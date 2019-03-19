@@ -67,3 +67,5 @@ nop
 ret
 */
 ```
+
+Copyright (c) 2019,  MSDN.WhiteKnight
