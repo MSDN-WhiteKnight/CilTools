@@ -3,7 +3,7 @@
 **License:** [BSD 2.0](LICENSE)  
 **Requirements:** .NET Framework 3.5+  
 
-CilBytecodeParser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so thay can be easily studied and programmatically processed.
+CilBytecodeParser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
 *Usage*
 
