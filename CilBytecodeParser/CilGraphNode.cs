@@ -80,7 +80,7 @@ namespace CilBytecodeParser
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            if(!String.IsNullOrEmpty(this._Name)) sb.Append(this._Name+": ");
+            if(!String.IsNullOrEmpty(this._Name)) sb.Append(this._Name + ": ");
             sb.Append(this._Instruction.ToString());
             return sb.ToString();
         }

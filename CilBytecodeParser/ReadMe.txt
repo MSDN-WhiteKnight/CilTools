@@ -1,9 +1,9 @@
 ﻿*** CilBytecodeParser library ***
 Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
 License: BSD 2.0
-Version: 1.0 (19.03.2019)
+Version: 1.1 (20.03.2019)
 
-CilBytecodeParser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so thay can be easily studied and programmatically processed.
+CilBytecodeParser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
 Requirements: .NET Framework 3.5+
 
@@ -65,3 +65,9 @@ call void [mscorlib]System.Console::WriteLine(string, System.Object, System.Obje
 nop
 ret
 */
+
+v1.1
+- Fixed types representation when converting instructions to text
+- Fixed ldftn instruction representation when converting it to text
+- Added CilAnalysis.GetReferencedMembers method
+

@@ -33,7 +33,7 @@ namespace CilBytecodeParser
         /// Gets the name of .NET type in CIL notation
         /// </summary>
         /// <param name="t">Type for which name is requested</param>
-        /// <returns>C# name of the type</returns>
+        /// <returns>Short of full type name</returns>
         public static string GetTypeName(Type t)
         {
             if (t == null) throw new ArgumentNullException("t");
@@ -49,13 +49,52 @@ namespace CilBytecodeParser
             else if (t.Equals(typeof(byte))) return "byte";
             else if (t.Equals(typeof(sbyte))) return "sbyte";
             else if (t.Equals(typeof(string))) return "string";
+            else if (t.Equals(typeof(object))) return "object";
             else
-            {
-                string s="";
-                if (t.IsValueType) s += "valuetype ";
-                s += t.FullName;
-                return s;
+            {                
+                return GetTypeFullName(t);
             }
+        }
+
+        /// <summary>
+        /// Gets the full name of .NET type in CIL notation
+        /// </summary>
+        /// <param name="t">Type for which name is requested</param>
+        /// <returns>Full type name</returns>
+        public static string GetTypeFullName(Type t)
+        {
+            if (t == null) throw new ArgumentNullException("t");
+            
+            StringBuilder sb = new StringBuilder();
+
+            if (t.IsValueType) sb.Append("valuetype ");
+            else if (t.IsClass) sb.Append("class ");
+
+            Assembly ass = t.Assembly;
+            sb.Append('[');
+            sb.Append(ass.GetName().Name);
+            sb.Append(']');
+
+            sb.Append(t.Namespace);
+            sb.Append('.');
+            sb.Append(t.Name);
+
+            if (t.IsGenericType)
+            {
+                sb.Append('<');
+
+                Type[] args=t.GetGenericArguments();
+                for(int i=0;i<args.Length;i++)
+                {
+                    if (i >= 1) sb.Append(", ");
+                    sb.Append(GetTypeName(args[i]));
+                }
+
+                sb.Append('>');
+            }
+
+            return sb.ToString();
+
         }
 
         /// <summary>
@@ -190,6 +229,69 @@ namespace CilBytecodeParser
         }
 
         /// <summary>
+        /// Gets members (fields or methods) referenced by specified methods that match specified criteria
+        /// </summary>
+        /// <param name="mb">Method for which to retreive referenced members</param>
+        /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(MethodBase mb, MemberCriteria flags)
+        {
+            if (mb == null) throw new ArgumentNullException("mb");
+
+            List<MemberInfo> results = new List<MemberInfo>();
+
+            //detect combinations of flags that can't produce any results
+            if ((flags & MemberCriteria.Methods) == 0 && (flags & MemberCriteria.Fields) == 0) return results;
+            if ((flags & MemberCriteria.Internal) == 0 && (flags & MemberCriteria.External) == 0) return results;
+            
+            Assembly ass;
+            var ins = CilReader.GetInstructions(mb);
+
+            foreach (var instr in ins)
+            {
+                if (instr.ReferencedMember == null) continue;
+
+                if ((flags & MemberCriteria.Methods) != 0 && instr.ReferencedMember is MethodBase)
+                {
+                    var item = instr.ReferencedMember as MethodBase;
+                    ass = item.DeclaringType.Assembly;
+
+                    if (ass.FullName.ToLower().Trim() == mb.DeclaringType.Assembly.FullName.ToLower().Trim())
+                    {
+                        //internal
+                        if ((flags & MemberCriteria.Internal) != 0 && !results.Contains(item)) results.Add(item);
+                    }
+                    else
+                    {
+                        //external
+                        if ((flags & MemberCriteria.External) != 0 && !results.Contains(item)) results.Add(item);
+                    }
+                }
+                else if ((flags & MemberCriteria.Fields) != 0 && instr.ReferencedMember is FieldInfo)
+                {
+                    var field = instr.ReferencedMember as FieldInfo;
+                    ass = field.DeclaringType.Assembly;
+
+                    if (ass.FullName.ToLower().Trim() == mb.DeclaringType.Assembly.FullName.ToLower().Trim())
+                    {
+                        //internal
+                        if ((flags & MemberCriteria.Internal) != 0 && !results.Contains(field)) results.Add(field);
+                    }
+                    else
+                    {
+                        //external
+                        if ((flags & MemberCriteria.External) != 0 && !results.Contains(field)) results.Add(field);
+                    }
+                }
+
+            }
+
+            return results;
+        }
+
+
+
+        /// <summary>
         /// Get all methods that are referenced by the code of the specified type
         /// </summary>
         /// <param name="t">Type for which to retreive referenced methods</param>
@@ -279,5 +381,14 @@ namespace CilBytecodeParser
             }
             return results;
         }
+    }
+
+    [Flags]
+    public enum MemberCriteria
+    {
+        External = 0x01,
+        Internal = 0x02,
+        Methods = 0x04,
+        Fields = 0x08
     }
 }

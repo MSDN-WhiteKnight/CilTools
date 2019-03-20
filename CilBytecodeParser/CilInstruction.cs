@@ -17,7 +17,8 @@ namespace CilBytecodeParser
     {
         static bool ReferencesMethodToken(OpCode op)
         {
-            return (op.Equals(OpCodes.Call) || op.Equals(OpCodes.Callvirt) || op.Equals(OpCodes.Newobj));
+            return (op.Equals(OpCodes.Call) || op.Equals(OpCodes.Callvirt) || op.Equals(OpCodes.Newobj)
+                || op.Equals(OpCodes.Ldftn));
         }
 
         static bool ReferencesFieldToken(OpCode op)
@@ -277,7 +278,7 @@ namespace CilBytecodeParser
         {
             StringBuilder sb = new StringBuilder();                        
 
-            sb.Append(this.Name);            
+            sb.Append(this.Name.PadRight(10));            
 
             if (Operand != null)
             {
@@ -302,10 +303,9 @@ namespace CilBytecodeParser
                         if (!called_method.IsStatic) sb.Append(" instance");
                                                 
                         sb.Append(rt);
-                        sb.Append(" [");                        
-                        sb.Append(t.Assembly.GetName().Name);
-                        sb.Append(']');                        
-                        sb.Append(t.FullName);
+                        sb.Append(' ');
+                        
+                        sb.Append(CilAnalysis.GetTypeFullName(t));
                         sb.Append("::");
                         sb.Append(called_method.Name);
                         sb.Append('(');
@@ -335,11 +335,9 @@ namespace CilBytecodeParser
                     {
                         fi = Method.Module.ResolveField(token);
                         Type t = fi.DeclaringType;
-                                                
-                        sb.Append(" [");
-                        sb.Append(t.Assembly.GetName().Name);
-                        sb.Append(']');
-                        sb.Append(t.FullName);
+                                           
+                        sb.Append(' ');
+                        sb.Append(CilAnalysis.GetTypeFullName(t));
                         sb.Append("::");
                         sb.Append(fi.Name);
                         
@@ -359,12 +357,10 @@ namespace CilBytecodeParser
 
                     try
                     {
-                        t = Method.Module.ResolveType(token);                                                
-
-                        sb.Append(" [");
-                        sb.Append(t.Assembly.GetName().Name);
-                        sb.Append(']');
-                        sb.Append(t.FullName);
+                        t = Method.Module.ResolveType(token);  
+                        
+                        sb.Append(' ');
+                        sb.Append(CilAnalysis.GetTypeFullName(t));
                         
                     }
                     catch (Exception ex)

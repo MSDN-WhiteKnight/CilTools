@@ -167,7 +167,7 @@ namespace CilBytecodeParser
                     sb.Append('(');
                     for (int i = 0; i < body.LocalVariables.Count;i++ )
                     {
-                        if (i >= 1) sb.Append(", ");
+                        if (i >= 1) sb.Append(",\r\n   ");
                         var local = body.LocalVariables[i];
                         sb.Append(CilAnalysis.GetTypeName(local.LocalType));
                         sb.Append(" V_" + local.LocalIndex.ToString());
@@ -179,6 +179,8 @@ namespace CilBytecodeParser
 
             if (node != null)
             {
+                sb.AppendLine();
+
                 //instructions
                 while (true)
                 {
@@ -222,7 +224,7 @@ namespace CilBytecodeParser
                     else sb.Append("".PadLeft(10, ' '));
 
                     //if instruction itself targets branch, append its label
-                    if (node.BranchTarget != null) sb.Append(instr.Name + " " + node.BranchTarget.Name);
+                    if (node.BranchTarget != null) sb.Append(instr.Name.PadRight(9) +" "+ node.BranchTarget.Name);
                     else sb.Append(instr.ToString());
 
                     sb.AppendLine();
