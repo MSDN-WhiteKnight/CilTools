@@ -208,28 +208,29 @@ namespace CilBytecodeParser
         public static IEnumerable<MethodBase> GetReferencedMethods(MethodBase mb)
         {
             if (mb == null) throw new ArgumentNullException("mb");
+                        
+            var coll = GetReferencedMembers(mb, MemberCriteria.External | MemberCriteria.Internal |
+                MemberCriteria.Methods);
 
-            List<MethodBase> results = new List<MethodBase>();
-
-            var ins = CilReader.GetInstructions(mb);
-
-            foreach (var instr in ins)
+            foreach (var item in coll)
             {
-                if (instr.ReferencedMember != null)
-                {
-                    if (instr.ReferencedMember is MethodBase)
-                    {
-                        var item = instr.ReferencedMember as MethodBase;
-                        if (!results.Contains(item)) results.Add(item);                        
-                    }
-                }
+                if (item is MethodBase) yield return (MethodBase)item;
             }
-
-            return results;
         }
 
         /// <summary>
-        /// Gets members (fields or methods) referenced by specified methods that match specified criteria
+        /// Gets all members (fields or methods) referenced by specified method
+        /// </summary>
+        /// <param name="mb">Method for which to retreive referenced members</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(MethodBase mb)
+        {
+            return GetReferencedMembers(mb, MemberCriteria.External | MemberCriteria.Internal |
+                MemberCriteria.Methods | MemberCriteria.Fields);
+        }
+
+        /// <summary>
+        /// Gets members (fields or methods) referenced by specified method that match specified criteria
         /// </summary>
         /// <param name="mb">Method for which to retreive referenced members</param>
         /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
@@ -254,9 +255,13 @@ namespace CilBytecodeParser
                 if ((flags & MemberCriteria.Methods) != 0 && instr.ReferencedMember is MethodBase)
                 {
                     var item = instr.ReferencedMember as MethodBase;
-                    ass = item.DeclaringType.Assembly;
 
-                    if (ass.FullName.ToLower().Trim() == mb.DeclaringType.Assembly.FullName.ToLower().Trim())
+                    //if declaring type is null, consider method external (usually the case for methods implemented in native code)
+                    if (item.DeclaringType == null) ass = null; 
+                    else ass = item.DeclaringType.Assembly;
+
+                    if (ass!=null && mb.DeclaringType !=null &&
+                        ass.FullName.ToLower().Trim() == mb.DeclaringType.Assembly.FullName.ToLower().Trim())
                     {
                         //internal
                         if ((flags & MemberCriteria.Internal) != 0 && !results.Contains(item)) results.Add(item);
@@ -269,7 +274,7 @@ namespace CilBytecodeParser
                 }
                 else if ((flags & MemberCriteria.Fields) != 0 && instr.ReferencedMember is FieldInfo)
                 {
-                    var field = instr.ReferencedMember as FieldInfo;
+                    var field = instr.ReferencedMember as FieldInfo;  
                     ass = field.DeclaringType.Assembly;
 
                     if (ass.FullName.ToLower().Trim() == mb.DeclaringType.Assembly.FullName.ToLower().Trim())
@@ -300,27 +305,57 @@ namespace CilBytecodeParser
         {
             if (t == null) throw new ArgumentNullException("t");
 
+            var coll = GetReferencedMembers(t, MemberCriteria.External | MemberCriteria.Internal |
+                MemberCriteria.Methods);
+
+            foreach (var item in coll)
+            {
+                if (item is MethodBase) yield return (MethodBase)item;
+            }
+        }
+
+        /// <summary>
+        /// Gets all members referenced by the code of specified type
+        /// </summary>
+        /// <param name="t">Type for which to retreive referenced memmbers</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(Type t)
+        {
+            return GetReferencedMembers(t, MemberCriteria.External | MemberCriteria.Internal |
+                MemberCriteria.Methods | MemberCriteria.Fields);
+        }
+
+        /// <summary>
+        /// Gets members referenced by the code of specified type that match specified criteria
+        /// </summary>
+        /// <param name="t">Type for which to retreive referenced memmbers</param>
+        /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(Type t,MemberCriteria flags)
+        {
+            if (t == null) throw new ArgumentNullException("t");
+
             //process regular methods
             var methods = t.GetMethods(
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance                
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
                 );
-            List<MethodBase> results = new List<MethodBase>();
+            List<MemberInfo> results = new List<MemberInfo>();
 
             foreach (var m in methods)
             {
                 try
                 {
-                    var coll = GetReferencedMethods(m);                                       
+                    var coll = GetReferencedMembers(m,flags);
 
                     foreach (var item in coll)
-                    {
+                    {                        
                         if (!results.Contains(item)) results.Add(item);
                     }
                 }
                 catch (Exception ex)
-                {
-                    string error = "Exception occured when trying to get a list of referenced methods.";
-                    OnError(m, new CilErrorEventArgs(ex, error));                    
+                {      
+                    string error = "Exception occured when trying to get a list of referenced members.";
+                    OnError(m, new CilErrorEventArgs(ex, error));
                 }
             }
 
@@ -333,17 +368,17 @@ namespace CilBytecodeParser
             {
                 try
                 {
-                    var coll = GetReferencedMethods(m);
-                    
+                    var coll = GetReferencedMembers(m, flags);
+
                     foreach (var item in coll)
                     {
                         if (!results.Contains(item)) results.Add(item);
                     }
                 }
                 catch (Exception ex)
-                {
-                    string error = "Exception occured when trying to get a list of referenced methods.";
-                    OnError(m, new CilErrorEventArgs(ex, error));    
+                {       
+                    string error = "Exception occured when trying to get a list of referenced members.";
+                    OnError(m, new CilErrorEventArgs(ex, error));
                 }
             }
 
@@ -359,12 +394,42 @@ namespace CilBytecodeParser
         {
             if (ass == null) throw new ArgumentNullException("ass");
 
+            var coll = GetReferencedMembers(ass, MemberCriteria.External | MemberCriteria.Internal |
+                MemberCriteria.Methods);
+
+            foreach (var item in coll)
+            {
+                if (item is MethodBase) yield return (MethodBase)item;
+            }
+        }
+
+        /// <summary>
+        /// Gets all members referenced by the code of specified assembly
+        /// </summary>
+        /// <param name="ass">Assembly for which to retreive referenced members</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(Assembly ass)
+        {
+            return GetReferencedMembers(ass, MemberCriteria.External | MemberCriteria.Internal |
+                MemberCriteria.Methods | MemberCriteria.Fields);
+        }
+
+        /// <summary>
+        /// Gets members referenced by the code of specified assembly that match specified criteria
+        /// </summary>
+        /// <param name="ass">Assembly for which to retreive referenced members</param>
+        /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(Assembly ass,MemberCriteria flags)
+        {
+            if (ass == null) throw new ArgumentNullException("ass");
+
             Type[] types = ass.GetTypes();
-            List<MethodBase> results = new List<MethodBase>();
+            List<MemberInfo> results = new List<MemberInfo>();
 
             foreach (Type t in types)
             {
-                var coll = GetReferencedMethods(t);
+                var coll = GetReferencedMembers(t, flags);
 
                 foreach (var item in coll)
                 {
@@ -375,7 +440,7 @@ namespace CilBytecodeParser
                     catch (Exception ex)
                     {
                         string error = "";
-                        OnError(item, new CilErrorEventArgs(ex, error));   
+                        OnError(item, new CilErrorEventArgs(ex, error));
                     }
                 }
             }
@@ -383,12 +448,30 @@ namespace CilBytecodeParser
         }
     }
 
+    /// <summary>
+    /// Represents bitwise flags that define what kinds of members are requested 
+    /// </summary>
     [Flags]
     public enum MemberCriteria
     {
+        /// <summary>
+        /// Return external (not from the same assembly as containing method) members
+        /// </summary>
         External = 0x01,
+
+        /// <summary>
+        /// Return internal (from the same assembly as containing method) members 
+        /// </summary>
         Internal = 0x02,
+
+        /// <summary>
+        /// Return methods (including constructors)
+        /// </summary>
         Methods = 0x04,
+
+        /// <summary>
+        /// Return fields
+        /// </summary>
         Fields = 0x08
     }
 }

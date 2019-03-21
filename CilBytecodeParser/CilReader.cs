@@ -67,6 +67,10 @@ namespace CilBytecodeParser
 
         static OpCode FindOpCode(short val)
         {
+            if (!opcodes.ContainsKey(val))
+            {
+                throw new NotSupportedException("Unknown opcode: 0x"+val.ToString("X"));
+            }
             return opcodes[val];
         }
 
@@ -113,6 +117,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Creates new CilReader object that uses specified byte array as source
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Source array is null</exception>
         /// <param name="src">An array of bytecode to read from</param>
         public CilReader(byte[] src)
         {
@@ -126,6 +131,8 @@ namespace CilBytecodeParser
         /// <summary>
         /// Creates new CilReader that uses a body of specified method as a source
         /// </summary>
+        /// <exception cref="System.ArgumentNullException">Source method is null</exception>
+        /// <exception cref="CilBytecodeParser.CilParserException">GetMethodBody returned null</exception>
         /// <param name="src">A MethodBase object that specifies a method to read from</param>
         public CilReader(MethodBase src)
         {
@@ -143,7 +150,9 @@ namespace CilBytecodeParser
         /// <summary>
         /// Reads next instruction from source
         /// </summary>
-        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">This CilReader is in faulty state or reached the end of source byte array</exception>
+        /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
+        /// <returns>CilInstruction retreived from the source</returns>
         public CilInstruction Read()
         {            
 
@@ -264,7 +273,9 @@ namespace CilBytecodeParser
 
         /// <summary>
         /// Reads all instructions from source until the end is reached
-        /// </summary>
+        /// </summary>        
+        /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
+        /// <exception cref="CilBytecodeParser.CilParserException">Unknown error occured</exception>
         /// <returns></returns>
         public IEnumerable<CilInstruction> ReadAll()
         {            
@@ -285,6 +296,10 @@ namespace CilBytecodeParser
         /// Reads all instructions from specified array of bytecode
         /// </summary>
         /// <param name="src">Source byte array</param>
+        /// <exception cref="System.ArgumentNullException">Source array is null</exception>
+        /// <exception cref="System.ArgumentException">Source array is empty</exception>
+        /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
+        /// <exception cref="CilBytecodeParser.CilParserException">Unknown error occured</exception>
         /// <returns>A collection of CIL instructions</returns>
         public static IEnumerable<CilInstruction> GetInstructions(byte[] src)
         {
@@ -299,6 +314,9 @@ namespace CilBytecodeParser
         /// Reads all instructions from specified method's body
         /// </summary>
         /// <param name="m">Source method</param>
+        /// <exception cref="System.ArgumentNullException">Source method is null</exception>        
+        /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
+        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retreive method body for the method</exception>
         /// <returns>A collection of CIL instructions that form the body of this method</returns>
         public static IEnumerable<CilInstruction> GetInstructions(MethodBase m)
         {

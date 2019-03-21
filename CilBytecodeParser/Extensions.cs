@@ -114,5 +114,68 @@ namespace CilBytecodeParser.Extensions
         {
             return CilAnalysis.GetReferencedMethods(ass);
         }
+
+        /// <summary>
+        /// Gets all members (fields or methods) referenced by specified method
+        /// </summary>
+        /// <param name="mb">Method for which to retreive referenced members</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(this MethodBase mb)
+        {
+            return CilAnalysis.GetReferencedMembers(mb);
+        }
+
+        /// <summary>
+        /// Gets all members referenced by the code of specified type
+        /// </summary>
+        /// <param name="t">Type for which to retreive referenced memmbers</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(this Type t)
+        {
+            return CilAnalysis.GetReferencedMembers(t);
+        }
+
+        /// <summary>
+        /// Gets all members referenced by the code of specified assembly
+        /// </summary>
+        /// <param name="ass">Assembly for which to retreive referenced members</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(this Assembly ass)
+        {
+            return CilAnalysis.GetReferencedMembers(ass);
+        }
+
+        /// <summary>
+        /// Gets members (fields or methods) referenced by specified method that match specified criteria
+        /// </summary>
+        /// <param name="mb">Method for which to retreive referenced members</param>
+        /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(this MethodBase mb, MemberCriteria flags)
+        {
+            return CilAnalysis.GetReferencedMembers(mb, flags);
+        }
+
+        /// <summary>
+        /// Gets members referenced by the code of specified type that match specified criteria
+        /// </summary>
+        /// <param name="t">Type for which to retreive referenced memmbers</param>
+        /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(this Type t, MemberCriteria flags)
+        {
+            return CilAnalysis.GetReferencedMembers(t, flags);
+        }
+
+        /// <summary>
+        /// Gets members referenced by the code of specified assembly that match specified criteria
+        /// </summary>
+        /// <param name="ass">Assembly for which to retreive referenced members</param>
+        /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <returns>A collection of MemberInfo objects</returns>
+        public static IEnumerable<MemberInfo> GetReferencedMembers(this Assembly ass, MemberCriteria flags)
+        {
+            return CilAnalysis.GetReferencedMembers(ass, flags);
+        }
     }
 }
