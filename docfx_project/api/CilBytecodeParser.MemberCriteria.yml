@@ -1,0 +1,171 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilBytecodeParser.MemberCriteria
+  commentId: T:CilBytecodeParser.MemberCriteria
+  id: MemberCriteria
+  parent: CilBytecodeParser
+  children:
+  - CilBytecodeParser.MemberCriteria.External
+  - CilBytecodeParser.MemberCriteria.Fields
+  - CilBytecodeParser.MemberCriteria.Internal
+  - CilBytecodeParser.MemberCriteria.Methods
+  langs:
+  - csharp
+  - vb
+  name: MemberCriteria
+  nameWithType: MemberCriteria
+  fullName: CilBytecodeParser.MemberCriteria
+  type: Enum
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRepresents bitwise flags that define what kinds of members are requested \n"
+  remarks: External members are members defined in different assembly then the method which references them, not to be confused with `external` keyword in C#. Internal members are members defined in the same assembly as referencing method, similarly, not to be confused with `internal` keyword or `InternalCall` attribute.  If you specify a combination of flags that does not match anything (i.e., if you define neither external nor internal members, or neither methods nor fields) when requesting referenced members, empty collection is returned.
+  syntax:
+    content: >-
+      [Flags]
+
+      public enum MemberCriteria
+    content.vb: >-
+      <Flags>
+
+      Public Enum MemberCriteria
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilBytecodeParser.MemberCriteria.External
+  commentId: F:CilBytecodeParser.MemberCriteria.External
+  id: External
+  parent: CilBytecodeParser.MemberCriteria
+  langs:
+  - csharp
+  - vb
+  name: External
+  nameWithType: MemberCriteria.External
+  fullName: CilBytecodeParser.MemberCriteria.External
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nReturn external (not from the same assembly as containing method) members\n"
+  syntax:
+    content: External = 1
+    return:
+      type: CilBytecodeParser.MemberCriteria
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.MemberCriteria.Internal
+  commentId: F:CilBytecodeParser.MemberCriteria.Internal
+  id: Internal
+  parent: CilBytecodeParser.MemberCriteria
+  langs:
+  - csharp
+  - vb
+  name: Internal
+  nameWithType: MemberCriteria.Internal
+  fullName: CilBytecodeParser.MemberCriteria.Internal
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nReturn internal (from the same assembly as containing method) members \n"
+  syntax:
+    content: Internal = 2
+    return:
+      type: CilBytecodeParser.MemberCriteria
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.MemberCriteria.Methods
+  commentId: F:CilBytecodeParser.MemberCriteria.Methods
+  id: Methods
+  parent: CilBytecodeParser.MemberCriteria
+  langs:
+  - csharp
+  - vb
+  name: Methods
+  nameWithType: MemberCriteria.Methods
+  fullName: CilBytecodeParser.MemberCriteria.Methods
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nReturn methods (including constructors)\n"
+  syntax:
+    content: Methods = 4
+    return:
+      type: CilBytecodeParser.MemberCriteria
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.MemberCriteria.Fields
+  commentId: F:CilBytecodeParser.MemberCriteria.Fields
+  id: Fields
+  parent: CilBytecodeParser.MemberCriteria
+  langs:
+  - csharp
+  - vb
+  name: Fields
+  nameWithType: MemberCriteria.Fields
+  fullName: CilBytecodeParser.MemberCriteria.Fields
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nReturn fields\n"
+  syntax:
+    content: Fields = 8
+    return:
+      type: CilBytecodeParser.MemberCriteria
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilBytecodeParser
+  commentId: N:CilBytecodeParser
+  isExternal: true
+  name: CilBytecodeParser
+  nameWithType: CilBytecodeParser
+  fullName: CilBytecodeParser
+- uid: CilBytecodeParser.MemberCriteria
+  commentId: T:CilBytecodeParser.MemberCriteria
+  parent: CilBytecodeParser
+  isExternal: true
+  name: MemberCriteria
+  nameWithType: MemberCriteria
+  fullName: CilBytecodeParser.MemberCriteria
