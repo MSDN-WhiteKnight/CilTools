@@ -1,6 +1,6 @@
 # CIL Bytecode Parser
 
-![logo](/docs/images/il.png)
+![logo](https://msdn-whiteknight.github.io/CilBytecodeParser/images/IL.png)
 
 **License:** [BSD 2.0](LICENSE)  
 **Requirements:** .NET Framework 3.5+  
