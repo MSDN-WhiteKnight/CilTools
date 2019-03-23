@@ -1,7 +1,7 @@
 ﻿*** CilBytecodeParser library ***
 Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
 License: BSD 2.0
-Version: 1.2 (21.03.2019)
+Version: 1.3 (23.03.2019)
 
 CilBytecodeParser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
@@ -76,4 +76,13 @@ v1.2
 - Documented exceptions for CilReader
 - Added several new CilAnalysis.GetReferencedMembers overloads
 - Added extension methods for GetReferencedMembers
+
+v1.3
+- Added support for vararg keyword
+- Added support for ldtoken instruction
+- Added typedref into short type names
+- Fixed local variables and fields representation in generated CIL text
+- Fixed types representation in generated CIL text
+- Tweaked error handling
+- Documented exceptions for most of the API
 

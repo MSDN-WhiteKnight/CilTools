@@ -12,6 +12,11 @@ namespace CilBytecodeParser
     /// <summary>
     /// Represents a CIL graph, a graph that reflects a flow of control between CIL instructions in the method
     /// </summary>
+    /// <remarks>
+    /// CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges representing how control flows between them when runtime executes method. The root of the graph is the first instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) and, if it's a jump instruction, a reference to the branch target (an instruction that would be executed if the condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, a string that identify it. The last instruction of the method has null as its next instruction reference.
+    /// 
+    /// Use <see cref="CilAnalysis.GetGraph"/> method to create CIL graph for a method.
+    /// </remarks>
     public class CilGraph
     {
         static bool FindTryBlock(IList<ExceptionHandlingClause> list, uint start, uint end)
@@ -84,6 +89,7 @@ namespace CilBytecodeParser
         /// </summary>
         /// <param name="root">Root node</param>
         /// <param name="mb">Method associated with this graph object</param>
+        /// <remarks>Use <see cref="CilAnalysis.GetGraph"/> method to create CIL graph for a method instead of using this contructor.</remarks>
         public CilGraph(CilGraphNode root, MethodBase mb)
         {
             this._Root = root;
@@ -103,10 +109,12 @@ namespace CilBytecodeParser
         /// <summary>
         /// Returns CIL code corresponding to this graph as a string
         /// </summary>
+        /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
         /// <returns>A string of CIL code</returns>
         public override string ToString()
         {
-            CilGraphNode node = this._Root;
+            CilGraphNode node = this._Root;            
+
             StringBuilder sb = new StringBuilder();
             int n_iter = 0;
             IList<ExceptionHandlingClause> trys=new List<ExceptionHandlingClause>();
@@ -135,6 +143,11 @@ namespace CilBytecodeParser
 
             if (this._Method.IsStatic) sb.Append("static ");
 
+            if (this._Method.CallingConvention == CallingConventions.VarArgs)
+            {
+                sb.Append("vararg ");
+            }
+
             ParameterInfo[] pars = this._Method.GetParameters();
             MethodInfo mi = this._Method as MethodInfo;
             string rt = "";
@@ -152,7 +165,7 @@ namespace CilBytecodeParser
 
             sb.Append(')');
             sb.AppendLine(" cil managed {");
-
+            
             if (body != null)
             {
                 sb.AppendLine(" .maxstack "+body.MaxStackSize.ToString());
@@ -210,7 +223,7 @@ namespace CilBytecodeParser
                         {
                             string st = "";
                             Type t = block.CatchType;
-                            if (t != null) st = t.ToString();
+                            if (t != null) st = CilAnalysis.GetTypeNameInternal(t);
                             sb.AppendLine(" .catch " + st + " {");
                         }
                         else if (block.Flags == ExceptionHandlingClauseOptions.Finally)
@@ -235,9 +248,10 @@ namespace CilBytecodeParser
                     n_iter++;
                     if (n_iter > 100000)
                     {
-                        throw new CilParserException(
-                            "Too many iterations while trying to process graph (possibly a cyclic or extremely large graph)"
+                        sb.AppendLine(
+                            "Error: Too many iterations while trying to process graph (possibly a cyclic or extremely large graph)"
                             );
+                        break;
                     }
                 }// end while
             }//endif

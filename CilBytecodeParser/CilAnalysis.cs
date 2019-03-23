@@ -11,7 +11,7 @@ using System.Reflection.Emit;
 namespace CilBytecodeParser
 {
     /// <summary>
-    /// Provide static methods that assist in parsing and analysing CIL bytecode
+    /// Provides static methods that assist in parsing and analysing CIL bytecode
     /// </summary>
     public static class CilAnalysis
     {
@@ -33,10 +33,18 @@ namespace CilBytecodeParser
         /// Gets the name of .NET type in CIL notation
         /// </summary>
         /// <param name="t">Type for which name is requested</param>
+        /// <exception cref="System.ArgumentNullException">t is null</exception>
+        /// <remarks>Returns short type name, such as `int32`, if it exists. Otherwise returns full name.</remarks>
         /// <returns>Short of full type name</returns>
         public static string GetTypeName(Type t)
         {
-            if (t == null) throw new ArgumentNullException("t");
+            if (t == null) throw new ArgumentNullException("t","Source type cannot be null");
+
+            if (t.IsByRef)
+            {
+                Type et = t.GetElementType();
+                if(et!=null) return GetTypeName(et) + "&";
+            }
 
             if (t.Equals(typeof(bool))) return "bool";
             else if (t.Equals(typeof(void))) return "void";
@@ -50,6 +58,7 @@ namespace CilBytecodeParser
             else if (t.Equals(typeof(sbyte))) return "sbyte";
             else if (t.Equals(typeof(string))) return "string";
             else if (t.Equals(typeof(object))) return "object";
+            else if (t.Equals(typeof(System.TypedReference))) return "typedref";
             else
             {                
                 return GetTypeFullName(t);
@@ -60,10 +69,12 @@ namespace CilBytecodeParser
         /// Gets the full name of .NET type in CIL notation
         /// </summary>
         /// <param name="t">Type for which name is requested</param>
+        /// <exception cref="System.ArgumentNullException">t is null</exception>
+        /// <remarks>Returns fully qualified name, such as `class [mscorlib]System.String`</remarks>
         /// <returns>Full type name</returns>
         public static string GetTypeFullName(Type t)
         {
-            if (t == null) throw new ArgumentNullException("t");
+            if (t == null) throw new ArgumentNullException("t", "Source type cannot be null");
             
             StringBuilder sb = new StringBuilder();
 
@@ -77,6 +88,8 @@ namespace CilBytecodeParser
 
             sb.Append(t.Namespace);
             sb.Append('.');
+
+            if (t.IsNested && t.DeclaringType != null) sb.Append(t.DeclaringType.Name + "/");            
             sb.Append(t.Name);
 
             if (t.IsGenericType)
@@ -97,14 +110,51 @@ namespace CilBytecodeParser
 
         }
 
+        internal static string GetTypeNameInternal(Type t)
+        {
+            //this is used when we don't need class/valuetype prefix, such as for method calls
+            if (t == null) throw new ArgumentNullException("t", "Source type cannot be null");
+
+            StringBuilder sb = new StringBuilder();            
+
+            Assembly ass = t.Assembly;
+            sb.Append('[');
+            sb.Append(ass.GetName().Name);
+            sb.Append(']');
+
+            sb.Append(t.Namespace);
+            sb.Append('.');
+
+            if (t.IsNested && t.DeclaringType!=null) sb.Append(t.DeclaringType.Name + "/");
+            sb.Append(t.Name);
+
+            if (t.IsGenericType)
+            {
+                sb.Append('<');
+
+                Type[] args = t.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) sb.Append(", ");
+                    sb.Append(GetTypeName(args[i]));
+                }
+
+                sb.Append('>');
+            }
+
+            return sb.ToString();
+
+        }
+
         /// <summary>
-        /// Returns CIL graph that represents a specified method
+        /// Returns <see cref="CilGraph"/> that represents a specified method
         /// </summary>
         /// <param name="m">Method for which to build CIL graph</param>
+        /// <exception cref="System.ArgumentNullException">Source method is null</exception>
         /// <returns>CIL graph object</returns>
         public static CilGraph GetGraph(MethodBase m)
         {
-            if (m == null) throw new ArgumentNullException("m");
+            if (m == null) throw new ArgumentNullException("m","Source method cannot be null");
 
             List<CilInstruction> instructions;
             List<int> labels = new List<int>();
@@ -192,6 +242,7 @@ namespace CilBytecodeParser
         /// Returns specified method CIL code as string
         /// </summary>
         /// <param name="m">Method for which to retreive CIL</param>
+        /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
         /// <returns>CIL code string</returns>
         public static string MethodToText(MethodBase m)
         {
@@ -204,11 +255,11 @@ namespace CilBytecodeParser
         /// Gets all methods that are referenced by the specified method
         /// </summary>
         /// <param name="mb">Method for which to retreive referenced methods</param>
+        /// <exception cref="System.ArgumentNullException">Source method is null</exception>
+        /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of referenced methods</returns>
         public static IEnumerable<MethodBase> GetReferencedMethods(MethodBase mb)
-        {
-            if (mb == null) throw new ArgumentNullException("mb");
-                        
+        {                       
             var coll = GetReferencedMembers(mb, MemberCriteria.External | MemberCriteria.Internal |
                 MemberCriteria.Methods);
 
@@ -222,6 +273,8 @@ namespace CilBytecodeParser
         /// Gets all members (fields or methods) referenced by specified method
         /// </summary>
         /// <param name="mb">Method for which to retreive referenced members</param>
+        /// <exception cref="System.ArgumentNullException">Source method is null</exception>
+        /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(MethodBase mb)
         {
@@ -234,10 +287,14 @@ namespace CilBytecodeParser
         /// </summary>
         /// <param name="mb">Method for which to retreive referenced members</param>
         /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <exception cref="System.ArgumentNullException">Source method is null</exception>
+        /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
+        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retreive method body for the method</exception>
+        /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(MethodBase mb, MemberCriteria flags)
         {
-            if (mb == null) throw new ArgumentNullException("mb");
+            if (mb == null) throw new ArgumentNullException("mb", "Source method cannot be null");
 
             List<MemberInfo> results = new List<MemberInfo>();
 
@@ -300,11 +357,11 @@ namespace CilBytecodeParser
         /// Get all methods that are referenced by the code of the specified type
         /// </summary>
         /// <param name="t">Type for which to retreive referenced methods</param>
+        /// <exception cref="System.ArgumentNullException">Source type is null</exception>
+        /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
         /// <returns>A collection of referenced methods</returns>
         public static IEnumerable<MethodBase> GetReferencedMethods(Type t)
-        {
-            if (t == null) throw new ArgumentNullException("t");
-
+        {     
             var coll = GetReferencedMembers(t, MemberCriteria.External | MemberCriteria.Internal |
                 MemberCriteria.Methods);
 
@@ -318,6 +375,8 @@ namespace CilBytecodeParser
         /// Gets all members referenced by the code of specified type
         /// </summary>
         /// <param name="t">Type for which to retreive referenced memmbers</param>
+        /// <exception cref="System.ArgumentNullException">Source type is null</exception>
+        /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(Type t)
         {
@@ -330,10 +389,12 @@ namespace CilBytecodeParser
         /// </summary>
         /// <param name="t">Type for which to retreive referenced memmbers</param>
         /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <exception cref="System.ArgumentNullException">Source type is null</exception>
+        /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(Type t,MemberCriteria flags)
         {
-            if (t == null) throw new ArgumentNullException("t");
+            if (t == null) throw new ArgumentNullException("t", "Source type cannot be null");
 
             //process regular methods
             var methods = t.GetMethods(
@@ -389,11 +450,11 @@ namespace CilBytecodeParser
         /// Get all methods that are referenced by the code in the specified assembly
         /// </summary>
         /// <param name="ass">Assembly for which to retreive referenced methods</param>
+        /// <exception cref="System.ArgumentNullException">Source assembly is null</exception>
+        /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the assembly's methods.</remarks>
         /// <returns>A collection of referenced methods</returns>
         public static IEnumerable<MethodBase> GetReferencedMethods(Assembly ass)
-        {
-            if (ass == null) throw new ArgumentNullException("ass");
-
+        {   
             var coll = GetReferencedMembers(ass, MemberCriteria.External | MemberCriteria.Internal |
                 MemberCriteria.Methods);
 
@@ -407,6 +468,8 @@ namespace CilBytecodeParser
         /// Gets all members referenced by the code of specified assembly
         /// </summary>
         /// <param name="ass">Assembly for which to retreive referenced members</param>
+        /// <exception cref="System.ArgumentNullException">Source assembly is null</exception>
+        /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the assembly's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(Assembly ass)
         {
@@ -419,10 +482,12 @@ namespace CilBytecodeParser
         /// </summary>
         /// <param name="ass">Assembly for which to retreive referenced members</param>
         /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <exception cref="System.ArgumentNullException">Source assembly is null</exception>
+        /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the assembly's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(Assembly ass,MemberCriteria flags)
         {
-            if (ass == null) throw new ArgumentNullException("ass");
+            if (ass == null) throw new ArgumentNullException("ass", "Source assembly cannot be null");
 
             Type[] types = ass.GetTypes();
             List<MemberInfo> results = new List<MemberInfo>();
@@ -451,6 +516,7 @@ namespace CilBytecodeParser
     /// <summary>
     /// Represents bitwise flags that define what kinds of members are requested 
     /// </summary>
+    /// <remarks>External members are members defined in different assembly then the method which references them, not to be confused with `external` keyword in C#. Internal members are members defined in the same assembly as referencing method, similarly, not to be confused with `internal` keyword or `InternalCall` attribute.  If you specify a combination of flags that does not match anything (i.e., if you define neither external nor internal members, or neither methods nor fields) when requesting referenced members, empty collection is returned.</remarks>
     [Flags]
     public enum MemberCriteria
     {

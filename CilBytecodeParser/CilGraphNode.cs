@@ -12,6 +12,7 @@ namespace CilBytecodeParser
     /// <summary>
     /// Represents a node node in the CIL graph. A node describes an instruction and its connection with other instructions
     /// </summary>
+    /// <remarks>See <see cref="CilGraph"/> class documentation for more information about CIL graphs.</remarks>
     public class CilGraphNode
     {
         /// <summary>
@@ -47,21 +48,25 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets label name associated with this node
         /// </summary>
+        /// <remarks>Label names are assigned to instruction that serve as branch targets for convenience. If the instruction is not used as target, the value is empty string.</remarks>
         public string Name { get { return this._Name; } }
 
         /// <summary>
         /// Gets a reference to the node that represents instruction directly preceding current instruction in the method bytecode
         /// </summary>
+        /// <remarks>For the first instruction in the method body, the value is null.</remarks>
         public CilGraphNode Previous { get { return this._Previous; } }
 
         /// <summary>
         /// Gets a reference to the node that represents instruction directly following current instruction in the method bytecode
         /// </summary>
+        /// <remarks>Next instruction will be normally executed after current one, unless it is a jump instruction and the condition for jump is met. For the last instruction of the method body, the value is null.</remarks>
         public CilGraphNode Next { get { return this._Next; } }
 
         /// <summary>
         /// Gets a reference to the node that represents instruction which is a target of the current instruction, if applicable
         /// </summary>
+        /// <remarks>Branch target is an instruction which would be called after current one if the condition for jump instruction is met. For non-jump instructions, the value is null.</remarks>
         public CilGraphNode BranchTarget { get { return this._BranchTarget; } }
 
         /// <summary>
@@ -89,20 +94,24 @@ namespace CilBytecodeParser
     /// <summary>
     /// A mutable version of CilGraphNode class
     /// </summary>    
+    /// <remarks>Graph nodes are exposed as immutable <see cref="CilGraphNode"/> objects by API of this library, such as <see cref="CilAnalysis.GetGraph"/> method, because usually you don't need to alter their properties. However, these nodes are created as mutable objects and their actual runtime type is CilGraphNodeMutable; you can cast them to that type if you need to set their properties.</remarks>
     public class CilGraphNodeMutable : CilGraphNode
     {
         /// <summary>
         /// Creates new mutable CIL graph node object
         /// </summary>
         /// <param name="instr">An instruction associated with this node</param>
+        /// <exception cref="System.ArgumentNullException">instr argument is null</exception>
         public CilGraphNodeMutable(CilInstruction instr)
         {
+            if (instr == null) throw new ArgumentNullException("instr", "instr argument cannot be null");
+
             this._Name = "";
             this._Instruction = instr;
         }
 
         /// <summary>
-        /// Gets or set CIL instruction associated with this node
+        /// Gets or sets CIL instruction associated with this node
         /// </summary>
         public new CilInstruction Instruction
         {
@@ -113,6 +122,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets or sets label name associated with this node
         /// </summary>
+        /// <remarks>Label names are assigned to instruction that serve as branch targets for convenience. If the instruction is not used as target, the value is empty string.</remarks>
         public new string Name
         {
             get { return this._Name; }
@@ -122,6 +132,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets or sets a reference to the node that represents instruction directly preceding current instruction in the method bytecode
         /// </summary>
+        /// <remarks>For the first instruction in the method body, the value is null.</remarks>
         public new CilGraphNode Previous
         {
             get { return this._Previous; }
@@ -131,6 +142,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets or sets a reference to the node that represents instruction directly following current instruction in the method bytecode
         /// </summary>
+        /// <remarks>Next instruction will be normally executed after current one, unless it is a jump instruction and the condition for jump is met. For the last instruction of the method body, the value is null.</remarks>
         public new CilGraphNode Next
         {
             get { return this._Next; }
@@ -140,6 +152,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets or sets a reference to the node that represents instruction which is a target of the current instruction, if applicable
         /// </summary>
+        /// <remarks>Branch target is an instruction which would be called after current one if the condition for jump instruction is met. For non-jump instructions, the value is null.</remarks>
         public new CilGraphNode BranchTarget
         {
             get { return this._BranchTarget; }

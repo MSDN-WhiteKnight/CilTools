@@ -118,10 +118,12 @@ namespace CilBytecodeParser
         /// Creates new CilReader object that uses specified byte array as source
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Source array is null</exception>
+        /// <exception cref="System.ArgumentException">Source array is empty</exception>
         /// <param name="src">An array of bytecode to read from</param>
         public CilReader(byte[] src)
         {
-            if (src == null) throw new ArgumentNullException("src");      
+            if (src == null) throw new ArgumentNullException("src", "Source array cannot be null");            
+            if (src.Length == 0) throw new ArgumentException("Source cannot be empty array");
 
             this.cilbytes = src;
             this.method = null;
@@ -136,7 +138,7 @@ namespace CilBytecodeParser
         /// <param name="src">A MethodBase object that specifies a method to read from</param>
         public CilReader(MethodBase src)
         {
-            if (src == null) throw new ArgumentNullException("src");   
+            if (src == null) throw new ArgumentNullException("src","Source method cannot be null");   
 
             MethodBody mb = null;            
             mb = src.GetMethodBody();
@@ -276,10 +278,9 @@ namespace CilBytecodeParser
         /// </summary>        
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
         /// <exception cref="CilBytecodeParser.CilParserException">Unknown error occured</exception>
-        /// <returns></returns>
+        /// <returns>A collection of CIL instructions</returns>
         public IEnumerable<CilInstruction> ReadAll()
-        {            
-
+        {     
             //парсим IL-код...
             while (true)
             {
@@ -302,10 +303,7 @@ namespace CilBytecodeParser
         /// <exception cref="CilBytecodeParser.CilParserException">Unknown error occured</exception>
         /// <returns>A collection of CIL instructions</returns>
         public static IEnumerable<CilInstruction> GetInstructions(byte[] src)
-        {
-            if (src == null) throw new ArgumentNullException("src");
-            if (src.Length == 0) throw new ArgumentException("Source cannot be empty array");
-
+        {            
             CilReader reader = new CilReader(src);
             return reader.ReadAll();
         }
@@ -319,12 +317,9 @@ namespace CilBytecodeParser
         /// <exception cref="CilBytecodeParser.CilParserException">Failed to retreive method body for the method</exception>
         /// <returns>A collection of CIL instructions that form the body of this method</returns>
         public static IEnumerable<CilInstruction> GetInstructions(MethodBase m)
-        {
-            if (m == null) throw new ArgumentNullException("m");  
-
+        {  
             CilReader reader = new CilReader(m);
             return reader.ReadAll();
         }       
-
     }
 }

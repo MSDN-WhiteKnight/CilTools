@@ -13,6 +13,7 @@ namespace CilBytecodeParser
     /// <summary>
     /// Represents CIL instruction, a main structural element of the method body which consists of operation code and operand.
     /// </summary>
+    /// <remarks>To retreive a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class.</remarks>
     public class CilInstruction
     {
         static bool ReferencesMethodToken(OpCode op)
@@ -32,6 +33,12 @@ namespace CilBytecodeParser
             return (op.Equals(OpCodes.Newarr) || op.Equals(OpCodes.Box) || op.Equals(OpCodes.Isinst)
                 || op.Equals(OpCodes.Castclass) || op.Equals(OpCodes.Initobj)
                 || op.Equals(OpCodes.Unbox) || op.Equals(OpCodes.Unbox_Any));
+        }
+
+        static bool ReferencesLocal(OpCode op)
+        {
+            return (op.Equals(OpCodes.Ldloc) || op.Equals(OpCodes.Ldloca) || op.Equals(OpCodes.Ldloc_S)
+                || op.Equals(OpCodes.Ldloca_S) || op.Equals(OpCodes.Stloc) || op.Equals(OpCodes.Stloc_S));
         }
 
         /// <summary>
@@ -136,7 +143,7 @@ namespace CilBytecodeParser
         }
 
         /// <summary>
-        /// Creates a new CilInstruction object initialized with specified field values
+        /// Creates a new CilInstruction object initialized with specified field values (infrastructure)
         /// </summary>
         /// <param name="opc">Opcode</param>
         /// <param name="operand">Operand object</param>
@@ -144,6 +151,7 @@ namespace CilBytecodeParser
         /// <param name="byteoffset">Byte offset</param>
         /// <param name="ordinalnum">Ordinal number</param>
         /// <param name="mb">Owning method</param>
+        /// <remarks>Do not use this constructor directly. To retreive a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class instead.</remarks>
         public CilInstruction(
             OpCode opc, object operand=null, uint opsize=0, uint byteoffset=0, uint ordinalnum=0, MethodBase mb=null
             )
@@ -180,7 +188,7 @@ namespace CilBytecodeParser
         }
 
         /// <summary>
-        /// Gets a member (field or method) referenced by this instruction, if applicable
+        /// Gets a member (type, field or method) referenced by this instruction, if applicable
         /// </summary>
         public MemberInfo ReferencedMember
         {
@@ -202,6 +210,12 @@ namespace CilBytecodeParser
 
                         FieldInfo fi = Method.Module.ResolveField((int)Operand);
                         return fi;
+                    }
+                    else if (ReferencesTypeToken(this.OpCode))
+                    {
+
+                        Type t = Method.Module.ResolveType((int)Operand);
+                        return t;
                     }
                     else return null;
                 }
@@ -243,7 +257,7 @@ namespace CilBytecodeParser
         }
 
         /// <summary>
-        /// Gets a string literal referenced by this instruction, if applciable
+        /// Gets a string literal referenced by this instruction, if applicable
         /// </summary>
         public string ReferencedString
         {
@@ -285,13 +299,13 @@ namespace CilBytecodeParser
                 
                 if (ReferencesMethodToken(this.OpCode) && this.Method != null)
                 {           
-                    //method
-     
-                    int token = (int)Operand;
-                    MethodBase called_method;
+                    //method                         
 
                     try
                     {
+                        int token = (int)Operand;
+                        MethodBase called_method;
+
                         called_method = Method.Module.ResolveMethod(token);
                         Type t = called_method.DeclaringType;
                         ParameterInfo[] pars = called_method.GetParameters();
@@ -305,7 +319,7 @@ namespace CilBytecodeParser
                         sb.Append(rt);
                         sb.Append(' ');
                         
-                        sb.Append(CilAnalysis.GetTypeFullName(t));
+                        sb.Append(CilAnalysis.GetTypeNameInternal(t));
                         sb.Append("::");
                         sb.Append(called_method.Name);
                         sb.Append('(');
@@ -326,18 +340,20 @@ namespace CilBytecodeParser
                 }
                 else if (ReferencesFieldToken(this.OpCode) && this.Method != null)
                 {
-                    //field
-
-                    int token = (int)Operand;
-                    FieldInfo fi;
+                    //field                    
 
                     try
                     {
+                        int token = (int)Operand;
+                        FieldInfo fi;
+
                         fi = Method.Module.ResolveField(token);
                         Type t = fi.DeclaringType;
                                            
                         sb.Append(' ');
-                        sb.Append(CilAnalysis.GetTypeFullName(t));
+                        sb.Append(CilAnalysis.GetTypeName(fi.FieldType));
+                        sb.Append(' ');
+                        sb.Append(CilAnalysis.GetTypeNameInternal(t));
                         sb.Append("::");
                         sb.Append(fi.Name);
                         
@@ -350,17 +366,17 @@ namespace CilBytecodeParser
                 }
                 else if (ReferencesTypeToken(this.OpCode) && this.Method != null)
                 {
-                    //type
-
-                    int token = (int)Operand;
-                    Type t;
+                    //type                    
 
                     try
                     {
+                        int token = (int)Operand;
+                        Type t;
+
                         t = Method.Module.ResolveType(token);  
                         
                         sb.Append(' ');
-                        sb.Append(CilAnalysis.GetTypeFullName(t));
+                        sb.Append(CilAnalysis.GetTypeNameInternal(t));
                         
                     }
                     catch (Exception ex)
@@ -373,11 +389,11 @@ namespace CilBytecodeParser
                 {
                     //string literal
 
-                    int token = (int)Operand;
-                    string s="";
-
                     try
                     {
+                        int token = (int)Operand;
+                        string s = "";
+
                         s = Method.Module.ResolveString(token);
 
                         sb.Append(" \"");
@@ -389,6 +405,41 @@ namespace CilBytecodeParser
                     {
                         string error = "Exception occured when trying to resolve string.";
                         OnError(this, new CilErrorEventArgs(ex, error));  
+                    }
+                }
+                else if (OpCode.Equals(OpCodes.Ldtoken) && this.Method != null)
+                {
+                    //metadata token
+                    int token = (int)Operand;                    
+
+                    try
+                    {                        
+                        MemberInfo mi;
+
+                        mi = Method.Module.ResolveMember(token);
+                        sb.Append(' ');
+                        if (mi is Type) sb.Append(CilAnalysis.GetTypeNameInternal((Type)mi));
+                        else sb.Append(mi.Name);
+                    }
+                    catch (Exception ex)
+                    {
+                        string error = "Exception occured when trying to resolve token.";
+                        OnError(this, new CilErrorEventArgs(ex, error));
+                        sb.Append(" 0x"+token.ToString("X"));
+                    }
+                }
+                else if (ReferencesLocal(this.OpCode))
+                {
+                    //local variable   
+
+                    try
+                    {  
+                        sb.Append(" V_" + this.Operand.ToString());
+                    }
+                    catch (Exception ex)
+                    {
+                        string error = "Exception occured when trying to process local variable.";
+                        OnError(this, new CilErrorEventArgs(ex, error));                        
                     }
                 }
                 else
