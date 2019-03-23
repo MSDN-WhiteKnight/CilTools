@@ -1,0 +1,312 @@
+{
+  "homepages": [],
+  "source_base_path": "D:/VADIM/Projects/CilBytecodeParser/docfx_project",
+  "xrefmap": "xrefmap.yml",
+  "files": [
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CilAnalysis.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CilAnalysis.html",
+          "hash": "0Wh7wremWZUOxhoWOebjmQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CilErrorEventArgs.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CilErrorEventArgs.html",
+          "hash": "JGTQq+131YkZgte2S3Im2A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CilGraph.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CilGraph.html",
+          "hash": "44ef8hyJKTj4Vcuba2nqDQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CilGraphNode.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CilGraphNode.html",
+          "hash": "kPveBbbzJpvhoUamPLYYeA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CilGraphNodeMutable.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CilGraphNodeMutable.html",
+          "hash": "HtLERjPQ1gJwI7HlLbX18g=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CilInstruction.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CilInstruction.html",
+          "hash": "Rcx58hWNLwtZSb62llvCCA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CilParserException.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CilParserException.html",
+          "hash": "jFxv4+qqJ2vhv3KHOBuM1A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CilReader.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CilReader.html",
+          "hash": "OwgcOnI5Z49vdfQtB5qzHg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CilReaderState.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CilReaderState.html",
+          "hash": "Qrt3PqbSS1ySEVEezDgYXQ=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.DebugUtils.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.DebugUtils.html",
+          "hash": "a37oabcAO6Lrjkxk9plMiw=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.Extensions.CilExtensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.Extensions.CilExtensions.html",
+          "hash": "TovI51WBql8izuH02a5F6A=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.Extensions.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.Extensions.html",
+          "hash": "ZuaNAjCdFYlJ4bSrwjSYQA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.MemberCriteria.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.MemberCriteria.html",
+          "hash": "LoVmyZo/XzPe6v+Um1JWeg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.html",
+          "hash": "oCJ/4Fx7VwbFFSxNGpkDBg=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "api/index.md",
+      "output": {
+        ".html": {
+          "relative_path": "api/index.html",
+          "hash": "pq+bH1j66q52P3ghlFLPzA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "api/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/toc.html",
+          "hash": "EUqkVlq6nIxfACCB6F6SEg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "articles/intro.md",
+      "output": {
+        ".html": {
+          "relative_path": "articles/intro.html",
+          "hash": "0h6j2q5OuahURHBpBVKnZA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "articles/toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "articles/toc.html",
+          "hash": "t7iiFrmuYmrKWisdq+lN6Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Resource",
+      "source_relative_path": "images/IL.png",
+      "output": {
+        "resource": {
+          "relative_path": "images/IL.png"
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "Conceptual",
+      "source_relative_path": "index.md",
+      "output": {
+        ".html": {
+          "relative_path": "index.html",
+          "hash": "SSnHW5Z8gpo5TyV9q2HqfA=="
+        }
+      },
+      "is_incremental": true,
+      "version": ""
+    },
+    {
+      "type": "Toc",
+      "source_relative_path": "toc.yml",
+      "output": {
+        ".html": {
+          "relative_path": "toc.html",
+          "hash": "k+/dkjFuwAVS32HduMpmBw=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    }
+  ],
+  "incremental_info": [
+    {
+      "status": {
+        "can_incremental": true,
+        "incrementalPhase": "build",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {
+        "ConceptualDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 3,
+          "skipped_file_count": 3
+        },
+        "ManagedReferenceDocumentProcessor": {
+          "can_incremental": true,
+          "incrementalPhase": "build",
+          "total_file_count": 14,
+          "skipped_file_count": 14
+        },
+        "ResourceDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor ResourceDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        },
+        "TocDocumentProcessor": {
+          "can_incremental": false,
+          "details": "Processor TocDocumentProcessor cannot support incremental build because the processor doesn't implement ISupportIncrementalDocumentProcessor interface.",
+          "incrementalPhase": "build",
+          "total_file_count": 0,
+          "skipped_file_count": 0
+        }
+      }
+    },
+    {
+      "status": {
+        "can_incremental": true,
+        "details": "Can support incremental post processing.",
+        "incrementalPhase": "postProcessing",
+        "total_file_count": 0,
+        "skipped_file_count": 0
+      },
+      "processors": {}
+    }
+  ],
+  "version_info": {},
+  "groups": [
+    {
+      "xrefmap": "xrefmap.yml"
+    }
+  ]
+}
