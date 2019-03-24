@@ -1,0 +1,741 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilBytecodeParser.CilGraph
+  commentId: T:CilBytecodeParser.CilGraph
+  id: CilGraph
+  parent: CilBytecodeParser
+  children:
+  - CilBytecodeParser.CilGraph.#ctor(CilBytecodeParser.CilGraphNode,System.Reflection.MethodBase)
+  - CilBytecodeParser.CilGraph._Method
+  - CilBytecodeParser.CilGraph._Root
+  - CilBytecodeParser.CilGraph.Error
+  - CilBytecodeParser.CilGraph.Method
+  - CilBytecodeParser.CilGraph.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
+  - CilBytecodeParser.CilGraph.Root
+  - CilBytecodeParser.CilGraph.ToString
+  langs:
+  - csharp
+  - vb
+  name: CilGraph
+  nameWithType: CilGraph
+  fullName: CilBytecodeParser.CilGraph
+  type: Class
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRepresents a CIL graph, a graph that reflects a flow of control between CIL instructions in the method\n"
+  remarks: "\nCIL graph is a directed graph with nodes representing CIL instructions withing method body and edges representing how control flows between them when runtime executes method. The root of the graph is the first instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) and, if it&apos;s a jump instruction, a reference to the branch target (an instruction that would be executed if the condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, a string that identify it. The last instruction of the method has null as its next instruction reference.\n\nUse <xref href=\"CilBytecodeParser.CilAnalysis.GetGraph(System.Reflection.MethodBase)\" data-throw-if-not-resolved=\"false\"></xref> method to create CIL graph for a method.\n"
+  syntax:
+    content: public class CilGraph
+    content.vb: Public Class CilGraph
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilBytecodeParser.CilGraph._Root
+  commentId: F:CilBytecodeParser.CilGraph._Root
+  id: _Root
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: _Root
+  nameWithType: CilGraph._Root
+  fullName: CilBytecodeParser.CilGraph._Root
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nA root node of this graph (the first instruction in the method)\n"
+  syntax:
+    content: protected CilGraphNode _Root
+    return:
+      type: CilBytecodeParser.CilGraphNode
+    content.vb: Protected _Root As CilGraphNode
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilBytecodeParser.CilGraph._Method
+  commentId: F:CilBytecodeParser.CilGraph._Method
+  id: _Method
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: _Method
+  nameWithType: CilGraph._Method
+  fullName: CilBytecodeParser.CilGraph._Method
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nA method object for which this graph is built\n"
+  syntax:
+    content: protected MethodBase _Method
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Protected _Method As MethodBase
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilBytecodeParser.CilGraph.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
+  commentId: M:CilBytecodeParser.CilGraph.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
+  id: OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: OnError(Object, CilErrorEventArgs)
+  nameWithType: CilGraph.OnError(Object, CilErrorEventArgs)
+  fullName: CilBytecodeParser.CilGraph.OnError(System.Object, CilBytecodeParser.CilErrorEventArgs)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRaises Error event\n"
+  syntax:
+    content: protected static void OnError(object sender, CilErrorEventArgs e)
+    parameters:
+    - id: sender
+      type: System.Object
+      description: object that generated event
+    - id: e
+      type: CilBytecodeParser.CilErrorEventArgs
+      description: event arguments
+    content.vb: Protected Shared Sub OnError(sender As Object, e As CilErrorEventArgs)
+  overload: CilBytecodeParser.CilGraph.OnError*
+  modifiers.csharp:
+  - protected
+  - static
+  modifiers.vb:
+  - Protected
+  - Shared
+- uid: CilBytecodeParser.CilGraph.#ctor(CilBytecodeParser.CilGraphNode,System.Reflection.MethodBase)
+  commentId: M:CilBytecodeParser.CilGraph.#ctor(CilBytecodeParser.CilGraphNode,System.Reflection.MethodBase)
+  id: '#ctor(CilBytecodeParser.CilGraphNode,System.Reflection.MethodBase)'
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: CilGraph(CilGraphNode, MethodBase)
+  nameWithType: CilGraph.CilGraph(CilGraphNode, MethodBase)
+  fullName: CilBytecodeParser.CilGraph.CilGraph(CilBytecodeParser.CilGraphNode, System.Reflection.MethodBase)
+  type: Constructor
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nCreates new CIL graph. (Insfrastructure; not intended for user code)\n"
+  remarks: Use <xref href="CilBytecodeParser.CilAnalysis.GetGraph(System.Reflection.MethodBase)" data-throw-if-not-resolved="false"></xref> method to create CIL graph for a method instead of using this contructor.
+  syntax:
+    content: public CilGraph(CilGraphNode root, MethodBase mb)
+    parameters:
+    - id: root
+      type: CilBytecodeParser.CilGraphNode
+      description: Root node
+    - id: mb
+      type: System.Reflection.MethodBase
+      description: Method associated with this graph object
+    content.vb: Public Sub New(root As CilGraphNode, mb As MethodBase)
+  overload: CilBytecodeParser.CilGraph.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilBytecodeParser.CilGraph.ToString
+  commentId: M:CilBytecodeParser.CilGraph.ToString
+  id: ToString
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: CilGraph.ToString()
+  fullName: CilBytecodeParser.CilGraph.ToString()
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nReturns CIL code corresponding to this graph as a string\n"
+  remarks: The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: A string of CIL code
+    content.vb: Public Overrides Function ToString As String
+  overridden: System.Object.ToString
+  overload: CilBytecodeParser.CilGraph.ToString*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilBytecodeParser.CilGraph.Root
+  commentId: P:CilBytecodeParser.CilGraph.Root
+  id: Root
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: Root
+  nameWithType: CilGraph.Root
+  fullName: CilBytecodeParser.CilGraph.Root
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets a root node of this graph (the first instruction in the method)\n"
+  syntax:
+    content: public CilGraphNode Root { get; }
+    parameters: []
+    return:
+      type: CilBytecodeParser.CilGraphNode
+    content.vb: Public ReadOnly Property Root As CilGraphNode
+  overload: CilBytecodeParser.CilGraph.Root*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilBytecodeParser.CilGraph.Method
+  commentId: P:CilBytecodeParser.CilGraph.Method
+  id: Method
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: Method
+  nameWithType: CilGraph.Method
+  fullName: CilBytecodeParser.CilGraph.Method
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets a method for which this graph is built\n"
+  syntax:
+    content: public MethodBase Method { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Public ReadOnly Property Method As MethodBase
+  overload: CilBytecodeParser.CilGraph.Method*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilBytecodeParser.CilGraph.Error
+  commentId: E:CilBytecodeParser.CilGraph.Error
+  id: Error
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: CilGraph.Error
+  fullName: CilBytecodeParser.CilGraph.Error
+  type: Event
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRaised when error occurs in one of the methods in this class\n"
+  syntax:
+    content: public static event EventHandler<CilErrorEventArgs> Error
+    return:
+      type: System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+    content.vb: Public Shared Event Error As EventHandler(Of CilErrorEventArgs)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: CilBytecodeParser
+  commentId: N:CilBytecodeParser
+  isExternal: true
+  name: CilBytecodeParser
+  nameWithType: CilBytecodeParser
+  fullName: CilBytecodeParser
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilBytecodeParser.CilGraphNode
+  commentId: T:CilBytecodeParser.CilGraphNode
+  parent: CilBytecodeParser
+  isExternal: true
+  name: CilGraphNode
+  nameWithType: CilGraphNode
+  fullName: CilBytecodeParser.CilGraphNode
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilBytecodeParser.CilGraph.OnError*
+  commentId: Overload:CilBytecodeParser.CilGraph.OnError
+  isExternal: true
+  name: OnError
+  nameWithType: CilGraph.OnError
+  fullName: CilBytecodeParser.CilGraph.OnError
+- uid: CilBytecodeParser.CilErrorEventArgs
+  commentId: T:CilBytecodeParser.CilErrorEventArgs
+  parent: CilBytecodeParser
+  isExternal: true
+  name: CilErrorEventArgs
+  nameWithType: CilErrorEventArgs
+  fullName: CilBytecodeParser.CilErrorEventArgs
+- uid: CilBytecodeParser.CilGraph.#ctor*
+  commentId: Overload:CilBytecodeParser.CilGraph.#ctor
+  isExternal: true
+  name: CilGraph
+  nameWithType: CilGraph.CilGraph
+  fullName: CilBytecodeParser.CilGraph.CilGraph
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilBytecodeParser.CilGraph.ToString*
+  commentId: Overload:CilBytecodeParser.CilGraph.ToString
+  isExternal: true
+  name: ToString
+  nameWithType: CilGraph.ToString
+  fullName: CilBytecodeParser.CilGraph.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilBytecodeParser.CilGraph.Root*
+  commentId: Overload:CilBytecodeParser.CilGraph.Root
+  isExternal: true
+  name: Root
+  nameWithType: CilGraph.Root
+  fullName: CilBytecodeParser.CilGraph.Root
+- uid: CilBytecodeParser.CilGraph.Method*
+  commentId: Overload:CilBytecodeParser.CilGraph.Method
+  isExternal: true
+  name: Method
+  nameWithType: CilGraph.Method
+  fullName: CilBytecodeParser.CilGraph.Method
+- uid: System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+  commentId: T:System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  name: EventHandler<CilErrorEventArgs>
+  nameWithType: EventHandler<CilErrorEventArgs>
+  fullName: System.EventHandler<CilBytecodeParser.CilErrorEventArgs>
+  nameWithType.vb: EventHandler(Of CilErrorEventArgs)
+  fullName.vb: System.EventHandler(Of CilBytecodeParser.CilErrorEventArgs)
+  name.vb: EventHandler(Of CilErrorEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilBytecodeParser.CilErrorEventArgs
+    name: CilErrorEventArgs
+    nameWithType: CilErrorEventArgs
+    fullName: CilBytecodeParser.CilErrorEventArgs
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilBytecodeParser.CilErrorEventArgs
+    name: CilErrorEventArgs
+    nameWithType: CilErrorEventArgs
+    fullName: CilBytecodeParser.CilErrorEventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: )
+    nameWithType: )
+    fullName: )

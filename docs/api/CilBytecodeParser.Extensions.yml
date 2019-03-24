@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilBytecodeParser.Extensions
+  commentId: N:CilBytecodeParser.Extensions
+  id: CilBytecodeParser.Extensions
+  children:
+  - CilBytecodeParser.Extensions.CilExtensions
+  langs:
+  - csharp
+  - vb
+  name: CilBytecodeParser.Extensions
+  nameWithType: CilBytecodeParser.Extensions
+  fullName: CilBytecodeParser.Extensions
+  type: Namespace
+  assemblies:
+  - CilBytecodeParser
+references:
+- uid: CilBytecodeParser.Extensions.CilExtensions
+  commentId: T:CilBytecodeParser.Extensions.CilExtensions
+  isExternal: true
+  name: CilExtensions
+  nameWithType: CilExtensions
+  fullName: CilBytecodeParser.Extensions.CilExtensions

@@ -1,0 +1,1225 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilBytecodeParser.CilAnalysis
+  commentId: T:CilBytecodeParser.CilAnalysis
+  id: CilAnalysis
+  parent: CilBytecodeParser
+  children:
+  - CilBytecodeParser.CilAnalysis.Error
+  - CilBytecodeParser.CilAnalysis.GetGraph(System.Reflection.MethodBase)
+  - CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly)
+  - CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly,CilBytecodeParser.MemberCriteria)
+  - CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.MethodBase)
+  - CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.MethodBase,CilBytecodeParser.MemberCriteria)
+  - CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Type)
+  - CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Type,CilBytecodeParser.MemberCriteria)
+  - CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Reflection.Assembly)
+  - CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Reflection.MethodBase)
+  - CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Type)
+  - CilBytecodeParser.CilAnalysis.GetTypeFullName(System.Type)
+  - CilBytecodeParser.CilAnalysis.GetTypeName(System.Type)
+  - CilBytecodeParser.CilAnalysis.MethodToText(System.Reflection.MethodBase)
+  langs:
+  - csharp
+  - vb
+  name: CilAnalysis
+  nameWithType: CilAnalysis
+  fullName: CilBytecodeParser.CilAnalysis
+  type: Class
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nProvides static methods that assist in parsing and analysing CIL bytecode\n"
+  syntax:
+    content: public static class CilAnalysis
+    content.vb: Public Module CilAnalysis
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: CilBytecodeParser.CilAnalysis.GetTypeName(System.Type)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetTypeName(System.Type)
+  id: GetTypeName(System.Type)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetTypeName(Type)
+  nameWithType: CilAnalysis.GetTypeName(Type)
+  fullName: CilBytecodeParser.CilAnalysis.GetTypeName(System.Type)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the name of .NET type in CIL notation\n"
+  remarks: Returns short type name, such as `int32`, if it exists. Otherwise returns full name.
+  syntax:
+    content: public static string GetTypeName(Type t)
+    parameters:
+    - id: t
+      type: System.Type
+      description: Type for which name is requested
+    return:
+      type: System.String
+      description: Short of full type name
+    content.vb: Public Shared Function GetTypeName(t As Type) As String
+  overload: CilBytecodeParser.CilAnalysis.GetTypeName*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: t is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetTypeFullName(System.Type)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetTypeFullName(System.Type)
+  id: GetTypeFullName(System.Type)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetTypeFullName(Type)
+  nameWithType: CilAnalysis.GetTypeFullName(Type)
+  fullName: CilBytecodeParser.CilAnalysis.GetTypeFullName(System.Type)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the full name of .NET type in CIL notation\n"
+  remarks: Returns fully qualified name, such as `class [mscorlib]System.String`
+  syntax:
+    content: public static string GetTypeFullName(Type t)
+    parameters:
+    - id: t
+      type: System.Type
+      description: Type for which name is requested
+    return:
+      type: System.String
+      description: Full type name
+    content.vb: Public Shared Function GetTypeFullName(t As Type) As String
+  overload: CilBytecodeParser.CilAnalysis.GetTypeFullName*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: t is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetGraph(System.Reflection.MethodBase)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetGraph(System.Reflection.MethodBase)
+  id: GetGraph(System.Reflection.MethodBase)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetGraph(MethodBase)
+  nameWithType: CilAnalysis.GetGraph(MethodBase)
+  fullName: CilBytecodeParser.CilAnalysis.GetGraph(System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nReturns <xref href=\"CilBytecodeParser.CilGraph\" data-throw-if-not-resolved=\"false\"></xref> that represents a specified method\n"
+  syntax:
+    content: public static CilGraph GetGraph(MethodBase m)
+    parameters:
+    - id: m
+      type: System.Reflection.MethodBase
+      description: Method for which to build CIL graph
+    return:
+      type: CilBytecodeParser.CilGraph
+      description: CIL graph object
+    content.vb: Public Shared Function GetGraph(m As MethodBase) As CilGraph
+  overload: CilBytecodeParser.CilAnalysis.GetGraph*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source method is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.MethodToText(System.Reflection.MethodBase)
+  commentId: M:CilBytecodeParser.CilAnalysis.MethodToText(System.Reflection.MethodBase)
+  id: MethodToText(System.Reflection.MethodBase)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: MethodToText(MethodBase)
+  nameWithType: CilAnalysis.MethodToText(MethodBase)
+  fullName: CilBytecodeParser.CilAnalysis.MethodToText(System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nReturns specified method CIL code as string\n"
+  remarks: The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.
+  syntax:
+    content: public static string MethodToText(MethodBase m)
+    parameters:
+    - id: m
+      type: System.Reflection.MethodBase
+      description: Method for which to retreive CIL
+    return:
+      type: System.String
+      description: CIL code string
+    content.vb: Public Shared Function MethodToText(m As MethodBase) As String
+  overload: CilBytecodeParser.CilAnalysis.MethodToText*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Reflection.MethodBase)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Reflection.MethodBase)
+  id: GetReferencedMethods(System.Reflection.MethodBase)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedMethods(MethodBase)
+  nameWithType: CilAnalysis.GetReferencedMethods(MethodBase)
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets all methods that are referenced by the specified method\n"
+  remarks: Referenced member is a member that appears as an operand of instruction in source method&apos;s body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.
+  syntax:
+    content: public static IEnumerable<MethodBase> GetReferencedMethods(MethodBase mb)
+    parameters:
+    - id: mb
+      type: System.Reflection.MethodBase
+      description: Method for which to retreive referenced methods
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
+      description: A collection of referenced methods
+    content.vb: Public Shared Function GetReferencedMethods(mb As MethodBase) As IEnumerable(Of MethodBase)
+  overload: CilBytecodeParser.CilAnalysis.GetReferencedMethods*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source method is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.MethodBase)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.MethodBase)
+  id: GetReferencedMembers(System.Reflection.MethodBase)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedMembers(MethodBase)
+  nameWithType: CilAnalysis.GetReferencedMembers(MethodBase)
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets all members (fields or methods) referenced by specified method\n"
+  remarks: Referenced member is a member that appears as an operand of instruction in source method&apos;s body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.
+  syntax:
+    content: public static IEnumerable<MemberInfo> GetReferencedMembers(MethodBase mb)
+    parameters:
+    - id: mb
+      type: System.Reflection.MethodBase
+      description: Method for which to retreive referenced members
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
+      description: A collection of MemberInfo objects
+    content.vb: Public Shared Function GetReferencedMembers(mb As MethodBase) As IEnumerable(Of MemberInfo)
+  overload: CilBytecodeParser.CilAnalysis.GetReferencedMembers*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source method is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.MethodBase,CilBytecodeParser.MemberCriteria)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.MethodBase,CilBytecodeParser.MemberCriteria)
+  id: GetReferencedMembers(System.Reflection.MethodBase,CilBytecodeParser.MemberCriteria)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedMembers(MethodBase, MemberCriteria)
+  nameWithType: CilAnalysis.GetReferencedMembers(MethodBase, MemberCriteria)
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.MethodBase, CilBytecodeParser.MemberCriteria)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets members (fields or methods) referenced by specified method that match specified criteria\n"
+  remarks: Referenced member is a member that appears as an operand of instruction in source method&apos;s body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.
+  syntax:
+    content: public static IEnumerable<MemberInfo> GetReferencedMembers(MethodBase mb, MemberCriteria flags)
+    parameters:
+    - id: mb
+      type: System.Reflection.MethodBase
+      description: Method for which to retreive referenced members
+    - id: flags
+      type: CilBytecodeParser.MemberCriteria
+      description: A combination of bitwise flags that control what kind of members are retreived
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
+      description: A collection of MemberInfo objects
+    content.vb: Public Shared Function GetReferencedMembers(mb As MethodBase, flags As MemberCriteria) As IEnumerable(Of MemberInfo)
+  overload: CilBytecodeParser.CilAnalysis.GetReferencedMembers*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source method is null
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: CilReader encountered unknown opcode
+  - type: CilBytecodeParser.CilParserException
+    commentId: T:CilBytecodeParser.CilParserException
+    description: Failed to retreive method body for the method
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Type)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Type)
+  id: GetReferencedMethods(System.Type)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedMethods(Type)
+  nameWithType: CilAnalysis.GetReferencedMethods(Type)
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Type)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGet all methods that are referenced by the code of the specified type\n"
+  remarks: Referenced member is a member that appears as an operand of instruction in any of the type&apos;s methods.
+  syntax:
+    content: public static IEnumerable<MethodBase> GetReferencedMethods(Type t)
+    parameters:
+    - id: t
+      type: System.Type
+      description: Type for which to retreive referenced methods
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
+      description: A collection of referenced methods
+    content.vb: Public Shared Function GetReferencedMethods(t As Type) As IEnumerable(Of MethodBase)
+  overload: CilBytecodeParser.CilAnalysis.GetReferencedMethods*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source type is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Type)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Type)
+  id: GetReferencedMembers(System.Type)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedMembers(Type)
+  nameWithType: CilAnalysis.GetReferencedMembers(Type)
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Type)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets all members referenced by the code of specified type\n"
+  remarks: Referenced member is a member that appears as an operand of instruction in any of the type&apos;s methods.
+  syntax:
+    content: public static IEnumerable<MemberInfo> GetReferencedMembers(Type t)
+    parameters:
+    - id: t
+      type: System.Type
+      description: Type for which to retreive referenced memmbers
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
+      description: A collection of MemberInfo objects
+    content.vb: Public Shared Function GetReferencedMembers(t As Type) As IEnumerable(Of MemberInfo)
+  overload: CilBytecodeParser.CilAnalysis.GetReferencedMembers*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source type is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Type,CilBytecodeParser.MemberCriteria)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Type,CilBytecodeParser.MemberCriteria)
+  id: GetReferencedMembers(System.Type,CilBytecodeParser.MemberCriteria)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedMembers(Type, MemberCriteria)
+  nameWithType: CilAnalysis.GetReferencedMembers(Type, MemberCriteria)
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Type, CilBytecodeParser.MemberCriteria)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets members referenced by the code of specified type that match specified criteria\n"
+  remarks: Referenced member is a member that appears as an operand of instruction in any of the type&apos;s methods.
+  syntax:
+    content: public static IEnumerable<MemberInfo> GetReferencedMembers(Type t, MemberCriteria flags)
+    parameters:
+    - id: t
+      type: System.Type
+      description: Type for which to retreive referenced memmbers
+    - id: flags
+      type: CilBytecodeParser.MemberCriteria
+      description: A combination of bitwise flags that control what kind of members are retreived
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
+      description: A collection of MemberInfo objects
+    content.vb: Public Shared Function GetReferencedMembers(t As Type, flags As MemberCriteria) As IEnumerable(Of MemberInfo)
+  overload: CilBytecodeParser.CilAnalysis.GetReferencedMembers*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source type is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Reflection.Assembly)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Reflection.Assembly)
+  id: GetReferencedMethods(System.Reflection.Assembly)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedMethods(Assembly)
+  nameWithType: CilAnalysis.GetReferencedMethods(Assembly)
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMethods(System.Reflection.Assembly)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGet all methods that are referenced by the code in the specified assembly\n"
+  remarks: Referenced member is a member that appears as an operand of instruction in any of the assembly&apos;s methods.
+  syntax:
+    content: public static IEnumerable<MethodBase> GetReferencedMethods(Assembly ass)
+    parameters:
+    - id: ass
+      type: System.Reflection.Assembly
+      description: Assembly for which to retreive referenced methods
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
+      description: A collection of referenced methods
+    content.vb: Public Shared Function GetReferencedMethods(ass As Assembly) As IEnumerable(Of MethodBase)
+  overload: CilBytecodeParser.CilAnalysis.GetReferencedMethods*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source assembly is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly)
+  id: GetReferencedMembers(System.Reflection.Assembly)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedMembers(Assembly)
+  nameWithType: CilAnalysis.GetReferencedMembers(Assembly)
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets all members referenced by the code of specified assembly\n"
+  remarks: Referenced member is a member that appears as an operand of instruction in any of the assembly&apos;s methods.
+  syntax:
+    content: public static IEnumerable<MemberInfo> GetReferencedMembers(Assembly ass)
+    parameters:
+    - id: ass
+      type: System.Reflection.Assembly
+      description: Assembly for which to retreive referenced members
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
+      description: A collection of MemberInfo objects
+    content.vb: Public Shared Function GetReferencedMembers(ass As Assembly) As IEnumerable(Of MemberInfo)
+  overload: CilBytecodeParser.CilAnalysis.GetReferencedMembers*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source assembly is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly,CilBytecodeParser.MemberCriteria)
+  commentId: M:CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly,CilBytecodeParser.MemberCriteria)
+  id: GetReferencedMembers(System.Reflection.Assembly,CilBytecodeParser.MemberCriteria)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedMembers(Assembly, MemberCriteria)
+  nameWithType: CilAnalysis.GetReferencedMembers(Assembly, MemberCriteria)
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly, CilBytecodeParser.MemberCriteria)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets members referenced by the code of specified assembly that match specified criteria\n"
+  remarks: Referenced member is a member that appears as an operand of instruction in any of the assembly&apos;s methods.
+  syntax:
+    content: public static IEnumerable<MemberInfo> GetReferencedMembers(Assembly ass, MemberCriteria flags)
+    parameters:
+    - id: ass
+      type: System.Reflection.Assembly
+      description: Assembly for which to retreive referenced members
+    - id: flags
+      type: CilBytecodeParser.MemberCriteria
+      description: A combination of bitwise flags that control what kind of members are retreived
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
+      description: A collection of MemberInfo objects
+    content.vb: Public Shared Function GetReferencedMembers(ass As Assembly, flags As MemberCriteria) As IEnumerable(Of MemberInfo)
+  overload: CilBytecodeParser.CilAnalysis.GetReferencedMembers*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source assembly is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.Error
+  commentId: E:CilBytecodeParser.CilAnalysis.Error
+  id: Error
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: CilAnalysis.Error
+  fullName: CilBytecodeParser.CilAnalysis.Error
+  type: Event
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRaised when error occurs in one of the methods in this class\n"
+  syntax:
+    content: public static event EventHandler<CilErrorEventArgs> Error
+    return:
+      type: System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+    content.vb: Public Shared Event Error As EventHandler(Of CilErrorEventArgs)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: CilBytecodeParser
+  commentId: N:CilBytecodeParser
+  isExternal: true
+  name: CilBytecodeParser
+  nameWithType: CilBytecodeParser
+  fullName: CilBytecodeParser
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilBytecodeParser.CilAnalysis.GetTypeName*
+  commentId: Overload:CilBytecodeParser.CilAnalysis.GetTypeName
+  isExternal: true
+  name: GetTypeName
+  nameWithType: CilAnalysis.GetTypeName
+  fullName: CilBytecodeParser.CilAnalysis.GetTypeName
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilBytecodeParser.CilAnalysis.GetTypeFullName*
+  commentId: Overload:CilBytecodeParser.CilAnalysis.GetTypeFullName
+  isExternal: true
+  name: GetTypeFullName
+  nameWithType: CilAnalysis.GetTypeFullName
+  fullName: CilBytecodeParser.CilAnalysis.GetTypeFullName
+- uid: CilBytecodeParser.CilAnalysis.GetGraph*
+  commentId: Overload:CilBytecodeParser.CilAnalysis.GetGraph
+  isExternal: true
+  name: GetGraph
+  nameWithType: CilAnalysis.GetGraph
+  fullName: CilBytecodeParser.CilAnalysis.GetGraph
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: CilBytecodeParser.CilGraph
+  commentId: T:CilBytecodeParser.CilGraph
+  parent: CilBytecodeParser
+  isExternal: true
+  name: CilGraph
+  nameWithType: CilGraph
+  fullName: CilBytecodeParser.CilGraph
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilBytecodeParser.CilAnalysis.MethodToText*
+  commentId: Overload:CilBytecodeParser.CilAnalysis.MethodToText
+  isExternal: true
+  name: MethodToText
+  nameWithType: CilAnalysis.MethodToText
+  fullName: CilBytecodeParser.CilAnalysis.MethodToText
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMethods*
+  commentId: Overload:CilBytecodeParser.CilAnalysis.GetReferencedMethods
+  isExternal: true
+  name: GetReferencedMethods
+  nameWithType: CilAnalysis.GetReferencedMethods
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMethods
+- uid: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<MethodBase>
+  nameWithType: IEnumerable<MethodBase>
+  fullName: System.Collections.Generic.IEnumerable<System.Reflection.MethodBase>
+  nameWithType.vb: IEnumerable(Of MethodBase)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Reflection.MethodBase)
+  name.vb: IEnumerable(Of MethodBase)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilBytecodeParser.CilAnalysis.GetReferencedMembers*
+  commentId: Overload:CilBytecodeParser.CilAnalysis.GetReferencedMembers
+  isExternal: true
+  name: GetReferencedMembers
+  nameWithType: CilAnalysis.GetReferencedMembers
+  fullName: CilBytecodeParser.CilAnalysis.GetReferencedMembers
+- uid: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<MemberInfo>
+  nameWithType: IEnumerable<MemberInfo>
+  fullName: System.Collections.Generic.IEnumerable<System.Reflection.MemberInfo>
+  nameWithType.vb: IEnumerable(Of MemberInfo)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Reflection.MemberInfo)
+  name.vb: IEnumerable(Of MemberInfo)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    nameWithType: MemberInfo
+    fullName: System.Reflection.MemberInfo
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Reflection.MemberInfo
+    name: MemberInfo
+    nameWithType: MemberInfo
+    fullName: System.Reflection.MemberInfo
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.NotSupportedException
+  commentId: T:System.NotSupportedException
+  isExternal: true
+- uid: CilBytecodeParser.CilParserException
+  commentId: T:CilBytecodeParser.CilParserException
+  isExternal: true
+  name: CilParserException
+  nameWithType: CilParserException
+  fullName: CilBytecodeParser.CilParserException
+- uid: CilBytecodeParser.MemberCriteria
+  commentId: T:CilBytecodeParser.MemberCriteria
+  parent: CilBytecodeParser
+  isExternal: true
+  name: MemberCriteria
+  nameWithType: MemberCriteria
+  fullName: CilBytecodeParser.MemberCriteria
+- uid: System.Reflection.Assembly
+  commentId: T:System.Reflection.Assembly
+  parent: System.Reflection
+  isExternal: true
+  name: Assembly
+  nameWithType: Assembly
+  fullName: System.Reflection.Assembly
+- uid: System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+  commentId: T:System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  name: EventHandler<CilErrorEventArgs>
+  nameWithType: EventHandler<CilErrorEventArgs>
+  fullName: System.EventHandler<CilBytecodeParser.CilErrorEventArgs>
+  nameWithType.vb: EventHandler(Of CilErrorEventArgs)
+  fullName.vb: System.EventHandler(Of CilBytecodeParser.CilErrorEventArgs)
+  name.vb: EventHandler(Of CilErrorEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilBytecodeParser.CilErrorEventArgs
+    name: CilErrorEventArgs
+    nameWithType: CilErrorEventArgs
+    fullName: CilBytecodeParser.CilErrorEventArgs
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilBytecodeParser.CilErrorEventArgs
+    name: CilErrorEventArgs
+    nameWithType: CilErrorEventArgs
+    fullName: CilBytecodeParser.CilErrorEventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: )
+    nameWithType: )
+    fullName: )

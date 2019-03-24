@@ -1,0 +1,131 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilBytecodeParser.CilReaderState
+  commentId: T:CilBytecodeParser.CilReaderState
+  id: CilReaderState
+  parent: CilBytecodeParser
+  children:
+  - CilBytecodeParser.CilReaderState.End
+  - CilBytecodeParser.CilReaderState.Error
+  - CilBytecodeParser.CilReaderState.Reading
+  langs:
+  - csharp
+  - vb
+  name: CilReaderState
+  nameWithType: CilReaderState
+  fullName: CilBytecodeParser.CilReaderState
+  type: Enum
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRepresents a state of CilReader object\n"
+  syntax:
+    content: public enum CilReaderState
+    content.vb: Public Enum CilReaderState
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilBytecodeParser.CilReaderState.Reading
+  commentId: F:CilBytecodeParser.CilReaderState.Reading
+  id: Reading
+  parent: CilBytecodeParser.CilReaderState
+  langs:
+  - csharp
+  - vb
+  name: Reading
+  nameWithType: CilReaderState.Reading
+  fullName: CilBytecodeParser.CilReaderState.Reading
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nCilReader can read instructions\n"
+  syntax:
+    content: Reading = 1
+    return:
+      type: CilBytecodeParser.CilReaderState
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.CilReaderState.Error
+  commentId: F:CilBytecodeParser.CilReaderState.Error
+  id: Error
+  parent: CilBytecodeParser.CilReaderState
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: CilReaderState.Error
+  fullName: CilBytecodeParser.CilReaderState.Error
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nCilReader is in a faulty state, because previous read operation resulted in error\n"
+  syntax:
+    content: Error = 2
+    return:
+      type: CilBytecodeParser.CilReaderState
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.CilReaderState.End
+  commentId: F:CilBytecodeParser.CilReaderState.End
+  id: End
+  parent: CilBytecodeParser.CilReaderState
+  langs:
+  - csharp
+  - vb
+  name: End
+  nameWithType: CilReaderState.End
+  fullName: CilBytecodeParser.CilReaderState.End
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nCilReader reached the end of its source data\n"
+  syntax:
+    content: End = 3
+    return:
+      type: CilBytecodeParser.CilReaderState
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilBytecodeParser
+  commentId: N:CilBytecodeParser
+  isExternal: true
+  name: CilBytecodeParser
+  nameWithType: CilBytecodeParser
+  fullName: CilBytecodeParser
+- uid: CilBytecodeParser.CilReaderState
+  commentId: T:CilBytecodeParser.CilReaderState
+  parent: CilBytecodeParser
+  isExternal: true
+  name: CilReaderState
+  nameWithType: CilReaderState
+  fullName: CilBytecodeParser.CilReaderState

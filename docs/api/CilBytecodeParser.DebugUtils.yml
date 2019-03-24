@@ -1,0 +1,862 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilBytecodeParser.DebugUtils
+  commentId: T:CilBytecodeParser.DebugUtils
+  id: DebugUtils
+  parent: CilBytecodeParser
+  children:
+  - CilBytecodeParser.DebugUtils.Error
+  - CilBytecodeParser.DebugUtils.GetExecutingInstruction(System.Diagnostics.StackFrame)
+  - CilBytecodeParser.DebugUtils.GetLastExecutedInstruction
+  - CilBytecodeParser.DebugUtils.GetLastExecutedInstruction(System.Diagnostics.StackFrame)
+  - CilBytecodeParser.DebugUtils.GetStackTrace
+  - CilBytecodeParser.DebugUtils.GetStackTrace(System.Diagnostics.StackTrace)
+  - CilBytecodeParser.DebugUtils.PrintStackTrace
+  - CilBytecodeParser.DebugUtils.PrintStackTrace(System.Diagnostics.StackTrace,System.IO.TextWriter)
+  langs:
+  - csharp
+  - vb
+  name: DebugUtils
+  nameWithType: DebugUtils
+  fullName: CilBytecodeParser.DebugUtils
+  type: Class
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nA collection of utility methods to assist in debugging\n"
+  syntax:
+    content: public static class DebugUtils
+    content.vb: Public Module DebugUtils
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: CilBytecodeParser.DebugUtils.GetExecutingInstruction(System.Diagnostics.StackFrame)
+  commentId: M:CilBytecodeParser.DebugUtils.GetExecutingInstruction(System.Diagnostics.StackFrame)
+  id: GetExecutingInstruction(System.Diagnostics.StackFrame)
+  parent: CilBytecodeParser.DebugUtils
+  langs:
+  - csharp
+  - vb
+  name: GetExecutingInstruction(StackFrame)
+  nameWithType: DebugUtils.GetExecutingInstruction(StackFrame)
+  fullName: CilBytecodeParser.DebugUtils.GetExecutingInstruction(System.Diagnostics.StackFrame)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets an currently executing instruction corresponding to the specified stack frame\n"
+  syntax:
+    content: public static CilInstruction GetExecutingInstruction(StackFrame sf)
+    parameters:
+    - id: sf
+      type: System.Diagnostics.StackFrame
+      description: A stack frame object
+    return:
+      type: CilBytecodeParser.CilInstruction
+      description: CIL instruction
+    content.vb: Public Shared Function GetExecutingInstruction(sf As StackFrame) As CilInstruction
+  overload: CilBytecodeParser.DebugUtils.GetExecutingInstruction*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source stack frame is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.DebugUtils.GetLastExecutedInstruction(System.Diagnostics.StackFrame)
+  commentId: M:CilBytecodeParser.DebugUtils.GetLastExecutedInstruction(System.Diagnostics.StackFrame)
+  id: GetLastExecutedInstruction(System.Diagnostics.StackFrame)
+  parent: CilBytecodeParser.DebugUtils
+  langs:
+  - csharp
+  - vb
+  name: GetLastExecutedInstruction(StackFrame)
+  nameWithType: DebugUtils.GetLastExecutedInstruction(StackFrame)
+  fullName: CilBytecodeParser.DebugUtils.GetLastExecutedInstruction(System.Diagnostics.StackFrame)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets a last executed instruction corresponding to the specified stack frame\n"
+  syntax:
+    content: public static CilInstruction GetLastExecutedInstruction(StackFrame sf)
+    parameters:
+    - id: sf
+      type: System.Diagnostics.StackFrame
+      description: A stack frame object
+    return:
+      type: CilBytecodeParser.CilInstruction
+      description: CIL instruction
+    content.vb: Public Shared Function GetLastExecutedInstruction(sf As StackFrame) As CilInstruction
+  overload: CilBytecodeParser.DebugUtils.GetLastExecutedInstruction*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source stack frame is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.DebugUtils.GetLastExecutedInstruction
+  commentId: M:CilBytecodeParser.DebugUtils.GetLastExecutedInstruction
+  id: GetLastExecutedInstruction
+  parent: CilBytecodeParser.DebugUtils
+  langs:
+  - csharp
+  - vb
+  name: GetLastExecutedInstruction()
+  nameWithType: DebugUtils.GetLastExecutedInstruction()
+  fullName: CilBytecodeParser.DebugUtils.GetLastExecutedInstruction()
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets a last executed instruction at the calling point of the code\n"
+  syntax:
+    content: public static CilInstruction GetLastExecutedInstruction()
+    return:
+      type: CilBytecodeParser.CilInstruction
+      description: CIL instruction
+    content.vb: Public Shared Function GetLastExecutedInstruction As CilInstruction
+  overload: CilBytecodeParser.DebugUtils.GetLastExecutedInstruction*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.DebugUtils.GetStackTrace
+  commentId: M:CilBytecodeParser.DebugUtils.GetStackTrace
+  id: GetStackTrace
+  parent: CilBytecodeParser.DebugUtils
+  langs:
+  - csharp
+  - vb
+  name: GetStackTrace()
+  nameWithType: DebugUtils.GetStackTrace()
+  fullName: CilBytecodeParser.DebugUtils.GetStackTrace()
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets a stack trace at the calling point represented as CIL instructions\n"
+  syntax:
+    content: public static IEnumerable<CilInstruction> GetStackTrace()
+    return:
+      type: System.Collections.Generic.IEnumerable{CilBytecodeParser.CilInstruction}
+      description: A collection of CIL instructions corresponding to frames of a callstack
+    content.vb: Public Shared Function GetStackTrace As IEnumerable(Of CilInstruction)
+  overload: CilBytecodeParser.DebugUtils.GetStackTrace*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.DebugUtils.PrintStackTrace
+  commentId: M:CilBytecodeParser.DebugUtils.PrintStackTrace
+  id: PrintStackTrace
+  parent: CilBytecodeParser.DebugUtils
+  langs:
+  - csharp
+  - vb
+  name: PrintStackTrace()
+  nameWithType: DebugUtils.PrintStackTrace()
+  fullName: CilBytecodeParser.DebugUtils.PrintStackTrace()
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nPrints a stack trace at the calling point, represented as a CIL code, into the standard output\n"
+  syntax:
+    content: public static void PrintStackTrace()
+    content.vb: Public Shared Sub PrintStackTrace
+  overload: CilBytecodeParser.DebugUtils.PrintStackTrace*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.DebugUtils.GetStackTrace(System.Diagnostics.StackTrace)
+  commentId: M:CilBytecodeParser.DebugUtils.GetStackTrace(System.Diagnostics.StackTrace)
+  id: GetStackTrace(System.Diagnostics.StackTrace)
+  parent: CilBytecodeParser.DebugUtils
+  langs:
+  - csharp
+  - vb
+  name: GetStackTrace(StackTrace)
+  nameWithType: DebugUtils.GetStackTrace(StackTrace)
+  fullName: CilBytecodeParser.DebugUtils.GetStackTrace(System.Diagnostics.StackTrace)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets a repesentation of the call stack as CIL instructions\n"
+  syntax:
+    content: public static IEnumerable<CilInstruction> GetStackTrace(StackTrace trace)
+    parameters:
+    - id: trace
+      type: System.Diagnostics.StackTrace
+      description: Stack trace object
+    return:
+      type: System.Collections.Generic.IEnumerable{CilBytecodeParser.CilInstruction}
+      description: A collection of CIL instructions
+    content.vb: Public Shared Function GetStackTrace(trace As StackTrace) As IEnumerable(Of CilInstruction)
+  overload: CilBytecodeParser.DebugUtils.GetStackTrace*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source stack trace is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.DebugUtils.PrintStackTrace(System.Diagnostics.StackTrace,System.IO.TextWriter)
+  commentId: M:CilBytecodeParser.DebugUtils.PrintStackTrace(System.Diagnostics.StackTrace,System.IO.TextWriter)
+  id: PrintStackTrace(System.Diagnostics.StackTrace,System.IO.TextWriter)
+  parent: CilBytecodeParser.DebugUtils
+  langs:
+  - csharp
+  - vb
+  name: PrintStackTrace(StackTrace, TextWriter)
+  nameWithType: DebugUtils.PrintStackTrace(StackTrace, TextWriter)
+  fullName: CilBytecodeParser.DebugUtils.PrintStackTrace(System.Diagnostics.StackTrace, System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nPrints a stack trace, represented as a CIL code, into the specified TextWriter\n"
+  syntax:
+    content: public static void PrintStackTrace(StackTrace trace, TextWriter target = null)
+    parameters:
+    - id: trace
+      type: System.Diagnostics.StackTrace
+      description: Source stack trace object
+    - id: target
+      type: System.IO.TextWriter
+      description: Target TextWriter object. If null or omitted, standard output will be used.
+    content.vb: Public Shared Sub PrintStackTrace(trace As StackTrace, target As TextWriter = Nothing)
+  overload: CilBytecodeParser.DebugUtils.PrintStackTrace*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source stack trace is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.DebugUtils.Error
+  commentId: E:CilBytecodeParser.DebugUtils.Error
+  id: Error
+  parent: CilBytecodeParser.DebugUtils
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: DebugUtils.Error
+  fullName: CilBytecodeParser.DebugUtils.Error
+  type: Event
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRaised when error occurs in one of the methods in this class\n"
+  syntax:
+    content: public static event EventHandler<CilErrorEventArgs> Error
+    return:
+      type: System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+    content.vb: Public Shared Event Error As EventHandler(Of CilErrorEventArgs)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: CilBytecodeParser
+  commentId: N:CilBytecodeParser
+  isExternal: true
+  name: CilBytecodeParser
+  nameWithType: CilBytecodeParser
+  fullName: CilBytecodeParser
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilBytecodeParser.DebugUtils.GetExecutingInstruction*
+  commentId: Overload:CilBytecodeParser.DebugUtils.GetExecutingInstruction
+  isExternal: true
+  name: GetExecutingInstruction
+  nameWithType: DebugUtils.GetExecutingInstruction
+  fullName: CilBytecodeParser.DebugUtils.GetExecutingInstruction
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.Diagnostics.StackFrame
+  commentId: T:System.Diagnostics.StackFrame
+  parent: System.Diagnostics
+  isExternal: true
+  name: StackFrame
+  nameWithType: StackFrame
+  fullName: System.Diagnostics.StackFrame
+- uid: CilBytecodeParser.CilInstruction
+  commentId: T:CilBytecodeParser.CilInstruction
+  parent: CilBytecodeParser
+  isExternal: true
+  name: CilInstruction
+  nameWithType: CilInstruction
+  fullName: CilBytecodeParser.CilInstruction
+- uid: System.Diagnostics
+  commentId: N:System.Diagnostics
+  isExternal: true
+  name: System.Diagnostics
+  nameWithType: System.Diagnostics
+  fullName: System.Diagnostics
+- uid: CilBytecodeParser.DebugUtils.GetLastExecutedInstruction*
+  commentId: Overload:CilBytecodeParser.DebugUtils.GetLastExecutedInstruction
+  isExternal: true
+  name: GetLastExecutedInstruction
+  nameWithType: DebugUtils.GetLastExecutedInstruction
+  fullName: CilBytecodeParser.DebugUtils.GetLastExecutedInstruction
+- uid: CilBytecodeParser.DebugUtils.GetStackTrace*
+  commentId: Overload:CilBytecodeParser.DebugUtils.GetStackTrace
+  isExternal: true
+  name: GetStackTrace
+  nameWithType: DebugUtils.GetStackTrace
+  fullName: CilBytecodeParser.DebugUtils.GetStackTrace
+- uid: System.Collections.Generic.IEnumerable{CilBytecodeParser.CilInstruction}
+  commentId: T:System.Collections.Generic.IEnumerable{CilBytecodeParser.CilInstruction}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<CilInstruction>
+  nameWithType: IEnumerable<CilInstruction>
+  fullName: System.Collections.Generic.IEnumerable<CilBytecodeParser.CilInstruction>
+  nameWithType.vb: IEnumerable(Of CilInstruction)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilBytecodeParser.CilInstruction)
+  name.vb: IEnumerable(Of CilInstruction)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilBytecodeParser.CilInstruction
+    name: CilInstruction
+    nameWithType: CilInstruction
+    fullName: CilBytecodeParser.CilInstruction
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilBytecodeParser.CilInstruction
+    name: CilInstruction
+    nameWithType: CilInstruction
+    fullName: CilBytecodeParser.CilInstruction
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilBytecodeParser.DebugUtils.PrintStackTrace*
+  commentId: Overload:CilBytecodeParser.DebugUtils.PrintStackTrace
+  isExternal: true
+  name: PrintStackTrace
+  nameWithType: DebugUtils.PrintStackTrace
+  fullName: CilBytecodeParser.DebugUtils.PrintStackTrace
+- uid: System.Diagnostics.StackTrace
+  commentId: T:System.Diagnostics.StackTrace
+  parent: System.Diagnostics
+  isExternal: true
+  name: StackTrace
+  nameWithType: StackTrace
+  fullName: System.Diagnostics.StackTrace
+- uid: System.IO.TextWriter
+  commentId: T:System.IO.TextWriter
+  parent: System.IO
+  isExternal: true
+  name: TextWriter
+  nameWithType: TextWriter
+  fullName: System.IO.TextWriter
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+- uid: System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+  commentId: T:System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  name: EventHandler<CilErrorEventArgs>
+  nameWithType: EventHandler<CilErrorEventArgs>
+  fullName: System.EventHandler<CilBytecodeParser.CilErrorEventArgs>
+  nameWithType.vb: EventHandler(Of CilErrorEventArgs)
+  fullName.vb: System.EventHandler(Of CilBytecodeParser.CilErrorEventArgs)
+  name.vb: EventHandler(Of CilErrorEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilBytecodeParser.CilErrorEventArgs
+    name: CilErrorEventArgs
+    nameWithType: CilErrorEventArgs
+    fullName: CilBytecodeParser.CilErrorEventArgs
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilBytecodeParser.CilErrorEventArgs
+    name: CilErrorEventArgs
+    nameWithType: CilErrorEventArgs
+    fullName: CilBytecodeParser.CilErrorEventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: )
+    nameWithType: )
+    fullName: )
