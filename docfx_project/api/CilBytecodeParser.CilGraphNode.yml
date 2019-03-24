@@ -30,7 +30,7 @@ items:
   assemblies:
   - CilBytecodeParser
   namespace: CilBytecodeParser
-  summary: "\nRepresents a node node in the CIL graph. A node describes an instruction and its connection with other instructions\n"
+  summary: "\nRepresents a node in the CIL graph. A node describes an instruction and its connection with other instructions\n"
   remarks: See <xref href="CilBytecodeParser.CilGraph" data-throw-if-not-resolved="false"></xref> class documentation for more information about CIL graphs.
   syntax:
     content: public class CilGraphNode
