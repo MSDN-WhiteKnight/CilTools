@@ -5,7 +5,7 @@
 **License:** [BSD 2.0](LICENSE)  
 **Requirements:** .NET Framework 3.5+  
 
-[Documentation](https://msdn-whiteknight.github.io/CilBytecodeParser/)
+[Download binaries (v1.3)](https://yadi.sk/d/EWEjw6WUVDJzCQ) |  [Documentation](https://msdn-whiteknight.github.io/CilBytecodeParser/)
 
 CIL Bytecode Parser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
