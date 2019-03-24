@@ -10,7 +10,7 @@ using System.Reflection.Emit;
 namespace CilBytecodeParser
 {
     /// <summary>
-    /// Represents a node node in the CIL graph. A node describes an instruction and its connection with other instructions
+    /// Represents a node in the CIL graph. A node describes an instruction and its connection with other instructions
     /// </summary>
     /// <remarks>See <see cref="CilGraph"/> class documentation for more information about CIL graphs.</remarks>
     public class CilGraphNode
