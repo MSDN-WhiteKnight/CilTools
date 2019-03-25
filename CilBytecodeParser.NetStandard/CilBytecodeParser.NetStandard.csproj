@@ -1,1 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
 
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.3.0</Version>
+    <Authors>MSDN-WhiteKnight</Authors>
+    <Product>CilBytecodeParser</Product>
+    <Description>.NET Standard version of CIL Bytecode Parser library.</Description>
+    <Copyright>Copyright (c) 2019, MSDN.WhiteKnight</Copyright>
+    <PackageLicenseUrl>https://github.com/MSDN-WhiteKnight/CilBytecodeParser/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/MSDN-WhiteKnight/CilBytecodeParser</PackageProjectUrl>
+    <PackageIconUrl>https://msdn-whiteknight.github.io/CilBytecodeParser/images/IL.png</PackageIconUrl>
+    <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilBytecodeParser</RepositoryUrl>
+    <PackageTags>dotnet cil msil bytecode</PackageTags>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\PROJECTS\CilBytecodeParser\CilBytecodeParser.NetStandard\CilBytecodeParser.NetStandard.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\CilBytecodeParser\CilAnalysis.cs" Link="CilAnalysis.cs" />
+	<Compile Include="..\CilBytecodeParser\CilErrorEventArgs.cs" Link="CilErrorEventArgs.cs" />
+    <Compile Include="..\CilBytecodeParser\DebugUtils.cs" Link="DebugUtils.cs" />
+    <Compile Include="..\CilBytecodeParser\CilGraph.cs" Link="CilGraph.cs" />
+    <Compile Include="..\CilBytecodeParser\CilGraphNode.cs" Link="CilGraphNode.cs" />
+    <Compile Include="..\CilBytecodeParser\CilInstruction.cs" Link="CilInstruction.cs" />
+    <Compile Include="..\CilBytecodeParser\CilReader.cs" Link="CilReader.cs" />
+    <Compile Include="..\CilBytecodeParser\Extensions.cs" Link="Extensions.cs" />    
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="ReadMe.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>
