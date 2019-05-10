@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Diagnostics;
 using CilBytecodeParser;
 
@@ -194,6 +195,11 @@ namespace CilBytecodeParser.Extensions
         public static IEnumerable<MemberInfo> GetReferencedMembers(this Assembly ass, MemberCriteria flags)
         {
             return CilAnalysis.GetReferencedMembers(ass, flags);
+        }
+
+        public static void EmitInstruction(this ILGenerator ilg, CilInstruction instr)
+        {
+            instr.EmitTo(ilg);
         }
     }
 }

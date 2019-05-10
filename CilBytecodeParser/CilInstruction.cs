@@ -452,5 +452,318 @@ namespace CilBytecodeParser
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Emits CIL code for this instruction into the specified IlGenerator
+        /// </summary>
+        /// <param name="ilg">Target IlGenerator object</param>
+        public void EmitTo(ILGenerator ilg)
+        {
+            if (this.OpCode == OpCodes.Call || this.OpCode == OpCodes.Callvirt)
+            {
+                ilg.EmitCall(this.OpCode, (MethodInfo)this.ReferencedMember, null);
+            }
+            else if (this.Operand == null)
+            {
+                ilg.Emit(this.OpCode);
+            }
+            else if (this.OperandType == typeof(float))
+            {
+                ilg.Emit(this.OpCode, (float)this.Operand);
+            }
+            else if (this.OperandType == typeof(double))
+            {
+                ilg.Emit(this.OpCode, (double)this.Operand);
+            }
+            else if (this.OperandType == typeof(long))
+            {
+                ilg.Emit(this.OpCode, (long)this.Operand);
+            }
+            else if (this.OperandType == typeof(short))
+            {
+                ilg.Emit(this.OpCode, (short)this.Operand);
+            }
+            else if (this.OperandType == typeof(int))
+            {
+                if (this.OpCode.Equals(OpCodes.Ldstr))
+                {
+                    ilg.Emit(this.OpCode, this.ReferencedString);
+                }
+                else if (ReferencesFieldToken(this.OpCode))
+                {
+                    ilg.Emit(this.OpCode, (FieldInfo)this.ReferencedMember);
+                }
+                else if (ReferencesTypeToken(this.OpCode))
+                {
+                    ilg.Emit(this.OpCode, (Type)this.ReferencedMember);
+                }
+                else if (ReferencesMethodToken(this.OpCode) && (this.ReferencedMember as ConstructorInfo) != null)
+                {
+                    ilg.Emit(this.OpCode, (ConstructorInfo)this.ReferencedMember);
+                }
+                else throw new NotSupportedException("OpCode not supported: " + this.OpCode.ToString());
+            }
+            else if (ReferencesLocal(this.OpCode) && this.OperandType == typeof(sbyte))
+            {
+                ilg.Emit(this.OpCode, (sbyte)this.Operand);
+            }
+            else throw new NotSupportedException("OperandType not supported: " + this.OperandType.ToString());
+        }
+
+        //*** TEXT PARSER ***
+
+        static Dictionary<string, OpCode> opcodes = new Dictionary<string, OpCode>();
+
+        static void LoadOpCodes()
+        {
+            FieldInfo[] fields = typeof(OpCodes).GetFields();
+            for (int i = 0; i < fields.Length; i++)
+            {
+                if (fields[i].FieldType == typeof(OpCode))
+                {
+                    OpCode opcode = (OpCode)fields[i].GetValue(null);                    
+                    opcodes[opcode.Name] = opcode;
+                }
+            }
+        }
+
+        static OpCode FindOpCode(string name)
+        {
+            if (!opcodes.ContainsKey(name))
+            {
+                throw new NotSupportedException("Unknown opcode: "+name);
+            }
+            return opcodes[name];
+        }
+
+        static CilInstruction()
+        {
+            LoadOpCodes();
+        }
+
+        static uint GetOperandSize(OpCode opcode)
+        {
+            uint size=0;
+            switch (opcode.OperandType)
+            {
+                case System.Reflection.Emit.OperandType.InlineBrTarget: size = 4; break;
+                case System.Reflection.Emit.OperandType.InlineField: size = 4; break;
+                case System.Reflection.Emit.OperandType.InlineMethod: size = 4; break;
+                case System.Reflection.Emit.OperandType.InlineSig: size = 4; break;
+                case System.Reflection.Emit.OperandType.InlineTok: size = 4; break;
+                case System.Reflection.Emit.OperandType.InlineType: size = 4; break;
+                case System.Reflection.Emit.OperandType.InlineI: size = 4; break;
+                case System.Reflection.Emit.OperandType.InlineI8: size = 8; break;
+                case System.Reflection.Emit.OperandType.InlineNone: size = 0; break;
+                case System.Reflection.Emit.OperandType.InlineR: size = 8; break;
+                case System.Reflection.Emit.OperandType.InlineString: size = 4; break;
+                case System.Reflection.Emit.OperandType.InlineSwitch: size = 4; break;
+                case System.Reflection.Emit.OperandType.InlineVar: size = 2; break;
+                case System.Reflection.Emit.OperandType.ShortInlineBrTarget: size = 1; break;
+                case System.Reflection.Emit.OperandType.ShortInlineI: size = 1; break;
+                case System.Reflection.Emit.OperandType.ShortInlineR: size = 4; break;
+                case System.Reflection.Emit.OperandType.ShortInlineVar: size = 1; break;
+                default:                    
+                    throw new NotSupportedException("Unsupported operand type: " + opcode.OperandType.ToString());
+            }
+            return size;
+        }
+
+        /// <summary>
+        /// Converts CIL instruction textual representation into the corresponding CilInstruction object
+        /// </summary>
+        /// <param name="str">The line of CIL code representing instruction</param>
+        /// <returns>CilInstruction object for the specified string</returns>
+        public static CilInstruction Parse(string str)
+        {
+            if (String.IsNullOrEmpty(str)) throw new ArgumentException("str parameter can't be null or empty string");
+
+            CilInstruction res=null;
+
+            List<string> tokens = new List<string>(10);
+            StringBuilder curr_token = new StringBuilder(100);
+            bool IsInComment = false;
+            bool IsInLiteral = false;
+            bool IsInToken = false;
+            char c;
+            char c_next;
+
+            for(int i=0;i<str.Length;i++)
+            {
+                c = str[i];
+                if(i+1 < str.Length)c_next = str[i+1];
+                else c_next=(char)0;                
+
+                if (!IsInToken && !IsInLiteral && !IsInComment &&
+                    (Char.IsLetterOrDigit(c) || Char.IsPunctuation(c) || Char.IsSymbol(c))
+                    && c != '/')
+                {
+                    //start new token
+                    IsInToken = true;
+
+                    if (c == '"') IsInLiteral = true;
+                    else IsInLiteral = false;
+
+                    curr_token = new StringBuilder(100);
+                    curr_token.Append(c);
+                    continue;
+                }
+
+                if (IsInToken && !IsInLiteral && Char.IsWhiteSpace(c))
+                {
+                    //end token
+                    IsInToken = false;                    
+                    tokens.Add(curr_token.ToString());
+                    curr_token = new StringBuilder(100);
+                    continue;
+                }
+
+                if (IsInToken && !IsInLiteral && 
+                    (c==':' && c_next!=':')
+                    )
+                {
+                    //end token
+                    curr_token.Append(c);
+                    IsInToken = false;
+                    tokens.Add(curr_token.ToString());
+                    curr_token = new StringBuilder(100);
+                    continue;
+                }
+
+                if (IsInToken && !IsInLiteral && c == '/' && (c_next == '/' || c_next == '*'))
+                {
+                    //end token
+                    IsInToken = false;                    
+                    tokens.Add(curr_token.ToString());
+                    curr_token = new StringBuilder(100);
+
+                    //start comment
+                    IsInComment = true;
+                    continue;
+                }
+
+                if (IsInToken && IsInLiteral && c=='"' && str[i-1]!='\\')
+                {
+                    //end token
+                    curr_token.Append(c);
+                    IsInToken = false;
+                    IsInLiteral = false;
+                    tokens.Add(curr_token.ToString());
+                    curr_token = new StringBuilder(100);
+                    continue;
+                }
+
+                if (!IsInComment && !IsInToken && !IsInLiteral && c == '/' && (c_next == '/' || c_next == '*'))
+                {
+                    //start comment
+                    IsInComment = true;
+                    continue;
+                }
+
+                if (IsInComment && c == '/' && str[i - 1] == '*')
+                {
+                    //end comment
+                    IsInComment = false;
+                    continue;
+                }
+
+                if (IsInToken && !IsInLiteral && (Char.IsLetterOrDigit(c) || Char.IsPunctuation(c) || Char.IsSymbol(c)))
+                {
+                    //append new char to the token
+                    curr_token.Append(c);
+                }
+
+                if (IsInToken && IsInLiteral && !(c=='"' && str[i-1]!='\\'))
+                {
+                    //append new char to the token
+                    curr_token.Append(c);
+                }
+            }//end for
+
+            if (IsInToken)
+            {
+                tokens.Add(curr_token.ToString());
+            }
+            
+            if (tokens.Count == 0) return null;
+            int args_start;
+
+            string opname = tokens[0].Trim();
+            args_start=1;
+            if (opname[opname.Length - 1] == ':')
+            {
+                //skip label
+                if (tokens.Count == 1) return null;
+                opname = tokens[1].Trim();
+                args_start=2;
+            }
+
+            string args = "";
+
+            for(int j=args_start;j<tokens.Count;j++) args+=tokens[j];
+            
+            args = args.Trim();
+
+            OpCode op = FindOpCode(opname);
+            uint opsize = GetOperandSize(op);
+            object operand = null;
+
+            var numstyle = System.Globalization.NumberStyles.Integer;
+            if (args.StartsWith("0x"))
+            {
+                numstyle = System.Globalization.NumberStyles.HexNumber;
+                args = args.Substring(2);
+            }
+
+            var fmt = System.Globalization.CultureInfo.InvariantCulture;
+
+            sbyte byteval;
+            short shortval;
+            float floatval;
+            int intval;
+            double doubleval;
+            long longval;
+
+            switch (opsize)
+            {
+
+                case 1: 
+                    if(SByte.TryParse(args,numstyle,fmt, out byteval)) operand = (object)byteval;                     
+                    break;
+
+                case 2:
+                    if (Int16.TryParse(args,numstyle,fmt, out shortval)) operand = (object)shortval; 
+                    break;
+
+                case 4:
+                    if (op.OperandType == System.Reflection.Emit.OperandType.ShortInlineR)
+                    {
+                        if (Single.TryParse(args, out floatval)) operand = (object)floatval;
+                    }
+                    else
+                    {
+                        if (Int32.TryParse(args, numstyle, fmt, out intval))
+                        {
+                            operand = (object)intval;
+                        }                        
+                    }
+                    break;
+
+                case 8:
+                    if (op.OperandType == System.Reflection.Emit.OperandType.InlineR)
+                    {
+                        if (Double.TryParse(args, out doubleval)) operand = (object)doubleval;
+                    }
+                    else
+                    {
+                        if (Int64.TryParse(args, numstyle, fmt, out longval)) operand = (object)longval;
+                    }
+                    break;
+            }
+
+            res = new CilInstruction(op, operand, opsize, 0, 0, null);                                   
+            
+            return res;
+        }
     }
 }

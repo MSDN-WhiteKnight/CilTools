@@ -86,3 +86,10 @@ v1.3
 - Tweaked error handling
 - Documented exceptions for most of the API
 
+v1.4
+- Added methods for enumerating graph nodes and instructions into CilGraph class
+- Added CilInstruction.Parse method
+- Added CilInstruction.EmitTo method and corresponding IlGenerator extension method
+
+
+

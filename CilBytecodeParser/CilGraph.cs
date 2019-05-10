@@ -260,5 +260,43 @@ namespace CilBytecodeParser
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Enumerates nodes in this graph
+        /// </summary>
+        /// <returns>The collection of graph nodes</returns>
+        public IEnumerable<CilGraphNode> GetNodes()
+        {
+            CilGraphNode node = this._Root;            
+
+            while (true)
+            {
+                if (node == null) break;
+
+                yield return node;
+
+                if (node.Next == null) break; //last instruction
+                else node = node.Next;
+            }
+        }
+
+        /// <summary>
+        /// Enumerates all instructions represented by this graph's nodes
+        /// </summary>
+        /// <returns>The collection of instructions</returns>
+        public IEnumerable<CilInstruction> GetInstructions()
+        {
+            CilGraphNode node = this._Root;
+
+            while (true)
+            {
+                if (node == null) break;
+
+                yield return node.Instruction;
+
+                if (node.Next == null) break; //last instruction
+                else node = node.Next;
+            }
+        }
+
     }
 }
