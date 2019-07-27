@@ -395,6 +395,7 @@ namespace CilBytecodeParser
                         string s = "";
 
                         s = Method.Module.ResolveString(token);
+                        s = CilAnalysis.EscapeString(s);
 
                         sb.Append(" \"");
                         sb.Append(s);
@@ -454,9 +455,9 @@ namespace CilBytecodeParser
         }
 
         /// <summary>
-        /// Emits CIL code for this instruction into the specified IlGenerator
+        /// Emits CIL code for this instruction into the specified IL generator.
         /// </summary>
-        /// <param name="ilg">Target IlGenerator object</param>
+        /// <param name="ilg">Target IL generator.</param>
         public void EmitTo(ILGenerator ilg)
         {
             if (this.OpCode == OpCodes.Call || this.OpCode == OpCodes.Callvirt)
@@ -501,10 +502,16 @@ namespace CilBytecodeParser
                 {
                     ilg.Emit(this.OpCode, (ConstructorInfo)this.ReferencedMember);
                 }
+                else if (this.OpCode.OperandType != System.Reflection.Emit.OperandType.InlineBrTarget)
+                {
+                    //emit all int32-referencing instructions, except jumps
+                    ilg.Emit(this.OpCode, (int)this.Operand);
+                }
                 else throw new NotSupportedException("OpCode not supported: " + this.OpCode.ToString());
             }
-            else if (ReferencesLocal(this.OpCode) && this.OperandType == typeof(sbyte))
+            else if (this.OperandType == typeof(sbyte) && this.OpCode.OperandType != System.Reflection.Emit.OperandType.ShortInlineBrTarget)
             {
+                //emit all sbyte-referencing instructions, except jumps
                 ilg.Emit(this.OpCode, (sbyte)this.Operand);
             }
             else throw new NotSupportedException("OperandType not supported: " + this.OperandType.ToString());
@@ -512,16 +519,19 @@ namespace CilBytecodeParser
 
         //*** TEXT PARSER ***
 
-        static Dictionary<string, OpCode> opcodes = new Dictionary<string, OpCode>();
+        static readonly object opcodes_sync = new object();
+        static Dictionary<string, OpCode> opcodes = null;
 
         static void LoadOpCodes()
-        {
+        {      
             FieldInfo[] fields = typeof(OpCodes).GetFields();
+            opcodes = new Dictionary<string, OpCode>(fields.Length);
+
             for (int i = 0; i < fields.Length; i++)
             {
                 if (fields[i].FieldType == typeof(OpCode))
                 {
-                    OpCode opcode = (OpCode)fields[i].GetValue(null);                    
+                    OpCode opcode = (OpCode)fields[i].GetValue(null);
                     opcodes[opcode.Name] = opcode;
                 }
             }
@@ -529,17 +539,17 @@ namespace CilBytecodeParser
 
         static OpCode FindOpCode(string name)
         {
-            if (!opcodes.ContainsKey(name))
+            lock (opcodes_sync)
             {
-                throw new NotSupportedException("Unknown opcode: "+name);
-            }
-            return opcodes[name];
-        }
+                if (opcodes == null) LoadOpCodes(); //on first run, initialize static dictionary
 
-        static CilInstruction()
-        {
-            LoadOpCodes();
-        }
+                if (!opcodes.ContainsKey(name))
+                {
+                    throw new NotSupportedException("Unknown opcode: " + name);
+                }
+                return opcodes[name];
+            }
+        }        
 
         static uint GetOperandSize(OpCode opcode)
         {

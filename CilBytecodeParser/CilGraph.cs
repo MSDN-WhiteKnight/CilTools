@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -29,6 +30,19 @@ namespace CilBytecodeParser
             }
 
             return false;
+        }
+
+        static uint GetTryBlocksCount(IList<ExceptionHandlingClause> list, uint start, uint end)
+        {
+            if (list == null) throw new ArgumentNullException("list");
+            uint res = 0;
+
+            foreach (var block in list)
+            {
+                if (block.TryOffset >= start && block.TryOffset < end) res++;
+            }
+
+            return res;
         }
 
         static IList<ExceptionHandlingClause> FindHandlerBlocks(IList<ExceptionHandlingClause> list, uint start, uint end)
@@ -296,6 +310,151 @@ namespace CilBytecodeParser
                 if (node.Next == null) break; //last instruction
                 else node = node.Next;
             }
+        }
+
+        /// <summary>
+        /// Emits the entire content of this CIL graph into the specified IL generator, 
+        /// optionally calling user callback for each processed instruction.
+        /// </summary>
+        /// <param name="gen">Target IL generator. </param>
+        /// <param name="callback">User callback to be called for each processed instruction.</param>
+        /// <remarks>Passing user callback into this method enables you to filter instructions that you want to be emitted 
+        /// into target IL generator. 
+        /// Return <see langword="true"/> to skip emitting instruction, or <see langword="false"/> to emit instruction.</remarks>
+        public void EmitTo(ILGenerator gen, Func<CilInstruction,bool> callback = null)
+        {
+            Dictionary<uint,Label> labels=new Dictionary<uint,Label>();
+            Label label;
+            IList<ExceptionHandlingClause> trys = new List<ExceptionHandlingClause>();                
+
+            MethodBody body = null;            
+            body = this._Method.GetMethodBody();
+
+            if (body == null)
+            {
+                throw new CilParserException("Cannot get method body. Method: " + this._Method.Name);
+            }
+
+            trys = body.ExceptionHandlingClauses;            
+
+            //local variables
+            if (body.LocalVariables != null)
+            {                
+                for (int i = 0; i < body.LocalVariables.Count; i++)
+                {      
+                    var local = body.LocalVariables[i];
+                    gen.DeclareLocal(local.LocalType);                    
+                }                
+            }
+
+            List<CilGraphNode> nodes = this.GetNodes().ToList();
+
+            //first stage - create labels
+            foreach (CilGraphNode node in nodes)
+            {
+                if (!String.IsNullOrEmpty(node.Name))
+                {
+                    //if instruction is marked with label, save label in dictionary
+                    label = gen.DefineLabel();
+                    labels[node.Instruction.OrdinalNumber] = label;                    
+                }
+            }
+
+            //second stage - emit actual IL
+            foreach (CilGraphNode node in nodes)
+            {
+                CilInstruction instr = node.Instruction;
+                                
+                //exception handling clauses
+                uint trys_count = GetTryBlocksCount(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                for (int i = 0; i < trys_count; i++)
+                {
+                    gen.BeginExceptionBlock();                    
+                }
+
+                if (FindBlockEnd(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize))
+                {                    
+                    gen.EndExceptionBlock();                    
+                }
+
+                var blocks = FindHandlerBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+
+                foreach (var block in blocks)
+                {
+                    if (block.Flags == ExceptionHandlingClauseOptions.Clause)
+                    {
+                        Type t = block.CatchType;
+                        gen.BeginCatchBlock(t);
+                    }
+                    else if (block.Flags == ExceptionHandlingClauseOptions.Finally)
+                    {                        
+                        gen.BeginFinallyBlock();
+                    }
+                }
+
+                //labels
+                if (!String.IsNullOrEmpty(node.Name))
+                {
+                    //if instruction has label, mark it
+                    if (labels.ContainsKey(instr.OrdinalNumber))
+                    {
+                        label = labels[instr.OrdinalNumber];
+                        gen.MarkLabel(label);                        
+                    }
+                }
+                                
+                //user callback
+                bool should_skip = false;
+
+                if (callback != null)
+                {
+                    should_skip = callback(instr); //execute user callback                    
+                }
+
+                //instruction itself
+                if (!should_skip)
+                {
+                    //if instruction is not processed by callback, emit it
+
+                    if (node.BranchTarget != null)
+                    {
+                        //if this instruction references branch, find label and emit jump instruction
+                        if (labels.ContainsKey(node.BranchTarget.Instruction.OrdinalNumber))
+                        {
+                            label = labels[node.BranchTarget.Instruction.OrdinalNumber];
+
+                            if (instr.OpCode.OperandType == OperandType.ShortInlineBrTarget)
+                            {
+                                //convert short form instructions into long form, to prevent failure when
+                                //method body is larger then expected
+
+                                OpCode opc;
+                                if (instr.OpCode == OpCodes.Brfalse_S) opc = OpCodes.Brfalse;
+                                else if (instr.OpCode == OpCodes.Brtrue_S) opc = OpCodes.Brtrue;
+                                else if (instr.OpCode == OpCodes.Leave_S) opc = OpCodes.Leave;
+                                else if (instr.OpCode == OpCodes.Br_S) opc = OpCodes.Br;
+                                else if (instr.OpCode == OpCodes.Blt_S) opc = OpCodes.Blt;
+                                else if (instr.OpCode == OpCodes.Blt_Un_S) opc = OpCodes.Blt_Un;
+                                else if (instr.OpCode == OpCodes.Bne_Un_S) opc = OpCodes.Bne_Un;
+                                else throw new NotSupportedException("OpCode not supported: " + instr.OpCode.ToString());
+
+                                gen.Emit(opc, label);
+                            }
+                            else //long form branching instruction
+                            {
+                                gen.Emit(instr.OpCode, label); //emit as-is
+                            }
+                        }
+                        else throw new CilParserException("Cannot find label for branch instruction");
+                    }
+                    else
+                    {
+                        //emit regular instruction
+                        instr.EmitTo(gen);
+                    }
+                }     
+
+            }//end foreach            
         }
 
     }

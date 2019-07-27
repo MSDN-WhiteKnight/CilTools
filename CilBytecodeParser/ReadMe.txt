@@ -90,5 +90,13 @@ v1.4
 - Added CilInstruction.Parse method
 - Added CilInstruction.EmitTo method and corresponding IlGenerator extension method
 
+v1.5
+- Moved CilInstruction.opcodes initialization from static constructor to first FindOpCode call, so it will be only loaded when needed.
+- Added support for instructions referencing 32-bit target branch operands
+- Added special characters escaping when displaying string literals
+- Added CilGraph.EmitTo method with jumps support as well as the corresponding IlGenerator extension method
+
+
+
 
 

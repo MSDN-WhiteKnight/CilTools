@@ -72,7 +72,7 @@ namespace CilBytecodeParser
         /// <exception cref="System.ArgumentNullException">t is null</exception>
         /// <remarks>Returns fully qualified name, such as `class [mscorlib]System.String`</remarks>
         /// <returns>Full type name</returns>
-        public static string GetTypeFullName(Type t)
+        public static string GetTypeFullName(Type t) 
         {
             if (t == null) throw new ArgumentNullException("t", "Source type cannot be null");
             
@@ -107,7 +107,38 @@ namespace CilBytecodeParser
             }
 
             return sb.ToString();
+        }
 
+        /// <summary>
+        /// Escapes special characters in the specified string, using rules similar to what are applied to C# string literals
+        /// </summary>
+        /// <param name="str">The string to escape</param>
+        /// <returns>The escaped string</returns>
+        public static string EscapeString(string str)
+        {
+            StringBuilder sb = new StringBuilder(str.Length * 2);
+
+            foreach (char c in str)
+            {
+                switch (c)
+                {
+                    case '\0': sb.Append("\\0"); break;
+                    case '\n': sb.Append("\\n"); break;
+                    case '\r': sb.Append("\\r"); break;
+                    case '\a': sb.Append("\\a"); break;
+                    case '\b': sb.Append("\\b"); break;
+                    case '\f': sb.Append("\\f"); break;
+                    case '\t': sb.Append("\\t"); break;
+                    case '"': sb.Append("\\\""); break;
+
+                    default:
+                        if (Char.IsControl(c)) sb.Append("\\u" + ((ushort)c).ToString("X").PadLeft(4, '0'));
+                        else sb.Append(c);
+                        break;
+                }
+            }
+
+            return sb.ToString();
         }
 
         internal static string GetTypeNameInternal(Type t)
@@ -182,6 +213,12 @@ namespace CilBytecodeParser
 
                     if (!labels.Contains(target)) labels.Add(target);
                 }
+                else if (instr.OpCode.OperandType == OperandType.InlineBrTarget && instr.Operand != null)
+                {
+                    int target = (int)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
+
+                    if (!labels.Contains(target)) labels.Add(target);
+                }
 
                 nodes.Add(new CilGraphNodeMutable(instr)); 
             }
@@ -218,6 +255,19 @@ namespace CilBytecodeParser
                 if (instr.OpCode.OperandType == OperandType.ShortInlineBrTarget && instr.Operand != null)
                 {
                     int target = (sbyte)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
+
+                    for (int i = 0; i < labels.Count; i++)
+                    {
+                        if (target == labels[i])
+                        {
+                            nodes[n].BranchTarget = targets[i];
+                            break;
+                        }
+                    }
+                }
+                else if (instr.OpCode.OperandType == OperandType.InlineBrTarget && instr.Operand != null)
+                {
+                    int target = (int)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
 
                     for (int i = 0; i < labels.Count; i++)
                     {

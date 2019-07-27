@@ -195,11 +195,31 @@ namespace CilBytecodeParser.Extensions
         public static IEnumerable<MemberInfo> GetReferencedMembers(this Assembly ass, MemberCriteria flags)
         {
             return CilAnalysis.GetReferencedMembers(ass, flags);
-        }
+        }                
 
+        /// <summary>
+        /// Emits CIL code for the specified instruction into the specified IL generator.
+        /// </summary>
+        /// <param name="ilg">Target IL generator.</param>
+        /// <param name="instr">IL instruction to be emitted.</param>
         public static void EmitInstruction(this ILGenerator ilg, CilInstruction instr)
         {
             instr.EmitTo(ilg);
+        }    
+
+        /// <summary>
+        /// Emits the entire content of CIL graph into the specified IL generator, 
+        /// optionally calling user callback for each processed instruction.
+        /// </summary>
+        /// <param name="ilg">Target IL generator. </param>
+        /// <param name="graph">The CIL graph which content should be emitted.</param>
+        /// <param name="callback">User callback to be called for each processed instruction.</param>
+        /// <remarks>Passing user callback into this method enables you to filter instructions that you want to be emitted 
+        /// into target IL generator. 
+        /// Return <see langword="true"/> to skip emitting instruction, or <see langword="false"/> to emit instruction.</remarks>
+        public static void EmitCilGraph(this ILGenerator ilg, CilGraph graph, Func<CilInstruction, bool> callback = null)
+        {
+            graph.EmitTo(ilg, callback);
         }
     }
 }
