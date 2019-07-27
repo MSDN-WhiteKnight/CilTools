@@ -1,8 +1,8 @@
-<?xml version="1.0"?>
+﻿<?xml version="1.0"?>
 <package >
   <metadata>
     <id>CilBytecodeParser</id>
-    <version>1.3.0</version>
+    <version>1.5.0</version>
     <authors>MSDN-WhiteKnight</authors>
     <owners>MSDN-WhiteKnight</owners>
     <title>CilBytecodeParser</title>
