@@ -716,6 +716,35 @@
   </table>
   
   
+  <a id="CilBytecodeParser_CilInstruction_EmitTo_" data-uid="CilBytecodeParser.CilInstruction.EmitTo*"></a>
+  <h4 id="CilBytecodeParser_CilInstruction_EmitTo_System_Reflection_Emit_ILGenerator_" data-uid="CilBytecodeParser.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)">EmitTo(ILGenerator)</h4>
+  <div class="markdown level1 summary"><p>Emits CIL code for this instruction into the specified IL generator.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void EmitTo(ILGenerator ilg)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.Emit.ILGenerator</span></td>
+        <td><span class="parametername">ilg</span></td>
+        <td><p>Target IL generator.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="CilBytecodeParser_CilInstruction_OnError_" data-uid="CilBytecodeParser.CilInstruction.OnError*"></a>
   <h4 id="CilBytecodeParser_CilInstruction_OnError_System_Object_CilBytecodeParser_CilErrorEventArgs_" data-uid="CilBytecodeParser.CilInstruction.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)">OnError(Object, CilErrorEventArgs)</h4>
   <div class="markdown level1 summary"><p>Raises a 'Error' event</p>
@@ -745,6 +774,51 @@
         <td><a class="xref" href="CilBytecodeParser.CilErrorEventArgs.html">CilErrorEventArgs</a></td>
         <td><span class="parametername">e</span></td>
         <td><p>Event arguments</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilBytecodeParser_CilInstruction_Parse_" data-uid="CilBytecodeParser.CilInstruction.Parse*"></a>
+  <h4 id="CilBytecodeParser_CilInstruction_Parse_System_String_" data-uid="CilBytecodeParser.CilInstruction.Parse(System.String)">Parse(String)</h4>
+  <div class="markdown level1 summary"><p>Converts CIL instruction textual representation into the corresponding CilInstruction object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static CilInstruction Parse(string str)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">str</span></td>
+        <td><p>The line of CIL code representing instruction</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilBytecodeParser.CilInstruction.html">CilInstruction</a></td>
+        <td><p>CilInstruction object for the specified string</p>
 </td>
       </tr>
     </tbody>

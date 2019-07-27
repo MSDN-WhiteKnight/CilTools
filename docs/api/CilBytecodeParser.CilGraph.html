@@ -262,6 +262,101 @@
   </h3>
   
   
+  <a id="CilBytecodeParser_CilGraph_EmitTo_" data-uid="CilBytecodeParser.CilGraph.EmitTo*"></a>
+  <h4 id="CilBytecodeParser_CilGraph_EmitTo_System_Reflection_Emit_ILGenerator_System_Func_CilBytecodeParser_CilInstruction_System_Boolean__" data-uid="CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator,System.Func{CilBytecodeParser.CilInstruction,System.Boolean})">EmitTo(ILGenerator, Func&lt;CilInstruction, Boolean&gt;)</h4>
+  <div class="markdown level1 summary"><p>Emits the entire content of this CIL graph into the specified IL generator,
+optionally calling user callback for each processed instruction.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void EmitTo(ILGenerator gen, Func&lt;CilInstruction, bool&gt; callback = null)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.Emit.ILGenerator</span></td>
+        <td><span class="parametername">gen</span></td>
+        <td><p>Target IL generator.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Func</span>&lt;<a class="xref" href="CilBytecodeParser.CilInstruction.html">CilInstruction</a>, <span class="xref">System.Boolean</span>&gt;</td>
+        <td><span class="parametername">callback</span></td>
+        <td><p>User callback to be called for each processed instruction.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilBytecodeParser_CilGraph_EmitTo_System_Reflection_Emit_ILGenerator_System_Func_CilBytecodeParser_CilInstruction_System_Boolean___remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Passing user callback into this method enables you to filter instructions that you want to be emitted
+into target IL generator.
+Return <span class="xref">true</span> to skip emitting instruction, or <span class="xref">false</span> to emit instruction.</p>
+</div>
+  
+  
+  <a id="CilBytecodeParser_CilGraph_GetInstructions_" data-uid="CilBytecodeParser.CilGraph.GetInstructions*"></a>
+  <h4 id="CilBytecodeParser_CilGraph_GetInstructions" data-uid="CilBytecodeParser.CilGraph.GetInstructions">GetInstructions()</h4>
+  <div class="markdown level1 summary"><p>Enumerates all instructions represented by this graph's nodes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;CilInstruction&gt; GetInstructions()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilBytecodeParser.CilInstruction.html">CilInstruction</a>&gt;</td>
+        <td><p>The collection of instructions</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilBytecodeParser_CilGraph_GetNodes_" data-uid="CilBytecodeParser.CilGraph.GetNodes*"></a>
+  <h4 id="CilBytecodeParser_CilGraph_GetNodes" data-uid="CilBytecodeParser.CilGraph.GetNodes">GetNodes()</h4>
+  <div class="markdown level1 summary"><p>Enumerates nodes in this graph</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;CilGraphNode&gt; GetNodes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilBytecodeParser.CilGraphNode.html">CilGraphNode</a>&gt;</td>
+        <td><p>The collection of graph nodes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="CilBytecodeParser_CilGraph_OnError_" data-uid="CilBytecodeParser.CilGraph.OnError*"></a>
   <h4 id="CilBytecodeParser_CilGraph_OnError_System_Object_CilBytecodeParser_CilErrorEventArgs_" data-uid="CilBytecodeParser.CilGraph.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)">OnError(Object, CilErrorEventArgs)</h4>
   <div class="markdown level1 summary"><p>Raises Error event</p>
