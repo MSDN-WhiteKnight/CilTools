@@ -19,6 +19,18 @@ references:
   commentId: E:CilBytecodeParser.CilAnalysis.Error
   fullName: CilBytecodeParser.CilAnalysis.Error
   nameWithType: CilAnalysis.Error
+- uid: CilBytecodeParser.CilAnalysis.EscapeString(System.String)
+  name: EscapeString(String)
+  href: api/CilBytecodeParser.CilAnalysis.html#CilBytecodeParser_CilAnalysis_EscapeString_System_String_
+  commentId: M:CilBytecodeParser.CilAnalysis.EscapeString(System.String)
+  fullName: CilBytecodeParser.CilAnalysis.EscapeString(System.String)
+  nameWithType: CilAnalysis.EscapeString(String)
+- uid: CilBytecodeParser.CilAnalysis.EscapeString*
+  name: EscapeString
+  href: api/CilBytecodeParser.CilAnalysis.html#CilBytecodeParser_CilAnalysis_EscapeString_
+  commentId: Overload:CilBytecodeParser.CilAnalysis.EscapeString
+  fullName: CilBytecodeParser.CilAnalysis.EscapeString
+  nameWithType: CilAnalysis.EscapeString
 - uid: CilBytecodeParser.CilAnalysis.GetGraph(System.Reflection.MethodBase)
   name: GetGraph(MethodBase)
   href: api/CilBytecodeParser.CilAnalysis.html#CilBytecodeParser_CilAnalysis_GetGraph_System_Reflection_MethodBase_
@@ -235,12 +247,51 @@ references:
   commentId: F:CilBytecodeParser.CilGraph._Root
   fullName: CilBytecodeParser.CilGraph._Root
   nameWithType: CilGraph._Root
+- uid: CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator,System.Func{CilBytecodeParser.CilInstruction,System.Boolean})
+  name: EmitTo(ILGenerator, Func<CilInstruction, Boolean>)
+  href: api/CilBytecodeParser.CilGraph.html#CilBytecodeParser_CilGraph_EmitTo_System_Reflection_Emit_ILGenerator_System_Func_CilBytecodeParser_CilInstruction_System_Boolean__
+  commentId: M:CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator,System.Func{CilBytecodeParser.CilInstruction,System.Boolean})
+  name.vb: EmitTo(ILGenerator, Func(Of CilInstruction, Boolean))
+  fullName: CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator, System.Func<CilBytecodeParser.CilInstruction, System.Boolean>)
+  fullName.vb: CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator, System.Func(Of CilBytecodeParser.CilInstruction, System.Boolean))
+  nameWithType: CilGraph.EmitTo(ILGenerator, Func<CilInstruction, Boolean>)
+  nameWithType.vb: CilGraph.EmitTo(ILGenerator, Func(Of CilInstruction, Boolean))
+- uid: CilBytecodeParser.CilGraph.EmitTo*
+  name: EmitTo
+  href: api/CilBytecodeParser.CilGraph.html#CilBytecodeParser_CilGraph_EmitTo_
+  commentId: Overload:CilBytecodeParser.CilGraph.EmitTo
+  fullName: CilBytecodeParser.CilGraph.EmitTo
+  nameWithType: CilGraph.EmitTo
 - uid: CilBytecodeParser.CilGraph.Error
   name: Error
   href: api/CilBytecodeParser.CilGraph.html#CilBytecodeParser_CilGraph_Error
   commentId: E:CilBytecodeParser.CilGraph.Error
   fullName: CilBytecodeParser.CilGraph.Error
   nameWithType: CilGraph.Error
+- uid: CilBytecodeParser.CilGraph.GetInstructions
+  name: GetInstructions()
+  href: api/CilBytecodeParser.CilGraph.html#CilBytecodeParser_CilGraph_GetInstructions
+  commentId: M:CilBytecodeParser.CilGraph.GetInstructions
+  fullName: CilBytecodeParser.CilGraph.GetInstructions()
+  nameWithType: CilGraph.GetInstructions()
+- uid: CilBytecodeParser.CilGraph.GetInstructions*
+  name: GetInstructions
+  href: api/CilBytecodeParser.CilGraph.html#CilBytecodeParser_CilGraph_GetInstructions_
+  commentId: Overload:CilBytecodeParser.CilGraph.GetInstructions
+  fullName: CilBytecodeParser.CilGraph.GetInstructions
+  nameWithType: CilGraph.GetInstructions
+- uid: CilBytecodeParser.CilGraph.GetNodes
+  name: GetNodes()
+  href: api/CilBytecodeParser.CilGraph.html#CilBytecodeParser_CilGraph_GetNodes
+  commentId: M:CilBytecodeParser.CilGraph.GetNodes
+  fullName: CilBytecodeParser.CilGraph.GetNodes()
+  nameWithType: CilGraph.GetNodes()
+- uid: CilBytecodeParser.CilGraph.GetNodes*
+  name: GetNodes
+  href: api/CilBytecodeParser.CilGraph.html#CilBytecodeParser_CilGraph_GetNodes_
+  commentId: Overload:CilBytecodeParser.CilGraph.GetNodes
+  fullName: CilBytecodeParser.CilGraph.GetNodes
+  nameWithType: CilGraph.GetNodes
 - uid: CilBytecodeParser.CilGraph.Method
   name: Method
   href: api/CilBytecodeParser.CilGraph.html#CilBytecodeParser_CilGraph_Method
@@ -577,6 +628,18 @@ references:
   commentId: Overload:CilBytecodeParser.CilInstruction.CreateEmptyInstruction
   fullName: CilBytecodeParser.CilInstruction.CreateEmptyInstruction
   nameWithType: CilInstruction.CreateEmptyInstruction
+- uid: CilBytecodeParser.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  name: EmitTo(ILGenerator)
+  href: api/CilBytecodeParser.CilInstruction.html#CilBytecodeParser_CilInstruction_EmitTo_System_Reflection_Emit_ILGenerator_
+  commentId: M:CilBytecodeParser.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  fullName: CilBytecodeParser.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  nameWithType: CilInstruction.EmitTo(ILGenerator)
+- uid: CilBytecodeParser.CilInstruction.EmitTo*
+  name: EmitTo
+  href: api/CilBytecodeParser.CilInstruction.html#CilBytecodeParser_CilInstruction_EmitTo_
+  commentId: Overload:CilBytecodeParser.CilInstruction.EmitTo
+  fullName: CilBytecodeParser.CilInstruction.EmitTo
+  nameWithType: CilInstruction.EmitTo
 - uid: CilBytecodeParser.CilInstruction.Error
   name: Error
   href: api/CilBytecodeParser.CilInstruction.html#CilBytecodeParser_CilInstruction_Error
@@ -679,6 +742,18 @@ references:
   commentId: Overload:CilBytecodeParser.CilInstruction.OrdinalNumber
   fullName: CilBytecodeParser.CilInstruction.OrdinalNumber
   nameWithType: CilInstruction.OrdinalNumber
+- uid: CilBytecodeParser.CilInstruction.Parse(System.String)
+  name: Parse(String)
+  href: api/CilBytecodeParser.CilInstruction.html#CilBytecodeParser_CilInstruction_Parse_System_String_
+  commentId: M:CilBytecodeParser.CilInstruction.Parse(System.String)
+  fullName: CilBytecodeParser.CilInstruction.Parse(System.String)
+  nameWithType: CilInstruction.Parse(String)
+- uid: CilBytecodeParser.CilInstruction.Parse*
+  name: Parse
+  href: api/CilBytecodeParser.CilInstruction.html#CilBytecodeParser_CilInstruction_Parse_
+  commentId: Overload:CilBytecodeParser.CilInstruction.Parse
+  fullName: CilBytecodeParser.CilInstruction.Parse
+  nameWithType: CilInstruction.Parse
 - uid: CilBytecodeParser.CilInstruction.ReferencedMember
   name: ReferencedMember
   href: api/CilBytecodeParser.CilInstruction.html#CilBytecodeParser_CilInstruction_ReferencedMember
@@ -997,6 +1072,33 @@ references:
   commentId: T:CilBytecodeParser.Extensions.CilExtensions
   fullName: CilBytecodeParser.Extensions.CilExtensions
   nameWithType: CilExtensions
+- uid: CilBytecodeParser.Extensions.CilExtensions.EmitCilGraph(System.Reflection.Emit.ILGenerator,CilBytecodeParser.CilGraph,System.Func{CilBytecodeParser.CilInstruction,System.Boolean})
+  name: EmitCilGraph(ILGenerator, CilGraph, Func<CilInstruction, Boolean>)
+  href: api/CilBytecodeParser.Extensions.CilExtensions.html#CilBytecodeParser_Extensions_CilExtensions_EmitCilGraph_System_Reflection_Emit_ILGenerator_CilBytecodeParser_CilGraph_System_Func_CilBytecodeParser_CilInstruction_System_Boolean__
+  commentId: M:CilBytecodeParser.Extensions.CilExtensions.EmitCilGraph(System.Reflection.Emit.ILGenerator,CilBytecodeParser.CilGraph,System.Func{CilBytecodeParser.CilInstruction,System.Boolean})
+  name.vb: EmitCilGraph(ILGenerator, CilGraph, Func(Of CilInstruction, Boolean))
+  fullName: CilBytecodeParser.Extensions.CilExtensions.EmitCilGraph(System.Reflection.Emit.ILGenerator, CilBytecodeParser.CilGraph, System.Func<CilBytecodeParser.CilInstruction, System.Boolean>)
+  fullName.vb: CilBytecodeParser.Extensions.CilExtensions.EmitCilGraph(System.Reflection.Emit.ILGenerator, CilBytecodeParser.CilGraph, System.Func(Of CilBytecodeParser.CilInstruction, System.Boolean))
+  nameWithType: CilExtensions.EmitCilGraph(ILGenerator, CilGraph, Func<CilInstruction, Boolean>)
+  nameWithType.vb: CilExtensions.EmitCilGraph(ILGenerator, CilGraph, Func(Of CilInstruction, Boolean))
+- uid: CilBytecodeParser.Extensions.CilExtensions.EmitCilGraph*
+  name: EmitCilGraph
+  href: api/CilBytecodeParser.Extensions.CilExtensions.html#CilBytecodeParser_Extensions_CilExtensions_EmitCilGraph_
+  commentId: Overload:CilBytecodeParser.Extensions.CilExtensions.EmitCilGraph
+  fullName: CilBytecodeParser.Extensions.CilExtensions.EmitCilGraph
+  nameWithType: CilExtensions.EmitCilGraph
+- uid: CilBytecodeParser.Extensions.CilExtensions.EmitInstruction(System.Reflection.Emit.ILGenerator,CilBytecodeParser.CilInstruction)
+  name: EmitInstruction(ILGenerator, CilInstruction)
+  href: api/CilBytecodeParser.Extensions.CilExtensions.html#CilBytecodeParser_Extensions_CilExtensions_EmitInstruction_System_Reflection_Emit_ILGenerator_CilBytecodeParser_CilInstruction_
+  commentId: M:CilBytecodeParser.Extensions.CilExtensions.EmitInstruction(System.Reflection.Emit.ILGenerator,CilBytecodeParser.CilInstruction)
+  fullName: CilBytecodeParser.Extensions.CilExtensions.EmitInstruction(System.Reflection.Emit.ILGenerator, CilBytecodeParser.CilInstruction)
+  nameWithType: CilExtensions.EmitInstruction(ILGenerator, CilInstruction)
+- uid: CilBytecodeParser.Extensions.CilExtensions.EmitInstruction*
+  name: EmitInstruction
+  href: api/CilBytecodeParser.Extensions.CilExtensions.html#CilBytecodeParser_Extensions_CilExtensions_EmitInstruction_
+  commentId: Overload:CilBytecodeParser.Extensions.CilExtensions.EmitInstruction
+  fullName: CilBytecodeParser.Extensions.CilExtensions.EmitInstruction
+  nameWithType: CilExtensions.EmitInstruction
 - uid: CilBytecodeParser.Extensions.CilExtensions.GetCilGraph(System.Reflection.MethodBase)
   name: GetCilGraph(MethodBase)
   href: api/CilBytecodeParser.Extensions.CilExtensions.html#CilBytecodeParser_Extensions_CilExtensions_GetCilGraph_System_Reflection_MethodBase_
