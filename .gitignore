@@ -335,8 +335,10 @@ ASALocalRun/
 *.pdf
 
 # NuGet
+*.dll
 *.nupkg
 
 # Misc ignored files
 _Distr/
 info.txt
+
