@@ -24,7 +24,9 @@ items:
     content: 'public class CilParserException : ApplicationException, ISerializable, _Exception'
     content.vb: >-
       Public Class CilParserException
+
           Inherits ApplicationException
+
           Implements ISerializable, _Exception
   inheritance:
   - System.Object

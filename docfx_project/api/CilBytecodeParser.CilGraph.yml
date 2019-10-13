@@ -8,7 +8,10 @@ items:
   - CilBytecodeParser.CilGraph.#ctor(CilBytecodeParser.CilGraphNode,System.Reflection.MethodBase)
   - CilBytecodeParser.CilGraph._Method
   - CilBytecodeParser.CilGraph._Root
+  - CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator,System.Func{CilBytecodeParser.CilInstruction,System.Boolean})
   - CilBytecodeParser.CilGraph.Error
+  - CilBytecodeParser.CilGraph.GetInstructions
+  - CilBytecodeParser.CilGraph.GetNodes
   - CilBytecodeParser.CilGraph.Method
   - CilBytecodeParser.CilGraph.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
   - CilBytecodeParser.CilGraph.Root
@@ -202,6 +205,101 @@ items:
   modifiers.vb:
   - Public
   - Overrides
+- uid: CilBytecodeParser.CilGraph.GetNodes
+  commentId: M:CilBytecodeParser.CilGraph.GetNodes
+  id: GetNodes
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: GetNodes()
+  nameWithType: CilGraph.GetNodes()
+  fullName: CilBytecodeParser.CilGraph.GetNodes()
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nEnumerates nodes in this graph\n"
+  syntax:
+    content: public IEnumerable<CilGraphNode> GetNodes()
+    return:
+      type: System.Collections.Generic.IEnumerable{CilBytecodeParser.CilGraphNode}
+      description: The collection of graph nodes
+    content.vb: Public Function GetNodes As IEnumerable(Of CilGraphNode)
+  overload: CilBytecodeParser.CilGraph.GetNodes*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilBytecodeParser.CilGraph.GetInstructions
+  commentId: M:CilBytecodeParser.CilGraph.GetInstructions
+  id: GetInstructions
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: GetInstructions()
+  nameWithType: CilGraph.GetInstructions()
+  fullName: CilBytecodeParser.CilGraph.GetInstructions()
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nEnumerates all instructions represented by this graph&apos;s nodes\n"
+  syntax:
+    content: public IEnumerable<CilInstruction> GetInstructions()
+    return:
+      type: System.Collections.Generic.IEnumerable{CilBytecodeParser.CilInstruction}
+      description: The collection of instructions
+    content.vb: Public Function GetInstructions As IEnumerable(Of CilInstruction)
+  overload: CilBytecodeParser.CilGraph.GetInstructions*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator,System.Func{CilBytecodeParser.CilInstruction,System.Boolean})
+  commentId: M:CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator,System.Func{CilBytecodeParser.CilInstruction,System.Boolean})
+  id: EmitTo(System.Reflection.Emit.ILGenerator,System.Func{CilBytecodeParser.CilInstruction,System.Boolean})
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: EmitTo(ILGenerator, Func<CilInstruction, Boolean>)
+  nameWithType: CilGraph.EmitTo(ILGenerator, Func<CilInstruction, Boolean>)
+  fullName: CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator, System.Func<CilBytecodeParser.CilInstruction, System.Boolean>)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nEmits the entire content of this CIL graph into the specified IL generator, \noptionally calling user callback for each processed instruction.\n"
+  remarks: "Passing user callback into this method enables you to filter instructions that you want to be emitted \ninto target IL generator. \nReturn <xref uid=\"langword_csharp_true\" name=\"true\" href=\"\"></xref> to skip emitting instruction, or <xref uid=\"langword_csharp_false\" name=\"false\" href=\"\"></xref> to emit instruction."
+  syntax:
+    content: public void EmitTo(ILGenerator gen, Func<CilInstruction, bool> callback = null)
+    parameters:
+    - id: gen
+      type: System.Reflection.Emit.ILGenerator
+      description: 'Target IL generator. '
+    - id: callback
+      type: System.Func{CilBytecodeParser.CilInstruction,System.Boolean}
+      description: User callback to be called for each processed instruction.
+    content.vb: Public Sub EmitTo(gen As ILGenerator, callback As Func(Of CilInstruction, Boolean) = Nothing)
+  overload: CilBytecodeParser.CilGraph.EmitTo*
+  nameWithType.vb: CilGraph.EmitTo(ILGenerator, Func(Of CilInstruction, Boolean))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CilBytecodeParser.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator, System.Func(Of CilBytecodeParser.CilInstruction, System.Boolean))
+  name.vb: EmitTo(ILGenerator, Func(Of CilInstruction, Boolean))
 - uid: CilBytecodeParser.CilGraph.Root
   commentId: P:CilBytecodeParser.CilGraph.Root
   id: Root
@@ -644,6 +742,279 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
+- uid: CilBytecodeParser.CilGraph.GetNodes*
+  commentId: Overload:CilBytecodeParser.CilGraph.GetNodes
+  isExternal: true
+  name: GetNodes
+  nameWithType: CilGraph.GetNodes
+  fullName: CilBytecodeParser.CilGraph.GetNodes
+- uid: System.Collections.Generic.IEnumerable{CilBytecodeParser.CilGraphNode}
+  commentId: T:System.Collections.Generic.IEnumerable{CilBytecodeParser.CilGraphNode}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<CilGraphNode>
+  nameWithType: IEnumerable<CilGraphNode>
+  fullName: System.Collections.Generic.IEnumerable<CilBytecodeParser.CilGraphNode>
+  nameWithType.vb: IEnumerable(Of CilGraphNode)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilBytecodeParser.CilGraphNode)
+  name.vb: IEnumerable(Of CilGraphNode)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilBytecodeParser.CilGraphNode
+    name: CilGraphNode
+    nameWithType: CilGraphNode
+    fullName: CilBytecodeParser.CilGraphNode
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilBytecodeParser.CilGraphNode
+    name: CilGraphNode
+    nameWithType: CilGraphNode
+    fullName: CilBytecodeParser.CilGraphNode
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilBytecodeParser.CilGraph.GetInstructions*
+  commentId: Overload:CilBytecodeParser.CilGraph.GetInstructions
+  isExternal: true
+  name: GetInstructions
+  nameWithType: CilGraph.GetInstructions
+  fullName: CilBytecodeParser.CilGraph.GetInstructions
+- uid: System.Collections.Generic.IEnumerable{CilBytecodeParser.CilInstruction}
+  commentId: T:System.Collections.Generic.IEnumerable{CilBytecodeParser.CilInstruction}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<CilInstruction>
+  nameWithType: IEnumerable<CilInstruction>
+  fullName: System.Collections.Generic.IEnumerable<CilBytecodeParser.CilInstruction>
+  nameWithType.vb: IEnumerable(Of CilInstruction)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilBytecodeParser.CilInstruction)
+  name.vb: IEnumerable(Of CilInstruction)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilBytecodeParser.CilInstruction
+    name: CilInstruction
+    nameWithType: CilInstruction
+    fullName: CilBytecodeParser.CilInstruction
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilBytecodeParser.CilInstruction
+    name: CilInstruction
+    nameWithType: CilInstruction
+    fullName: CilBytecodeParser.CilInstruction
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilBytecodeParser.CilGraph.EmitTo*
+  commentId: Overload:CilBytecodeParser.CilGraph.EmitTo
+  isExternal: true
+  name: EmitTo
+  nameWithType: CilGraph.EmitTo
+  fullName: CilBytecodeParser.CilGraph.EmitTo
+- uid: System.Reflection.Emit.ILGenerator
+  commentId: T:System.Reflection.Emit.ILGenerator
+  parent: System.Reflection.Emit
+  isExternal: true
+  name: ILGenerator
+  nameWithType: ILGenerator
+  fullName: System.Reflection.Emit.ILGenerator
+- uid: System.Func{CilBytecodeParser.CilInstruction,System.Boolean}
+  commentId: '!:System.Func{CilBytecodeParser.CilInstruction,System.Boolean}'
+  definition: System.Func`2
+  name: Func<CilInstruction, Boolean>
+  nameWithType: Func<CilInstruction, Boolean>
+  fullName: System.Func<CilBytecodeParser.CilInstruction, System.Boolean>
+  nameWithType.vb: Func(Of CilInstruction, Boolean)
+  fullName.vb: System.Func(Of CilBytecodeParser.CilInstruction, System.Boolean)
+  name.vb: Func(Of CilInstruction, Boolean)
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilBytecodeParser.CilInstruction
+    name: CilInstruction
+    nameWithType: CilInstruction
+    fullName: CilBytecodeParser.CilInstruction
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilBytecodeParser.CilInstruction
+    name: CilInstruction
+    nameWithType: CilInstruction
+    fullName: CilBytecodeParser.CilInstruction
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.Emit
+  commentId: N:System.Reflection.Emit
+  isExternal: true
+  name: System.Reflection.Emit
+  nameWithType: System.Reflection.Emit
+  fullName: System.Reflection.Emit
+- uid: System.Func`2
+  isExternal: true
+  name: Func<, >
+  nameWithType: Func<, >
+  fullName: System.Func<, >
+  nameWithType.vb: Func(Of , )
+  fullName.vb: System.Func(Of , )
+  name.vb: Func(Of , )
+  spec.csharp:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: ''
+    nameWithType: ''
+    fullName: ''
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: ''
+    nameWithType: ''
+    fullName: ''
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Func`2
+    name: Func
+    nameWithType: Func
+    fullName: System.Func
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: ''
+    nameWithType: ''
+    fullName: ''
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - name: ''
+    nameWithType: ''
+    fullName: ''
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: CilBytecodeParser.CilGraph.Root*
   commentId: Overload:CilBytecodeParser.CilGraph.Root
   isExternal: true

@@ -30,6 +30,7 @@ items:
     content: 'public class CilGraphNodeMutable : CilGraphNode'
     content.vb: >-
       Public Class CilGraphNodeMutable
+
           Inherits CilGraphNode
   inheritance:
   - System.Object

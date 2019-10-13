@@ -46,16 +46,18 @@ namespace CilBytecodeParser
                 if(et!=null) return GetTypeName(et) + "&";
             }
 
-            if (t.Equals(typeof(bool))) return "bool";
-            else if (t.Equals(typeof(void))) return "void";
-            else if (t.Equals(typeof(int))) return "int32";
-            else if (t.Equals(typeof(uint))) return "uint32";
-            else if (t.Equals(typeof(long))) return "int64";
-            else if (t.Equals(typeof(ulong))) return "uint64";
-            else if (t.Equals(typeof(short))) return "int16";
+            if (t.Equals(typeof(bool)))        return "bool";
+            else if (t.Equals(typeof(void)))   return "void";
+            else if (t.Equals(typeof(int)))    return "int32";
+            else if (t.Equals(typeof(uint)))   return "uint32";
+            else if (t.Equals(typeof(long)))   return "int64";
+            else if (t.Equals(typeof(ulong)))  return "uint64";
+            else if (t.Equals(typeof(short)))  return "int16";
             else if (t.Equals(typeof(ushort))) return "uint16";
-            else if (t.Equals(typeof(byte))) return "byte";
-            else if (t.Equals(typeof(sbyte))) return "sbyte";
+            else if (t.Equals(typeof(byte)))   return "uint8";
+            else if (t.Equals(typeof(sbyte)))  return "int8";
+            else if (t.Equals(typeof(float)))  return "float32";
+            else if (t.Equals(typeof(double))) return "float64";
             else if (t.Equals(typeof(string))) return "string";
             else if (t.Equals(typeof(object))) return "object";
             else if (t.Equals(typeof(System.TypedReference))) return "typedref";
@@ -424,7 +426,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets all members referenced by the code of specified type
         /// </summary>
-        /// <param name="t">Type for which to retreive referenced memmbers</param>
+        /// <param name="t">Type for which to retreive referenced members</param>
         /// <exception cref="System.ArgumentNullException">Source type is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
@@ -437,7 +439,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets members referenced by the code of specified type that match specified criteria
         /// </summary>
-        /// <param name="t">Type for which to retreive referenced memmbers</param>
+        /// <param name="t">Type for which to retreive referenced members</param>
         /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
         /// <exception cref="System.ArgumentNullException">Source type is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
