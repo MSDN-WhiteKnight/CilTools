@@ -133,7 +133,7 @@ namespace CilBytecodeParser
             int n_iter = 0;
             IList<ExceptionHandlingClause> trys=new List<ExceptionHandlingClause>();
             bool block_end = false;
-             MethodBody body=null;
+            MethodBody body=null;
 
             try
             {
@@ -170,16 +170,65 @@ namespace CilBytecodeParser
 
             sb.Append(this._Method.Name);
             sb.Append('(');
+            sb.AppendLine();
 
             for (int i = 0; i < pars.Length; i++)
             {
-                if (i >= 1) sb.Append(", ");
-                sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));                
+                if (i >= 1)
+                {
+                    sb.AppendLine(", ");                    
+                }
+
+                sb.Append("    ");
+                if (pars[i].IsOptional) sb.Append("[opt] ");
+
+                sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));
+
+                string parname;
+                if (pars[i].Name != null) parname = pars[i].Name;
+                else parname = "par" + (i+1).ToString();
+
+                sb.Append(' ');
+                sb.Append(parname);
+                
             }
 
+            sb.AppendLine();
             sb.Append(')');
             sb.AppendLine(" cil managed {");
-            
+
+            //optional parameters
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                {
+                    sb.Append(" .param [");
+                    sb.Append((i+1).ToString());
+                    sb.Append("] = ");
+                    
+                    if (pars[i].RawDefaultValue != null)
+                    {
+                        if (pars[i].RawDefaultValue.GetType() == typeof(string))
+                        {
+                            sb.Append('"');
+                            sb.Append(CilAnalysis.EscapeString(pars[i].RawDefaultValue.ToString()));
+                            sb.Append('"');
+                        }
+                        else //most of the types...
+                        {
+                            sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));
+                            sb.Append('(');
+                            sb.Append(Convert.ToString(pars[i].RawDefaultValue, System.Globalization.CultureInfo.InvariantCulture));
+                            sb.Append(')');
+                        }
+                    }
+                    else sb.Append("nullref");
+                    
+                    sb.AppendLine();
+                }
+            }
+
+            //method body           
             if (body != null)
             {
                 sb.AppendLine(" .maxstack "+body.MaxStackSize.ToString());

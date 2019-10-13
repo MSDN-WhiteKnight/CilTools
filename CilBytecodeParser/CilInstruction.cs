@@ -446,7 +446,7 @@ namespace CilBytecodeParser
                 else
                 {
                     sb.Append(' ');
-                    sb.Append(Operand.ToString());
+                    sb.Append(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
                 }
                 
             }

@@ -15,6 +15,7 @@ items:
   - CilBytecodeParser.CilInstruction.ByteOffset
   - CilBytecodeParser.CilInstruction.Code
   - CilBytecodeParser.CilInstruction.CreateEmptyInstruction(System.Reflection.MethodBase)
+  - CilBytecodeParser.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
   - CilBytecodeParser.CilInstruction.Error
   - CilBytecodeParser.CilInstruction.Method
   - CilBytecodeParser.CilInstruction.Name
@@ -24,6 +25,7 @@ items:
   - CilBytecodeParser.CilInstruction.OperandSize
   - CilBytecodeParser.CilInstruction.OperandType
   - CilBytecodeParser.CilInstruction.OrdinalNumber
+  - CilBytecodeParser.CilInstruction.Parse(System.String)
   - CilBytecodeParser.CilInstruction.ReferencedMember
   - CilBytecodeParser.CilInstruction.ReferencedString
   - CilBytecodeParser.CilInstruction.ReferencedType
@@ -372,6 +374,71 @@ items:
   modifiers.vb:
   - Public
   - Overrides
+- uid: CilBytecodeParser.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  commentId: M:CilBytecodeParser.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  id: EmitTo(System.Reflection.Emit.ILGenerator)
+  parent: CilBytecodeParser.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: EmitTo(ILGenerator)
+  nameWithType: CilInstruction.EmitTo(ILGenerator)
+  fullName: CilBytecodeParser.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nEmits CIL code for this instruction into the specified IL generator.\n"
+  syntax:
+    content: public void EmitTo(ILGenerator ilg)
+    parameters:
+    - id: ilg
+      type: System.Reflection.Emit.ILGenerator
+      description: Target IL generator.
+    content.vb: Public Sub EmitTo(ilg As ILGenerator)
+  overload: CilBytecodeParser.CilInstruction.EmitTo*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilBytecodeParser.CilInstruction.Parse(System.String)
+  commentId: M:CilBytecodeParser.CilInstruction.Parse(System.String)
+  id: Parse(System.String)
+  parent: CilBytecodeParser.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: Parse(String)
+  nameWithType: CilInstruction.Parse(String)
+  fullName: CilBytecodeParser.CilInstruction.Parse(System.String)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nConverts CIL instruction textual representation into the corresponding CilInstruction object\n"
+  syntax:
+    content: public static CilInstruction Parse(string str)
+    parameters:
+    - id: str
+      type: System.String
+      description: The line of CIL code representing instruction
+    return:
+      type: CilBytecodeParser.CilInstruction
+      description: CilInstruction object for the specified string
+    content.vb: Public Shared Function Parse(str As String) As CilInstruction
+  overload: CilBytecodeParser.CilInstruction.Parse*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
 - uid: CilBytecodeParser.CilInstruction.Method
   commentId: P:CilBytecodeParser.CilInstruction.Method
   id: Method
@@ -1181,6 +1248,25 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
+- uid: CilBytecodeParser.CilInstruction.EmitTo*
+  commentId: Overload:CilBytecodeParser.CilInstruction.EmitTo
+  isExternal: true
+  name: EmitTo
+  nameWithType: CilInstruction.EmitTo
+  fullName: CilBytecodeParser.CilInstruction.EmitTo
+- uid: System.Reflection.Emit.ILGenerator
+  commentId: T:System.Reflection.Emit.ILGenerator
+  parent: System.Reflection.Emit
+  isExternal: true
+  name: ILGenerator
+  nameWithType: ILGenerator
+  fullName: System.Reflection.Emit.ILGenerator
+- uid: CilBytecodeParser.CilInstruction.Parse*
+  commentId: Overload:CilBytecodeParser.CilInstruction.Parse
+  isExternal: true
+  name: Parse
+  nameWithType: CilInstruction.Parse
+  fullName: CilBytecodeParser.CilInstruction.Parse
 - uid: CilBytecodeParser.CilInstruction.Method*
   commentId: Overload:CilBytecodeParser.CilInstruction.Method
   isExternal: true

@@ -6,6 +6,7 @@ items:
   parent: CilBytecodeParser
   children:
   - CilBytecodeParser.CilAnalysis.Error
+  - CilBytecodeParser.CilAnalysis.EscapeString(System.String)
   - CilBytecodeParser.CilAnalysis.GetGraph(System.Reflection.MethodBase)
   - CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly)
   - CilBytecodeParser.CilAnalysis.GetReferencedMembers(System.Reflection.Assembly,CilBytecodeParser.MemberCriteria)
@@ -127,6 +128,41 @@ items:
   - type: System.ArgumentNullException
     commentId: T:System.ArgumentNullException
     description: t is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilBytecodeParser.CilAnalysis.EscapeString(System.String)
+  commentId: M:CilBytecodeParser.CilAnalysis.EscapeString(System.String)
+  id: EscapeString(System.String)
+  parent: CilBytecodeParser.CilAnalysis
+  langs:
+  - csharp
+  - vb
+  name: EscapeString(String)
+  nameWithType: CilAnalysis.EscapeString(String)
+  fullName: CilBytecodeParser.CilAnalysis.EscapeString(System.String)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nEscapes special characters in the specified string, using rules similar to what are applied to C# string literals\n"
+  syntax:
+    content: public static string EscapeString(string str)
+    parameters:
+    - id: str
+      type: System.String
+      description: The string to escape
+    return:
+      type: System.String
+      description: The escaped string
+    content.vb: Public Shared Function EscapeString(str As String) As String
+  overload: CilBytecodeParser.CilAnalysis.EscapeString*
   modifiers.csharp:
   - public
   - static
@@ -401,7 +437,7 @@ items:
     parameters:
     - id: t
       type: System.Type
-      description: Type for which to retreive referenced memmbers
+      description: Type for which to retreive referenced members
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
       description: A collection of MemberInfo objects
@@ -441,7 +477,7 @@ items:
     parameters:
     - id: t
       type: System.Type
-      description: Type for which to retreive referenced memmbers
+      description: Type for which to retreive referenced members
     - id: flags
       type: CilBytecodeParser.MemberCriteria
       description: A combination of bitwise flags that control what kind of members are retreived
@@ -940,6 +976,12 @@ references:
   name: GetTypeFullName
   nameWithType: CilAnalysis.GetTypeFullName
   fullName: CilBytecodeParser.CilAnalysis.GetTypeFullName
+- uid: CilBytecodeParser.CilAnalysis.EscapeString*
+  commentId: Overload:CilBytecodeParser.CilAnalysis.EscapeString
+  isExternal: true
+  name: EscapeString
+  nameWithType: CilAnalysis.EscapeString
+  fullName: CilBytecodeParser.CilAnalysis.EscapeString
 - uid: CilBytecodeParser.CilAnalysis.GetGraph*
   commentId: Overload:CilBytecodeParser.CilAnalysis.GetGraph
   isExternal: true
