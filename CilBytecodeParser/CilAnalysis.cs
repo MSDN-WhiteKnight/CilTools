@@ -46,6 +46,12 @@ namespace CilBytecodeParser
                 if(et!=null) return GetTypeName(et) + "&";
             }
 
+            if (t.IsArray)
+            {
+                Type et = t.GetElementType();
+                if (et != null) return GetTypeName(et) + "[]";
+            }
+
             if (t.Equals(typeof(bool)))        return "bool";
             else if (t.Equals(typeof(void)))   return "void";
             else if (t.Equals(typeof(int)))    return "int32";

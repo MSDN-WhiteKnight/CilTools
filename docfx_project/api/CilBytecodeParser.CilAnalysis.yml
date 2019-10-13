@@ -437,7 +437,7 @@ items:
     parameters:
     - id: t
       type: System.Type
-      description: Type for which to retreive referenced memmbers
+      description: Type for which to retreive referenced members
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
       description: A collection of MemberInfo objects
@@ -477,7 +477,7 @@ items:
     parameters:
     - id: t
       type: System.Type
-      description: Type for which to retreive referenced memmbers
+      description: Type for which to retreive referenced members
     - id: flags
       type: CilBytecodeParser.MemberCriteria
       description: A combination of bitwise flags that control what kind of members are retreived

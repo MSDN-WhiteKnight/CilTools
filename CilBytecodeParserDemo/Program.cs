@@ -13,19 +13,9 @@ namespace CilBytecodeParserDemo
 {
     class Program
     {
-
-        public static void Foo(int a,int b = 1,byte c = 2,string k="hello",decimal d = 1.1M,float e=1.2f, Program f=null,double x=1.3)
-        {
-            Console.WriteLine(2.2f);
-        }
-
+        
         static void Main(string[] args)
-        {
-            /*var text = typeof(Program).GetMethod("Foo").GetCilText();
-            Console.WriteLine(text);
-            Console.ReadKey();
-            return;*/
-
+        {            
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
             Console.WriteLine("Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
             Console.WriteLine();

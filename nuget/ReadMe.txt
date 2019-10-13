@@ -96,7 +96,9 @@ v1.5
 - Added special characters escaping when displaying string literals
 - Added CilGraph.EmitTo method with jumps support as well as the corresponding IlGenerator extension method
 
-
-
-
-
+v1.6
+- CilGraph.ToString now displays parameter names
+- Added support for optional parameters and default values to CilGraph.ToString
+- Converting constant values to string now uses InvariantCulture
+- Fixed byte, sbyte, float and double type names representation in text output
+- Improved representation of array types in text output
