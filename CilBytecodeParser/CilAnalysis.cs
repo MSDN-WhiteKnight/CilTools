@@ -46,10 +46,16 @@ namespace CilBytecodeParser
                 if(et!=null) return GetTypeName(et) + "&";
             }
 
-            if (t.IsArray)
+            if (t.IsArray && t.GetArrayRank()==1)
             {
                 Type et = t.GetElementType();
                 if (et != null) return GetTypeName(et) + "[]";
+            }
+
+            if (t.IsPointer)
+            {
+                Type et = t.GetElementType();
+                if (et != null) return GetTypeName(et) + "*";
             }
 
             if (t.Equals(typeof(bool)))        return "bool";
@@ -183,6 +189,37 @@ namespace CilBytecodeParser
 
             return sb.ToString();
 
+        }
+
+        internal static string MethodToString(MethodBase m)
+        {
+            StringBuilder sb = new StringBuilder();                        
+            Type t = m.DeclaringType;
+            ParameterInfo[] pars = m.GetParameters();
+
+            MethodInfo mi = m as MethodInfo;
+            string rt;
+            if (mi != null) rt = CilAnalysis.GetTypeName(mi.ReturnType);
+            else rt = "void";
+
+            if (!m.IsStatic) sb.Append("instance ");
+
+            sb.Append(rt);
+            sb.Append(' ');
+
+            sb.Append(CilAnalysis.GetTypeNameInternal(t));
+            sb.Append("::");
+            sb.Append(m.Name);
+            sb.Append('(');
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (i >= 1) sb.Append(", ");
+                sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));
+            }
+
+            sb.Append(')');
+            return sb.ToString();
         }
 
         /// <summary>

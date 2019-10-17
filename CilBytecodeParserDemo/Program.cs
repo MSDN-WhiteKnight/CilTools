@@ -12,10 +12,22 @@ using CilBytecodeParser.Extensions;
 namespace CilBytecodeParserDemo
 {
     class Program
-    {
+    {        
+        public static void Foo()
+        {
+            
+        }
+
+        static void Test()
+        {
+            Console.WriteLine(typeof(Program).GetMethod("Foo").GetCilText());
+            Console.ReadKey();
+        }
         
         static void Main(string[] args)
-        {            
+        {
+            //Test();
+
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
             Console.WriteLine("Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
             Console.WriteLine();

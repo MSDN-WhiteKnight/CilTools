@@ -102,3 +102,8 @@ v1.6
 - Converting constant values to string now uses InvariantCulture
 - Fixed byte, sbyte, float and double type names representation in text output
 - Improved representation of array types in text output
+
+v1.7
+- Fixed incorrect multidimensional array types representation in text output
+- Improved representation of pointer types in text output
+- CilGraph.ToString now displays method's attributes

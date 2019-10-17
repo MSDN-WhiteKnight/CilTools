@@ -170,14 +170,11 @@ namespace CilBytecodeParser
 
             sb.Append(this._Method.Name);
             sb.Append('(');
-            sb.AppendLine();
-
+            
             for (int i = 0; i < pars.Length; i++)
             {
-                if (i >= 1)
-                {
-                    sb.AppendLine(", ");                    
-                }
+                if (i >= 1) sb.AppendLine(", ");
+                else sb.AppendLine();
 
                 sb.Append("    ");
                 if (pars[i].IsOptional) sb.Append("[opt] ");
@@ -193,7 +190,7 @@ namespace CilBytecodeParser
                 
             }
 
-            sb.AppendLine();
+            if(pars.Length>0) sb.AppendLine();
             sb.Append(')');
             sb.AppendLine(" cil managed {");
 
@@ -226,6 +223,29 @@ namespace CilBytecodeParser
                     
                     sb.AppendLine();
                 }
+            }
+
+            //attributes
+            try
+            {
+                object[] attrs = this._Method.GetCustomAttributes(false);
+                for (int i = 0; i < attrs.Length; i++)
+                {
+                    Type t = attrs[i].GetType();
+                    ConstructorInfo[] constr = t.GetConstructors();
+                    string s_attr;
+
+                    if (constr.Length == 1) s_attr = CilAnalysis.MethodToString(constr[0]);
+                    else s_attr = CilAnalysis.GetTypeNameInternal(t);
+
+                    sb.Append(" //.custom ");
+                    sb.AppendLine(s_attr);
+                }
+            }
+            catch (InvalidOperationException) { }
+            catch (TypeLoadException ex)
+            {
+                OnError(this, new CilErrorEventArgs(ex, "Failed to load attributes for " + this._Method.ToString()));
             }
 
             //method body           

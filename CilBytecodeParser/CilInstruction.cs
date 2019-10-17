@@ -305,32 +305,9 @@ namespace CilBytecodeParser
                     {
                         int token = (int)Operand;
                         MethodBase called_method;
-
                         called_method = Method.Module.ResolveMethod(token);
-                        Type t = called_method.DeclaringType;
-                        ParameterInfo[] pars = called_method.GetParameters();
-
-                        MethodInfo mi = called_method as MethodInfo;
-                        string rt = "";
-                        if (mi != null) rt = " " + CilAnalysis.GetTypeName(mi.ReturnType);
-
-                        if (!called_method.IsStatic) sb.Append(" instance");
-                                                
-                        sb.Append(rt);
                         sb.Append(' ');
-                        
-                        sb.Append(CilAnalysis.GetTypeNameInternal(t));
-                        sb.Append("::");
-                        sb.Append(called_method.Name);
-                        sb.Append('(');
-
-                        for (int i = 0; i < pars.Length; i++)
-                        {
-                            if (i >= 1) sb.Append(", ");
-                            sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));                            
-                        }
-
-                        sb.Append(')');
+                        sb.Append(CilAnalysis.MethodToString(called_method));                                                
                     }
                     catch (Exception ex)
                     {
