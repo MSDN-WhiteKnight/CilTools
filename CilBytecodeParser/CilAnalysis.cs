@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Diagnostics;
 
 namespace CilBytecodeParser
 {
@@ -37,8 +38,19 @@ namespace CilBytecodeParser
         /// <remarks>Returns short type name, such as `int32`, if it exists. Otherwise returns full name.</remarks>
         /// <returns>Short of full type name</returns>
         public static string GetTypeName(Type t)
-        {
+        {            
             if (t == null) throw new ArgumentNullException("t","Source type cannot be null");
+
+            if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
+            {                
+                string prefix;
+
+                if (t.DeclaringMethod == null) prefix = "!";
+                else prefix = "!!";
+
+                if(String.IsNullOrEmpty(t.Name)) return prefix+t.GenericParameterPosition.ToString();
+                else return prefix + t.Name;
+            }
 
             if (t.IsByRef)
             {
@@ -50,7 +62,7 @@ namespace CilBytecodeParser
             {
                 Type et = t.GetElementType();
                 if (et != null) return GetTypeName(et) + "[]";
-            }
+            }                       
 
             if (t.IsPointer)
             {
@@ -58,20 +70,23 @@ namespace CilBytecodeParser
                 if (et != null) return GetTypeName(et) + "*";
             }
 
-            if (t.Equals(typeof(bool)))        return "bool";
-            else if (t.Equals(typeof(void)))   return "void";
-            else if (t.Equals(typeof(int)))    return "int32";
-            else if (t.Equals(typeof(uint)))   return "uint32";
-            else if (t.Equals(typeof(long)))   return "int64";
-            else if (t.Equals(typeof(ulong)))  return "uint64";
-            else if (t.Equals(typeof(short)))  return "int16";
-            else if (t.Equals(typeof(ushort))) return "uint16";
-            else if (t.Equals(typeof(byte)))   return "uint8";
-            else if (t.Equals(typeof(sbyte)))  return "int8";
-            else if (t.Equals(typeof(float)))  return "float32";
-            else if (t.Equals(typeof(double))) return "float64";
-            else if (t.Equals(typeof(string))) return "string";
-            else if (t.Equals(typeof(object))) return "object";
+            if (t.Equals(typeof(void)))         return "void";
+            else if (t.Equals(typeof(bool)))    return "bool";            
+            else if (t.Equals(typeof(int)))     return "int32";
+            else if (t.Equals(typeof(uint)))    return "uint32";
+            else if (t.Equals(typeof(long)))    return "int64";
+            else if (t.Equals(typeof(ulong)))   return "uint64";
+            else if (t.Equals(typeof(short)))   return "int16";
+            else if (t.Equals(typeof(ushort)))  return "uint16";
+            else if (t.Equals(typeof(byte)))    return "uint8";
+            else if (t.Equals(typeof(sbyte)))   return "int8";            
+            else if (t.Equals(typeof(float)))   return "float32";
+            else if (t.Equals(typeof(double)))  return "float64";
+            else if (t.Equals(typeof(string)))  return "string";
+            else if (t.Equals(typeof(char)))    return "char";           
+            else if (t.Equals(typeof(object)))  return "object";
+            else if (t.Equals(typeof(IntPtr)))  return "native int";
+            else if (t.Equals(typeof(UIntPtr))) return "native uint";
             else if (t.Equals(typeof(System.TypedReference))) return "typedref";
             else
             {                
@@ -100,8 +115,11 @@ namespace CilBytecodeParser
             sb.Append(ass.GetName().Name);
             sb.Append(']');
 
-            sb.Append(t.Namespace);
-            sb.Append('.');
+            if (!String.IsNullOrEmpty(t.Namespace))
+            {
+                sb.Append(t.Namespace);
+                sb.Append('.');
+            }
 
             if (t.IsNested && t.DeclaringType != null) sb.Append(t.DeclaringType.Name + "/");            
             sb.Append(t.Name);
@@ -114,6 +132,7 @@ namespace CilBytecodeParser
                 for(int i=0;i<args.Length;i++)
                 {
                     if (i >= 1) sb.Append(", ");
+
                     sb.Append(GetTypeName(args[i]));
                 }
 
@@ -130,6 +149,8 @@ namespace CilBytecodeParser
         /// <returns>The escaped string</returns>
         public static string EscapeString(string str)
         {
+            if (String.IsNullOrEmpty(str)) return str;
+
             StringBuilder sb = new StringBuilder(str.Length * 2);
 
             foreach (char c in str)
@@ -158,7 +179,18 @@ namespace CilBytecodeParser
         internal static string GetTypeNameInternal(Type t)
         {
             //this is used when we don't need class/valuetype prefix, such as for method calls
-            if (t == null) throw new ArgumentNullException("t", "Source type cannot be null");
+            Debug.Assert(t != null, "GetTypeNameInternal: Source type cannot be null");
+
+            if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
+            {
+                string prefix;
+
+                if (t.DeclaringMethod == null) prefix = "!";
+                else prefix = "!!";
+
+                if (String.IsNullOrEmpty(t.Name)) return prefix + t.GenericParameterPosition.ToString();
+                else return prefix + t.Name;
+            }
 
             StringBuilder sb = new StringBuilder();            
 
@@ -167,8 +199,11 @@ namespace CilBytecodeParser
             sb.Append(ass.GetName().Name);
             sb.Append(']');
 
-            sb.Append(t.Namespace);
-            sb.Append('.');
+            if (!String.IsNullOrEmpty(t.Namespace))
+            {
+                sb.Append(t.Namespace);
+                sb.Append('.');
+            }
 
             if (t.IsNested && t.DeclaringType!=null) sb.Append(t.DeclaringType.Name + "/");
             sb.Append(t.Name);

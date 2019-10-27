@@ -169,6 +169,23 @@ namespace CilBytecodeParser
             sb.Append(rt);
 
             sb.Append(this._Method.Name);
+
+            if (this._Method.IsGenericMethod || this._Method.IsGenericMethodDefinition )
+            {
+                sb.Append('<');
+
+                Type[] args = this._Method.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) sb.Append(", ");
+
+                    if (args[i].IsGenericParameter) sb.Append(args[i].Name);
+                    else sb.Append(CilAnalysis.GetTypeName(args[i]));
+                }
+
+                sb.Append('>');
+            }
+
             sb.Append('(');
             
             for (int i = 0; i < pars.Length; i++)
@@ -178,8 +195,8 @@ namespace CilBytecodeParser
 
                 sb.Append("    ");
                 if (pars[i].IsOptional) sb.Append("[opt] ");
-
-                sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));
+                                
+                sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));                
 
                 string parname;
                 if (pars[i].Name != null) parname = pars[i].Name;

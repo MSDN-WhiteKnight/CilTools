@@ -107,3 +107,9 @@ v1.7
 - Fixed incorrect multidimensional array types representation in text output
 - Improved representation of pointer types in text output
 - CilGraph.ToString now displays method's attributes
+
+v1.8 (in progress)
+- Fixed handling of null arguments in some CilAnalysis methods
+- Fixed handling of no-namespace types in text output
+- Improved representation of char, IntPtr and UIntPtr types in text output
+- Refactored and improved code related to metadata tokens resolution. Now handles generic methods and types better.

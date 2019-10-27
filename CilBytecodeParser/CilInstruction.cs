@@ -198,23 +198,38 @@ namespace CilBytecodeParser
                 if (this.Method == null) return null;
                 if (this.Operand == null) return null;
 
+                Type[] t_args = null;
+                Type[] m_args = null;
+
+                //get generic type args
+                if (Method.DeclaringType != null)
+                {
+                    if (Method.DeclaringType.IsGenericType || Method.DeclaringType.IsGenericTypeDefinition)
+                    {
+                        t_args = Method.DeclaringType.GetGenericArguments();
+                    }
+                }
+
+                //get generic method args
+                if (Method.IsGenericMethod || Method.IsGenericMethodDefinition)
+                {
+                    m_args = Method.GetGenericArguments();
+                }
+
                 try
                 {
                     if (ReferencesMethodToken(this.OpCode))
-                    {
-                        MethodBase method = Method.Module.ResolveMethod((int)Operand);
-                        return method;
+                    {    
+                        return Method.Module.ResolveMethod((int)Operand, t_args, m_args);
                     }
                     else if (ReferencesFieldToken(this.OpCode))
                     {
-
                         FieldInfo fi = Method.Module.ResolveField((int)Operand);
                         return fi;
                     }
                     else if (ReferencesTypeToken(this.OpCode))
                     {
-
-                        Type t = Method.Module.ResolveType((int)Operand);
+                        Type t = Method.Module.ResolveType((int)Operand, t_args, m_args);
                         return t;
                     }
                     else return null;
@@ -238,21 +253,7 @@ namespace CilBytecodeParser
                 if (this.Method == null) return null;
                 if (this.Operand == null) return null;
 
-                try
-                {
-                    if (ReferencesTypeToken(this.OpCode))
-                    {
-                        Type t = Method.Module.ResolveType((int)Operand);
-                        return t;
-                    }
-                    else return null;
-                }
-                catch (Exception ex)
-                {
-                    string error = "Exception occured when trying to resolve type token.";
-                    OnError(this, new CilErrorEventArgs(ex, error));  
-                    return null;
-                }
+                return this.ReferencedMember as Type;                                
             }
         }
 
@@ -296,24 +297,18 @@ namespace CilBytecodeParser
 
             if (Operand != null)
             {
-                
-                if (ReferencesMethodToken(this.OpCode) && this.Method != null)
-                {           
-                    //method                         
 
-                    try
+                if (ReferencesMethodToken(this.OpCode) && this.Method != null)
+                {
+                    //method           
+                    MethodBase called_method = null;
+                    called_method = this.ReferencedMember as MethodBase;
+                    if (called_method != null)
                     {
-                        int token = (int)Operand;
-                        MethodBase called_method;
-                        called_method = Method.Module.ResolveMethod(token);
                         sb.Append(' ');
-                        sb.Append(CilAnalysis.MethodToString(called_method));                                                
+                        sb.Append(CilAnalysis.MethodToString(called_method));
                     }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to resolve method token.";
-                        OnError(this, new CilErrorEventArgs(ex, error));  
-                    }
+
                 }
                 else if (ReferencesFieldToken(this.OpCode) && this.Method != null)
                 {
@@ -326,19 +321,19 @@ namespace CilBytecodeParser
 
                         fi = Method.Module.ResolveField(token);
                         Type t = fi.DeclaringType;
-                                           
+
                         sb.Append(' ');
                         sb.Append(CilAnalysis.GetTypeName(fi.FieldType));
                         sb.Append(' ');
                         sb.Append(CilAnalysis.GetTypeNameInternal(t));
                         sb.Append("::");
                         sb.Append(fi.Name);
-                        
+
                     }
                     catch (Exception ex)
                     {
                         string error = "Exception occured when trying to resolve field token.";
-                        OnError(this, new CilErrorEventArgs(ex, error));  
+                        OnError(this, new CilErrorEventArgs(ex, error));
                     }
                 }
                 else if (ReferencesTypeToken(this.OpCode) && this.Method != null)
@@ -347,19 +342,17 @@ namespace CilBytecodeParser
 
                     try
                     {
-                        int token = (int)Operand;
-                        Type t;
+                        //int token = (int)Operand;
+                        Type t = this.ReferencedType;
 
-                        t = Method.Module.ResolveType(token);  
-                        
                         sb.Append(' ');
                         sb.Append(CilAnalysis.GetTypeNameInternal(t));
-                        
+
                     }
                     catch (Exception ex)
                     {
                         string error = "Exception occured when trying to resolve type token.";
-                        OnError(this, new CilErrorEventArgs(ex, error));  
+                        OnError(this, new CilErrorEventArgs(ex, error));
                     }
                 }
                 else if (OpCode.Equals(OpCodes.Ldstr) && this.Method != null)
@@ -376,22 +369,22 @@ namespace CilBytecodeParser
 
                         sb.Append(" \"");
                         sb.Append(s);
-                        sb.Append('"');                        
+                        sb.Append('"');
 
                     }
                     catch (Exception ex)
                     {
                         string error = "Exception occured when trying to resolve string.";
-                        OnError(this, new CilErrorEventArgs(ex, error));  
+                        OnError(this, new CilErrorEventArgs(ex, error));
                     }
                 }
                 else if (OpCode.Equals(OpCodes.Ldtoken) && this.Method != null)
                 {
                     //metadata token
-                    int token = (int)Operand;                    
+                    int token = (int)Operand;
 
                     try
-                    {                        
+                    {
                         MemberInfo mi;
 
                         mi = Method.Module.ResolveMember(token);
@@ -403,7 +396,7 @@ namespace CilBytecodeParser
                     {
                         string error = "Exception occured when trying to resolve token.";
                         OnError(this, new CilErrorEventArgs(ex, error));
-                        sb.Append(" 0x"+token.ToString("X"));
+                        sb.Append(" 0x" + token.ToString("X"));
                     }
                 }
                 else if (ReferencesLocal(this.OpCode))
@@ -411,13 +404,13 @@ namespace CilBytecodeParser
                     //local variable   
 
                     try
-                    {  
+                    {
                         sb.Append(" V_" + this.Operand.ToString());
                     }
                     catch (Exception ex)
                     {
                         string error = "Exception occured when trying to process local variable.";
-                        OnError(this, new CilErrorEventArgs(ex, error));                        
+                        OnError(this, new CilErrorEventArgs(ex, error));
                     }
                 }
                 else

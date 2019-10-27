@@ -11,22 +11,31 @@ using CilBytecodeParser.Extensions;
 
 namespace CilBytecodeParserDemo
 {
-    class Program
-    {        
-        public static void Foo()
+    class MyClass<T> where T:new()
+    {
+        public static void Foo<U>(List<U> x, T y)
         {
-            
+            List<U> list = new List<U>(x);
+            T obj = new T();
         }
+    }
+
+    class Program
+    {
+        
 
         static void Test()
         {
-            Console.WriteLine(typeof(Program).GetMethod("Foo").GetCilText());
+            var graph = typeof(MyClass<>).GetMethod("Foo").GetCilGraph();
+            var instr = graph.GetInstructions().ToList();
+            ;
+            Console.WriteLine(graph.ToString());
             Console.ReadKey();
         }
         
         static void Main(string[] args)
         {
-            //Test();
+            Test();
 
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
             Console.WriteLine("Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
