@@ -170,7 +170,7 @@ namespace CilBytecodeParser
 
             sb.Append(this._Method.Name);
 
-            if (this._Method.IsGenericMethod || this._Method.IsGenericMethodDefinition )
+            if (this._Method.IsGenericMethod )
             {
                 sb.Append('<');
 

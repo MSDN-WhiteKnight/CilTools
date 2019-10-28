@@ -204,14 +204,14 @@ namespace CilBytecodeParser
                 //get generic type args
                 if (Method.DeclaringType != null)
                 {
-                    if (Method.DeclaringType.IsGenericType || Method.DeclaringType.IsGenericTypeDefinition)
+                    if (Method.DeclaringType.IsGenericType)
                     {
                         t_args = Method.DeclaringType.GetGenericArguments();
                     }
                 }
 
                 //get generic method args
-                if (Method.IsGenericMethod || Method.IsGenericMethodDefinition)
+                if (Method.IsGenericMethod)
                 {
                     m_args = Method.GetGenericArguments();
                 }

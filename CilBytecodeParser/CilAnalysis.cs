@@ -234,6 +234,7 @@ namespace CilBytecodeParser
 
             MethodInfo mi = m as MethodInfo;
             string rt;
+
             if (mi != null) rt = CilAnalysis.GetTypeName(mi.ReturnType);
             else rt = "void";
 
@@ -245,6 +246,22 @@ namespace CilBytecodeParser
             sb.Append(CilAnalysis.GetTypeNameInternal(t));
             sb.Append("::");
             sb.Append(m.Name);
+
+            if (m.IsGenericMethod)
+            {                
+                sb.Append('<');
+
+                Type[] args = m.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) sb.Append(", ");
+
+                    sb.Append(CilAnalysis.GetTypeName(args[i]));
+                }
+
+                sb.Append('>');
+            }
+
             sb.Append('(');
 
             for (int i = 0; i < pars.Length; i++)

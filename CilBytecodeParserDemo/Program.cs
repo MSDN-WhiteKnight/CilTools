@@ -21,14 +21,13 @@ namespace CilBytecodeParserDemo
     }
 
     class Program
-    {
-        
+    {        
 
         static void Test()
         {
             var graph = typeof(MyClass<>).GetMethod("Foo").GetCilGraph();
             var instr = graph.GetInstructions().ToList();
-            ;
+            
             Console.WriteLine(graph.ToString());
             Console.ReadKey();
         }
