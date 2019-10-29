@@ -13,10 +13,16 @@ namespace CilBytecodeParserDemo
 {
     class MyClass<T> where T:new()
     {
+        public static T field;
+        public static int f;
+
         public static void Foo<U>(List<U> x, T y)
         {
             List<U> list = new List<U>(x);
-            T obj = new T();
+            var builder = new System.Text.StringBuilder("");
+            field = y;
+            T z = field;
+            f = 1;
         }
     }
 
@@ -34,7 +40,7 @@ namespace CilBytecodeParserDemo
         
         static void Main(string[] args)
         {
-            Test();
+            //Test();
 
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
             Console.WriteLine("Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");

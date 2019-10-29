@@ -224,13 +224,11 @@ namespace CilBytecodeParser
                     }
                     else if (ReferencesFieldToken(this.OpCode))
                     {
-                        FieldInfo fi = Method.Module.ResolveField((int)Operand);
-                        return fi;
+                        return Method.Module.ResolveField((int)Operand, t_args, m_args);                        
                     }
                     else if (ReferencesTypeToken(this.OpCode))
                     {
-                        Type t = Method.Module.ResolveType((int)Operand, t_args, m_args);
-                        return t;
+                        return Method.Module.ResolveType((int)Operand, t_args, m_args);                        
                     }
                     else return null;
                 }
@@ -249,10 +247,7 @@ namespace CilBytecodeParser
         public Type ReferencedType
         {
             get
-            {
-                if (this.Method == null) return null;
-                if (this.Operand == null) return null;
-
+            { 
                 return this.ReferencedMember as Type;                                
             }
         }
@@ -301,58 +296,39 @@ namespace CilBytecodeParser
                 if (ReferencesMethodToken(this.OpCode) && this.Method != null)
                 {
                     //method           
-                    MethodBase called_method = null;
-                    called_method = this.ReferencedMember as MethodBase;
+                    MethodBase called_method = this.ReferencedMember as MethodBase;
+
                     if (called_method != null)
                     {
                         sb.Append(' ');
                         sb.Append(CilAnalysis.MethodToString(called_method));
                     }
-
                 }
                 else if (ReferencesFieldToken(this.OpCode) && this.Method != null)
                 {
-                    //field                    
+                    //field                       
+                    FieldInfo fi = this.ReferencedMember as FieldInfo;
 
-                    try
+                    if (fi != null)
                     {
-                        int token = (int)Operand;
-                        FieldInfo fi;
-
-                        fi = Method.Module.ResolveField(token);
                         Type t = fi.DeclaringType;
-
                         sb.Append(' ');
                         sb.Append(CilAnalysis.GetTypeName(fi.FieldType));
                         sb.Append(' ');
                         sb.Append(CilAnalysis.GetTypeNameInternal(t));
                         sb.Append("::");
                         sb.Append(fi.Name);
-
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to resolve field token.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
                     }
                 }
                 else if (ReferencesTypeToken(this.OpCode) && this.Method != null)
                 {
-                    //type                    
+                    //type                                         
+                    Type t = this.ReferencedType;
 
-                    try
+                    if (t != null)
                     {
-                        //int token = (int)Operand;
-                        Type t = this.ReferencedType;
-
                         sb.Append(' ');
                         sb.Append(CilAnalysis.GetTypeNameInternal(t));
-
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to resolve type token.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
                     }
                 }
                 else if (OpCode.Equals(OpCodes.Ldstr) && this.Method != null)
