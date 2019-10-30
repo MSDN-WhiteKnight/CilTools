@@ -41,6 +41,12 @@ namespace CilBytecodeParser
                 || op.Equals(OpCodes.Ldloca_S) || op.Equals(OpCodes.Stloc) || op.Equals(OpCodes.Stloc_S));
         }
 
+        static bool ReferencesParam(OpCode op)
+        {
+            return (op.Equals(OpCodes.Ldarg) || op.Equals(OpCodes.Ldarg_S) || op.Equals(OpCodes.Ldarga)
+                || op.Equals(OpCodes.Ldarga_S) );
+        }
+
         /// <summary>
         /// Raised when error occurs in one of the methods in this class
         /// </summary>
@@ -386,6 +392,28 @@ namespace CilBytecodeParser
                     catch (Exception ex)
                     {
                         string error = "Exception occured when trying to process local variable.";
+                        OnError(this, new CilErrorEventArgs(ex, error));
+                    }
+                }
+                else if (ReferencesParam(this.OpCode))
+                {
+                    //parameter   
+
+                    try
+                    {
+                        int param_index = Convert.ToInt32(this._Operand);
+                        ParameterInfo[] pars = this._Method.GetParameters();
+
+                        if (this._Method.IsStatic == false) param_index--;
+
+                        sb.Append(' ');
+
+                        if(param_index>=0) sb.Append(pars[param_index].Name);
+                        else sb.Append("this");
+                    }
+                    catch (Exception ex)
+                    {
+                        string error = "Exception occured when trying to process parameter.";
                         OnError(this, new CilErrorEventArgs(ex, error));
                     }
                 }

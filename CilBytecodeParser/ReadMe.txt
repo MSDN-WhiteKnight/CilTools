@@ -113,3 +113,5 @@ v1.8 (in progress)
 - Fixed handling of no-namespace types in text output
 - Improved representation of char, IntPtr and UIntPtr types in text output
 - Refactored and improved code related to metadata tokens resolution. Now handles generic methods and types better.
+- Fixed access modifiers handling when outputting method signature
+- Added support for argument-referencing instructions

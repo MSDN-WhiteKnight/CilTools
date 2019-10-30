@@ -148,14 +148,21 @@ namespace CilBytecodeParser
 
             sb.Append(".method ");
 
-            //signature
+            //signature            
             if (this._Method.IsPublic) sb.Append("public ");
             else if (this._Method.IsPrivate) sb.Append("private ");
-            else sb.Append("protected ");
+            else if (this._Method.IsAssembly) sb.Append("assembly "); //internal
+            else if (this._Method.IsFamily) sb.Append("family "); //protected
+            else sb.Append("famorassem "); //protected internal
 
             if (this._Method.IsHideBySig) sb.Append("hidebysig ");
 
+            if (this._Method.IsAbstract) sb.Append("abstract ");
+
+            if (this._Method.IsVirtual) sb.Append("virtual ");
+
             if (this._Method.IsStatic) sb.Append("static ");
+            else sb.Append("instance ");
 
             if (this._Method.CallingConvention == CallingConventions.VarArgs)
             {

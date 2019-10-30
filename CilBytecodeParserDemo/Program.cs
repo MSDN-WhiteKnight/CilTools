@@ -11,27 +11,24 @@ using CilBytecodeParser.Extensions;
 
 namespace CilBytecodeParserDemo
 {
-    class MyClass<T> where T:new()
+    class MyClass
     {
-        public static T field;
-        public static int f;
-
-        public static void Foo<U>(List<U> x, T y)
+        public static string field;
+        
+        public static void Foo(List<int> x, int param)
         {
-            List<U> list = new List<U>(x);
-            var builder = new System.Text.StringBuilder("");
-            field = y;
-            T z = field;
-            f = 1;
+            //Console.WriteLine(this);
+            
+            Program.f = 1;
         }
     }
 
     class Program
-    {        
-
+    {
+        public static int f;
         static void Test()
         {
-            var graph = typeof(MyClass<>).GetMethod("Foo").GetCilGraph();
+            var graph = typeof(MyClass).GetMethod("Foo",BindingFlags.Instance|BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic).GetCilGraph();
             var instr = graph.GetInstructions().ToList();
             
             Console.WriteLine(graph.ToString());
