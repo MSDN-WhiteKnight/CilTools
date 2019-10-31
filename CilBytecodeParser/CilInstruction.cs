@@ -16,6 +16,18 @@ namespace CilBytecodeParser
     /// <remarks>To retreive a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class.</remarks>
     public class CilInstruction
     {
+        //ECMA-335 II.23.2.3: StandAloneMethodSig
+        const int CALLCONV_DEFAULT  = 0x00;
+        const int CALLCONV_CDECL    = 0x01;
+        const int CALLCONV_STDCALL  = 0x02;
+        const int CALLCONV_THISCALL = 0x03;
+        const int CALLCONV_FASTCALL = 0x04;
+        const int CALLCONV_VARARG   = 0x05;
+        const int CALLCONV_MASK     = 0x0F;
+
+        const int MFLAG_HASTHIS = 0x20;
+        const int MFLAG_EXPLICITTHIS = 0x40;
+
         static bool ReferencesMethodToken(OpCode op)
         {
             return (op.Equals(OpCodes.Call) || op.Equals(OpCodes.Callvirt) || op.Equals(OpCodes.Newobj)
@@ -360,16 +372,14 @@ namespace CilBytecodeParser
                         OnError(this, new CilErrorEventArgs(ex, error));
                     }
                 }
-                else if (OpCode.Equals(OpCodes.Ldtoken) && this.Method != null)
+                else if ( OpCode.Equals(OpCodes.Ldtoken) && this.Method != null)
                 {
                     //metadata token
                     int token = (int)Operand;
 
                     try
                     {
-                        MemberInfo mi;
-
-                        mi = Method.Module.ResolveMember(token);
+                        MemberInfo mi = Method.Module.ResolveMember(token); 
                         sb.Append(' ');
                         if (mi is Type) sb.Append(CilAnalysis.GetTypeNameInternal((Type)mi));
                         else sb.Append(mi.Name);
@@ -395,7 +405,7 @@ namespace CilBytecodeParser
                         OnError(this, new CilErrorEventArgs(ex, error));
                     }
                 }
-                else if (ReferencesParam(this.OpCode))
+                else if (ReferencesParam(this.OpCode) && this.Method != null)
                 {
                     //parameter   
 
@@ -415,6 +425,45 @@ namespace CilBytecodeParser
                     {
                         string error = "Exception occured when trying to process parameter.";
                         OnError(this, new CilErrorEventArgs(ex, error));
+                    }
+                }
+                else if (OpCode.Equals(OpCodes.Calli) && this.Method != null)
+                {
+                    //standalone signature token
+                    int token = (int)Operand;
+
+                    try
+                    {
+                        byte[] sig = Method.Module.ResolveSignature(token);
+                        sb.Append(' ');                                                
+
+                        switch (sig[0] & CALLCONV_MASK)
+                        {
+                            case CALLCONV_CDECL:   sb.Append("unmanaged cdecl ");   break;
+                            case CALLCONV_STDCALL: sb.Append("unmanaged stdcall "); break;
+                            case CALLCONV_THISCALL: sb.Append("unmanaged thiscall "); break;
+                            case CALLCONV_FASTCALL: sb.Append("unmanaged fastcall "); break;
+                            case CALLCONV_VARARG: sb.Append("vararg "); break;
+                        }
+
+                        if ((sig[0] & MFLAG_HASTHIS) == MFLAG_HASTHIS) sb.Append("instance ");
+                        if ((sig[0] & MFLAG_EXPLICITTHIS) == MFLAG_HASTHIS) sb.Append("explicit ");
+
+                        sb.Append("// StandAloneMethodSig ( ");
+
+                        for (int i = 0; i < sig.Length; i++)
+                        {
+                            sb.Append(sig[i].ToString("X2"));
+                            sb.Append(' ');
+                        }
+
+                        sb.Append(")");
+                    }
+                    catch (Exception ex)
+                    {
+                        string error = "Exception occured when trying to resolve signature.";
+                        OnError(this, new CilErrorEventArgs(ex, error));
+                        sb.Append(" 0x" + token.ToString("X"));
                     }
                 }
                 else

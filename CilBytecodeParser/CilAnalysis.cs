@@ -243,8 +243,11 @@ namespace CilBytecodeParser
             sb.Append(rt);
             sb.Append(' ');
 
-            sb.Append(CilAnalysis.GetTypeNameInternal(t));
-            sb.Append("::");
+            if (t != null)
+            {
+                sb.Append(CilAnalysis.GetTypeNameInternal(t));
+                sb.Append("::");
+            }
             sb.Append(m.Name);
 
             if (m.IsGenericMethod)

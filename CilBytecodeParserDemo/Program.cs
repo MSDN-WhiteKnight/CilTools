@@ -1,4 +1,4 @@
-﻿/* CilBytecodeParser library demo applciation
+﻿/* CilBytecodeParser library demo application
  * Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
@@ -28,6 +28,8 @@ namespace CilBytecodeParserDemo
         public static int f;
         static void Test()
         {
+            //System.Runtime.CompilerServices.CallConvStdcall
+
             var graph = typeof(MyClass).GetMethod("Foo",BindingFlags.Instance|BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic).GetCilGraph();
             var instr = graph.GetInstructions().ToList();
             
@@ -53,7 +55,7 @@ namespace CilBytecodeParserDemo
                 if (args.Length < 3)
                 {
                     Console.WriteLine("Prints CIL code of the specified method");
-                    Console.WriteLine("Usage: CilBytecodeParserTest.exe (assembly path) (type full name) (method name)");
+                    Console.WriteLine("Usage: CilBytecodeParserDemo.exe (assembly path) (type full name) (method name)");
                     Console.WriteLine();
                     Console.WriteLine("When called without arguments, prints yourself");
                     Console.WriteLine();
