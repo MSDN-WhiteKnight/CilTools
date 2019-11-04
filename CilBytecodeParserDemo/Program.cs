@@ -27,9 +27,7 @@ namespace CilBytecodeParserDemo
     {
         public static int f;
         static void Test()
-        {
-            //System.Runtime.CompilerServices.CallConvStdcall
-
+        {            
             var graph = typeof(MyClass).GetMethod("Foo",BindingFlags.Instance|BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic).GetCilGraph();
             var instr = graph.GetInstructions().ToList();
             

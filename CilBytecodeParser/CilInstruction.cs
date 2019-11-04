@@ -2,6 +2,7 @@
  * Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,6 +17,63 @@ namespace CilBytecodeParser
     /// <remarks>To retreive a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class.</remarks>
     public class CilInstruction
     {
+        //ECMA-335 II.23.1.16 Element types used in signatures
+        const int ELEMENT_TYPE_CMOD_REQD = 0x1f;
+        const int ELEMENT_TYPE_CMOD_OPT = 0x20;
+
+        const int ELEMENT_TYPE_VOID = 0x01; 
+        const int ELEMENT_TYPE_BOOLEAN  = 0x02;   
+        const int ELEMENT_TYPE_CHAR =  0x03;   
+        const int ELEMENT_TYPE_I1 =  0x04;   
+        const int ELEMENT_TYPE_U1 =  0x05;   
+        const int ELEMENT_TYPE_I2 =  0x06;
+        const int ELEMENT_TYPE_U2 =  0x07;
+        const int ELEMENT_TYPE_I4 =  0x08;   
+        const int ELEMENT_TYPE_U4 =  0x09;   
+        const int ELEMENT_TYPE_I8 =  0x0a;   
+        const int ELEMENT_TYPE_U8 =  0x0b;   
+        const int ELEMENT_TYPE_R4 =  0x0c;   
+        const int ELEMENT_TYPE_R8 =  0x0d;
+        const int ELEMENT_TYPE_STRING = 0x0e;
+        const int ELEMENT_TYPE_PTR = 0x0f;  //Followed by type 
+        const int ELEMENT_TYPE_BYREF =  0x10;  //Followed by type 
+        const int ELEMENT_TYPE_VALUETYPE =  0x11;  //Followed by TypeDef or TypeRef token 
+        const int ELEMENT_TYPE_CLASS =  0x12;  //Followed by TypeDef or TypeRef token 
+        const int ELEMENT_TYPE_VAR = 0x13;  //Generic parameter in a generic type definition, represented as number (compressed unsigned integer) 
+        const int ELEMENT_TYPE_ARRAY =  0x14;  //type rank boundsCount bound1 … loCount lo1 … 
+        const int ELEMENT_TYPE_GENERICINST = 0x15;  //Generic type instantiation.  Followed by type type-arg-count  type-1 ... type-n 
+        const int ELEMENT_TYPE_TYPEDBYREF = 0x16; 
+        const int ELEMENT_TYPE_I = 0x18;  //System.IntPtr 
+        const int ELEMENT_TYPE_U =  0x19;  //System.UIntPtr 
+        const int ELEMENT_TYPE_FNPTR = 0x1b;  //Followed by full method signature 
+        const int ELEMENT_TYPE_OBJECT = 0x1c;  //System.Object 
+        const int ELEMENT_TYPE_SZARRAY = 0x1d;  //Single-dim array with 0 lower bound 
+        const int ELEMENT_TYPE_MVAR = 0x1e;  //Generic parameter in a generic method definition, represented as number (compressed unsigned integer) 
+        const int ELEMENT_TYPE_INTERNAL = 0x21;  //Implemented within the CLI 
+        const int ELEMENT_TYPE_MODIFIER =  0x40;  //Or’d with following element types 
+        const int ELEMENT_TYPE_SENTINEL = 0x41;  //Sentinel for vararg method signature 
+        
+        static Dictionary<int, Type> types = new Dictionary<int, Type>
+        {
+            {ELEMENT_TYPE_VOID,typeof(void)},
+            {ELEMENT_TYPE_BOOLEAN,typeof(bool)},
+            {ELEMENT_TYPE_CHAR,typeof(char)},
+            {ELEMENT_TYPE_I1,typeof(sbyte)},
+            {ELEMENT_TYPE_U1,typeof(byte)},
+            {ELEMENT_TYPE_I2,typeof(short)},
+            {ELEMENT_TYPE_U2,typeof(ushort)},
+            {ELEMENT_TYPE_I4,typeof(int)},
+            {ELEMENT_TYPE_U4,typeof(uint)},
+            {ELEMENT_TYPE_I8,typeof(long)},
+            {ELEMENT_TYPE_U8,typeof(ulong)},
+            {ELEMENT_TYPE_R4,typeof(float)},
+            {ELEMENT_TYPE_R8,typeof(double)},
+            {ELEMENT_TYPE_STRING,typeof(string)},
+            {ELEMENT_TYPE_I,typeof(IntPtr)},
+            {ELEMENT_TYPE_U,typeof(UIntPtr)},
+            {ELEMENT_TYPE_OBJECT,typeof(object)},
+        };        
+
         //ECMA-335 II.23.2.3: StandAloneMethodSig
         const int CALLCONV_DEFAULT  = 0x00;
         const int CALLCONV_CDECL    = 0x01;
@@ -26,7 +84,181 @@ namespace CilBytecodeParser
         const int CALLCONV_MASK     = 0x0F;
 
         const int MFLAG_HASTHIS = 0x20;
-        const int MFLAG_EXPLICITTHIS = 0x40;
+        const int MFLAG_EXPLICITTHIS = 0x40;                
+
+        static byte ReadByte(Stream source)
+        {
+            int res = source.ReadByte();
+            if (res < 0) throw new EndOfStreamException();
+            return (byte)res;
+        }
+
+        static uint ReadCompressed(Stream source) //ECMA-335 II.23.2 Blobs and signatures
+        {
+            byte[] paramcount_bytes = new byte[4];            
+            byte b1,b2,b3,b4;
+            b1 = ReadByte(source);           
+
+            if ((b1 & 0x80) == 0x80)
+            {
+                b2 = ReadByte(source);
+
+                if ((b2 & 0x40) == 0x40) //4 bytes
+                {
+                    paramcount_bytes[0] = b1;
+                    paramcount_bytes[1] = b2;
+
+                    b3 = ReadByte(source);
+                    b4 = ReadByte(source);
+
+                    paramcount_bytes[2] = b3;
+                    paramcount_bytes[3] = b4;                    
+                }
+                else //2 bytes
+                {
+                    paramcount_bytes[0] = b1;
+                    paramcount_bytes[1] = b2;                    
+                }
+            }
+            else //1 byte
+            {
+                paramcount_bytes[0] = b1;                
+            }
+
+            return BitConverter.ToUInt32(paramcount_bytes, 0);
+        }
+
+        static int DecodeToken(uint decompressed) //ECMA-335 II.23.2.8 TypeDefOrRefOrSpecEncoded
+        {
+            byte table_index = (byte)((int)decompressed & 0x03);
+            int value_index = ((int)decompressed & ~0x03) >> 2;
+
+            byte[] value_bytes = BitConverter.GetBytes(value_index);
+            byte[] res_bytes = new byte[4];
+            res_bytes[3] = table_index;
+            res_bytes[0] = value_bytes[0];
+            res_bytes[1] = value_bytes[1];
+            res_bytes[2] = value_bytes[2];
+            return BitConverter.ToInt32(res_bytes, 0);
+        }
+
+        static string ReadTypeSpec(Stream source, Module module) //ECMA-335 II.23.2.12 Type
+        {            
+            StringBuilder sb = new StringBuilder();
+            StringBuilder sb_mods = new StringBuilder();
+            byte b;
+            int typetok;
+            Type t;
+            uint paramnum;
+            byte type = 0;
+            bool found_type;
+            bool isbyref = false;
+            bool isptr = false;
+            
+            //read modifiers
+            while (true)
+            {
+                b = ReadByte(source);
+                found_type = false;
+
+                switch (b)
+                {
+                    case ELEMENT_TYPE_CMOD_OPT:
+                        typetok = DecodeToken(ReadCompressed(source));
+                        try
+                        {
+                            t = module.ResolveType(typetok);
+                            sb_mods.Append(" modopt(" + CilAnalysis.GetTypeNameInternal(t) + ")");
+                        }
+                        catch (Exception ex)
+                        {
+                            OnError(null, new CilErrorEventArgs(ex, "Failed to resolve type token for modopt: 0x" + typetok.ToString("X")));                            
+                            sb_mods.Append(" modopt(Type" + typetok.ToString("X") + ")");
+                        }
+                        break;
+                    case ELEMENT_TYPE_CMOD_REQD:
+                        typetok = DecodeToken(ReadCompressed(source));
+                        try
+                        {
+                            t = module.ResolveType(typetok);
+                            sb_mods.Append(" modreq(" + CilAnalysis.GetTypeNameInternal(t) + ")");
+                        }
+                        catch (Exception ex)
+                        {
+                            OnError(null, new CilErrorEventArgs(ex, "Failed to resolve type token for modreq: 0x" + typetok.ToString("X")));
+                            sb_mods.Append(" modreq(Type" + typetok.ToString("X") + ")");
+                        }
+                        break;
+                    case ELEMENT_TYPE_BYREF:
+                        isbyref = true;
+                        break;
+                    case ELEMENT_TYPE_PTR:
+                        isptr = true;
+                        break;
+                    default:
+                        type = b;
+                        found_type = true;
+                        break;
+                }
+                if (found_type) break;
+            }//end while
+
+            //read type
+            Type rettype = null;
+            if (types.ContainsKey((int)type))
+            {
+                rettype = types[(int)type];
+                sb.Append(CilAnalysis.GetTypeName(rettype));
+                if (isbyref) sb.Append('&');
+                else if (isptr) sb.Append('*');
+            }
+            else
+            {
+                switch (type)
+                {
+                    case ELEMENT_TYPE_CLASS:
+                        typetok = DecodeToken(ReadCompressed(source));
+                        try
+                        {
+                            t = module.ResolveType(typetok);
+                            sb.Append(CilAnalysis.GetTypeName(t));
+                        }
+                        catch (Exception ex)
+                        {
+                            OnError(null, new CilErrorEventArgs(ex, "Failed to resolve class token: 0x" + typetok.ToString("X")));
+                            sb.Append("class Type" + typetok.ToString("X"));                        
+                        }
+                        break;
+                    case ELEMENT_TYPE_VALUETYPE:
+                        typetok = DecodeToken(ReadCompressed(source));
+                        try
+                        {
+                            t = module.ResolveType(typetok);
+                            sb.Append(CilAnalysis.GetTypeName(t));
+                        }
+                        catch (Exception ex)
+                        {
+                            OnError(null, new CilErrorEventArgs(ex, "Failed to resolve valuetype token: 0x" + typetok.ToString("X")));
+                            sb.Append("valuetype Type" + typetok.ToString("X"));
+                        }                        
+                        break;
+                    case ELEMENT_TYPE_VAR: //generic type arg
+                        paramnum = ReadCompressed(source);
+                        sb.Append("!" + paramnum.ToString());
+                        break;
+                    case ELEMENT_TYPE_MVAR: //generic method arg
+                        paramnum = ReadCompressed(source);
+                        sb.Append("!!" + paramnum.ToString());
+                        break;
+                    default:
+                        sb.Append("Type" + type.ToString("X"));
+                        break;
+                }
+            }
+                                                                
+            sb.Append(sb_mods.ToString()); 
+            return sb.ToString();
+        }
 
         static bool ReferencesMethodToken(OpCode op)
         {
@@ -431,40 +663,73 @@ namespace CilBytecodeParser
                 {
                     //standalone signature token
                     int token = (int)Operand;
+                    byte[] sig = null;
 
                     try
                     {
-                        byte[] sig = Method.Module.ResolveSignature(token);
-                        sb.Append(' ');                                                
-
-                        switch (sig[0] & CALLCONV_MASK)
-                        {
-                            case CALLCONV_CDECL:   sb.Append("unmanaged cdecl ");   break;
-                            case CALLCONV_STDCALL: sb.Append("unmanaged stdcall "); break;
-                            case CALLCONV_THISCALL: sb.Append("unmanaged thiscall "); break;
-                            case CALLCONV_FASTCALL: sb.Append("unmanaged fastcall "); break;
-                            case CALLCONV_VARARG: sb.Append("vararg "); break;
-                        }
-
-                        if ((sig[0] & MFLAG_HASTHIS) == MFLAG_HASTHIS) sb.Append("instance ");
-                        if ((sig[0] & MFLAG_EXPLICITTHIS) == MFLAG_HASTHIS) sb.Append("explicit ");
-
-                        sb.Append("// StandAloneMethodSig ( ");
-
-                        for (int i = 0; i < sig.Length; i++)
-                        {
-                            sb.Append(sig[i].ToString("X2"));
-                            sb.Append(' ');
-                        }
-
-                        sb.Append(")");
+                        sig = Method.Module.ResolveSignature(token);                        
                     }
                     catch (Exception ex)
                     {
                         string error = "Exception occured when trying to resolve signature.";
                         OnError(this, new CilErrorEventArgs(ex, error));
-                        sb.Append(" 0x" + token.ToString("X"));
+                        sb.Append(" StandAloneMethodSig" + token.ToString("X"));
                     }
+
+                    if (sig != null) //parse signature
+                    {
+                        sb.Append(' ');
+
+                        try
+                        {
+                            StringBuilder sb_sig = new StringBuilder();
+                            MemoryStream ms = new MemoryStream(sig);
+                            using (ms)
+                            {
+                                byte b = ReadByte(ms); //calling convention & method flags
+
+                                switch (b & CALLCONV_MASK)
+                                {
+                                    case CALLCONV_CDECL: sb_sig.Append("unmanaged cdecl "); break;
+                                    case CALLCONV_STDCALL: sb_sig.Append("unmanaged stdcall "); break;
+                                    case CALLCONV_THISCALL: sb_sig.Append("unmanaged thiscall "); break;
+                                    case CALLCONV_FASTCALL: sb_sig.Append("unmanaged fastcall "); break;
+                                    case CALLCONV_VARARG: sb_sig.Append("vararg "); break;
+                                }
+
+                                if ((b & MFLAG_HASTHIS) == MFLAG_HASTHIS) sb_sig.Append("instance ");
+                                if ((b & MFLAG_EXPLICITTHIS) == MFLAG_HASTHIS) sb_sig.Append("explicit ");
+
+                                uint paramcount = ReadCompressed(ms);
+
+                                sb_sig.Append(ReadTypeSpec(ms, this.Method.Module));
+                                sb_sig.Append(" (");
+
+                                for (int i = 0; i < paramcount; i++)
+                                {
+                                    if (i >= 1) sb_sig.Append(", ");
+                                    sb_sig.Append(ReadTypeSpec(ms, this.Method.Module));
+                                }
+                                sb_sig.Append(')');
+
+                            }//end using
+                            sb.Append(sb_sig.ToString());
+                        }
+                        catch (Exception ex)
+                        {
+                            string error = "Exception occured when trying to parse signature.";
+                            OnError(this, new CilErrorEventArgs(ex, error));
+                            sb.Append("//StandAloneMethodSig: ( ");
+
+                            for (int i = 0; i < sig.Length; i++)
+                            {
+                                sb.Append(sig[i].ToString("X2"));
+                                sb.Append(' ');
+                            }
+
+                            sb.Append(")");
+                        }
+                    }//end if (sig != null)                    
                 }
                 else
                 {
