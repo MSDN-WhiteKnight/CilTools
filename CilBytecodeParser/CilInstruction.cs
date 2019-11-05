@@ -153,7 +153,8 @@ namespace CilBytecodeParser
             byte type = 0;
             bool found_type;
             bool isbyref = false;
-            bool isptr = false;
+            //bool isptr = false;
+            string ts;
             
             //read modifiers
             while (true)
@@ -192,9 +193,9 @@ namespace CilBytecodeParser
                     case ELEMENT_TYPE_BYREF:
                         isbyref = true;
                         break;
-                    case ELEMENT_TYPE_PTR:
+                    /*case ELEMENT_TYPE_PTR:
                         isptr = true;
-                        break;
+                        break;*/
                     default:
                         type = b;
                         found_type = true;
@@ -210,7 +211,7 @@ namespace CilBytecodeParser
                 rettype = types[(int)type];
                 sb.Append(CilAnalysis.GetTypeName(rettype));
                 if (isbyref) sb.Append('&');
-                else if (isptr) sb.Append('*');
+                //else if (isptr) sb.Append('*');
             }
             else
             {
@@ -240,7 +241,47 @@ namespace CilBytecodeParser
                         {
                             OnError(null, new CilErrorEventArgs(ex, "Failed to resolve valuetype token: 0x" + typetok.ToString("X")));
                             sb.Append("valuetype Type" + typetok.ToString("X"));
-                        }                        
+                        }
+                        break;
+                    case ELEMENT_TYPE_ARRAY:
+                        ts = ReadTypeSpec(source, module);
+                        sb.Append(ts);
+
+                        //II.23.2.13 ArrayShape
+                        uint rank = ReadCompressed(source);
+                        if (rank == 0) throw new CilParserException("Fatal parse error: array rank cannot be zero!");
+
+                        uint numsizes = ReadCompressed(source);
+                        uint[] sizes = new uint[numsizes];
+                                                
+                        for (uint n = 0; n < numsizes; n++)
+                        {
+                            uint dsize = ReadCompressed(source);
+                            sizes[n] = dsize;
+                        }
+
+                        uint numbounds = ReadCompressed(source);
+                        if (numbounds > 0) throw new NotSupportedException("Parsing array shapes that specify lower bounds is not supported");
+
+                        sb.Append('[');
+
+                        for (uint n = 0; n < rank; n++)
+                        {
+                            if (n >= 1) sb.Append(',');
+                            if (n < numsizes) sb.Append("0..."+(sizes[n]-1).ToString());
+                        }
+
+                        sb.Append(']');
+                        break;
+                    case ELEMENT_TYPE_SZARRAY:
+                        ts = ReadTypeSpec(source, module);
+                        sb.Append(ts);
+                        sb.Append("[]");
+                        break;
+                    case ELEMENT_TYPE_PTR:
+                        ts = ReadTypeSpec(source, module);
+                        sb.Append(ts);
+                        sb.Append('*');
                         break;
                     case ELEMENT_TYPE_VAR: //generic type arg
                         paramnum = ReadCompressed(source);
@@ -250,6 +291,8 @@ namespace CilBytecodeParser
                         paramnum = ReadCompressed(source);
                         sb.Append("!!" + paramnum.ToString());
                         break;
+                    case ELEMENT_TYPE_FNPTR: throw new NotSupportedException("Parsing signatures with function pointers is not supported");
+                    case ELEMENT_TYPE_GENERICINST: throw new NotSupportedException("Parsing signatures with generic types is not supported");
                     default:
                         sb.Append("Type" + type.ToString("X"));
                         break;
@@ -713,7 +756,7 @@ namespace CilBytecodeParser
                                 sb_sig.Append(')');
 
                             }//end using
-                            sb.Append(sb_sig.ToString());
+                            sb.Append(sb_sig.ToString());                                                        
                         }
                         catch (Exception ex)
                         {
