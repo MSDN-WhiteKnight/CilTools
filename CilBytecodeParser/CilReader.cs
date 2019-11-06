@@ -154,7 +154,7 @@ namespace CilBytecodeParser
         /// </summary>
         /// <exception cref="System.InvalidOperationException">This CilReader is in faulty state or reached the end of source byte array</exception>
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <returns>CilInstruction retreived from the source</returns>
+        /// <returns>CilInstruction retrieved from the source</returns>
         public CilInstruction Read()
         {            
 
@@ -314,7 +314,7 @@ namespace CilBytecodeParser
         /// <param name="m">Source method</param>
         /// <exception cref="System.ArgumentNullException">Source method is null</exception>        
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retreive method body for the method</exception>
+        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retrieve method body for the method</exception>
         /// <returns>A collection of CIL instructions that form the body of this method</returns>
         public static IEnumerable<CilInstruction> GetInstructions(MethodBase m)
         {  

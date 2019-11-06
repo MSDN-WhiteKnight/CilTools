@@ -14,7 +14,7 @@ namespace CilBytecodeParser
     /// <summary>
     /// Represents CIL instruction, a main structural element of the method body which consists of operation code and operand.
     /// </summary>
-    /// <remarks>To retreive a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class.</remarks>
+    /// <remarks>To retrieve a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class.</remarks>
     public class CilInstruction
     {        
         //ECMA-335 II.23.2.3: StandAloneMethodSig
@@ -175,7 +175,7 @@ namespace CilBytecodeParser
         /// <param name="byteoffset">Byte offset</param>
         /// <param name="ordinalnum">Ordinal number</param>
         /// <param name="mb">Owning method</param>
-        /// <remarks>Do not use this constructor directly. To retreive a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class instead.</remarks>
+        /// <remarks>Do not use this constructor directly. To retrieve a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class instead.</remarks>
         public CilInstruction(
             OpCode opc, object operand=null, uint opsize=0, uint byteoffset=0, uint ordinalnum=0, MethodBase mb=null
             )
@@ -472,7 +472,7 @@ namespace CilBytecodeParser
                                 }
 
                                 if ((b & MFLAG_HASTHIS) == MFLAG_HASTHIS) sb_sig.Append("instance ");
-                                if ((b & MFLAG_EXPLICITTHIS) == MFLAG_HASTHIS) sb_sig.Append("explicit ");
+                                if ((b & MFLAG_EXPLICITTHIS) == MFLAG_EXPLICITTHIS) sb_sig.Append("explicit ");
 
                                 uint paramcount = TypeSpec.ReadCompressed(ms);
 

@@ -391,7 +391,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Returns specified method CIL code as string
         /// </summary>
-        /// <param name="m">Method for which to retreive CIL</param>
+        /// <param name="m">Method for which to retrieve CIL</param>
         /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
         /// <returns>CIL code string</returns>
         public static string MethodToText(MethodBase m)
@@ -404,7 +404,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets all methods that are referenced by the specified method
         /// </summary>
-        /// <param name="mb">Method for which to retreive referenced methods</param>
+        /// <param name="mb">Method for which to retrieve referenced methods</param>
         /// <exception cref="System.ArgumentNullException">Source method is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of referenced methods</returns>
@@ -422,7 +422,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets all members (fields or methods) referenced by specified method
         /// </summary>
-        /// <param name="mb">Method for which to retreive referenced members</param>
+        /// <param name="mb">Method for which to retrieve referenced members</param>
         /// <exception cref="System.ArgumentNullException">Source method is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
@@ -435,11 +435,11 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets members (fields or methods) referenced by specified method that match specified criteria
         /// </summary>
-        /// <param name="mb">Method for which to retreive referenced members</param>
-        /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <param name="mb">Method for which to retrieve referenced members</param>
+        /// <param name="flags">A combination of bitwise flags that control what kind of members are retrieved</param>
         /// <exception cref="System.ArgumentNullException">Source method is null</exception>
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retreive method body for the method</exception>
+        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retrieve method body for the method</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(MethodBase mb, MemberCriteria flags)
@@ -506,7 +506,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Get all methods that are referenced by the code of the specified type
         /// </summary>
-        /// <param name="t">Type for which to retreive referenced methods</param>
+        /// <param name="t">Type for which to retrieve referenced methods</param>
         /// <exception cref="System.ArgumentNullException">Source type is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
         /// <returns>A collection of referenced methods</returns>
@@ -524,7 +524,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets all members referenced by the code of specified type
         /// </summary>
-        /// <param name="t">Type for which to retreive referenced members</param>
+        /// <param name="t">Type for which to retrieve referenced members</param>
         /// <exception cref="System.ArgumentNullException">Source type is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
@@ -537,8 +537,8 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets members referenced by the code of specified type that match specified criteria
         /// </summary>
-        /// <param name="t">Type for which to retreive referenced members</param>
-        /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <param name="t">Type for which to retrieve referenced members</param>
+        /// <param name="flags">A combination of bitwise flags that control what kind of members are retrieved</param>
         /// <exception cref="System.ArgumentNullException">Source type is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
@@ -599,7 +599,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Get all methods that are referenced by the code in the specified assembly
         /// </summary>
-        /// <param name="ass">Assembly for which to retreive referenced methods</param>
+        /// <param name="ass">Assembly for which to retrieve referenced methods</param>
         /// <exception cref="System.ArgumentNullException">Source assembly is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the assembly's methods.</remarks>
         /// <returns>A collection of referenced methods</returns>
@@ -617,7 +617,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets all members referenced by the code of specified assembly
         /// </summary>
-        /// <param name="ass">Assembly for which to retreive referenced members</param>
+        /// <param name="ass">Assembly for which to retrieve referenced members</param>
         /// <exception cref="System.ArgumentNullException">Source assembly is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the assembly's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
@@ -630,8 +630,8 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets members referenced by the code of specified assembly that match specified criteria
         /// </summary>
-        /// <param name="ass">Assembly for which to retreive referenced members</param>
-        /// <param name="flags">A combination of bitwise flags that control what kind of members are retreived</param>
+        /// <param name="ass">Assembly for which to retrieve referenced members</param>
+        /// <param name="flags">A combination of bitwise flags that control what kind of members are retrieved</param>
         /// <exception cref="System.ArgumentNullException">Source assembly is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the assembly's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
