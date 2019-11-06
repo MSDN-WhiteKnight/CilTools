@@ -29,7 +29,7 @@ namespace CilBytecodeParserDemo
         static void Test()
         {            
             var graph = typeof(MyClass).GetMethod("Foo",BindingFlags.Instance|BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic).GetCilGraph();
-            var instr = graph.GetInstructions().ToList();
+            var instr = graph.GetInstructions().ToList(); 
             
             Console.WriteLine(graph.ToString());
             Console.ReadKey();
@@ -61,8 +61,14 @@ namespace CilBytecodeParserDemo
                     asspath = "";
                     type = "CilBytecodeParserDemo.Program";
                     method = "Main";
+                     
                     Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);
-                    ass = Assembly.GetExecutingAssembly();
+                    ass = Assembly.GetExecutingAssembly();                    
+
+                    /*asspath = "\\Projects\\CppCliTest\\Debug\\CppCliTest.exe";
+                    type = "C";
+                    method = "test_pointer_operations";  
+                    ass = Assembly.LoadFrom(asspath);*/
                 }
                 else
                 {
@@ -72,6 +78,7 @@ namespace CilBytecodeParserDemo
                     Console.WriteLine(asspath);
                     ass = Assembly.LoadFrom(asspath);
                 }
+
                 Console.WriteLine("Method: {0}:{1}", type, method);
                 Console.WriteLine();
                 Type t = ass.GetType(type);
@@ -81,15 +88,12 @@ namespace CilBytecodeParserDemo
                     );
 
                 MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
-                Console.WriteLine(mi.GetCilText());
-                
-                
-            
+                Console.WriteLine(mi.GetCilText());            
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-            }         
+            }
 
             Console.ReadKey();
         }

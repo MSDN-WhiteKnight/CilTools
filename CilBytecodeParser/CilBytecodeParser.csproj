@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CilAnalysis.cs" />
     <Compile Include="CilErrorEventArgs.cs" />
+    <Compile Include="CustomModifier.cs" />
     <Compile Include="DebugUtils.cs" />
     <Compile Include="CilGraph.cs" />
     <Compile Include="CilGraphNode.cs" />
@@ -50,6 +51,7 @@
     <Compile Include="CilReader.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="TypeSpec.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
