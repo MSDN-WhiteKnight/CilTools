@@ -27,9 +27,23 @@ namespace CilBytecodeParserDemo
     {
         public static int f;
         static void Test()
-        {            
-            var graph = typeof(MyClass).GetMethod("Foo",BindingFlags.Instance|BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic).GetCilGraph();
-            var instr = graph.GetInstructions().ToList(); 
+        {
+            string asspath = "C:\\_\\Projects\\CppCliTest\\Debug\\CppCliTest.exe";
+            string type = "C";
+            string method = "test_pointer_operations";
+            Assembly ass = Assembly.LoadFrom(asspath);
+
+            Type t = ass.GetType(type);
+
+            MethodInfo[] methods = t.GetMethods(
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
+                );
+
+            MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
+
+            var graph = mi.GetCilGraph();
+            var instr = graph.GetInstructions().ToList();
+            ;
             
             Console.WriteLine(graph.ToString());
             Console.ReadKey();
@@ -49,7 +63,6 @@ namespace CilBytecodeParserDemo
 
             try
             {
-
                 if (args.Length < 3)
                 {
                     Console.WriteLine("Prints CIL code of the specified method");
@@ -63,12 +76,7 @@ namespace CilBytecodeParserDemo
                     method = "Main";
                      
                     Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);
-                    ass = Assembly.GetExecutingAssembly();                    
-
-                    /*asspath = "\\Projects\\CppCliTest\\Debug\\CppCliTest.exe";
-                    type = "C";
-                    method = "test_pointer_operations";  
-                    ass = Assembly.LoadFrom(asspath);*/
+                    ass = Assembly.GetExecutingAssembly();                                        
                 }
                 else
                 {

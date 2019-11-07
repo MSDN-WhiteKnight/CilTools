@@ -51,6 +51,8 @@
     <Compile Include="CilReader.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="MetadataReader.cs" />
+    <Compile Include="Signature.cs" />
     <Compile Include="TypeSpec.cs" />
   </ItemGroup>
   <ItemGroup>

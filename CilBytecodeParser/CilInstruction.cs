@@ -16,24 +16,7 @@ namespace CilBytecodeParser
     /// </summary>
     /// <remarks>To retrieve a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class.</remarks>
     public class CilInstruction
-    {        
-        //ECMA-335 II.23.2.3: StandAloneMethodSig
-        const int CALLCONV_DEFAULT  = 0x00;
-        const int CALLCONV_CDECL    = 0x01;
-        const int CALLCONV_STDCALL  = 0x02;
-        const int CALLCONV_THISCALL = 0x03;
-        const int CALLCONV_FASTCALL = 0x04;
-        const int CALLCONV_VARARG   = 0x05;
-        const int CALLCONV_MASK     = 0x0F;
-
-        const int MFLAG_HASTHIS = 0x20;
-        const int MFLAG_EXPLICITTHIS = 0x40;
-                
-        static string ReadTypeSpec(Stream source, Module module) //ECMA-335 II.23.2.12 Type
-        { 
-            return TypeSpec.ReadFromStream(source, module).ToString();
-        }
-
+    {       
         static bool ReferencesMethodToken(OpCode op)
         {
             return (op.Equals(OpCodes.Call) || op.Equals(OpCodes.Callvirt) || op.Equals(OpCodes.Newobj)
@@ -302,6 +285,43 @@ namespace CilBytecodeParser
                     return null;
                 }
             }
+        }        
+
+        public Signature ReferencedSignature
+        {
+            get
+            {
+                if (this.Method == null) return null;
+                if (this.Operand == null) return null;
+                if (!this.OpCode.Equals(OpCodes.Calli)) return null;
+
+                //standalone signature token
+                int token = (int)Operand;
+                byte[] sig = null;
+
+                try
+                {
+                    sig = Method.Module.ResolveSignature(token);
+                }
+                catch (Exception ex)
+                {
+                    string error = "Exception occured when trying to resolve signature.";
+                    OnError(this, new CilErrorEventArgs(ex, error));
+                    return null;
+                }
+
+                try
+                {
+                    Signature res = new Signature(sig, this.Method.Module);
+                    return res;
+                }
+                catch (Exception ex)
+                {
+                    string error = "Exception occured when trying to parse signature.";
+                    OnError(this, new CilErrorEventArgs(ex, error));
+                    return null;
+                }
+            }
         }
 
         /// <summary>
@@ -455,39 +475,8 @@ namespace CilBytecodeParser
                         sb.Append(' ');
 
                         try
-                        {
-                            StringBuilder sb_sig = new StringBuilder();
-                            MemoryStream ms = new MemoryStream(sig);
-                            using (ms)
-                            {
-                                byte b = TypeSpec.ReadByte(ms); //calling convention & method flags
-
-                                switch (b & CALLCONV_MASK)
-                                {
-                                    case CALLCONV_CDECL: sb_sig.Append("unmanaged cdecl "); break;
-                                    case CALLCONV_STDCALL: sb_sig.Append("unmanaged stdcall "); break;
-                                    case CALLCONV_THISCALL: sb_sig.Append("unmanaged thiscall "); break;
-                                    case CALLCONV_FASTCALL: sb_sig.Append("unmanaged fastcall "); break;
-                                    case CALLCONV_VARARG: sb_sig.Append("vararg "); break;
-                                }
-
-                                if ((b & MFLAG_HASTHIS) == MFLAG_HASTHIS) sb_sig.Append("instance ");
-                                if ((b & MFLAG_EXPLICITTHIS) == MFLAG_EXPLICITTHIS) sb_sig.Append("explicit ");
-
-                                uint paramcount = TypeSpec.ReadCompressed(ms);
-
-                                sb_sig.Append(ReadTypeSpec(ms, this.Method.Module));
-                                sb_sig.Append(" (");
-
-                                for (int i = 0; i < paramcount; i++)
-                                {
-                                    if (i >= 1) sb_sig.Append(", ");
-                                    sb_sig.Append(ReadTypeSpec(ms, this.Method.Module));
-                                }
-                                sb_sig.Append(')');
-
-                            }//end using
-                            sb.Append(sb_sig.ToString());                                                        
+                        {                                                        
+                            sb.Append(new Signature(sig, Method.Module).ToString());                                                        
                         }
                         catch (Exception ex)
                         {
