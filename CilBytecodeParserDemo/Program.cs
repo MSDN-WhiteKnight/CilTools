@@ -15,11 +15,13 @@ namespace CilBytecodeParserDemo
     {
         public static string field;
         
-        public static void Foo(List<int> x, int param)
+        [CLSCompliant(false)]
+        [STAThread]
+        public void Foo(List<int> x, int param=0)
         {
-            //Console.WriteLine(this);
-            
-            Program.f = 1;
+            Console.WriteLine(this);
+
+            Program.f = param;
         }
     }
 
@@ -39,12 +41,26 @@ namespace CilBytecodeParserDemo
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
                 );
 
-            MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
-
+            MethodInfo mi = typeof(MyClass).GetMethod("Foo");//methods.Where((x) => { return x.Name == method; }).First();
+            
             var graph = mi.GetCilGraph();
             var instr = graph.GetInstructions().ToList();
-            ;
-            
+
+            /*foreach (var item in instr)
+            {
+                Console.Write(item.OpCode.ToString()+" ");
+                if (item.ReferencedSignature != null)
+                {
+                    Console.Write(item.ReferencedSignature.ToString());
+                }
+                if (item.ReferencedLocal != null)
+                {
+                    Console.Write("{0} {1} {2}", item.ReferencedLocal.LocalIndex, item.ReferencedLocal.LocalType, item.ReferencedLocal.IsPinned);
+                }
+                Console.WriteLine();
+            }*/
+
+            //graph.Print(null,false,false,true,true);
             Console.WriteLine(graph.ToString());
             Console.ReadKey();
         }

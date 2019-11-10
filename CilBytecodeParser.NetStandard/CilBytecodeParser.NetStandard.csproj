@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.3.0</Version>
+    <Version>1.8.0</Version>
     <Authors>MSDN-WhiteKnight</Authors>
     <Product>CilBytecodeParser</Product>
     <Description>.NET Standard version of CIL Bytecode Parser library.</Description>
@@ -21,13 +21,17 @@
 
   <ItemGroup>
     <Compile Include="..\CilBytecodeParser\CilAnalysis.cs" Link="CilAnalysis.cs" />
-	<Compile Include="..\CilBytecodeParser\CilErrorEventArgs.cs" Link="CilErrorEventArgs.cs" />
+    <Compile Include="..\CilBytecodeParser\CilErrorEventArgs.cs" Link="CilErrorEventArgs.cs" />
     <Compile Include="..\CilBytecodeParser\DebugUtils.cs" Link="DebugUtils.cs" />
     <Compile Include="..\CilBytecodeParser\CilGraph.cs" Link="CilGraph.cs" />
     <Compile Include="..\CilBytecodeParser\CilGraphNode.cs" Link="CilGraphNode.cs" />
     <Compile Include="..\CilBytecodeParser\CilInstruction.cs" Link="CilInstruction.cs" />
     <Compile Include="..\CilBytecodeParser\CilReader.cs" Link="CilReader.cs" />
-    <Compile Include="..\CilBytecodeParser\Extensions.cs" Link="Extensions.cs" />    
+    <Compile Include="..\CilBytecodeParser\Extensions.cs" Link="Extensions.cs" />  
+    <Compile Include="..\CilBytecodeParser\CustomModifier.cs" Link="CustomModifier.cs" />  
+    <Compile Include="..\CilBytecodeParser\MetadataReader.cs" Link="MetadataReader.cs" />
+    <Compile Include="..\CilBytecodeParser\Signature.cs" Link="Signature.cs" />  
+    <Compile Include="..\CilBytecodeParser\TypeSpec.cs" Link="TypeSpec.cs" /> 
   </ItemGroup>
 
   <ItemGroup>

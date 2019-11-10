@@ -65,6 +65,27 @@ namespace CilBytecodeParser
 
         public int ParamsCount { get { return this._ParamTypes.Length; } }
 
+        public TypeSpec GetParamType(int index)
+        {
+            if (index < 0 || index >= this._ParamTypes.Length)
+            {
+                throw new ArgumentOutOfRangeException("index", "Index must be non-negative and within the size of collection");
+            }
+
+            return this._ParamTypes[index];
+        }
+
+        public IEnumerable<TypeSpec> ParamTypes
+        {
+            get
+            {
+                for (int i = 0; i < this._ParamTypes.Length; i++)
+                {
+                    yield return this._ParamTypes[i];
+                }
+            }
+        }
+
         public TypeSpec[] GetParamTypes()
         {
             TypeSpec[] res = new TypeSpec[this._ParamTypes.Length];

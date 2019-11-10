@@ -20,7 +20,7 @@ namespace CilBytecodeParser
         static bool ReferencesMethodToken(OpCode op)
         {
             return (op.Equals(OpCodes.Call) || op.Equals(OpCodes.Callvirt) || op.Equals(OpCodes.Newobj)
-                || op.Equals(OpCodes.Ldftn));
+                || op.Equals(OpCodes.Ldftn) || op.Equals(OpCodes.Ldvirtftn) );
         }
 
         static bool ReferencesFieldToken(OpCode op)
@@ -324,6 +324,66 @@ namespace CilBytecodeParser
             }
         }
 
+        public ParameterInfo ReferencedParameter
+        {
+            get
+            {
+                if (this._Operand == null) return null;
+                if (this._Method == null) return null;
+
+                if (ReferencesParam(this._OpCode))
+                {
+                    try
+                    {
+                        int param_index = Convert.ToInt32(this._Operand);
+                        ParameterInfo[] pars = this._Method.GetParameters();
+
+                        if (this._Method.IsStatic == false) param_index--;
+
+                        if (param_index >= 0) return pars[param_index];
+                        else return null;
+                    }
+                    catch (Exception ex)
+                    {
+                        string error = "Exception occured when trying to resolve parameter.";
+                        OnError(this, new CilErrorEventArgs(ex, error));
+                        return null;
+                    }
+                }
+                else return null;
+            }
+        }
+
+        public LocalVariableInfo ReferencedLocal
+        {
+            get
+            {
+                if (this._Operand == null) return null;
+                if (this._Method == null) return null;
+
+                if (ReferencesLocal(this._OpCode))
+                {
+                    try
+                    {
+                        int local_index = Convert.ToInt32(this._Operand);
+                        MethodBody mb = this._Method.GetMethodBody();
+
+                        if (mb == null) return null;
+
+                        LocalVariableInfo res = mb.LocalVariables[local_index];
+                        return res;
+                    }
+                    catch (Exception ex)
+                    {
+                        string error = "Exception occured when trying to resolve local variable.";
+                        OnError(this, new CilErrorEventArgs(ex, error));
+                        return null;
+                    }
+                }
+                else return null;
+            }
+        }
+
         /// <summary>
         /// Returns a text representation of this instruction as a line of CIL code
         /// </summary>
@@ -419,39 +479,19 @@ namespace CilBytecodeParser
                 }
                 else if (ReferencesLocal(this.OpCode))
                 {
-                    //local variable   
-
-                    try
-                    {
-                        sb.Append(" V_" + this.Operand.ToString());
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to process local variable.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
-                    }
+                    //local variable
+                    sb.Append(" V_" + this.Operand.ToString());
                 }
                 else if (ReferencesParam(this.OpCode) && this.Method != null)
                 {
-                    //parameter   
+                    //parameter
+                    ParameterInfo par = this.ReferencedParameter;
 
-                    try
+                    if (par != null)
                     {
-                        int param_index = Convert.ToInt32(this._Operand);
-                        ParameterInfo[] pars = this._Method.GetParameters();
-
-                        if (this._Method.IsStatic == false) param_index--;
-
                         sb.Append(' ');
-
-                        if(param_index>=0) sb.Append(pars[param_index].Name);
-                        else sb.Append("this");
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to process parameter.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
-                    }
+                        sb.Append(par.Name);
+                    }                    
                 }
                 else if (OpCode.Equals(OpCodes.Calli) && this.Method != null)
                 {

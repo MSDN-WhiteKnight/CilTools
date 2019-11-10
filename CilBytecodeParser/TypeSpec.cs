@@ -231,7 +231,7 @@ namespace CilBytecodeParser
 
             if (isbyref) restype = restype.MakeByRefType();
 
-            return new TypeSpec(mods,type,restype,ts,paramnum);
+            return new TypeSpec(mods.ToArray(),type,restype,ts,paramnum);
         }
 
         /// <summary>
@@ -255,12 +255,12 @@ namespace CilBytecodeParser
 
         // *** instance members ***
         byte _ElementType;
-        IEnumerable<CustomModifier> _Modifiers;        
+        CustomModifier[] _Modifiers;        
         TypeSpec _InnerSpec;
         Type _Type;
         uint _paramnum;
 
-        internal TypeSpec(IEnumerable<CustomModifier> mods, byte elemtype, Type t,TypeSpec ts = null, uint parnum = 0)
+        internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, TypeSpec ts = null, uint parnum = 0)
         {
             this._Modifiers = mods;
             this._ElementType = elemtype;
@@ -271,9 +271,34 @@ namespace CilBytecodeParser
 
         public byte ElementType { get { return this._ElementType; } }
 
+        public int ModifiersCount { get { return this._Modifiers.Length; } }
+
+        public CustomModifier GetModifier(int index)
+        {
+            if (index < 0 || index >= this._Modifiers.Length)
+            {
+                throw new ArgumentOutOfRangeException("index", "Index must be non-negative and within the size of collection");
+            }
+
+            return this._Modifiers[index];
+        }
+
+        public IEnumerable<CustomModifier> Modifiers
+        {
+            get
+            {
+                for (int i = 0; i < this._Modifiers.Length; i++)
+                {
+                    yield return this._Modifiers[i];
+                }
+            }
+        }
+
         public CustomModifier[] GetModifiers()
         {
-            return this._Modifiers.ToArray();
+            CustomModifier[] res = new CustomModifier[this._Modifiers.Length];
+            this._Modifiers.CopyTo(res, 0);
+            return res;            
         }
 
         public TypeSpec InnerTypeSpec { get { return this._InnerSpec; } }

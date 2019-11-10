@@ -2,6 +2,7 @@
  * Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -119,189 +120,215 @@ namespace CilBytecodeParser
         /// Gets a method for which this graph is built
         /// </summary>
         public MethodBase Method { get { return this._Method; } }
-                
-        /// <summary>
-        /// Returns CIL code corresponding to this graph as a string
-        /// </summary>
-        /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
-        /// <returns>A string of CIL code</returns>
-        public override string ToString()
-        {
-            CilGraphNode node = this._Root;            
 
-            StringBuilder sb = new StringBuilder();
+        public void Print(
+            TextWriter output = null, 
+            bool IncludeSignature = false, 
+            bool IncludeDefaults = false, 
+            bool IncludeAttributes = false,
+            bool IncludeHeader = false)
+        {
+            if (output == null) output = Console.Out;
+
+            CilGraphNode node = this._Root;
+                        
             int n_iter = 0;
-            IList<ExceptionHandlingClause> trys=new List<ExceptionHandlingClause>();
+            IList<ExceptionHandlingClause> trys = new List<ExceptionHandlingClause>();
             bool block_end = false;
-            MethodBody body=null;
+            MethodBody body = null;
+            ParameterInfo[] pars = this._Method.GetParameters();
 
             try
             {
                 body = this._Method.GetMethodBody();
-                if(body!=null) trys = body.ExceptionHandlingClauses;
+                if (body != null) trys = body.ExceptionHandlingClauses;
             }
             catch (Exception ex)
             {
                 string error = "Exception occured when trying to get method body.";
-                OnError(this, new CilErrorEventArgs(ex, error));   
+                OnError(this, new CilErrorEventArgs(ex, error));
             }
 
-            sb.Append(".method ");
-
-            //signature            
-            if (this._Method.IsPublic) sb.Append("public ");
-            else if (this._Method.IsPrivate) sb.Append("private ");
-            else if (this._Method.IsAssembly) sb.Append("assembly "); //internal
-            else if (this._Method.IsFamily) sb.Append("family "); //protected
-            else sb.Append("famorassem "); //protected internal
-
-            if (this._Method.IsHideBySig) sb.Append("hidebysig ");
-
-            if (this._Method.IsAbstract) sb.Append("abstract ");
-
-            if (this._Method.IsVirtual) sb.Append("virtual ");
-
-            if (this._Method.IsStatic) sb.Append("static ");
-            else sb.Append("instance ");
-
-            if (this._Method.CallingConvention == CallingConventions.VarArgs)
+            if (IncludeSignature)
             {
-                sb.Append("vararg ");
-            }
+                output.Write(".method "); //signature
 
-            ParameterInfo[] pars = this._Method.GetParameters();
-            MethodInfo mi = this._Method as MethodInfo;
-            string rt = "";
-            if (mi != null) rt = CilAnalysis.GetTypeName(mi.ReturnType)+" ";
-            sb.Append(rt);
+                if (this._Method.IsPublic) output.Write("public ");
+                else if (this._Method.IsPrivate) output.Write("private ");
+                else if (this._Method.IsAssembly) output.Write("assembly "); //internal
+                else if (this._Method.IsFamily) output.Write("family "); //protected
+                else output.Write("famorassem "); //protected internal
 
-            sb.Append(this._Method.Name);
+                if (this._Method.IsHideBySig) output.Write("hidebysig ");
 
-            if (this._Method.IsGenericMethod )
-            {
-                sb.Append('<');
+                if (this._Method.IsAbstract) output.Write("abstract ");
 
-                Type[] args = this._Method.GetGenericArguments();
-                for (int i = 0; i < args.Length; i++)
+                if (this._Method.IsVirtual) output.Write("virtual ");
+
+                if (this._Method.IsStatic) output.Write("static ");
+                else output.Write("instance ");
+
+                if (this._Method.CallingConvention == CallingConventions.VarArgs)
                 {
-                    if (i >= 1) sb.Append(", ");
-
-                    if (args[i].IsGenericParameter) sb.Append(args[i].Name);
-                    else sb.Append(CilAnalysis.GetTypeName(args[i]));
+                    output.Write("vararg ");
                 }
 
-                sb.Append('>');
-            }
+                MethodInfo mi = this._Method as MethodInfo;
+                string rt = "";
+                if (mi != null) rt = CilAnalysis.GetTypeName(mi.ReturnType) + " ";
+                output.Write(rt);
 
-            sb.Append('(');
-            
-            for (int i = 0; i < pars.Length; i++)
-            {
-                if (i >= 1) sb.AppendLine(", ");
-                else sb.AppendLine();
+                output.Write(this._Method.Name);
 
-                sb.Append("    ");
-                if (pars[i].IsOptional) sb.Append("[opt] ");
-                                
-                sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));                
-
-                string parname;
-                if (pars[i].Name != null) parname = pars[i].Name;
-                else parname = "par" + (i+1).ToString();
-
-                sb.Append(' ');
-                sb.Append(parname);
-                
-            }
-
-            if(pars.Length>0) sb.AppendLine();
-            sb.Append(')');
-            sb.AppendLine(" cil managed {");
-
-            //optional parameters
-            for (int i = 0; i < pars.Length; i++)
-            {
-                if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                if (this._Method.IsGenericMethod)
                 {
-                    sb.Append(" .param [");
-                    sb.Append((i+1).ToString());
-                    sb.Append("] = ");
-                    
-                    if (pars[i].RawDefaultValue != null)
+                    output.Write('<');
+
+                    Type[] args = this._Method.GetGenericArguments();
+                    for (int i = 0; i < args.Length; i++)
                     {
-                        if (pars[i].RawDefaultValue.GetType() == typeof(string))
+                        if (i >= 1) output.Write(", ");
+
+                        if (args[i].IsGenericParameter) output.Write(args[i].Name);
+                        else output.Write(CilAnalysis.GetTypeName(args[i]));
+                    }
+
+                    output.Write('>');
+                }
+
+                output.Write('(');
+
+                for (int i = 0; i < pars.Length; i++)
+                {
+                    if (i >= 1) output.WriteLine(", ");
+                    else output.WriteLine();
+
+                    output.Write("    ");
+                    if (pars[i].IsOptional) output.Write("[opt] ");
+
+                    output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
+
+                    string parname;
+                    if (pars[i].Name != null) parname = pars[i].Name;
+                    else parname = "par" + (i + 1).ToString();
+
+                    output.Write(' ');
+                    output.Write(parname);
+
+                }
+
+                if (pars.Length > 0) output.WriteLine();
+                output.Write(')');
+                output.WriteLine(" cil managed {");
+            }
+
+            if (IncludeDefaults)
+            {
+                //optional parameters
+                for (int i = 0; i < pars.Length; i++)
+                {
+                    if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                    {
+                        output.Write(" .param [");
+                        output.Write((i + 1).ToString());
+                        output.Write("] = ");
+
+                        if (pars[i].RawDefaultValue != null)
                         {
-                            sb.Append('"');
-                            sb.Append(CilAnalysis.EscapeString(pars[i].RawDefaultValue.ToString()));
-                            sb.Append('"');
+                            if (pars[i].RawDefaultValue.GetType() == typeof(string))
+                            {
+                                output.Write('"');
+                                output.Write(CilAnalysis.EscapeString(pars[i].RawDefaultValue.ToString()));
+                                output.Write('"');
+                            }
+                            else //most of the types...
+                            {
+                                output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
+                                output.Write('(');
+                                output.Write(Convert.ToString(pars[i].RawDefaultValue, System.Globalization.CultureInfo.InvariantCulture));
+                                output.Write(')');
+                            }
                         }
-                        else //most of the types...
+                        else output.Write("nullref");
+
+                        output.WriteLine();
+                    }
+                }
+            }
+
+            if (IncludeAttributes)
+            {
+                //attributes
+                try
+                {
+                    object[] attrs = this._Method.GetCustomAttributes(false);
+                    for (int i = 0; i < attrs.Length; i++)
+                    {
+                        Type t = attrs[i].GetType();
+                        ConstructorInfo[] constr = t.GetConstructors();
+                        string s_attr;
+
+                        if (constr.Length == 1)
                         {
-                            sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));
-                            sb.Append('(');
-                            sb.Append(Convert.ToString(pars[i].RawDefaultValue, System.Globalization.CultureInfo.InvariantCulture));
-                            sb.Append(')');
+                            s_attr = CilAnalysis.MethodToString(constr[0]);
+                            if (constr[0].GetParameters().Length == 0)
+                            {
+                                output.Write(" .custom ");
+                                output.Write(s_attr);
+                                output.WriteLine(" = ( 01 00 00 00 )"); //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
+                            }
+                            else
+                            {
+                                output.Write(" //.custom ");
+                                output.Write(s_attr);
+                                output.WriteLine();
+                            }                            
+                        }
+                        else
+                        {
+                            output.Write(" //.custom ");
+                            s_attr = CilAnalysis.GetTypeNameInternal(t);
+                            output.WriteLine(s_attr);
                         }
                     }
-                    else sb.Append("nullref");
-                    
-                    sb.AppendLine();
                 }
-            }
-
-            //attributes
-            try
-            {
-                object[] attrs = this._Method.GetCustomAttributes(false);
-                for (int i = 0; i < attrs.Length; i++)
+                catch (InvalidOperationException) { }
+                catch (TypeLoadException ex)
                 {
-                    Type t = attrs[i].GetType();
-                    ConstructorInfo[] constr = t.GetConstructors();
-                    string s_attr;
-
-                    if (constr.Length == 1) s_attr = CilAnalysis.MethodToString(constr[0]);
-                    else s_attr = CilAnalysis.GetTypeNameInternal(t);
-
-                    sb.Append(" //.custom ");
-                    sb.AppendLine(s_attr);
+                    OnError(this, new CilErrorEventArgs(ex, "Failed to load attributes for " + this._Method.ToString()));
                 }
             }
-            catch (InvalidOperationException) { }
-            catch (TypeLoadException ex)
-            {
-                OnError(this, new CilErrorEventArgs(ex, "Failed to load attributes for " + this._Method.ToString()));
-            }
 
-            //method body           
-            if (body != null)
+            //method header           
+            if (body != null && IncludeHeader)
             {
-                sb.AppendLine(" .maxstack "+body.MaxStackSize.ToString());
+                output.WriteLine(" .maxstack " + body.MaxStackSize.ToString());
 
                 //local variables
                 if (body.LocalVariables != null && body.LocalVariables.Count > 0)
                 {
-                    sb.Append(" .locals");
+                    output.Write(" .locals");
 
-                    if (body.InitLocals) sb.Append(" init ");
+                    if (body.InitLocals) output.Write(" init ");
 
-                    sb.Append('(');
-                    for (int i = 0; i < body.LocalVariables.Count;i++ )
+                    output.Write('(');
+                    for (int i = 0; i < body.LocalVariables.Count; i++)
                     {
-                        if (i >= 1) sb.Append(",\r\n   ");
+                        if (i >= 1) output.Write(",\r\n   ");
                         var local = body.LocalVariables[i];
-                        sb.Append(CilAnalysis.GetTypeName(local.LocalType));
-                        sb.Append(" V_" + local.LocalIndex.ToString());
+                        output.Write(CilAnalysis.GetTypeName(local.LocalType));
+                        output.Write(" V_" + local.LocalIndex.ToString());
                     }
-                    sb.Append(')');
-                    sb.AppendLine();
+                    output.Write(')');
+                    output.WriteLine();
                 }
             }
 
+            //instructions
             if (node != null)
             {
-                sb.AppendLine();
-
-                //instructions
+                output.WriteLine();
+                                
                 while (true)
                 {
                     block_end = false;
@@ -311,12 +338,12 @@ namespace CilBytecodeParser
 
                     if (FindTryBlock(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize))
                     {
-                        sb.AppendLine(" .try     {");
+                        output.WriteLine(" .try     {");
                     }
 
                     if (FindBlockEnd(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize))
                     {
-                        sb.AppendLine(" }");
+                        output.WriteLine(" }");
                         block_end = true;
                     }
 
@@ -324,30 +351,30 @@ namespace CilBytecodeParser
 
                     foreach (var block in blocks)
                     {
-                        if (!block_end) sb.AppendLine(" }");
+                        if (!block_end) output.WriteLine(" }");
 
                         if (block.Flags == ExceptionHandlingClauseOptions.Clause)
                         {
                             string st = "";
                             Type t = block.CatchType;
                             if (t != null) st = CilAnalysis.GetTypeNameInternal(t);
-                            sb.AppendLine(" .catch " + st + " {");
+                            output.WriteLine(" .catch " + st + " {");
                         }
                         else if (block.Flags == ExceptionHandlingClauseOptions.Finally)
                         {
-                            sb.AppendLine(" finally  {");
+                            output.WriteLine(" finally  {");
                         }
                     }
 
                     //if instruction is referenced as branch target, prepend label to it
-                    if (!String.IsNullOrEmpty(node.Name)) sb.Append(node.Name + ": ");
-                    else sb.Append("".PadLeft(10, ' '));
+                    if (!String.IsNullOrEmpty(node.Name)) output.Write(node.Name + ": ");
+                    else output.Write("".PadLeft(10, ' '));
 
                     //if instruction itself targets branch, append its label
-                    if (node.BranchTarget != null) sb.Append(instr.Name.PadRight(9) +" "+ node.BranchTarget.Name);
-                    else sb.Append(instr.ToString());
+                    if (node.BranchTarget != null) output.Write(instr.Name.PadRight(9) + " " + node.BranchTarget.Name);
+                    else output.Write(instr.ToString());
 
-                    sb.AppendLine();
+                    output.WriteLine();
 
                     if (node.Next == null) break; //last instruction
                     else node = node.Next;
@@ -355,7 +382,7 @@ namespace CilBytecodeParser
                     n_iter++;
                     if (n_iter > 100000)
                     {
-                        sb.AppendLine(
+                        output.WriteLine(
                             "Error: Too many iterations while trying to process graph (possibly a cyclic or extremely large graph)"
                             );
                         break;
@@ -363,8 +390,24 @@ namespace CilBytecodeParser
                 }// end while
             }//endif
 
-            sb.AppendLine("}");
-            return sb.ToString();
+            if (IncludeSignature) output.WriteLine("}");            
+        }
+                
+        /// <summary>
+        /// Returns CIL code corresponding to this graph as a string
+        /// </summary>
+        /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
+        /// <returns>A string of CIL code</returns>
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(2048);
+            StringWriter wr = new StringWriter(sb);
+
+            using (wr)
+            {
+                this.Print(wr, true, true, true, true);
+                return sb.ToString();
+            }            
         }
 
         /// <summary>
