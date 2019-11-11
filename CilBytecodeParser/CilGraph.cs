@@ -271,7 +271,12 @@ namespace CilBytecodeParser
                         if (constr.Length == 1)
                         {
                             s_attr = CilAnalysis.MethodToString(constr[0]);
-                            if (constr[0].GetParameters().Length == 0)
+                            int parcount = constr[0].GetParameters().Length;      
+
+                            if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
+                                t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
+                                Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
+                                )
                             {
                                 output.Write(" .custom ");
                                 output.Write(s_attr);

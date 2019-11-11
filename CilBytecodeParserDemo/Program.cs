@@ -11,11 +11,11 @@ using CilBytecodeParser.Extensions;
 
 namespace CilBytecodeParserDemo
 {
-    class MyClass
+    public class MyClass
     {
         public static string field;
-        
-        [CLSCompliant(false)]
+
+        [MyAttribute()]
         [STAThread]
         public void Foo(List<int> x, int param=0)
         {
@@ -23,6 +23,16 @@ namespace CilBytecodeParserDemo
 
             Program.f = param;
         }
+    }
+
+    public class MyAttribute : Attribute
+    {
+        public MyAttribute()
+        {
+
+        }
+
+        public string Name { get; set; }
     }
 
     class Program
@@ -33,13 +43,13 @@ namespace CilBytecodeParserDemo
             string asspath = "C:\\_\\Projects\\CppCliTest\\Debug\\CppCliTest.exe";
             string type = "C";
             string method = "test_pointer_operations";
-            Assembly ass = Assembly.LoadFrom(asspath);
 
+            /*Assembly ass = Assembly.LoadFrom(asspath);
             Type t = ass.GetType(type);
 
             MethodInfo[] methods = t.GetMethods(
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
-                );
+                );*/
 
             MethodInfo mi = typeof(MyClass).GetMethod("Foo");//methods.Where((x) => { return x.Name == method; }).First();
             

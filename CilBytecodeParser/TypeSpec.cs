@@ -9,65 +9,193 @@ using System.Text;
 using System.Reflection;
 
 namespace CilBytecodeParser
-{  
+{
+    /// <summary>
+    /// Represents signature element type as defined in ECMA-335 CLI specification
+    /// </summary>
+    public enum ElementType : byte //ECMA-335 II.23.1.16 Element types used in signatures
+    {
+        /// <summary>
+        /// The absence of return value
+        /// </summary>
+        Void = 0x01,
+
+        /// <summary>
+        /// System.Boolean
+        /// </summary>
+        Boolean = 0x02,
+
+        /// <summary>
+        /// System.Char
+        /// </summary>
+        Char = 0x03,
+
+        /// <summary>
+        /// sbyte
+        /// </summary>
+        I1 = 0x04,
+
+        /// <summary>
+        /// byte
+        /// </summary>
+        U1 = 0x05,
+
+        /// <summary>
+        /// short
+        /// </summary>
+        I2 = 0x06,
+
+        /// <summary>
+        /// ushort
+        /// </summary>
+        U2 = 0x07,
+
+        /// <summary>
+        /// int
+        /// </summary>
+        I4 = 0x08,
+
+        /// <summary>
+        /// uint
+        /// </summary>
+        U4 = 0x09,
+
+        /// <summary>
+        /// long
+        /// </summary>
+        I8 = 0x0a,
+
+        /// <summary>
+        /// ulong
+        /// </summary>
+        U8 = 0x0b,
+
+        /// <summary>
+        /// float
+        /// </summary>
+        R4 = 0x0c,
+
+        /// <summary>
+        /// double
+        /// </summary>
+        R8 = 0x0d,
+
+        /// <summary>
+        /// Sytem.String
+        /// </summary>
+        String = 0x0e,
+
+        /// <summary>
+        /// Unmanaged pointer
+        /// </summary>
+        Ptr = 0x0f,  //Followed by type 
+
+        /// <summary>
+        /// Passed by reference
+        /// </summary>
+        ByRef = 0x10,  //Followed by type 
+
+        /// <summary>
+        /// Value type
+        /// </summary>
+        ValueType = 0x11,  //Followed by TypeDef or TypeRef token 
+
+        /// <summary>
+        /// Reference type
+        /// </summary>
+        Class = 0x12,  //Followed by TypeDef or TypeRef token 
+
+        /// <summary>
+        /// Generic parameter in a generic type definition
+        /// </summary>
+        Var = 0x13,  //represented as number (compressed unsigned integer) 
+
+        /// <summary>
+        /// Array
+        /// </summary>
+        Array = 0x14,  //type rank boundsCount bound1 … loCount lo1 … 
+
+        /// <summary>
+        /// Generic type instantiation
+        /// </summary>
+        GenericInst = 0x15,  //Followed by type type-arg-count  type-1 ... type-n 
+
+        /// <summary>
+        /// Passed by typed reference
+        /// </summary>
+        TypedByRef = 0x16,
+
+        /// <summary>
+        /// System.IntPtr
+        /// </summary>
+        I = 0x18,
+
+        /// <summary>
+        /// System.UIntPtr
+        /// </summary>
+        U = 0x19,
+
+        /// <summary>
+        /// Function pointer
+        /// </summary>
+        FnPtr = 0x1b,  //Followed by full method signature 
+
+        /// <summary>
+        /// System.Object
+        /// </summary>
+        Object = 0x1c, 
+
+        /// <summary>
+        /// Single-dimensional array with 0 lower bound
+        /// </summary>
+        SzArray = 0x1d,  
+
+        /// <summary>
+        /// Generic parameter in a generic method definition
+        /// </summary>
+        MVar = 0x1e, //Represented as number (compressed unsigned integer)
+ 
+        /// <summary>
+        /// Implemented within the CLI
+        /// </summary>
+        Internal = 0x21, 
+
+        /// <summary>
+        /// Modifier
+        /// </summary>
+        Modifier = 0x40, 
+
+        /// <summary>
+        /// Sentinel for vararg method signature
+        /// </summary>
+        Sentinel = 0x41 
+    }
 
     public class TypeSpec //ECMA-335 II.23.2.12 Type
     {
-        //ECMA-335 II.23.1.16 Element types used in signatures 
-        public const byte ELEMENT_TYPE_VOID = 0x01;
-        public const byte ELEMENT_TYPE_BOOLEAN = 0x02;
-        public const byte ELEMENT_TYPE_CHAR = 0x03;
-        public const byte ELEMENT_TYPE_I1 = 0x04;
-        public const byte ELEMENT_TYPE_U1 = 0x05;
-        public const byte ELEMENT_TYPE_I2 = 0x06;
-        public const byte ELEMENT_TYPE_U2 = 0x07;
-        public const byte ELEMENT_TYPE_I4 = 0x08;
-        public const byte ELEMENT_TYPE_U4 = 0x09;
-        public const byte ELEMENT_TYPE_I8 = 0x0a;
-        public const byte ELEMENT_TYPE_U8 = 0x0b;
-        public const byte ELEMENT_TYPE_R4 = 0x0c;
-        public const byte ELEMENT_TYPE_R8 = 0x0d;
-        public const byte ELEMENT_TYPE_STRING = 0x0e;
-        public const byte ELEMENT_TYPE_PTR = 0x0f;  //Followed by type 
-        public const byte ELEMENT_TYPE_BYREF = 0x10;  //Followed by type 
-        public const byte ELEMENT_TYPE_VALUETYPE = 0x11;  //Followed by TypeDef or TypeRef token 
-        public const byte ELEMENT_TYPE_CLASS = 0x12;  //Followed by TypeDef or TypeRef token 
-        public const byte ELEMENT_TYPE_VAR = 0x13;  //Generic parameter in a generic type definition, represented as number (compressed unsigned integer) 
-        public const byte ELEMENT_TYPE_ARRAY = 0x14;  //type rank boundsCount bound1 … loCount lo1 … 
-        public const byte ELEMENT_TYPE_GENERICINST = 0x15;  //Generic type instantiation.  Followed by type type-arg-count  type-1 ... type-n 
-        public const byte ELEMENT_TYPE_TYPEDBYREF = 0x16;
-        public const byte ELEMENT_TYPE_I = 0x18;  //System.IntPtr 
-        public const byte ELEMENT_TYPE_U = 0x19;  //System.UIntPtr 
-        public const byte ELEMENT_TYPE_FNPTR = 0x1b;  //Followed by full method signature 
-        public const byte ELEMENT_TYPE_OBJECT = 0x1c;  //System.Object 
-        public const byte ELEMENT_TYPE_SZARRAY = 0x1d;  //Single-dim array with 0 lower bound 
-        public const byte ELEMENT_TYPE_MVAR = 0x1e;  //Generic parameter in a generic method definition, represented as number (compressed unsigned integer) 
-        public const byte ELEMENT_TYPE_INTERNAL = 0x21;  //Implemented within the CLI 
-        public const byte ELEMENT_TYPE_MODIFIER = 0x40;  //Or’d with following element types 
-        public const byte ELEMENT_TYPE_SENTINEL = 0x41;  //Sentinel for vararg method signature
-
+        //ECMA-335 II.23.1.16 Element types used in signatures
         internal const byte ELEMENT_TYPE_CMOD_REQD = 0x1f;
         internal const byte ELEMENT_TYPE_CMOD_OPT = 0x20;
 
         static Dictionary<byte, Type> _types = new Dictionary<byte, Type>
         {
-            {ELEMENT_TYPE_VOID,typeof(void)},
-            {ELEMENT_TYPE_BOOLEAN,typeof(bool)},
-            {ELEMENT_TYPE_CHAR,typeof(char)},
-            {ELEMENT_TYPE_I1,typeof(sbyte)},
-            {ELEMENT_TYPE_U1,typeof(byte)},
-            {ELEMENT_TYPE_I2,typeof(short)},
-            {ELEMENT_TYPE_U2,typeof(ushort)},
-            {ELEMENT_TYPE_I4,typeof(int)},
-            {ELEMENT_TYPE_U4,typeof(uint)},
-            {ELEMENT_TYPE_I8,typeof(long)},
-            {ELEMENT_TYPE_U8,typeof(ulong)},
-            {ELEMENT_TYPE_R4,typeof(float)},
-            {ELEMENT_TYPE_R8,typeof(double)},
-            {ELEMENT_TYPE_STRING,typeof(string)},
-            {ELEMENT_TYPE_I,typeof(IntPtr)},
-            {ELEMENT_TYPE_U,typeof(UIntPtr)},
-            {ELEMENT_TYPE_OBJECT,typeof(object)},
+            {(byte)CilBytecodeParser.ElementType.Void,typeof(void)},
+            {(byte)CilBytecodeParser.ElementType.Boolean,typeof(bool)},
+            {(byte)CilBytecodeParser.ElementType.Char,typeof(char)},
+            {(byte)CilBytecodeParser.ElementType.I1,typeof(sbyte)},
+            {(byte)CilBytecodeParser.ElementType.U1,typeof(byte)},
+            {(byte)CilBytecodeParser.ElementType.I2,typeof(short)},
+            {(byte)CilBytecodeParser.ElementType.U2,typeof(ushort)},
+            {(byte)CilBytecodeParser.ElementType.I4,typeof(int)},
+            {(byte)CilBytecodeParser.ElementType.U4,typeof(uint)},
+            {(byte)CilBytecodeParser.ElementType.I8,typeof(long)},
+            {(byte)CilBytecodeParser.ElementType.U8,typeof(ulong)},
+            {(byte)CilBytecodeParser.ElementType.R4,typeof(float)},
+            {(byte)CilBytecodeParser.ElementType.R8,typeof(double)},
+            {(byte)CilBytecodeParser.ElementType.String,typeof(string)},
+            {(byte)CilBytecodeParser.ElementType.I,typeof(IntPtr)},
+            {(byte)CilBytecodeParser.ElementType.U,typeof(UIntPtr)},
+            {(byte)CilBytecodeParser.ElementType.Object,typeof(object)},
         };    
 
         static int DecodeToken(uint decompressed) //ECMA-335 II.23.2.8 TypeDefOrRefOrSpecEncoded
@@ -141,7 +269,7 @@ namespace CilBytecodeParser
                         mods.Add(mod);
 
                         break;
-                    case ELEMENT_TYPE_BYREF:
+                    case (byte)CilBytecodeParser.ElementType.ByRef:
                         isbyref = true;
                         break;
                     default:
@@ -163,7 +291,7 @@ namespace CilBytecodeParser
             {
                 switch (type)
                 {
-                    case ELEMENT_TYPE_CLASS:
+                    case (byte)CilBytecodeParser.ElementType.Class:
                         typetok = DecodeToken(MetadataReader.ReadCompressed(source));
 
                         try
@@ -176,7 +304,7 @@ namespace CilBytecodeParser
                         }
                         
                         break;
-                    case ELEMENT_TYPE_VALUETYPE:
+                    case (byte)CilBytecodeParser.ElementType.ValueType:
                         typetok = DecodeToken(MetadataReader.ReadCompressed(source));
 
                         try
@@ -189,7 +317,7 @@ namespace CilBytecodeParser
                         }
                                                 
                         break;
-                    case ELEMENT_TYPE_ARRAY:
+                    case (byte)CilBytecodeParser.ElementType.Array:
                         ts = TypeSpec.ReadFromStream(source, module);                        
 
                         //II.23.2.13 ArrayShape
@@ -210,22 +338,24 @@ namespace CilBytecodeParser
                                                 
                         restype = ts.Type.MakeArrayType((int)rank);                        
                         break;
-                    case ELEMENT_TYPE_SZARRAY:
+                    case (byte)CilBytecodeParser.ElementType.SzArray:
                         ts = TypeSpec.ReadFromStream(source, module);
                         restype = ts.Type.MakeArrayType();                        
                         break;
-                    case ELEMENT_TYPE_PTR:
+                    case (byte)CilBytecodeParser.ElementType.Ptr:
                         ts = TypeSpec.ReadFromStream(source, module);
                         restype = ts.Type.MakePointerType();
                         break;
-                    case ELEMENT_TYPE_VAR: //generic type arg
+                    case (byte)CilBytecodeParser.ElementType.Var: //generic type arg
                         paramnum = MetadataReader.ReadCompressed(source);                        
                         break;
-                    case ELEMENT_TYPE_MVAR: //generic method arg
+                    case (byte)CilBytecodeParser.ElementType.MVar: //generic method arg
                         paramnum = MetadataReader.ReadCompressed(source);                        
                         break;
-                    case ELEMENT_TYPE_FNPTR: throw new NotSupportedException("Parsing signatures with function pointers is not supported");
-                    case ELEMENT_TYPE_GENERICINST: throw new NotSupportedException("Parsing signatures with generic types is not supported");                    
+                    case (byte)CilBytecodeParser.ElementType.FnPtr: 
+                        throw new NotSupportedException("Parsing signatures with function pointers is not supported");
+                    case (byte)CilBytecodeParser.ElementType.GenericInst: 
+                        throw new NotSupportedException("Parsing signatures with generic types is not supported");
                 }//end switch
             }
 
@@ -269,7 +399,7 @@ namespace CilBytecodeParser
             this._paramnum = parnum;
         }
 
-        public byte ElementType { get { return this._ElementType; } }
+        public ElementType ElementType { get { return (ElementType)this._ElementType; } }
 
         public int ModifiersCount { get { return this._Modifiers.Length; } }
 
@@ -309,7 +439,7 @@ namespace CilBytecodeParser
         {
             StringBuilder sb = new StringBuilder(50);
 
-            if (this._InnerSpec != null && this._ElementType == ELEMENT_TYPE_SZARRAY)
+            if (this._InnerSpec != null && this._ElementType == (byte)CilBytecodeParser.ElementType.SzArray)
             {
                 sb.Append(this._InnerSpec.ToString());
                 sb.Append("[]");
@@ -318,7 +448,7 @@ namespace CilBytecodeParser
                     if (this._Type.IsByRef) sb.Append("&");
                 }
             }
-            else if(this._InnerSpec != null && this._ElementType == ELEMENT_TYPE_PTR)
+            else if(this._InnerSpec != null && this._ElementType == (byte)CilBytecodeParser.ElementType.Ptr)
             {
                 sb.Append(this._InnerSpec.ToString());
                 sb.Append("*");
@@ -331,11 +461,11 @@ namespace CilBytecodeParser
             {
                 sb.Append(CilAnalysis.GetTypeName(this._Type));
             }
-            else if (this._ElementType == ELEMENT_TYPE_VAR) //generic type arg
+            else if (this._ElementType == (byte)CilBytecodeParser.ElementType.Var) //generic type arg
             {
                 sb.Append("!" + this._paramnum.ToString());
             }
-            else if (this._ElementType == ELEMENT_TYPE_MVAR) //generic method arg
+            else if (this._ElementType == (byte)CilBytecodeParser.ElementType.MVar) //generic method arg
             {
                 sb.Append("!!" + this._paramnum.ToString());
             }
