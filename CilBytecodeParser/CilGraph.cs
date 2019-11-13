@@ -120,7 +120,23 @@ namespace CilBytecodeParser
         /// Gets a method for which this graph is built
         /// </summary>
         public MethodBase Method { get { return this._Method; } }
+                
+        /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
+        /// <returns>A string of CIL code</returns>
 
+        /// <summary>
+        /// Writes the CIL code corresponding to this graph into the specified TextWriter, optionally including signature, 
+        /// default parameter values, attributes and method header
+        /// </summary>
+        /// <param name="output">The destination TextWriter, or null to use standard output</param>
+        /// <param name="IncludeSignature">Indicates that method signature should be included in the output</param>
+        /// <param name="IncludeDefaults">Indicates that default parameter values should be included in the output</param>
+        /// <param name="IncludeAttributes">Indicates that custom attributes should be included in the output</param>
+        /// <param name="IncludeHeader">Indicates that method header should be included in the output</param>
+        /// <remarks>
+        /// <para>The CIL code produced by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid  input for CIL assembler.</para>
+        /// <para>Method header contains information such as maximum stack size and local variable types.</para>
+        /// </remarks>
         public void Print(
             TextWriter output = null, 
             bool IncludeSignature = false, 

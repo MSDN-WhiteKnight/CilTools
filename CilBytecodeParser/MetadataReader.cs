@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace CilBytecodeParser
 {
-    internal static class MetadataReader
+    internal static class MetadataReader //Internal helper methods for parsing ECMA-335 binary metadata
     {
         public static byte ReadByte(Stream source)
         {

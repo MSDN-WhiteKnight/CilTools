@@ -11,7 +11,7 @@ using System.Reflection;
 namespace CilBytecodeParser
 {
     /// <summary>
-    /// Represents signature element type as defined in ECMA-335 CLI specification
+    /// Represents signature element type as defined in ECMA-335
     /// </summary>
     public enum ElementType : byte //ECMA-335 II.23.1.16 Element types used in signatures
     {
@@ -171,6 +171,9 @@ namespace CilBytecodeParser
         Sentinel = 0x41 
     }
 
+    /// <summary>
+    /// Represents type specification, the set of type information stored in the signature, as defined by ECMA-335
+    /// </summary>
     public class TypeSpec //ECMA-335 II.23.2.12 Type
     {
         //ECMA-335 II.23.1.16 Element types used in signatures
@@ -399,10 +402,21 @@ namespace CilBytecodeParser
             this._paramnum = parnum;
         }
 
+        /// <summary>
+        /// Gets the element type of this type specification 
+        /// </summary>
         public ElementType ElementType { get { return (ElementType)this._ElementType; } }
 
+        /// <summary>
+        /// Gets the amount of custom modifiers associated with this type specification 
+        /// </summary>
         public int ModifiersCount { get { return this._Modifiers.Length; } }
 
+        /// <summary>
+        /// Gets the custom modifier with the specified index
+        /// </summary>
+        /// <param name="index">Index of the requested modifier</param>
+        /// <returns>The requested custom modifier</returns>
         public CustomModifier GetModifier(int index)
         {
             if (index < 0 || index >= this._Modifiers.Length)
@@ -413,6 +427,9 @@ namespace CilBytecodeParser
             return this._Modifiers[index];
         }
 
+        /// <summary>
+        /// Enumerates custom modifiers associated with this type specification
+        /// </summary>
         public IEnumerable<CustomModifier> Modifiers
         {
             get
@@ -424,6 +441,10 @@ namespace CilBytecodeParser
             }
         }
 
+        /// <summary>
+        /// Gets the array of custom modifiers associated with this type specification
+        /// </summary>
+        /// <returns>The array of custom modifiers</returns>
         public CustomModifier[] GetModifiers()
         {
             CustomModifier[] res = new CustomModifier[this._Modifiers.Length];
@@ -431,10 +452,19 @@ namespace CilBytecodeParser
             return res;            
         }
 
+        /// <summary>
+        /// Gets the inner type specification if this instance represents an array or pointer type. For other types, the value is null
+        /// </summary>
         public TypeSpec InnerTypeSpec { get { return this._InnerSpec; } }
 
+        /// <summary>
+        /// Gets the type which this type specification represents
+        /// </summary>
         public Type Type { get { return this._Type; } }
 
+        /// <summary>
+        /// Returns textual representation of this type specification as CIL code
+        /// </summary>        
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(50);
