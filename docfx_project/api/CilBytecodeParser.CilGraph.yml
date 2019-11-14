@@ -14,6 +14,7 @@ items:
   - CilBytecodeParser.CilGraph.GetNodes
   - CilBytecodeParser.CilGraph.Method
   - CilBytecodeParser.CilGraph.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
+  - CilBytecodeParser.CilGraph.Print(System.IO.TextWriter,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
   - CilBytecodeParser.CilGraph.Root
   - CilBytecodeParser.CilGraph.ToString
   langs:
@@ -168,6 +169,49 @@ items:
       description: Method associated with this graph object
     content.vb: Public Sub New(root As CilGraphNode, mb As MethodBase)
   overload: CilBytecodeParser.CilGraph.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilBytecodeParser.CilGraph.Print(System.IO.TextWriter,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
+  commentId: M:CilBytecodeParser.CilGraph.Print(System.IO.TextWriter,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
+  id: Print(System.IO.TextWriter,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
+  parent: CilBytecodeParser.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: Print(TextWriter, Boolean, Boolean, Boolean, Boolean)
+  nameWithType: CilGraph.Print(TextWriter, Boolean, Boolean, Boolean, Boolean)
+  fullName: CilBytecodeParser.CilGraph.Print(System.IO.TextWriter, System.Boolean, System.Boolean, System.Boolean, System.Boolean)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nWrites the CIL code corresponding to this graph into the specified TextWriter, optionally including signature, \ndefault parameter values, attributes and method header\n"
+  remarks: "\n<p>The CIL code produced by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid  input for CIL assembler.</p>\n<p>Method header contains information such as maximum stack size and local variable types.</p>\n"
+  syntax:
+    content: public void Print(TextWriter output = null, bool IncludeSignature = false, bool IncludeDefaults = false, bool IncludeAttributes = false, bool IncludeHeader = false)
+    parameters:
+    - id: output
+      type: System.IO.TextWriter
+      description: The destination TextWriter, or null to use standard output
+    - id: IncludeSignature
+      type: System.Boolean
+      description: Indicates that method signature should be included in the output
+    - id: IncludeDefaults
+      type: System.Boolean
+      description: Indicates that default parameter values should be included in the output
+    - id: IncludeAttributes
+      type: System.Boolean
+      description: Indicates that custom attributes should be included in the output
+    - id: IncludeHeader
+      type: System.Boolean
+      description: Indicates that method header should be included in the output
+    content.vb: Public Sub Print(output As TextWriter = Nothing, IncludeSignature As Boolean = False, IncludeDefaults As Boolean = False, IncludeAttributes As Boolean = False, IncludeHeader As Boolean = False)
+  overload: CilBytecodeParser.CilGraph.Print*
   modifiers.csharp:
   - public
   modifiers.vb:
@@ -698,6 +742,32 @@ references:
   name: CilGraph
   nameWithType: CilGraph.CilGraph
   fullName: CilBytecodeParser.CilGraph.CilGraph
+- uid: CilBytecodeParser.CilGraph.Print*
+  commentId: Overload:CilBytecodeParser.CilGraph.Print
+  isExternal: true
+  name: Print
+  nameWithType: CilGraph.Print
+  fullName: CilBytecodeParser.CilGraph.Print
+- uid: System.IO.TextWriter
+  commentId: T:System.IO.TextWriter
+  parent: System.IO
+  isExternal: true
+  name: TextWriter
+  nameWithType: TextWriter
+  fullName: System.IO.TextWriter
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
 - uid: System.Object.ToString
   commentId: M:System.Object.ToString
   parent: System.Object

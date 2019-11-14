@@ -2,6 +2,8 @@
 - uid: CilBytecodeParser
   name: CilBytecodeParser
   items:
+  - uid: CilBytecodeParser.CallingConvention
+    name: CallingConvention
   - uid: CilBytecodeParser.CilAnalysis
     name: CilAnalysis
   - uid: CilBytecodeParser.CilErrorEventArgs
@@ -20,10 +22,18 @@
     name: CilReader
   - uid: CilBytecodeParser.CilReaderState
     name: CilReaderState
+  - uid: CilBytecodeParser.CustomModifier
+    name: CustomModifier
   - uid: CilBytecodeParser.DebugUtils
     name: DebugUtils
+  - uid: CilBytecodeParser.ElementType
+    name: ElementType
   - uid: CilBytecodeParser.MemberCriteria
     name: MemberCriteria
+  - uid: CilBytecodeParser.Signature
+    name: Signature
+  - uid: CilBytecodeParser.TypeSpec
+    name: TypeSpec
 - uid: CilBytecodeParser.Extensions
   name: CilBytecodeParser.Extensions
   items:

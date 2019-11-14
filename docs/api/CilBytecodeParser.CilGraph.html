@@ -392,6 +392,64 @@ Return <span class="xref">true</span> to skip emitting instruction, or <span cla
   </table>
   
   
+  <a id="CilBytecodeParser_CilGraph_Print_" data-uid="CilBytecodeParser.CilGraph.Print*"></a>
+  <h4 id="CilBytecodeParser_CilGraph_Print_System_IO_TextWriter_System_Boolean_System_Boolean_System_Boolean_System_Boolean_" data-uid="CilBytecodeParser.CilGraph.Print(System.IO.TextWriter,System.Boolean,System.Boolean,System.Boolean,System.Boolean)">Print(TextWriter, Boolean, Boolean, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Writes the CIL code corresponding to this graph into the specified TextWriter, optionally including signature,
+default parameter values, attributes and method header</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void Print(TextWriter output = null, bool IncludeSignature = false, bool IncludeDefaults = false, bool IncludeAttributes = false, bool IncludeHeader = false)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The destination TextWriter, or null to use standard output</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">IncludeSignature</span></td>
+        <td><p>Indicates that method signature should be included in the output</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">IncludeDefaults</span></td>
+        <td><p>Indicates that default parameter values should be included in the output</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">IncludeAttributes</span></td>
+        <td><p>Indicates that custom attributes should be included in the output</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">IncludeHeader</span></td>
+        <td><p>Indicates that method header should be included in the output</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilBytecodeParser_CilGraph_Print_System_IO_TextWriter_System_Boolean_System_Boolean_System_Boolean_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The CIL code produced by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid  input for CIL assembler.</p>
+<p>Method header contains information such as maximum stack size and local variable types.</p>
+</div>
+  
+  
   <a id="CilBytecodeParser_CilGraph_ToString_" data-uid="CilBytecodeParser.CilGraph.ToString*"></a>
   <h4 id="CilBytecodeParser_CilGraph_ToString" data-uid="CilBytecodeParser.CilGraph.ToString">ToString()</h4>
   <div class="markdown level1 summary"><p>Returns CIL code corresponding to this graph as a string</p>

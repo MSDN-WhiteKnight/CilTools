@@ -287,6 +287,9 @@ namespace CilBytecodeParser
             }
         }        
 
+        /// <summary>
+        /// Gets a signature referenced by this instruction, if applicable
+        /// </summary>
         public Signature ReferencedSignature
         {
             get
@@ -324,6 +327,9 @@ namespace CilBytecodeParser
             }
         }
 
+        /// <summary>
+        /// Gets the information about method parameter referenced by this instruction, if applicable
+        /// </summary>
         public ParameterInfo ReferencedParameter
         {
             get
@@ -354,6 +360,9 @@ namespace CilBytecodeParser
             }
         }
 
+        /// <summary>
+        /// Gets the information about local variable referenced by this instruction, if applicable
+        /// </summary>
         public LocalVariableInfo ReferencedLocal
         {
             get

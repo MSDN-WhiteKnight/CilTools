@@ -285,7 +285,7 @@ items:
     content: public CilInstruction Read()
     return:
       type: CilBytecodeParser.CilInstruction
-      description: CilInstruction retreived from the source
+      description: CilInstruction retrieved from the source
     content.vb: Public Function Read As CilInstruction
   overload: CilBytecodeParser.CilReader.Read*
   exceptions:
@@ -424,7 +424,7 @@ items:
     description: CilReader encountered unknown opcode
   - type: CilBytecodeParser.CilParserException
     commentId: T:CilBytecodeParser.CilParserException
-    description: Failed to retreive method body for the method
+    description: Failed to retrieve method body for the method
   modifiers.csharp:
   - public
   - static

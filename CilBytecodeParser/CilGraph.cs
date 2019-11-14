@@ -119,10 +119,7 @@ namespace CilBytecodeParser
         /// <summary>
         /// Gets a method for which this graph is built
         /// </summary>
-        public MethodBase Method { get { return this._Method; } }
-                
-        /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
-        /// <returns>A string of CIL code</returns>
+        public MethodBase Method { get { return this._Method; } }  
 
         /// <summary>
         /// Writes the CIL code corresponding to this graph into the specified TextWriter, optionally including signature, 

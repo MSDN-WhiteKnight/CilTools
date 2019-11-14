@@ -10,75 +10,11 @@ using CilBytecodeParser;
 using CilBytecodeParser.Extensions;
 
 namespace CilBytecodeParserDemo
-{
-    public class MyClass
-    {
-        public static string field;
-
-        [MyAttribute()]
-        [STAThread]
-        public void Foo(List<int> x, int param=0)
-        {
-            Console.WriteLine(this);
-
-            Program.f = param;
-        }
-    }
-
-    public class MyAttribute : Attribute
-    {
-        public MyAttribute()
-        {
-
-        }
-
-        public string Name { get; set; }
-    }
-
+{    
     class Program
     {
-        public static int f;
-        static void Test()
-        {
-            string asspath = "C:\\_\\Projects\\CppCliTest\\Debug\\CppCliTest.exe";
-            string type = "C";
-            string method = "test_pointer_operations";
-
-            /*Assembly ass = Assembly.LoadFrom(asspath);
-            Type t = ass.GetType(type);
-
-            MethodInfo[] methods = t.GetMethods(
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
-                );*/
-
-            MethodInfo mi = typeof(MyClass).GetMethod("Foo");//methods.Where((x) => { return x.Name == method; }).First();
-            
-            var graph = mi.GetCilGraph();
-            var instr = graph.GetInstructions().ToList();
-
-            /*foreach (var item in instr)
-            {
-                Console.Write(item.OpCode.ToString()+" ");
-                if (item.ReferencedSignature != null)
-                {
-                    Console.Write(item.ReferencedSignature.ToString());
-                }
-                if (item.ReferencedLocal != null)
-                {
-                    Console.Write("{0} {1} {2}", item.ReferencedLocal.LocalIndex, item.ReferencedLocal.LocalType, item.ReferencedLocal.IsPinned);
-                }
-                Console.WriteLine();
-            }*/
-
-            //graph.Print(null,false,false,true,true);
-            Console.WriteLine(graph.ToString());
-            Console.ReadKey();
-        }
-        
         static void Main(string[] args)
-        {
-            //Test();
-
+        {            
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
             Console.WriteLine("Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
             Console.WriteLine();

@@ -65,8 +65,16 @@ namespace CilBytecodeParser
         /// </summary>
         /// <param name="data">The byte array containing StandAloneMethodSig data (ECMA-335 II.23.2.3)</param>
         /// <param name="module">Module containing the passed signature</param>
+        /// <exception cref="System.ArgumentNullException">Source array is null</exception>
+        /// <exception cref="System.ArgumentException">Source array is empty</exception>
+        /// <exception cref="System.IO.EndOfStreamException">Unexpected end of input data</exception>
+        /// <exception cref="CilParserException">Input data is invalid</exception>
+        /// <exception cref="System.NotSupportedException">Signature contains generic types, function pointers or variable-bound arrays</exception>
         public Signature(byte[] data, Module module) //ECMA-335 II.23.2.3: StandAloneMethodSig
-        {            
+        {
+            if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
+            if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
+
             MemoryStream ms = new MemoryStream(data);
             using (ms)
             {
@@ -119,6 +127,7 @@ namespace CilBytecodeParser
         /// </summary>
         /// <param name="index">Index of the requested parameter</param>
         /// <returns>The type of requested parameter</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">Index is negative or outside the bounds of collection</exception>
         public TypeSpec GetParamType(int index)
         {
             if (index < 0 || index >= this._ParamTypes.Length)

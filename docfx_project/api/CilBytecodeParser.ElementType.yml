@@ -1,0 +1,943 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilBytecodeParser.ElementType
+  commentId: T:CilBytecodeParser.ElementType
+  id: ElementType
+  parent: CilBytecodeParser
+  children:
+  - CilBytecodeParser.ElementType.Array
+  - CilBytecodeParser.ElementType.Boolean
+  - CilBytecodeParser.ElementType.ByRef
+  - CilBytecodeParser.ElementType.Char
+  - CilBytecodeParser.ElementType.Class
+  - CilBytecodeParser.ElementType.FnPtr
+  - CilBytecodeParser.ElementType.GenericInst
+  - CilBytecodeParser.ElementType.I
+  - CilBytecodeParser.ElementType.I1
+  - CilBytecodeParser.ElementType.I2
+  - CilBytecodeParser.ElementType.I4
+  - CilBytecodeParser.ElementType.I8
+  - CilBytecodeParser.ElementType.Internal
+  - CilBytecodeParser.ElementType.Modifier
+  - CilBytecodeParser.ElementType.MVar
+  - CilBytecodeParser.ElementType.Object
+  - CilBytecodeParser.ElementType.Ptr
+  - CilBytecodeParser.ElementType.R4
+  - CilBytecodeParser.ElementType.R8
+  - CilBytecodeParser.ElementType.Sentinel
+  - CilBytecodeParser.ElementType.String
+  - CilBytecodeParser.ElementType.SzArray
+  - CilBytecodeParser.ElementType.TypedByRef
+  - CilBytecodeParser.ElementType.U
+  - CilBytecodeParser.ElementType.U1
+  - CilBytecodeParser.ElementType.U2
+  - CilBytecodeParser.ElementType.U4
+  - CilBytecodeParser.ElementType.U8
+  - CilBytecodeParser.ElementType.ValueType
+  - CilBytecodeParser.ElementType.Var
+  - CilBytecodeParser.ElementType.Void
+  langs:
+  - csharp
+  - vb
+  name: ElementType
+  nameWithType: ElementType
+  fullName: CilBytecodeParser.ElementType
+  type: Enum
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRepresents signature element type as defined in ECMA-335\n"
+  syntax:
+    content: 'public enum ElementType : byte'
+    content.vb: Public Enum ElementType As Byte
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilBytecodeParser.ElementType.Void
+  commentId: F:CilBytecodeParser.ElementType.Void
+  id: Void
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Void
+  nameWithType: ElementType.Void
+  fullName: CilBytecodeParser.ElementType.Void
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nThe absence of return value\n"
+  syntax:
+    content: Void = 1
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Boolean
+  commentId: F:CilBytecodeParser.ElementType.Boolean
+  id: Boolean
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Boolean
+  nameWithType: ElementType.Boolean
+  fullName: CilBytecodeParser.ElementType.Boolean
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nSystem.Boolean\n"
+  syntax:
+    content: Boolean = 2
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Char
+  commentId: F:CilBytecodeParser.ElementType.Char
+  id: Char
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Char
+  nameWithType: ElementType.Char
+  fullName: CilBytecodeParser.ElementType.Char
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nSystem.Char\n"
+  syntax:
+    content: Char = 3
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.I1
+  commentId: F:CilBytecodeParser.ElementType.I1
+  id: I1
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I1
+  nameWithType: ElementType.I1
+  fullName: CilBytecodeParser.ElementType.I1
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nsbyte\n"
+  syntax:
+    content: I1 = 4
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.U1
+  commentId: F:CilBytecodeParser.ElementType.U1
+  id: U1
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U1
+  nameWithType: ElementType.U1
+  fullName: CilBytecodeParser.ElementType.U1
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nbyte\n"
+  syntax:
+    content: U1 = 5
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.I2
+  commentId: F:CilBytecodeParser.ElementType.I2
+  id: I2
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I2
+  nameWithType: ElementType.I2
+  fullName: CilBytecodeParser.ElementType.I2
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nshort\n"
+  syntax:
+    content: I2 = 6
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.U2
+  commentId: F:CilBytecodeParser.ElementType.U2
+  id: U2
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U2
+  nameWithType: ElementType.U2
+  fullName: CilBytecodeParser.ElementType.U2
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nushort\n"
+  syntax:
+    content: U2 = 7
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.I4
+  commentId: F:CilBytecodeParser.ElementType.I4
+  id: I4
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I4
+  nameWithType: ElementType.I4
+  fullName: CilBytecodeParser.ElementType.I4
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nint\n"
+  syntax:
+    content: I4 = 8
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.U4
+  commentId: F:CilBytecodeParser.ElementType.U4
+  id: U4
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U4
+  nameWithType: ElementType.U4
+  fullName: CilBytecodeParser.ElementType.U4
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nuint\n"
+  syntax:
+    content: U4 = 9
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.I8
+  commentId: F:CilBytecodeParser.ElementType.I8
+  id: I8
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I8
+  nameWithType: ElementType.I8
+  fullName: CilBytecodeParser.ElementType.I8
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nlong\n"
+  syntax:
+    content: I8 = 10
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.U8
+  commentId: F:CilBytecodeParser.ElementType.U8
+  id: U8
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U8
+  nameWithType: ElementType.U8
+  fullName: CilBytecodeParser.ElementType.U8
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nulong\n"
+  syntax:
+    content: U8 = 11
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.R4
+  commentId: F:CilBytecodeParser.ElementType.R4
+  id: R4
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: R4
+  nameWithType: ElementType.R4
+  fullName: CilBytecodeParser.ElementType.R4
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nfloat\n"
+  syntax:
+    content: R4 = 12
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.R8
+  commentId: F:CilBytecodeParser.ElementType.R8
+  id: R8
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: R8
+  nameWithType: ElementType.R8
+  fullName: CilBytecodeParser.ElementType.R8
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\ndouble\n"
+  syntax:
+    content: R8 = 13
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.String
+  commentId: F:CilBytecodeParser.ElementType.String
+  id: String
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: String
+  nameWithType: ElementType.String
+  fullName: CilBytecodeParser.ElementType.String
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nSytem.String\n"
+  syntax:
+    content: String = 14
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Ptr
+  commentId: F:CilBytecodeParser.ElementType.Ptr
+  id: Ptr
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Ptr
+  nameWithType: ElementType.Ptr
+  fullName: CilBytecodeParser.ElementType.Ptr
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nUnmanaged pointer\n"
+  syntax:
+    content: Ptr = 15
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.ByRef
+  commentId: F:CilBytecodeParser.ElementType.ByRef
+  id: ByRef
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: ByRef
+  nameWithType: ElementType.ByRef
+  fullName: CilBytecodeParser.ElementType.ByRef
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nPassed by reference\n"
+  syntax:
+    content: ByRef = 16
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.ValueType
+  commentId: F:CilBytecodeParser.ElementType.ValueType
+  id: ValueType
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: ValueType
+  nameWithType: ElementType.ValueType
+  fullName: CilBytecodeParser.ElementType.ValueType
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nValue type\n"
+  syntax:
+    content: ValueType = 17
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Class
+  commentId: F:CilBytecodeParser.ElementType.Class
+  id: Class
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Class
+  nameWithType: ElementType.Class
+  fullName: CilBytecodeParser.ElementType.Class
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nReference type\n"
+  syntax:
+    content: Class = 18
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Var
+  commentId: F:CilBytecodeParser.ElementType.Var
+  id: Var
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Var
+  nameWithType: ElementType.Var
+  fullName: CilBytecodeParser.ElementType.Var
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGeneric parameter in a generic type definition\n"
+  syntax:
+    content: Var = 19
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Array
+  commentId: F:CilBytecodeParser.ElementType.Array
+  id: Array
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Array
+  nameWithType: ElementType.Array
+  fullName: CilBytecodeParser.ElementType.Array
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nArray\n"
+  syntax:
+    content: Array = 20
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.GenericInst
+  commentId: F:CilBytecodeParser.ElementType.GenericInst
+  id: GenericInst
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: GenericInst
+  nameWithType: ElementType.GenericInst
+  fullName: CilBytecodeParser.ElementType.GenericInst
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGeneric type instantiation\n"
+  syntax:
+    content: GenericInst = 21
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.TypedByRef
+  commentId: F:CilBytecodeParser.ElementType.TypedByRef
+  id: TypedByRef
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: TypedByRef
+  nameWithType: ElementType.TypedByRef
+  fullName: CilBytecodeParser.ElementType.TypedByRef
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nPassed by typed reference\n"
+  syntax:
+    content: TypedByRef = 22
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.I
+  commentId: F:CilBytecodeParser.ElementType.I
+  id: I
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I
+  nameWithType: ElementType.I
+  fullName: CilBytecodeParser.ElementType.I
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nSystem.IntPtr\n"
+  syntax:
+    content: I = 24
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.U
+  commentId: F:CilBytecodeParser.ElementType.U
+  id: U
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U
+  nameWithType: ElementType.U
+  fullName: CilBytecodeParser.ElementType.U
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nSystem.UIntPtr\n"
+  syntax:
+    content: U = 25
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.FnPtr
+  commentId: F:CilBytecodeParser.ElementType.FnPtr
+  id: FnPtr
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: FnPtr
+  nameWithType: ElementType.FnPtr
+  fullName: CilBytecodeParser.ElementType.FnPtr
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nFunction pointer\n"
+  syntax:
+    content: FnPtr = 27
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Object
+  commentId: F:CilBytecodeParser.ElementType.Object
+  id: Object
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Object
+  nameWithType: ElementType.Object
+  fullName: CilBytecodeParser.ElementType.Object
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nSystem.Object\n"
+  syntax:
+    content: Object = 28
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.SzArray
+  commentId: F:CilBytecodeParser.ElementType.SzArray
+  id: SzArray
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: SzArray
+  nameWithType: ElementType.SzArray
+  fullName: CilBytecodeParser.ElementType.SzArray
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nSingle-dimensional array with 0 lower bound\n"
+  syntax:
+    content: SzArray = 29
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.MVar
+  commentId: F:CilBytecodeParser.ElementType.MVar
+  id: MVar
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: MVar
+  nameWithType: ElementType.MVar
+  fullName: CilBytecodeParser.ElementType.MVar
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGeneric parameter in a generic method definition\n"
+  syntax:
+    content: MVar = 30
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Internal
+  commentId: F:CilBytecodeParser.ElementType.Internal
+  id: Internal
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Internal
+  nameWithType: ElementType.Internal
+  fullName: CilBytecodeParser.ElementType.Internal
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nImplemented within the CLI\n"
+  syntax:
+    content: Internal = 33
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Modifier
+  commentId: F:CilBytecodeParser.ElementType.Modifier
+  id: Modifier
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Modifier
+  nameWithType: ElementType.Modifier
+  fullName: CilBytecodeParser.ElementType.Modifier
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nModifier\n"
+  syntax:
+    content: Modifier = 64
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilBytecodeParser.ElementType.Sentinel
+  commentId: F:CilBytecodeParser.ElementType.Sentinel
+  id: Sentinel
+  parent: CilBytecodeParser.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Sentinel
+  nameWithType: ElementType.Sentinel
+  fullName: CilBytecodeParser.ElementType.Sentinel
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nSentinel for vararg method signature\n"
+  syntax:
+    content: Sentinel = 65
+    return:
+      type: CilBytecodeParser.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilBytecodeParser
+  commentId: N:CilBytecodeParser
+  isExternal: true
+  name: CilBytecodeParser
+  nameWithType: CilBytecodeParser
+  fullName: CilBytecodeParser
+- uid: CilBytecodeParser.ElementType
+  commentId: T:CilBytecodeParser.ElementType
+  parent: CilBytecodeParser
+  isExternal: true
+  name: ElementType
+  nameWithType: ElementType
+  fullName: CilBytecodeParser.ElementType

@@ -121,7 +121,7 @@ items:
     parameters:
     - id: m
       type: System.Reflection.MethodBase
-      description: Method for which to retreive CIL
+      description: Method for which to retrieve CIL
     return:
       type: System.String
       description: CIL code string
@@ -175,7 +175,7 @@ items:
     description: CilReader encountered unknown opcode
   - type: CilBytecodeParser.CilParserException
     commentId: T:CilBytecodeParser.CilParserException
-    description: Failed to retreive method body for the method
+    description: Failed to retrieve method body for the method
   modifiers.csharp:
   - public
   - static
@@ -363,7 +363,7 @@ items:
     parameters:
     - id: mb
       type: System.Reflection.MethodBase
-      description: Method for which to retreive referenced methods
+      description: Method for which to retrieve referenced methods
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
       description: A collection of referenced methods
@@ -378,7 +378,7 @@ items:
     description: CilReader encountered unknown opcode
   - type: CilBytecodeParser.CilParserException
     commentId: T:CilBytecodeParser.CilParserException
-    description: Failed to retreive method body for the method
+    description: Failed to retrieve method body for the method
   modifiers.csharp:
   - public
   - static
@@ -410,7 +410,7 @@ items:
     parameters:
     - id: t
       type: System.Type
-      description: Type for which to retreive referenced methods
+      description: Type for which to retrieve referenced methods
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
       description: A collection of referenced methods
@@ -450,7 +450,7 @@ items:
     parameters:
     - id: ass
       type: System.Reflection.Assembly
-      description: Assembly for which to retreive referenced methods
+      description: Assembly for which to retrieve referenced methods
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
       description: A collection of referenced methods
@@ -490,7 +490,7 @@ items:
     parameters:
     - id: mb
       type: System.Reflection.MethodBase
-      description: Method for which to retreive referenced members
+      description: Method for which to retrieve referenced members
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
       description: A collection of MemberInfo objects
@@ -505,7 +505,7 @@ items:
     description: CilReader encountered unknown opcode
   - type: CilBytecodeParser.CilParserException
     commentId: T:CilBytecodeParser.CilParserException
-    description: Failed to retreive method body for the method
+    description: Failed to retrieve method body for the method
   modifiers.csharp:
   - public
   - static
@@ -537,7 +537,7 @@ items:
     parameters:
     - id: t
       type: System.Type
-      description: Type for which to retreive referenced memmbers
+      description: Type for which to retrieve referenced memmbers
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
       description: A collection of MemberInfo objects
@@ -577,7 +577,7 @@ items:
     parameters:
     - id: ass
       type: System.Reflection.Assembly
-      description: Assembly for which to retreive referenced members
+      description: Assembly for which to retrieve referenced members
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
       description: A collection of MemberInfo objects
@@ -617,10 +617,10 @@ items:
     parameters:
     - id: mb
       type: System.Reflection.MethodBase
-      description: Method for which to retreive referenced members
+      description: Method for which to retrieve referenced members
     - id: flags
       type: CilBytecodeParser.MemberCriteria
-      description: A combination of bitwise flags that control what kind of members are retreived
+      description: A combination of bitwise flags that control what kind of members are retrieved
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
       description: A collection of MemberInfo objects
@@ -635,7 +635,7 @@ items:
     description: CilReader encountered unknown opcode
   - type: CilBytecodeParser.CilParserException
     commentId: T:CilBytecodeParser.CilParserException
-    description: Failed to retreive method body for the method
+    description: Failed to retrieve method body for the method
   modifiers.csharp:
   - public
   - static
@@ -667,10 +667,10 @@ items:
     parameters:
     - id: t
       type: System.Type
-      description: Type for which to retreive referenced memmbers
+      description: Type for which to retrieve referenced memmbers
     - id: flags
       type: CilBytecodeParser.MemberCriteria
-      description: A combination of bitwise flags that control what kind of members are retreived
+      description: A combination of bitwise flags that control what kind of members are retrieved
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
       description: A collection of MemberInfo objects
@@ -710,10 +710,10 @@ items:
     parameters:
     - id: ass
       type: System.Reflection.Assembly
-      description: Assembly for which to retreive referenced members
+      description: Assembly for which to retrieve referenced members
     - id: flags
       type: CilBytecodeParser.MemberCriteria
-      description: A combination of bitwise flags that control what kind of members are retreived
+      description: A combination of bitwise flags that control what kind of members are retrieved
     return:
       type: System.Collections.Generic.IEnumerable{System.Reflection.MemberInfo}
       description: A collection of MemberInfo objects

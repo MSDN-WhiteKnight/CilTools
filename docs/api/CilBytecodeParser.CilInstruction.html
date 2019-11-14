@@ -109,7 +109,7 @@
     <pre><code class="lang-csharp hljs">public class CilInstruction</code></pre>
   </div>
   <h5 id="CilBytecodeParser_CilInstruction_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>To retreive a collection of CIL instructions for the specified method, use methods of <a class="xref" href="CilBytecodeParser.CilReader.html">CilReader</a> class.</p>
+  <div class="markdown level0 remarks"><p>To retrieve a collection of CIL instructions for the specified method, use methods of <a class="xref" href="CilBytecodeParser.CilReader.html">CilReader</a> class.</p>
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -173,7 +173,7 @@
     </tbody>
   </table>
   <h5 id="CilBytecodeParser_CilInstruction__ctor_System_Reflection_Emit_OpCode_System_Object_System_UInt32_System_UInt32_System_UInt32_System_Reflection_MethodBase__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Do not use this constructor directly. To retreive a collection of CIL instructions for the specified method, use methods of <a class="xref" href="CilBytecodeParser.CilReader.html">CilReader</a> class instead.</p>
+  <div class="markdown level1 remarks"><p>Do not use this constructor directly. To retrieve a collection of CIL instructions for the specified method, use methods of <a class="xref" href="CilBytecodeParser.CilReader.html">CilReader</a> class instead.</p>
 </div>
   <h3 id="fields">Fields
   </h3>
@@ -565,6 +565,32 @@
   </table>
   
   
+  <a id="CilBytecodeParser_CilInstruction_ReferencedLocal_" data-uid="CilBytecodeParser.CilInstruction.ReferencedLocal*"></a>
+  <h4 id="CilBytecodeParser_CilInstruction_ReferencedLocal" data-uid="CilBytecodeParser.CilInstruction.ReferencedLocal">ReferencedLocal</h4>
+  <div class="markdown level1 summary"><p>Gets the information about local variable referenced by this instruction, if applicable</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LocalVariableInfo ReferencedLocal { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.LocalVariableInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="CilBytecodeParser_CilInstruction_ReferencedMember_" data-uid="CilBytecodeParser.CilInstruction.ReferencedMember*"></a>
   <h4 id="CilBytecodeParser_CilInstruction_ReferencedMember" data-uid="CilBytecodeParser.CilInstruction.ReferencedMember">ReferencedMember</h4>
   <div class="markdown level1 summary"><p>Gets a member (type, field or method) referenced by this instruction, if applicable</p>
@@ -585,6 +611,58 @@
     <tbody>
       <tr>
         <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilBytecodeParser_CilInstruction_ReferencedParameter_" data-uid="CilBytecodeParser.CilInstruction.ReferencedParameter*"></a>
+  <h4 id="CilBytecodeParser_CilInstruction_ReferencedParameter" data-uid="CilBytecodeParser.CilInstruction.ReferencedParameter">ReferencedParameter</h4>
+  <div class="markdown level1 summary"><p>Gets the information about method parameter referenced by this instruction, if applicable</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ParameterInfo ReferencedParameter { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.ParameterInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilBytecodeParser_CilInstruction_ReferencedSignature_" data-uid="CilBytecodeParser.CilInstruction.ReferencedSignature*"></a>
+  <h4 id="CilBytecodeParser_CilInstruction_ReferencedSignature" data-uid="CilBytecodeParser.CilInstruction.ReferencedSignature">ReferencedSignature</h4>
+  <div class="markdown level1 summary"><p>Gets a signature referenced by this instruction, if applicable</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Signature ReferencedSignature { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilBytecodeParser.Signature.html">Signature</a></td>
         <td></td>
       </tr>
     </tbody>

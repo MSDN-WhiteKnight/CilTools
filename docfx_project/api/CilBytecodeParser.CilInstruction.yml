@@ -26,7 +26,10 @@ items:
   - CilBytecodeParser.CilInstruction.OperandType
   - CilBytecodeParser.CilInstruction.OrdinalNumber
   - CilBytecodeParser.CilInstruction.Parse(System.String)
+  - CilBytecodeParser.CilInstruction.ReferencedLocal
   - CilBytecodeParser.CilInstruction.ReferencedMember
+  - CilBytecodeParser.CilInstruction.ReferencedParameter
+  - CilBytecodeParser.CilInstruction.ReferencedSignature
   - CilBytecodeParser.CilInstruction.ReferencedString
   - CilBytecodeParser.CilInstruction.ReferencedType
   - CilBytecodeParser.CilInstruction.ToString
@@ -45,7 +48,7 @@ items:
   - CilBytecodeParser
   namespace: CilBytecodeParser
   summary: "\nRepresents CIL instruction, a main structural element of the method body which consists of operation code and operand.\n"
-  remarks: To retreive a collection of CIL instructions for the specified method, use methods of <xref href="CilBytecodeParser.CilReader" data-throw-if-not-resolved="false"></xref> class.
+  remarks: To retrieve a collection of CIL instructions for the specified method, use methods of <xref href="CilBytecodeParser.CilReader" data-throw-if-not-resolved="false"></xref> class.
   syntax:
     content: public class CilInstruction
     content.vb: Public Class CilInstruction
@@ -279,7 +282,7 @@ items:
   - CilBytecodeParser
   namespace: CilBytecodeParser
   summary: "\nCreates a new CilInstruction object initialized with specified field values (infrastructure)\n"
-  remarks: Do not use this constructor directly. To retreive a collection of CIL instructions for the specified method, use methods of <xref href="CilBytecodeParser.CilReader" data-throw-if-not-resolved="false"></xref> class instead.
+  remarks: Do not use this constructor directly. To retrieve a collection of CIL instructions for the specified method, use methods of <xref href="CilBytecodeParser.CilReader" data-throw-if-not-resolved="false"></xref> class instead.
   syntax:
     content: public CilInstruction(OpCode opc, object operand = null, uint opsize = 0U, uint byteoffset = 0U, uint ordinalnum = 0U, MethodBase mb = null)
     parameters:
@@ -842,6 +845,99 @@ items:
   modifiers.vb:
   - Public
   - ReadOnly
+- uid: CilBytecodeParser.CilInstruction.ReferencedSignature
+  commentId: P:CilBytecodeParser.CilInstruction.ReferencedSignature
+  id: ReferencedSignature
+  parent: CilBytecodeParser.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ReferencedSignature
+  nameWithType: CilInstruction.ReferencedSignature
+  fullName: CilBytecodeParser.CilInstruction.ReferencedSignature
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets a signature referenced by this instruction, if applicable\n"
+  syntax:
+    content: public Signature ReferencedSignature { get; }
+    parameters: []
+    return:
+      type: CilBytecodeParser.Signature
+    content.vb: Public ReadOnly Property ReferencedSignature As Signature
+  overload: CilBytecodeParser.CilInstruction.ReferencedSignature*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilBytecodeParser.CilInstruction.ReferencedParameter
+  commentId: P:CilBytecodeParser.CilInstruction.ReferencedParameter
+  id: ReferencedParameter
+  parent: CilBytecodeParser.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ReferencedParameter
+  nameWithType: CilInstruction.ReferencedParameter
+  fullName: CilBytecodeParser.CilInstruction.ReferencedParameter
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the information about method parameter referenced by this instruction, if applicable\n"
+  syntax:
+    content: public ParameterInfo ReferencedParameter { get; }
+    parameters: []
+    return:
+      type: System.Reflection.ParameterInfo
+    content.vb: Public ReadOnly Property ReferencedParameter As ParameterInfo
+  overload: CilBytecodeParser.CilInstruction.ReferencedParameter*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilBytecodeParser.CilInstruction.ReferencedLocal
+  commentId: P:CilBytecodeParser.CilInstruction.ReferencedLocal
+  id: ReferencedLocal
+  parent: CilBytecodeParser.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ReferencedLocal
+  nameWithType: CilInstruction.ReferencedLocal
+  fullName: CilBytecodeParser.CilInstruction.ReferencedLocal
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the information about local variable referenced by this instruction, if applicable\n"
+  syntax:
+    content: public LocalVariableInfo ReferencedLocal { get; }
+    parameters: []
+    return:
+      type: System.Reflection.LocalVariableInfo
+    content.vb: Public ReadOnly Property ReferencedLocal As LocalVariableInfo
+  overload: CilBytecodeParser.CilInstruction.ReferencedLocal*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
 - uid: CilBytecodeParser.CilInstruction.Error
   commentId: E:CilBytecodeParser.CilInstruction.Error
   id: Error
@@ -1366,6 +1462,45 @@ references:
   name: ReferencedString
   nameWithType: CilInstruction.ReferencedString
   fullName: CilBytecodeParser.CilInstruction.ReferencedString
+- uid: CilBytecodeParser.CilInstruction.ReferencedSignature*
+  commentId: Overload:CilBytecodeParser.CilInstruction.ReferencedSignature
+  isExternal: true
+  name: ReferencedSignature
+  nameWithType: CilInstruction.ReferencedSignature
+  fullName: CilBytecodeParser.CilInstruction.ReferencedSignature
+- uid: CilBytecodeParser.Signature
+  commentId: T:CilBytecodeParser.Signature
+  parent: CilBytecodeParser
+  isExternal: true
+  name: Signature
+  nameWithType: Signature
+  fullName: CilBytecodeParser.Signature
+- uid: CilBytecodeParser.CilInstruction.ReferencedParameter*
+  commentId: Overload:CilBytecodeParser.CilInstruction.ReferencedParameter
+  isExternal: true
+  name: ReferencedParameter
+  nameWithType: CilInstruction.ReferencedParameter
+  fullName: CilBytecodeParser.CilInstruction.ReferencedParameter
+- uid: System.Reflection.ParameterInfo
+  commentId: T:System.Reflection.ParameterInfo
+  parent: System.Reflection
+  isExternal: true
+  name: ParameterInfo
+  nameWithType: ParameterInfo
+  fullName: System.Reflection.ParameterInfo
+- uid: CilBytecodeParser.CilInstruction.ReferencedLocal*
+  commentId: Overload:CilBytecodeParser.CilInstruction.ReferencedLocal
+  isExternal: true
+  name: ReferencedLocal
+  nameWithType: CilInstruction.ReferencedLocal
+  fullName: CilBytecodeParser.CilInstruction.ReferencedLocal
+- uid: System.Reflection.LocalVariableInfo
+  commentId: T:System.Reflection.LocalVariableInfo
+  parent: System.Reflection
+  isExternal: true
+  name: LocalVariableInfo
+  nameWithType: LocalVariableInfo
+  fullName: System.Reflection.LocalVariableInfo
 - uid: System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
   commentId: T:System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
   parent: System

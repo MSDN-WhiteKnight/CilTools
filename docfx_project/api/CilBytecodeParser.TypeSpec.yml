@@ -1,0 +1,968 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilBytecodeParser.TypeSpec
+  commentId: T:CilBytecodeParser.TypeSpec
+  id: TypeSpec
+  parent: CilBytecodeParser
+  children:
+  - CilBytecodeParser.TypeSpec.ElementType
+  - CilBytecodeParser.TypeSpec.Error
+  - CilBytecodeParser.TypeSpec.GetModifier(System.Int32)
+  - CilBytecodeParser.TypeSpec.GetModifiers
+  - CilBytecodeParser.TypeSpec.InnerTypeSpec
+  - CilBytecodeParser.TypeSpec.Modifiers
+  - CilBytecodeParser.TypeSpec.ModifiersCount
+  - CilBytecodeParser.TypeSpec.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
+  - CilBytecodeParser.TypeSpec.ToString
+  - CilBytecodeParser.TypeSpec.Type
+  langs:
+  - csharp
+  - vb
+  name: TypeSpec
+  nameWithType: TypeSpec
+  fullName: CilBytecodeParser.TypeSpec
+  type: Class
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRepresents type specification, the set of type information stored in the signature, as defined by ECMA-335\n"
+  syntax:
+    content: public class TypeSpec
+    content.vb: Public Class TypeSpec
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilBytecodeParser.TypeSpec.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
+  commentId: M:CilBytecodeParser.TypeSpec.OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
+  id: OnError(System.Object,CilBytecodeParser.CilErrorEventArgs)
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: OnError(Object, CilErrorEventArgs)
+  nameWithType: TypeSpec.OnError(Object, CilErrorEventArgs)
+  fullName: CilBytecodeParser.TypeSpec.OnError(System.Object, CilBytecodeParser.CilErrorEventArgs)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRaises a &apos;Error&apos; event\n"
+  syntax:
+    content: protected static void OnError(object sender, CilErrorEventArgs e)
+    parameters:
+    - id: sender
+      type: System.Object
+      description: Object that caused this event
+    - id: e
+      type: CilBytecodeParser.CilErrorEventArgs
+      description: Event arguments
+    content.vb: Protected Shared Sub OnError(sender As Object, e As CilErrorEventArgs)
+  overload: CilBytecodeParser.TypeSpec.OnError*
+  modifiers.csharp:
+  - protected
+  - static
+  modifiers.vb:
+  - Protected
+  - Shared
+- uid: CilBytecodeParser.TypeSpec.GetModifier(System.Int32)
+  commentId: M:CilBytecodeParser.TypeSpec.GetModifier(System.Int32)
+  id: GetModifier(System.Int32)
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: GetModifier(Int32)
+  nameWithType: TypeSpec.GetModifier(Int32)
+  fullName: CilBytecodeParser.TypeSpec.GetModifier(System.Int32)
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the custom modifier with the specified index\n"
+  syntax:
+    content: public CustomModifier GetModifier(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: Index of the requested modifier
+    return:
+      type: CilBytecodeParser.CustomModifier
+      description: The requested custom modifier
+    content.vb: Public Function GetModifier(index As Integer) As CustomModifier
+  overload: CilBytecodeParser.TypeSpec.GetModifier*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Index is negative or outside the bounds of the collection
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilBytecodeParser.TypeSpec.GetModifiers
+  commentId: M:CilBytecodeParser.TypeSpec.GetModifiers
+  id: GetModifiers
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: GetModifiers()
+  nameWithType: TypeSpec.GetModifiers()
+  fullName: CilBytecodeParser.TypeSpec.GetModifiers()
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the array of custom modifiers associated with this type specification\n"
+  syntax:
+    content: public CustomModifier[] GetModifiers()
+    return:
+      type: CilBytecodeParser.CustomModifier[]
+      description: The array of custom modifiers
+    content.vb: Public Function GetModifiers As CustomModifier()
+  overload: CilBytecodeParser.TypeSpec.GetModifiers*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilBytecodeParser.TypeSpec.ToString
+  commentId: M:CilBytecodeParser.TypeSpec.ToString
+  id: ToString
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: TypeSpec.ToString()
+  fullName: CilBytecodeParser.TypeSpec.ToString()
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nReturns textual representation of this type specification as CIL code\n"
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString As String
+  overridden: System.Object.ToString
+  overload: CilBytecodeParser.TypeSpec.ToString*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilBytecodeParser.TypeSpec.ElementType
+  commentId: P:CilBytecodeParser.TypeSpec.ElementType
+  id: ElementType
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: ElementType
+  nameWithType: TypeSpec.ElementType
+  fullName: CilBytecodeParser.TypeSpec.ElementType
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the element type of this type specification \n"
+  syntax:
+    content: public ElementType ElementType { get; }
+    parameters: []
+    return:
+      type: CilBytecodeParser.ElementType
+    content.vb: Public ReadOnly Property ElementType As ElementType
+  overload: CilBytecodeParser.TypeSpec.ElementType*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilBytecodeParser.TypeSpec.ModifiersCount
+  commentId: P:CilBytecodeParser.TypeSpec.ModifiersCount
+  id: ModifiersCount
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: ModifiersCount
+  nameWithType: TypeSpec.ModifiersCount
+  fullName: CilBytecodeParser.TypeSpec.ModifiersCount
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the amount of custom modifiers associated with this type specification \n"
+  syntax:
+    content: public int ModifiersCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property ModifiersCount As Integer
+  overload: CilBytecodeParser.TypeSpec.ModifiersCount*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilBytecodeParser.TypeSpec.Modifiers
+  commentId: P:CilBytecodeParser.TypeSpec.Modifiers
+  id: Modifiers
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: Modifiers
+  nameWithType: TypeSpec.Modifiers
+  fullName: CilBytecodeParser.TypeSpec.Modifiers
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nEnumerates custom modifiers associated with this type specification\n"
+  syntax:
+    content: public IEnumerable<CustomModifier> Modifiers { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{CilBytecodeParser.CustomModifier}
+    content.vb: Public ReadOnly Property Modifiers As IEnumerable(Of CustomModifier)
+  overload: CilBytecodeParser.TypeSpec.Modifiers*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilBytecodeParser.TypeSpec.InnerTypeSpec
+  commentId: P:CilBytecodeParser.TypeSpec.InnerTypeSpec
+  id: InnerTypeSpec
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: InnerTypeSpec
+  nameWithType: TypeSpec.InnerTypeSpec
+  fullName: CilBytecodeParser.TypeSpec.InnerTypeSpec
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the inner type specification if this instance represents an array or pointer type. For other types, the value is null\n"
+  syntax:
+    content: public TypeSpec InnerTypeSpec { get; }
+    parameters: []
+    return:
+      type: CilBytecodeParser.TypeSpec
+    content.vb: Public ReadOnly Property InnerTypeSpec As TypeSpec
+  overload: CilBytecodeParser.TypeSpec.InnerTypeSpec*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilBytecodeParser.TypeSpec.Type
+  commentId: P:CilBytecodeParser.TypeSpec.Type
+  id: Type
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: TypeSpec.Type
+  fullName: CilBytecodeParser.TypeSpec.Type
+  type: Property
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets the type which this type specification represents\n"
+  syntax:
+    content: public Type Type { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public ReadOnly Property Type As Type
+  overload: CilBytecodeParser.TypeSpec.Type*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilBytecodeParser.TypeSpec.Error
+  commentId: E:CilBytecodeParser.TypeSpec.Error
+  id: Error
+  parent: CilBytecodeParser.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: TypeSpec.Error
+  fullName: CilBytecodeParser.TypeSpec.Error
+  type: Event
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nRaised when error occurs in one of the methods in this class\n"
+  syntax:
+    content: public static event EventHandler<CilErrorEventArgs> Error
+    return:
+      type: System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+    content.vb: Public Shared Event Error As EventHandler(Of CilErrorEventArgs)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: CilBytecodeParser
+  commentId: N:CilBytecodeParser
+  isExternal: true
+  name: CilBytecodeParser
+  nameWithType: CilBytecodeParser
+  fullName: CilBytecodeParser
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilBytecodeParser.TypeSpec.OnError*
+  commentId: Overload:CilBytecodeParser.TypeSpec.OnError
+  isExternal: true
+  name: OnError
+  nameWithType: TypeSpec.OnError
+  fullName: CilBytecodeParser.TypeSpec.OnError
+- uid: CilBytecodeParser.CilErrorEventArgs
+  commentId: T:CilBytecodeParser.CilErrorEventArgs
+  parent: CilBytecodeParser
+  isExternal: true
+  name: CilErrorEventArgs
+  nameWithType: CilErrorEventArgs
+  fullName: CilBytecodeParser.CilErrorEventArgs
+- uid: CilBytecodeParser.TypeSpec.GetModifier*
+  commentId: Overload:CilBytecodeParser.TypeSpec.GetModifier
+  isExternal: true
+  name: GetModifier
+  nameWithType: TypeSpec.GetModifier
+  fullName: CilBytecodeParser.TypeSpec.GetModifier
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilBytecodeParser.CustomModifier
+  commentId: T:CilBytecodeParser.CustomModifier
+  parent: CilBytecodeParser
+  isExternal: true
+  name: CustomModifier
+  nameWithType: CustomModifier
+  fullName: CilBytecodeParser.CustomModifier
+- uid: CilBytecodeParser.TypeSpec.GetModifiers*
+  commentId: Overload:CilBytecodeParser.TypeSpec.GetModifiers
+  isExternal: true
+  name: GetModifiers
+  nameWithType: TypeSpec.GetModifiers
+  fullName: CilBytecodeParser.TypeSpec.GetModifiers
+- uid: CilBytecodeParser.CustomModifier[]
+  isExternal: true
+  name: CustomModifier[]
+  nameWithType: CustomModifier[]
+  fullName: CilBytecodeParser.CustomModifier[]
+  nameWithType.vb: CustomModifier()
+  fullName.vb: CilBytecodeParser.CustomModifier()
+  name.vb: CustomModifier()
+  spec.csharp:
+  - uid: CilBytecodeParser.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilBytecodeParser.CustomModifier
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilBytecodeParser.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilBytecodeParser.CustomModifier
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilBytecodeParser.TypeSpec.ToString*
+  commentId: Overload:CilBytecodeParser.TypeSpec.ToString
+  isExternal: true
+  name: ToString
+  nameWithType: TypeSpec.ToString
+  fullName: CilBytecodeParser.TypeSpec.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilBytecodeParser.TypeSpec.ElementType*
+  commentId: Overload:CilBytecodeParser.TypeSpec.ElementType
+  isExternal: true
+  name: ElementType
+  nameWithType: TypeSpec.ElementType
+  fullName: CilBytecodeParser.TypeSpec.ElementType
+- uid: CilBytecodeParser.ElementType
+  commentId: T:CilBytecodeParser.ElementType
+  parent: CilBytecodeParser
+  isExternal: true
+  name: ElementType
+  nameWithType: ElementType
+  fullName: CilBytecodeParser.ElementType
+- uid: CilBytecodeParser.TypeSpec.ModifiersCount*
+  commentId: Overload:CilBytecodeParser.TypeSpec.ModifiersCount
+  isExternal: true
+  name: ModifiersCount
+  nameWithType: TypeSpec.ModifiersCount
+  fullName: CilBytecodeParser.TypeSpec.ModifiersCount
+- uid: CilBytecodeParser.TypeSpec.Modifiers*
+  commentId: Overload:CilBytecodeParser.TypeSpec.Modifiers
+  isExternal: true
+  name: Modifiers
+  nameWithType: TypeSpec.Modifiers
+  fullName: CilBytecodeParser.TypeSpec.Modifiers
+- uid: System.Collections.Generic.IEnumerable{CilBytecodeParser.CustomModifier}
+  commentId: T:System.Collections.Generic.IEnumerable{CilBytecodeParser.CustomModifier}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<CustomModifier>
+  nameWithType: IEnumerable<CustomModifier>
+  fullName: System.Collections.Generic.IEnumerable<CilBytecodeParser.CustomModifier>
+  nameWithType.vb: IEnumerable(Of CustomModifier)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilBytecodeParser.CustomModifier)
+  name.vb: IEnumerable(Of CustomModifier)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilBytecodeParser.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilBytecodeParser.CustomModifier
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilBytecodeParser.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilBytecodeParser.CustomModifier
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilBytecodeParser.TypeSpec.InnerTypeSpec*
+  commentId: Overload:CilBytecodeParser.TypeSpec.InnerTypeSpec
+  isExternal: true
+  name: InnerTypeSpec
+  nameWithType: TypeSpec.InnerTypeSpec
+  fullName: CilBytecodeParser.TypeSpec.InnerTypeSpec
+- uid: CilBytecodeParser.TypeSpec
+  commentId: T:CilBytecodeParser.TypeSpec
+  parent: CilBytecodeParser
+  isExternal: true
+  name: TypeSpec
+  nameWithType: TypeSpec
+  fullName: CilBytecodeParser.TypeSpec
+- uid: CilBytecodeParser.TypeSpec.Type*
+  commentId: Overload:CilBytecodeParser.TypeSpec.Type
+  isExternal: true
+  name: Type
+  nameWithType: TypeSpec.Type
+  fullName: CilBytecodeParser.TypeSpec.Type
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+  commentId: T:System.EventHandler{CilBytecodeParser.CilErrorEventArgs}
+  parent: System
+  definition: System.EventHandler`1
+  name: EventHandler<CilErrorEventArgs>
+  nameWithType: EventHandler<CilErrorEventArgs>
+  fullName: System.EventHandler<CilBytecodeParser.CilErrorEventArgs>
+  nameWithType.vb: EventHandler(Of CilErrorEventArgs)
+  fullName.vb: System.EventHandler(Of CilBytecodeParser.CilErrorEventArgs)
+  name.vb: EventHandler(Of CilErrorEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilBytecodeParser.CilErrorEventArgs
+    name: CilErrorEventArgs
+    nameWithType: CilErrorEventArgs
+    fullName: CilBytecodeParser.CilErrorEventArgs
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilBytecodeParser.CilErrorEventArgs
+    name: CilErrorEventArgs
+    nameWithType: CilErrorEventArgs
+    fullName: CilBytecodeParser.CilErrorEventArgs
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.EventHandler`1
+  commentId: T:System.EventHandler`1
+  isExternal: true
+  name: EventHandler<TEventArgs>
+  nameWithType: EventHandler<TEventArgs>
+  fullName: System.EventHandler<TEventArgs>
+  nameWithType.vb: EventHandler(Of TEventArgs)
+  fullName.vb: System.EventHandler(Of TEventArgs)
+  name.vb: EventHandler(Of TEventArgs)
+  spec.csharp:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.EventHandler`1
+    name: EventHandler
+    nameWithType: EventHandler
+    fullName: System.EventHandler
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: TEventArgs
+    nameWithType: TEventArgs
+    fullName: TEventArgs
+  - name: )
+    nameWithType: )
+    fullName: )

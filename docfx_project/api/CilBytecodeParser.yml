@@ -4,6 +4,7 @@ items:
   commentId: N:CilBytecodeParser
   id: CilBytecodeParser
   children:
+  - CilBytecodeParser.CallingConvention
   - CilBytecodeParser.CilAnalysis
   - CilBytecodeParser.CilErrorEventArgs
   - CilBytecodeParser.CilGraph
@@ -13,8 +14,12 @@ items:
   - CilBytecodeParser.CilParserException
   - CilBytecodeParser.CilReader
   - CilBytecodeParser.CilReaderState
+  - CilBytecodeParser.CustomModifier
   - CilBytecodeParser.DebugUtils
+  - CilBytecodeParser.ElementType
   - CilBytecodeParser.MemberCriteria
+  - CilBytecodeParser.Signature
+  - CilBytecodeParser.TypeSpec
   langs:
   - csharp
   - vb
@@ -45,6 +50,13 @@ references:
   name: CilErrorEventArgs
   nameWithType: CilErrorEventArgs
   fullName: CilBytecodeParser.CilErrorEventArgs
+- uid: CilBytecodeParser.CustomModifier
+  commentId: T:CilBytecodeParser.CustomModifier
+  parent: CilBytecodeParser
+  isExternal: true
+  name: CustomModifier
+  nameWithType: CustomModifier
+  fullName: CilBytecodeParser.CustomModifier
 - uid: CilBytecodeParser.DebugUtils
   commentId: T:CilBytecodeParser.DebugUtils
   isExternal: true
@@ -97,6 +109,34 @@ references:
   name: CilReader
   nameWithType: CilReader
   fullName: CilBytecodeParser.CilReader
+- uid: CilBytecodeParser.CallingConvention
+  commentId: T:CilBytecodeParser.CallingConvention
+  parent: CilBytecodeParser
+  isExternal: true
+  name: CallingConvention
+  nameWithType: CallingConvention
+  fullName: CilBytecodeParser.CallingConvention
+- uid: CilBytecodeParser.Signature
+  commentId: T:CilBytecodeParser.Signature
+  parent: CilBytecodeParser
+  isExternal: true
+  name: Signature
+  nameWithType: Signature
+  fullName: CilBytecodeParser.Signature
+- uid: CilBytecodeParser.ElementType
+  commentId: T:CilBytecodeParser.ElementType
+  parent: CilBytecodeParser
+  isExternal: true
+  name: ElementType
+  nameWithType: ElementType
+  fullName: CilBytecodeParser.ElementType
+- uid: CilBytecodeParser.TypeSpec
+  commentId: T:CilBytecodeParser.TypeSpec
+  parent: CilBytecodeParser
+  isExternal: true
+  name: TypeSpec
+  nameWithType: TypeSpec
+  fullName: CilBytecodeParser.TypeSpec
 - uid: CilBytecodeParser
   commentId: N:CilBytecodeParser
   isExternal: true

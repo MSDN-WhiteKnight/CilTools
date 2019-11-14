@@ -5,11 +5,23 @@
   "files": [
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CallingConvention.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CallingConvention.html",
+          "hash": "khKu71JUFeFZDxuvY5HeDg=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/CilBytecodeParser.CilAnalysis.yml",
       "output": {
         ".html": {
           "relative_path": "api/CilBytecodeParser.CilAnalysis.html",
-          "hash": "ZChkfMzzqtQWGXtiqyxaPQ=="
+          "hash": "vNshmylt9OwEmOtiJS/epg=="
         }
       },
       "is_incremental": false,
@@ -33,7 +45,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CilBytecodeParser.CilGraph.html",
-          "hash": "bPy4g4NZePIbE+jFh76NsQ=="
+          "hash": "SV1SdHxjMAKC3eoxGlWK7Q=="
         }
       },
       "is_incremental": false,
@@ -69,7 +81,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CilBytecodeParser.CilInstruction.html",
-          "hash": "dj85KMaR654gkv5CknGcfg=="
+          "hash": "jqq7iGjurUm5OHJtCax68w=="
         }
       },
       "is_incremental": false,
@@ -93,7 +105,7 @@
       "output": {
         ".html": {
           "relative_path": "api/CilBytecodeParser.CilReader.html",
-          "hash": "OwgcOnI5Z49vdfQtB5qzHg=="
+          "hash": "EkFC1q/bgddxRwisEeg1FA=="
         }
       },
       "is_incremental": false,
@@ -113,6 +125,18 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.CustomModifier.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.CustomModifier.html",
+          "hash": "j1k14G9Uin7dWuC8A/Hk+Q=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/CilBytecodeParser.DebugUtils.yml",
       "output": {
         ".html": {
@@ -125,11 +149,23 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.ElementType.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.ElementType.html",
+          "hash": "WhwQSQ7ydaQKw0H1Q9r35A=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/CilBytecodeParser.Extensions.CilExtensions.yml",
       "output": {
         ".html": {
           "relative_path": "api/CilBytecodeParser.Extensions.CilExtensions.html",
-          "hash": "lKVNTXCYXEEwWzQx49/sfQ=="
+          "hash": "TX/4bQgDMGirLAyJeHcCJA=="
         }
       },
       "is_incremental": false,
@@ -161,11 +197,35 @@
     },
     {
       "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.Signature.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.Signature.html",
+          "hash": "R5LLk1jNTqX3bXo1xHRYCQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
+      "source_relative_path": "api/CilBytecodeParser.TypeSpec.yml",
+      "output": {
+        ".html": {
+          "relative_path": "api/CilBytecodeParser.TypeSpec.html",
+          "hash": "uwdv37pAE5oGiTRb7q9JaQ=="
+        }
+      },
+      "is_incremental": false,
+      "version": ""
+    },
+    {
+      "type": "ManagedReference",
       "source_relative_path": "api/CilBytecodeParser.yml",
       "output": {
         ".html": {
           "relative_path": "api/CilBytecodeParser.html",
-          "hash": "zXkX/C8i9FRe45mBXY0lfw=="
+          "hash": "UhRlKco14y+wCYb+SJ6/MQ=="
         }
       },
       "is_incremental": false,
@@ -189,7 +249,7 @@
       "output": {
         ".html": {
           "relative_path": "api/toc.html",
-          "hash": "EUqkVlq6nIxfACCB6F6SEg=="
+          "hash": "Am3be93itf0T9U3tOQxEew=="
         }
       },
       "is_incremental": false,
@@ -276,7 +336,7 @@
         "ManagedReferenceDocumentProcessor": {
           "can_incremental": false,
           "incrementalPhase": "build",
-          "total_file_count": 14,
+          "total_file_count": 19,
           "skipped_file_count": 0
         },
         "ConceptualDocumentProcessor": {

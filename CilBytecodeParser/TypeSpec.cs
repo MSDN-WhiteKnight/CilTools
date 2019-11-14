@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using System.Linq;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
@@ -216,7 +217,9 @@ namespace CilBytecodeParser
         }
 
         internal static TypeSpec ReadFromStream(Stream source, Module module) //ECMA-335 II.23.2.12 Type
-        {            
+        {
+            Debug.Assert(source != null, "Source stream is null");
+
             CustomModifier mod;            
             byte b;
             int typetok;
@@ -394,7 +397,7 @@ namespace CilBytecodeParser
         uint _paramnum;
 
         internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, TypeSpec ts = null, uint parnum = 0)
-        {
+        {            
             this._Modifiers = mods;
             this._ElementType = elemtype;
             this._Type = t;
@@ -417,6 +420,7 @@ namespace CilBytecodeParser
         /// </summary>
         /// <param name="index">Index of the requested modifier</param>
         /// <returns>The requested custom modifier</returns>
+        /// <exception cref="System.ArgumentOutOfRangeException">Index is negative or outside the bounds of the collection</exception>
         public CustomModifier GetModifier(int index)
         {
             if (index < 0 || index >= this._Modifiers.Length)
