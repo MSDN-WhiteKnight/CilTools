@@ -1,0 +1,14 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v1    
+    - name: Build with MSBuild
+      run: |
+        & "$env:windir\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
