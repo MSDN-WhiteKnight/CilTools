@@ -195,8 +195,9 @@ namespace CilBytecodeParser.Extensions
         public static IEnumerable<MemberInfo> GetReferencedMembers(this Assembly ass, MemberCriteria flags)
         {
             return CilAnalysis.GetReferencedMembers(ass, flags);
-        }                
+        }
 
+#if !NETSTANDARD
         /// <summary>
         /// Emits CIL code for the specified instruction into the specified IL generator.
         /// </summary>
@@ -205,7 +206,8 @@ namespace CilBytecodeParser.Extensions
         public static void EmitInstruction(this ILGenerator ilg, CilInstruction instr)
         {
             instr.EmitTo(ilg);
-        }    
+        }
+
 
         /// <summary>
         /// Emits the entire content of CIL graph into the specified IL generator, 
@@ -221,5 +223,6 @@ namespace CilBytecodeParser.Extensions
         {
             graph.EmitTo(ilg, callback);
         }
+#endif
     }
 }

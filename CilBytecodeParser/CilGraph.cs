@@ -466,6 +466,7 @@ namespace CilBytecodeParser
             }
         }
 
+#if !NETSTANDARD
         /// <summary>
         /// Emits the entire content of this CIL graph into the specified IL generator, 
         /// optionally calling user callback for each processed instruction.
@@ -610,6 +611,7 @@ namespace CilBytecodeParser
 
             }//end foreach            
         }
+#endif
 
     }
 }
