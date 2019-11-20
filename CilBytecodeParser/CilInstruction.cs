@@ -554,6 +554,7 @@ namespace CilBytecodeParser
             return sb.ToString();
         }
 
+#if !NETSTANDARD
         /// <summary>
         /// Emits CIL code for this instruction into the specified IL generator.
         /// </summary>
@@ -616,6 +617,7 @@ namespace CilBytecodeParser
             }
             else throw new NotSupportedException("OperandType not supported: " + this.OperandType.ToString());
         }
+#endif
 
         //*** TEXT PARSER ***
 
@@ -678,6 +680,7 @@ namespace CilBytecodeParser
             }
             return size;
         }
+
 
         /// <summary>
         /// Converts CIL instruction textual representation into the corresponding CilInstruction object
