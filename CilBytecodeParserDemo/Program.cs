@@ -65,7 +65,7 @@ namespace CilBytecodeParserDemo
                 Console.WriteLine(ex.ToString());
             }
 
-            Console.ReadKey();
+            if (!Console.IsInputRedirected) Console.ReadKey();
         }
 
     }
