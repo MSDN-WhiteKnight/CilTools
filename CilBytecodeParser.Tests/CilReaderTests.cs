@@ -141,6 +141,82 @@ namespace CilBytecodeParser.Tests
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of GetInterfaceCount method should be 'ret'");
         }
 
+        public static void PrintList()
+        {
+            List<string> lst = new List<string>();
+            lst.Add("Bob");
+            lst.Add("Alice");
+            Console.WriteLine(String.Join(";", lst));
+        }
+
+        [TestMethod]
+        public void TestGenericType()
+        {
+            MethodInfo mi = typeof(CilReaderTests).GetMethod("PrintList");
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
+
+            AssertThat.NotEmpty(instructions, "The result of PrintList method parsing should not be empty collection");
+                        
+            AssertThat.HasOnlyOneMatch(
+                instructions,
+                (x) => {
+                    if (x.OpCode == OpCodes.Newobj)
+                    {
+                        Type t = ((MethodBase)x.ReferencedMember).DeclaringType;
+                        if (!t.IsGenericType) return false;
+                        if (t.Name != "List`1") return false;
+                        if (t.GenericTypeArguments.Length == 0) return false;
+                        return t.GenericTypeArguments[0] == typeof(string);
+                    }
+                    else return false;
+                },
+                "The result of PrintList method parsing should contain a single 'newobj' instruction creating List<string>"
+                );
+
+            AssertThat.HasAtLeastOneMatch(
+                instructions,
+                (x) => {
+                    if (x.OpCode == OpCodes.Call || x.OpCode == OpCodes.Callvirt)
+                    {
+                        MethodInfo m = (MethodInfo)x.ReferencedMember;
+                        if (m.Name != "Add") return false;
+
+                        Type t = m.DeclaringType;
+                        if (!t.IsGenericType) return false;
+                        if (t.Name != "List`1") return false;
+                        if (t.GenericTypeArguments.Length == 0) return false;
+                        return t.GenericTypeArguments[0] == typeof(string);
+                    }
+                    else return false;
+                },
+                "The result of PrintList method parsing should contain at least one List<string>.Add call"
+                );
+
+            Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of PrintList method should be 'ret'");
+        }
+
+        public static T[] GenerateArray<T>(int len)
+        {
+            return new T[len];
+        }
+
+        [TestMethod]
+        public void TestGenericParameter()
+        {
+            MethodInfo mi = typeof(CilReaderTests).GetMethod("GenerateArray");
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
+
+            AssertThat.NotEmpty(instructions, "The result of GenerateArray method parsing should not be empty collection");            
+               
+            AssertThat.HasOnlyOneMatch(
+                instructions,
+                (x) => x.OpCode == OpCodes.Newarr && x.ReferencedType.IsGenericParameter == true && x.ReferencedType.GenericParameterPosition == 0,
+                "The result of GenerateArray method parsing should contain a single 'newarr' instruction referencing generic parameter"
+                );
+
+            Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of GenerateArray method should be 'ret'");
+        }
+
         [TestMethod]
         public void TestExternalAssemblyAccess()
         {
@@ -161,6 +237,8 @@ namespace CilBytecodeParser.Tests
                 "The result of Path.GetExtension method parsing should contain at least one instruction which is not 'nop' or 'ret'"
                 );
         }
+
+        
         
     }
 }
