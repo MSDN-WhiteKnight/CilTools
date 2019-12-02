@@ -14,15 +14,10 @@ namespace CilBytecodeParser.Tests
     [TestClass]
     public class CilReaderTests
     {
-        public static void PrintHelloWorld()
-        {            
-            Console.WriteLine("Hello, World");            
-        }
-
         [TestMethod]
-        public void TestHelloWorld()
+        public void Test_CilReader_HelloWorld()
         {
-            MethodInfo mi = typeof(CilReaderTests).GetMethod("PrintHelloWorld");
+            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
                         
             AssertThat.NotEmpty(instructions, "The result of PrintHelloWorld method parsing should not be empty collection");
@@ -50,15 +45,10 @@ namespace CilBytecodeParser.Tests
             
         }
 
-        public static double CalcSum(double x, double y)
-        {
-            return x + y;
-        }
-
         [TestMethod]
-        public void TestCalcSum()
+        public void Test_CilReader_CalcSum()
         {
-            MethodInfo mi = typeof(CilReaderTests).GetMethod("CalcSum");
+            MethodInfo mi = typeof(SampleMethods).GetMethod("CalcSum");
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
             
             AssertThat.NotEmpty(instructions, "The result of CalcSum method parsing should not be empty collection");
@@ -82,17 +72,12 @@ namespace CilBytecodeParser.Tests
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of CalcSum method should be 'ret'");
         }
 
-        static int Foo=2;
-
-        public static void SquareFoo()
-        {
-            Foo = Foo * Foo;
-        }
+        
 
         [TestMethod]
-        public void TestStaticFieldAccess()
+        public void Test_CilReader_StaticFieldAccess()
         {
-            MethodInfo mi = typeof(CilReaderTests).GetMethod("SquareFoo");
+            MethodInfo mi = typeof(SampleMethods).GetMethod("SquareFoo");
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
                         
             AssertThat.NotEmpty(instructions, "The result of SquareFoo method parsing should not be empty collection");
@@ -118,16 +103,10 @@ namespace CilBytecodeParser.Tests
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of SquareFoo method should be 'ret'");
         }
 
-        public static int GetInterfaceCount(Type t)
-        {
-            Type[] array = t.GetInterfaces();
-            return array.Length;
-        }
-
         [TestMethod]
-        public void TestVirtualCall()
+        public void Test_CilReader_VirtualCall()
         {
-            MethodInfo mi = typeof(CilReaderTests).GetMethod("GetInterfaceCount");
+            MethodInfo mi = typeof(SampleMethods).GetMethod("GetInterfaceCount");
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
             AssertThat.NotEmpty(instructions, "The result of GetInterfaceCount method parsing should not be empty collection");
@@ -141,18 +120,10 @@ namespace CilBytecodeParser.Tests
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of GetInterfaceCount method should be 'ret'");
         }
 
-        public static void PrintList()
-        {
-            List<string> lst = new List<string>();
-            lst.Add("Bob");
-            lst.Add("Alice");
-            Console.WriteLine(String.Join(";", lst));
-        }
-
         [TestMethod]
-        public void TestGenericType()
+        public void Test_CilReader_GenericType()
         {
-            MethodInfo mi = typeof(CilReaderTests).GetMethod("PrintList");
+            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintList");
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
             AssertThat.NotEmpty(instructions, "The result of PrintList method parsing should not be empty collection");
@@ -193,17 +164,12 @@ namespace CilBytecodeParser.Tests
                 );
 
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of PrintList method should be 'ret'");
-        }
-
-        public static T[] GenerateArray<T>(int len)
-        {
-            return new T[len];
-        }
+        }        
 
         [TestMethod]
-        public void TestGenericParameter()
+        public void Test_CilReader_GenericParameter()
         {
-            MethodInfo mi = typeof(CilReaderTests).GetMethod("GenerateArray");
+            MethodInfo mi = typeof(SampleMethods).GetMethod("GenerateArray");
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
             AssertThat.NotEmpty(instructions, "The result of GenerateArray method parsing should not be empty collection");            
@@ -218,7 +184,7 @@ namespace CilBytecodeParser.Tests
         }
 
         [TestMethod]
-        public void TestExternalAssemblyAccess()
+        public void Test_CilReader_ExternalAssemblyAccess()
         {
             MethodInfo mi = typeof(System.IO.Path).GetMethod("GetExtension");
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
@@ -236,9 +202,6 @@ namespace CilBytecodeParser.Tests
                 (x) => x.OpCode != OpCodes.Nop && x.OpCode != OpCodes.Ret,
                 "The result of Path.GetExtension method parsing should contain at least one instruction which is not 'nop' or 'ret'"
                 );
-        }
-
-        
-        
+        }        
     }
 }
