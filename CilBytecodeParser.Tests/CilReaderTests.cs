@@ -42,6 +42,18 @@ namespace CilBytecodeParser.Tests
                 );
 
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of PrintHelloWorld method should be 'ret'");
+
+            //Test EmitTo: only NetFX
+#if !NETSTANDARD
+            DynamicMethod dm = new DynamicMethod("PrintHelloWorldDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();
+#endif
             
         }
 
@@ -70,9 +82,21 @@ namespace CilBytecodeParser.Tests
                 );
 
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of CalcSum method should be 'ret'");
-        }
 
-        
+            //Test EmitTo: only NetFX
+            //Dont' run in debug, because compiler generates branching here for some reason
+#if !NETSTANDARD && !DEBUG
+            DynamicMethod dm = new DynamicMethod("CalcSumDynamic", typeof(double), new Type[] { typeof(double), typeof(double) }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            var deleg = (Func<double, double, double>)dm.CreateDelegate(typeof(Func<double, double, double>));
+            double result = deleg(1.1,2.4);
+            Assert.AreEqual(1.1 + 2.4, result, 0.01, "The result of CalcSumDynamic is wrong");
+#endif
+        }        
 
         [TestMethod]
         public void Test_CilReader_StaticFieldAccess()
@@ -101,6 +125,19 @@ namespace CilBytecodeParser.Tests
                 );
 
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of SquareFoo method should be 'ret'");
+
+            //Test EmitTo: only NetFX
+#if !NETSTANDARD
+            DynamicMethod dm = new DynamicMethod("SquareFooDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();
+            Assert.AreEqual(4, SampleMethods.Foo, "The value of SampleMethods.Foo is wrong");
+#endif
         }
 
         [TestMethod]
@@ -118,6 +155,23 @@ namespace CilBytecodeParser.Tests
                 );
 
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of GetInterfaceCount method should be 'ret'");
+
+            //Test EmitTo: only NetFX
+            //Dont' run in debug, because compiler generates branching here for some reason
+#if !NETSTANDARD && !DEBUG
+            DynamicMethod dm = new DynamicMethod("GetInterfaceCountDynamic", typeof(int), new Type[] {typeof(Type) }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+
+            ilg.DeclareLocal(typeof(Type[]));
+            
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            var deleg = (Func<Type, int>)dm.CreateDelegate(typeof(Func<Type, int>));
+            int res = deleg(typeof(List<>));
+            Assert.AreEqual(SampleMethods.GetInterfaceCount(typeof(List<>)), res, "The result of GetInterfaceCountDynamic is wrong");
+#endif
         }
 
         [TestMethod]

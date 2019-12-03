@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using CilBytecodeParser;
@@ -43,6 +44,15 @@ namespace CilBytecodeParser.Tests
             CilGraphNode last = nodes[nodes.Length - 1];                       
             Assert.IsTrue(last.Instruction.OpCode == OpCodes.Ret, "The last instruction of PrintHelloWorld method should be 'ret'");
             Assert.IsNull(last.BranchTarget, "The 'ret' instruction should not have branch target");
+
+            //Test EmitTo: only NetFX
+#if !NETSTANDARD
+            DynamicMethod dm = new DynamicMethod("CilGraphTests_PrintHelloWorldDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            graph.EmitTo(ilg);
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();
+#endif
         }
 
         [TestMethod]
@@ -65,6 +75,15 @@ namespace CilBytecodeParser.Tests
             CilGraphNode last = nodes[nodes.Length - 1];
             Assert.IsTrue(last.Instruction.OpCode == OpCodes.Ret, "The last instruction of PrintTenNumbers method should be 'ret'");
             Assert.IsNull(last.BranchTarget, "The 'ret' instruction should not have branch target");
+
+            //Test EmitTo: only NetFX
+#if !NETSTANDARD
+            DynamicMethod dm = new DynamicMethod("CilGraphTests_PrintTenNumbersDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            graph.EmitTo(ilg);
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();
+#endif
         }
     }
 }

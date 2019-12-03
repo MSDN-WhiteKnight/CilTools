@@ -19,7 +19,7 @@ namespace CilBytecodeParser.Tests
             return x + y;
         }
 
-        static int Foo = 2;
+        public static int Foo = 2;
 
         public static void SquareFoo()
         {
