@@ -218,6 +218,21 @@ namespace CilBytecodeParser.Tests
                 );
 
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of PrintList method should be 'ret'");
+
+            //Test EmitTo: only NetFX            
+#if !NETSTANDARD
+            DynamicMethod dm = new DynamicMethod("PrintListDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+
+            ilg.DeclareLocal(typeof(List<string>));
+            
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();            
+#endif
         }        
 
         [TestMethod]

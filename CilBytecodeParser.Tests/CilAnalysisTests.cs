@@ -39,5 +39,16 @@ namespace CilBytecodeParser.Tests
                 (x) => x.Name == "WriteLine" && x.DeclaringType.Name == "Console",
                 "PrintProcessId should reference Console.WriteLine");            
         }
+
+        [TestMethod]
+        public void Test_GetReferencedMembers()
+        {
+            MemberInfo[] methods = CilAnalysis.GetReferencedMembers(typeof(SampleMethods).GetMethod("SquareFoo")).ToArray();
+
+            AssertThat.HasOnlyOneMatch(
+                methods,
+                (x) => x.MemberType == MemberTypes.Field && x.Name == "Foo" && x.DeclaringType.Name == "SampleMethods",
+                "SquareFoo should reference only SampleMethods.Foo");                        
+        }
     }
 }
