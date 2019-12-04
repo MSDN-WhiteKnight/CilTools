@@ -317,9 +317,9 @@ namespace CilBytecodeParser
         /// <exception cref="CilBytecodeParser.CilParserException">Failed to retrieve method body for the method</exception>
         /// <returns>A collection of CIL instructions that form the body of this method</returns>
         public static IEnumerable<CilInstruction> GetInstructions(MethodBase m)
-        {  
+        {
             CilReader reader = new CilReader(m);
             return reader.ReadAll();
-        }       
+        }
     }
 }

@@ -3,12 +3,18 @@ name: .NET Framework
 on: [push]
 
 jobs:
-  build:
+  NetFX-CI:
 
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v1    
+    - uses: actions/checkout@v1
     - name: Build with MSBuild
       run: |
-        & "$env:windir\Microsoft.NET\Framework\v4.0.30319\msbuild.exe"
+        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe"
+    - name: Run
+      run: |        
+        & CilBytecodeParserDemo\bin\Debug\CilBytecodeParserDemo.exe
+    - name: Test with VSTest console
+      run: |
+        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" CilBytecodeParser.Tests\bin\Debug\CilBytecodeParser.Tests.dll

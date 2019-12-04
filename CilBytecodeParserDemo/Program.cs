@@ -10,11 +10,11 @@ using CilBytecodeParser;
 using CilBytecodeParser.Extensions;
 
 namespace CilBytecodeParserDemo
-{    
+{
     class Program
     {
         static void Main(string[] args)
-        {            
+        {
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
             Console.WriteLine("Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
             Console.WriteLine();
@@ -65,7 +65,7 @@ namespace CilBytecodeParserDemo
                 Console.WriteLine(ex.ToString());
             }
 
-            Console.ReadKey();
+            if (!Console.IsInputRedirected) Console.ReadKey();
         }
 
     }
