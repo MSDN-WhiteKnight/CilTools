@@ -45,6 +45,24 @@ namespace CilBytecodeParser.Tests
             Assert.IsTrue(last.Instruction.OpCode == OpCodes.Ret, "The last instruction of PrintHelloWorld method should be 'ret'");
             Assert.IsNull(last.BranchTarget, "The 'ret' instruction should not have branch target");
 
+            //Test conversion to string
+            string str = graph.ToString();
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("public") });
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("static") });
+
+            AssertThat.IsMatch(str, new MatchElement[] { 
+                new Literal(".method"), MatchElement.Any, new Literal("void"), MatchElement.Any, 
+                new Literal("PrintHelloWorld"), MatchElement.Any, 
+                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any, 
+                new Literal("{"), MatchElement.Any, 
+                new Literal("ldstr"), MatchElement.Any, new Literal("\"Hello, World\""), MatchElement.Any,
+                new Literal("call"), MatchElement.Any, 
+                new Literal("void"), MatchElement.Any, new Literal("System.Console::WriteLine"), MatchElement.Any,
+                new Literal("ret"), MatchElement.Any, 
+                new Literal("}") 
+            });
+            
+
             //Test EmitTo: only NetFX
 #if !NETSTANDARD
             DynamicMethod dm = new DynamicMethod("CilGraphTests_PrintHelloWorldDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
@@ -75,6 +93,25 @@ namespace CilBytecodeParser.Tests
             CilGraphNode last = nodes[nodes.Length - 1];
             Assert.IsTrue(last.Instruction.OpCode == OpCodes.Ret, "The last instruction of PrintTenNumbers method should be 'ret'");
             Assert.IsNull(last.BranchTarget, "The 'ret' instruction should not have branch target");
+
+            //Test conversion to string
+            string str = graph.ToString();
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("public") });
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("static") });
+
+            AssertThat.IsMatch(str, new MatchElement[] { 
+                new Literal(".method"), MatchElement.Any, new Literal("void"), MatchElement.Any, 
+                new Literal("PrintTenNumbers"), MatchElement.Any, 
+                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any, 
+                new Literal("{"), MatchElement.Any, 
+                new Literal(".locals"), MatchElement.Any, new Literal("int32"), MatchElement.Any, 
+                new Literal("call"), MatchElement.Any, 
+                new Literal("void"), MatchElement.Any, new Literal("System.Console::WriteLine"), MatchElement.Any,
+                new Literal("ret"), MatchElement.Any, 
+                new Literal("}") 
+            });
+
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal("IL_"), MatchElement.Any, new Literal(":") });
 
             //Test EmitTo: only NetFX
 #if !NETSTANDARD
