@@ -58,5 +58,25 @@ namespace CilBytecodeParser.Tests
             int x = System.Diagnostics.Process.GetCurrentProcess().Id;
             Console.WriteLine(x.ToString());
         }
+
+        public static void DoSomething(int i)
+        {
+            //placeholder method            
+        }
+
+        public static void TemplateMethod() //template for a dynamic method
+        {            
+            for (int i = 1; i <= 5; i++)
+            {
+                DoSomething(i);                
+            }
+        }
+
+        public static int counter;
+
+        public static void IncrementCounter(int i)
+        {
+            counter += i;
+        }
     }
 }

@@ -591,6 +591,8 @@ namespace CilBytecodeParser
                                 else if (instr.OpCode == OpCodes.Blt_S) opc = OpCodes.Blt;
                                 else if (instr.OpCode == OpCodes.Blt_Un_S) opc = OpCodes.Blt_Un;
                                 else if (instr.OpCode == OpCodes.Bne_Un_S) opc = OpCodes.Bne_Un;
+                                else if (instr.OpCode == OpCodes.Ble_S) opc = OpCodes.Ble;
+                                else if (instr.OpCode == OpCodes.Ble_Un_S) opc = OpCodes.Ble_Un;
                                 else throw new NotSupportedException("OpCode not supported: " + instr.OpCode.ToString());
 
                                 gen.Emit(opc, label);

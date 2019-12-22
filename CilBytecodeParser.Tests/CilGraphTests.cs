@@ -122,5 +122,36 @@ namespace CilBytecodeParser.Tests
             deleg();
 #endif
         }
+                
+#if !NETSTANDARD
+        [TestMethod]
+        public void Test_CilGraph_Emit() //Test EmitTo: only NetFX
+        {
+            DynamicMethod dm = new DynamicMethod("CilGraphTests_EmitTest", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            MethodInfo miTemplate = typeof(SampleMethods).GetMethod("TemplateMethod");
+            CilGraph graph = CilAnalysis.GetGraph(miTemplate);
+            MethodInfo miTarget = typeof(SampleMethods).GetMethod("IncrementCounter");
+
+            graph.EmitTo(ilg, (instr) =>
+            {
+                if ((instr.OpCode.Equals(OpCodes.Call) || instr.OpCode.Equals(OpCodes.Callvirt)) &&
+                    instr.ReferencedMember.Name == "DoSomething")
+                {
+                    //replace every DoSomething call by IncrementCounter call
+
+                    ilg.EmitCall(OpCodes.Call,miTarget,null);
+                    return true; //handled
+                }
+                else return false;
+            });
+
+            //create and execute delegate
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            SampleMethods.counter = 0;
+            deleg();
+            Assert.AreEqual<int>(15, SampleMethods.counter); 
+        }
+#endif
     }
 }
