@@ -21,7 +21,7 @@ namespace CilBytecodeParserDemo
             string asspath;
             string type;
             string method;
-            Assembly ass;
+            Assembly ass;            
 
             try
             {
@@ -58,7 +58,8 @@ namespace CilBytecodeParserDemo
                     );
 
                 MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
-                Console.WriteLine(mi.GetCilText());
+                CilGraph graph = CilAnalysis.GetGraph(mi);                
+                graph.Print(null, true, true, true, true);                
             }
             catch (Exception ex)
             {
