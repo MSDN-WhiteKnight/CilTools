@@ -200,8 +200,7 @@ namespace CilBytecodeParser
             CilGraphNode node = this._Root;
                         
             int n_iter = 0;
-            IList<ExceptionHandlingClause> trys = new List<ExceptionHandlingClause>();
-            bool block_end = false;
+            IList<ExceptionHandlingClause> trys = new List<ExceptionHandlingClause>();            
             MethodBody body = null;
             ParameterInfo[] pars = this._Method.GetParameters();
 
@@ -415,7 +414,8 @@ namespace CilBytecodeParser
 
                     IList<ExceptionHandlingClause> filters = FindFilterBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
                     IList<ExceptionHandlingClause> ended_blocks = FindBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-                    
+
+                    // try
                     for (int i = 0; i < distinct_starts.Count; i++)
                     {
                         output.WriteLine(new String(indent.ToArray())+" .try     {");
@@ -428,20 +428,21 @@ namespace CilBytecodeParser
                         output.WriteLine(new String(indent.ToArray()) + " }");                        
                     }
 
+                    // end handler
                     for (int i = 0; i < ended_blocks.Count; i++)
                     {
                         if(indent.Count>0)indent.Pop();
-                        output.WriteLine(new String(indent.ToArray()) + " }");
-                        
-                        block_end = true;
+                        output.WriteLine(new String(indent.ToArray()) + " }");                        
                     }
 
+                    // filter
                     for (int i = 0; i < filters.Count; i++)
                     {                        
                         output.WriteLine(new String(indent.ToArray()) + " filter   {");
                         indent.Push(' ');
                     }
 
+                    // handler start
                     var blocks = FindHandlerBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
 
                     foreach (var block in blocks)
@@ -467,11 +468,10 @@ namespace CilBytecodeParser
                         }
                         else if ( (block.Flags & ExceptionHandlingClauseOptions.Fault) != 0)
                         {
-                            output.WriteLine(new String(indent.ToArray()) + " .fault  {");
+                            output.WriteLine(new String(indent.ToArray()) + " fault    {");
                         }
 
-                        indent.Push(' ');
-                        
+                        indent.Push(' ');                        
                     }
 
                     output.Write(new String(indent.ToArray()));

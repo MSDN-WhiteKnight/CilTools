@@ -122,7 +122,57 @@ namespace CilBytecodeParser.Tests
             deleg();
 #endif
         }
-                
+
+        [TestMethod]
+        public void Test_CilGraph_Exceptions()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("DivideNumbers");
+            CilGraph graph = CilAnalysis.GetGraph(mi);
+            AssertThat.IsCorrect(graph);
+
+            //Test conversion to string
+            string str = graph.ToString();
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("public") });
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("static") });
+
+            AssertThat.IsMatch(str, new MatchElement[] { 
+                new Literal(".method"), MatchElement.Any, new Literal("bool"), MatchElement.Any, 
+                new Literal("DivideNumbers"), MatchElement.Any, 
+                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any, 
+                new Literal("{"), MatchElement.Any, 
+                new Literal(".try"), MatchElement.Any, new Literal("{"), MatchElement.Any, 
+                new Literal("}"), MatchElement.Any, 
+                new Literal("catch"), MatchElement.Any, new Literal("DivideByZeroException"), MatchElement.Any,
+                new Literal("{"), MatchElement.Any,
+                new Literal("}"), MatchElement.Any, 
+                new Literal("finally"), MatchElement.Any, 
+                new Literal("{"), MatchElement.Any,
+                new Literal("endfinally"), MatchElement.Any, 
+                new Literal("}"), MatchElement.Any, 
+                new Literal("ret"), MatchElement.Any, 
+                new Literal("}") 
+            });
+
+            //Test EmitTo: only NetFX
+#if !NETSTANDARD
+            DynamicMethod dm = new DynamicMethod("CilGraphTests_DivideNumbersDynamic", typeof(bool), 
+                new Type[] { typeof(int),typeof(int),typeof(int).MakeByRefType() }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            graph.EmitTo(ilg);
+            SampleMethods.DivideNumbersDelegate deleg = (SampleMethods.DivideNumbersDelegate)dm.CreateDelegate(typeof(SampleMethods.DivideNumbersDelegate));
+
+            int res;
+            bool success;
+
+            success = deleg(4, 2, out res);
+            Assert.IsTrue(success, "The calculation of 4/2 should not fail");
+            Assert.AreEqual(2, res, "The result of 4/2 should be 2");
+
+            success = deleg(1, 0, out res);
+            Assert.IsFalse(success, "The calculation of 1/0 should fail");                        
+#endif
+        }
+
 #if !NETSTANDARD
         [TestMethod]
         public void Test_CilGraph_Emit() //Test EmitTo: only NetFX

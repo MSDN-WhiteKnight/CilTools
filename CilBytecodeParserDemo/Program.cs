@@ -50,7 +50,8 @@ namespace CilBytecodeParserDemo
                 }
 
                 Console.WriteLine("Method: {0}:{1}", type, method);
-                Console.WriteLine();
+                Console.WriteLine();                                
+
                 Type t = ass.GetType(type);
 
                 MethodInfo[] methods = t.GetMethods(
