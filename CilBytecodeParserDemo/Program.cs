@@ -36,9 +36,9 @@ namespace CilBytecodeParserDemo
                     asspath = "";
                     type = "CilBytecodeParserDemo.Program";
                     method = "Main";
-                     
+
                     Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);
-                    ass = Assembly.GetExecutingAssembly();                                        
+                    ass = Assembly.GetExecutingAssembly();
                 }
                 else
                 {
@@ -50,7 +50,8 @@ namespace CilBytecodeParserDemo
                 }
 
                 Console.WriteLine("Method: {0}:{1}", type, method);
-                Console.WriteLine();
+                Console.WriteLine();                                
+
                 Type t = ass.GetType(type);
 
                 MethodInfo[] methods = t.GetMethods(
@@ -58,11 +59,14 @@ namespace CilBytecodeParserDemo
                     );
 
                 MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
-                Console.WriteLine(mi.GetCilText());            
+                CilGraph graph = CilAnalysis.GetGraph(mi);                
+                graph.Print(null, true, true, true, true);                
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+                if (!Console.IsInputRedirected) Console.ReadKey();
+                throw;
             }
 
             if (!Console.IsInputRedirected) Console.ReadKey();

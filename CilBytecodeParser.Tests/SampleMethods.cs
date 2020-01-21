@@ -78,5 +78,25 @@ namespace CilBytecodeParser.Tests
         {
             counter += i;
         }
+
+        public delegate bool DivideNumbersDelegate(int x, int y, out int result);
+
+        public static bool DivideNumbers(int x,int y,out int result)
+        {
+            int z = 0;
+            try
+            {
+                z = x / y;
+            }
+            catch (DivideByZeroException)
+            {
+                return false;
+            }
+            finally
+            {
+                result = z;
+            }
+            return true;
+        }
     }
 }
