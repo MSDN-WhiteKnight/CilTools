@@ -21,7 +21,7 @@ namespace CilBytecodeParserDemo
             string asspath;
             string type;
             string method;
-            Assembly ass;            
+            Assembly ass;
 
             try
             {

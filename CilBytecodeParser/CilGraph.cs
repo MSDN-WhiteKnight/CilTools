@@ -20,7 +20,7 @@ namespace CilBytecodeParser
     /// Use <see cref="CilAnalysis.GetGraph"/> method to create CIL graph for a method.
     /// </remarks>
     public class CilGraph
-    {        
+    {
         static IList<ExceptionHandlingClause> FindTryBlocks(IList<ExceptionHandlingClause> list, uint start, uint end)
         {
             if (list == null) throw new ArgumentNullException("list");
@@ -122,7 +122,7 @@ namespace CilBytecodeParser
                 if (block.HandlerOffset + block.HandlerLength >= start && block.HandlerOffset + block.HandlerLength < end) res.Add(block);
             }
             return res;
-        }        
+        }
 
         /// <summary>
         /// Raised when error occurs in one of the methods in this class
@@ -643,7 +643,7 @@ namespace CilBytecodeParser
                 var blocks = FindHandlerBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
 
                 foreach (var block in blocks)
-                {                    
+                {
                     if (block.Flags == ExceptionHandlingClauseOptions.Clause)
                     {
                         Type t = block.CatchType;
