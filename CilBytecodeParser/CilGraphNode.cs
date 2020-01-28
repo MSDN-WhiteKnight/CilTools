@@ -40,6 +40,8 @@ namespace CilBytecodeParser
         /// </summary>
         protected CilGraphNode _BranchTarget = null;
 
+        protected CilGraphNode[] _SwitchTargets = null;
+
         /// <summary>
         /// Gets CIL instruction associated with this node
         /// </summary>
@@ -68,6 +70,18 @@ namespace CilBytecodeParser
         /// </summary>
         /// <remarks>Branch target is an instruction which would be called after current one if the condition for jump instruction is met. For non-jump instructions, the value is null.</remarks>
         public CilGraphNode BranchTarget { get { return this._BranchTarget; } }
+
+        public CilGraphNode[] SwitchTargets
+        {
+            get
+            {
+                if (this._SwitchTargets == null) return null;
+
+                CilGraphNode[] res = new CilGraphNode[this._SwitchTargets.Length];
+                Array.Copy(this._SwitchTargets, res, this._SwitchTargets.Length);
+                return res;
+            }
+        }
 
         /// <summary>
         /// Creates new CilGraphNode object
@@ -157,6 +171,19 @@ namespace CilBytecodeParser
         {
             get { return this._BranchTarget; }
             set { this._BranchTarget = value; }
+        }
+
+        public new CilGraphNode[] SwitchTargets
+        {
+            get
+            {
+                return base.SwitchTargets;
+            }
+
+            set 
+            {
+                this._SwitchTargets = value;
+            }
         }
     }
 }

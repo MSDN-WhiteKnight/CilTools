@@ -481,7 +481,25 @@ namespace CilBytecodeParser
                     else output.Write("".PadLeft(10, ' '));
 
                     //if instruction itself targets branch, append its label
-                    if (node.BranchTarget != null) output.Write(instr.Name.PadRight(9) + " " + node.BranchTarget.Name);
+                    if (node.BranchTarget != null)
+                    {
+                        output.Write(instr.Name.PadRight(9) + " " + node.BranchTarget.Name);
+                    }
+                    else if (node.SwitchTargets != null)
+                    {
+                        output.Write(instr.Name.PadRight(11));                        
+                        output.Write('(');
+                        CilGraphNode[] targets = node.SwitchTargets;
+
+                        for (int i = 0; i < targets.Length; i++)
+                        {
+                            if (i >= 1) output.Write(",");
+                            output.Write(targets[i].Name);
+                        }
+
+                        output.Write(' ');
+                        output.Write(')');
+                    }
                     else output.Write(instr.ToString());
 
                     output.WriteLine();
