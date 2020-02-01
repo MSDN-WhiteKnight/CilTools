@@ -416,7 +416,7 @@ namespace CilBytecodeParser
                             }
                         }
 
-                        nodes[n].SwitchTargets = swt;
+                        nodes[n].SetSwitchTargets(swt);
                     }
                 }
 

@@ -480,27 +480,30 @@ namespace CilBytecodeParser
                     if (!String.IsNullOrEmpty(node.Name)) output.Write(node.Name + ": ");
                     else output.Write("".PadLeft(10, ' '));
 
-                    //if instruction itself targets branch, append its label
-                    if (node.BranchTarget != null)
+                    if (node.BranchTarget != null) //if instruction itself targets branch, append its label
                     {
                         output.Write(instr.Name.PadRight(9) + " " + node.BranchTarget.Name);
                     }
-                    else if (node.SwitchTargets != null)
+                    else
                     {
-                        output.Write(instr.Name.PadRight(11));                        
-                        output.Write('(');
-                        CilGraphNode[] targets = node.SwitchTargets;
+                        CilGraphNode[] swtargets = node.GetSwitchTargets();
 
-                        for (int i = 0; i < targets.Length; i++)
+                        if (swtargets.Length > 0) //append switch target list
                         {
-                            if (i >= 1) output.Write(",");
-                            output.Write(targets[i].Name);
-                        }
+                            output.Write(instr.Name.PadRight(11));
+                            output.Write('(');
 
-                        output.Write(' ');
-                        output.Write(')');
-                    }
-                    else output.Write(instr.ToString());
+                            for (int i = 0; i < swtargets.Length; i++)
+                            {
+                                if (i >= 1) output.Write(",");
+                                output.Write(swtargets[i].Name);
+                            }
+
+                            output.Write(' ');
+                            output.Write(')');
+                        }
+                        else output.Write(instr.ToString()); //print regular instruction
+                    }                    
 
                     output.WriteLine();
 
@@ -738,13 +741,30 @@ namespace CilBytecodeParser
                         }
                         else throw new CilParserException("Cannot find label for branch instruction");
                     }
+                    else if (instr.OpCode == OpCodes.Switch)
+                    {
+                        //emit jump table
+                        CilGraphNode[] swtargets = node.GetSwitchTargets();
+                        Label[] swlabels = new Label[swtargets.Length];
+
+                        for (int i = 0; i < swtargets.Length; i++)
+                        {
+                            if (labels.ContainsKey(swtargets[i].Instruction.OrdinalNumber))
+                            {
+                                swlabels[i] = labels[swtargets[i].Instruction.OrdinalNumber];                                
+                            }
+                            else throw new CilParserException("Cannot find label for switch instruction");
+                        }
+
+                        gen.Emit(instr.OpCode, swlabels);
+                    }
                     else if (instr.OpCode != OpCodes.Endfilter && instr.OpCode != OpCodes.Endfinally)
                     {
-                        //endfilter/endfinally are already emitted with exception blocks 
+                        //endfilter/endfinally are already emitted with exception blocks                                                
 
                         instr.EmitTo(gen); //emit regular instruction                        
                     }
-                }     
+                }
 
             }//end foreach            
         }

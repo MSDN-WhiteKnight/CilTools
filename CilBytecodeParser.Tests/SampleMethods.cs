@@ -98,5 +98,16 @@ namespace CilBytecodeParser.Tests
             }
             return true;
         }
+
+        public static string SwitchTest(int x)
+        {
+            switch (x)
+            {
+                case 1: return "One";
+                case 2: return "Two";
+                case 3: return "Three";
+                default: return x.ToString();
+            }
+        }
     }
 }
