@@ -71,6 +71,10 @@ namespace CilBytecodeParser
         /// <remarks>Branch target is an instruction which would be called after current one if the condition for jump instruction is met. For non-jump instructions, the value is null.</remarks>
         public CilGraphNode BranchTarget { get { return this._BranchTarget; } }
 
+        /// <summary>
+        /// Gets an array of nodes that represents the jump table of the switch instruction, if applicable
+        /// </summary>
+        /// <remarks>Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. For non-switch instructions, returns an empty array.</remarks>
         public CilGraphNode[] GetSwitchTargets()
         {            
             if (this._SwitchTargets == null) return new CilGraphNode[0];
@@ -170,6 +174,10 @@ namespace CilBytecodeParser
             set { this._BranchTarget = value; }
         }
 
+        /// <summary>
+        /// Sets the array of nodes that represents the jump table of the switch instruction
+        /// </summary>
+        /// <remarks>Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. </remarks>
         public void SetSwitchTargets(CilGraphNode[] newtargets)
         {
             this._SwitchTargets = newtargets;
