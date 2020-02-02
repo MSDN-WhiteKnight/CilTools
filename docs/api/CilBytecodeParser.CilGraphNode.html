@@ -252,6 +252,30 @@
       </tr>
     </tbody>
   </table>
+  
+  
+  <h4 id="CilBytecodeParser_CilGraphNode__SwitchTargets" data-uid="CilBytecodeParser.CilGraphNode._SwitchTargets">_SwitchTargets</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected CilGraphNode[] _SwitchTargets</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilBytecodeParser.CilGraphNode.html">CilGraphNode</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   
@@ -398,6 +422,35 @@
 </div>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="CilBytecodeParser_CilGraphNode_GetSwitchTargets_" data-uid="CilBytecodeParser.CilGraphNode.GetSwitchTargets*"></a>
+  <h4 id="CilBytecodeParser_CilGraphNode_GetSwitchTargets" data-uid="CilBytecodeParser.CilGraphNode.GetSwitchTargets">GetSwitchTargets()</h4>
+  <div class="markdown level1 summary"><p>Gets an array of nodes that represents the jump table of the switch instruction, if applicable</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public CilGraphNode[] GetSwitchTargets()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilBytecodeParser.CilGraphNode.html">CilGraphNode</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilBytecodeParser_CilGraphNode_GetSwitchTargets_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. For non-switch instructions, returns an empty array.</p>
+</div>
   
   
   <a id="CilBytecodeParser_CilGraphNode_ToString_" data-uid="CilBytecodeParser.CilGraphNode.ToString*"></a>

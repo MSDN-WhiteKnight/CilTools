@@ -442,6 +442,12 @@ references:
   commentId: F:CilBytecodeParser.CilGraphNode._Previous
   fullName: CilBytecodeParser.CilGraphNode._Previous
   nameWithType: CilGraphNode._Previous
+- uid: CilBytecodeParser.CilGraphNode._SwitchTargets
+  name: _SwitchTargets
+  href: api/CilBytecodeParser.CilGraphNode.html#CilBytecodeParser_CilGraphNode__SwitchTargets
+  commentId: F:CilBytecodeParser.CilGraphNode._SwitchTargets
+  fullName: CilBytecodeParser.CilGraphNode._SwitchTargets
+  nameWithType: CilGraphNode._SwitchTargets
 - uid: CilBytecodeParser.CilGraphNode.BranchTarget
   name: BranchTarget
   href: api/CilBytecodeParser.CilGraphNode.html#CilBytecodeParser_CilGraphNode_BranchTarget
@@ -454,6 +460,18 @@ references:
   commentId: Overload:CilBytecodeParser.CilGraphNode.BranchTarget
   fullName: CilBytecodeParser.CilGraphNode.BranchTarget
   nameWithType: CilGraphNode.BranchTarget
+- uid: CilBytecodeParser.CilGraphNode.GetSwitchTargets
+  name: GetSwitchTargets()
+  href: api/CilBytecodeParser.CilGraphNode.html#CilBytecodeParser_CilGraphNode_GetSwitchTargets
+  commentId: M:CilBytecodeParser.CilGraphNode.GetSwitchTargets
+  fullName: CilBytecodeParser.CilGraphNode.GetSwitchTargets()
+  nameWithType: CilGraphNode.GetSwitchTargets()
+- uid: CilBytecodeParser.CilGraphNode.GetSwitchTargets*
+  name: GetSwitchTargets
+  href: api/CilBytecodeParser.CilGraphNode.html#CilBytecodeParser_CilGraphNode_GetSwitchTargets_
+  commentId: Overload:CilBytecodeParser.CilGraphNode.GetSwitchTargets
+  fullName: CilBytecodeParser.CilGraphNode.GetSwitchTargets
+  nameWithType: CilGraphNode.GetSwitchTargets
 - uid: CilBytecodeParser.CilGraphNode.Instruction
   name: Instruction
   href: api/CilBytecodeParser.CilGraphNode.html#CilBytecodeParser_CilGraphNode_Instruction
@@ -592,6 +610,21 @@ references:
   commentId: Overload:CilBytecodeParser.CilGraphNodeMutable.Previous
   fullName: CilBytecodeParser.CilGraphNodeMutable.Previous
   nameWithType: CilGraphNodeMutable.Previous
+- uid: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets(CilBytecodeParser.CilGraphNode[])
+  name: SetSwitchTargets(CilGraphNode[])
+  href: api/CilBytecodeParser.CilGraphNodeMutable.html#CilBytecodeParser_CilGraphNodeMutable_SetSwitchTargets_CilBytecodeParser_CilGraphNode___
+  commentId: M:CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets(CilBytecodeParser.CilGraphNode[])
+  name.vb: SetSwitchTargets(CilGraphNode())
+  fullName: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets(CilBytecodeParser.CilGraphNode[])
+  fullName.vb: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets(CilBytecodeParser.CilGraphNode())
+  nameWithType: CilGraphNodeMutable.SetSwitchTargets(CilGraphNode[])
+  nameWithType.vb: CilGraphNodeMutable.SetSwitchTargets(CilGraphNode())
+- uid: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets*
+  name: SetSwitchTargets
+  href: api/CilBytecodeParser.CilGraphNodeMutable.html#CilBytecodeParser_CilGraphNodeMutable_SetSwitchTargets_
+  commentId: Overload:CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets
+  fullName: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets
+  nameWithType: CilGraphNodeMutable.SetSwitchTargets
 - uid: CilBytecodeParser.CilInstruction
   name: CilInstruction
   href: api/CilBytecodeParser.CilInstruction.html

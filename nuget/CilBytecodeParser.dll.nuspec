@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>CilBytecodeParser</id>
-    <version>1.8.0</version>
+    <version>1.9.0</version>
     <authors>MSDN-WhiteKnight</authors>
     <owners>MSDN-WhiteKnight</owners>
     <title>CilBytecodeParser</title>
@@ -12,7 +12,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>CIL Bytecode Parser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.</description>
     <releaseNotes></releaseNotes>
-    <copyright>Copyright (c) 2019, MSDN.WhiteKnight</copyright>
+    <copyright>Copyright (c) 2020, MSDN.WhiteKnight</copyright>
     <tags>dotnet cil msil bytecode </tags>
     <dependencies>      
     </dependencies>    

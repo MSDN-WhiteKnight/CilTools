@@ -11,6 +11,7 @@ items:
   - CilBytecodeParser.CilGraphNodeMutable.Name
   - CilBytecodeParser.CilGraphNodeMutable.Next
   - CilBytecodeParser.CilGraphNodeMutable.Previous
+  - CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets(CilBytecodeParser.CilGraphNode[])
   langs:
   - csharp
   - vb
@@ -40,6 +41,8 @@ items:
   - CilBytecodeParser.CilGraphNode._Previous
   - CilBytecodeParser.CilGraphNode._Next
   - CilBytecodeParser.CilGraphNode._BranchTarget
+  - CilBytecodeParser.CilGraphNode._SwitchTargets
+  - CilBytecodeParser.CilGraphNode.GetSwitchTargets
   - CilBytecodeParser.CilGraphNode.ToString
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
@@ -87,6 +90,39 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets(CilBytecodeParser.CilGraphNode[])
+  commentId: M:CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets(CilBytecodeParser.CilGraphNode[])
+  id: SetSwitchTargets(CilBytecodeParser.CilGraphNode[])
+  parent: CilBytecodeParser.CilGraphNodeMutable
+  langs:
+  - csharp
+  - vb
+  name: SetSwitchTargets(CilGraphNode[])
+  nameWithType: CilGraphNodeMutable.SetSwitchTargets(CilGraphNode[])
+  fullName: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets(CilBytecodeParser.CilGraphNode[])
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nSets the array of nodes that represents the jump table of the switch instruction\n"
+  remarks: 'Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. '
+  syntax:
+    content: public void SetSwitchTargets(CilGraphNode[] newtargets)
+    parameters:
+    - id: newtargets
+      type: CilBytecodeParser.CilGraphNode[]
+    content.vb: Public Sub SetSwitchTargets(newtargets As CilGraphNode())
+  overload: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets*
+  nameWithType.vb: CilGraphNodeMutable.SetSwitchTargets(CilGraphNode())
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets(CilBytecodeParser.CilGraphNode())
+  name.vb: SetSwitchTargets(CilGraphNode())
 - uid: CilBytecodeParser.CilGraphNodeMutable.Instruction
   commentId: P:CilBytecodeParser.CilGraphNodeMutable.Instruction
   id: Instruction
@@ -302,6 +338,44 @@ references:
   name: _BranchTarget
   nameWithType: CilGraphNode._BranchTarget
   fullName: CilBytecodeParser.CilGraphNode._BranchTarget
+- uid: CilBytecodeParser.CilGraphNode._SwitchTargets
+  commentId: F:CilBytecodeParser.CilGraphNode._SwitchTargets
+  parent: CilBytecodeParser.CilGraphNode
+  isExternal: true
+  name: _SwitchTargets
+  nameWithType: CilGraphNode._SwitchTargets
+  fullName: CilBytecodeParser.CilGraphNode._SwitchTargets
+- uid: CilBytecodeParser.CilGraphNode.GetSwitchTargets
+  commentId: M:CilBytecodeParser.CilGraphNode.GetSwitchTargets
+  parent: CilBytecodeParser.CilGraphNode
+  isExternal: true
+  name: GetSwitchTargets()
+  nameWithType: CilGraphNode.GetSwitchTargets()
+  fullName: CilBytecodeParser.CilGraphNode.GetSwitchTargets()
+  spec.csharp:
+  - uid: CilBytecodeParser.CilGraphNode.GetSwitchTargets
+    name: GetSwitchTargets
+    nameWithType: CilGraphNode.GetSwitchTargets
+    fullName: CilBytecodeParser.CilGraphNode.GetSwitchTargets
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilBytecodeParser.CilGraphNode.GetSwitchTargets
+    name: GetSwitchTargets
+    nameWithType: CilGraphNode.GetSwitchTargets
+    fullName: CilBytecodeParser.CilGraphNode.GetSwitchTargets
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: CilBytecodeParser.CilGraphNode.ToString
   commentId: M:CilBytecodeParser.CilGraphNode.ToString
   parent: CilBytecodeParser.CilGraphNode
@@ -603,6 +677,38 @@ references:
   name: CilInstruction
   nameWithType: CilInstruction
   fullName: CilBytecodeParser.CilInstruction
+- uid: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets*
+  commentId: Overload:CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets
+  isExternal: true
+  name: SetSwitchTargets
+  nameWithType: CilGraphNodeMutable.SetSwitchTargets
+  fullName: CilBytecodeParser.CilGraphNodeMutable.SetSwitchTargets
+- uid: CilBytecodeParser.CilGraphNode[]
+  isExternal: true
+  name: CilGraphNode[]
+  nameWithType: CilGraphNode[]
+  fullName: CilBytecodeParser.CilGraphNode[]
+  nameWithType.vb: CilGraphNode()
+  fullName.vb: CilBytecodeParser.CilGraphNode()
+  name.vb: CilGraphNode()
+  spec.csharp:
+  - uid: CilBytecodeParser.CilGraphNode
+    name: CilGraphNode
+    nameWithType: CilGraphNode
+    fullName: CilBytecodeParser.CilGraphNode
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilBytecodeParser.CilGraphNode
+    name: CilGraphNode
+    nameWithType: CilGraphNode
+    fullName: CilBytecodeParser.CilGraphNode
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
 - uid: CilBytecodeParser.CilGraphNodeMutable.Instruction*
   commentId: Overload:CilBytecodeParser.CilGraphNodeMutable.Instruction
   isExternal: true

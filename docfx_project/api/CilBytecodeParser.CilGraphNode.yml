@@ -11,7 +11,9 @@ items:
   - CilBytecodeParser.CilGraphNode._Name
   - CilBytecodeParser.CilGraphNode._Next
   - CilBytecodeParser.CilGraphNode._Previous
+  - CilBytecodeParser.CilGraphNode._SwitchTargets
   - CilBytecodeParser.CilGraphNode.BranchTarget
+  - CilBytecodeParser.CilGraphNode.GetSwitchTargets
   - CilBytecodeParser.CilGraphNode.Instruction
   - CilBytecodeParser.CilGraphNode.Name
   - CilBytecodeParser.CilGraphNode.Next
@@ -187,6 +189,61 @@ items:
   - protected
   modifiers.vb:
   - Protected
+- uid: CilBytecodeParser.CilGraphNode._SwitchTargets
+  commentId: F:CilBytecodeParser.CilGraphNode._SwitchTargets
+  id: _SwitchTargets
+  parent: CilBytecodeParser.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: _SwitchTargets
+  nameWithType: CilGraphNode._SwitchTargets
+  fullName: CilBytecodeParser.CilGraphNode._SwitchTargets
+  type: Field
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  syntax:
+    content: protected CilGraphNode[] _SwitchTargets
+    return:
+      type: CilBytecodeParser.CilGraphNode[]
+    content.vb: Protected _SwitchTargets As CilGraphNode()
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilBytecodeParser.CilGraphNode.GetSwitchTargets
+  commentId: M:CilBytecodeParser.CilGraphNode.GetSwitchTargets
+  id: GetSwitchTargets
+  parent: CilBytecodeParser.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: GetSwitchTargets()
+  nameWithType: CilGraphNode.GetSwitchTargets()
+  fullName: CilBytecodeParser.CilGraphNode.GetSwitchTargets()
+  type: Method
+  source:
+    path: CilBytecodeParser
+    isExternal: true
+  assemblies:
+  - CilBytecodeParser
+  namespace: CilBytecodeParser
+  summary: "\nGets an array of nodes that represents the jump table of the switch instruction, if applicable\n"
+  remarks: Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. For non-switch instructions, returns an empty array.
+  syntax:
+    content: public CilGraphNode[] GetSwitchTargets()
+    return:
+      type: CilBytecodeParser.CilGraphNode[]
+    content.vb: Public Function GetSwitchTargets As CilGraphNode()
+  overload: CilBytecodeParser.CilGraphNode.GetSwitchTargets*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 - uid: CilBytecodeParser.CilGraphNode.#ctor
   commentId: M:CilBytecodeParser.CilGraphNode.#ctor
   id: '#ctor'
@@ -693,6 +750,38 @@ references:
   name: CilGraphNode
   nameWithType: CilGraphNode
   fullName: CilBytecodeParser.CilGraphNode
+- uid: CilBytecodeParser.CilGraphNode[]
+  isExternal: true
+  name: CilGraphNode[]
+  nameWithType: CilGraphNode[]
+  fullName: CilBytecodeParser.CilGraphNode[]
+  nameWithType.vb: CilGraphNode()
+  fullName.vb: CilBytecodeParser.CilGraphNode()
+  name.vb: CilGraphNode()
+  spec.csharp:
+  - uid: CilBytecodeParser.CilGraphNode
+    name: CilGraphNode
+    nameWithType: CilGraphNode
+    fullName: CilBytecodeParser.CilGraphNode
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilBytecodeParser.CilGraphNode
+    name: CilGraphNode
+    nameWithType: CilGraphNode
+    fullName: CilBytecodeParser.CilGraphNode
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilBytecodeParser.CilGraphNode.GetSwitchTargets*
+  commentId: Overload:CilBytecodeParser.CilGraphNode.GetSwitchTargets
+  isExternal: true
+  name: GetSwitchTargets
+  nameWithType: CilGraphNode.GetSwitchTargets
+  fullName: CilBytecodeParser.CilGraphNode.GetSwitchTargets
 - uid: CilBytecodeParser.CilGraphNode.#ctor*
   commentId: Overload:CilBytecodeParser.CilGraphNode.#ctor
   isExternal: true
