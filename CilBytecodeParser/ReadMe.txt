@@ -119,3 +119,10 @@ v1.8
 - Impoved parsing of instructions that reference local variables
 - Fixed ldvirtfn opcode handling
 - Added CilGraph.Print method for customizable conversion to text; refactored and improved CilGraph.ToString()
+
+v1.9
+- Fix CilGraph.EmitTo ble instructions handling
+- Add filter and fault exception blocks support
+- Add proper handling of duplicate try blocks
+- Indent exception blocks when outtputting them as text
+- Add switch instruction support

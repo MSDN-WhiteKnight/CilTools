@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CilBytecodeParser")]
-[assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight  2019")]
+[assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -18,5 +18,5 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("300c0864-7479-4bfc-838c-bda19767f9cf")]
 
-[assembly: AssemblyVersion("1.8.0.0")]
-[assembly: AssemblyFileVersion("1.8.0.0")]
+[assembly: AssemblyVersion("1.9.0.0")]
+[assembly: AssemblyFileVersion("1.9.0.0")]
