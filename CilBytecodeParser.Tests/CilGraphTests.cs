@@ -202,6 +202,28 @@ namespace CilBytecodeParser.Tests
             deleg();
             Assert.AreEqual<int>(15, SampleMethods.counter); 
         }
+
+        [TestMethod]
+        public void Test_CilGraph_Switch() 
+        {
+            DynamicMethod dm = new DynamicMethod(
+                "CilGraphTests_SwitchTestDynamic", typeof(string), new Type[] { typeof(int) }, typeof(SampleMethods).Module
+                );
+            ILGenerator ilg = dm.GetILGenerator(512);
+            MethodInfo mi = typeof(SampleMethods).GetMethod("SwitchTest");
+            CilGraph graph = CilAnalysis.GetGraph(mi);            
+            
+            graph.EmitTo(ilg);
+
+            //create and execute delegate
+            Func<int, string> deleg = (Func<int, string>)dm.CreateDelegate(typeof(Func<int, string>));
+            string res = deleg(1);
+            Assert.AreEqual("One", res);
+            res = deleg(2);
+            Assert.AreEqual("Two", res);
+            res = deleg(120);
+            Assert.AreEqual((120).ToString(), res);
+        }
 #endif
     }
 }

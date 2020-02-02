@@ -306,21 +306,36 @@ namespace CilBytecodeParser
                    
             foreach (CilInstruction instr in instructions)
             {
-                //if instruction references branch targets, add byte offset into labels
-                if (instr.OpCode.OperandType == OperandType.ShortInlineBrTarget && instr.Operand != null)
-                {
-                    int target = (sbyte)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
-
-                    if (!labels.Contains(target)) labels.Add(target);
-                }
-                else if (instr.OpCode.OperandType == OperandType.InlineBrTarget && instr.Operand != null)
-                {
-                    int target = (int)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
-
-                    if (!labels.Contains(target)) labels.Add(target);
-                }
-
                 nodes.Add(new CilGraphNodeMutable(instr)); 
+                if (instr.Operand == null) continue;
+
+                int target;
+
+                //if instruction references branch targets, add byte offset into labels
+                switch (instr.OpCode.OperandType)
+                {
+                    case OperandType.ShortInlineBrTarget: 
+                        target = (sbyte)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
+                        if (!labels.Contains(target)) labels.Add(target);
+                        break;
+
+                    case OperandType.InlineBrTarget:
+                        target = (int)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
+                        if (!labels.Contains(target)) labels.Add(target);
+                        break;
+
+                    case OperandType.InlineSwitch:
+                        int[] arr = instr.Operand as int[];
+                        if (arr == null) break;
+
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            target = arr[i] + (int)instr.ByteOffset + (int)instr.TotalSize;
+                            if (!labels.Contains(target)) labels.Add(target);
+                        }
+
+                        break;
+                }
             }
 
             labels.Sort();
@@ -376,6 +391,32 @@ namespace CilBytecodeParser
                             nodes[n].BranchTarget = targets[i];
                             break;
                         }
+                    }
+                }
+                else if (instr.OpCode.OperandType == OperandType.InlineSwitch && instr.Operand != null)
+                {
+                    //for switch instruction, set array of target instructions
+
+                    int[] arr = instr.Operand as int[];
+                    if (arr != null)
+                    {
+                        CilGraphNode[] swt = new CilGraphNode[arr.Length];
+
+                        for (int j = 0; j < arr.Length; j++)
+                        {
+                            int target = arr[j] + (int)instr.ByteOffset + (int)instr.TotalSize;
+
+                            for (int i = 0; i < labels.Count; i++)
+                            {
+                                if (target == labels[i])
+                                {
+                                    swt[j] = targets[i];
+                                    break;
+                                }
+                            }
+                        }
+
+                        nodes[n].SetSwitchTargets(swt);
                     }
                 }
 

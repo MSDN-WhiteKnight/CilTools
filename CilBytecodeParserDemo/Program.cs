@@ -59,7 +59,8 @@ namespace CilBytecodeParserDemo
                     );
 
                 MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
-                CilGraph graph = CilAnalysis.GetGraph(mi);                
+                CilGraph graph = CilAnalysis.GetGraph(mi);
+                
                 graph.Print(null, true, true, true, true);                
             }
             catch (Exception ex)

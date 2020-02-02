@@ -221,7 +221,6 @@ namespace CilBytecodeParser
                     this.state = CilReaderState.Error;
                     throw new NotSupportedException("Unsupported operand type: " + opcode.OperandType.ToString());
             }            
-            
 
             try
             {
@@ -230,6 +229,7 @@ namespace CilBytecodeParser
                     //convert operand into an appropriate type
                     byte[] operand_bytes = new byte[size];
                     Array.Copy(cilbytes, current_pos, operand_bytes, 0, size);
+                    current_pos += size; //пропускаем нужное число байтов
 
                     switch (size)
                     {
@@ -238,11 +238,27 @@ namespace CilBytecodeParser
 
                         case 2: operand = (object)BitConverter.ToInt16(operand_bytes, 0); break;
 
-                        case 4: 
-                            if(opcode.OperandType == OperandType.ShortInlineR)
+                        case 4:
+                            if (opcode.OperandType == OperandType.InlineSwitch)
+                            {
+                                uint count_labels = BitConverter.ToUInt32(operand_bytes, 0);
+                                int[] labels = new int[count_labels]; 
+
+                                for (uint i = 0; i < count_labels; i++)
+                                {
+                                    operand_bytes = new byte[sizeof(int)];
+                                    Array.Copy(cilbytes, current_pos, operand_bytes, 0, sizeof(int));
+                                    current_pos += sizeof(int);
+                                    labels[i] = BitConverter.ToInt32(operand_bytes, 0);
+                                    int target = (int)byteoffset + opcode.Size + size + (int)count_labels*sizeof(int) + labels[i];
+                                }
+
+                                operand = (object)labels;
+                            }
+                            else if(opcode.OperandType == OperandType.ShortInlineR)
                                 operand = (object)BitConverter.ToSingle(operand_bytes, 0); 
                             else
-                                operand = (object)BitConverter.ToInt32(operand_bytes, 0); 
+                                operand = (object)BitConverter.ToInt32(operand_bytes, 0);
                             break;
 
                         case 8: 
@@ -255,8 +271,7 @@ namespace CilBytecodeParser
                 }
 
                 instr = new CilInstruction(opcode, operand, (uint)size, byteoffset, current_ordinal, this.Method);
-
-                current_pos += size; //пропускаем нужное число байтов
+                                
                 current_ordinal++;
 
                 if (current_pos >= cilbytes.Length)

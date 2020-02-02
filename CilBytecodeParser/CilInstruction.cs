@@ -144,8 +144,18 @@ namespace CilBytecodeParser
         {
             get
             {
-                if (this.OpCode != null) return (uint)this.OpCode.Size + OperandSize;
-                else return 0;
+                if (this.OpCode == null) return 0;
+
+                if (this.OpCode.OperandType == System.Reflection.Emit.OperandType.InlineSwitch)
+                {
+                    uint res = (uint)this.OpCode.Size + this._OperandSize;
+                    int[] arr = this.Operand as int[];
+
+                    if (arr != null) res += (uint)arr.Length * sizeof(int);
+
+                    return res;
+                }
+                else return (uint)this.OpCode.Size + this._OperandSize;                 
             }
         }
 
@@ -542,6 +552,31 @@ namespace CilBytecodeParser
                             sb.Append(")");
                         }
                     }//end if (sig != null)                    
+                }
+                else if (OpCode.OperandType == System.Reflection.Emit.OperandType.InlineSwitch)
+                {
+                    int[] labels = this.Operand as int[];
+
+                    if (labels != null)
+                    {
+                        sb.Append(' ');
+                        sb.Append('(');
+
+                        for (int i = 0; i < labels.Length; i++)
+                        {
+                            if (i >= 1) sb.Append(", ");
+                            int target = (int)this._ByteOffset + (int)this.TotalSize + labels[i];
+                            sb.Append("0x");
+                            sb.Append(target.ToString("X4"));
+                        }
+
+                        sb.Append(')');
+                    }
+                    else
+                    {
+                        sb.Append(' ');
+                        sb.Append(Convert.ToString(this.Operand, System.Globalization.CultureInfo.InvariantCulture));
+                    }
                 }
                 else
                 {
