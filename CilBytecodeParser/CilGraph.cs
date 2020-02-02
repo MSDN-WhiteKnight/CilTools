@@ -760,7 +760,7 @@ namespace CilBytecodeParser
                     }
                     else if (instr.OpCode != OpCodes.Endfilter && instr.OpCode != OpCodes.Endfinally)
                     {
-                        //endfilter/endfinally are already emitted with exception blocks                                                
+                        //endfilter/endfinally are already emitted with exception blocks
 
                         instr.EmitTo(gen); //emit regular instruction                        
                     }
