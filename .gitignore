@@ -332,6 +332,7 @@ ASALocalRun/
 ####################################################################
 
 # Documentation
+/docs/manifest.json
 *.pdf
 
 # NuGet
