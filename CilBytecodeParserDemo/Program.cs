@@ -15,6 +15,42 @@ namespace CilBytecodeParserDemo
     {
         static void Main(string[] args)
         {
+            DynamicMethod dm = new DynamicMethod("Method", typeof(void), new Type[] { }, typeof(Program).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            ilg.Emit(OpCodes.Ldstr, "Hello world");
+            ilg.Emit(
+                OpCodes.Call,
+                typeof(Console).GetMethod("WriteLine", new Type[] { typeof(string) })
+                );
+            ilg.Emit(OpCodes.Ret);
+            var deleg = (Action)dm.CreateDelegate(typeof(Action));
+
+            var mb = new CilBytecodeParser.Reflection.MethodBaseWrapper(dm);
+            byte[] il = mb.GetBytecode();
+            var module = mb.ModuleWrapper;
+
+            var coll = CilReader.GetInstructions(il);
+
+            foreach (CilInstruction instr in coll)
+            {
+                if (instr.OpCode.OperandType == OperandType.InlineMethod)
+                {
+                    Console.Write(instr.OpCode.ToString()+" ");
+                    var meth = module.ResolveMethod((int)instr.Operand,null,null);
+                    if (meth != null) Console.WriteLine(meth.ToString());
+                    else Console.WriteLine("<unknown method>");
+                }
+                else if (instr.OpCode.OperandType == OperandType.InlineString)
+                {
+                    Console.Write(instr.OpCode.ToString() + " ");
+                    Console.WriteLine(module.ResolveString((int)instr.Operand).ToString());
+                }
+                else Console.WriteLine(instr.ToString());
+            }
+
+            Console.ReadKey();
+            return;
+
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
             Console.WriteLine("Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
             Console.WriteLine();
@@ -66,11 +102,11 @@ namespace CilBytecodeParserDemo
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                if (!Console.IsInputRedirected) Console.ReadKey();
+                /*if (!Console.IsInputRedirected)*/ Console.ReadKey();
                 throw;
             }
 
-            if (!Console.IsInputRedirected) Console.ReadKey();
+            /*if (!Console.IsInputRedirected)*/ Console.ReadKey();
         }
 
     }
