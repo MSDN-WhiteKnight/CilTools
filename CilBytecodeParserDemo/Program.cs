@@ -72,7 +72,8 @@ namespace CilBytecodeParserDemo
                 else Console.WriteLine(instr.ToString());
             }
 
-            Console.ReadKey();
+            //Console.ReadKey();
+            ;
             return;
 
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
@@ -126,11 +127,11 @@ namespace CilBytecodeParserDemo
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                /*if (!Console.IsInputRedirected)*/ Console.ReadKey();
+                /*if (!Console.IsInputRedirected) Console.ReadKey();*/
                 throw;
             }
 
-            /*if (!Console.IsInputRedirected)*/ Console.ReadKey();
+            /*if (!Console.IsInputRedirected) Console.ReadKey();*/            
         }
 
     }
