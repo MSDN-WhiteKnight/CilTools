@@ -13,6 +13,8 @@ namespace CilBytecodeParserDemo
 {
     class Program
     {
+        public static int f = 2;
+
         static void Main(string[] args)
         {
             DynamicMethod dm = new DynamicMethod("Method", typeof(void), new Type[] { }, typeof(Program).Module);
@@ -22,6 +24,14 @@ namespace CilBytecodeParserDemo
                 OpCodes.Call,
                 typeof(Console).GetMethod("WriteLine", new Type[] { typeof(string) })
                 );
+            ilg.Emit(OpCodes.Ldsfld,typeof(Program).GetField("f"));
+            ilg.Emit(
+                OpCodes.Call,
+                typeof(Console).GetMethod("WriteLine", new Type[] { typeof(int) })
+                );
+            ilg.Emit(OpCodes.Ldc_I4, 10);
+            ilg.Emit(OpCodes.Newarr, typeof(byte));
+            ilg.Emit(OpCodes.Pop);
             ilg.Emit(OpCodes.Ret);
             var deleg = (Action)dm.CreateDelegate(typeof(Action));
 
@@ -40,10 +50,24 @@ namespace CilBytecodeParserDemo
                     if (meth != null) Console.WriteLine(meth.ToString());
                     else Console.WriteLine("<unknown method>");
                 }
+                else if (instr.OpCode.OperandType == OperandType.InlineField)
+                {
+                    Console.Write(instr.OpCode.ToString() + " ");
+                    var f = module.ResolveField((int)instr.Operand, null, null);
+                    if (f != null) Console.WriteLine(f.ToString());
+                    else Console.WriteLine("<unknown field>");
+                }
                 else if (instr.OpCode.OperandType == OperandType.InlineString)
                 {
                     Console.Write(instr.OpCode.ToString() + " ");
                     Console.WriteLine(module.ResolveString((int)instr.Operand).ToString());
+                }
+                else if (instr.OpCode.OperandType == OperandType.InlineType)
+                {
+                    Console.Write(instr.OpCode.ToString() + " ");
+                    var t = module.ResolveType((int)instr.Operand, null, null);
+                    if (t != null) Console.WriteLine(t.ToString());
+                    else Console.WriteLine("<unknown type>");
                 }
                 else Console.WriteLine(instr.ToString());
             }
