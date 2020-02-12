@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CilBytecodeParser.Reflection
 {
-    public class ModuleWrapperDynamic : ModuleWrapper
+    internal class ModuleWrapperDynamic : ModuleWrapper
     {        
         object resolver;
         MethodBase mbResolveToken;

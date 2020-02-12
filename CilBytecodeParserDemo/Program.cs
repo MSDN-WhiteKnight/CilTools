@@ -30,51 +30,15 @@ namespace CilBytecodeParserDemo
                 typeof(Console).GetMethod("WriteLine", new Type[] { typeof(int) })
                 );
             ilg.Emit(OpCodes.Ldc_I4, 10);
-            ilg.Emit(OpCodes.Newarr, typeof(object));
+            ilg.Emit(OpCodes.Newarr, typeof(string));
             ilg.Emit(OpCodes.Pop);
             ilg.Emit(OpCodes.Ret);
             var deleg = (Action)dm.CreateDelegate(typeof(Action));
-            deleg();            
+            deleg();                        
+                                    
+            Console.WriteLine(CilAnalysis.MethodToText(dm));
 
-            var mb = new CilBytecodeParser.Reflection.MethodBaseWrapper(dm);
-            byte[] il = mb.GetBytecode();
-            var module = mb.ModuleWrapper;
-
-            var coll = CilReader.GetInstructions(il);
-
-            foreach (CilInstruction instr in coll)
-            {
-                if (instr.OpCode.OperandType == OperandType.InlineMethod)
-                {
-                    Console.Write(instr.OpCode.ToString()+" ");
-                    var meth = module.ResolveMethod((int)instr.Operand,null,null);
-                    if (meth != null) Console.WriteLine(meth.ToString());
-                    else Console.WriteLine("<unknown method>");
-                }
-                else if (instr.OpCode.OperandType == OperandType.InlineField)
-                {
-                    Console.Write(instr.OpCode.ToString() + " ");
-                    var f = module.ResolveField((int)instr.Operand, null, null);
-                    if (f != null) Console.WriteLine(f.ToString());
-                    else Console.WriteLine("<unknown field>");
-                }
-                else if (instr.OpCode.OperandType == OperandType.InlineString)
-                {
-                    Console.Write(instr.OpCode.ToString() + " ");
-                    Console.WriteLine(module.ResolveString((int)instr.Operand).ToString());
-                }
-                else if (instr.OpCode.OperandType == OperandType.InlineType)
-                {
-                    Console.Write(instr.OpCode.ToString() + " ");
-                    var t = module.ResolveType((int)instr.Operand, null, null);
-                    if (t != null) Console.WriteLine(t.ToString());
-                    else Console.WriteLine("<unknown type>");
-                }
-                else Console.WriteLine(instr.ToString());
-            }
-
-            //Console.ReadKey();
-            ;
+            if (!Console.IsInputRedirected) Console.ReadKey();
             return;
 
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
@@ -123,16 +87,16 @@ namespace CilBytecodeParserDemo
                 MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
                 CilGraph graph = CilAnalysis.GetGraph(mi);
                 
-                graph.Print(null, true, true, true, true);                
+                graph.Print(null, true, true, true, true);
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
-                /*if (!Console.IsInputRedirected) Console.ReadKey();*/
+                if (!Console.IsInputRedirected) Console.ReadKey();
                 throw;
             }
-
-            /*if (!Console.IsInputRedirected) Console.ReadKey();*/            
+            
+            if (!Console.IsInputRedirected) Console.ReadKey();
         }
 
     }

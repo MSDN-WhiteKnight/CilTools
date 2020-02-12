@@ -7,10 +7,8 @@ using System.Globalization;
 
 namespace CilBytecodeParser.Reflection
 {
-    public class MethodBaseWrapper : MethodBase
-    {
-        
-
+    internal class MethodBaseWrapper : MethodBase
+    {        
         MethodBase srcmethod;
         ModuleWrapper module;
 
@@ -54,12 +52,25 @@ namespace CilBytecodeParser.Reflection
 
         public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
         {
-            throw new NotSupportedException("This MethodBase implementation does not support calls");
+            return srcmethod.Invoke(obj, invokeAttr, binder, parameters, culture);
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
         {
             return srcmethod.IsDefined(attributeType,inherit);
+        }
+
+        public override bool IsGenericMethod
+        {
+            get
+            {
+                return srcmethod.IsGenericMethod;
+            }
+        }
+
+        public override Type[] GetGenericArguments()
+        {
+            return srcmethod.GetGenericArguments();
         }
 
         public ModuleWrapper ModuleWrapper

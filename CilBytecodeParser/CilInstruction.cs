@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using CilBytecodeParser.Reflection;
 
 namespace CilBytecodeParser
 {
@@ -178,7 +179,9 @@ namespace CilBytecodeParser
             this._OperandSize = opsize;
             this._ByteOffset = byteoffset;
             this._OrdinalNumber = ordinalnum;
-            this._Method = mb;
+
+            if (mb == null || mb is MethodBaseWrapper) this._Method = mb;
+            else this._Method = new MethodBaseWrapper(mb);
         }
         
         /// <summary>
@@ -210,8 +213,7 @@ namespace CilBytecodeParser
         public MemberInfo ReferencedMember
         {
             get
-            {
-
+            {                
                 if (this.Method == null) return null;
                 if (this.Operand == null) return null;
 
@@ -237,15 +239,15 @@ namespace CilBytecodeParser
                 {
                     if (ReferencesMethodToken(this.OpCode))
                     {    
-                        return Method.Module.ResolveMethod((int)Operand, t_args, m_args);
+                        return (Method as MethodBaseWrapper).ModuleWrapper.ResolveMethod((int)Operand, t_args, m_args);
                     }
                     else if (ReferencesFieldToken(this.OpCode))
                     {
-                        return Method.Module.ResolveField((int)Operand, t_args, m_args);                        
+                        return (Method as MethodBaseWrapper).ModuleWrapper.ResolveField((int)Operand, t_args, m_args);                        
                     }
                     else if (ReferencesTypeToken(this.OpCode))
                     {
-                        return Method.Module.ResolveType((int)Operand, t_args, m_args);                        
+                        return (Method as MethodBaseWrapper).ModuleWrapper.ResolveType((int)Operand, t_args, m_args);                        
                     }
                     else return null;
                 }
@@ -283,7 +285,7 @@ namespace CilBytecodeParser
                 {
                     if (this.OpCode.Equals(OpCodes.Ldstr))
                     {
-                        string s = Method.Module.ResolveString((int)Operand);
+                        string s = (Method as MethodBaseWrapper).ModuleWrapper.ResolveString((int)Operand);
                         return s;
                     }
                     else return null;
@@ -314,7 +316,7 @@ namespace CilBytecodeParser
 
                 try
                 {
-                    sig = Method.Module.ResolveSignature(token);
+                    sig = (Method as MethodBaseWrapper).ModuleWrapper.ResolveSignature(token);
                 }
                 catch (Exception ex)
                 {
@@ -463,7 +465,7 @@ namespace CilBytecodeParser
                         int token = (int)Operand;
                         string s = "";
 
-                        s = Method.Module.ResolveString(token);
+                        s = (Method as MethodBaseWrapper).ModuleWrapper.ResolveString(token);
                         s = CilAnalysis.EscapeString(s);
 
                         sb.Append(" \"");
@@ -484,7 +486,7 @@ namespace CilBytecodeParser
 
                     try
                     {
-                        MemberInfo mi = Method.Module.ResolveMember(token); 
+                        MemberInfo mi = (Method as MethodBaseWrapper).ModuleWrapper.ResolveMember(token,null,null);
                         sb.Append(' ');
                         if (mi is Type) sb.Append(CilAnalysis.GetTypeNameInternal((Type)mi));
                         else sb.Append(mi.Name);
@@ -520,7 +522,7 @@ namespace CilBytecodeParser
 
                     try
                     {
-                        sig = Method.Module.ResolveSignature(token);                        
+                        sig = (Method as MethodBaseWrapper).ModuleWrapper.ResolveSignature(token);                        
                     }
                     catch (Exception ex)
                     {
@@ -534,8 +536,8 @@ namespace CilBytecodeParser
                         sb.Append(' ');
 
                         try
-                        {                                                        
-                            sb.Append(new Signature(sig, Method.Module).ToString());                                                        
+                        {
+                            sb.Append(new Signature(sig, (Method as MethodBaseWrapper).ModuleWrapper).ToString());                                                        
                         }
                         catch (Exception ex)
                         {

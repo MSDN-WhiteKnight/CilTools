@@ -2,10 +2,12 @@
  * Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using CilBytecodeParser.Reflection;
 
 namespace CilBytecodeParser
 {
@@ -74,8 +76,23 @@ namespace CilBytecodeParser
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
+                        
+            ModuleWrapper mwr = new ModuleWrapper(module);
+            Initialize(data, mwr);
+        }
 
+        internal Signature(byte[] data, ModuleWrapper module)
+        {
+            Debug.Assert(data != null, "Source array cannot be null");
+            Debug.Assert(data.Length > 0, "Source array cannot be empty");            
+            
+            Initialize(data, module);
+        }
+
+        void Initialize(byte[] data, ModuleWrapper module)
+        {
             MemoryStream ms = new MemoryStream(data);
+
             using (ms)
             {
                 byte b = MetadataReader.ReadByte(ms); //calling convention & method flags
@@ -88,12 +105,12 @@ namespace CilBytecodeParser
 
                 uint paramcount = MetadataReader.ReadCompressed(ms);
                 this._ParamTypes = new TypeSpec[paramcount];
-                this._ReturnType = TypeSpec.ReadFromStream(ms, module);                
+                this._ReturnType = TypeSpec.ReadFromStream(ms, module);
 
                 for (int i = 0; i < paramcount; i++)
                 {
-                    this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, module);                    
-                } 
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, module);
+                }
             }
         }
 

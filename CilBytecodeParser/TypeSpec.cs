@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using CilBytecodeParser.Reflection;
 
 namespace CilBytecodeParser
 {
@@ -216,7 +217,7 @@ namespace CilBytecodeParser
             return BitConverter.ToInt32(res_bytes, 0);
         }
 
-        internal static TypeSpec ReadFromStream(Stream source, Module module) //ECMA-335 II.23.2.12 Type
+        internal static TypeSpec ReadFromStream(Stream source, ModuleWrapper module) //ECMA-335 II.23.2.12 Type
         {
             Debug.Assert(source != null, "Source stream is null");
 
@@ -302,7 +303,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            restype = module.ResolveType(typetok);                            
+                            restype = module.ResolveType(typetok);
                         }
                         catch (Exception ex)
                         {
@@ -315,7 +316,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            restype = module.ResolveType(typetok);                            
+                            restype = module.ResolveType(typetok, null, null);
                         }
                         catch (Exception ex)
                         {
@@ -324,7 +325,7 @@ namespace CilBytecodeParser
                                                 
                         break;
                     case (byte)CilBytecodeParser.ElementType.Array:
-                        ts = TypeSpec.ReadFromStream(source, module);                        
+                        ts = TypeSpec.ReadFromStream(source, module);
 
                         //II.23.2.13 ArrayShape
                         uint rank = MetadataReader.ReadCompressed(source);

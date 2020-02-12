@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using CilBytecodeParser.Reflection;
 
 namespace CilBytecodeParser
 {
@@ -138,14 +139,18 @@ namespace CilBytecodeParser
         /// <param name="src">A MethodBase object that specifies a method to read from</param>
         public CilReader(MethodBase src)
         {
-            if (src == null) throw new ArgumentNullException("src","Source method cannot be null");   
+            if (src == null) throw new ArgumentNullException("src","Source method cannot be null");
 
-            MethodBody mb = null;            
-            mb = src.GetMethodBody();
-            if (mb == null) throw new CilParserException("Cannot read method bytecode: GetMethodBody returned null");
+            MethodBaseWrapper wrapper = new MethodBaseWrapper(src);
 
-            this.cilbytes = mb.GetILAsByteArray();
-            this.method = src;
+            byte[] bytecode = wrapper.GetBytecode();
+
+            if (bytecode == null) throw new CilParserException("Cannot read method bytecode: GetBytecode returned null");
+
+            if (bytecode.Length == 0) throw new CilParserException("Cannot read method bytecode: source array is empty");
+
+            this.cilbytes = bytecode;
+            this.method = wrapper;
             this.state = CilReaderState.Reading;
         }
 
