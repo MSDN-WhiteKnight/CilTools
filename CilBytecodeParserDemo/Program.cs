@@ -30,10 +30,11 @@ namespace CilBytecodeParserDemo
                 typeof(Console).GetMethod("WriteLine", new Type[] { typeof(int) })
                 );
             ilg.Emit(OpCodes.Ldc_I4, 10);
-            ilg.Emit(OpCodes.Newarr, typeof(byte));
+            ilg.Emit(OpCodes.Newarr, typeof(object));
             ilg.Emit(OpCodes.Pop);
             ilg.Emit(OpCodes.Ret);
             var deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();            
 
             var mb = new CilBytecodeParser.Reflection.MethodBaseWrapper(dm);
             byte[] il = mb.GetBytecode();

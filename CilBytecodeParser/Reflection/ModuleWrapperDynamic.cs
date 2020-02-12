@@ -7,8 +7,7 @@ using System.Text;
 namespace CilBytecodeParser.Reflection
 {
     public class ModuleWrapperDynamic : ModuleWrapper
-    {
-        MethodBase srcmethod;
+    {        
         object resolver;
         MethodBase mbResolveToken;
         MethodBase mbGetStringLiteral;
@@ -27,6 +26,9 @@ namespace CilBytecodeParser.Reflection
             FieldInfo field = this.srcmethod.GetType().GetField("m_resolver",
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
                 );
+
+            if (field == null) return;
+
             this.resolver = field.GetValue(this.srcmethod);
 
             this.mbResolveToken = this.resolver.GetType().GetMethod(
@@ -105,6 +107,8 @@ namespace CilBytecodeParser.Reflection
 
         public override Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
+            if (this.resolver == null) return base.ResolveType(metadataToken, genericTypeArguments, genericMethodArguments);
+
             if (Environment.Version.Major >= 4)
             {
                 IntPtr typeHandle, methodHandle, fieldHandle;
@@ -128,6 +132,8 @@ namespace CilBytecodeParser.Reflection
 
         public override MethodBase ResolveMethod(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
+            if (this.resolver == null) return base.ResolveMethod(metadataToken, genericTypeArguments, genericMethodArguments);
+
             if (Environment.Version.Major >= 4)
             {
                 IntPtr typeHandle, methodHandle, fieldHandle;
@@ -156,6 +162,8 @@ namespace CilBytecodeParser.Reflection
 
         public override FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
+            if (this.resolver == null) return base.ResolveField(metadataToken, genericTypeArguments, genericMethodArguments);
+
             if (Environment.Version.Major >= 4)
             {
                 IntPtr typeHandle, methodHandle, fieldHandle;
@@ -184,6 +192,7 @@ namespace CilBytecodeParser.Reflection
 
         public override MemberInfo ResolveMember(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
+            if (this.resolver == null) return base.ResolveMember(metadataToken, genericTypeArguments, genericMethodArguments);
 
             if (Environment.Version.Major >= 4)
             {
@@ -230,11 +239,15 @@ namespace CilBytecodeParser.Reflection
 
         public override byte[] ResolveSignature(int metadataToken)
         {
+            if (this.resolver == null) return base.ResolveSignature(metadataToken);
+
             return (byte[])mbResolveSignature.Invoke(resolver, new object[] { metadataToken, 0 });
         }
 
         public override string ResolveString(int metadataToken)
         {
+            if (this.resolver == null) return base.ResolveString(metadataToken);
+
             return (string)mbGetStringLiteral.Invoke(resolver, new object[] { metadataToken });
         }
     }

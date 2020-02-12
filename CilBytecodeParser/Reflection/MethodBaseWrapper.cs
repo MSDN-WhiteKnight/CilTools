@@ -9,11 +9,15 @@ namespace CilBytecodeParser.Reflection
 {
     public class MethodBaseWrapper : MethodBase
     {
+        
+
         MethodBase srcmethod;
+        ModuleWrapper module;
 
         public MethodBaseWrapper(MethodBase mb) : base()
         {
-            this.srcmethod = mb;            
+            this.srcmethod = mb;
+            this.module = ModuleWrapper.Create(srcmethod);
         }
 
         public override MethodAttributes Attributes {get{ return srcmethod.Attributes;}}
@@ -62,7 +66,7 @@ namespace CilBytecodeParser.Reflection
         {
             get
             {
-                return ModuleWrapper.Create(srcmethod);
+                return this.module;
             }
         }
 
@@ -70,14 +74,16 @@ namespace CilBytecodeParser.Reflection
         {
             FieldInfo fieldGenerator = srcmethod.GetType().GetField("m_ilGenerator",
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            ILGenerator valueGenerator = (ILGenerator)fieldGenerator.GetValue(srcmethod);
+            object valueGenerator = fieldGenerator.GetValue(srcmethod);
 
-            var field = typeof(ILGenerator).GetField("m_ILStream",
+            if (valueGenerator == null) throw new NotSupportedException("Cannot get bytecode for this method");
+
+            var field = Types.ILGeneratorType.GetField("m_ILStream",
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
                 );
             byte[] ilbytes = (byte[])field.GetValue(valueGenerator);
 
-            field = typeof(ILGenerator).GetField("m_length",
+            field = Types.ILGeneratorType.GetField("m_length",
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
                 );
             int len = (int)field.GetValue(valueGenerator);
@@ -94,8 +100,17 @@ namespace CilBytecodeParser.Reflection
 
         public byte[] GetBytecode()
         {
-            if (srcmethod is DynamicMethod) return GetBytecodeDynamic();
-            else return srcmethod.GetMethodBody().GetILAsByteArray();
+            if (Types.IsDynamicMethod(srcmethod))
+            {
+                return GetBytecodeDynamic();
+            }
+            else
+            {
+                MethodBody body = srcmethod.GetMethodBody();
+
+                if (body == null) return new byte[0];
+                else return body.GetILAsByteArray();
+            }
         }
     }
 }

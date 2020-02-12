@@ -8,7 +8,7 @@ namespace CilBytecodeParser.Reflection
 {
     public class ModuleWrapper
     {
-        MethodBase srcmethod;        
+        protected MethodBase srcmethod;        
 
         protected ModuleWrapper(MethodBase mb)
         {
@@ -17,7 +17,7 @@ namespace CilBytecodeParser.Reflection
 
         public static ModuleWrapper Create(MethodBase mb)
         {
-            if (mb is DynamicMethod) return new ModuleWrapperDynamic(mb);
+            if(Types.IsDynamicMethod(mb)) return new ModuleWrapperDynamic(mb);
             else return new ModuleWrapper(mb);
         }
 
