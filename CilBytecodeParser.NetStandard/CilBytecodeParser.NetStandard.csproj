@@ -36,6 +36,8 @@
     <Compile Include="..\CilBytecodeParser\Reflection\MethodBaseWrapper.cs" Link="MethodBaseWrapper.cs" />
     <Compile Include="..\CilBytecodeParser\Reflection\ModuleWrapper.cs" Link="ModuleWrapper.cs" />
     <Compile Include="..\CilBytecodeParser\Reflection\ModuleWrapperDynamic.cs" Link="ModuleWrapperDynamic.cs" />
+	<Compile Include="Reflection\CustomMethod.cs" />
+    <Compile Include="Reflection\ITokenResolver.cs" />
   </ItemGroup>
 
   <ItemGroup>
