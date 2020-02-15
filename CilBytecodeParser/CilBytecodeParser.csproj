@@ -54,6 +54,8 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="MetadataReader.cs" />
+    <Compile Include="Reflection\CustomMethod.cs" />
+    <Compile Include="Reflection\ITokenResolver.cs" />
     <Compile Include="Reflection\MethodBaseWrapper.cs" />
     <Compile Include="Reflection\ModuleWrapper.cs" />
     <Compile Include="Reflection\ModuleWrapperDynamic.cs" />

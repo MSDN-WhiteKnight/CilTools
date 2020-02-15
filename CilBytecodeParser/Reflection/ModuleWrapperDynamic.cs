@@ -6,6 +6,9 @@ using System.Text;
 
 namespace CilBytecodeParser.Reflection
 {
+    /// <summary>
+    /// Resolves metadata tokens in the context of specified dynamic method
+    /// </summary>
     internal class ModuleWrapperDynamic : ModuleWrapper
     {        
         object resolver;
@@ -50,7 +53,8 @@ namespace CilBytecodeParser.Reflection
                 Type tIRuntimeFieldInfo = typeof(RuntimeTypeHandle).Assembly.GetType("System.IRuntimeFieldInfo");
 
                 this.mbGetTypeFromHandle = typeof(Type).GetMethod(
-                "GetTypeFromHandleUnsafe", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(IntPtr) }, null
+                "GetTypeFromHandleUnsafe", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, 
+                new[] { typeof(IntPtr) }, null
                 );
 
                 if (tIRuntimeFieldInfo != null)
@@ -65,7 +69,8 @@ namespace CilBytecodeParser.Reflection
                 {
 
                     this.mbGetMethodBase = tRuntimeType.GetMethod(
-                        "GetMethodBase", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[] { tRuntimeType, tRMHI }, null
+                        "GetMethodBase", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, 
+                        new Type[] { tRuntimeType, tRMHI }, null
                         );
 
                     this.ciRuntimeMethodHandle = tRMHI.GetConstructor(
@@ -77,14 +82,16 @@ namespace CilBytecodeParser.Reflection
                 {
 
                     this.ciRuntimeFieldInfo = tRFIS.GetConstructor(
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(IntPtr), typeof(object) }, null
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic, null, 
+                        new[] { typeof(IntPtr), typeof(object) }, null
                         );
                 }
             }
             else
             {
                 this.mbGetTypeFromHandle = typeof(Type).GetMethod(
-                "GetTypeFromHandle", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, new[] { typeof(System.RuntimeTypeHandle) }, null
+                "GetTypeFromHandle", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, 
+                new[] { typeof(System.RuntimeTypeHandle) }, null
                 );
 
                 this.mbGetFieldInfo = tRuntimeType.GetMethod(
@@ -209,12 +216,16 @@ namespace CilBytecodeParser.Reflection
 
                 if (methodHandle != IntPtr.Zero)
                 {
-                    return (MethodBase)mbGetMethodBase.Invoke(null, new[] { t, ciRuntimeMethodHandle.Invoke(new object[] { methodHandle }) });
+                    return (MethodBase)mbGetMethodBase.Invoke(
+                        null, new[] { t, ciRuntimeMethodHandle.Invoke(new object[] { methodHandle }) }
+                        );
                 }
 
                 if (fieldHandle != IntPtr.Zero)
                 {
-                    return (FieldInfo)mbGetFieldInfo.Invoke(null, new[] { t, ciRuntimeFieldInfo.Invoke(new object[] { fieldHandle, null }) });
+                    return (FieldInfo)mbGetFieldInfo.Invoke(
+                        null, new[] { t, ciRuntimeFieldInfo.Invoke(new object[] { fieldHandle, null }) }
+                        );
                 }
 
                 if (typeHandle != IntPtr.Zero)

@@ -17,9 +17,12 @@ namespace CilBytecodeParserDemo
 
         static void Main(string[] args)
         {
-            DynamicMethod dm = new DynamicMethod("Method", typeof(void), new Type[] { }, typeof(Program).Module);
+            DynamicMethod dm = new DynamicMethod("Method", typeof(void), new Type[] {typeof(string) }, typeof(Program).Module);            
             ILGenerator ilg = dm.GetILGenerator(512);
-            ilg.Emit(OpCodes.Ldstr, "Hello world");
+            ilg.DeclareLocal(typeof(string));
+            ilg.Emit(OpCodes.Ldstr, "Hello, world.");
+            ilg.Emit(OpCodes.Stloc, (short)0);
+            ilg.Emit(OpCodes.Ldloc, (short)0);
             ilg.Emit(
                 OpCodes.Call,
                 typeof(Console).GetMethod("WriteLine", new Type[] { typeof(string) })
@@ -33,8 +36,8 @@ namespace CilBytecodeParserDemo
             ilg.Emit(OpCodes.Newarr, typeof(string));
             ilg.Emit(OpCodes.Pop);
             ilg.Emit(OpCodes.Ret);
-            var deleg = (Action)dm.CreateDelegate(typeof(Action));
-            deleg();                        
+            var deleg = (Action<string>)dm.CreateDelegate(typeof(Action<string>));
+            deleg("Hello, world!");
                                     
             Console.WriteLine(CilAnalysis.MethodToText(dm));
 

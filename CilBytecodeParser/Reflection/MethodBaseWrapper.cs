@@ -7,15 +7,15 @@ using System.Globalization;
 
 namespace CilBytecodeParser.Reflection
 {
-    internal class MethodBaseWrapper : MethodBase
+    internal class MethodBaseWrapper : CustomMethod
     {        
         MethodBase srcmethod;
-        ModuleWrapper module;
+        ITokenResolver resolver;
 
         public MethodBaseWrapper(MethodBase mb) : base()
         {
             this.srcmethod = mb;
-            this.module = ModuleWrapper.Create(srcmethod);
+            this.resolver = CustomMethod.CreateResolver(mb);
         }
 
         public override MethodAttributes Attributes {get{ return srcmethod.Attributes;}}
@@ -73,14 +73,14 @@ namespace CilBytecodeParser.Reflection
             return srcmethod.GetGenericArguments();
         }
 
-        public ModuleWrapper ModuleWrapper
+        public override ITokenResolver TokenResolver
         {
             get
             {
-                return this.module;
+                return this.resolver;
             }
         }
-
+        
         byte[] GetBytecodeDynamic()
         {
             FieldInfo fieldGenerator = srcmethod.GetType().GetField("m_ilGenerator",
@@ -109,7 +109,23 @@ namespace CilBytecodeParser.Reflection
             return il;
         }
 
-        public byte[] GetBytecode()
+        byte[] GetLocalSignatureDynamic()
+        {
+            FieldInfo fieldResolver = srcmethod.GetType().GetField("m_resolver",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+            object valueResolver = fieldResolver.GetValue(srcmethod);
+
+            if (valueResolver == null) throw new NotSupportedException("Cannot get local variables for this method");
+
+            var field = valueResolver.GetType().GetField("m_localSignature",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                );
+            byte[] sigbytes = (byte[])field.GetValue(valueResolver);
+
+            return sigbytes;
+        }
+
+        public override byte[] GetBytecode()
         {
             if (Types.IsDynamicMethod(srcmethod))
             {

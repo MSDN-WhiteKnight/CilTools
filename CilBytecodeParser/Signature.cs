@@ -81,15 +81,15 @@ namespace CilBytecodeParser
             Initialize(data, mwr);
         }
 
-        internal Signature(byte[] data, ModuleWrapper module)
+        internal Signature(byte[] data, ITokenResolver resolver)
         {
             Debug.Assert(data != null, "Source array cannot be null");
             Debug.Assert(data.Length > 0, "Source array cannot be empty");            
             
-            Initialize(data, module);
+            Initialize(data, resolver);
         }
 
-        void Initialize(byte[] data, ModuleWrapper module)
+        void Initialize(byte[] data, ITokenResolver resolver)
         {
             MemoryStream ms = new MemoryStream(data);
 
@@ -105,11 +105,11 @@ namespace CilBytecodeParser
 
                 uint paramcount = MetadataReader.ReadCompressed(ms);
                 this._ParamTypes = new TypeSpec[paramcount];
-                this._ReturnType = TypeSpec.ReadFromStream(ms, module);
+                this._ReturnType = TypeSpec.ReadFromStream(ms, resolver);
 
                 for (int i = 0; i < paramcount; i++)
                 {
-                    this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, module);
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver);
                 }
             }
         }

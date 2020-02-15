@@ -141,8 +141,7 @@ namespace CilBytecodeParser
         {
             if (src == null) throw new ArgumentNullException("src","Source method cannot be null");
 
-            MethodBaseWrapper wrapper = new MethodBaseWrapper(src);
-
+            CustomMethod wrapper = CustomMethod.PrepareMethod(src);
             byte[] bytecode = wrapper.GetBytecode();
 
             if (bytecode == null) throw new CilParserException("Cannot read method bytecode: GetBytecode returned null");

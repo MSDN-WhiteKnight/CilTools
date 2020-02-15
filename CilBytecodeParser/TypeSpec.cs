@@ -217,7 +217,7 @@ namespace CilBytecodeParser
             return BitConverter.ToInt32(res_bytes, 0);
         }
 
-        internal static TypeSpec ReadFromStream(Stream source, ModuleWrapper module) //ECMA-335 II.23.2.12 Type
+        internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver) //ECMA-335 II.23.2.12 Type
         {
             Debug.Assert(source != null, "Source stream is null");
 
@@ -247,7 +247,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            t = module.ResolveType(typetok);
+                            t = resolver.ResolveType(typetok);
                             mod = new CustomModifier(false, typetok, t);
                         }
                         catch (Exception ex)
@@ -264,7 +264,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            t = module.ResolveType(typetok);
+                            t = resolver.ResolveType(typetok);
                             mod = new CustomModifier(true, typetok, t);
                         }
                         catch (Exception ex)
@@ -303,7 +303,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            restype = module.ResolveType(typetok);
+                            restype = resolver.ResolveType(typetok);
                         }
                         catch (Exception ex)
                         {
@@ -316,7 +316,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            restype = module.ResolveType(typetok, null, null);
+                            restype = resolver.ResolveType(typetok, null, null);
                         }
                         catch (Exception ex)
                         {
@@ -325,7 +325,7 @@ namespace CilBytecodeParser
                                                 
                         break;
                     case (byte)CilBytecodeParser.ElementType.Array:
-                        ts = TypeSpec.ReadFromStream(source, module);
+                        ts = TypeSpec.ReadFromStream(source, resolver);
 
                         //II.23.2.13 ArrayShape
                         uint rank = MetadataReader.ReadCompressed(source);
@@ -346,11 +346,11 @@ namespace CilBytecodeParser
                         restype = ts.Type.MakeArrayType((int)rank);                        
                         break;
                     case (byte)CilBytecodeParser.ElementType.SzArray:
-                        ts = TypeSpec.ReadFromStream(source, module);
+                        ts = TypeSpec.ReadFromStream(source, resolver);
                         restype = ts.Type.MakeArrayType();                        
                         break;
                     case (byte)CilBytecodeParser.ElementType.Ptr:
-                        ts = TypeSpec.ReadFromStream(source, module);
+                        ts = TypeSpec.ReadFromStream(source, resolver);
                         restype = ts.Type.MakePointerType();
                         break;
                     case (byte)CilBytecodeParser.ElementType.Var: //generic type arg

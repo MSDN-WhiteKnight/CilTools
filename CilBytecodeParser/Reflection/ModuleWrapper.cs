@@ -6,28 +6,31 @@ using System.Text;
 
 namespace CilBytecodeParser.Reflection
 {
-    internal class ModuleWrapper
+    /// <summary>
+    /// Resolves metadata tokens in the context of the specified module
+    /// </summary>
+    internal class ModuleWrapper:ITokenResolver
     {
         protected MethodBase srcmethod;
         protected Module innermodule;
 
-        protected ModuleWrapper(MethodBase mb)
+        /// <summary>
+        /// Creates ModuleWrapper object using the module containing the specified method
+        /// </summary>        
+        public ModuleWrapper(MethodBase mb)
         {
             this.srcmethod = mb;
             this.innermodule = mb.Module;
         }
 
+        /// <summary>
+        /// Creates ModuleWrapper object using the explicitly specified module
+        /// </summary>        
         public ModuleWrapper(Module m)
         {
             this.srcmethod = null;
             this.innermodule = m;
-        }
-
-        public static ModuleWrapper Create(MethodBase mb)
-        {
-            if(Types.IsDynamicMethod(mb)) return new ModuleWrapperDynamic(mb);
-            else return new ModuleWrapper(mb);
-        }
+        }                
 
         public virtual Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
@@ -44,9 +47,19 @@ namespace CilBytecodeParser.Reflection
             return innermodule.ResolveMethod(metadataToken, genericTypeArguments, genericMethodArguments);
         }
 
+        public virtual MethodBase ResolveMethod(int metadataToken)
+        {
+            return ResolveMethod(metadataToken, null, null);
+        }
+
         public virtual FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
             return innermodule.ResolveField(metadataToken, genericTypeArguments, genericMethodArguments);
+        }
+
+        public virtual FieldInfo ResolveField(int metadataToken)
+        {
+            return ResolveField(metadataToken, null, null);
         }
 
         public virtual MemberInfo ResolveMember(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
