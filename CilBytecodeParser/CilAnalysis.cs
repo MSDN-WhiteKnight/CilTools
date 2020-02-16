@@ -8,6 +8,7 @@ using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Diagnostics;
+using CilBytecodeParser.Reflection;
 
 namespace CilBytecodeParser
 {
@@ -286,7 +287,7 @@ namespace CilBytecodeParser
         public static CilGraph GetGraph(MethodBase m)
         {
             if (m == null) throw new ArgumentNullException("m","Source method cannot be null");
-
+            
             List<CilInstruction> instructions;
             List<int> labels = new List<int>();
 
@@ -297,7 +298,7 @@ namespace CilBytecodeParser
             catch (Exception ex)
             {
                 string error = "Exception occured when trying to read method's instructions.";
-                OnError(m, new CilErrorEventArgs(ex, error));  
+                OnError(m, new CilErrorEventArgs(ex, error));
                 return new CilGraph(null, m);
             }
 

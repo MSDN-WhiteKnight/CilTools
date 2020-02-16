@@ -1,4 +1,7 @@
-﻿using System;
+﻿/* CilBytecodeParser library 
+ * Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * License: BSD 2.0 */
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -29,7 +32,7 @@ namespace CilBytecodeParser.Reflection
         public override string Name {get{ return  srcmethod.Name;}}
 
         public override Type ReflectedType {get{ return  srcmethod.ReflectedType;}}
-
+        
         public override object[] GetCustomAttributes(bool inherit)
         {
             return srcmethod.GetCustomAttributes(inherit);
@@ -109,7 +112,7 @@ namespace CilBytecodeParser.Reflection
             return il;
         }
 
-        byte[] GetLocalSignatureDynamic()
+        byte[] GetLocalVarSignatureDynamic()
         {
             FieldInfo fieldResolver = srcmethod.GetType().GetField("m_resolver",
                 BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
@@ -137,6 +140,24 @@ namespace CilBytecodeParser.Reflection
 
                 if (body == null) return new byte[0];
                 else return body.GetILAsByteArray();
+            }
+        }
+
+        public override byte[] GetLocalVarSignature()
+        {
+            if (Types.IsDynamicMethod(srcmethod))
+            {
+                return GetLocalVarSignatureDynamic();
+            }
+            else
+            {
+                MethodBody body = srcmethod.GetMethodBody();
+
+                if (body == null) return new byte[0];
+
+                int token = body.LocalSignatureMetadataToken;
+
+                return this.resolver.ResolveSignature(token);
             }
         }
     }

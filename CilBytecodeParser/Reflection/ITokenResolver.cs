@@ -1,4 +1,7 @@
-﻿using System;
+﻿/* CilBytecodeParser library 
+ * Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * License: BSD 2.0 */
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -8,7 +11,7 @@ namespace CilBytecodeParser.Reflection
     /// <summary>
     /// Represents an object that can be used to convert metadata tokens into corresponding high-level reflection objects
     /// </summary>
-    internal interface ITokenResolver
+    public interface ITokenResolver
     {
         /// <summary>
         /// Returns the type identified by the specified metadata token, in the context defined by the specified generic type parameters.

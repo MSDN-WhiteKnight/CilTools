@@ -203,6 +203,7 @@ namespace CilBytecodeParser
             int n_iter = 0;
             IList<ExceptionHandlingClause> trys = new List<ExceptionHandlingClause>();            
             MethodBody body = null;
+            LocalVariable[] locals = null;
             ParameterInfo[] pars = this._Method.GetParameters();
 
             try
@@ -213,6 +214,17 @@ namespace CilBytecodeParser
             catch (Exception ex)
             {
                 string error = "Exception occured when trying to get method body.";
+                OnError(this, new CilErrorEventArgs(ex, error));
+            }
+
+            try
+            {
+                CustomMethod cm = CustomMethod.PrepareMethod(this._Method);
+                locals = cm.GetLocalVariables();
+            }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to get local variables.";
                 OnError(this, new CilErrorEventArgs(ex, error));
             }
 
@@ -372,12 +384,27 @@ namespace CilBytecodeParser
             }
 
             //method header           
-            if (body != null && IncludeHeader)
+            if (IncludeHeader)
             {
-                output.WriteLine(" .maxstack " + body.MaxStackSize.ToString());
+                if(body!=null) output.WriteLine(" .maxstack " + body.MaxStackSize.ToString());
 
                 //local variables
-                if (body.LocalVariables != null && body.LocalVariables.Count > 0)
+                if(locals!=null && locals.Length>0)
+                {
+                    output.Write(" .locals ");
+
+                    output.Write('(');
+                    for (int i = 0; i < locals.Length; i++)
+                    {
+                        if (i >= 1) output.Write(",\r\n   ");
+                        LocalVariable local = locals[i];
+                        output.Write(local.LocalTypeSpec.ToString());                        
+                        output.Write(" V_" + local.LocalIndex.ToString());
+                    }
+                    output.Write(')');
+                    output.WriteLine();
+                }
+                else if (body != null && body.LocalVariables != null && body.LocalVariables.Count > 0)
                 {
                     output.Write(" .locals");
 
@@ -387,7 +414,7 @@ namespace CilBytecodeParser
                     for (int i = 0; i < body.LocalVariables.Count; i++)
                     {
                         if (i >= 1) output.Write(",\r\n   ");
-                        var local = body.LocalVariables[i];
+                        LocalVariableInfo local = body.LocalVariables[i];
                         output.Write(CilAnalysis.GetTypeName(local.LocalType));
                         output.Write(" V_" + local.LocalIndex.ToString());
                     }

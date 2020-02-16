@@ -1,4 +1,7 @@
-﻿using System;
+﻿/* CilBytecodeParser library 
+ * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * License: BSD 2.0 */
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -23,6 +26,17 @@ namespace CilBytecodeParser.Reflection
         /// </summary>
         /// <returns>CIL bytecode as byte array</returns>
         public abstract byte[] GetBytecode();
+
+
+        public abstract byte[] GetLocalVarSignature();
+
+
+        public virtual LocalVariable[] GetLocalVariables()
+        {
+            byte[] sig = this.GetLocalVarSignature();
+
+            return CilBytecodeParser.Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver);
+        }
 
         /// <summary>
         /// Converts MethodBase into the form suitable for processing by CilBytecodeparser

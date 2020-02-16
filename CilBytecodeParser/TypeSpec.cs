@@ -181,6 +181,7 @@ namespace CilBytecodeParser
         //ECMA-335 II.23.1.16 Element types used in signatures
         internal const byte ELEMENT_TYPE_CMOD_REQD = 0x1f;
         internal const byte ELEMENT_TYPE_CMOD_OPT = 0x20;
+        internal const byte ELEMENT_TYPE_PINNED = 0x45;
 
         static Dictionary<byte, Type> _types = new Dictionary<byte, Type>
         {
@@ -227,6 +228,7 @@ namespace CilBytecodeParser
             Type t;                       
             bool found_type;
             bool isbyref = false;
+            bool ispinned = false;
 
             byte type = 0; //element type
             List<CustomModifier> mods = new List<CustomModifier>(5);
@@ -278,6 +280,9 @@ namespace CilBytecodeParser
                         break;
                     case (byte)CilBytecodeParser.ElementType.ByRef:
                         isbyref = true;
+                        break;
+                    case ELEMENT_TYPE_PINNED:
+                        ispinned = true;
                         break;
                     default:
                         type = b;
@@ -368,7 +373,7 @@ namespace CilBytecodeParser
 
             if (isbyref) restype = restype.MakeByRefType();
 
-            return new TypeSpec(mods.ToArray(),type,restype,ts,paramnum);
+            return new TypeSpec(mods.ToArray(),type,restype,ts,paramnum,ispinned);
         }
 
         /// <summary>
@@ -396,14 +401,16 @@ namespace CilBytecodeParser
         TypeSpec _InnerSpec;
         Type _Type;
         uint _paramnum;
+        bool _pinned;
 
-        internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, TypeSpec ts = null, uint parnum = 0)
+        internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, TypeSpec ts = null, uint parnum = 0, bool pinned = false)
         {            
             this._Modifiers = mods;
             this._ElementType = elemtype;
             this._Type = t;
             this._InnerSpec = ts;
             this._paramnum = parnum;
+            this._pinned = pinned;
         }
 
         /// <summary>
@@ -466,6 +473,9 @@ namespace CilBytecodeParser
         /// Gets the type which this type specification represents
         /// </summary>
         public Type Type { get { return this._Type; } }
+
+
+        public bool IsPinned { get { return this._pinned; } }
 
         /// <summary>
         /// Returns textual representation of this type specification as CIL code
