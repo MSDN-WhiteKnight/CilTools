@@ -14,11 +14,96 @@ namespace CilBytecodeParser.Reflection
     {        
         MethodBase srcmethod;
         ITokenResolver resolver;
+        int _stacksize;
+        bool _hasstacksize;
+        byte[] _code;
+        byte[] _localssig;
 
         public MethodBaseWrapper(MethodBase mb) : base()
         {
             this.srcmethod = mb;
             this.resolver = CustomMethod.CreateResolver(mb);
+
+            if (Types.IsDynamicMethod(srcmethod))
+            {
+                FieldInfo fieldGenerator = srcmethod.GetType().GetField("m_ilGenerator",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                object valueGenerator = fieldGenerator.GetValue(srcmethod);
+                FieldInfo field;
+
+                if (valueGenerator != null)
+                {
+
+                    field = Types.ILGeneratorType.GetField("m_ILStream",
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                        );
+                    byte[] ilbytes = (byte[])field.GetValue(valueGenerator);
+
+                    field = Types.ILGeneratorType.GetField("m_length",
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                        );
+                    int len = (int)field.GetValue(valueGenerator);
+
+                    field = valueGenerator.GetType().GetField("m_methodBuilder",
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                        );
+                    MethodBase val = (MethodBase)field.GetValue(valueGenerator);
+
+                    byte[] il = new byte[len];
+                    Array.Copy(ilbytes, il, len);
+                    this._code = il;
+                }
+                else
+                {
+                    this._code = new byte[0];
+                }
+
+                FieldInfo fieldResolver = srcmethod.GetType().GetField("m_resolver",
+                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                object valueResolver = fieldResolver.GetValue(srcmethod);
+
+                if (valueResolver != null)
+                {
+                    field = valueResolver.GetType().GetField("m_localSignature",
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                        );
+                    byte[] sigbytes = (byte[])field.GetValue(valueResolver);
+                    this._localssig = sigbytes;
+
+                    field = valueResolver.GetType().GetField("m_stackSize",
+                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                        );
+                    this._stacksize = (int)field.GetValue(valueResolver);
+                    this._hasstacksize = true;
+                }
+                else
+                {
+                    this._localssig = new byte[0];
+                    this._hasstacksize = false;
+                }
+            }
+            else
+            {
+                MethodBody body = srcmethod.GetMethodBody();
+
+                if (body != null)
+                {
+                    this._code = body.GetILAsByteArray();
+                    int token = body.LocalSignatureMetadataToken;
+
+                    if (token == 0) this._localssig = new byte[0];
+                    else this._localssig = this.resolver.ResolveSignature(token);
+
+                    this._stacksize = body.MaxStackSize;
+                    this._hasstacksize = true;
+                }
+                else
+                {
+                    this._code = new byte[0];
+                    this._localssig = new byte[0];
+                    this._hasstacksize = false;
+                }
+            }
         }
 
         public override MethodAttributes Attributes {get{ return srcmethod.Attributes;}}
@@ -84,81 +169,25 @@ namespace CilBytecodeParser.Reflection
             }
         }
         
-        byte[] GetBytecodeDynamic()
-        {
-            FieldInfo fieldGenerator = srcmethod.GetType().GetField("m_ilGenerator",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            object valueGenerator = fieldGenerator.GetValue(srcmethod);
-
-            if (valueGenerator == null) throw new NotSupportedException("Cannot get bytecode for this method");
-
-            var field = Types.ILGeneratorType.GetField("m_ILStream",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                );
-            byte[] ilbytes = (byte[])field.GetValue(valueGenerator);
-
-            field = Types.ILGeneratorType.GetField("m_length",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                );
-            int len = (int)field.GetValue(valueGenerator);
-
-            field = valueGenerator.GetType().GetField("m_methodBuilder",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                );
-            MethodBase val = (MethodBase)field.GetValue(valueGenerator);
-
-            byte[] il = new byte[len];
-            Array.Copy(ilbytes, il, len);
-            return il;
-        }
-
-        byte[] GetLocalVarSignatureDynamic()
-        {
-            FieldInfo fieldResolver = srcmethod.GetType().GetField("m_resolver",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-            object valueResolver = fieldResolver.GetValue(srcmethod);
-
-            if (valueResolver == null) throw new NotSupportedException("Cannot get local variables for this method");
-
-            var field = valueResolver.GetType().GetField("m_localSignature",
-                BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                );
-            byte[] sigbytes = (byte[])field.GetValue(valueResolver);
-
-            return sigbytes;
-        }
-
+        
         public override byte[] GetBytecode()
         {
-            if (Types.IsDynamicMethod(srcmethod))
-            {
-                return GetBytecodeDynamic();
-            }
-            else
-            {
-                MethodBody body = srcmethod.GetMethodBody();
-
-                if (body == null) return new byte[0];
-                else return body.GetILAsByteArray();
-            }
+            return this._code;
         }
 
         public override byte[] GetLocalVarSignature()
         {
-            if (Types.IsDynamicMethod(srcmethod))
-            {
-                return GetLocalVarSignatureDynamic();
-            }
-            else
-            {
-                MethodBody body = srcmethod.GetMethodBody();
+            return this._localssig;
+        }
 
-                if (body == null) return new byte[0];
+        public override int MaxStackSize
+        {
+            get { return this._stacksize; }
+        }
 
-                int token = body.LocalSignatureMetadataToken;
-
-                return this.resolver.ResolveSignature(token);
-            }
+        public override bool MaxStackSizeSpecified
+        {
+            get { return this._hasstacksize; }
         }
     }
 }

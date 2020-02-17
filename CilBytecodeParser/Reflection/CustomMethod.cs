@@ -27,9 +27,11 @@ namespace CilBytecodeParser.Reflection
         /// <returns>CIL bytecode as byte array</returns>
         public abstract byte[] GetBytecode();
 
+        public abstract int MaxStackSize { get; }
 
+        public abstract bool MaxStackSizeSpecified { get; }
+        
         public abstract byte[] GetLocalVarSignature();
-
 
         public virtual LocalVariable[] GetLocalVariables()
         {

@@ -204,6 +204,8 @@ namespace CilBytecodeParser
             IList<ExceptionHandlingClause> trys = new List<ExceptionHandlingClause>();            
             MethodBody body = null;
             LocalVariable[] locals = null;
+            int maxstack=0;
+            bool has_maxstack=false;
             ParameterInfo[] pars = this._Method.GetParameters();
 
             try
@@ -219,12 +221,24 @@ namespace CilBytecodeParser
 
             try
             {
-                CustomMethod cm = CustomMethod.PrepareMethod(this._Method);
+                CustomMethod cm = CustomMethod.PrepareMethod(this._Method);                
+                has_maxstack = cm.MaxStackSizeSpecified;
+
+                if (has_maxstack)
+                {
+                    maxstack = cm.MaxStackSize;
+                }
+                else if (body != null)
+                {
+                    maxstack = body.MaxStackSize;
+                    has_maxstack = true;
+                }
+
                 locals = cm.GetLocalVariables();
             }
             catch (Exception ex)
             {
-                string error = "Exception occured when trying to get local variables.";
+                string error = "Exception occured when trying to get method header.";
                 OnError(this, new CilErrorEventArgs(ex, error));
             }
 
@@ -386,7 +400,7 @@ namespace CilBytecodeParser
             //method header           
             if (IncludeHeader)
             {
-                if(body!=null) output.WriteLine(" .maxstack " + body.MaxStackSize.ToString());
+                if(has_maxstack) output.WriteLine(" .maxstack " + maxstack.ToString());
 
                 //local variables
                 if(locals!=null && locals.Length>0)
