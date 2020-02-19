@@ -33,6 +33,8 @@ namespace CilBytecodeParser.Reflection
         
         public abstract byte[] GetLocalVarSignature();
 
+        public abstract ExceptionBlock[] GetExceptionBlocks();
+
         public virtual LocalVariable[] GetLocalVariables()
         {
             byte[] sig = this.GetLocalVarSignature();

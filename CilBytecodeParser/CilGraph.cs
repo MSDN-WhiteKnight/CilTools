@@ -22,10 +22,10 @@ namespace CilBytecodeParser
     /// </remarks>
     public class CilGraph
     {
-        static IList<ExceptionHandlingClause> FindTryBlocks(IList<ExceptionHandlingClause> list, uint start, uint end)
+        static IList<ExceptionBlock> FindTryBlocks(IList<ExceptionBlock> list, uint start, uint end)
         {
             if (list == null) throw new ArgumentNullException("list");
-            IList<ExceptionHandlingClause> res = new List<ExceptionHandlingClause>(list.Count);
+            IList<ExceptionBlock> res = new List<ExceptionBlock>(list.Count);
 
             foreach (var block in list)
             {
@@ -35,10 +35,10 @@ namespace CilBytecodeParser
             return res;
         }
 
-        static IList<ExceptionHandlingClause> FindTryBlockEnds(IList<ExceptionHandlingClause> list, uint start, uint end)
+        static IList<ExceptionBlock> FindTryBlockEnds(IList<ExceptionBlock> list, uint start, uint end)
         {
             if (list == null) throw new ArgumentNullException("list");
-            IList<ExceptionHandlingClause> res = new List<ExceptionHandlingClause>(list.Count);
+            IList<ExceptionBlock> res = new List<ExceptionBlock>(list.Count);
 
             foreach (var block in list)
             {
@@ -48,11 +48,11 @@ namespace CilBytecodeParser
             return res;
         }
 
-        private class TryBlockComparer : IEqualityComparer<ExceptionHandlingClause>
+        private class TryBlockComparer : IEqualityComparer<ExceptionBlock>
         {
-            public bool Equals(ExceptionHandlingClause x, ExceptionHandlingClause y)
+            public bool Equals(ExceptionBlock x, ExceptionBlock y)
             {
-                if (x == null)
+                /*if (x == null)
                 {
                     if (y == null) return true;
                     else return false;
@@ -64,20 +64,21 @@ namespace CilBytecodeParser
                         return x.TryOffset == y.TryOffset && x.TryLength == y.TryLength;
                     }
                     else return false;
-                }
+                }*/
+                return x.TryOffset == y.TryOffset && x.TryLength == y.TryLength;
             }
 
-            public int GetHashCode(ExceptionHandlingClause obj)
+            public int GetHashCode(ExceptionBlock obj)
             {
-                if (obj == null) return 0;
-                else return obj.TryOffset + obj.TryLength;
+                /*if (obj == null) return 0;
+                else*/ return obj.TryOffset + obj.TryLength;
             }
         }
 
-        static HashSet<ExceptionHandlingClause> FindDistinctTryBlocks(IList<ExceptionHandlingClause> list)
+        static HashSet<ExceptionBlock> FindDistinctTryBlocks(IList<ExceptionBlock> list)
         {
             if (list == null) throw new ArgumentNullException("list");
-            HashSet<ExceptionHandlingClause> set = new HashSet<ExceptionHandlingClause>(new TryBlockComparer());           
+            HashSet<ExceptionBlock> set = new HashSet<ExceptionBlock>(new TryBlockComparer());           
 
             foreach (var block in list)
             {
@@ -87,10 +88,10 @@ namespace CilBytecodeParser
             return set;
         }
 
-        static IList<ExceptionHandlingClause> FindFilterBlocks(IList<ExceptionHandlingClause> list, uint start, uint end)
+        static IList<ExceptionBlock> FindFilterBlocks(IList<ExceptionBlock> list, uint start, uint end)
         {
             if (list == null) throw new ArgumentNullException("list");
-            IList<ExceptionHandlingClause> res = new List<ExceptionHandlingClause>(list.Count);
+            IList<ExceptionBlock> res = new List<ExceptionBlock>(list.Count);
 
             foreach (var block in list)
             {
@@ -101,11 +102,11 @@ namespace CilBytecodeParser
             return res;
         }
 
-        static IList<ExceptionHandlingClause> FindHandlerBlocks(IList<ExceptionHandlingClause> list, uint start, uint end)
+        static IList<ExceptionBlock> FindHandlerBlocks(IList<ExceptionBlock> list, uint start, uint end)
         {
             if (list == null) throw new ArgumentNullException("list");
 
-            IList<ExceptionHandlingClause> res = new List<ExceptionHandlingClause>(list.Count);
+            IList<ExceptionBlock> res = new List<ExceptionBlock>(list.Count);
             foreach (var block in list)
             {
                 if (block.HandlerOffset >= start && block.HandlerOffset < end) res.Add(block);
@@ -113,11 +114,11 @@ namespace CilBytecodeParser
             return res;
         }
 
-        static IList<ExceptionHandlingClause> FindBlockEnds(IList<ExceptionHandlingClause> list, uint start, uint end)
+        static IList<ExceptionBlock> FindBlockEnds(IList<ExceptionBlock> list, uint start, uint end)
         {
             if (list == null) throw new ArgumentNullException("list");
 
-            IList<ExceptionHandlingClause> res = new List<ExceptionHandlingClause>(list.Count);
+            IList<ExceptionBlock> res = new List<ExceptionBlock>(list.Count);
             foreach (var block in list)
             {
                 if (block.HandlerOffset + block.HandlerLength >= start && block.HandlerOffset + block.HandlerLength < end) res.Add(block);
@@ -201,7 +202,7 @@ namespace CilBytecodeParser
             CilGraphNode node = this._Root;
                         
             int n_iter = 0;
-            IList<ExceptionHandlingClause> trys = new List<ExceptionHandlingClause>();            
+            IList<ExceptionBlock> trys = new List<ExceptionBlock>();            
             MethodBody body = null;
             LocalVariable[] locals = null;
             int maxstack=0;
@@ -211,7 +212,7 @@ namespace CilBytecodeParser
             try
             {
                 body = this._Method.GetMethodBody();
-                if (body != null) trys = body.ExceptionHandlingClauses;
+                //if (body != null) trys = body.ExceptionHandlingClauses;
             }
             catch (Exception ex)
             {
@@ -234,6 +235,7 @@ namespace CilBytecodeParser
                     has_maxstack = true;
                 }
 
+                trys = cm.GetExceptionBlocks();
                 locals = cm.GetLocalVariables();
             }
             catch (Exception ex)
@@ -448,14 +450,14 @@ namespace CilBytecodeParser
                     CilInstruction instr = node.Instruction;
 
                     //exception handling clauses
-                    IList<ExceptionHandlingClause> started_trys = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-                    HashSet<ExceptionHandlingClause> distinct_starts = FindDistinctTryBlocks(started_trys);
+                    IList<ExceptionBlock> started_trys = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                    HashSet<ExceptionBlock> distinct_starts = FindDistinctTryBlocks(started_trys);
 
-                    IList<ExceptionHandlingClause> ended_trys = FindTryBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-                    HashSet<ExceptionHandlingClause> distinct_ends = FindDistinctTryBlocks(ended_trys);
+                    IList<ExceptionBlock> ended_trys = FindTryBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                    HashSet<ExceptionBlock> distinct_ends = FindDistinctTryBlocks(ended_trys);
 
-                    IList<ExceptionHandlingClause> filters = FindFilterBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-                    IList<ExceptionHandlingClause> ended_blocks = FindBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                    IList<ExceptionBlock> filters = FindFilterBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                    IList<ExceptionBlock> ended_blocks = FindBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
 
                     // try
                     for (int i = 0; i < distinct_starts.Count; i++)
@@ -635,7 +637,7 @@ namespace CilBytecodeParser
         {
             Dictionary<uint,Label> labels=new Dictionary<uint,Label>();
             Label label;
-            IList<ExceptionHandlingClause> trys = new List<ExceptionHandlingClause>();                
+            IList<ExceptionBlock> trys = new List<ExceptionBlock>();                
 
             MethodBody body = null;            
             body = this._Method.GetMethodBody();
@@ -645,7 +647,10 @@ namespace CilBytecodeParser
                 throw new CilParserException("Cannot get method body. Method: " + this._Method.Name);
             }
 
-            trys = body.ExceptionHandlingClauses;            
+            IList<ExceptionHandlingClause> clauses = body.ExceptionHandlingClauses;
+            trys = new ExceptionBlock[clauses.Count];
+
+            for (int i = 0; i < clauses.Count; i++) trys[i] = ExceptionBlock.FromReflection(clauses[i]);
 
             //local variables
             if (body.LocalVariables != null)
@@ -676,11 +681,11 @@ namespace CilBytecodeParser
                 CilInstruction instr = node.Instruction;
                                 
                 //exception handling clauses
-                IList<ExceptionHandlingClause> block_starts = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-                IList<ExceptionHandlingClause> filters = FindFilterBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);                
-                IList<ExceptionHandlingClause> block_ends = FindBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                IList<ExceptionBlock> block_starts = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                IList<ExceptionBlock> filters = FindFilterBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                IList<ExceptionBlock> block_ends = FindBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
 
-                IList<ExceptionHandlingClause> filters_next=new ExceptionHandlingClause[0];
+                IList<ExceptionBlock> filters_next = new ExceptionBlock[0];
                 if (node.Next != null)
                 {
                     filters_next = FindFilterBlocks(

@@ -20,6 +20,8 @@ namespace CilBytecodeParserDemo
             DynamicMethod dm = new DynamicMethod("Method", typeof(void), new Type[] {typeof(string) }, typeof(Program).Module);            
             ILGenerator ilg = dm.GetILGenerator(512);
             ilg.DeclareLocal(typeof(string));
+
+            ilg.BeginExceptionBlock();
             ilg.Emit(OpCodes.Ldstr, "Hello, world.");
             ilg.Emit(OpCodes.Stloc, (short)0);
             ilg.Emit(OpCodes.Ldloc, (short)0);
@@ -27,14 +29,20 @@ namespace CilBytecodeParserDemo
                 OpCodes.Call,
                 typeof(Console).GetMethod("WriteLine", new Type[] { typeof(string) })
                 );
+
+            ilg.BeginCatchBlock(typeof(ArgumentException));
             ilg.Emit(OpCodes.Ldsfld,typeof(Program).GetField("f"));
             ilg.Emit(
                 OpCodes.Call,
                 typeof(Console).GetMethod("WriteLine", new Type[] { typeof(int) })
                 );
+
+            ilg.BeginFinallyBlock();
             ilg.Emit(OpCodes.Ldc_I4, 10);
             ilg.Emit(OpCodes.Newarr, typeof(string));
-            ilg.Emit(OpCodes.Pop);
+            ilg.Emit(OpCodes.Pop); 
+            ilg.EndExceptionBlock();
+
             ilg.Emit(OpCodes.Ret);
             var deleg = (Action<string>)dm.CreateDelegate(typeof(Action<string>));
             deleg("Hello, world!");
@@ -79,7 +87,7 @@ namespace CilBytecodeParserDemo
                 }
 
                 Console.WriteLine("Method: {0}:{1}", type, method);
-                Console.WriteLine();                                
+                Console.WriteLine();
 
                 Type t = ass.GetType(type);
 
@@ -89,7 +97,7 @@ namespace CilBytecodeParserDemo
 
                 MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
                 CilGraph graph = CilAnalysis.GetGraph(mi);
-                
+
                 graph.Print(null, true, true, true, true);
             }
             catch (Exception ex)
@@ -98,7 +106,7 @@ namespace CilBytecodeParserDemo
                 if (!Console.IsInputRedirected) Console.ReadKey();
                 throw;
             }
-            
+
             if (!Console.IsInputRedirected) Console.ReadKey();
         }
 

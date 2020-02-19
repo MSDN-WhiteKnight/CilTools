@@ -39,6 +39,7 @@
 	  <Compile Include="..\CilBytecodeParser\Reflection\CustomMethod.cs"  Link="CustomMethod.cs"/>
     <Compile Include="..\CilBytecodeParser\Reflection\ITokenResolver.cs" Link="ITokenResolver.cs"/>
     <Compile Include="..\CilBytecodeParser\Reflection\LocalVariable.cs" Link="LocalVariable.cs"/>
+    <Compile Include="..\CilBytecodeParser\Reflection\ExceptionBlock.cs" Link="ExceptionBlock.cs"/>
   </ItemGroup>
 
   <ItemGroup>
