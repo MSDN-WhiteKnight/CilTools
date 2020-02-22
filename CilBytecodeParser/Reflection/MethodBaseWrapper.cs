@@ -92,7 +92,6 @@ namespace CilBytecodeParser.Reflection
                     FieldInfo fieldCatchAddr = t.GetField("m_catchAddr", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     FieldInfo fieldCatchClass = t.GetField("m_catchClass", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     FieldInfo fieldCatchEndAddr = t.GetField("m_catchEndAddr", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    //FieldInfo fieldEndFinally = t.GetField("m_endFinally", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     FieldInfo fieldFilterAddr = t.GetField("m_filterAddr", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
                     FieldInfo fieldType = t.GetField("m_type", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
@@ -164,18 +163,7 @@ namespace CilBytecodeParser.Reflection
                 }
             }
         }
-
-        /* m_exceptions
-        System.Reflection.Emit.__ExceptionInfo[]
-        m_startAddr = 0
-        m_endAddr = 33
-        m_catchAddr = {int[4]}
-        m_catchClass = {System.Type[4]}
-        m_catchEndAddr = {int[4]}
-        m_endFinally = 33
-        m_filterAddr = {int[4]}*/
         
-
         public override MethodAttributes Attributes {get{ return srcmethod.Attributes;}}
 
         public override RuntimeMethodHandle MethodHandle {get{ return  srcmethod.MethodHandle;}}
@@ -231,6 +219,17 @@ namespace CilBytecodeParser.Reflection
             return srcmethod.GetGenericArguments();
         }
 
+        public override Type ReturnType
+        {
+            get 
+            {
+                MethodInfo mi = srcmethod as MethodInfo;
+
+                if (mi != null) return mi.ReturnType;
+                else return null;
+            }
+        }
+
         public override ITokenResolver TokenResolver
         {
             get
@@ -247,6 +246,20 @@ namespace CilBytecodeParser.Reflection
         public override byte[] GetLocalVarSignature()
         {
             return this._localssig;
+        }
+
+        public override LocalVariable[] GetLocalVariables()
+        {
+            LocalVariable[] ret=null;
+
+            try
+            {
+                ret = base.GetLocalVariables();
+            }
+            catch (NotSupportedException) { }
+
+            if (ret != null) return ret;
+            else return LocalVariable.FromReflection(this.srcmethod);
         }
 
         public override int MaxStackSize

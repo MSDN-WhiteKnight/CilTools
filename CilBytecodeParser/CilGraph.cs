@@ -164,7 +164,7 @@ namespace CilBytecodeParser
         public CilGraph(CilGraphNode root, MethodBase mb)
         {
             this._Root = root;
-            this._Method = mb;
+            this._Method = CustomMethod.PrepareMethod(mb);
         }
 
         /// <summary>
@@ -203,44 +203,36 @@ namespace CilBytecodeParser
                         
             int n_iter = 0;
             IList<ExceptionBlock> trys = new List<ExceptionBlock>();            
-            MethodBody body = null;
             LocalVariable[] locals = null;
             int maxstack=0;
             bool has_maxstack=false;
             ParameterInfo[] pars = this._Method.GetParameters();
-
+            CustomMethod cm = (CustomMethod)this._Method;
+            
             try
-            {
-                body = this._Method.GetMethodBody();
-                //if (body != null) trys = body.ExceptionHandlingClauses;
-            }
-            catch (Exception ex)
-            {
-                string error = "Exception occured when trying to get method body.";
-                OnError(this, new CilErrorEventArgs(ex, error));
-            }
-
-            try
-            {
-                CustomMethod cm = CustomMethod.PrepareMethod(this._Method);                
+            {                
                 has_maxstack = cm.MaxStackSizeSpecified;
 
                 if (has_maxstack)
                 {
                     maxstack = cm.MaxStackSize;
                 }
-                else if (body != null)
-                {
-                    maxstack = body.MaxStackSize;
-                    has_maxstack = true;
-                }
 
-                trys = cm.GetExceptionBlocks();
-                locals = cm.GetLocalVariables();
+                trys = cm.GetExceptionBlocks();                
             }
             catch (Exception ex)
             {
                 string error = "Exception occured when trying to get method header.";
+                OnError(this, new CilErrorEventArgs(ex, error));
+            }
+
+            try
+            {
+                locals = cm.GetLocalVariables();
+            }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to get local variables.";
                 OnError(this, new CilErrorEventArgs(ex, error));
             }
 
@@ -267,10 +259,9 @@ namespace CilBytecodeParser
                 {
                     output.Write("vararg ");
                 }
-
-                MethodInfo mi = this._Method as MethodInfo;
+                                
                 string rt = "";
-                if (mi != null) rt = CilAnalysis.GetTypeName(mi.ReturnType) + " ";
+                if (cm.ReturnType != null) rt = CilAnalysis.GetTypeName(cm.ReturnType) + " ";
                 output.Write(rt);
 
                 output.Write(this._Method.Name);
@@ -415,23 +406,6 @@ namespace CilBytecodeParser
                         if (i >= 1) output.Write(",\r\n   ");
                         LocalVariable local = locals[i];
                         output.Write(local.LocalTypeSpec.ToString());                        
-                        output.Write(" V_" + local.LocalIndex.ToString());
-                    }
-                    output.Write(')');
-                    output.WriteLine();
-                }
-                else if (body != null && body.LocalVariables != null && body.LocalVariables.Count > 0)
-                {
-                    output.Write(" .locals");
-
-                    if (body.InitLocals) output.Write(" init ");
-
-                    output.Write('(');
-                    for (int i = 0; i < body.LocalVariables.Count; i++)
-                    {
-                        if (i >= 1) output.Write(",\r\n   ");
-                        LocalVariableInfo local = body.LocalVariables[i];
-                        output.Write(CilAnalysis.GetTypeName(local.LocalType));
                         output.Write(" V_" + local.LocalIndex.ToString());
                     }
                     output.Write(')');
@@ -636,30 +610,19 @@ namespace CilBytecodeParser
         public void EmitTo(ILGenerator gen, Func<CilInstruction,bool> callback = null)
         {
             Dictionary<uint,Label> labels=new Dictionary<uint,Label>();
-            Label label;
-            IList<ExceptionBlock> trys = new List<ExceptionBlock>();                
-
-            MethodBody body = null;            
-            body = this._Method.GetMethodBody();
-
-            if (body == null)
-            {
-                throw new CilParserException("Cannot get method body. Method: " + this._Method.Name);
-            }
-
-            IList<ExceptionHandlingClause> clauses = body.ExceptionHandlingClauses;
-            trys = new ExceptionBlock[clauses.Count];
-
-            for (int i = 0; i < clauses.Count; i++) trys[i] = ExceptionBlock.FromReflection(clauses[i]);
-
+            Label label;            
+            CustomMethod cm = this._Method as CustomMethod;
+            IList<ExceptionBlock> trys= cm.GetExceptionBlocks();
+            LocalVariable[] locals = cm.GetLocalVariables();
+            
             //local variables
-            if (body.LocalVariables != null)
-            {                
-                for (int i = 0; i < body.LocalVariables.Count; i++)
-                {      
-                    var local = body.LocalVariables[i];
+            if (locals != null)
+            {
+                for (int i = 0; i < locals.Length; i++)
+                {
+                    LocalVariable local = locals[i];
                     gen.DeclareLocal(local.LocalType);                    
-                }                
+                }
             }
 
             List<CilGraphNode> nodes = this.GetNodes().ToList();

@@ -15,6 +15,8 @@ namespace CilBytecodeParser.Reflection
     /// </summary>
     internal abstract class CustomMethod : MethodBase
     {
+        public abstract Type ReturnType { get; }
+
         /// <summary>
         /// When overridden in the derived class, returns an object that can be used to convert metadata tokens 
         /// into corresponding reflection objects

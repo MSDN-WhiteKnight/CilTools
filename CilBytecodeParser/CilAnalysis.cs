@@ -290,6 +290,7 @@ namespace CilBytecodeParser
             
             List<CilInstruction> instructions;
             List<int> labels = new List<int>();
+            m = CustomMethod.PrepareMethod(m);
 
             try
             {

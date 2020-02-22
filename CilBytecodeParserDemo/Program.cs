@@ -20,6 +20,8 @@ namespace CilBytecodeParserDemo
             DynamicMethod dm = new DynamicMethod("Method", typeof(void), new Type[] {typeof(string) }, typeof(Program).Module);            
             ILGenerator ilg = dm.GetILGenerator(512);
             ilg.DeclareLocal(typeof(string));
+            ilg.DeclareLocal(typeof(Program));
+            ilg.DeclareLocal(typeof(string));
 
             ilg.BeginExceptionBlock();
             ilg.Emit(OpCodes.Ldstr, "Hello, world.");
@@ -51,9 +53,9 @@ namespace CilBytecodeParserDemo
 
             if (!Console.IsInputRedirected) Console.ReadKey();
             return;
-
+            
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
-            Console.WriteLine("Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
+            Console.WriteLine("Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
             Console.WriteLine();
             string asspath;
             string type;
