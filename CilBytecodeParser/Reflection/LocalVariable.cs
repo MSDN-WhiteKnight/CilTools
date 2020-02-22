@@ -6,15 +6,16 @@ using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Diagnostics;
 
 namespace CilBytecodeParser.Reflection
 {
-    public class LocalVariable
+    public struct LocalVariable
     {
         TypeSpec type;
         int index;
 
-        protected LocalVariable(TypeSpec ptype, int pindex)
+        internal LocalVariable(TypeSpec ptype, int pindex)
         {
             this.type = ptype;
             this.index = pindex;
@@ -67,6 +68,26 @@ namespace CilBytecodeParser.Reflection
 
             ModuleWrapper mwr = new ModuleWrapper(module);
             return ReadSignatureImpl(data, mwr);
+        }
+
+        internal static LocalVariable[] FromReflection(MethodBase mb)
+        {
+            Debug.Assert(mb != null, "Source method cannot be null");
+
+            MethodBody body = mb.GetMethodBody();
+
+            if (body == null) return new LocalVariable[0];
+
+            LocalVariable[] ret = new LocalVariable[body.LocalVariables.Count];
+
+            for (int i = 0; i < body.LocalVariables.Count; i++)
+            {
+                ret[i] = new LocalVariable(
+                    TypeSpec.FromType(body.LocalVariables[i].LocalType, body.LocalVariables[i].IsPinned),
+                    i);
+            }
+
+            return ret;
         }
     }
 }
