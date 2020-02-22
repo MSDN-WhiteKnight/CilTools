@@ -364,6 +364,11 @@ namespace CilBytecodeParser
                     case (byte)CilBytecodeParser.ElementType.MVar: //generic method arg
                         paramnum = MetadataReader.ReadCompressed(source);                        
                         break;
+                    case (byte)CilBytecodeParser.ElementType.Internal:
+                        //skip sizeof(IntPtr) bytes
+                        byte[] buf = new byte[System.Runtime.InteropServices.Marshal.SizeOf(typeof(IntPtr))];
+                        source.Read(buf, 0, buf.Length);
+                        break;
                     case (byte)CilBytecodeParser.ElementType.FnPtr: 
                         throw new NotSupportedException("Parsing signatures with function pointers is not supported");
                     case (byte)CilBytecodeParser.ElementType.GenericInst: 
@@ -374,6 +379,60 @@ namespace CilBytecodeParser
             if (isbyref) restype = restype.MakeByRefType();
 
             return new TypeSpec(mods.ToArray(),type,restype,ts,paramnum,ispinned);
+        }
+
+        internal static TypeSpec FromType(Type t, bool pinned)
+        {
+            Debug.Assert(t != null, "Input type should not be null");
+
+            byte et = 0;
+            uint genpos = 0;
+            TypeSpec inner=null;
+
+            //try find primitive type
+            foreach (byte key in _types.Keys)
+            {
+                if (t == _types[key])
+                {
+                    et = key;
+                    break;
+                }
+            }
+
+            if (et == 0) //if not found, determine complex type
+            {
+                if (t.IsGenericParameter)
+                {
+                    if (t.DeclaringMethod == null) et = (byte)ElementType.Var;
+                    else et = (byte)ElementType.MVar;
+
+                    genpos = (uint)t.GenericParameterPosition;
+                }
+                else if (t.IsArray)
+                {
+                    et = (byte)ElementType.Array;
+                    inner = TypeSpec.FromType(t.GetElementType(),false);
+                }
+                else if (t.IsPointer)
+                {
+                    et = (byte)ElementType.Ptr;
+                    inner = TypeSpec.FromType(t.GetElementType(), false);
+                }
+                else if (t.IsGenericType)
+                {
+                    et = (byte)ElementType.GenericInst;
+                }
+                else if (t.IsValueType)
+                {
+                    et = (byte)ElementType.ValueType;
+                }
+                else if (t.IsClass)
+                {
+                    et = (byte)ElementType.Class;
+                }
+            }
+
+            return new TypeSpec(new CustomModifier[0], et,t, inner, genpos, pinned);
         }
 
         /// <summary>
@@ -513,6 +572,10 @@ namespace CilBytecodeParser
             else if (this._ElementType == (byte)CilBytecodeParser.ElementType.MVar) //generic method arg
             {
                 sb.Append("!!" + this._paramnum.ToString());
+            }
+            else if (this._ElementType == (byte)CilBytecodeParser.ElementType.Internal)
+            {
+                sb.Append("ClrInternal");
             }
             else
             {
