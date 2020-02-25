@@ -115,7 +115,7 @@ namespace CilBytecodeParser.Tests
 
         public override string GetString()
         {
-            return "[\\s\\S]+";
+            return "[\\s\\S]*";
         }
     }
 }
