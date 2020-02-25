@@ -19,37 +19,26 @@ namespace CilBytecodeParserDemo
         {
             DynamicMethod dm = new DynamicMethod("Method", typeof(void), new Type[] {typeof(string) }, typeof(Program).Module);            
             ILGenerator ilg = dm.GetILGenerator(512);
-            ilg.DeclareLocal(typeof(string));
-            ilg.DeclareLocal(typeof(Program));
-            ilg.DeclareLocal(typeof(string));
-
-            ilg.BeginExceptionBlock();
-            ilg.Emit(OpCodes.Ldstr, "Hello, world.");
-            ilg.Emit(OpCodes.Stloc, (short)0);
-            ilg.Emit(OpCodes.Ldloc, (short)0);
-            ilg.Emit(
-                OpCodes.Call,
-                typeof(Console).GetMethod("WriteLine", new Type[] { typeof(string) })
-                );
-
-            ilg.BeginCatchBlock(typeof(ArgumentException));
-            ilg.Emit(OpCodes.Ldsfld,typeof(Program).GetField("f"));
-            ilg.Emit(
-                OpCodes.Call,
-                typeof(Console).GetMethod("WriteLine", new Type[] { typeof(int) })
-                );
-
-            ilg.BeginFinallyBlock();
-            ilg.Emit(OpCodes.Ldc_I4, 10);
-            ilg.Emit(OpCodes.Newarr, typeof(string));
-            ilg.Emit(OpCodes.Pop); 
-            ilg.EndExceptionBlock();
-
+            ilg.Emit(OpCodes.Ldarg_0);
+            ilg.Emit(OpCodes.Ldftn,typeof(Console).GetMethod("WriteLine",new Type[]{typeof(string)}));
+            ilg.EmitCalli(OpCodes.Calli, CallingConventions.Standard, typeof(void), new Type[] { typeof(string) }, null);            
             ilg.Emit(OpCodes.Ret);
-            var deleg = (Action<string>)dm.CreateDelegate(typeof(Action<string>));
-            deleg("Hello, world!");
-                                    
-            Console.WriteLine(CilAnalysis.MethodToText(dm));
+
+            var deleg = (Action<string>)dm.CreateDelegate(typeof(Action<string>));                        
+            deleg("Hello from System.Reflection.Emit!");
+
+            CilGraph gr = CilAnalysis.GetGraph(dm);
+            CilGraphNode[] nodes = gr.GetNodes().ToArray();
+
+            foreach (var node in nodes)
+            {
+                if (node.Instruction.ReferencedSignature != null)
+                {
+                    Console.WriteLine(node.Instruction.ReferencedSignature.ReturnType.Type.ToString());
+                }
+            }
+                        
+            Console.WriteLine(gr.ToString());
 
             if (!Console.IsInputRedirected) Console.ReadKey();
             return;
