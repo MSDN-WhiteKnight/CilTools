@@ -325,7 +325,7 @@ namespace CilBytecodeParser
 
                 try
                 {
-                    Signature res = new Signature(sig, this.Method.Module);
+                    Signature res = new Signature(sig, (Method as CustomMethod).TokenResolver);
                     return res;
                 }
                 catch (Exception ex)
