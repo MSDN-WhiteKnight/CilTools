@@ -10,23 +10,43 @@ using System.Diagnostics;
 
 namespace CilBytecodeParser.Reflection
 {
+    /// <summary>
+    /// Represents local variable declaration in the method body
+    /// </summary>
     public struct LocalVariable
     {
         TypeSpec type;
         int index;
 
+        /// <summary>
+        /// Initializes a new LocalVariable instance with the specified TypeSpec and index
+        /// </summary>
+        /// <param name="ptype">TypeSpec object representing the variable type</param>
+        /// <param name="pindex">Index of local variable within method body</param>
         internal LocalVariable(TypeSpec ptype, int pindex)
         {
             this.type = ptype;
             this.index = pindex;
         }
 
+        /// <summary>
+        /// Gets the TypeSpec object representing the variable type
+        /// </summary>
         public TypeSpec LocalTypeSpec { get { return this.type; } }
 
+        /// <summary>
+        /// Gets the variable type
+        /// </summary>
         public Type LocalType { get { return this.type.Type; } }
 
+        /// <summary>
+        /// Gets the index of local variable within the containing method body
+        /// </summary>
         public int LocalIndex { get { return this.index; } }
 
+        /// <summary>
+        /// Gets the value indicating whether the object pointed by local variable is pinned in memory
+        /// </summary>
         public bool IsPinned { get { return this.type.IsPinned; } }
 
         static LocalVariable[] ReadSignatureImpl(byte[] data, ITokenResolver resolver)
@@ -53,6 +73,14 @@ namespace CilBytecodeParser.Reflection
             }
         }
 
+        /// <summary>
+        /// Reads local variables from the specified signature, resolving tokens using the specified ITokenResolver
+        /// </summary>
+        /// <param name="data">Local variable signature as byte array</param>
+        /// <param name="resolver">The object used to resolve metadata tokens</param>
+        /// <returns>An array of local variables read from the signature</returns>
+        /// <exception cref="System.ArgumentNullException">Input array is null</exception>
+        /// <exception cref="NotSupportedException">Signature contains unsupported types</exception>
         public static LocalVariable[] ReadSignature(byte[] data, ITokenResolver resolver)
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
@@ -61,6 +89,14 @@ namespace CilBytecodeParser.Reflection
             return ReadSignatureImpl(data, resolver);
         }
 
+        /// <summary>
+        /// Reads local variables from the specified signature, resolving tokens within the scope of the specified module
+        /// </summary>
+        /// <param name="data">Local variable signature as byte array</param>
+        /// <param name="module">Module in which to resolve metadata tokens</param>
+        /// <returns>An array of local variables read from the signature</returns>
+        /// <exception cref="System.ArgumentNullException">Input array is null</exception>
+        /// <exception cref="NotSupportedException">Signature contains unsupported types</exception>
         public static LocalVariable[] ReadSignature(byte[] data, Module module)
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
@@ -70,6 +106,11 @@ namespace CilBytecodeParser.Reflection
             return ReadSignatureImpl(data, mwr);
         }
 
+        /// <summary>
+        /// Reads local variables from the specified method's body
+        /// </summary>
+        /// <param name="mb">Source method</param>
+        /// <returns>An array of local variables read from the method body</returns>
         internal static LocalVariable[] FromReflection(MethodBase mb)
         {
             Debug.Assert(mb != null, "Source method cannot be null");

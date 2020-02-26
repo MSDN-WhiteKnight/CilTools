@@ -533,7 +533,9 @@ namespace CilBytecodeParser
         /// </summary>
         public Type Type { get { return this._Type; } }
 
-
+        /// <summary>
+        /// Gets the value indicating whether this TypeSpec represents pinned local variable
+        /// </summary>
         public bool IsPinned { get { return this._pinned; } }
 
         /// <summary>

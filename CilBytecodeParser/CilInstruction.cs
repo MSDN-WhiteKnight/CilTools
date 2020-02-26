@@ -179,7 +179,7 @@ namespace CilBytecodeParser
             this._OperandSize = opsize;
             this._ByteOffset = byteoffset;
             this._OrdinalNumber = ordinalnum;
-            this._Method = CustomMethod.PrepareMethod(mb);            
+            this._Method = CustomMethod.PrepareMethod(mb);
         }
         
         /// <summary>
@@ -211,7 +211,7 @@ namespace CilBytecodeParser
         public MemberInfo ReferencedMember
         {
             get
-            {                
+            {
                 if (this.Method == null) return null;
                 if (this.Operand == null) return null;
 

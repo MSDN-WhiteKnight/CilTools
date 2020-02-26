@@ -287,7 +287,7 @@ namespace CilBytecodeParser
         public static CilGraph GetGraph(MethodBase m)
         {
             if (m == null) throw new ArgumentNullException("m","Source method cannot be null");
-            
+
             List<CilInstruction> instructions;
             List<int> labels = new List<int>();
             m = CustomMethod.PrepareMethod(m);

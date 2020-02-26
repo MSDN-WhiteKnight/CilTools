@@ -13,8 +13,12 @@ namespace CilBytecodeParser.Reflection
     /// Inherit from this class when you want CilBytecodeparser to process bytecode from your custom data source, instead of 
     /// reflection.
     /// </summary>
-    internal abstract class CustomMethod : MethodBase
+    public abstract class CustomMethod : MethodBase
     {
+        /// <summary>
+        /// When overridden in the derived class, returns the type of this method's return value
+        /// </summary>
+        /// <remarks>Return null if the return type is not applicable (such as for constructors).</remarks>
         public abstract Type ReturnType { get; }
 
         /// <summary>
@@ -29,14 +33,33 @@ namespace CilBytecodeParser.Reflection
         /// <returns>CIL bytecode as byte array</returns>
         public abstract byte[] GetBytecode();
 
+        /// <summary>
+        /// When overridden in the derived class, returns the maximum size of operand stack during method execution
+        /// </summary>
         public abstract int MaxStackSize { get; }
 
+        /// <summary>
+        /// When overridden in the derived class, specifies whether the MaxStackSize property value is defined
+        /// </summary>
         public abstract bool MaxStackSizeSpecified { get; }
         
+        /// <summary>
+        /// When overridden in the derived class, returns the local variable signature as an array of bytes
+        /// </summary>
+        /// <returns></returns>
         public abstract byte[] GetLocalVarSignature();
 
+        /// <summary>
+        /// When overridden in the derived class, returns the list of exception handling blocks in the method's body
+        /// </summary>        
         public abstract ExceptionBlock[] GetExceptionBlocks();
 
+        /// <summary>
+        /// Returns the array of local variable declarations of this method
+        /// </summary>
+        /// <remarks>
+        /// The default implementation reads local varaibles from the signature returned by GetLocalVarSignature method
+        /// </remarks>
         public virtual LocalVariable[] GetLocalVariables()
         {
             byte[] sig = this.GetLocalVarSignature();
@@ -45,7 +68,7 @@ namespace CilBytecodeParser.Reflection
         }
 
         /// <summary>
-        /// Converts MethodBase into the form suitable for processing by CilBytecodeparser
+        /// Converts MethodBase into the form suitable for processing by CilBytecodeParser
         /// </summary>        
         internal static CustomMethod PrepareMethod(MethodBase src)
         {
