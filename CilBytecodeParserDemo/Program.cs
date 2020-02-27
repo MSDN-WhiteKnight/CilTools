@@ -16,7 +16,7 @@ namespace CilBytecodeParserDemo
         static void Main(string[] args)
         {
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
-            Console.WriteLine("Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
+            Console.WriteLine("Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
             Console.WriteLine();
             string asspath;
             string type;
@@ -50,7 +50,7 @@ namespace CilBytecodeParserDemo
                 }
 
                 Console.WriteLine("Method: {0}:{1}", type, method);
-                Console.WriteLine();                                
+                Console.WriteLine();
 
                 Type t = ass.GetType(type);
 
@@ -60,8 +60,8 @@ namespace CilBytecodeParserDemo
 
                 MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
                 CilGraph graph = CilAnalysis.GetGraph(mi);
-                
-                graph.Print(null, true, true, true, true);                
+
+                graph.Print(null, true, true, true, true);
             }
             catch (Exception ex)
             {

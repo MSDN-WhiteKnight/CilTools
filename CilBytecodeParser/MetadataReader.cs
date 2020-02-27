@@ -30,19 +30,18 @@ namespace CilBytecodeParser
 
                 if ((b2 & 0x40) == 0x40) //4 bytes
                 {
-                    paramcount_bytes[0] = b1;
-                    paramcount_bytes[1] = b2;
-
                     b3 = ReadByte(source);
                     b4 = ReadByte(source);
 
-                    paramcount_bytes[2] = b3;
-                    paramcount_bytes[3] = b4;
+                    paramcount_bytes[0] = b4;
+                    paramcount_bytes[1] = b3;
+                    paramcount_bytes[2] = b2;
+                    paramcount_bytes[3] = (byte)(b1 & 0x1F);
                 }
                 else //2 bytes
                 {
-                    paramcount_bytes[0] = b1;
-                    paramcount_bytes[1] = b2;
+                    paramcount_bytes[0] = b2;
+                    paramcount_bytes[1] = (byte)(b1 & 0x3F);
                 }
             }
             else //1 byte

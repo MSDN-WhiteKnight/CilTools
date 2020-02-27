@@ -8,6 +8,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using CilBytecodeParser.Reflection;
 
 namespace CilBytecodeParser
 {
@@ -180,6 +181,7 @@ namespace CilBytecodeParser
         //ECMA-335 II.23.1.16 Element types used in signatures
         internal const byte ELEMENT_TYPE_CMOD_REQD = 0x1f;
         internal const byte ELEMENT_TYPE_CMOD_OPT = 0x20;
+        internal const byte ELEMENT_TYPE_PINNED = 0x45;
 
         static Dictionary<byte, Type> _types = new Dictionary<byte, Type>
         {
@@ -216,7 +218,7 @@ namespace CilBytecodeParser
             return BitConverter.ToInt32(res_bytes, 0);
         }
 
-        internal static TypeSpec ReadFromStream(Stream source, Module module) //ECMA-335 II.23.2.12 Type
+        internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver) //ECMA-335 II.23.2.12 Type
         {
             Debug.Assert(source != null, "Source stream is null");
 
@@ -226,6 +228,7 @@ namespace CilBytecodeParser
             Type t;                       
             bool found_type;
             bool isbyref = false;
+            bool ispinned = false;
 
             byte type = 0; //element type
             List<CustomModifier> mods = new List<CustomModifier>(5);
@@ -246,7 +249,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            t = module.ResolveType(typetok);
+                            t = resolver.ResolveType(typetok);
                             mod = new CustomModifier(false, typetok, t);
                         }
                         catch (Exception ex)
@@ -263,7 +266,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            t = module.ResolveType(typetok);
+                            t = resolver.ResolveType(typetok);
                             mod = new CustomModifier(true, typetok, t);
                         }
                         catch (Exception ex)
@@ -277,6 +280,9 @@ namespace CilBytecodeParser
                         break;
                     case (byte)CilBytecodeParser.ElementType.ByRef:
                         isbyref = true;
+                        break;
+                    case ELEMENT_TYPE_PINNED:
+                        ispinned = true;
                         break;
                     default:
                         type = b;
@@ -302,7 +308,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            restype = module.ResolveType(typetok);                            
+                            restype = resolver.ResolveType(typetok);
                         }
                         catch (Exception ex)
                         {
@@ -315,7 +321,7 @@ namespace CilBytecodeParser
 
                         try
                         {
-                            restype = module.ResolveType(typetok);                            
+                            restype = resolver.ResolveType(typetok, null, null);
                         }
                         catch (Exception ex)
                         {
@@ -324,7 +330,7 @@ namespace CilBytecodeParser
                                                 
                         break;
                     case (byte)CilBytecodeParser.ElementType.Array:
-                        ts = TypeSpec.ReadFromStream(source, module);                        
+                        ts = TypeSpec.ReadFromStream(source, resolver);
 
                         //II.23.2.13 ArrayShape
                         uint rank = MetadataReader.ReadCompressed(source);
@@ -345,11 +351,11 @@ namespace CilBytecodeParser
                         restype = ts.Type.MakeArrayType((int)rank);                        
                         break;
                     case (byte)CilBytecodeParser.ElementType.SzArray:
-                        ts = TypeSpec.ReadFromStream(source, module);
+                        ts = TypeSpec.ReadFromStream(source, resolver);
                         restype = ts.Type.MakeArrayType();                        
                         break;
                     case (byte)CilBytecodeParser.ElementType.Ptr:
-                        ts = TypeSpec.ReadFromStream(source, module);
+                        ts = TypeSpec.ReadFromStream(source, resolver);
                         restype = ts.Type.MakePointerType();
                         break;
                     case (byte)CilBytecodeParser.ElementType.Var: //generic type arg
@@ -357,6 +363,11 @@ namespace CilBytecodeParser
                         break;
                     case (byte)CilBytecodeParser.ElementType.MVar: //generic method arg
                         paramnum = MetadataReader.ReadCompressed(source);                        
+                        break;
+                    case (byte)CilBytecodeParser.ElementType.Internal:
+                        //skip sizeof(IntPtr) bytes
+                        byte[] buf = new byte[System.Runtime.InteropServices.Marshal.SizeOf(typeof(IntPtr))];
+                        source.Read(buf, 0, buf.Length);
                         break;
                     case (byte)CilBytecodeParser.ElementType.FnPtr: 
                         throw new NotSupportedException("Parsing signatures with function pointers is not supported");
@@ -367,7 +378,61 @@ namespace CilBytecodeParser
 
             if (isbyref) restype = restype.MakeByRefType();
 
-            return new TypeSpec(mods.ToArray(),type,restype,ts,paramnum);
+            return new TypeSpec(mods.ToArray(),type,restype,ts,paramnum,ispinned);
+        }
+
+        internal static TypeSpec FromType(Type t, bool pinned)
+        {
+            Debug.Assert(t != null, "Input type should not be null");
+
+            byte et = 0;
+            uint genpos = 0;
+            TypeSpec inner=null;
+
+            //try find primitive type
+            foreach (byte key in _types.Keys)
+            {
+                if (t == _types[key])
+                {
+                    et = key;
+                    break;
+                }
+            }
+
+            if (et == 0) //if not found, determine complex type
+            {
+                if (t.IsGenericParameter)
+                {
+                    if (t.DeclaringMethod == null) et = (byte)ElementType.Var;
+                    else et = (byte)ElementType.MVar;
+
+                    genpos = (uint)t.GenericParameterPosition;
+                }
+                else if (t.IsArray)
+                {
+                    et = (byte)ElementType.Array;
+                    inner = TypeSpec.FromType(t.GetElementType(),false);
+                }
+                else if (t.IsPointer)
+                {
+                    et = (byte)ElementType.Ptr;
+                    inner = TypeSpec.FromType(t.GetElementType(), false);
+                }
+                else if (t.IsGenericType)
+                {
+                    et = (byte)ElementType.GenericInst;
+                }
+                else if (t.IsValueType)
+                {
+                    et = (byte)ElementType.ValueType;
+                }
+                else if (t.IsClass)
+                {
+                    et = (byte)ElementType.Class;
+                }
+            }
+
+            return new TypeSpec(new CustomModifier[0], et,t, inner, genpos, pinned);
         }
 
         /// <summary>
@@ -395,14 +460,16 @@ namespace CilBytecodeParser
         TypeSpec _InnerSpec;
         Type _Type;
         uint _paramnum;
+        bool _pinned;
 
-        internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, TypeSpec ts = null, uint parnum = 0)
+        internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, TypeSpec ts = null, uint parnum = 0, bool pinned = false)
         {            
             this._Modifiers = mods;
             this._ElementType = elemtype;
             this._Type = t;
             this._InnerSpec = ts;
             this._paramnum = parnum;
+            this._pinned = pinned;
         }
 
         /// <summary>
@@ -467,6 +534,11 @@ namespace CilBytecodeParser
         public Type Type { get { return this._Type; } }
 
         /// <summary>
+        /// Gets the value indicating whether this TypeSpec represents pinned local variable
+        /// </summary>
+        public bool IsPinned { get { return this._pinned; } }
+
+        /// <summary>
         /// Returns textual representation of this type specification as CIL code
         /// </summary>        
         public override string ToString()
@@ -502,6 +574,10 @@ namespace CilBytecodeParser
             else if (this._ElementType == (byte)CilBytecodeParser.ElementType.MVar) //generic method arg
             {
                 sb.Append("!!" + this._paramnum.ToString());
+            }
+            else if (this._ElementType == (byte)CilBytecodeParser.ElementType.Internal)
+            {
+                sb.Append("ClrInternal");
             }
             else
             {

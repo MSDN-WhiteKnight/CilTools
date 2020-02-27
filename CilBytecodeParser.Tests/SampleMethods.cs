@@ -109,5 +109,7 @@ namespace CilBytecodeParser.Tests
                 default: return x.ToString();
             }
         }
+
+        public static int f;
     }
 }

@@ -40,6 +40,9 @@ namespace CilBytecodeParser
         /// </summary>
         protected CilGraphNode _BranchTarget = null;
 
+        /// <summary>
+        /// An array of nodes that represents the jump table of the switch instruction, if applicable
+        /// </summary>
         protected CilGraphNode[] _SwitchTargets = null;
 
         /// <summary>

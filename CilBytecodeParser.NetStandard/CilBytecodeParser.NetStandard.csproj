@@ -31,7 +31,15 @@
     <Compile Include="..\CilBytecodeParser\CustomModifier.cs" Link="CustomModifier.cs" />  
     <Compile Include="..\CilBytecodeParser\MetadataReader.cs" Link="MetadataReader.cs" />
     <Compile Include="..\CilBytecodeParser\Signature.cs" Link="Signature.cs" />  
-    <Compile Include="..\CilBytecodeParser\TypeSpec.cs" Link="TypeSpec.cs" /> 
+    <Compile Include="..\CilBytecodeParser\TypeSpec.cs" Link="TypeSpec.cs" />
+    <Compile Include="..\CilBytecodeParser\Reflection\Types.cs" Link="Types.cs" /> 
+    <Compile Include="..\CilBytecodeParser\Reflection\MethodBaseWrapper.cs" Link="MethodBaseWrapper.cs" />
+    <Compile Include="..\CilBytecodeParser\Reflection\ModuleWrapper.cs" Link="ModuleWrapper.cs" />
+    <Compile Include="..\CilBytecodeParser\Reflection\ModuleWrapperDynamic.cs" Link="ModuleWrapperDynamic.cs" />
+	  <Compile Include="..\CilBytecodeParser\Reflection\CustomMethod.cs"  Link="CustomMethod.cs"/>
+    <Compile Include="..\CilBytecodeParser\Reflection\ITokenResolver.cs" Link="ITokenResolver.cs"/>
+    <Compile Include="..\CilBytecodeParser\Reflection\LocalVariable.cs" Link="LocalVariable.cs"/>
+    <Compile Include="..\CilBytecodeParser\Reflection\ExceptionBlock.cs" Link="ExceptionBlock.cs"/>
   </ItemGroup>
 
   <ItemGroup>

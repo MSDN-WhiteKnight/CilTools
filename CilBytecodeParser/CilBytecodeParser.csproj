@@ -52,6 +52,14 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="MetadataReader.cs" />
+    <Compile Include="Reflection\CustomMethod.cs" />
+    <Compile Include="Reflection\ExceptionBlock.cs" />
+    <Compile Include="Reflection\ITokenResolver.cs" />
+    <Compile Include="Reflection\LocalVariable.cs" />
+    <Compile Include="Reflection\MethodBaseWrapper.cs" />
+    <Compile Include="Reflection\ModuleWrapper.cs" />
+    <Compile Include="Reflection\ModuleWrapperDynamic.cs" />
+    <Compile Include="Reflection\Types.cs" />
     <Compile Include="Signature.cs" />
     <Compile Include="TypeSpec.cs" />
   </ItemGroup>
