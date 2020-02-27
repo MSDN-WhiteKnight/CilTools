@@ -13,36 +13,8 @@ namespace CilBytecodeParserDemo
 {
     class Program
     {
-        public static int f = 2;
-
         static void Main(string[] args)
         {
-            DynamicMethod dm = new DynamicMethod("Method", typeof(void), new Type[] {typeof(string) }, typeof(Program).Module);            
-            ILGenerator ilg = dm.GetILGenerator(512);
-            ilg.Emit(OpCodes.Ldarg_0);
-            ilg.Emit(OpCodes.Ldftn,typeof(Console).GetMethod("WriteLine",new Type[]{typeof(string)}));
-            ilg.EmitCalli(OpCodes.Calli, CallingConventions.Standard, typeof(void), new Type[] { typeof(string) }, null);            
-            ilg.Emit(OpCodes.Ret);
-
-            var deleg = (Action<string>)dm.CreateDelegate(typeof(Action<string>));                        
-            deleg("Hello from System.Reflection.Emit!");
-
-            CilGraph gr = CilAnalysis.GetGraph(dm);
-            CilGraphNode[] nodes = gr.GetNodes().ToArray();
-
-            foreach (var node in nodes)
-            {
-                if (node.Instruction.ReferencedSignature != null)
-                {
-                    Console.WriteLine(node.Instruction.ReferencedSignature.ReturnType.Type.ToString());
-                }
-            }
-                        
-            Console.WriteLine(gr.ToString());
-
-            if (!Console.IsInputRedirected) Console.ReadKey();
-            return;
-            
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
             Console.WriteLine("Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
             Console.WriteLine();
