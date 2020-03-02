@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilBytecodeParser", "CilByt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilBytecodeParser.Tests", "CilBytecodeParser.Tests\CilBytecodeParser.Tests.csproj", "{3B6EA845-B9F5-4041-BC32-F043B3D4B01C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilBytecodeParser.Runtime", "CilBytecodeParser.Runtime\CilBytecodeParser.Runtime.csproj", "{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,16 @@ Global
 		{3B6EA845-B9F5-4041-BC32-F043B3D4B01C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{3B6EA845-B9F5-4041-BC32-F043B3D4B01C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{3B6EA845-B9F5-4041-BC32-F043B3D4B01C}.Release|Win32.ActiveCfg = Release|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

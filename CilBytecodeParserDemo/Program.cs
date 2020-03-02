@@ -1,5 +1,5 @@
 ﻿/* CilBytecodeParser library demo application
- * Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -22,6 +22,10 @@ namespace CilBytecodeParserDemo
             string type;
             string method;
             Assembly ass;
+
+            /*CilBytecodeParser.Runtime.CLR.DumpMethods(684);
+            Console.ReadLine();
+            return;*/
 
             try
             {
