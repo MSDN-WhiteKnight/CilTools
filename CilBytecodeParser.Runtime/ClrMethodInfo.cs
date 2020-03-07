@@ -13,25 +13,33 @@ using CilBytecodeParser.Reflection;
 
 namespace CilBytecodeParser.Runtime
 {
-    internal class ClrMethodInfo : CustomMethod
+    class ClrMethodInfo : CustomMethod
     {
         ClrMethod method;
-        DataTarget target;        
+        ClrTokenTable tokentable;
+        DataTarget target;
+        ClrTypeInfo type;
 
-        internal ClrMethodInfo(ClrMethod m, DataTarget dt)
+        public ClrMethodInfo(ClrMethod m, DataTarget dt,ClrTokenTable table)
         {
             this.method = m;
             this.target = dt;
+            this.tokentable = table;
+            this.type = new ClrTypeInfo(m.Type);
         }
 
         public override Type ReturnType
         {
-            get { return new UnknownType(); }
+            get 
+            {
+                if (method.IsConstructor || method.IsClassConstructor) return null;
+                else return UnknownType.Value;
+            }
         }
 
         public override ITokenResolver TokenResolver
         {
-            get { throw new NotImplementedException(); }
+            get { return this.tokentable; }
         }
 
         public override byte[] GetBytecode()
@@ -98,7 +106,22 @@ namespace CilBytecodeParser.Runtime
 
         public override MethodAttributes Attributes
         {
-            get { return (MethodAttributes)0; }
+            get
+            {
+                MethodAttributes ret = (MethodAttributes)0;
+                if (method.IsAbstract) ret |= MethodAttributes.Abstract;
+                if (method.IsFinal) ret |= MethodAttributes.Final;
+                if (method.IsInternal) ret |= MethodAttributes.Assembly;
+                if (method.IsPrivate) ret |= MethodAttributes.Private;
+                if (method.IsProtected) ret |= MethodAttributes.Family;
+                if (method.IsPublic) ret |= MethodAttributes.Public;
+                if (method.IsStatic) ret |= MethodAttributes.Static;
+                if (method.IsVirtual) ret |= MethodAttributes.Virtual;
+                if (method.IsPInvoke) ret |= MethodAttributes.PinvokeImpl;
+                if (method.IsSpecialName) ret |= MethodAttributes.SpecialName;
+                if (method.IsRTSpecialName) ret |= MethodAttributes.RTSpecialName;
+                return ret;
+            }
         }
 
         public override MethodImplAttributes GetMethodImplementationFlags()
@@ -111,7 +134,8 @@ namespace CilBytecodeParser.Runtime
             return new ParameterInfo[] { };
         }
 
-        public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, System.Globalization.CultureInfo culture)
+        public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters,
+            System.Globalization.CultureInfo culture)
         {
             throw new NotImplementedException();
         }
@@ -123,7 +147,7 @@ namespace CilBytecodeParser.Runtime
 
         public override Type DeclaringType
         {
-            get { return new UnknownType(); }
+            get { return this.type; }
         }
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
@@ -154,6 +178,14 @@ namespace CilBytecodeParser.Runtime
         public override Type ReflectedType
         {
             get { throw new NotImplementedException(); }
+        }
+
+        public override int MetadataToken
+        {
+            get
+            {
+                return (int)method.MetadataToken;
+            }
         }
     }
 }

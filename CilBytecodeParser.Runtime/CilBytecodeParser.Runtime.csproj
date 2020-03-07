@@ -43,7 +43,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CLR.cs" />
+    <Compile Include="ClrAssemblyInfo.cs" />
+    <Compile Include="ClrFieldInfo.cs" />
     <Compile Include="ClrMethodInfo.cs" />
+    <Compile Include="ClrTokenTable.cs" />
+    <Compile Include="ClrTypeInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnknownType.cs" />
   </ItemGroup>

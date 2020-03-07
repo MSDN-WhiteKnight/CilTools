@@ -23,9 +23,10 @@ namespace CilBytecodeParserDemo
             string method;
             Assembly ass;
 
-            /*CilBytecodeParser.Runtime.CLR.DumpMethods(684);
+            CilBytecodeParser.Runtime.CLR.DumpMethods(5288);
+            Console.WriteLine("End");
             Console.ReadLine();
-            return;*/
+            return;
 
             try
             {

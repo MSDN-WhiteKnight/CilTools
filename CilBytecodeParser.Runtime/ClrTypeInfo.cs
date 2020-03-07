@@ -5,41 +5,48 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Diagnostics;
+using CilBytecodeParser;
+using Microsoft.Diagnostics.Runtime;
 
 namespace CilBytecodeParser.Runtime
 {
-    internal class UnknownType : Type
+    class ClrTypeInfo : Type
     {
-        UnknownType()
+        ClrType type;
+        ClrTypeInfo basetype;
+
+        public ClrTypeInfo(ClrType t)
         {
+            Debug.Assert(t != null, "t in ClrTypeInfo(ClrType t) should not be null");
 
-        }
+            this.type = t;
 
-        static UnknownType instance = new UnknownType();
-
-        public static UnknownType Value
-        {
-            get { return instance; }
+            if (type.BaseType == null) this.basetype=null;
+            else this.basetype = new ClrTypeInfo(type.BaseType);
         }
 
         public override Assembly Assembly
         {
-            get { return new ClrAssemblyInfo(null); }
+            get { return new ClrAssemblyInfo(type.Module); }
         }
 
         public override string AssemblyQualifiedName
         {
-            get { return "???"; }
+            get { return new ClrAssemblyInfo(type.Module).FullName; }
         }
 
         public override Type BaseType
         {
-            get { return typeof(object); }
+            get 
+            {
+                return this.basetype;
+            }
         }
 
         public override string FullName
         {
-            get { return "???"; }
+            get { return type.Name; }
         }
 
         public override Guid GUID
@@ -102,7 +109,8 @@ namespace CilBytecodeParser.Runtime
             throw new NotImplementedException();
         }
 
-        protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
+        protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder, 
+            CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
             throw new NotImplementedException();
         }
@@ -127,25 +135,26 @@ namespace CilBytecodeParser.Runtime
             throw new NotImplementedException();
         }
 
-        protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType, Type[] types, ParameterModifier[] modifiers)
+        protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType, 
+            Type[] types, ParameterModifier[] modifiers)
         {
             throw new NotImplementedException();
         }
 
         protected override bool HasElementTypeImpl()
         {
-            throw new NotImplementedException();
+            return type.IsArray || type.IsPointer;
         }
 
-        public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args, ParameterModifier[] modifiers,
-            System.Globalization.CultureInfo culture, string[] namedParameters)
+        public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args,
+            ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] namedParameters)
         {
             throw new NotImplementedException();
         }
 
         protected override bool IsArrayImpl()
         {
-            return false;
+            return type.IsArray;
         }
 
         protected override bool IsByRefImpl()
@@ -160,12 +169,12 @@ namespace CilBytecodeParser.Runtime
 
         protected override bool IsPointerImpl()
         {
-            return false;
+            return type.IsPointer;
         }
 
         protected override bool IsPrimitiveImpl()
         {
-            return false;
+            return type.IsPrimitive;
         }
 
         public override Module Module
@@ -200,7 +209,15 @@ namespace CilBytecodeParser.Runtime
 
         public override string Name
         {
-            get { return "???"; }
+            get { return type.Name; }
+        }
+
+        public override int MetadataToken
+        {
+            get
+            {
+                return (int)type.MetadataToken;
+            }
         }
     }
 }

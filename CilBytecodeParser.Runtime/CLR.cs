@@ -10,7 +10,7 @@ namespace CilBytecodeParser.Runtime
 {
     public class CLR
     {
-        public static Dictionary<int, string> GetTokenTable(string module, ClrRuntime runtime)
+        public static Dictionary<int, string> GetTokenStringTable(string module, ClrRuntime runtime)
         {
             //get metadata tokens for specified module in ClrMD debugging session
 
@@ -36,6 +36,50 @@ namespace CilBytecodeParser.Runtime
             return table;
         }
 
+        static ClrTokenTable GetTokenTable(string module, ClrRuntime runtime)
+        {
+            //get metadata tokens for specified module in ClrMD debugging session
+
+            ClrTokenTable table = new ClrTokenTable();
+
+            foreach (ClrType t in runtime.Heap.EnumerateTypes())
+            {
+                string name = t.Module.FileName;
+                if (name == null) name = "";
+                if (!Path.GetFileName(name).Equals(module, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    continue;
+                }
+
+                ClrTypeInfo ti = new ClrTypeInfo(t);
+                table.SetValue((int)t.MetadataToken, ti);
+
+                foreach (var m in t.Methods)
+                {
+                    if (!(m.Type.Name == t.Name)) continue; //skip inherited methods
+
+                    table.SetValue((int)m.MetadataToken, new ClrMethodInfo(m, runtime.DataTarget, table));
+                }
+
+                foreach (var f in t.Fields)
+                {
+                    table.SetValue((int)f.Token, new ClrFieldInfo(f,ti));
+                }
+
+                foreach (var f in t.StaticFields)
+                {
+                    table.SetValue((int)f.Token, new ClrFieldInfo(f, ti));
+                }
+
+                foreach (var f in t.ThreadStaticFields)
+                {
+                    table.SetValue((int)f.Token, new ClrFieldInfo(f, ti));
+                }
+            }
+
+            return table;
+        }
+                
         public static void DumpMethods(int pid)
         {
             //prints bytecode of methods in specified managed process
@@ -57,7 +101,7 @@ namespace CilBytecodeParser.Runtime
             {
                 ClrInfo runtimeInfo = dt.ClrVersions[0];
                 ClrRuntime runtime = runtimeInfo.CreateRuntime();
-                Dictionary<int, string> tokens = GetTokenTable(module, runtime);
+                ClrTokenTable tokens = GetTokenTable(module, runtime);
 
                 //dump regular methods
 
@@ -79,7 +123,7 @@ namespace CilBytecodeParser.Runtime
 
                         Console.WriteLine(" Method: " + m.Name);
 
-                        ClrMethodInfo info = new ClrMethodInfo(m, dt);                        
+                        ClrMethodInfo info = new ClrMethodInfo(m, dt,tokens);
 
                         CilGraph gr = CilAnalysis.GetGraph(info);
                         Console.WriteLine(gr.ToString());
@@ -93,11 +137,17 @@ namespace CilBytecodeParser.Runtime
 
                 //dump dynamic methods
 
-                foreach (ClrObject o in runtime.Heap.EnumerateObjects())
+                var en = runtime.Heap.EnumerateObjects();
+                ;
+
+                foreach (ClrObject o in en)
                 {
                     if (o.Type == null) continue;
-                    if (!o.Type.Name.Contains("ILGenerator")) continue;
 
+                    var bt = o.Type.BaseType;                                        
+
+                    if (!o.Type.Name.Contains("ILGenerator")) continue;
+                    
                     try
                     {
                         string mname;
@@ -126,17 +176,18 @@ namespace CilBytecodeParser.Runtime
                             if (instr.OpCode.FlowControl == FlowControl.Call)
                             {
                                 int n = (int)instr.Operand;
-                                if (tokens.ContainsKey(n))
+                                /*if (tokens.ContainsKey(n))
                                 {
                                     Console.WriteLine(instr.OpCode.ToString().PadRight(10, ' ') + " " + tokens[n]);
                                 }
-                                else
+                                else*/
                                 {
                                     Console.WriteLine(instr.OpCode.ToString().PadRight(10, ' ') + " 0x" + n.ToString("X"));
                                 }
                             }
                             else Console.WriteLine(instr.ToString());
                         }
+                        Console.ReadKey();
                         Console.WriteLine();
                     }
                     catch (Exception ex)
