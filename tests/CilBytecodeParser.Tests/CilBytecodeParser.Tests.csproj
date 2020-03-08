@@ -59,7 +59,7 @@
     <Compile Include="CilAnalysisTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CilBytecodeParser\CilBytecodeParser.csproj">
+    <ProjectReference Include="..\..\CilBytecodeParser\CilBytecodeParser.csproj">
       <Project>{38496d54-0bc8-479b-a57e-f0ec83e78ad3}</Project>
       <Name>CilBytecodeParser</Name>
     </ProjectReference>
