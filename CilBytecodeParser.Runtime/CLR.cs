@@ -3,6 +3,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Diagnostics;
 using Microsoft.Diagnostics.Runtime;
 using CilBytecodeParser;
 
@@ -79,23 +80,45 @@ namespace CilBytecodeParser.Runtime
 
             return table;
         }
-                
+
         public static void DumpMethods(int pid)
+        {
+            Process process = Process.GetProcessById(pid);
+            using (process)
+            {
+                DumpMethods(process);
+            }
+        }
+
+        public static void DumpMethods(string processname)
+        {
+            Process[] processes = Process.GetProcessesByName(processname);
+            if (processes.Length == 0)
+            {
+                Console.WriteLine("Process not found");
+                return;
+            }
+
+            Process process = processes[0];
+
+            using (process)
+            {
+                DumpMethods(process);
+            }
+        }
+                
+        public static void DumpMethods(Process process)
         {
             //prints bytecode of methods in specified managed process
 
-            string module = "";
-            var process = System.Diagnostics.Process.GetProcessById(pid);
-            using (process)
-            {
-                module = Path.GetFileName(process.MainModule.FileName);
-            }
+            string module = "";                        
+            module = Path.GetFileName(process.MainModule.FileName);            
 
-            Console.WriteLine("Process ID: {0}; Process name: {1}", pid, module);
+            Console.WriteLine("Process ID: {0}; Process name: {1}", process.Id, module);
             Console.WriteLine();
 
             //Start ClrMD session
-            DataTarget dt = DataTarget.AttachToProcess(pid, 5000, AttachFlag.Passive);
+            DataTarget dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.Passive);
 
             using (dt)
             {
@@ -129,7 +152,7 @@ namespace CilBytecodeParser.Runtime
                         Console.WriteLine(gr.ToString());
 
                         Console.WriteLine();
-                        Console.ReadKey();
+                        //Console.ReadKey();
                     }
 
                     Console.WriteLine();
@@ -144,56 +167,19 @@ namespace CilBytecodeParser.Runtime
                 {
                     if (o.Type == null) continue;
 
-                    var bt = o.Type.BaseType;                                        
-
-                    if (!o.Type.Name.Contains("ILGenerator")) continue;
+                    var bt = o.Type.BaseType;
                     
-                    try
+                    //if (!o.Type.Name.Contains("ILGenerator")) continue;
+
+                    if(o.Type.Name == "System.Reflection.Emit.DynamicMethod" || o.Type.Name == "System.Reflection.Emit.MethodBuilder")
                     {
-                        string mname;
-                        try
-                        {
-                            ClrObject builder = o.GetObjectField("m_methodBuilder");
-                            mname = builder.GetStringField("m_strName");
-                        }
-                        catch (ArgumentException)
-                        {
-                            mname = "???";
-                        }
-
-                        int size = o.GetField<int>("m_length");
-                        ClrObject stream = o.GetObjectField("m_ILStream");
-                        ClrType type = stream.Type;
-                        ulong obj = stream.Address;
-                        int len = type.GetArrayLength(obj);
-                        byte[] il = new byte[size];
-
-                        for (int i = 0; i < size; i++) il[i] = (byte)type.GetArrayElementValue(obj, i);
-
-                        Console.WriteLine("Dynamic method: " + mname);
-                        foreach (CilInstruction instr in CilReader.GetInstructions(il))
-                        {
-                            if (instr.OpCode.FlowControl == FlowControl.Call)
-                            {
-                                int n = (int)instr.Operand;
-                                /*if (tokens.ContainsKey(n))
-                                {
-                                    Console.WriteLine(instr.OpCode.ToString().PadRight(10, ' ') + " " + tokens[n]);
-                                }
-                                else*/
-                                {
-                                    Console.WriteLine(instr.OpCode.ToString().PadRight(10, ' ') + " 0x" + n.ToString("X"));
-                                }
-                            }
-                            else Console.WriteLine(instr.ToString());
-                        }
-                        Console.ReadKey();
+                        ClrDynamicMethod dm = new ClrDynamicMethod(o, tokens);
+                        CilGraph gr = CilAnalysis.GetGraph(dm);
+                        Console.WriteLine(gr.ToString());
                         Console.WriteLine();
+                        Console.ReadKey(); 
                     }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.GetType().ToString() + ": " + ex.Message);
-                    }
+                    
                 }
             }//end using
         }

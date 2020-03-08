@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="CLR.cs" />
     <Compile Include="ClrAssemblyInfo.cs" />
+    <Compile Include="ClrDynamicMethod.cs" />
     <Compile Include="ClrFieldInfo.cs" />
     <Compile Include="ClrMethodInfo.cs" />
     <Compile Include="ClrTokenTable.cs" />
