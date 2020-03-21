@@ -131,8 +131,7 @@ namespace CilBytecodeParser.Runtime
                 foreach (var t in runtime.Heap.EnumerateTypes())
                 {
                     string name = t.Module.FileName;
-                    if (name == null) name = "";
-                    ;
+                    if (name == null) name = "";                    
 
                     if (!(Path.GetFileName(name).Equals(module, StringComparison.InvariantCultureIgnoreCase)))
                     {
@@ -168,8 +167,6 @@ namespace CilBytecodeParser.Runtime
                     if (o.Type == null) continue;
 
                     var bt = o.Type.BaseType;
-                    
-                    //if (!o.Type.Name.Contains("ILGenerator")) continue;
 
                     if(o.Type.Name == "System.Reflection.Emit.DynamicMethod" || o.Type.Name == "System.Reflection.Emit.MethodBuilder")
                     {
@@ -177,7 +174,7 @@ namespace CilBytecodeParser.Runtime
                         CilGraph gr = CilAnalysis.GetGraph(dm);
                         Console.WriteLine(gr.ToString());
                         Console.WriteLine();
-                        Console.ReadKey(); 
+                        //Console.ReadKey(); 
                     }
                     
                 }

@@ -19,10 +19,13 @@ namespace SampleApp
             DynamicMethod dm = new DynamicMethod("Method1", typeof(int), new Type[] { typeof(int), typeof(int) }, typeof(EmitSampleProgram).Module);
             ILGenerator ilg = dm.GetILGenerator(512);
 
+            ilg.BeginExceptionBlock();
             ilg.Emit(OpCodes.Ldarg_0);
             ilg.Emit(OpCodes.Ldarg_1);
             ilg.Emit(OpCodes.Add);
             ilg.Emit(OpCodes.Stsfld, typeof(EmitSampleProgram).GetField("x"));
+            ilg.BeginCatchBlock(typeof(Exception));
+            ilg.EndExceptionBlock();
             ilg.Emit(OpCodes.Ldsfld, typeof(EmitSampleProgram).GetField("x"));
             ilg.Emit(OpCodes.Ret);
 

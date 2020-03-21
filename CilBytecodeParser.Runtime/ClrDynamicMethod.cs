@@ -16,9 +16,55 @@ namespace CilBytecodeParser.Runtime
     {
         ClrObject method;
         ClrObject ilgen;
-        ClrTokenTable tokentable;
-        //DynamicResolver.m_scope.m_tokens (ArrayList)
-        //ArrayList: .field private object[] _items
+        ClrTokenTable tokentable;        
+
+        ulong[] GetDynamicTokenTable()
+        {
+            ClrObject resolver = method.GetObjectField("m_resolver");
+            ClrObject scope = resolver.GetObjectField("m_scope");
+            ClrObject dtokens = scope.GetObjectField("m_tokens");
+            ClrObject items = dtokens.GetObjectField("_items");
+            ClrType arrtype = items.Type;
+            ulong addr = items.Address;
+            int len = arrtype.GetArrayLength(addr);
+            ulong[] ret = new ulong[len];
+
+            for (int i = 0; i < len; i++)
+            {
+                object val = arrtype.GetArrayElementValue(addr, i);
+                ret[i] = (ulong)val;                
+            }
+
+            return ret;
+        }
+
+        void ReadExceptionBlocks()
+        {
+            ClrObject exceptions;
+            if (method.Type.Name.EndsWith("DynamicMethod"))
+            {
+                ClrObject resolver = method.GetObjectField("m_resolver");
+                if (resolver != null && !resolver.IsNull) exceptions = resolver.GetObjectField("m_exceptions");
+                else exceptions = new ClrObject();
+            }
+            else
+            {
+                exceptions = method.GetObjectField("m_exceptions");
+            }
+
+            if (exceptions.IsNull) return;
+
+            int len = exceptions.Type.GetArrayLength(exceptions);
+
+            for (int i = 0; i < len; i++)
+            {
+                ulong addr = exceptions.Type.GetArrayElementAddress(exceptions, i);
+                ClrObject o = new ClrObject(addr, exceptions.Type.ComponentType);
+                int startAddr = o.GetField<int>("m_startAddr");
+                int m_endAddr = o.GetField<int>("m_endAddr");
+            }
+
+        }
 
         public ClrDynamicMethod(ClrObject m, ClrTokenTable tokens)
         {
@@ -142,7 +188,7 @@ namespace CilBytecodeParser.Runtime
                     else
                     {
                         mname = method.GetStringField("m_strName");
-                    }                    
+                    }
                 }
                 catch (ArgumentException)
                 {

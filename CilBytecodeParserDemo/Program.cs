@@ -23,7 +23,7 @@ namespace CilBytecodeParserDemo
             string method;
             Assembly ass;
 
-            CilBytecodeParser.Runtime.CLR.DumpMethods("EmitSampleApp");
+            CilBytecodeParser.Runtime.CLR.DumpMethods("EmitSampleApp");//EmitSampleApp
             Console.WriteLine("End");
             Console.ReadLine();
             return;

@@ -15,6 +15,7 @@ namespace CilBytecodeParser.Runtime
     {
         ClrType type;
         ClrTypeInfo basetype;
+        ClrTypeInfo elemType;
 
         public ClrTypeInfo(ClrType t)
         {
@@ -24,6 +25,12 @@ namespace CilBytecodeParser.Runtime
 
             if (type.BaseType == null) this.basetype=null;
             else this.basetype = new ClrTypeInfo(type.BaseType);
+
+            if ((type.IsArray || type.IsPointer) && type.ComponentType!=null)
+            {
+                this.elemType = new ClrTypeInfo(type.ComponentType);
+            }
+            else this.elemType = null;
         }
 
         public override Assembly Assembly
@@ -59,7 +66,8 @@ namespace CilBytecodeParser.Runtime
             return (TypeAttributes)0;
         }
 
-        protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
+        protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, 
+            Type[] types, ParameterModifier[] modifiers)
         {
             throw new NotImplementedException();
         }
@@ -71,7 +79,7 @@ namespace CilBytecodeParser.Runtime
 
         public override Type GetElementType()
         {
-            throw new NotImplementedException();
+            return this.elemType;
         }
 
         public override EventInfo GetEvent(string name, BindingFlags bindingAttr)
@@ -218,6 +226,16 @@ namespace CilBytecodeParser.Runtime
             {
                 return (int)type.MetadataToken;
             }
+        }
+
+        public override int GetArrayRank()
+        {
+            if (this.IsArray)
+            {
+                if (type.ElementType == ClrElementType.SZArray) return 1;
+                else throw new NotSupportedException("Multi-dimensional arrays or arrays with non-zero lower bound are not supported.");
+            }
+            else return 0;            
         }
     }
 }
