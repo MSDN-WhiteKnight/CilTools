@@ -415,6 +415,7 @@ namespace CilBytecodeParser
 
             if (Operand != null)
             {
+                string stroperand = null;
 
                 if (ReferencesMethodToken(this.OpCode) && this.Method != null)
                 {
@@ -422,25 +423,39 @@ namespace CilBytecodeParser
                     MethodBase called_method = this.ReferencedMember as MethodBase;
 
                     if (called_method != null)
-                    {
-                        sb.Append(' ');
-                        sb.Append(CilAnalysis.MethodToString(called_method));
+                    {                        
+                        stroperand = CilAnalysis.MethodToString(called_method);
                     }
+                    else
+                    {
+                        int token = (int)Operand;
+                        stroperand = "UnknownMethod" + token.ToString("X");
+                    }
+
+                    sb.Append(' ');
+                    sb.Append(stroperand);
                 }
                 else if (ReferencesFieldToken(this.OpCode) && this.Method != null)
                 {
                     //field                       
                     FieldInfo fi = this.ReferencedMember as FieldInfo;
+                    sb.Append(' ');
 
                     if (fi != null)
                     {
                         Type t = fi.DeclaringType;
-                        sb.Append(' ');
+                        
                         sb.Append(CilAnalysis.GetTypeName(fi.FieldType));
                         sb.Append(' ');
                         sb.Append(CilAnalysis.GetTypeNameInternal(t));
                         sb.Append("::");
                         sb.Append(fi.Name);
+                    }
+                    else
+                    {
+                        int token = (int)Operand;
+                        stroperand = "UnknownField" + token.ToString("X");
+                        sb.Append(stroperand);
                     }
                 }
                 else if (ReferencesTypeToken(this.OpCode) && this.Method != null)
@@ -450,51 +465,65 @@ namespace CilBytecodeParser
 
                     if (t != null)
                     {
-                        sb.Append(' ');
-                        sb.Append(CilAnalysis.GetTypeNameInternal(t));
+                        stroperand = CilAnalysis.GetTypeNameInternal(t);
                     }
+                    else
+                    {
+                        int token = (int)Operand;
+                        stroperand = "UnknownType" + token.ToString("X");
+                    }
+
+                    sb.Append(' ');
+                    sb.Append(stroperand);
                 }
                 else if (OpCode.Equals(OpCodes.Ldstr) && this.Method != null)
                 {
                     //string literal
+                    int token = (int)Operand;
 
                     try
                     {
-                        int token = (int)Operand;
-                        string s = "";
-
-                        s = (Method as CustomMethod).TokenResolver.ResolveString(token);
-                        s = CilAnalysis.EscapeString(s);
-
-                        sb.Append(" \"");
-                        sb.Append(s);
-                        sb.Append('"');
-
+                        stroperand = (Method as CustomMethod).TokenResolver.ResolveString(token);
+                        stroperand = "\"" + CilAnalysis.EscapeString(stroperand) + "\"";                                                
                     }
                     catch (Exception ex)
                     {
                         string error = "Exception occured when trying to resolve string.";
                         OnError(this, new CilErrorEventArgs(ex, error));
                     }
+
+                    if (String.IsNullOrEmpty(stroperand))
+                    {
+                        stroperand = "UnknownString" + token.ToString("X");
+                    }
+
+                    sb.Append(' ');
+                    sb.Append(stroperand);
                 }
                 else if ( OpCode.Equals(OpCodes.Ldtoken) && this.Method != null)
                 {
                     //metadata token
-                    int token = (int)Operand;
+                    int token = (int)Operand;                    
 
                     try
                     {
-                        MemberInfo mi = (Method as CustomMethod).TokenResolver.ResolveMember(token, null, null);
-                        sb.Append(' ');
-                        if (mi is Type) sb.Append(CilAnalysis.GetTypeNameInternal((Type)mi));
-                        else sb.Append(mi.Name);
+                        MemberInfo mi = (Method as CustomMethod).TokenResolver.ResolveMember(token, null, null);                        
+                        if (mi is Type) stroperand = CilAnalysis.GetTypeNameInternal((Type)mi);
+                        else stroperand = mi.Name;
                     }
                     catch (Exception ex)
                     {
                         string error = "Exception occured when trying to resolve token.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
-                        sb.Append(" 0x" + token.ToString("X"));
+                        OnError(this, new CilErrorEventArgs(ex, error));                        
                     }
+
+                    if (String.IsNullOrEmpty(stroperand))
+                    {
+                        stroperand = "UnknownMember" + token.ToString("X");
+                    }
+
+                    sb.Append(' ');
+                    sb.Append(stroperand);
                 }
                 else if (ReferencesLocal(this.OpCode))
                 {
