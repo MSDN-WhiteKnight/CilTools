@@ -16,17 +16,19 @@ namespace CilBytecodeParser.Runtime
     class ClrMethodInfo : CustomMethod
     {
         ClrMethod method;
-        ClrTokenTable tokentable;
+        ClrAssemblyInfo assembly;
         DataTarget target;
         ClrTypeInfo type;
 
-        public ClrMethodInfo(ClrMethod m, DataTarget dt,ClrTokenTable table)
+        public ClrMethodInfo(ClrMethod m, ClrTypeInfo owner)
         {
             this.method = m;
-            this.target = dt;
-            this.tokentable = table;
-            this.type = new ClrTypeInfo(m.Type);
+            this.target = (owner.Assembly as ClrAssemblyInfo).InnerModule.Runtime.DataTarget;
+            this.assembly = (ClrAssemblyInfo)owner.Assembly;
+            this.type = owner;
         }
+
+        public ClrMethod InnerMethod { get { return this.method; } }
 
         public override Type ReturnType
         {
@@ -39,7 +41,7 @@ namespace CilBytecodeParser.Runtime
 
         public override ITokenResolver TokenResolver
         {
-            get { return this.tokentable; }
+            get { return this.assembly; }
         }
 
         public override byte[] GetBytecode()

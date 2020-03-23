@@ -16,31 +16,36 @@ namespace CilBytecodeParser.Runtime
         ClrType type;
         ClrTypeInfo basetype;
         ClrTypeInfo elemType;
+        ClrAssemblyInfo assembly;
 
-        public ClrTypeInfo(ClrType t)
+        public ClrTypeInfo(ClrType t, ClrAssemblyInfo ass)
         {
-            Debug.Assert(t != null, "t in ClrTypeInfo(ClrType t) should not be null");
+            Debug.Assert(t != null, "t in ClrTypeInfo() should not be null");
+            Debug.Assert(ass != null, "ass in ClrTypeInfo() should not be null");
 
             this.type = t;
+            this.assembly = ass;
 
             if (type.BaseType == null) this.basetype=null;
-            else this.basetype = new ClrTypeInfo(type.BaseType);
+            else this.basetype = new ClrTypeInfo(type.BaseType, new ClrAssemblyInfo(null));
 
             if ((type.IsArray || type.IsPointer) && type.ComponentType!=null)
             {
-                this.elemType = new ClrTypeInfo(type.ComponentType);
+                this.elemType = new ClrTypeInfo(type.ComponentType, new ClrAssemblyInfo(null));
             }
             else this.elemType = null;
         }
 
+        public ClrType InnerType { get { return this.type; } }
+
         public override Assembly Assembly
         {
-            get { return new ClrAssemblyInfo(type.Module); }
+            get { return this.assembly; }
         }
 
         public override string AssemblyQualifiedName
         {
-            get { return new ClrAssemblyInfo(type.Module).FullName; }
+            get { return this.assembly.FullName; }
         }
 
         public override Type BaseType

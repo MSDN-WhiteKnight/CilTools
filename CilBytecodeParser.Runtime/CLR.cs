@@ -10,75 +10,24 @@ using CilBytecodeParser;
 namespace CilBytecodeParser.Runtime
 {
     public class CLR
-    {
-        public static Dictionary<int, string> GetTokenStringTable(string module, ClrRuntime runtime)
+    {        
+        static ClrAssemblyInfo GetAssemblyInfo(string modulename, ClrRuntime runtime)
         {
-            //get metadata tokens for specified module in ClrMD debugging session
+            ClrModule module = null;
 
-            Dictionary<int, string> table = new Dictionary<int, string>();
-
-            foreach (var t in runtime.Heap.EnumerateTypes())
+            foreach (ClrModule x in runtime.Modules)
             {
-                string name = t.Module.FileName;
-                if (name == null) name = "";
-                if (!Path.GetFileName(name).Equals(module, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    continue;
-                }
+                if (x.FileName == null) continue;
 
-                foreach (var m in t.Methods)
+                if (Path.GetFileName(x.FileName).Equals(modulename, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    if (!(m.Type.Name == t.Name)) continue; //skip inherited methods
-
-                    table[(int)m.MetadataToken] = t.Name + "." + m.Name;
+                    module = x;
                 }
             }
 
-            return table;
-        }
+            if (module == null) return null;                        
 
-        static ClrTokenTable GetTokenTable(string module, ClrRuntime runtime)
-        {
-            //get metadata tokens for specified module in ClrMD debugging session
-
-            ClrTokenTable table = new ClrTokenTable();
-
-            foreach (ClrType t in runtime.Heap.EnumerateTypes())
-            {
-                string name = t.Module.FileName;
-                if (name == null) name = "";
-                if (!Path.GetFileName(name).Equals(module, StringComparison.InvariantCultureIgnoreCase))
-                {
-                    continue;
-                }
-
-                ClrTypeInfo ti = new ClrTypeInfo(t);
-                table.SetValue((int)t.MetadataToken, ti);
-
-                foreach (var m in t.Methods)
-                {
-                    if (!(m.Type.Name == t.Name)) continue; //skip inherited methods
-
-                    table.SetValue((int)m.MetadataToken, new ClrMethodInfo(m, runtime.DataTarget, table));
-                }
-
-                foreach (var f in t.Fields)
-                {
-                    table.SetValue((int)f.Token, new ClrFieldInfo(f,ti));
-                }
-
-                foreach (var f in t.StaticFields)
-                {
-                    table.SetValue((int)f.Token, new ClrFieldInfo(f, ti));
-                }
-
-                foreach (var f in t.ThreadStaticFields)
-                {
-                    table.SetValue((int)f.Token, new ClrFieldInfo(f, ti));
-                }
-            }
-
-            return table;
+            return (ClrAssemblyInfo)(new ClrAssemblyReader(runtime).Read(module));
         }
 
         public static void DumpMethods(int pid)
@@ -124,7 +73,7 @@ namespace CilBytecodeParser.Runtime
             {
                 ClrInfo runtimeInfo = dt.ClrVersions[0];
                 ClrRuntime runtime = runtimeInfo.CreateRuntime();
-                ClrTokenTable tokens = GetTokenTable(module, runtime);
+                ClrAssemblyInfo ass = GetAssemblyInfo(module, runtime);
 
                 //dump regular methods
 
@@ -145,13 +94,13 @@ namespace CilBytecodeParser.Runtime
 
                         Console.WriteLine(" Method: " + m.Name);
 
-                        ClrMethodInfo info = new ClrMethodInfo(m, dt,tokens);
+                        ClrMethodInfo info = new ClrMethodInfo(m, new ClrTypeInfo(t,ass));
 
                         CilGraph gr = CilAnalysis.GetGraph(info);
                         Console.WriteLine(gr.ToString());
 
                         Console.WriteLine();
-                        //Console.ReadKey();
+                        Console.ReadKey();
                     }
 
                     Console.WriteLine();
@@ -170,11 +119,11 @@ namespace CilBytecodeParser.Runtime
 
                     if(o.Type.Name == "System.Reflection.Emit.DynamicMethod" || o.Type.Name == "System.Reflection.Emit.MethodBuilder")
                     {
-                        ClrDynamicMethod dm = new ClrDynamicMethod(o, tokens);
+                        ClrDynamicMethod dm = new ClrDynamicMethod(o);
                         CilGraph gr = CilAnalysis.GetGraph(dm);
                         Console.WriteLine(gr.ToString());
                         Console.WriteLine();
-                        //Console.ReadKey(); 
+                        Console.ReadKey(); 
                     }
                     
                 }
