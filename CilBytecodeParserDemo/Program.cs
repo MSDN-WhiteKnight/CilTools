@@ -84,11 +84,6 @@ namespace CilBytecodeParserDemo
             string method;
             Assembly ass;
 
-            DumpMethods("MSBuild");//EmitSampleApp
-            Console.WriteLine("End");
-            Console.ReadLine();
-            return;
-
             try
             {
                 if (args.Length < 3)

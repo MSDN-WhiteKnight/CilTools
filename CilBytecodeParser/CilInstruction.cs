@@ -503,7 +503,7 @@ namespace CilBytecodeParser
                 else if ( OpCode.Equals(OpCodes.Ldtoken) && this.Method != null)
                 {
                     //metadata token
-                    int token = (int)Operand;                    
+                    int token = (int)Operand;
 
                     try
                     {
