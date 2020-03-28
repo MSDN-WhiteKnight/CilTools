@@ -23,9 +23,10 @@ namespace CilBytecodeParser.Runtime
         public ClrMethodInfo(ClrMethod m, ClrTypeInfo owner)
         {
             this.method = m;
-            this.target = (owner.Assembly as ClrAssemblyInfo).InnerModule.Runtime.DataTarget;
             this.assembly = (ClrAssemblyInfo)owner.Assembly;
             this.type = owner;
+
+            if (assembly != null) this.target = assembly.InnerModule.Runtime.DataTarget;
         }
 
         public ClrMethod InnerMethod { get { return this.method; } }

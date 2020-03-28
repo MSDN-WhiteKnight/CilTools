@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CLR.cs" />
     <Compile Include="ClrAssemblyInfo.cs" />
     <Compile Include="ClrAssemblyReader.cs" />
     <Compile Include="ClrDynamicMethod.cs" />

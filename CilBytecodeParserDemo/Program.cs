@@ -5,14 +5,75 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Diagnostics;
 using System.Linq;
 using CilBytecodeParser;
 using CilBytecodeParser.Extensions;
+using CilBytecodeParser.Runtime;
 
 namespace CilBytecodeParserDemo
 {
     class Program
     {
+        public static void DumpMethods(int pid)
+        {
+            Process process = Process.GetProcessById(pid);
+            using (process)
+            {
+                DumpMethods(process);
+            }
+        }
+
+        public static void DumpMethods(string processname)
+        {
+            Process[] processes = Process.GetProcessesByName(processname);
+            if (processes.Length == 0)
+            {
+                Console.WriteLine("Process not found");
+                return;
+            }
+
+            Process process = processes[0];
+
+            using (process)
+            {
+                DumpMethods(process);
+            }
+        }
+
+        public static void DumpMethods(Process process)
+        {
+            //prints bytecode of methods in specified managed process
+
+            string module = "";
+            module = System.IO.Path.GetFileName(process.MainModule.FileName);
+            
+            Console.WriteLine("Process ID: {0}; Process name: {1}", process.Id, module);
+            Console.WriteLine();
+
+            foreach (MethodBase m in ClrAssemblyReader.EnumerateModuleMethods(process))
+            {
+                Console.WriteLine(" Method: " + m.DeclaringType.Name + "." + m.Name);
+
+                CilGraph gr = CilAnalysis.GetGraph(m);
+                Console.WriteLine(gr.ToString());
+
+                Console.WriteLine();
+                //Console.ReadKey();
+            }
+
+            foreach (MethodBase m in ClrAssemblyReader.EnumerateDynamicMethods(process))
+            {
+                Console.WriteLine(" Dynamic Method: " + m.Name);
+
+                CilGraph gr = CilAnalysis.GetGraph(m);
+                Console.WriteLine(gr.ToString());
+
+                Console.WriteLine();
+                //Console.ReadKey();
+            }
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("*** CIL Bytecode Parser library demo ***");
@@ -23,7 +84,7 @@ namespace CilBytecodeParserDemo
             string method;
             Assembly ass;
 
-            CilBytecodeParser.Runtime.CLR.DumpMethods("EmitSampleApp");//EmitSampleApp
+            DumpMethods("MSBuild");//EmitSampleApp
             Console.WriteLine("End");
             Console.ReadLine();
             return;

@@ -12,20 +12,26 @@ using Microsoft.Diagnostics.Runtime;
 
 namespace CilBytecodeParser.Runtime
 {
-    class ClrAssemblyInfo:Assembly, ITokenResolver
+    public class ClrAssemblyInfo:Assembly, ITokenResolver
     {
+        static ClrAssemblyInfo unknown = new ClrAssemblyInfo(null);
+
+        internal static ClrAssemblyInfo UnknownAssembly
+        {
+            get { return unknown; }
+        }
+
         ClrModule module;
         AssemblyName asn;
         Dictionary<int, MemberInfo> table = new Dictionary<int, MemberInfo>();
 
-        public ClrAssemblyInfo(ClrModule m)
+        internal ClrAssemblyInfo(ClrModule m)
         {
             this.module = m;
             AssemblyName n = new AssemblyName();
 
             if (m != null)
             {
-
                 n.Name = Path.GetFileNameWithoutExtension(this.module.AssemblyName);
 
                 if (this.module.IsFile) n.CodeBase = this.module.FileName;
@@ -74,12 +80,12 @@ namespace CilBytecodeParser.Runtime
             }
         }
 
-        public void Clear()
+        internal void ClearTokenTable()
         {
             this.table.Clear();
         }
 
-        public void SetValue(int token, MemberInfo member)
+        internal void SetMemberByToken(int token, MemberInfo member)
         {
             table[token] = member;
         }
@@ -136,6 +142,22 @@ namespace CilBytecodeParser.Runtime
         public string ResolveString(int metadataToken)
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<MemberInfo> EnumerateMembers()
+        {
+            foreach (MemberInfo member in table.Values)
+            {
+                yield return member;
+            }
+        }
+
+        public IEnumerable<MethodBase> EnumerateMethods()
+        {
+            foreach (MemberInfo member in table.Values)
+            {
+                if (member is MethodBase) yield return (MethodBase)member;
+            }
         }
     }
 }

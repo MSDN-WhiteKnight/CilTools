@@ -23,7 +23,7 @@ namespace CilBytecodeParser.Runtime
             ClrType ft = field.Type;
 
             if (ft == null) this.fieldtype = UnknownType.Value;
-            else this.fieldtype = new ClrTypeInfo(ft, (ClrAssemblyInfo)owner.Assembly);
+            else this.fieldtype = new ClrTypeInfo(ft, (ClrAssemblyInfo)owner.Assembly); //TODO: Deduplicate ClrTypeInfo instances
         }
 
         public ClrField InnerField { get { return this.field; } }

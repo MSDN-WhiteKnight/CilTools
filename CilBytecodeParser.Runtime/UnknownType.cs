@@ -24,7 +24,7 @@ namespace CilBytecodeParser.Runtime
 
         public override Assembly Assembly
         {
-            get { return new ClrAssemblyInfo(null); }
+            get { return ClrAssemblyInfo.UnknownAssembly; }
         }
 
         public override string AssemblyQualifiedName
