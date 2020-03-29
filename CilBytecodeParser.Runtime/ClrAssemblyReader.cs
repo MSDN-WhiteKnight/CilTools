@@ -1,4 +1,7 @@
-﻿using System;
+﻿/* CilBytecodeParser library 
+ * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * License: BSD 2.0 */
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
@@ -64,7 +67,7 @@ namespace CilBytecodeParser.Runtime
                     //dump regular methods
                     foreach (ClrModule module in runtime.Modules)
                     {
-                        ClrAssemblyInfo ass = reader.Read(module);                                                
+                        ClrAssemblyInfo ass = reader.Read(module);
 
                         foreach (MethodBase m in ass.EnumerateMethods())
                         {
