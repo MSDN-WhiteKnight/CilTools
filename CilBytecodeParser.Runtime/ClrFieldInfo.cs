@@ -30,7 +30,16 @@ namespace CilBytecodeParser.Runtime
 
         public override FieldAttributes Attributes
         {
-            get { return (FieldAttributes)0; }
+            get 
+            {
+                FieldAttributes ret = (FieldAttributes)0;
+                if (field.IsInternal) ret |= FieldAttributes.Assembly;
+                if (field.IsProtected) ret |= FieldAttributes.Family;
+                if (field.IsPrivate) ret |= FieldAttributes.Private;
+                if (field.IsPublic) ret |= FieldAttributes.Public;
+                if (field is ClrStaticField) ret |= FieldAttributes.Static;                
+                return ret;
+            }
         }
 
         public override RuntimeFieldHandle FieldHandle

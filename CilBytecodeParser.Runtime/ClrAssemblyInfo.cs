@@ -159,5 +159,87 @@ namespace CilBytecodeParser.Runtime
                 if (member is MethodBase) yield return (MethodBase)member;
             }
         }
+
+        public override Type[] GetTypes()
+        {
+            List<Type> types = new List<Type>();
+
+            foreach (MemberInfo member in table.Values)
+            {
+                if (member is Type) types.Add( (Type)member );
+            }
+
+            return types.ToArray();
+        }
+
+        public override Type GetType(string name)
+        {
+            return GetType(name, false, false);
+        }
+
+        public override Type GetType(string name, bool throwOnError)
+        {
+            return GetType(name, throwOnError, false);
+        }
+
+        public override Type GetType(string name, bool throwOnError, bool ignoreCase)
+        {
+            StringComparison comp;
+
+            if (ignoreCase) comp = StringComparison.InvariantCultureIgnoreCase;
+            else comp = StringComparison.InvariantCulture;
+
+            foreach (MemberInfo member in table.Values)
+            {
+                if (member is Type)
+                {
+                    if (String.Equals(member.Name, name, comp)) return (Type)member;
+                }
+            }
+
+            if (throwOnError) throw new TypeLoadException("Type " + name + " not found");
+            else return null;
+        }
+
+        public override IEnumerable<Type> ExportedTypes
+        {
+            get
+            {
+                foreach (MemberInfo member in table.Values)
+                {
+                    if (member is ClrTypeInfo)
+                    {
+                        ClrTypeInfo t = (ClrTypeInfo)member;
+
+                        if (t.InnerType.IsPublic) yield return t;
+                    }
+                }
+            }
+        }
+
+        public override Type[] GetExportedTypes()
+        {
+            List<Type> ret = new List<Type>();
+
+            foreach (Type t in ExportedTypes)
+            {
+                ret.Add(t);
+            }
+
+            return ret.ToArray();
+        }
+
+        public override bool IsDynamic
+        {
+            get
+            {
+                if (this.module == null) return false;
+                else return this.module.IsDynamic;
+            }
+        }
+
+        public override bool ReflectionOnly{ get { return true; } }
+
+         
     }
 }

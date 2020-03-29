@@ -45,7 +45,7 @@ namespace CilBytecodeParser.Runtime
 
         public override string AssemblyQualifiedName
         {
-            get { return this.assembly.FullName; }
+            get { return this.type.Name+", "+this.assembly.FullName; }
         }
 
         public override Type BaseType
@@ -68,7 +68,12 @@ namespace CilBytecodeParser.Runtime
 
         protected override TypeAttributes GetAttributeFlagsImpl()
         {
-            return (TypeAttributes)0;
+            TypeAttributes ret=(TypeAttributes)0;
+            if (type.IsAbstract) ret |= TypeAttributes.Abstract;            
+            if (type.IsInterface) ret |= TypeAttributes.Interface;
+            if (type.IsPublic) ret |= TypeAttributes.Public;
+            if (type.IsSealed) ret |= TypeAttributes.Sealed;
+            return ret;
         }
 
         protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder, CallingConventions callConvention, 
@@ -89,12 +94,12 @@ namespace CilBytecodeParser.Runtime
 
         public override EventInfo GetEvent(string name, BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This type implementation does not support events");
         }
 
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This type implementation does not support events");
         }
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
@@ -120,6 +125,17 @@ namespace CilBytecodeParser.Runtime
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
             throw new NotImplementedException();
+
+            /*List<MemberInfo> members = new List<MemberInfo>();
+
+            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            {
+                if (!String.Equals(m.DeclaringType.Name, this.type.Name, StringComparison.InvariantCulture)) continue;
+                                
+                members.Add(m);                
+            }
+
+            return members.ToArray();*/
         }
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder, 
@@ -145,13 +161,13 @@ namespace CilBytecodeParser.Runtime
 
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This type implementation does not support properties");
         }
 
         protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType, 
             Type[] types, ParameterModifier[] modifiers)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException("This type implementation does not support properties");
         }
 
         protected override bool HasElementTypeImpl()
@@ -162,7 +178,7 @@ namespace CilBytecodeParser.Runtime
         public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args,
             ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] namedParameters)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException("Cannot invoke members on type loaded into reflection-only context");
         }
 
         protected override bool IsArrayImpl()
@@ -197,7 +213,14 @@ namespace CilBytecodeParser.Runtime
 
         public override string Namespace
         {
-            get { return ""; }
+            get 
+            {
+                string tn = type.Name;
+                int index = tn.LastIndexOf('.');
+
+                if (index < 0) return "";
+                else return tn.Substring(0, index);                
+            }
         }
 
         public override Type UnderlyingSystemType
@@ -222,7 +245,15 @@ namespace CilBytecodeParser.Runtime
 
         public override string Name
         {
-            get { return type.Name; }
+            get 
+            {
+                string tn = type.Name;
+                int index = tn.LastIndexOf('.');
+
+                if (index < 0) return tn;
+                if (index + 1 >= tn.Length) return tn;
+                else return tn.Substring(index + 1);
+            }
         }
 
         public override int MetadataToken
@@ -240,7 +271,8 @@ namespace CilBytecodeParser.Runtime
                 if (type.ElementType == ClrElementType.SZArray) return 1;
                 else throw new NotSupportedException("Multi-dimensional arrays or arrays with non-zero lower bound are not supported.");
             }
-            else return 0;            
+            else return 0;
         }
+              
     }
 }

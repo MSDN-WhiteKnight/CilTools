@@ -59,7 +59,7 @@ namespace CilBytecodeParserDemo
                 Console.WriteLine(gr.ToString());
 
                 Console.WriteLine();
-                //Console.ReadKey();
+                Console.ReadKey();
             }
 
             foreach (MethodBase m in ClrAssemblyReader.EnumerateDynamicMethods(process))
@@ -70,7 +70,7 @@ namespace CilBytecodeParserDemo
                 Console.WriteLine(gr.ToString());
 
                 Console.WriteLine();
-                //Console.ReadKey();
+                Console.ReadKey();
             }
         }
 
@@ -83,6 +83,11 @@ namespace CilBytecodeParserDemo
             string type;
             string method;
             Assembly ass;
+
+            DumpMethods("MSBuild");//EmitSampleApp
+            Console.WriteLine("End");
+            Console.ReadLine();
+            return;
 
             try
             {
