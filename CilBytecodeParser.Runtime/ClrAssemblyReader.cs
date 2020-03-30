@@ -14,40 +14,13 @@ namespace CilBytecodeParser.Runtime
 {
     public class ClrAssemblyReader
     {
-        static IEnumerable<MethodBase> EnumerateDynamicMethods(DataTarget dt)
-        {
-            foreach (ClrInfo runtimeInfo in dt.ClrVersions)
-            {
-                ClrRuntime runtime = runtimeInfo.CreateRuntime();
-
-                //dump dynamic methods
-                var en = runtime.Heap.EnumerateObjects();
-
-                foreach (ClrObject o in en)
-                {
-                    if (o.Type == null) continue;
-
-                    var bt = o.Type.BaseType;
-
-                    if (o.Type.Name == "System.Reflection.Emit.DynamicMethod" || o.Type.Name == "System.Reflection.Emit.MethodBuilder")
-                    {
-                        ClrDynamicMethod dm = new ClrDynamicMethod(o);
-                        yield return dm;
-                    }
-                }
-            }
-        }
-
-        public static IEnumerable<MethodBase> EnumerateDynamicMethods(Process process)
+        public static DynamicMethodsAssembly GetDynamicMethods(Process process)
         {
             if (process == null) throw new ArgumentNullException("process");
 
             DataTarget dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.Passive);
-
-            using (dt)
-            {
-                foreach (MethodBase m in EnumerateDynamicMethods(dt)) yield return m;
-            }
+            DynamicMethodsAssembly ass = new DynamicMethodsAssembly(dt,true);
+            return ass;
         }
 
         public static IEnumerable<MethodBase> EnumerateMethods(Process process)
@@ -76,8 +49,9 @@ namespace CilBytecodeParser.Runtime
                     }                    
                 }
 
-                //dump dynamic methods                     
-                var en = EnumerateDynamicMethods(dt);
+                //dump dynamic methods
+                DynamicMethodsAssembly dynass = new DynamicMethodsAssembly(dt,false);
+                var en = dynass.EnumerateMethods();
 
                 foreach (var o in en)
                 {
@@ -196,6 +170,11 @@ namespace CilBytecodeParser.Runtime
             }
 
             return ass;
+        }
+
+        public DynamicMethodsAssembly GetDynamicMethods()
+        {
+            return new DynamicMethodsAssembly(this.runtime.DataTarget, false);
         }
     }
 }

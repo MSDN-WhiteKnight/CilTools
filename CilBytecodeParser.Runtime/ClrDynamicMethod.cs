@@ -15,7 +15,8 @@ namespace CilBytecodeParser.Runtime
     class ClrDynamicMethod : CustomMethod
     {
         ClrObject method;
-        ClrObject ilgen;        
+        ClrObject ilgen;
+        DynamicMethodsAssembly owner;
 
         ulong[] GetDynamicTokenTable()
         {
@@ -65,11 +66,12 @@ namespace CilBytecodeParser.Runtime
 
         }
 
-        public ClrDynamicMethod(ClrObject m)
+        public ClrDynamicMethod(ClrObject m, DynamicMethodsAssembly ass)
         {
             this.method = m;
             ClrObject ilg = m.GetObjectField("m_ilGenerator");
-            this.ilgen = ilg;            
+            this.ilgen = ilg;
+            this.owner = ass;
         }
 
         public override Type ReturnType
@@ -148,7 +150,7 @@ namespace CilBytecodeParser.Runtime
 
         public override Type DeclaringType
         {
-            get { return UnknownType.Value; }
+            get { return this.owner.ChildType; }
         }
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
