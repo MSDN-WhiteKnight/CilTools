@@ -5,18 +5,18 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CilBytecodeParserDemo")]
-[assembly: AssemblyDescription("CilTools.BytecodeAnalysis library demo program")]
+[assembly: AssemblyTitle("CilTools.Runtime")]
+[assembly: AssemblyDescription("CIL Tools ClrMD bytecode provider")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CilTools")]
+[assembly: AssemblyProduct("CilTools.Runtime")]
 [assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("8d3c3ebc-f3f0-4fdc-8c4c-57844d341e5f")]
+[assembly: Guid("9399e692-bce7-4ec9-b92a-3426a94c0fbc")]
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

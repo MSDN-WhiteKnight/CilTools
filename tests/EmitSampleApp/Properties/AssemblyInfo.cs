@@ -1,4 +1,4 @@
-﻿/* CilBytecodeParser library 
+﻿/* CIL Tools
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System.Reflection;
@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("EmitSampleApp")]
-[assembly: AssemblyDescription("CIL Bytecode Parser sample app")]
+[assembly: AssemblyDescription("CIL Tools dynamic methods sample app")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("EmitSampleApp")]

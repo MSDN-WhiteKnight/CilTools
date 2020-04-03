@@ -14,9 +14,9 @@ jobs:
       with:
         dotnet-version: 2.2.108
     - name: Build with dotnet
-      run: dotnet build CilBytecodeParser.NetStandard/CilBytecodeParser.NetStandard.sln
+      run: dotnet build CilTools.BytecodeAnalysis.NetStandard/CilTools.BytecodeAnalysis.NetStandard.sln
     - name: Archive build results
       uses: actions/upload-artifact@v1
       with:
           name: Output
-          path: CilBytecodeParser.NetStandard/bin/Debug/
+          path: CilTools.BytecodeAnalysis.NetStandard/bin/Debug/

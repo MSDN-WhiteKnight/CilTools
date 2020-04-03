@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: nuget/setup-nuget@v1
     - name: Restore NuGet packages
-      run: nuget restore CilBytecodeParser.Runtime\CilBytecodeParser.Runtime.csproj -PackagesDirectory packages
+      run: nuget restore CilTools.Runtime\CilTools.Runtime.csproj -PackagesDirectory packages
     - name: Build with MSBuild
       run: |
         & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe"
@@ -20,4 +20,4 @@ jobs:
         & CilBytecodeParserDemo\bin\Debug\CilBytecodeParserDemo.exe
     - name: Test with VSTest console
       run: |
-        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilBytecodeParser.Tests\bin\Debug\CilBytecodeParser.Tests.dll
+        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilTools.BytecodeAnalysis.Tests\bin\Debug\CilTools.BytecodeAnalysis.Tests.dll

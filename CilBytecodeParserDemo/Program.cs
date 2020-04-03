@@ -1,4 +1,4 @@
-﻿/* CilBytecodeParser library demo application
+﻿/* CilTools.BytecodeAnalysis library demo application
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
@@ -7,9 +7,9 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Diagnostics;
 using System.Linq;
-using CilBytecodeParser;
-using CilBytecodeParser.Extensions;
-using CilBytecodeParser.Runtime;
+using CilTools.BytecodeAnalysis;
+using CilTools.BytecodeAnalysis.Extensions;
+using CilTools.Runtime;
 
 namespace CilBytecodeParserDemo
 {
