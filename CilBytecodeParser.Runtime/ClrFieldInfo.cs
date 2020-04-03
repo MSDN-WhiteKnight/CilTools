@@ -20,17 +20,22 @@ namespace CilBytecodeParser.Runtime
         {
             this.field = f;
             this.ownertype = owner;
-            ClrType ft = field.Type;
-
-            if (ft == null) this.fieldtype = UnknownType.Value;
-            else this.fieldtype = new ClrTypeInfo(ft, (ClrAssemblyInfo)owner.Assembly); //TODO: Deduplicate ClrTypeInfo instances
         }
 
         public ClrField InnerField { get { return this.field; } }
 
         public override FieldAttributes Attributes
         {
-            get { return (FieldAttributes)0; }
+            get 
+            {
+                FieldAttributes ret = (FieldAttributes)0;
+                if (field.IsInternal) ret |= FieldAttributes.Assembly;
+                if (field.IsProtected) ret |= FieldAttributes.Family;
+                if (field.IsPrivate) ret |= FieldAttributes.Private;
+                if (field.IsPublic) ret |= FieldAttributes.Public;
+                if (field is ClrStaticField) ret |= FieldAttributes.Static;                
+                return ret;
+            }
         }
 
         public override RuntimeFieldHandle FieldHandle
@@ -42,6 +47,17 @@ namespace CilBytecodeParser.Runtime
         {
             get
             {
+                if (this.fieldtype == null)
+                {
+                    ClrType ft = field.Type;
+
+                    if (ft != null)
+                    {
+                        this.fieldtype = ClrTypeInfo.LoadTypeInfo(ownertype, ft);
+                    }
+                    else this.fieldtype = UnknownType.Value;
+                }
+
                 return this.fieldtype;
             }
         }

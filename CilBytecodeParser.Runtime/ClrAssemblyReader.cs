@@ -1,4 +1,7 @@
-﻿using System;
+﻿/* CilBytecodeParser library 
+ * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * License: BSD 2.0 */
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
@@ -11,40 +14,13 @@ namespace CilBytecodeParser.Runtime
 {
     public class ClrAssemblyReader
     {
-        static IEnumerable<MethodBase> EnumerateDynamicMethods(DataTarget dt)
-        {
-            foreach (ClrInfo runtimeInfo in dt.ClrVersions)
-            {
-                ClrRuntime runtime = runtimeInfo.CreateRuntime();
-
-                //dump dynamic methods
-                var en = runtime.Heap.EnumerateObjects();
-
-                foreach (ClrObject o in en)
-                {
-                    if (o.Type == null) continue;
-
-                    var bt = o.Type.BaseType;
-
-                    if (o.Type.Name == "System.Reflection.Emit.DynamicMethod" || o.Type.Name == "System.Reflection.Emit.MethodBuilder")
-                    {
-                        ClrDynamicMethod dm = new ClrDynamicMethod(o);
-                        yield return dm;
-                    }
-                }
-            }
-        }
-
-        public static IEnumerable<MethodBase> EnumerateDynamicMethods(Process process)
+        public static DynamicMethodsAssembly GetDynamicMethods(Process process)
         {
             if (process == null) throw new ArgumentNullException("process");
 
             DataTarget dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.Passive);
-
-            using (dt)
-            {
-                foreach (MethodBase m in EnumerateDynamicMethods(dt)) yield return m;
-            }
+            DynamicMethodsAssembly ass = new DynamicMethodsAssembly(dt,true);
+            return ass;
         }
 
         public static IEnumerable<MethodBase> EnumerateMethods(Process process)
@@ -64,7 +40,7 @@ namespace CilBytecodeParser.Runtime
                     //dump regular methods
                     foreach (ClrModule module in runtime.Modules)
                     {
-                        ClrAssemblyInfo ass = reader.Read(module);                                                
+                        ClrAssemblyInfo ass = reader.Read(module);
 
                         foreach (MethodBase m in ass.EnumerateMethods())
                         {
@@ -73,8 +49,9 @@ namespace CilBytecodeParser.Runtime
                     }                    
                 }
 
-                //dump dynamic methods                     
-                var en = EnumerateDynamicMethods(dt);
+                //dump dynamic methods
+                DynamicMethodsAssembly dynass = new DynamicMethodsAssembly(dt,false);
+                var en = dynass.EnumerateMethods();
 
                 foreach (var o in en)
                 {
@@ -126,6 +103,7 @@ namespace CilBytecodeParser.Runtime
         }
 
         ClrRuntime runtime;
+        Dictionary<ulong, ClrAssemblyInfo> cache = new Dictionary<ulong, ClrAssemblyInfo>();
 
         public ClrAssemblyReader(ClrRuntime r)
         {
@@ -154,15 +132,26 @@ namespace CilBytecodeParser.Runtime
 
             if (module == null) return null;
 
-            return (ClrAssemblyInfo)this.Read(module);
+            return this.Read(module);
         }
 
         public ClrAssemblyInfo Read(ClrModule module)
         {
             if (module == null) throw new ArgumentNullException("module");
+            
+            //if assembly was already loaded, return assembly from cache
+            if (this.cache.ContainsKey(module.AssemblyId)) return this.cache[module.AssemblyId];
 
+            //load assembly and store it in cache
+            ClrAssemblyInfo ret = ReadImpl(module);
+            this.cache[module.AssemblyId] = ret;
+            return ret;
+        }
+
+        ClrAssemblyInfo ReadImpl(ClrModule module)
+        {
             //get metadata tokens for specified module in ClrMD debugging session
-            ClrAssemblyInfo ass = new ClrAssemblyInfo(module);
+            ClrAssemblyInfo ass = new ClrAssemblyInfo(module,this);
 
             foreach (ClrType t in module.EnumerateTypes())
             {
@@ -171,7 +160,10 @@ namespace CilBytecodeParser.Runtime
 
                 foreach (var m in t.Methods)
                 {
-                    if (!(m.Type.Name == t.Name)) continue; //skip inherited methods
+                    if (m.Type != null)
+                    {
+                        if (m.Type.Name != t.Name) continue; //skip inherited methods
+                    }
 
                     ass.SetMemberByToken((int)m.MetadataToken, new ClrMethodInfo(m, ti));
                 }
@@ -193,6 +185,11 @@ namespace CilBytecodeParser.Runtime
             }
 
             return ass;
+        }
+
+        public DynamicMethodsAssembly GetDynamicMethods()
+        {
+            return new DynamicMethodsAssembly(this.runtime.DataTarget, false);
         }
     }
 }

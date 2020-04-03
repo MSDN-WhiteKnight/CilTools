@@ -14,7 +14,7 @@ namespace CilBytecodeParser.Runtime
 {
     public class ClrAssemblyInfo:Assembly, ITokenResolver
     {
-        static ClrAssemblyInfo unknown = new ClrAssemblyInfo(null);
+        static ClrAssemblyInfo unknown = new ClrAssemblyInfo(null,null);
 
         internal static ClrAssemblyInfo UnknownAssembly
         {
@@ -24,8 +24,9 @@ namespace CilBytecodeParser.Runtime
         ClrModule module;
         AssemblyName asn;
         Dictionary<int, MemberInfo> table = new Dictionary<int, MemberInfo>();
+        ClrAssemblyReader reader;
 
-        internal ClrAssemblyInfo(ClrModule m)
+        internal ClrAssemblyInfo(ClrModule m, ClrAssemblyReader r)
         {
             this.module = m;
             AssemblyName n = new AssemblyName();
@@ -44,12 +45,15 @@ namespace CilBytecodeParser.Runtime
             }
 
             this.asn = n;
+            this.reader = r;
         }
 
         public ClrModule InnerModule
         {
             get { return this.module; }
         }
+
+        public ClrAssemblyReader AssemblyReader { get { return this.reader; } }
 
         public override string FullName
         {
@@ -159,5 +163,89 @@ namespace CilBytecodeParser.Runtime
                 if (member is MethodBase) yield return (MethodBase)member;
             }
         }
+
+        public override Type[] GetTypes()
+        {
+            List<Type> types = new List<Type>();
+
+            foreach (MemberInfo member in table.Values)
+            {
+                if (member is Type) types.Add( (Type)member );
+            }
+
+            return types.ToArray();
+        }
+
+        public override Type GetType(string name)
+        {
+            return GetType(name, false, false);
+        }
+
+        public override Type GetType(string name, bool throwOnError)
+        {
+            return GetType(name, throwOnError, false);
+        }
+
+        public override Type GetType(string name, bool throwOnError, bool ignoreCase)
+        {
+            StringComparison comp;
+
+            if (ignoreCase) comp = StringComparison.InvariantCultureIgnoreCase;
+            else comp = StringComparison.InvariantCulture;
+
+            foreach (MemberInfo member in table.Values)
+            {
+                if (member is Type)
+                {
+                    Type t = (Type)member;
+
+                    if (String.Equals(t.FullName, name, comp)) return t;
+                }
+            }
+
+            if (throwOnError) throw new TypeLoadException("Type " + name + " not found");
+            else return null;
+        }
+
+        public override IEnumerable<Type> ExportedTypes
+        {
+            get
+            {
+                foreach (MemberInfo member in table.Values)
+                {
+                    if (member is ClrTypeInfo)
+                    {
+                        ClrTypeInfo t = (ClrTypeInfo)member;
+
+                        if (t.InnerType.IsPublic) yield return t;
+                    }
+                }
+            }
+        }
+
+        public override Type[] GetExportedTypes()
+        {
+            List<Type> ret = new List<Type>();
+
+            foreach (Type t in ExportedTypes)
+            {
+                ret.Add(t);
+            }
+
+            return ret.ToArray();
+        }
+
+        public override bool IsDynamic
+        {
+            get
+            {
+                if (this.module == null) return false;
+                else return this.module.IsDynamic;
+            }
+        }
+
+        public override bool ReflectionOnly{ get { return true; } }
+
+         
     }
 }

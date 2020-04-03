@@ -140,7 +140,7 @@ namespace CilBytecodeParser.Runtime
         public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters,
             System.Globalization.CultureInfo culture)
         {
-            throw new NotImplementedException();
+            throw new InvalidOperationException("Cannot invoke methods on type loaded into reflection-only context");
         }
 
         public override RuntimeMethodHandle MethodHandle

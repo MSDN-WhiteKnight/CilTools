@@ -62,15 +62,20 @@ namespace CilBytecodeParserDemo
                 //Console.ReadKey();
             }
 
-            foreach (MethodBase m in ClrAssemblyReader.EnumerateDynamicMethods(process))
+            DynamicMethodsAssembly dynass = ClrAssemblyReader.GetDynamicMethods(process);
+
+            using (dynass)
             {
-                Console.WriteLine(" Dynamic Method: " + m.Name);
+                foreach (MethodBase m in dynass.EnumerateMethods())
+                {
+                    Console.WriteLine("Method: " + m.DeclaringType.Name + "." + m.Name);
 
-                CilGraph gr = CilAnalysis.GetGraph(m);
-                Console.WriteLine(gr.ToString());
+                    CilGraph gr = CilAnalysis.GetGraph(m);
+                    Console.WriteLine(gr.ToString());
 
-                Console.WriteLine();
-                //Console.ReadKey();
+                    Console.WriteLine();
+                    //Console.ReadKey();
+                }
             }
         }
 
