@@ -103,6 +103,7 @@ namespace CilBytecodeParser.Runtime
         }
 
         ClrRuntime runtime;
+        Dictionary<ulong, ClrAssemblyInfo> cache = new Dictionary<ulong, ClrAssemblyInfo>();
 
         public ClrAssemblyReader(ClrRuntime r)
         {
@@ -131,15 +132,26 @@ namespace CilBytecodeParser.Runtime
 
             if (module == null) return null;
 
-            return (ClrAssemblyInfo)this.Read(module);
+            return this.Read(module);
         }
 
         public ClrAssemblyInfo Read(ClrModule module)
         {
             if (module == null) throw new ArgumentNullException("module");
+            
+            //if assembly was already loaded, return assembly from cache
+            if (this.cache.ContainsKey(module.AssemblyId)) return this.cache[module.AssemblyId];
 
+            //load assembly and store it in cache
+            ClrAssemblyInfo ret = ReadImpl(module);
+            this.cache[module.AssemblyId] = ret;
+            return ret;
+        }
+
+        ClrAssemblyInfo ReadImpl(ClrModule module)
+        {
             //get metadata tokens for specified module in ClrMD debugging session
-            ClrAssemblyInfo ass = new ClrAssemblyInfo(module);
+            ClrAssemblyInfo ass = new ClrAssemblyInfo(module,this);
 
             foreach (ClrType t in module.EnumerateTypes())
             {
@@ -148,7 +160,10 @@ namespace CilBytecodeParser.Runtime
 
                 foreach (var m in t.Methods)
                 {
-                    if (!(m.Type.Name == t.Name)) continue; //skip inherited methods
+                    if (m.Type != null)
+                    {
+                        if (m.Type.Name != t.Name) continue; //skip inherited methods
+                    }
 
                     ass.SetMemberByToken((int)m.MetadataToken, new ClrMethodInfo(m, ti));
                 }
