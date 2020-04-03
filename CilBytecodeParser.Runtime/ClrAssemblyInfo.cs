@@ -14,7 +14,7 @@ namespace CilBytecodeParser.Runtime
 {
     public class ClrAssemblyInfo:Assembly, ITokenResolver
     {
-        static ClrAssemblyInfo unknown = new ClrAssemblyInfo(null);
+        static ClrAssemblyInfo unknown = new ClrAssemblyInfo(null,null);
 
         internal static ClrAssemblyInfo UnknownAssembly
         {
@@ -24,8 +24,9 @@ namespace CilBytecodeParser.Runtime
         ClrModule module;
         AssemblyName asn;
         Dictionary<int, MemberInfo> table = new Dictionary<int, MemberInfo>();
+        ClrAssemblyReader reader;
 
-        internal ClrAssemblyInfo(ClrModule m)
+        internal ClrAssemblyInfo(ClrModule m, ClrAssemblyReader r)
         {
             this.module = m;
             AssemblyName n = new AssemblyName();
@@ -44,12 +45,15 @@ namespace CilBytecodeParser.Runtime
             }
 
             this.asn = n;
+            this.reader = r;
         }
 
         public ClrModule InnerModule
         {
             get { return this.module; }
         }
+
+        public ClrAssemblyReader AssemblyReader { get { return this.reader; } }
 
         public override string FullName
         {
@@ -193,7 +197,9 @@ namespace CilBytecodeParser.Runtime
             {
                 if (member is Type)
                 {
-                    if (String.Equals(member.Name, name, comp)) return (Type)member;
+                    Type t = (Type)member;
+
+                    if (String.Equals(t.FullName, name, comp)) return t;
                 }
             }
 
