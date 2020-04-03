@@ -1,4 +1,4 @@
-# CIL Bytecode Parser
+# CIL Tools
 
 ![logo](https://msdn-whiteknight.github.io/CilBytecodeParser/images/IL.png)
 
