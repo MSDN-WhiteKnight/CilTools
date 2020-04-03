@@ -20,10 +20,6 @@ namespace CilBytecodeParser.Runtime
         {
             this.field = f;
             this.ownertype = owner;
-            ClrType ft = field.Type;
-
-            if (ft == null) this.fieldtype = UnknownType.Value;
-            else this.fieldtype = new ClrTypeInfo(ft, (ClrAssemblyInfo)owner.Assembly); //TODO: Deduplicate ClrTypeInfo instances
         }
 
         public ClrField InnerField { get { return this.field; } }
@@ -51,6 +47,17 @@ namespace CilBytecodeParser.Runtime
         {
             get
             {
+                if (this.fieldtype == null)
+                {
+                    ClrType ft = field.Type;
+
+                    if (ft != null)
+                    {
+                        this.fieldtype = ClrTypeInfo.LoadTypeInfo(ownertype, ft);
+                    }
+                    else this.fieldtype = UnknownType.Value;
+                }
+
                 return this.fieldtype;
             }
         }

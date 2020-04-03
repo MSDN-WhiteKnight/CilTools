@@ -14,9 +14,37 @@ namespace CilBytecodeParser.Runtime
     class ClrTypeInfo : Type
     {
         ClrType type;
-        ClrTypeInfo basetype;
-        ClrTypeInfo elemType;
+        Type basetype;
+        Type elemType;
         ClrAssemblyInfo assembly;
+
+        internal static Type LoadTypeInfo(ClrTypeInfo ownertype, ClrType ft)
+        {
+            ClrTypeInfo ftTypeInfo;
+            ClrAssemblyInfo ownerass = (ClrAssemblyInfo)ownertype.Assembly;
+            
+            if (ownerass.AssemblyReader == null) return UnknownType.Value;
+            if (ft.Module == null) return UnknownType.Value;
+            if (ownertype.InnerType.Module == null) return UnknownType.Value;
+
+            //determine type's containing assembly
+            ClrAssemblyInfo ftAss;
+            if (ft.Module.AssemblyId == ownertype.InnerType.Module.AssemblyId) ftAss = ownerass;
+            else ftAss = ownerass.AssemblyReader.Read(ft.Module);
+
+            if (ftAss == null) new ClrTypeInfo(ft, ClrAssemblyInfo.UnknownAssembly);
+
+            //load type from assembly
+            Type t = ftAss.GetType(ft.Name);
+            ftTypeInfo = t as ClrTypeInfo;
+
+            if (ftTypeInfo == null) //unable to find existing type instance, create new one
+            {
+                ftTypeInfo = new ClrTypeInfo(ft, ftAss);
+            }
+
+            return ftTypeInfo;
+        }
 
         public ClrTypeInfo(ClrType t, ClrAssemblyInfo ass)
         {
@@ -25,15 +53,6 @@ namespace CilBytecodeParser.Runtime
 
             this.type = t;
             this.assembly = ass;
-
-            if (type.BaseType == null) this.basetype=null;
-            else this.basetype = new ClrTypeInfo(type.BaseType, new ClrAssemblyInfo(null));
-
-            if ((type.IsArray || type.IsPointer) && type.ComponentType!=null)
-            {
-                this.elemType = new ClrTypeInfo(type.ComponentType, new ClrAssemblyInfo(null));
-            }
-            else this.elemType = null;
         }
 
         public ClrType InnerType { get { return this.type; } }
@@ -52,6 +71,13 @@ namespace CilBytecodeParser.Runtime
         {
             get 
             {
+                if (type.BaseType == null) return null;
+
+                if (this.basetype == null)
+                {
+                    this.basetype = LoadTypeInfo(this, type.BaseType);
+                }
+
                 return this.basetype;
             }
         }
@@ -89,6 +115,14 @@ namespace CilBytecodeParser.Runtime
 
         public override Type GetElementType()
         {
+            if (this.elemType == null)
+            {
+                if ((type.IsArray || type.IsPointer) && type.ComponentType != null)
+                {
+                    this.elemType = LoadTypeInfo(this, type.ComponentType);
+                }
+            }
+
             return this.elemType;
         }
 

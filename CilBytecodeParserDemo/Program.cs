@@ -59,7 +59,7 @@ namespace CilBytecodeParserDemo
                 Console.WriteLine(gr.ToString());
 
                 Console.WriteLine();
-                Console.ReadKey();
+                //Console.ReadKey();
             }
 
             DynamicMethodsAssembly dynass = ClrAssemblyReader.GetDynamicMethods(process);
@@ -74,7 +74,7 @@ namespace CilBytecodeParserDemo
                     Console.WriteLine(gr.ToString());
 
                     Console.WriteLine();
-                    Console.ReadKey();
+                    //Console.ReadKey();
                 }
             }
         }
