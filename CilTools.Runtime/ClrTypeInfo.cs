@@ -138,12 +138,65 @@ namespace CilTools.Runtime
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            bool access_match;
+            bool sem_match;
+
+            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            {
+                if (!String.Equals(m.DeclaringType.FullName, this.type.Name, StringComparison.InvariantCulture)) continue;
+
+                access_match = false;
+                sem_match = false;
+
+                if (m is FieldInfo)
+                {
+                    FieldInfo fi = (FieldInfo)m;
+
+                    if (!String.Equals(fi.Name, name, StringComparison.InvariantCulture)) continue;
+
+                    if (bindingAttr.HasFlag(BindingFlags.Public) && fi.IsPublic) access_match = true;
+                    else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !fi.IsPublic) access_match = true;
+
+                    if (bindingAttr.HasFlag(BindingFlags.Static) && fi.IsStatic) sem_match = true;
+                    else if (bindingAttr.HasFlag(BindingFlags.Instance) && !fi.IsStatic) sem_match = true;
+
+                    if (access_match && sem_match) return fi;
+                }
+                else continue;
+            }
+
+            return null;
         }
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            List<FieldInfo> fields = new List<FieldInfo>();
+            bool access_match;
+            bool sem_match;
+
+            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            {
+                if (!String.Equals(m.DeclaringType.FullName, this.type.Name, StringComparison.InvariantCulture)) continue;
+
+                access_match = false;
+                sem_match = false;
+
+                if (m is FieldInfo)
+                {
+                    FieldInfo fi = (FieldInfo)m;
+
+                    if (bindingAttr.HasFlag(BindingFlags.Public) && fi.IsPublic) access_match = true;
+                    else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !fi.IsPublic) access_match = true;
+
+                    if (bindingAttr.HasFlag(BindingFlags.Static) && fi.IsStatic) sem_match = true;
+                    else if (bindingAttr.HasFlag(BindingFlags.Instance) && !fi.IsStatic) sem_match = true;
+
+                    if (access_match && sem_match) fields.Add(fi);
+                }
+                else continue;
+            }
+
+            return fields.ToArray();
         }
 
         public override Type GetInterface(string name, bool ignoreCase)
@@ -158,18 +211,51 @@ namespace CilTools.Runtime
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
-
-            /*List<MemberInfo> members = new List<MemberInfo>();
+            List<MemberInfo> members = new List<MemberInfo>();
+            bool access_match;
+            bool sem_match;
 
             foreach (MemberInfo m in this.assembly.EnumerateMembers())
             {
-                if (!String.Equals(m.DeclaringType.Name, this.type.Name, StringComparison.InvariantCulture)) continue;
-                                
-                members.Add(m);                
+                if (!String.Equals(m.DeclaringType.FullName, this.type.Name, StringComparison.InvariantCulture)) continue;
+
+                access_match = false;
+                sem_match = false;
+                
+                if(m is FieldInfo)
+                {
+                    FieldInfo fi = (FieldInfo)m;
+
+                    if (bindingAttr.HasFlag(BindingFlags.Public) && fi.IsPublic) access_match = true;
+                    else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !fi.IsPublic) access_match = true;
+
+                    if (bindingAttr.HasFlag(BindingFlags.Static) && fi.IsStatic) sem_match = true;
+                    else if (bindingAttr.HasFlag(BindingFlags.Instance) && !fi.IsStatic) sem_match = true;
+                }
+                else if (m is MethodBase)
+                {
+                    MethodBase mb = (MethodBase)m;
+
+                    if (bindingAttr.HasFlag(BindingFlags.Public) && mb.IsPublic) access_match = true;
+                    else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !mb.IsPublic) access_match = true;
+
+                    if (bindingAttr.HasFlag(BindingFlags.Static) && mb.IsStatic) sem_match = true;
+                    else if (bindingAttr.HasFlag(BindingFlags.Instance) && !mb.IsStatic) sem_match = true;
+                }
+                else if (m is Type)
+                {
+                    Type t = (Type)m;
+
+                    if (bindingAttr.HasFlag(BindingFlags.Public) && t.IsPublic) access_match = true;
+                    else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !t.IsPublic) access_match = true;
+
+                    sem_match = true;
+                }
+
+                if(access_match && sem_match) members.Add(m);
             }
 
-            return members.ToArray();*/
+            return members.ToArray();
         }
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder, 
