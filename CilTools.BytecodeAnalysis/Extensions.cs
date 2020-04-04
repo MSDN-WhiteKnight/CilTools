@@ -41,7 +41,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// </summary>
         /// <param name="m">Source method</param>
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retrieve method body for the method</exception>
+        /// <exception cref="CilParserException">Failed to retrieve method body for the method</exception>
         /// <returns>A collection of CIL instructions that form the body of this method</returns>
         public static IEnumerable<CilInstruction> GetInstructions(this MethodBase m)
         {
@@ -93,7 +93,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// </summary>
         /// <param name="mb">Method for which to retrieve referenced methods</param>
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retrieve method body for the method</exception>
+        /// <exception cref="CilParserException">Failed to retrieve method body for the method</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of referenced methods</returns>
         public static IEnumerable<MethodBase> GetReferencedMethods(this MethodBase mb)
@@ -128,7 +128,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// </summary>
         /// <param name="mb">Method for which to retrieve referenced members</param>
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retrieve method body for the method</exception>
+        /// <exception cref="CilParserException">Failed to retrieve method body for the method</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(this MethodBase mb)
@@ -164,7 +164,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// <param name="mb">Method for which to retrieve referenced members</param>
         /// <param name="flags">A combination of bitwise flags that control what kind of members are retrieved</param>
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retrieve method body for the method</exception>
+        /// <exception cref="CilParserException">Failed to retrieve method body for the method</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(this MethodBase mb, MemberCriteria flags)

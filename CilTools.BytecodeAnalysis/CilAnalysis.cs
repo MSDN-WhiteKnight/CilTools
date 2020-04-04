@@ -482,7 +482,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="flags">A combination of bitwise flags that control what kind of members are retrieved</param>
         /// <exception cref="System.ArgumentNullException">Source method is null</exception>
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retrieve method body for the method</exception>
+        /// <exception cref="CilParserException">Failed to retrieve method body for the method</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
         public static IEnumerable<MemberInfo> GetReferencedMembers(MethodBase mb, MemberCriteria flags)

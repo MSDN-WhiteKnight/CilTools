@@ -135,7 +135,7 @@ namespace CilTools.BytecodeAnalysis
         /// Creates new CilReader that uses a body of specified method as a source
         /// </summary>
         /// <exception cref="System.ArgumentNullException">Source method is null</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">GetMethodBody returned null</exception>
+        /// <exception cref="CilParserException">GetMethodBody returned null</exception>
         /// <param name="src">A MethodBase object that specifies a method to read from</param>
         public CilReader(MethodBase src)
         {
@@ -296,7 +296,7 @@ namespace CilTools.BytecodeAnalysis
         /// Reads all instructions from source until the end is reached
         /// </summary>        
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Unknown error occured</exception>
+        /// <exception cref="CilParserException">Unknown error occured</exception>
         /// <returns>A collection of CIL instructions</returns>
         public IEnumerable<CilInstruction> ReadAll()
         {     
@@ -319,7 +319,7 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.ArgumentNullException">Source array is null</exception>
         /// <exception cref="System.ArgumentException">Source array is empty</exception>
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Unknown error occured</exception>
+        /// <exception cref="CilParserException">Unknown error occured</exception>
         /// <returns>A collection of CIL instructions</returns>
         public static IEnumerable<CilInstruction> GetInstructions(byte[] src)
         {            
@@ -333,7 +333,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="m">Source method</param>
         /// <exception cref="System.ArgumentNullException">Source method is null</exception>        
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
-        /// <exception cref="CilBytecodeParser.CilParserException">Failed to retrieve method body for the method</exception>
+        /// <exception cref="CilParserException">Failed to retrieve method body for the method</exception>
         /// <returns>A collection of CIL instructions that form the body of this method</returns>
         public static IEnumerable<CilInstruction> GetInstructions(MethodBase m)
         {
