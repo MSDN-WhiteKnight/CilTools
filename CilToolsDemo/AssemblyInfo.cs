@@ -5,7 +5,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("CilBytecodeParserDemo")]
+[assembly: AssemblyTitle("CilToolsDemo")]
 [assembly: AssemblyDescription("CilTools.BytecodeAnalysis library demo program")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]

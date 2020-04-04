@@ -1,15 +1,22 @@
 # CIL Tools
 
-![logo](https://msdn-whiteknight.github.io/CilBytecodeParser/images/IL.png)
+![logo](https://msdn-whiteknight.github.io/CilTools/images/IL.png)
+
+CIL tools is a set of software to work with Common Intermediate Language in .NET:
+
+- *CilTools.BytecodeAnalysis* - programmatically inspect bytecode of methods
+- *CilTools.Runtime* (work in progress) - load bytecode of methods in another process
+
+## CilTools.BytecodeAnalysis (previously CilBytecodeParser)
 
 **License:** [BSD 2.0](LICENSE)  
 **Requirements:** .NET Framework 3.5+  
 
 Download: 
 
-[![Nuget](https://img.shields.io/nuget/v/CilBytecodeParser)](https://www.nuget.org/packages/CilBytecodeParser/) &nbsp; [![GitHub release (latest by date)](https://img.shields.io/github/v/release/MSDN-WhiteKnight/CilBytecodeParser)](https://github.com/MSDN-WhiteKnight/CilBytecodeParser/releases)
+[![Nuget](https://img.shields.io/nuget/v/CilBytecodeParser)](https://www.nuget.org/packages/CilBytecodeParser/) &nbsp; [![GitHub release (latest by date)](https://img.shields.io/github/v/release/MSDN-WhiteKnight/CilTools)](https://github.com/MSDN-WhiteKnight/CilTools/releases)
 
-[View documentation](https://msdn-whiteknight.github.io/CilBytecodeParser/)
+[View documentation](https://msdn-whiteknight.github.io/CilTools/)
 
 CIL Bytecode Parser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
@@ -76,4 +83,4 @@ ret
 */
 ```
 
-Copyright (c) 2019,  MSDN.WhiteKnight
+Copyright (c) 2020,  MSDN.WhiteKnight

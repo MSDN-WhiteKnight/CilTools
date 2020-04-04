@@ -3,43 +3,40 @@ Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight)
 License: BSD 2.0
 Version: 1.3 (23.03.2019)
 
-CilBytecodeParser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
+CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
 Requirements: .NET Standard 2.0+
 
-Usage: Add reference to CilBytecodeParser.dll, import CilBytecodeParser namespace. Use CilReader.GetInstructions to get the collection of instructions from method, CilAnalysis.GetGraph to get a a graph that represents a flow of control between method's instructions, or CilAnalysis.MethodToText when you need to output method's CIL code as text. CilBytecodeParser.Extensions namespace provides an alternative syntax via extenstion methods.
+Usage: Add reference to CilTools.BytecodeAnalysis.dll, import CilTools.BytecodeAnalysis namespace. Use CilReader.GetInstructions to get the collection of instructions from method, CilAnalysis.GetGraph to get a a graph that represents a flow of control between method's instructions, or CilAnalysis.MethodToText when you need to output method's CIL code as text. CilTools.BytecodeAnalysis.Extensions namespace provides an alternative syntax via extenstion methods.
 
 Example:
 
 using System;
 using System.Collections.Generic;
-using CilBytecodeParser;
-using CilBytecodeParser.Extensions;
+using CilTools.BytecodeAnalysis;
+using CilTools.BytecodeAnalysis.Extensions;
 
-namespace CilBytecodeParserTest
+class Program
 {
-    class Program
+    public static void Hello()
     {
-        public static void Hello()
-        {
-            int a = 1;
-            int b = 2;
-            Console.WriteLine("Hello, World");
-            Console.WriteLine("{0} + {1} = {2}",a,b,a+b);
-        }
-
-        static void Main(string[] args)
-        {
-            IEnumerable<CilInstruction> instructions = typeof(Program).GetMethod("Hello").GetInstructions();
-
-            foreach (CilInstruction instr in instructions)
-            {
-                Console.WriteLine(instr.ToString());
-            }
-            Console.ReadKey();
-        }
-
+        int a = 1;
+        int b = 2;
+        Console.WriteLine("Hello, World");
+        Console.WriteLine("{0} + {1} = {2}",a,b,a+b);
     }
+
+    static void Main(string[] args)
+    {
+        IEnumerable<CilInstruction> instructions = typeof(Program).GetMethod("Hello").GetInstructions();
+
+        foreach (CilInstruction instr in instructions)
+        {
+            Console.WriteLine(instr.ToString());
+        }
+        Console.ReadKey();
+    }
+
 }
 
 /* Output:

@@ -11,7 +11,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.BytecodeAnalysis.Extensions;
 using CilTools.Runtime;
 
-namespace CilBytecodeParserDemo
+namespace CilToolsDemo
 {
     class Program
     {
@@ -81,7 +81,7 @@ namespace CilBytecodeParserDemo
 
         static void Main(string[] args)
         {
-            Console.WriteLine("*** CIL Bytecode Parser library demo ***");
+            Console.WriteLine("*** CIL Tools demo ***");
             Console.WriteLine("Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) ");
             Console.WriteLine();
             string asspath;
@@ -94,13 +94,13 @@ namespace CilBytecodeParserDemo
                 if (args.Length < 3)
                 {
                     Console.WriteLine("Prints CIL code of the specified method");
-                    Console.WriteLine("Usage: CilBytecodeParserDemo.exe (assembly path) (type full name) (method name)");
+                    Console.WriteLine("Usage: CilToolsDemo.exe (assembly path) (type full name) (method name)");
                     Console.WriteLine();
                     Console.WriteLine("When called without arguments, prints yourself");
                     Console.WriteLine();
 
                     asspath = "";
-                    type = "CilBytecodeParserDemo.Program";
+                    type = "CilToolsDemo.Program";
                     method = "Main";
 
                     Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);

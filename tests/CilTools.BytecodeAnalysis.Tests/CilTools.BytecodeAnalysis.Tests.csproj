@@ -61,7 +61,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj">
       <Project>{38496d54-0bc8-479b-a57e-f0ec83e78ad3}</Project>
-      <Name>CilBytecodeParser</Name>
+      <Name>CilTools.BytecodeAnalysis</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
