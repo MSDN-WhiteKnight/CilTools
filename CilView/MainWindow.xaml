@@ -1,0 +1,13 @@
+﻿<Window x:Class="CilView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CIL View" Height="350" Width="525">
+    <Grid>
+        <TextBox x:Name="tbMainContent" HorizontalAlignment="Stretch"  Margin="20,75,20,20" TextWrapping="Wrap" Text="..." 
+                 VerticalAlignment="Stretch" IsReadOnly="True" />
+        <TextBox x:Name="tbProcessName" HorizontalAlignment="Left" Height="24" Margin="20,26,0,0" TextWrapping="Wrap" Text="EmitSampleApp" 
+                 VerticalAlignment="Top" Width="169"/>
+        <Button x:Name="bShow" Content="Show" HorizontalAlignment="Left" Height="24" Margin="215,26,0,0" VerticalAlignment="Top" Width="71" Click="bShow_Click"/>
+
+    </Grid>
+</Window>
