@@ -47,6 +47,9 @@
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+	<Reference Include="Microsoft.Diagnostics.Runtime">
+      <HintPath>..\packages\Microsoft.Diagnostics.Runtime.1.1.61812\lib\net45\Microsoft.Diagnostics.Runtime.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
