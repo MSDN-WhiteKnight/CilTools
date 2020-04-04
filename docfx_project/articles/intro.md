@@ -1,49 +1,49 @@
-# CIL Bytecode Parser
+# CIL Tools
 
 ![logo](../images/il.png)
+
+## CilTools.BytecodeAnalysis
 
 **License:** BSD 2.0  
 **Requirements:** .NET Framework 3.5+  
 
-CIL Bytecode Parser reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
+CilTools.BytecodeAnalysis library reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
 *Usage*
 
-Add reference to CilBytecodeParser.dll, import CilBytecodeParser namespace. Use <xref:CilBytecodeParser.CilReader.GetInstructions(System.Reflection.MethodBase)> to get the collection of instructions from method, <xref:CilBytecodeParser.CilAnalysis.GetGraph(System.Reflection.MethodBase)> to get a a graph that represents a flow of control between method's instructions, or <xref:CilBytecodeParser.CilAnalysis.MethodToText(System.Reflection.MethodBase)> when you need to output method's CIL code as text. <xref:CilBytecodeParser.Extensions> namespace provides an alternative syntax via extension methods.
+Add reference to CilTools.BytecodeAnalysis.dll, import CilTools.BytecodeAnalysis namespace. Use <xref:CilTools.BytecodeAnalysis.CilReader.GetInstructions(System.Reflection.MethodBase)> to get the collection of instructions from method, <xref:CilTools.BytecodeAnalysis.CilAnalysis.GetGraph(System.Reflection.MethodBase)> to get a a graph that represents a flow of control between method's instructions, or <xref:CilTools.BytecodeAnalysis.CilAnalysis.MethodToText(System.Reflection.MethodBase)> when you need to output method's CIL code as text. <xref:CilTools.BytecodeAnalysis.Extensions> namespace provides an alternative syntax via extension methods.
 
 *Example*
 
 ```
 using System;
 using System.Collections.Generic;
-using CilBytecodeParser;
-using CilBytecodeParser.Extensions;
+using CilTools.BytecodeAnalysis;
+using CilTools.BytecodeAnalysis.Extensions;
 
-namespace CilBytecodeParserTest
+class Program
 {
-    class Program
+    public static void Hello()
     {
-        public static void Hello()
-        {
-            int a = 1;
-            int b = 2;
-            Console.WriteLine("Hello, World");
-            Console.WriteLine("{0} + {1} = {2}",a,b,a+b);
-        }
-
-        static void Main(string[] args)
-        {
-            IEnumerable<CilInstruction> instructions = typeof(Program).GetMethod("Hello").GetInstructions();
-
-            foreach (CilInstruction instr in instructions)
-            {
-                Console.WriteLine(instr.ToString());
-            }
-            Console.ReadKey();
-        }
-
+        int a = 1;
+        int b = 2;
+        Console.WriteLine("Hello, World");
+        Console.WriteLine("{0} + {1} = {2}",a,b,a+b);
     }
+
+    static void Main(string[] args)
+    {
+        IEnumerable<CilInstruction> instructions = typeof(Program).GetMethod("Hello").GetInstructions();
+
+        foreach (CilInstruction instr in instructions)
+        {
+            Console.WriteLine(instr.ToString());
+        }
+        Console.ReadKey();
+    }
+
 }
+
 
 /* Output:
 
@@ -70,4 +70,4 @@ ret
 */
 ```
 
-Copyright (c) 2019, MSDN.WhiteKnight
+Copyright (c) 2020, MSDN.WhiteKnight

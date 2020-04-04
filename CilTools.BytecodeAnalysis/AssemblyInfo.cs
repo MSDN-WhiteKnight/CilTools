@@ -1,22 +1,22 @@
-﻿/* CIL Tools
+﻿/* CilTools.BytecodeAnalysis library 
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("EmitSampleApp")]
-[assembly: AssemblyDescription("CIL Tools dynamic methods sample app")]
+[assembly: AssemblyTitle("CilTools.BytecodeAnalysis")]
+[assembly: AssemblyDescription("CIL bytecode analysis library")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EmitSampleApp")]
-[assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight 2020")]
+[assembly: AssemblyProduct("CilTools.BytecodeAnalysis")]
+[assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("a692fe9f-c078-45fe-b9ba-0733f857bb2c")]
+[assembly: Guid("300c0864-7479-4bfc-838c-bda19767f9cf")]
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

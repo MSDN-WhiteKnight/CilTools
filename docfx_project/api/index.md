@@ -1,7 +1,7 @@
 # API reference
 
-CIL bytecode parser has following namespaces:
+CIL Tools has following namespaces:
 
-<xref:CilBytecodeParser>
+<xref:CilTools.BytecodeAnalysis>
 
-<xref:CilBytecodeParser.Extensions>
+<xref:CilTools.BytecodeAnalysis.Extensions>

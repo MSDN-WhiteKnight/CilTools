@@ -5,18 +5,18 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyTitle("EmitSampleApp")]
-[assembly: AssemblyDescription("CIL Tools dynamic methods sample app")]
+[assembly: AssemblyTitle("CilToolsDemo")]
+[assembly: AssemblyDescription("CilTools.BytecodeAnalysis library demo program")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("EmitSampleApp")]
+[assembly: AssemblyProduct("CilTools")]
 [assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight 2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
 [assembly: ComVisible(false)]
 
-[assembly: Guid("a692fe9f-c078-45fe-b9ba-0733f857bb2c")]
+[assembly: Guid("8d3c3ebc-f3f0-4fdc-8c4c-57844d341e5f")]
 
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
