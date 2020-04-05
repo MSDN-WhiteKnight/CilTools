@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using Microsoft.Diagnostics.Runtime;
+using Microsoft.Win32;
 
 namespace CilView
 {
@@ -93,7 +94,7 @@ namespace CilView
         ObservableCollection<Assembly> LoadAssemblies(int pid)
         {
             Process process = Process.GetProcessById(pid);
-            dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.Passive);
+            dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.NonInvasive);
 
             using (process)
             {
@@ -111,7 +112,7 @@ namespace CilView
             }
 
             Process process = processes[0];
-            dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.Passive);
+            dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.NonInvasive);
 
             using (process)
             {
@@ -144,6 +145,16 @@ namespace CilView
             return ret;
         }
 
+        static ObservableCollection<Assembly> LoadAssembliesFromFile(string file)
+        {
+            ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
+
+            Assembly main = Assembly.LoadFrom(file);
+            ret.Add(main);
+            
+            return ret;
+        }
+
         static ObservableCollection<Type> LoadTypes(Assembly ass)
         {
             ObservableCollection<Type> ret = new ObservableCollection<Type>(ass.GetTypes());
@@ -168,7 +179,7 @@ namespace CilView
             InitializeComponent();
         }
 
-        private void bShow_Click(object sender, RoutedEventArgs e)
+        void UpdateAssemblies(ObservableCollection<Assembly> coll)
         {
             if (this.dt != null)
             {
@@ -179,9 +190,16 @@ namespace CilView
             this.assemblies.Clear();
             this.types.Clear();
             this.methods.Clear();
-
-            this.assemblies = LoadAssemblies(tbProcessName.Text);
+            this.assemblies = coll;
             cbAssembly.ItemsSource = this.assemblies;
+
+            if (this.assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
+        }
+
+        private void bOpenProcess_Click(object sender, RoutedEventArgs e)
+        {
+            ObservableCollection<Assembly> assemblies = LoadAssemblies(tbProcessName.Text);
+            UpdateAssemblies(assemblies);
         }
 
         private void cbAssembly_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -222,6 +240,19 @@ namespace CilView
                 gr.Print(wr, true, true, true, true);
                 wr.Flush();
                 tbMainContent.Text = sb.ToString();
+            }
+        }
+
+        private void bOpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.RestoreDirectory = true;
+            dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|All files|*";
+
+            if (dlg.ShowDialog(this) == true)
+            {
+                ObservableCollection<Assembly> assemblies = LoadAssembliesFromFile(dlg.FileName);
+                UpdateAssemblies(assemblies);
             }
         }
     }

@@ -369,7 +369,8 @@ namespace CilTools.Runtime
         {
             get 
             {
-                string tn = type.Name;
+                string tn;
+                tn = type.Name;
                 int index = tn.LastIndexOf('.');
 
                 if (index < 0) return tn;

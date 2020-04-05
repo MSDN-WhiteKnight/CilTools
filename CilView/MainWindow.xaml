@@ -8,7 +8,10 @@
                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" />
         <TextBox x:Name="tbProcessName" HorizontalAlignment="Left" Height="24" Margin="10,10,0,0" TextWrapping="Wrap" Text="EmitSampleApp" 
                  VerticalAlignment="Top" Width="169"/>
-        <Button x:Name="bShow" Content="Show" HorizontalAlignment="Left" Height="24" Margin="195,10,0,0" VerticalAlignment="Top" Width="71" Click="bShow_Click"/>
+        <Button x:Name="bOpenProcess" Content="Open process" HorizontalAlignment="Left" Height="24" Margin="195,10,0,0" VerticalAlignment="Top" 
+                Width="90" Click="bOpenProcess_Click"/>
+        <Button x:Name="bOpenFile" Content="Open file" HorizontalAlignment="Left" Height="24" Margin="300,10,0,0" VerticalAlignment="Top" 
+                Width="90" Click="bOpenFile_Click" />
         <ComboBox x:Name="cbAssembly" HorizontalAlignment="Left" Height="21" Margin="10,50,0,0" VerticalAlignment="Top" Width="200"
                   DisplayMemberPath="FullName" SelectionChanged="cbAssembly_SelectionChanged"/>
         <ComboBox x:Name="cbType" HorizontalAlignment="Left" Height="21" Margin="230,50,0,0" VerticalAlignment="Top" Width="200"
