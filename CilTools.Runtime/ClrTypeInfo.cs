@@ -217,6 +217,8 @@ namespace CilTools.Runtime
 
             foreach (MemberInfo m in this.assembly.EnumerateMembers())
             {
+                if (m.DeclaringType == null) continue;
+
                 if (!String.Equals(m.DeclaringType.FullName, this.type.Name, StringComparison.InvariantCulture)) continue;
 
                 access_match = false;
@@ -367,7 +369,8 @@ namespace CilTools.Runtime
         {
             get 
             {
-                string tn = type.Name;
+                string tn;
+                tn = type.Name;
                 int index = tn.LastIndexOf('.');
 
                 if (index < 0) return tn;
@@ -392,6 +395,14 @@ namespace CilTools.Runtime
                 else throw new NotSupportedException("Multi-dimensional arrays or arrays with non-zero lower bound are not supported.");
             }
             else return 0;
+        }
+
+        public override int GetHashCode()
+        {
+            if (this.type == null) return 0;
+            if (this.type.Name == null) return 0;
+
+            return this.type.Name.GetHashCode();
         }
               
     }

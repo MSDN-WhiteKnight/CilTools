@@ -1,0 +1,23 @@
+﻿<Window x:Class="CilView.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="CIL View" Height="480" Width="640" Closed="Window_Closed_1">
+    <Grid>
+        <TextBox x:Name="tbMainContent" HorizontalAlignment="Stretch"  Margin="230,86,19.6,20.4" TextWrapping="Wrap" Text="..." 
+                 VerticalAlignment="Stretch" IsReadOnly="True" FontFamily="Courier New" FontSize="14" 
+                 VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" />
+        <TextBox x:Name="tbProcessName" HorizontalAlignment="Left" Height="24" Margin="10,10,0,0" TextWrapping="Wrap" Text="EmitSampleApp" 
+                 VerticalAlignment="Top" Width="169"/>
+        <Button x:Name="bOpenProcess" Content="Open process" HorizontalAlignment="Left" Height="24" Margin="195,10,0,0" VerticalAlignment="Top" 
+                Width="90" Click="bOpenProcess_Click"/>
+        <Button x:Name="bOpenFile" Content="Open file" HorizontalAlignment="Left" Height="24" Margin="300,10,0,0" VerticalAlignment="Top" 
+                Width="90" Click="bOpenFile_Click" />
+        <ComboBox x:Name="cbAssembly" HorizontalAlignment="Left" Height="21" Margin="10,50,0,0" VerticalAlignment="Top" Width="200"
+                  DisplayMemberPath="FullName" SelectionChanged="cbAssembly_SelectionChanged"/>
+        <ComboBox x:Name="cbType" HorizontalAlignment="Left" Height="21" Margin="230,50,0,0" VerticalAlignment="Top" Width="200"
+                   SelectionChanged="cbType_SelectionChanged"/>
+        <ListBox x:Name="lbMethod" HorizontalAlignment="Left" Margin="10,86,20,20" VerticalAlignment="Stretch" Width="200"
+                 DisplayMemberPath="Name" SelectionChanged="lbMethod_SelectionChanged"/>
+
+    </Grid>
+</Window>

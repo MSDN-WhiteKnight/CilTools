@@ -227,5 +227,10 @@ namespace CilTools.Runtime
 
             return members.ToArray();
         }
+
+        public override int GetHashCode()
+        {
+            return owner.FullName.GetHashCode();
+        }
     }
 }

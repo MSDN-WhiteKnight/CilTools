@@ -99,12 +99,12 @@ namespace CilTools.Runtime
 
         public override byte[] GetLocalVarSignature()
         {
-            throw new NotImplementedException();
+            return new byte[] { }; //not implemented
         }
 
         public override ExceptionBlock[] GetExceptionBlocks()
         {
-            throw new NotImplementedException();
+            return new ExceptionBlock[] { }; //not implemented
         }
 
         public override MethodAttributes Attributes
