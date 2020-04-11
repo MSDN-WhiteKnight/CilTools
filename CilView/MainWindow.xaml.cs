@@ -24,183 +24,29 @@ namespace CilView
     /// </summary>
     public partial class MainWindow : Window
     {
-        DataTarget dt = null;
-        ObservableCollection<Assembly> assemblies=new ObservableCollection<Assembly>();
-        ObservableCollection<Type> types = new ObservableCollection<Type>();
-        ObservableCollection<MethodBase> methods = new ObservableCollection<MethodBase>();
+        AssemblySource source;
 
-        static void DumpMethods(int pid, TextWriter target)
+        void SetSource(AssemblySource newval)
         {
-            Process process = Process.GetProcessById(pid);
-            using (process)
+            if (this.source != null)
             {
-                DumpMethods(process, target);
+                this.source.Dispose();
+                this.source = null;
+                this.DataContext = null;
             }
-        }
-
-        static void DumpMethods(string processname, TextWriter target)
-        {
-            Process[] processes = Process.GetProcessesByName(processname);
-            if (processes.Length == 0)
-            {
-                Console.WriteLine("Process not found");
-                return;
-            }
-
-            Process process = processes[0];
-
-            using (process)
-            {
-                DumpMethods(process, target);
-            }
-        }
-
-        static void DumpMethods(Process process, TextWriter target)
-        {
-            //prints bytecode of methods in specified managed process
-
-            string module = "";
-            module = System.IO.Path.GetFileName(process.MainModule.FileName);
-
-            target.WriteLine("Process ID: {0}; Process name: {1}", process.Id, module);
-            target.WriteLine();
-
-            foreach (MethodBase m in ClrAssemblyReader.EnumerateModuleMethods(process))
-            {
-                target.WriteLine(" Method: " + m.DeclaringType.Name + "." + m.Name);
-
-                CilGraph gr = CilAnalysis.GetGraph(m);
-                target.WriteLine(gr.ToString());
-
-                target.WriteLine();                
-            }
-
-            DynamicMethodsAssembly dynass = ClrAssemblyReader.GetDynamicMethods(process);
-
-            using (dynass)
-            {
-                foreach (MethodBase m in dynass.EnumerateMethods())
-                {
-                    target.WriteLine("Method: " + m.DeclaringType.Name + "." + m.Name);
-
-                    CilGraph gr = CilAnalysis.GetGraph(m);
-                    target.WriteLine(gr.ToString());
-
-                    target.WriteLine();                    
-                }
-            }
-        }
-
-        ObservableCollection<Assembly> LoadAssemblies(int pid)
-        {
-            Process process = Process.GetProcessById(pid);
-            dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.NonInvasive);
-
-            using (process)
-            {
-                return LoadAssemblies(dt);
-            }
-        }
-
-        ObservableCollection<Assembly> LoadAssemblies(string processname)
-        {
-            Process[] processes = Process.GetProcessesByName(processname);
-            if (processes.Length == 0)
-            {
-                MessageBox.Show("Process not found");
-                return new ObservableCollection<Assembly>();
-            }
-
-            if (this.dt != null)
-            {
-                this.dt.Dispose();
-                this.dt = null;
-            }
-
-            Process process = processes[0];
-            dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.NonInvasive);
-
-            using (process)
-            {
-                return LoadAssemblies(dt);
-            }
-        }
-
-        static ObservableCollection<Assembly> LoadAssemblies(DataTarget dt)
-        {
-            ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
-
-            if (dt.ClrVersions.Count == 0)
-            {
-                MessageBox.Show("Error: unable to find .NET Runtime in target process!");
-                return ret;
-            }
-
-            var runtimeInfo = dt.ClrVersions[0];
-            ClrRuntime runtime = runtimeInfo.CreateRuntime();
-            ClrAssemblyReader reader = new ClrAssemblyReader(runtime);
-
-            foreach (ClrModule x in runtime.Modules)
-            {
-                ret.Add(reader.Read(x));
-            }
-
-            DynamicMethodsAssembly dynass = reader.GetDynamicMethods();
-            ret.Add(dynass);
-            return ret;
-        }
-
-        ObservableCollection<Assembly> LoadAssembliesFromFile(string file)
-        {
-            ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
-
-            Assembly main = Assembly.LoadFrom(file);
-            ret.Add(main);
             
-            return ret;
-        }
-
-        static ObservableCollection<Type> LoadTypes(Assembly ass)
-        {
-            ObservableCollection<Type> ret = new ObservableCollection<Type>(ass.GetTypes());
-            return ret;
-        }
-
-        static ObservableCollection<MethodBase> LoadMethods(Type t)
-        {
-            ObservableCollection<MethodBase> ret = new ObservableCollection<MethodBase>();
-            MemberInfo[] members = t.GetMembers(
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
-                );
-
-            foreach (MemberInfo member in members)
-            {
-                if (member is MethodBase) ret.Add((MethodBase)member);
-            }
-
-            return ret;
+            this.source = newval;
+            this.DataContext = newval;
         }
 
         public MainWindow()
         {
             InitializeComponent();
         }
-
-        void UpdateAssemblies(ObservableCollection<Assembly> coll)
-        {
-            this.assemblies.Clear();
-            this.types.Clear();
-            this.methods.Clear();
-            this.assemblies = coll;
-            cbAssembly.ItemsSource = this.assemblies;
-
-            if (this.assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
-        }
-
+        
         private void bOpenProcess_Click(object sender, RoutedEventArgs e)
         {
-            ObservableCollection<Assembly> assemblies = LoadAssemblies(tbProcessName.Text);
-            UpdateAssemblies(assemblies);
+            SetSource(new ProcessAssemblySource(tbProcessName.Text, true));
         }
 
         private void cbAssembly_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -208,11 +54,11 @@ namespace CilView
             Assembly ass = (Assembly)cbAssembly.SelectedItem;
 
             if (ass == null) return;
+            if (source == null) return;
 
-            this.types.Clear();
-            this.methods.Clear();
-            this.types = LoadTypes(ass);
-            cbType.ItemsSource = this.types;
+            source.Types.Clear();
+            source.Methods.Clear();
+            source.Types = AssemblySource.LoadTypes(ass);
         }
 
         private void cbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -220,10 +66,10 @@ namespace CilView
             Type t = (Type)cbType.SelectedItem;
 
             if (t == null) return;
+            if (source == null) return;
 
-            this.methods.Clear();
-            this.methods = LoadMethods(t);
-            lbMethod.ItemsSource = this.methods;
+            source.Methods.Clear();
+            source.Methods = AssemblySource.LoadMethods(t);
         }
 
         private void lbMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -252,18 +98,15 @@ namespace CilView
 
             if (dlg.ShowDialog(this) == true)
             {
-                ObservableCollection<Assembly> assemblies = LoadAssembliesFromFile(dlg.FileName);
-                UpdateAssemblies(assemblies);
+                SetSource(new FileAssemblySource(dlg.FileName));
+
+                if (this.source.Assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
             }
         }
 
         private void Window_Closed_1(object sender, EventArgs e)
         {
-            if (this.dt != null)
-            {
-                this.dt.Dispose();
-                this.dt = null;
-            }
+            SetSource(null);
         }
     }
 }
