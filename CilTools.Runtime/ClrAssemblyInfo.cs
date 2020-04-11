@@ -145,7 +145,7 @@ namespace CilTools.Runtime
 
         public string ResolveString(int metadataToken)
         {
-            throw new NotImplementedException();
+            return null; //not implemented
         }
 
         public IEnumerable<MemberInfo> EnumerateMembers()
