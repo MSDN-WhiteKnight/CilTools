@@ -111,6 +111,12 @@ namespace CilView
                 return new ObservableCollection<Assembly>();
             }
 
+            if (this.dt != null)
+            {
+                this.dt.Dispose();
+                this.dt = null;
+            }
+
             Process process = processes[0];
             dt = DataTarget.AttachToProcess(process.Id, 5000, AttachFlag.NonInvasive);
 
@@ -119,7 +125,6 @@ namespace CilView
                 return LoadAssemblies(dt);
             }
         }
-
 
         static ObservableCollection<Assembly> LoadAssemblies(DataTarget dt)
         {
@@ -145,7 +150,7 @@ namespace CilView
             return ret;
         }
 
-        static ObservableCollection<Assembly> LoadAssembliesFromFile(string file)
+        ObservableCollection<Assembly> LoadAssembliesFromFile(string file)
         {
             ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
 
@@ -164,7 +169,9 @@ namespace CilView
         static ObservableCollection<MethodBase> LoadMethods(Type t)
         {
             ObservableCollection<MethodBase> ret = new ObservableCollection<MethodBase>();
-            MemberInfo[] members = t.GetMembers(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance);
+            MemberInfo[] members = t.GetMembers(
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
+                );
 
             foreach (MemberInfo member in members)
             {
@@ -181,12 +188,6 @@ namespace CilView
 
         void UpdateAssemblies(ObservableCollection<Assembly> coll)
         {
-            if (this.dt != null)
-            {
-                this.dt.Dispose();
-                this.dt = null;
-            }
-
             this.assemblies.Clear();
             this.types.Clear();
             this.methods.Clear();
@@ -253,6 +254,15 @@ namespace CilView
             {
                 ObservableCollection<Assembly> assemblies = LoadAssembliesFromFile(dlg.FileName);
                 UpdateAssemblies(assemblies);
+            }
+        }
+
+        private void Window_Closed_1(object sender, EventArgs e)
+        {
+            if (this.dt != null)
+            {
+                this.dt.Dispose();
+                this.dt = null;
             }
         }
     }
