@@ -356,6 +356,8 @@ namespace CilTools.BytecodeAnalysis
 
                         if (this._Method.IsStatic == false) param_index--;
 
+                        if (param_index >= pars.Length) return null; //prevent IndexOutOfRangeException on our ClrMD impl
+
                         if (param_index >= 0) return pars[param_index];
                         else return null;
                     }
@@ -507,8 +509,10 @@ namespace CilTools.BytecodeAnalysis
 
                     try
                     {
-                        MemberInfo mi = (Method as CustomMethod).TokenResolver.ResolveMember(token, null, null);                        
-                        if (mi is Type) stroperand = CilAnalysis.GetTypeNameInternal((Type)mi);
+                        MemberInfo mi = (Method as CustomMethod).TokenResolver.ResolveMember(token, null, null);
+
+                        if (mi == null) stroperand = "";
+                        else if (mi is Type) stroperand = CilAnalysis.GetTypeNameInternal((Type)mi);
                         else stroperand = mi.Name;
                     }
                     catch (Exception ex)
@@ -534,14 +538,17 @@ namespace CilTools.BytecodeAnalysis
                 {
                     //parameter
                     ParameterInfo par = this.ReferencedParameter;
+                    sb.Append(' ');
 
                     if (par != null)
                     {
-                        sb.Append(' ');
-
-                        if(String.IsNullOrEmpty(par.Name))sb.Append("par"+(par.Position+1).ToString());
+                        if (String.IsNullOrEmpty(par.Name)) sb.Append("par" + (par.Position + 1).ToString());
                         else sb.Append(par.Name);
-                    }                    
+                    }
+                    else
+                    {
+                        sb.Append("par" + this.Operand.ToString());
+                    }
                 }
                 else if (OpCode.Equals(OpCodes.Calli) && this.Method != null)
                 {
