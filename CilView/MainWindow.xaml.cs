@@ -46,7 +46,14 @@ namespace CilView
         
         private void bOpenProcess_Click(object sender, RoutedEventArgs e)
         {
-            SetSource(new ProcessAssemblySource(tbProcessName.Text, true));
+            SelectProcessWindow wnd = new SelectProcessWindow();
+            wnd.Owner = this;
+            bool? res = wnd.ShowDialog();
+
+            if (res == true)
+            {
+                SetSource(new ProcessAssemblySource(wnd.SelectedProcess, wnd.ActiveMode));
+            }
         }
 
         private void cbAssembly_SelectionChanged(object sender, SelectionChangedEventArgs e)
