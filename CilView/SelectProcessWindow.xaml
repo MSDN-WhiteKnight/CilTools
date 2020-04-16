@@ -1,13 +1,14 @@
 ﻿<Window x:Class="CilView.SelectProcessWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Attach to process" Height="300" Width="400">
+        Title="Attach to process" Height="300" Width="400" Closed="Window_Closed" WindowStartupLocation="CenterOwner">
     <Grid>
-        <ListBox x:Name="lbProcesses" HorizontalAlignment="Stretch" Margin="10,10,10,45" VerticalAlignment="Stretch" 
-                 DisplayMemberPath="ProcessName"/>
+        <ListBox x:Name="lbProcesses" HorizontalAlignment="Stretch" Margin="10,10,10,77" VerticalAlignment="Stretch" 
+                 DisplayMemberPath="ProcessName" SelectionChanged="lbProcesses_SelectionChanged"/>
         <CheckBox x:Name="chbActiveMode" Content="active mode" HorizontalAlignment="Left" Height="17" Margin="10,10,10,12" VerticalAlignment="Bottom" Width="123"/>
         <Button x:Name="bOK" Content="OK" HorizontalAlignment="Left" Height="25" Margin="165,10,10,10" VerticalAlignment="Bottom" Width="80" Click="bOK_Click"/>
         <Button x:Name="bCancel" Content="Cancel" HorizontalAlignment="Left" Height="25" Margin="270,10,10,10" VerticalAlignment="Bottom" Width="80" Click="bCancel_Click"/>
+        <TextBlock x:Name="tbInfo" HorizontalAlignment="Stretch" Height="30" Margin="10,10,10,40" TextWrapping="Wrap" Text="..." VerticalAlignment="Bottom"/>
 
     </Grid>
 </Window>
