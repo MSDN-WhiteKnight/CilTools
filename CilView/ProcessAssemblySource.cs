@@ -28,6 +28,12 @@ namespace CilView
 
             ClrInfo runtimeInfo = dt.ClrVersions[0];
             ClrRuntime runtime = runtimeInfo.CreateRuntime();
+            return LoadAssemblies(runtime);
+        }
+
+        public static ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime)
+        {
+            ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
             ClrAssemblyReader reader = new ClrAssemblyReader(runtime);
 
             foreach (ClrModule x in runtime.Modules)
@@ -40,11 +46,49 @@ namespace CilView
             return ret;
         }
 
-        public ProcessAssemblySource(string processname, bool active)
+        void Init(ClrRuntime runtime)
+        {
+            this.dt = runtime.DataTarget;
+            this.Assemblies = LoadAssemblies(runtime);
+        }
+
+        public ProcessAssemblySource(ClrRuntime runtime)
+        {
+            this.Init(runtime);
+        }
+
+        void Init(DataTarget dtSource)
+        {
+            this.dt = dtSource;
+            this.Assemblies = LoadAssemblies(dtSource);
+        }
+
+        public ProcessAssemblySource(DataTarget dtSource)
+        {
+            this.Init(dtSource);
+        }
+
+        void Init(Process pr, bool active)
         {
             this.Types = new ObservableCollection<Type>();
             this.Methods = new ObservableCollection<MethodBase>();
 
+            AttachFlag at;
+
+            if (active) at = AttachFlag.NonInvasive;
+            else at = AttachFlag.Passive;
+            
+            DataTarget dt = DataTarget.AttachToProcess(pr.Id, 5000, at);
+            this.Init(dt);
+        }
+
+        public ProcessAssemblySource(Process pr, bool active)
+        {
+            this.Init(pr, active);
+        }
+                
+        public ProcessAssemblySource(string processname, bool active)
+        {
             Process[] processes = Process.GetProcessesByName(processname);
 
             if (processes.Length == 0)
@@ -54,16 +98,28 @@ namespace CilView
                 return;
             }
 
-            AttachFlag at;
-
-            if(active) at = AttachFlag.NonInvasive;
-            else at = AttachFlag.Passive;
-
             Process process = processes[0];
+
             using (process)
             {
-                dt = DataTarget.AttachToProcess(process.Id, 5000, at);
-                this.Assemblies = LoadAssemblies(dt);
+                this.Init(process, active);
+            }
+        }
+
+        public ProcessAssemblySource(int pid, bool active)
+        {
+            Process process = Process.GetProcessById(pid);
+
+            if (process == null)
+            {
+                MessageBox.Show("Process not found");
+                this.Assemblies = new ObservableCollection<Assembly>();
+                return;
+            }
+
+            using (process)
+            {
+                this.Init(process, active);
             }
         }
 

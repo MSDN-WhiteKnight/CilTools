@@ -46,7 +46,14 @@ namespace CilView
         
         private void bOpenProcess_Click(object sender, RoutedEventArgs e)
         {
-            SetSource(new ProcessAssemblySource(tbProcessName.Text, true));
+            SelectProcessWindow wnd = new SelectProcessWindow();
+            wnd.Owner = this;
+            bool? res = wnd.ShowDialog();
+
+            if (res == true)
+            {
+                SetSource(new ProcessAssemblySource(wnd.SelectedProcess, wnd.ActiveMode));
+            }
         }
 
         private void cbAssembly_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -107,6 +114,20 @@ namespace CilView
         private void Window_Closed_1(object sender, EventArgs e)
         {
             SetSource(null);
+        }
+
+        private void miAbout_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(this, 
+                "CIL View "+typeof(MainWindow).Assembly.GetName().Version.ToString()+Environment.NewLine+
+                "CIL Tools project"+Environment.NewLine+
+                "License: BSD 2.0", 
+                "About");
+        }
+
+        private void miExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
