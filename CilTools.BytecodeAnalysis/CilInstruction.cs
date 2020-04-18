@@ -16,7 +16,7 @@ namespace CilTools.BytecodeAnalysis
     /// Represents CIL instruction, a main structural element of the method body which consists of operation code and operand.
     /// </summary>
     /// <remarks>To retrieve a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class.</remarks>
-    public class CilInstruction
+    public abstract class CilInstructionBase
     {       
         static bool ReferencesMethodToken(OpCode op)
         {
@@ -59,7 +59,7 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <param name="sender">Object that caused this event</param>
         /// <param name="e">Event arguments</param>
-        protected static void OnError(object sender, CilErrorEventArgs e)
+        internal static void OnError(object sender, CilErrorEventArgs e)
         {
             EventHandler<CilErrorEventArgs> handler = Error;
             if (handler != null)
@@ -78,7 +78,7 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         protected OpCode _OpCode;
 
-        /// <summary>
+        /*/// <summary>
         /// Operand object of this instruction, if applicable
         /// </summary>
         protected object _Operand;
@@ -86,7 +86,7 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Size, in bytes, of this instruction's operand
         /// </summary>
-        protected uint _OperandSize;
+        protected uint _OperandSize;*/
 
         /// <summary>
         /// Byte offset of this instruction from the beginning of the method body
@@ -111,12 +111,12 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets the operand object of this instruction
         /// </summary>
-        public object Operand { get { return this._Operand; } }
+        public abstract object Operand { get; }
 
         /// <summary>
         /// Gets the size, in bytes, of this instruction's operand
         /// </summary>
-        public uint OperandSize { get { return this._OperandSize; } }
+        public abstract uint OperandSize { get; }
 
         /// <summary>
         /// Gets a byte offset of this instruction from the beginning of the method body
@@ -149,14 +149,14 @@ namespace CilTools.BytecodeAnalysis
 
                 if (this.OpCode.OperandType == System.Reflection.Emit.OperandType.InlineSwitch)
                 {
-                    uint res = (uint)this.OpCode.Size + this._OperandSize;
+                    uint res = (uint)this.OpCode.Size + this.OperandSize;
                     int[] arr = this.Operand as int[];
 
                     if (arr != null) res += (uint)arr.Length * sizeof(int);
 
                     return res;
                 }
-                else return (uint)this.OpCode.Size + this._OperandSize;                 
+                else return (uint)this.OpCode.Size + this.OperandSize;
             }
         }
 
@@ -170,13 +170,11 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="ordinalnum">Ordinal number</param>
         /// <param name="mb">Owning method</param>
         /// <remarks>Do not use this constructor directly. To retrieve a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class instead.</remarks>
-        public CilInstruction(
-            OpCode opc, object operand=null, uint opsize=0, uint byteoffset=0, uint ordinalnum=0, MethodBase mb=null
+        protected CilInstructionBase(
+            OpCode opc,uint byteoffset=0, uint ordinalnum=0, MethodBase mb=null
             )
         {
             this._OpCode = opc;
-            this._Operand = operand;
-            this._OperandSize = opsize;
             this._ByteOffset = byteoffset;
             this._OrdinalNumber = ordinalnum;
             this._Method = CustomMethod.PrepareMethod(mb);
@@ -189,7 +187,7 @@ namespace CilTools.BytecodeAnalysis
         /// <returns>Empty CilInstruction object</returns>
         public static CilInstruction CreateEmptyInstruction(MethodBase mb)
         {
-            CilInstruction instr = new CilInstruction(OpCodes.Nop,null,0,0,0,mb);            
+            CilInstruction instr = new CilInstruction(OpCodes.Nop,0,0,mb);
             return instr;
         }
         
@@ -241,11 +239,11 @@ namespace CilTools.BytecodeAnalysis
                     }
                     else if (ReferencesFieldToken(this.OpCode))
                     {
-                        return (Method as CustomMethod).TokenResolver.ResolveField((int)Operand, t_args, m_args);                        
+                        return (Method as CustomMethod).TokenResolver.ResolveField((int)Operand, t_args, m_args);   
                     }
                     else if (ReferencesTypeToken(this.OpCode))
                     {
-                        return (Method as CustomMethod).TokenResolver.ResolveType((int)Operand, t_args, m_args);                        
+                        return (Method as CustomMethod).TokenResolver.ResolveType((int)Operand, t_args, m_args);  
                     }
                     else return null;
                 }
@@ -344,14 +342,14 @@ namespace CilTools.BytecodeAnalysis
         {
             get
             {
-                if (this._Operand == null) return null;
+                if (this.Operand == null) return null;
                 if (this._Method == null) return null;
 
                 if (ReferencesParam(this._OpCode))
                 {
                     try
                     {
-                        int param_index = Convert.ToInt32(this._Operand);
+                        int param_index = Convert.ToInt32(this.Operand);
                         ParameterInfo[] pars = this._Method.GetParameters();
 
                         if (this._Method.IsStatic == false) param_index--;
@@ -379,14 +377,14 @@ namespace CilTools.BytecodeAnalysis
         {
             get
             {
-                if (this._Operand == null) return null;
+                if (this.Operand == null) return null;
                 if (this._Method == null) return null;
 
                 if (ReferencesLocal(this._OpCode))
                 {
                     try
                     {
-                        int local_index = Convert.ToInt32(this._Operand);
+                        int local_index = Convert.ToInt32(this.Operand);
                         MethodBody mb = this._Method.GetMethodBody();
 
                         if (mb == null) return null;
@@ -486,7 +484,7 @@ namespace CilTools.BytecodeAnalysis
                     try
                     {
                         stroperand = (Method as CustomMethod).TokenResolver.ResolveString(token);
-                        stroperand = "\"" + CilAnalysis.EscapeString(stroperand) + "\"";                                                
+                        stroperand = "\"" + CilAnalysis.EscapeString(stroperand) + "\"";
                     }
                     catch (Exception ex)
                     {
@@ -760,11 +758,11 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <param name="str">The line of CIL code representing instruction</param>
         /// <returns>CilInstruction object for the specified string</returns>
-        public static CilInstruction Parse(string str)
+        public static CilInstructionBase Parse(string str)
         {
             if (String.IsNullOrEmpty(str)) throw new ArgumentException("str parameter can't be null or empty string");
 
-            CilInstruction res=null;
+            CilInstructionBase res=null;
 
             List<string> tokens = new List<string>(10);
             StringBuilder curr_token = new StringBuilder(100);
@@ -892,7 +890,7 @@ namespace CilTools.BytecodeAnalysis
 
             OpCode op = FindOpCode(opname);
             uint opsize = GetOperandSize(op);
-            object operand = null;
+            //object operand = null;
 
             var numstyle = System.Globalization.NumberStyles.Integer;
             if (args.StartsWith("0x"))
@@ -913,24 +911,40 @@ namespace CilTools.BytecodeAnalysis
             switch (opsize)
             {
 
-                case 1: 
-                    if(SByte.TryParse(args,numstyle,fmt, out byteval)) operand = (object)byteval;                     
+                case 0:
+                    res = new CilInstruction(op, 0, 0, null);
+                    break;
+                case 1:
+                    if (SByte.TryParse(args, numstyle, fmt, out byteval))
+                    {
+                        //operand = (object)byteval;
+                        res = new CilInstruction<sbyte>(op, byteval, opsize, 0, 0, null);
+                    }
                     break;
 
                 case 2:
-                    if (Int16.TryParse(args,numstyle,fmt, out shortval)) operand = (object)shortval; 
+                    if (Int16.TryParse(args, numstyle, fmt, out shortval))
+                    {
+                        //operand = (object)shortval;
+                        res = new CilInstruction<short>(op, shortval, opsize, 0, 0, null);
+                    }
                     break;
 
                 case 4:
                     if (op.OperandType == System.Reflection.Emit.OperandType.ShortInlineR)
                     {
-                        if (Single.TryParse(args, out floatval)) operand = (object)floatval;
+                        if (Single.TryParse(args, out floatval))
+                        {
+                            //operand = (object)floatval;
+                            res = new CilInstruction<float>(op, floatval, opsize, 0, 0, null);
+                        }
                     }
                     else
                     {
                         if (Int32.TryParse(args, numstyle, fmt, out intval))
                         {
-                            operand = (object)intval;
+                            //operand = (object)intval;
+                            res = new CilInstruction<int>(op, intval, opsize, 0, 0, null);
                         }                        
                     }
                     break;
@@ -938,18 +952,78 @@ namespace CilTools.BytecodeAnalysis
                 case 8:
                     if (op.OperandType == System.Reflection.Emit.OperandType.InlineR)
                     {
-                        if (Double.TryParse(args, out doubleval)) operand = (object)doubleval;
+                        if (Double.TryParse(args, out doubleval))
+                        {
+                            //operand = (object)doubleval;
+                            res = new CilInstruction<double>(op, doubleval, opsize, 0, 0, null);
+                        }
                     }
                     else
                     {
-                        if (Int64.TryParse(args, numstyle, fmt, out longval)) operand = (object)longval;
+                        if (Int64.TryParse(args, numstyle, fmt, out longval))
+                        {
+                            //operand = (object)longval;
+                            res = new CilInstruction<long>(op, longval, opsize, 0, 0, null);
+                        }
                     }
                     break;
             }
 
-            res = new CilInstruction(op, operand, opsize, 0, 0, null);                                   
+            //res = new CilInstruction(op, operand, opsize, 0, 0, null);
             
             return res;
         }
     }
+
+    public sealed class CilInstruction : CilInstructionBase
+    {
+        public CilInstruction(
+            OpCode opc, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
+            )
+            : base(opc, byteoffset, ordinalnum, mb)
+        {
+            //do nothing
+        }
+
+        public override object Operand
+        {
+            get { return null; }
+        }
+
+        public override uint OperandSize
+        {
+            get { return 0; }
+        }
+    }
+
+    public sealed class CilInstruction<T> : CilInstructionBase
+    {
+        T _operand;
+        uint _operandsize;
+
+        public CilInstruction(
+            OpCode opc,T operand,uint operandsize,uint byteoffset=0, uint ordinalnum=0, MethodBase mb=null
+            ):base(opc,byteoffset,ordinalnum,mb)
+        {
+            this._operand = operand;
+            this._operandsize = operandsize;
+        }
+
+        public override object Operand
+        {
+            get { return (object)this._operand; }
+        }
+
+        public T OperandValue
+        {
+            get { return this._operand; }
+        }
+
+        public override uint OperandSize
+        {
+            get { return _operandsize; }
+        }
+    }
+
+    
 }

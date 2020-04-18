@@ -421,7 +421,7 @@ namespace CilTools.BytecodeAnalysis
                                 
                 while (true)
                 {                    
-                    CilInstruction instr = node.Instruction;
+                    CilInstructionBase instr = node.Instruction;
 
                     //exception handling clauses
                     IList<ExceptionBlock> started_trys = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
@@ -582,7 +582,7 @@ namespace CilTools.BytecodeAnalysis
         /// Enumerates all instructions represented by this graph's nodes
         /// </summary>
         /// <returns>The collection of instructions</returns>
-        public IEnumerable<CilInstruction> GetInstructions()
+        public IEnumerable<CilInstructionBase> GetInstructions()
         {
             CilGraphNode node = this._Root;
 
@@ -607,7 +607,7 @@ namespace CilTools.BytecodeAnalysis
         /// <remarks>Passing user callback into this method enables you to filter instructions that you want to be emitted 
         /// into target IL generator. 
         /// Return <see langword="true"/> to skip emitting instruction, or <see langword="false"/> to emit instruction.</remarks>
-        public void EmitTo(ILGenerator gen, Func<CilInstruction,bool> callback = null)
+        public void EmitTo(ILGenerator gen, Func<CilInstructionBase,bool> callback = null)
         {
             Dictionary<uint,Label> labels=new Dictionary<uint,Label>();
             Label label;            
@@ -641,7 +641,7 @@ namespace CilTools.BytecodeAnalysis
             //second stage - emit actual IL
             foreach (CilGraphNode node in nodes)
             {
-                CilInstruction instr = node.Instruction;
+                CilInstructionBase instr = node.Instruction;
                                 
                 //exception handling clauses
                 IList<ExceptionBlock> block_starts = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);

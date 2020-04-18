@@ -18,7 +18,7 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// CIL instruction associated with this node
         /// </summary>
-        protected CilInstruction _Instruction;
+        protected CilInstructionBase _Instruction;
 
         /// <summary>
         /// Optional label name associated with this node
@@ -48,7 +48,7 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets CIL instruction associated with this node
         /// </summary>
-        public CilInstruction Instruction { get { return this._Instruction; } }
+        public CilInstructionBase Instruction { get { return this._Instruction; } }
 
         /// <summary>
         /// Gets label name associated with this node
@@ -93,7 +93,7 @@ namespace CilTools.BytecodeAnalysis
         protected CilGraphNode()
         {
             this._Name = "";
-            this._Instruction = new CilInstruction(OpCodes.Nop);
+            this._Instruction = CilInstructionBase.CreateEmptyInstruction(null);
         }
         
         /// <summary>
@@ -120,7 +120,7 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <param name="instr">An instruction associated with this node</param>
         /// <exception cref="System.ArgumentNullException">instr argument is null</exception>
-        public CilGraphNodeMutable(CilInstruction instr)
+        public CilGraphNodeMutable(CilInstructionBase instr)
         {
             if (instr == null) throw new ArgumentNullException("instr", "instr argument cannot be null");
 
@@ -131,7 +131,7 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets or sets CIL instruction associated with this node
         /// </summary>
-        public new CilInstruction Instruction
+        public new CilInstructionBase Instruction
         {
             get { return this._Instruction; }
             set { this._Instruction = value; }

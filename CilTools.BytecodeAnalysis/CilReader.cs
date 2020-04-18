@@ -159,7 +159,7 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.InvalidOperationException">This CilReader is in faulty state or reached the end of source byte array</exception>
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
         /// <returns>CilInstruction retrieved from the source</returns>
-        public CilInstruction Read()
+        public CilInstructionBase Read()
         {            
 
             if (this.state == CilReaderState.Error)
@@ -172,9 +172,9 @@ namespace CilTools.BytecodeAnalysis
                 throw new InvalidOperationException("Cannot read from this CilReader, because it reached the end of source byte array");
             }
                         
-            object operand=null;
+            //object operand=null;
             uint byteoffset;
-            CilInstruction instr;     
+            CilInstructionBase instr=null;
             short op;
             OpCode opcode;
             int size = 0;
@@ -228,7 +228,7 @@ namespace CilTools.BytecodeAnalysis
 
             try
             {
-                if (size > 0)                
+                if (size > 0)
                 {
                     //convert operand into an appropriate type
                     byte[] operand_bytes = new byte[size];
@@ -238,15 +238,25 @@ namespace CilTools.BytecodeAnalysis
                     switch (size)
                     {
 
-                        case 1: operand = (object)(sbyte)operand_bytes[0]; break;
+                        case 1:
+                            //operand = (object)(sbyte)operand_bytes[0];
+                            instr = new CilInstruction<sbyte>(
+                                opcode, (sbyte)operand_bytes[0], (uint)size, byteoffset, current_ordinal, this.Method
+                                );
+                            break;
 
-                        case 2: operand = (object)BitConverter.ToInt16(operand_bytes, 0); break;
+                        case 2:
+                            //operand = (object)BitConverter.ToInt16(operand_bytes, 0);
+                            instr = new CilInstruction<short>(
+                                opcode, BitConverter.ToInt16(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
+                                );
+                            break;
 
                         case 4:
                             if (opcode.OperandType == OperandType.InlineSwitch)
                             {
                                 uint count_labels = BitConverter.ToUInt32(operand_bytes, 0);
-                                int[] labels = new int[count_labels]; 
+                                int[] labels = new int[count_labels];
 
                                 for (uint i = 0; i < count_labels; i++)
                                 {
@@ -254,27 +264,54 @@ namespace CilTools.BytecodeAnalysis
                                     Array.Copy(cilbytes, current_pos, operand_bytes, 0, sizeof(int));
                                     current_pos += sizeof(int);
                                     labels[i] = BitConverter.ToInt32(operand_bytes, 0);
-                                    int target = (int)byteoffset + opcode.Size + size + (int)count_labels*sizeof(int) + labels[i];
+                                    int target = (int)byteoffset + opcode.Size + size + (int)count_labels * sizeof(int) + labels[i];
                                 }
 
-                                operand = (object)labels;
+                                //operand = (object)labels;
+                                instr = new CilInstruction<int[]>(
+                                opcode, labels, (uint)size, byteoffset, current_ordinal, this.Method
+                                );
                             }
-                            else if(opcode.OperandType == OperandType.ShortInlineR)
-                                operand = (object)BitConverter.ToSingle(operand_bytes, 0); 
+                            else if (opcode.OperandType == OperandType.ShortInlineR)
+                            {
+                                //operand = (object)BitConverter.ToSingle(operand_bytes, 0);
+                                instr = new CilInstruction<float>(
+                                 opcode, BitConverter.ToSingle(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
+                                );
+                            }
                             else
-                                operand = (object)BitConverter.ToInt32(operand_bytes, 0);
+                            {
+                                //operand = (object)BitConverter.ToInt32(operand_bytes, 0);
+                                instr = new CilInstruction<int>(
+                                 opcode, BitConverter.ToInt32(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
+                                );
+                            }
                             break;
 
-                        case 8: 
-                            if(opcode.OperandType == OperandType.InlineR)
-                                operand = (object)BitConverter.ToDouble(operand_bytes, 0); 
+                        case 8:
+                            if (opcode.OperandType == OperandType.InlineR)
+                            {
+                                //operand = (object)BitConverter.ToDouble(operand_bytes, 0);
+                                instr = new CilInstruction<double>(
+                                 opcode, BitConverter.ToDouble(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
+                                );
+                            }
                             else
-                                operand = (object)BitConverter.ToInt64(operand_bytes, 0); 
-                            break;   
+                            {
+                                //operand = (object)BitConverter.ToInt64(operand_bytes, 0);
+                                instr = new CilInstruction<long>(
+                                 opcode, BitConverter.ToInt64(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
+                                );
+                            }
+                            break;
                     }
                 }
+                else
+                {
+                    instr = new CilInstruction(opcode, byteoffset, current_ordinal, this.Method);
+                }
 
-                instr = new CilInstruction(opcode, operand, (uint)size, byteoffset, current_ordinal, this.Method);
+                //instr = new CilInstruction(opcode, operand, (uint)size, byteoffset, current_ordinal, this.Method);
                                 
                 current_ordinal++;
 
@@ -298,14 +335,14 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
         /// <exception cref="CilParserException">Unknown error occured</exception>
         /// <returns>A collection of CIL instructions</returns>
-        public IEnumerable<CilInstruction> ReadAll()
+        public IEnumerable<CilInstructionBase> ReadAll()
         {     
             //парсим IL-код...
             while (true)
             {
                 if (this.state != CilReaderState.Reading) break;
 
-                CilInstruction instr = this.Read();                
+                CilInstructionBase instr = this.Read();
                 yield return instr;
             }
 
@@ -321,7 +358,7 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
         /// <exception cref="CilParserException">Unknown error occured</exception>
         /// <returns>A collection of CIL instructions</returns>
-        public static IEnumerable<CilInstruction> GetInstructions(byte[] src)
+        public static IEnumerable<CilInstructionBase> GetInstructions(byte[] src)
         {            
             CilReader reader = new CilReader(src);
             return reader.ReadAll();
@@ -335,7 +372,7 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
         /// <exception cref="CilParserException">Failed to retrieve method body for the method</exception>
         /// <returns>A collection of CIL instructions that form the body of this method</returns>
-        public static IEnumerable<CilInstruction> GetInstructions(MethodBase m)
+        public static IEnumerable<CilInstructionBase> GetInstructions(MethodBase m)
         {
             CilReader reader = new CilReader(m);
             return reader.ReadAll();
