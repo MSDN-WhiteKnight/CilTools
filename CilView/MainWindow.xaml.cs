@@ -115,5 +115,19 @@ namespace CilView
         {
             SetSource(null);
         }
+
+        private void miAbout_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(this, 
+                "CIL View "+typeof(MainWindow).Assembly.GetName().Version.ToString()+Environment.NewLine+
+                "CIL Tools project"+Environment.NewLine+
+                "License: BSD 2.0", 
+                "About");
+        }
+
+        private void miExit_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 }

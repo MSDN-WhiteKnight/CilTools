@@ -108,5 +108,52 @@ namespace CilView
                 }
             }
         }
+
+        private void bSearch_Click(object sender, RoutedEventArgs e)
+        {
+            if (this.processes == null) return;
+
+            string text = tbSearch.Text.Trim();
+            int id;
+            bool has_id = Int32.TryParse(text,out id);
+
+            if (text == String.Empty)
+            {
+                MessageBox.Show(this, "Type process name starting fragment or PID into the text field to search", "Information");
+                return;
+            }
+
+            int start_index = lbProcesses.SelectedIndex+1;
+
+            if (start_index < 0) start_index = 0;
+            if (start_index >= lbProcesses.Items.Count) start_index = 0;
+
+            for (int i = start_index; i < processes.Length; i++)
+            {
+                try
+                {
+                    if (this.processes[i].ProcessName.StartsWith(text))
+                    {
+                        lbProcesses.SelectedIndex = i;
+                        lbProcesses.ScrollIntoView(lbProcesses.SelectedItem);
+                        return;
+                    }
+
+                    if (has_id && this.processes[i].Id == id)
+                    {
+                        lbProcesses.SelectedIndex = i;
+                        lbProcesses.ScrollIntoView(lbProcesses.SelectedItem);
+                        return;
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+
+                }
+            }
+
+            MessageBox.Show(this, "Nothing found for: "+text, "Information");
+            lbProcesses.SelectedItem = null;
+        }
     }
 }
