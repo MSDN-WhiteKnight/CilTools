@@ -44,7 +44,7 @@
   <ItemGroup>
     <Compile Include="CilAnalysis.cs" />
     <Compile Include="CilErrorEventArgs.cs" />
-    <Compile Include="CilInsruction.cs" />
+    <Compile Include="CilInstruction.cs" />
     <Compile Include="CilTokenInstruction.cs" />
     <Compile Include="CustomModifier.cs" />
     <Compile Include="DebugUtils.cs" />
