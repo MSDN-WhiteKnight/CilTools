@@ -18,7 +18,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilReader_HelloWorld()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
-            CilInstructionBase[] instructions = CilReader.GetInstructions(mi).ToArray();
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
                         
             AssertThat.NotEmpty(instructions, "The result of PrintHelloWorld method parsing should not be empty collection");
                         
@@ -61,7 +61,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilReader_CalcSum()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("CalcSum");
-            CilInstructionBase[] instructions = CilReader.GetInstructions(mi).ToArray();
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
             
             AssertThat.NotEmpty(instructions, "The result of CalcSum method parsing should not be empty collection");
 
@@ -102,7 +102,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilReader_StaticFieldAccess()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("SquareFoo");
-            CilInstructionBase[] instructions = CilReader.GetInstructions(mi).ToArray();
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
                         
             AssertThat.NotEmpty(instructions, "The result of SquareFoo method parsing should not be empty collection");
             
@@ -144,7 +144,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilReader_VirtualCall()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("GetInterfaceCount");
-            CilInstructionBase[] instructions = CilReader.GetInstructions(mi).ToArray();
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
             AssertThat.NotEmpty(instructions, "The result of GetInterfaceCount method parsing should not be empty collection");
 
@@ -178,7 +178,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilReader_GenericType()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("PrintList");
-            CilInstructionBase[] instructions = CilReader.GetInstructions(mi).ToArray();
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
             AssertThat.NotEmpty(instructions, "The result of PrintList method parsing should not be empty collection");
                         
@@ -239,7 +239,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilReader_GenericParameter()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("GenerateArray");
-            CilInstructionBase[] instructions = CilReader.GetInstructions(mi).ToArray();
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
             AssertThat.NotEmpty(instructions, "The result of GenerateArray method parsing should not be empty collection");            
                
@@ -256,7 +256,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilReader_ExternalAssemblyAccess()
         {
             MethodInfo mi = typeof(System.IO.Path).GetMethod("GetExtension");
-            CilInstructionBase[] instructions = CilReader.GetInstructions(mi).ToArray();
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
             AssertThat.NotEmpty(instructions, "The result of Path.GetExtension method parsing should not be empty collection");
                   

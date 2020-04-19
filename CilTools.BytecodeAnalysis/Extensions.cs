@@ -43,7 +43,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
         /// <exception cref="CilParserException">Failed to retrieve method body for the method</exception>
         /// <returns>A collection of CIL instructions that form the body of this method</returns>
-        public static IEnumerable<CilInstructionBase> GetInstructions(this MethodBase m)
+        public static IEnumerable<CilInstruction> GetInstructions(this MethodBase m)
         {
             return CilReader.GetInstructions(m);
         }
@@ -53,7 +53,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// </summary>
         /// <param name="sf">A stack frame object</param>
         /// <returns>CIL instruction</returns>
-        public static CilInstructionBase GetExecutingInstruction(this StackFrame sf)
+        public static CilInstruction GetExecutingInstruction(this StackFrame sf)
         {
             return DebugUtils.GetExecutingInstruction(sf);
         }
@@ -63,7 +63,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// </summary>
         /// <param name="sf">A stack frame object</param>
         /// <returns>CIL instruction</returns>
-        public static CilInstructionBase GetLastExecutedInstruction(this StackFrame sf)
+        public static CilInstruction GetLastExecutedInstruction(this StackFrame sf)
         {
             return DebugUtils.GetLastExecutedInstruction(sf);
         }
@@ -73,7 +73,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// </summary>
         /// <param name="trace">Stack trace object</param>
         /// <returns>A collection of CIL instructions</returns>
-        public static IEnumerable<CilInstructionBase> GetInstructions(this StackTrace trace)
+        public static IEnumerable<CilInstruction> GetInstructions(this StackTrace trace)
         {
             return DebugUtils.GetStackTrace(trace);
         }
@@ -202,7 +202,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// </summary>
         /// <param name="ilg">Target IL generator.</param>
         /// <param name="instr">IL instruction to be emitted.</param>
-        public static void EmitInstruction(this ILGenerator ilg, CilInstructionBase instr)
+        public static void EmitInstruction(this ILGenerator ilg, CilInstruction instr)
         {
             instr.EmitTo(ilg);
         }
@@ -218,7 +218,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// <remarks>Passing user callback into this method enables you to filter instructions that you want to be emitted 
         /// into target IL generator. 
         /// Return <see langword="true"/> to skip emitting instruction, or <see langword="false"/> to emit instruction.</remarks>
-        public static void EmitCilGraph(this ILGenerator ilg, CilGraph graph, Func<CilInstructionBase, bool> callback = null)
+        public static void EmitCilGraph(this ILGenerator ilg, CilGraph graph, Func<CilInstruction, bool> callback = null)
         {
             graph.EmitTo(ilg, callback);
         }

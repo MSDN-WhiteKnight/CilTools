@@ -13,9 +13,9 @@ using System.Diagnostics;
 
 namespace CilTools.BytecodeAnalysis
 {
-    public sealed class CilInstruction : CilInstructionBase
+    sealed class CilInstructionImpl : CilInstruction
     {
-        public CilInstruction(
+        public CilInstructionImpl(
             OpCode opc, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
             )
             : base(opc, byteoffset, ordinalnum, mb)
@@ -42,14 +42,24 @@ namespace CilTools.BytecodeAnalysis
         {
             get { return null; }
         }
+
+        public override string ReferencedString
+        {
+            get { return null; }
+        }
+
+        public override Signature ReferencedSignature
+        {
+            get { return null; }
+        }
     }
 
-    public class CilInstruction<T> : CilInstructionBase
+    class CilInstructionImpl<T> : CilInstruction
     {
         protected T _operand;
         uint _operandsize;
 
-        public CilInstruction(
+        public CilInstructionImpl(
             OpCode opc,T operand,uint operandsize,uint byteoffset=0, uint ordinalnum=0, MethodBase mb=null
             ):base(opc,byteoffset,ordinalnum,mb)
         {
@@ -96,6 +106,50 @@ namespace CilTools.BytecodeAnalysis
                 catch (Exception ex)
                 {
                     string error = "Exception occured when trying to resolve member token.";
+                    OnError(this, new CilErrorEventArgs(ex, error));
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a string literal referenced by this instruction, if applicable
+        /// </summary>
+        public override string ReferencedString
+        {
+            get
+            {
+                if (typeof(T) != typeof(int)) return null;
+
+                try
+                {
+                    return this.ResolveStringToken((int)Operand);
+                }
+                catch (Exception ex)
+                {
+                    string error = "Exception occured when trying to resolve string token.";
+                    OnError(this, new CilErrorEventArgs(ex, error));
+                    return null;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Gets a signature referenced by this instruction, if applicable
+        /// </summary>
+        public override Signature ReferencedSignature
+        {
+            get
+            {
+                if (typeof(T) != typeof(int)) return null;
+
+                try
+                {
+                    return this.ResolveSignatureToken((int)Operand);
+                }
+                catch (Exception ex)
+                {
+                    string error = "Exception occured when trying to parse signature.";
                     OnError(this, new CilErrorEventArgs(ex, error));
                     return null;
                 }

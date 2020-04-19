@@ -37,11 +37,11 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="sf">A stack frame object</param>
         /// <exception cref="System.ArgumentNullException">Source stack frame is null</exception>
         /// <returns>CIL instruction</returns>
-        public static CilInstructionBase GetExecutingInstruction(StackFrame sf)
+        public static CilInstruction GetExecutingInstruction(StackFrame sf)
         {
             if (sf == null) throw new ArgumentNullException("sf", "Source stack frame cannot be null");
 
-            CilInstructionBase instr=null, retval=null;
+            CilInstruction instr=null, retval=null;
 
             try
             {
@@ -78,11 +78,11 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="sf">A stack frame object</param>
         /// <exception cref="System.ArgumentNullException">Source stack frame is null</exception>
         /// <returns>CIL instruction</returns>
-        public static CilInstructionBase GetLastExecutedInstruction(StackFrame sf)
+        public static CilInstruction GetLastExecutedInstruction(StackFrame sf)
         {
             if (sf == null) throw new ArgumentNullException("sf", "Source stack frame cannot be null");
 
-            CilInstructionBase instr = null, prev_instr = null, retval = null;
+            CilInstruction instr = null, prev_instr = null, retval = null;
 
             try
             {
@@ -123,7 +123,7 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <returns>CIL instruction</returns>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static CilInstructionBase GetLastExecutedInstruction()
+        public static CilInstruction GetLastExecutedInstruction()
         {
             var trace = new StackTrace();
             var frame = trace.GetFrame(1);
@@ -135,18 +135,18 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <returns>A collection of CIL instructions corresponding to frames of a callstack</returns>
         [MethodImpl(MethodImplOptions.NoInlining)]
-        public static IEnumerable<CilInstructionBase> GetStackTrace()
+        public static IEnumerable<CilInstruction> GetStackTrace()
         {
             var trace = new StackTrace();
             var frames = trace.GetFrames();
             for(int i=1;i<frames.Length;i++)
             {
-                CilInstructionBase instr;
+                CilInstruction instr;
 
                 if (i == 1) instr = DebugUtils.GetLastExecutedInstruction(frames[i]);
                 else instr = DebugUtils.GetExecutingInstruction(frames[i]);
 
-                if (instr == null) instr = CilInstructionBase.CreateEmptyInstruction(frames[i].GetMethod());
+                if (instr == null) instr = CilInstruction.CreateEmptyInstruction(frames[i].GetMethod());
 
                 yield return instr;
             }
@@ -164,13 +164,13 @@ namespace CilTools.BytecodeAnalysis
 
             for (int i = 1; i < frames.Length; i++)
             {
-                CilInstructionBase instr;
+                CilInstruction instr;
                 MethodBase mb=frames[i].GetMethod();
 
                 if (i == 1) instr = DebugUtils.GetLastExecutedInstruction(frames[i]);
                 else instr = DebugUtils.GetExecutingInstruction(frames[i]);
 
-                if (instr == null) instr = CilInstructionBase.CreateEmptyInstruction(mb);
+                if (instr == null) instr = CilInstruction.CreateEmptyInstruction(mb);
 
                 Console.Write("in ");
                 Console.Write(mb.DeclaringType.FullName + ".");
@@ -186,18 +186,18 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="trace">Stack trace object</param>
         /// <exception cref="System.ArgumentNullException">Source stack trace is null</exception>
         /// <returns>A collection of CIL instructions</returns>
-        public static IEnumerable<CilInstructionBase> GetStackTrace(StackTrace trace)
+        public static IEnumerable<CilInstruction> GetStackTrace(StackTrace trace)
         {
             if (trace == null) throw new ArgumentNullException("trace", "Source stack trace cannot be null");
 
             var frames = trace.GetFrames();
             for (int i = 0; i < frames.Length; i++)
             {
-                CilInstructionBase instr;
+                CilInstruction instr;
 
                 instr = DebugUtils.GetExecutingInstruction(frames[i]);
 
-                if (instr == null) instr = CilInstructionBase.CreateEmptyInstruction(frames[i].GetMethod());
+                if (instr == null) instr = CilInstruction.CreateEmptyInstruction(frames[i].GetMethod());
 
                 yield return instr;
             }
@@ -215,7 +215,7 @@ namespace CilTools.BytecodeAnalysis
 
             if (target == null) target = Console.Out;
 
-            foreach (CilInstructionBase instr in instructions)
+            foreach (CilInstruction instr in instructions)
             {
                 target.Write("in ");                
                 target.Write(instr.Method.DeclaringType.FullName + ".");

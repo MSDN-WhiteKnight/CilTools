@@ -288,7 +288,7 @@ namespace CilTools.BytecodeAnalysis
         {
             if (m == null) throw new ArgumentNullException("m","Source method cannot be null");
 
-            List<CilInstructionBase> instructions;
+            List<CilInstruction> instructions;
             List<int> labels = new List<int>();
             m = CustomMethod.PrepareMethod(m);
 
@@ -306,7 +306,7 @@ namespace CilTools.BytecodeAnalysis
             List<CilGraphNodeMutable> nodes = new List<CilGraphNodeMutable>(instructions.Count);
             CilGraphNode[] targets;
                    
-            foreach (CilInstructionBase instr in instructions)
+            foreach (CilInstruction instr in instructions)
             {
                 nodes.Add(new CilGraphNodeMutable(instr)); 
                 if (instr.Operand == null) continue;
@@ -348,7 +348,7 @@ namespace CilTools.BytecodeAnalysis
 
             foreach (CilGraphNodeMutable node in nodes)
             {
-                CilInstructionBase instr = node.Instruction;
+                CilInstruction instr = node.Instruction;
 
                 for (int i = 0; i < labels.Count; i++)
                 {
@@ -365,7 +365,7 @@ namespace CilTools.BytecodeAnalysis
 
             for(int n=0;n<nodes.Count;n++)
             {
-                CilInstructionBase instr = nodes[n].Instruction;
+                CilInstruction instr = nodes[n].Instruction;
 
                 //if instruction references branch target, connect it with respective node
 

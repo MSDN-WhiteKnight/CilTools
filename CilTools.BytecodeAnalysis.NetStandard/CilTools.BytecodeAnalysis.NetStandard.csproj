@@ -26,6 +26,8 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\CilGraph.cs" Link="CilGraph.cs" />
     <Compile Include="..\CilTools.BytecodeAnalysis\CilGraphNode.cs" Link="CilGraphNode.cs" />
     <Compile Include="..\CilTools.BytecodeAnalysis\CilInstruction.cs" Link="CilInstruction.cs" />
+    <Compile Include="..\CilTools.BytecodeAnalysis\CilInsructionImpl.cs" Link="CilInsructionImpl.cs" />
+    <Compile Include="..\CilTools.BytecodeAnalysis\CilTokenInstruction.cs" Link="CilTokenInstruction.cs" />
     <Compile Include="..\CilTools.BytecodeAnalysis\CilReader.cs" Link="CilReader.cs" />
     <Compile Include="..\CilTools.BytecodeAnalysis\Extensions.cs" Link="Extensions.cs" />  
     <Compile Include="..\CilTools.BytecodeAnalysis\CustomModifier.cs" Link="CustomModifier.cs" />  
@@ -39,9 +41,7 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\CustomMethod.cs"  Link="CustomMethod.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ITokenResolver.cs" Link="ITokenResolver.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\LocalVariable.cs" Link="LocalVariable.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ExceptionBlock.cs" Link="ExceptionBlock.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\CilInsructionBase.cs" Link="CilInsructionBase.cs" />
-    <Compile Include="..\CilTools.BytecodeAnalysis\CilTokenInstruction.cs" Link="CilTokenInstruction.cs" />	
+    <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ExceptionBlock.cs" Link="ExceptionBlock.cs"/>    	
   </ItemGroup>
 
   <ItemGroup>

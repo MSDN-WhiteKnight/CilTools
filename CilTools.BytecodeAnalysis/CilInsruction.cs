@@ -17,7 +17,7 @@ namespace CilTools.BytecodeAnalysis
     /// Represents CIL instruction, a main structural element of the method body which consists of operation code and operand.
     /// </summary>
     /// <remarks>To retrieve a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class.</remarks>
-    public abstract class CilInstructionBase
+    public abstract class CilInstruction
     {
         protected static bool ReferencesMethodToken(OpCode op)
         {
@@ -49,9 +49,7 @@ namespace CilTools.BytecodeAnalysis
             return (op.Equals(OpCodes.Ldarg) || op.Equals(OpCodes.Ldarg_S) || op.Equals(OpCodes.Ldarga)
                 || op.Equals(OpCodes.Ldarga_S));
         }
-
         
-
         /// <summary>
         /// Raised when error occurs in one of the methods in this class
         /// </summary>
@@ -173,7 +171,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="ordinalnum">Ordinal number</param>
         /// <param name="mb">Owning method</param>
         /// <remarks>Do not use this constructor directly. To retrieve a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class instead.</remarks>
-        protected CilInstructionBase(
+        protected CilInstruction(
             OpCode opc, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
             )
         {
@@ -190,8 +188,22 @@ namespace CilTools.BytecodeAnalysis
         /// <returns>Empty CilInstruction object</returns>
         public static CilInstruction CreateEmptyInstruction(MethodBase mb)
         {
-            CilInstruction instr = new CilInstruction(OpCodes.Nop, 0, 0, mb);
+            CilInstructionImpl instr = new CilInstructionImpl(OpCodes.Nop, 0, 0, mb);
             return instr;
+        }
+
+        public static CilInstruction Create<T>(
+            OpCode opc, T operand, uint operandsize, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
+            )
+        {
+            return new CilInstructionImpl<T>(opc, operand, operandsize, byteoffset, ordinalnum, mb);
+        }
+
+        public static CilInstruction Create(
+            OpCode opc, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
+            )
+        {
+            return new CilInstructionImpl(opc, byteoffset, ordinalnum, mb);
         }
 
         /// <summary>
@@ -199,7 +211,7 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         public abstract Type OperandType { get; }
 
-        protected MemberInfo ResolveMemberToken(int token)
+        internal MemberInfo ResolveMemberToken(int token)
         {
             if (this.Method == null) return null;
 
@@ -236,6 +248,37 @@ namespace CilTools.BytecodeAnalysis
             else return null;
         }
 
+        internal string ResolveStringToken(int token)
+        {
+            if (this.Method == null) return null;
+            if(!this.OpCode.Equals(OpCodes.Ldstr)) return null;
+
+            return (Method as CustomMethod).TokenResolver.ResolveString((int)Operand);
+        }
+
+        internal Signature ResolveSignatureToken(int token)
+        {
+            if (this.Method == null) return null;
+            if (!this.OpCode.Equals(OpCodes.Calli)) return null;
+
+            //standalone signature token            
+            byte[] sig = null;
+
+            try
+            {
+                sig = (Method as CustomMethod).TokenResolver.ResolveSignature(token);
+            }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to resolve signature.";
+                OnError(this, new CilErrorEventArgs(ex, error));
+                return null;
+            }
+
+            Signature res = new Signature(sig, (Method as CustomMethod).TokenResolver);
+            return res;
+        }
+
         /// <summary>
         /// Gets a member (type, field or method) referenced by this instruction, if applicable
         /// </summary>
@@ -258,69 +301,17 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets a string literal referenced by this instruction, if applicable
         /// </summary>
-        public string ReferencedString
+        public abstract string ReferencedString
         {
-            get
-            {
-                if (this.Method == null) return null;
-                if (this.Operand == null) return null;
-
-                try
-                {
-                    if (this.OpCode.Equals(OpCodes.Ldstr))
-                    {
-                        string s = (Method as CustomMethod).TokenResolver.ResolveString((int)Operand);
-                        return s;
-                    }
-                    else return null;
-                }
-                catch (Exception ex)
-                {
-                    string error = "Exception occured when trying to resolve string token.";
-                    OnError(this, new CilErrorEventArgs(ex, error));
-                    return null;
-                }
-            }
+            get;
         }
 
         /// <summary>
         /// Gets a signature referenced by this instruction, if applicable
         /// </summary>
-        public Signature ReferencedSignature
+        public abstract Signature ReferencedSignature
         {
-            get
-            {
-                if (this.Method == null) return null;
-                if (this.Operand == null) return null;
-                if (!this.OpCode.Equals(OpCodes.Calli)) return null;
-
-                //standalone signature token
-                int token = (int)Operand;
-                byte[] sig = null;
-
-                try
-                {
-                    sig = (Method as CustomMethod).TokenResolver.ResolveSignature(token);
-                }
-                catch (Exception ex)
-                {
-                    string error = "Exception occured when trying to resolve signature.";
-                    OnError(this, new CilErrorEventArgs(ex, error));
-                    return null;
-                }
-
-                try
-                {
-                    Signature res = new Signature(sig, (Method as CustomMethod).TokenResolver);
-                    return res;
-                }
-                catch (Exception ex)
-                {
-                    string error = "Exception occured when trying to parse signature.";
-                    OnError(this, new CilErrorEventArgs(ex, error));
-                    return null;
-                }
-            }
+            get;
         }
 
         /// <summary>
@@ -746,11 +737,11 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <param name="str">The line of CIL code representing instruction</param>
         /// <returns>CilInstruction object for the specified string</returns>
-        public static CilInstructionBase Parse(string str)
+        public static CilInstruction Parse(string str)
         {
             if (String.IsNullOrEmpty(str)) throw new ArgumentException("str parameter can't be null or empty string");
 
-            CilInstructionBase res = null;
+            CilInstruction res = null;
 
             List<string> tokens = new List<string>(10);
             StringBuilder curr_token = new StringBuilder(100);
@@ -900,13 +891,13 @@ namespace CilTools.BytecodeAnalysis
             {
 
                 case 0:
-                    res = new CilInstruction(op, 0, 0, null);
+                    res = new CilInstructionImpl(op, 0, 0, null);
                     break;
                 case 1:
                     if (SByte.TryParse(args, numstyle, fmt, out byteval))
                     {
                         //operand = (object)byteval;
-                        res = new CilInstruction<sbyte>(op, byteval, opsize, 0, 0, null);
+                        res = new CilInstructionImpl<sbyte>(op, byteval, opsize, 0, 0, null);
                     }
                     break;
 
@@ -914,7 +905,7 @@ namespace CilTools.BytecodeAnalysis
                     if (Int16.TryParse(args, numstyle, fmt, out shortval))
                     {
                         //operand = (object)shortval;
-                        res = new CilInstruction<short>(op, shortval, opsize, 0, 0, null);
+                        res = new CilInstructionImpl<short>(op, shortval, opsize, 0, 0, null);
                     }
                     break;
 
@@ -924,7 +915,7 @@ namespace CilTools.BytecodeAnalysis
                         if (Single.TryParse(args, out floatval))
                         {
                             //operand = (object)floatval;
-                            res = new CilInstruction<float>(op, floatval, opsize, 0, 0, null);
+                            res = new CilInstructionImpl<float>(op, floatval, opsize, 0, 0, null);
                         }
                     }
                     else
@@ -932,7 +923,7 @@ namespace CilTools.BytecodeAnalysis
                         if (Int32.TryParse(args, numstyle, fmt, out intval))
                         {
                             //operand = (object)intval;
-                            res = new CilInstruction<int>(op, intval, opsize, 0, 0, null);
+                            res = new CilInstructionImpl<int>(op, intval, opsize, 0, 0, null);
                         }
                     }
                     break;
@@ -943,7 +934,7 @@ namespace CilTools.BytecodeAnalysis
                         if (Double.TryParse(args, out doubleval))
                         {
                             //operand = (object)doubleval;
-                            res = new CilInstruction<double>(op, doubleval, opsize, 0, 0, null);
+                            res = new CilInstructionImpl<double>(op, doubleval, opsize, 0, 0, null);
                         }
                     }
                     else
@@ -951,7 +942,7 @@ namespace CilTools.BytecodeAnalysis
                         if (Int64.TryParse(args, numstyle, fmt, out longval))
                         {
                             //operand = (object)longval;
-                            res = new CilInstruction<long>(op, longval, opsize, 0, 0, null);
+                            res = new CilInstructionImpl<long>(op, longval, opsize, 0, 0, null);
                         }
                     }
                     break;
