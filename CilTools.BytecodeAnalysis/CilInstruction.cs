@@ -60,6 +60,14 @@ namespace CilTools.BytecodeAnalysis
                 opc.OperandType == System.Reflection.Emit.OperandType.InlineType;
         }
 
+        internal static bool ReferencesMemberToken(OpCode opc)
+        {
+            return opc.OperandType == System.Reflection.Emit.OperandType.InlineMethod ||
+                opc.OperandType == System.Reflection.Emit.OperandType.InlineField ||
+                opc.OperandType == System.Reflection.Emit.OperandType.InlineTok || 
+                opc.OperandType == System.Reflection.Emit.OperandType.InlineType;
+        }
+
         /// <summary>
         /// A reference to a method which this instruction belongs to
         /// </summary>
@@ -220,18 +228,10 @@ namespace CilTools.BytecodeAnalysis
             {
                 m_args = Method.GetGenericArguments();
             }
-
-            if (ReferencesMethodToken(this.OpCode))
+            
+            if(ReferencesMemberToken(this.OpCode))
             {
-                return (Method as CustomMethod).TokenResolver.ResolveMethod(token, t_args, m_args);
-            }
-            else if (ReferencesFieldToken(this.OpCode))
-            {
-                return (Method as CustomMethod).TokenResolver.ResolveField(token, t_args, m_args);
-            }
-            else if (ReferencesTypeToken(this.OpCode))
-            {
-                return (Method as CustomMethod).TokenResolver.ResolveType(token, t_args, m_args);
+                return (Method as CustomMethod).TokenResolver.ResolveMember(token, t_args, m_args);
             }
             else return null;
         }
@@ -396,6 +396,36 @@ namespace CilTools.BytecodeAnalysis
                 {
                     ilg.Emit(this.OpCode, (ConstructorInfo)this.ReferencedMember);
                 }
+                else if (ReferencesMemberToken(this.OpCode))
+                {
+                    if (this.ReferencedMember is MethodInfo)
+                    {
+                        ilg.Emit(this.OpCode, (MethodInfo)this.ReferencedMember);
+                    }
+                    else if (this.ReferencedMember is ConstructorInfo)
+                    {
+                        ilg.Emit(this.OpCode, (ConstructorInfo)this.ReferencedMember);
+                    }
+                    else if (this.ReferencedMember is Type)
+                    {
+                        ilg.Emit(this.OpCode, (Type)this.ReferencedMember);
+                    }
+                    else if (this.ReferencedMember is FieldInfo)
+                    {
+                        ilg.Emit(this.OpCode, (FieldInfo)this.ReferencedMember);
+                    }
+                    else
+                    {
+                        string s;
+
+                        if (this.ReferencedMember != null) s = this.ReferencedMember.Name;
+                        else s = "(null)";
+
+                        throw new NotSupportedException(
+                            "Unknown member type: " + s +" (OpCode: " + this.OpCode.ToString()+")"
+                            );
+                    }
+                }
                 else if (this.OpCode.OperandType != System.Reflection.Emit.OperandType.InlineBrTarget)
                 {
                     //emit all int32-referencing instructions, except jumps
@@ -445,35 +475,6 @@ namespace CilTools.BytecodeAnalysis
                 return opcodes[name];
             }
         }
-
-        static uint GetOperandSize(OpCode opcode)
-        {
-            uint size = 0;
-            switch (opcode.OperandType)
-            {
-                case System.Reflection.Emit.OperandType.InlineBrTarget: size = 4; break;
-                case System.Reflection.Emit.OperandType.InlineField: size = 4; break;
-                case System.Reflection.Emit.OperandType.InlineMethod: size = 4; break;
-                case System.Reflection.Emit.OperandType.InlineSig: size = 4; break;
-                case System.Reflection.Emit.OperandType.InlineTok: size = 4; break;
-                case System.Reflection.Emit.OperandType.InlineType: size = 4; break;
-                case System.Reflection.Emit.OperandType.InlineI: size = 4; break;
-                case System.Reflection.Emit.OperandType.InlineI8: size = 8; break;
-                case System.Reflection.Emit.OperandType.InlineNone: size = 0; break;
-                case System.Reflection.Emit.OperandType.InlineR: size = 8; break;
-                case System.Reflection.Emit.OperandType.InlineString: size = 4; break;
-                case System.Reflection.Emit.OperandType.InlineSwitch: size = 4; break;
-                case System.Reflection.Emit.OperandType.InlineVar: size = 2; break;
-                case System.Reflection.Emit.OperandType.ShortInlineBrTarget: size = 1; break;
-                case System.Reflection.Emit.OperandType.ShortInlineI: size = 1; break;
-                case System.Reflection.Emit.OperandType.ShortInlineR: size = 4; break;
-                case System.Reflection.Emit.OperandType.ShortInlineVar: size = 1; break;
-                default:
-                    throw new NotSupportedException("Unsupported operand type: " + opcode.OperandType.ToString());
-            }
-            return size;
-        }
-
 
         /// <summary>
         /// Converts CIL instruction textual representation into the corresponding CilInstruction object
@@ -611,7 +612,7 @@ namespace CilTools.BytecodeAnalysis
             args = args.Trim();
 
             OpCode op = FindOpCode(opname);
-            uint opsize = GetOperandSize(op);
+            uint opsize = CilReader.GetOperandSize(op);
 
             var numstyle = System.Globalization.NumberStyles.Integer;
             if (args.StartsWith("0x"))

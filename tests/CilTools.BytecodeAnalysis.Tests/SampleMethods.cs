@@ -111,5 +111,10 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         public static int f;
+
+        public static void TestTokens()
+        {
+            Console.WriteLine(typeof(int));
+        }
     }
 }
