@@ -90,7 +90,7 @@ namespace CilView
 
             using (wr)
             {
-                CilGraph gr = CilAnalysis.GetGraph(mb);
+                CilGraph gr = CilGraph.Create(mb);
                 gr.Print(wr, true, true, true, true);
                 wr.Flush();
                 tbMainContent.Text = sb.ToString();

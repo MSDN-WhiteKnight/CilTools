@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Diagnostics.cs" />
     <Compile Include="CilAnalysis.cs" />
     <Compile Include="CilErrorEventArgs.cs" />
     <Compile Include="CilInstruction.cs" />

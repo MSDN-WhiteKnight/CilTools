@@ -160,19 +160,21 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.NotSupportedException">CilReader encountered unknown opcode</exception>
         /// <returns>CilInstruction retrieved from the source</returns>
         public CilInstruction Read()
-        {            
-
+        {
             if (this.state == CilReaderState.Error)
             {
-                throw new InvalidOperationException("Cannot read from this CilReader, because previous read operation resulted in error");
+                throw new InvalidOperationException(
+                    "Cannot read from this CilReader, because previous read operation resulted in error"
+                    );
             }
 
             if (this.state == CilReaderState.End)
             {
-                throw new InvalidOperationException("Cannot read from this CilReader, because it reached the end of source byte array");
+                throw new InvalidOperationException(
+                    "Cannot read from this CilReader, because it reached the end of source byte array"
+                    );
             }
-                        
-            //object operand=null;
+            
             uint byteoffset;
             CilInstruction instr=null;
             short op;
@@ -224,7 +226,7 @@ namespace CilTools.BytecodeAnalysis
                 default:
                     this.state = CilReaderState.Error;
                     throw new NotSupportedException("Unsupported operand type: " + opcode.OperandType.ToString());
-            }            
+            }
 
             try
             {
@@ -237,16 +239,15 @@ namespace CilTools.BytecodeAnalysis
 
                     switch (size)
                     {
-
                         case 1:
-                            //operand = (object)(sbyte)operand_bytes[0];
+                            
                             instr = new CilInstructionImpl<sbyte>(
                                 opcode, (sbyte)operand_bytes[0], (uint)size, byteoffset, current_ordinal, this.Method
                                 );
                             break;
 
                         case 2:
-                            //operand = (object)BitConverter.ToInt16(operand_bytes, 0);
+                            
                             instr = new CilInstructionImpl<short>(
                                 opcode, BitConverter.ToInt16(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
                                 );
@@ -266,39 +267,47 @@ namespace CilTools.BytecodeAnalysis
                                     labels[i] = BitConverter.ToInt32(operand_bytes, 0);
                                     int target = (int)byteoffset + opcode.Size + size + (int)count_labels * sizeof(int) + labels[i];
                                 }
-
-                                //operand = (object)labels;
+                                
                                 instr = new CilInstructionImpl<int[]>(
                                 opcode, labels, (uint)size, byteoffset, current_ordinal, this.Method
                                 );
                             }
                             else if (opcode.OperandType == OperandType.ShortInlineR)
                             {
-                                //operand = (object)BitConverter.ToSingle(operand_bytes, 0);
                                 instr = new CilInstructionImpl<float>(
                                  opcode, BitConverter.ToSingle(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
                                 );
                             }
                             else
                             {
-                                //operand = (object)BitConverter.ToInt32(operand_bytes, 0);
-                                instr = new CilInstructionImpl<int>(
-                                 opcode, BitConverter.ToInt32(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
-                                );
+                                if (CilInstruction.ReferencesToken(opcode))
+                                {
+                                    instr = new CilTokenInstruction(
+                                        opcode,
+                                        BitConverter.ToInt32(operand_bytes, 0),
+                                        (uint)size, byteoffset, current_ordinal, this.Method
+                                        );
+                                }
+                                else
+                                {
+                                    instr = new CilInstructionImpl<int>(
+                                     opcode, 
+                                     BitConverter.ToInt32(operand_bytes, 0), 
+                                     (uint)size, byteoffset, current_ordinal, this.Method
+                                    );
+                                }
                             }
                             break;
 
                         case 8:
                             if (opcode.OperandType == OperandType.InlineR)
                             {
-                                //operand = (object)BitConverter.ToDouble(operand_bytes, 0);
                                 instr = new CilInstructionImpl<double>(
                                  opcode, BitConverter.ToDouble(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
                                 );
                             }
                             else
                             {
-                                //operand = (object)BitConverter.ToInt64(operand_bytes, 0);
                                 instr = new CilInstructionImpl<long>(
                                  opcode, BitConverter.ToInt64(operand_bytes, 0), (uint)size, byteoffset, current_ordinal, this.Method
                                 );
@@ -310,9 +319,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     instr = new CilInstructionImpl(opcode, byteoffset, current_ordinal, this.Method);
                 }
-
-                //instr = new CilInstruction(opcode, operand, (uint)size, byteoffset, current_ordinal, this.Method);
-                                
+                
                 current_ordinal++;
 
                 if (current_pos >= cilbytes.Length)

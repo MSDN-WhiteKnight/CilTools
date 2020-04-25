@@ -17,7 +17,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilGraph_HelloWorld()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
-            CilGraph graph = CilAnalysis.GetGraph(mi);
+            CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
 
             CilGraphNode[] nodes = graph.GetNodes().ToArray();
@@ -80,7 +80,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilGraph_Loop()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("PrintTenNumbers");
-            CilGraph graph = CilAnalysis.GetGraph(mi);
+            CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
 
             CilGraphNode[] nodes = graph.GetNodes().ToArray();
@@ -130,7 +130,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilGraph_Exceptions()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("DivideNumbers");
-            CilGraph graph = CilAnalysis.GetGraph(mi);
+            CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
 
             //Test conversion to string
@@ -183,7 +183,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             DynamicMethod dm = new DynamicMethod("CilGraphTests_EmitTest", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
             ILGenerator ilg = dm.GetILGenerator(512);
             MethodInfo miTemplate = typeof(SampleMethods).GetMethod("TemplateMethod");
-            CilGraph graph = CilAnalysis.GetGraph(miTemplate);
+            CilGraph graph = CilGraph.Create(miTemplate);
             MethodInfo miTarget = typeof(SampleMethods).GetMethod("IncrementCounter");
 
             graph.EmitTo(ilg, (instr) =>
@@ -214,7 +214,7 @@ namespace CilTools.BytecodeAnalysis.Tests
                 );
             ILGenerator ilg = dm.GetILGenerator(512);
             MethodInfo mi = typeof(SampleMethods).GetMethod("SwitchTest");
-            CilGraph graph = CilAnalysis.GetGraph(mi);            
+            CilGraph graph = CilGraph.Create(mi);
             
             graph.EmitTo(ilg);
 
@@ -269,7 +269,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             int res = deleg("Hello, world!");
 
             //create CilGraph from DynamicMethod
-            CilGraph graph = CilAnalysis.GetGraph(dm);
+            CilGraph graph = CilGraph.Create(dm);
 
             //verify CilGraph
             AssertThat.IsCorrect(graph);
@@ -366,7 +366,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             deleg("Hello from System.Reflection.Emit!");
 
             //create CilGraph from DynamicMethod
-            CilGraph graph = CilAnalysis.GetGraph(dm);
+            CilGraph graph = CilGraph.Create(dm);
 
             //verify CilGraph
             AssertThat.IsCorrect(graph);

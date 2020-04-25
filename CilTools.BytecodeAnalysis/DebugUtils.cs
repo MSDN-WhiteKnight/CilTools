@@ -18,20 +18,6 @@ namespace CilTools.BytecodeAnalysis
     public static class DebugUtils
     {
         /// <summary>
-        /// Raised when error occurs in one of the methods in this class
-        /// </summary>
-        public static event EventHandler<CilErrorEventArgs> Error;
-
-        static void OnError(object sender, CilErrorEventArgs e)
-        {
-            EventHandler<CilErrorEventArgs> handler = Error;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
-        }
-
-        /// <summary>
         /// Gets an currently executing instruction corresponding to the specified stack frame
         /// </summary>
         /// <param name="sf">A stack frame object</param>
@@ -66,7 +52,7 @@ namespace CilTools.BytecodeAnalysis
             catch (Exception ex)
             {
                 string error = "Exception occured when trying to get executing exception from stack frame.";
-                OnError(sf, new CilErrorEventArgs(ex, error));  
+                Diagnostics.OnError(sf, new CilErrorEventArgs(ex, error));  
             }
 
             return retval;
@@ -112,7 +98,7 @@ namespace CilTools.BytecodeAnalysis
             catch (Exception ex)
             {
                 string error = "Exception occured when trying to get last executed exception from stack frame.";
-                OnError(sf, new CilErrorEventArgs(ex, error));  
+                Diagnostics.OnError(sf, new CilErrorEventArgs(ex, error));  
             }
 
             return retval;

@@ -18,7 +18,7 @@ namespace CilTools.BytecodeAnalysis
     /// <remarks>
     /// CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges representing how control flows between them when runtime executes method. The root of the graph is the first instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) and, if it's a jump instruction, a reference to the branch target (an instruction that would be executed if the condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, a string that identify it. The last instruction of the method has null as its next instruction reference.
     /// 
-    /// Use <see cref="CilAnalysis.GetGraph"/> method to create CIL graph for a method.
+    /// Use <see cref="CilGraph.Create"/> method to create CIL graph for a method.
     /// </remarks>
     public class CilGraph
     {
@@ -52,26 +52,12 @@ namespace CilTools.BytecodeAnalysis
         {
             public bool Equals(ExceptionBlock x, ExceptionBlock y)
             {
-                /*if (x == null)
-                {
-                    if (y == null) return true;
-                    else return false;
-                }
-                else
-                {
-                    if (y != null)
-                    {
-                        return x.TryOffset == y.TryOffset && x.TryLength == y.TryLength;
-                    }
-                    else return false;
-                }*/
                 return x.TryOffset == y.TryOffset && x.TryLength == y.TryLength;
             }
 
             public int GetHashCode(ExceptionBlock obj)
             {
-                /*if (obj == null) return 0;
-                else*/ return obj.TryOffset + obj.TryLength;
+                return obj.TryOffset + obj.TryLength;
             }
         }
 
@@ -127,41 +113,176 @@ namespace CilTools.BytecodeAnalysis
         }
 
         /// <summary>
-        /// Raised when error occurs in one of the methods in this class
+        /// Returns <see cref="CilGraph"/> that represents a specified method
         /// </summary>
-        public static event EventHandler<CilErrorEventArgs> Error;
-
-        /// <summary>
-        /// Raises Error event
-        /// </summary>
-        /// <param name="sender">object that generated event</param>
-        /// <param name="e">event arguments</param>
-        protected static void OnError(object sender, CilErrorEventArgs e)
+        /// <param name="m">Method for which to build CIL graph</param>
+        /// <exception cref="System.ArgumentNullException">Source method is null</exception>
+        /// <returns>CIL graph object</returns>
+        public static CilGraph Create(MethodBase m)
         {
-            EventHandler<CilErrorEventArgs> handler = Error;
-            if (handler != null)
+            if (m == null) throw new ArgumentNullException("m", "Source method cannot be null");
+
+            List<CilInstruction> instructions;
+            List<int> labels = new List<int>();
+            m = CustomMethod.PrepareMethod(m);
+
+            try
             {
-                handler(sender, e);
+                instructions = CilReader.GetInstructions(m).ToList();
             }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to read method's instructions.";
+                Diagnostics.OnError(m, new CilErrorEventArgs(ex, error));
+                return new CilGraph(null, m);
+            }
+
+            List<CilGraphNodeMutable> nodes = new List<CilGraphNodeMutable>(instructions.Count);
+            CilGraphNode[] targets;
+
+            foreach (CilInstruction instr in instructions)
+            {
+                nodes.Add(new CilGraphNodeMutable(instr));
+                if (instr.Operand == null) continue;
+
+                int target;
+
+                //if instruction references branch targets, add byte offset into labels
+                switch (instr.OpCode.OperandType)
+                {
+                    case OperandType.ShortInlineBrTarget:
+                        target = (sbyte)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
+                        if (!labels.Contains(target)) labels.Add(target);
+                        break;
+
+                    case OperandType.InlineBrTarget:
+                        target = (int)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
+                        if (!labels.Contains(target)) labels.Add(target);
+                        break;
+
+                    case OperandType.InlineSwitch:
+                        int[] arr = instr.Operand as int[];
+                        if (arr == null) break;
+
+                        for (int i = 0; i < arr.Length; i++)
+                        {
+                            target = arr[i] + (int)instr.ByteOffset + (int)instr.TotalSize;
+                            if (!labels.Contains(target)) labels.Add(target);
+                        }
+
+                        break;
+                }
+            }
+
+            labels.Sort();
+
+            targets = new CilGraphNodeMutable[labels.Count];
+
+            //find all nodes that are referenced as labels and give them names
+
+            foreach (CilGraphNodeMutable node in nodes)
+            {
+                CilInstruction instr = node.Instruction;
+
+                for (int i = 0; i < labels.Count; i++)
+                {
+                    if (instr.ByteOffset == labels[i])
+                    {
+                        node.Name = " IL_" + (i + 1).ToString().PadLeft(4, '0');
+                        targets[i] = node;
+                        break;
+                    }
+                }
+            }
+
+            //build the final graph
+
+            for (int n = 0; n < nodes.Count; n++)
+            {
+                CilInstruction instr = nodes[n].Instruction;
+
+                //if instruction references branch target, connect it with respective node
+
+                if (instr.OpCode.OperandType == OperandType.ShortInlineBrTarget && instr.Operand != null)
+                {
+                    int target = (sbyte)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
+
+                    for (int i = 0; i < labels.Count; i++)
+                    {
+                        if (target == labels[i])
+                        {
+                            nodes[n].BranchTarget = targets[i];
+                            break;
+                        }
+                    }
+                }
+                else if (instr.OpCode.OperandType == OperandType.InlineBrTarget && instr.Operand != null)
+                {
+                    int target = (int)instr.Operand + (int)instr.ByteOffset + (int)instr.TotalSize;
+
+                    for (int i = 0; i < labels.Count; i++)
+                    {
+                        if (target == labels[i])
+                        {
+                            nodes[n].BranchTarget = targets[i];
+                            break;
+                        }
+                    }
+                }
+                else if (instr.OpCode.OperandType == OperandType.InlineSwitch && instr.Operand != null)
+                {
+                    //for switch instruction, set array of target instructions
+
+                    int[] arr = instr.Operand as int[];
+                    if (arr != null)
+                    {
+                        CilGraphNode[] swt = new CilGraphNode[arr.Length];
+
+                        for (int j = 0; j < arr.Length; j++)
+                        {
+                            int target = arr[j] + (int)instr.ByteOffset + (int)instr.TotalSize;
+
+                            for (int i = 0; i < labels.Count; i++)
+                            {
+                                if (target == labels[i])
+                                {
+                                    swt[j] = targets[i];
+                                    break;
+                                }
+                            }
+                        }
+
+                        nodes[n].SetSwitchTargets(swt);
+                    }
+                }
+
+                //connect previous and next nodes
+                if (n > 0) nodes[n].Previous = nodes[n - 1];
+                if (n < nodes.Count - 1) nodes[n].Next = nodes[n + 1];
+
+            }
+
+            return new CilGraph(nodes[0], m); //first node is a root node
         }
 
         /// <summary>
         /// A root node of this graph (the first instruction in the method)
         /// </summary>
-        protected CilGraphNode _Root;
+        CilGraphNode _Root;
 
         /// <summary>
         /// A method object for which this graph is built
         /// </summary>
-        protected MethodBase _Method;
+        MethodBase _Method;
 
         /// <summary>
         /// Creates new CIL graph. (Insfrastructure; not intended for user code)
         /// </summary>
         /// <param name="root">Root node</param>
         /// <param name="mb">Method associated with this graph object</param>
-        /// <remarks>Use <see cref="CilAnalysis.GetGraph"/> method to create CIL graph for a method instead of using this contructor.</remarks>
-        public CilGraph(CilGraphNode root, MethodBase mb)
+        /// <remarks>Use <see cref="CilGraph.Create"/> method to create CIL graph for a method instead of using this 
+        /// contructor.</remarks>
+        internal CilGraph(CilGraphNode root, MethodBase mb)
         {
             this._Root = root;
             this._Method = CustomMethod.PrepareMethod(mb);
@@ -223,7 +344,7 @@ namespace CilTools.BytecodeAnalysis
             catch (Exception ex)
             {
                 string error = "Exception occured when trying to get method header.";
-                OnError(this, new CilErrorEventArgs(ex, error));
+                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
             }
 
             try
@@ -233,7 +354,7 @@ namespace CilTools.BytecodeAnalysis
             catch (Exception ex)
             {
                 string error = "Exception occured when trying to get local variables.";
-                OnError(this, new CilErrorEventArgs(ex, error));
+                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
             }
 
             if (IncludeSignature)
@@ -386,7 +507,10 @@ namespace CilTools.BytecodeAnalysis
                 catch (InvalidOperationException) { }
                 catch (TypeLoadException ex)
                 {
-                    OnError(this, new CilErrorEventArgs(ex, "Failed to load attributes for " + this._Method.ToString()));
+                    Diagnostics.OnError(
+                        this, 
+                        new CilErrorEventArgs(ex, "Failed to load attributes for " + this._Method.ToString())
+                        );
                 }
             }
 

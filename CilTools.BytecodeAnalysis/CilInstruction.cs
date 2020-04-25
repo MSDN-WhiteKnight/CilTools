@@ -19,85 +19,66 @@ namespace CilTools.BytecodeAnalysis
     /// <remarks>To retrieve a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class.</remarks>
     public abstract class CilInstruction
     {
-        protected static bool ReferencesMethodToken(OpCode op)
+        internal static bool ReferencesMethodToken(OpCode op)
         {
             return (op.Equals(OpCodes.Call) || op.Equals(OpCodes.Callvirt) || op.Equals(OpCodes.Newobj)
                 || op.Equals(OpCodes.Ldftn) || op.Equals(OpCodes.Ldvirtftn));
         }
 
-        protected static bool ReferencesFieldToken(OpCode op)
+        internal static bool ReferencesFieldToken(OpCode op)
         {
             return (op.Equals(OpCodes.Stfld) || op.Equals(OpCodes.Stsfld) ||
                     op.Equals(OpCodes.Ldsfld) || op.Equals(OpCodes.Ldfld));
         }
 
-        protected static bool ReferencesTypeToken(OpCode op)
+        internal static bool ReferencesTypeToken(OpCode op)
         {
             return (op.Equals(OpCodes.Newarr) || op.Equals(OpCodes.Box) || op.Equals(OpCodes.Isinst)
                 || op.Equals(OpCodes.Castclass) || op.Equals(OpCodes.Initobj)
                 || op.Equals(OpCodes.Unbox) || op.Equals(OpCodes.Unbox_Any));
         }
 
-        protected static bool ReferencesLocal(OpCode op)
+        internal static bool ReferencesLocal(OpCode op)
         {
             return (op.Equals(OpCodes.Ldloc) || op.Equals(OpCodes.Ldloca) || op.Equals(OpCodes.Ldloc_S)
                 || op.Equals(OpCodes.Ldloca_S) || op.Equals(OpCodes.Stloc) || op.Equals(OpCodes.Stloc_S));
         }
 
-        protected static bool ReferencesParam(OpCode op)
+        internal static bool ReferencesParam(OpCode op)
         {
             return (op.Equals(OpCodes.Ldarg) || op.Equals(OpCodes.Ldarg_S) || op.Equals(OpCodes.Ldarga)
                 || op.Equals(OpCodes.Ldarga_S));
         }
-        
-        /// <summary>
-        /// Raised when error occurs in one of the methods in this class
-        /// </summary>
-        public static event EventHandler<CilErrorEventArgs> Error;
 
-        /// <summary>
-        /// Raises a 'Error' event
-        /// </summary>
-        /// <param name="sender">Object that caused this event</param>
-        /// <param name="e">Event arguments</param>
-        internal static void OnError(object sender, CilErrorEventArgs e)
+        internal static bool ReferencesToken(OpCode opc)
         {
-            EventHandler<CilErrorEventArgs> handler = Error;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
+            return opc.OperandType == System.Reflection.Emit.OperandType.InlineMethod ||
+                opc.OperandType == System.Reflection.Emit.OperandType.InlineField ||
+                opc.OperandType == System.Reflection.Emit.OperandType.InlineTok ||
+                opc.OperandType == System.Reflection.Emit.OperandType.InlineString ||
+                opc.OperandType == System.Reflection.Emit.OperandType.InlineSig ||
+                opc.OperandType == System.Reflection.Emit.OperandType.InlineType;
         }
 
         /// <summary>
         /// A reference to a method which this instruction belongs to
         /// </summary>
-        protected MethodBase _Method;
+        internal MethodBase _Method;
 
         /// <summary>
         /// Opcode of this instruction
         /// </summary>
-        protected OpCode _OpCode;
-
-        /*/// <summary>
-        /// Operand object of this instruction, if applicable
-        /// </summary>
-        protected object _Operand;
-
-        /// <summary>
-        /// Size, in bytes, of this instruction's operand
-        /// </summary>
-        protected uint _OperandSize;*/
+        internal OpCode _OpCode;
 
         /// <summary>
         /// Byte offset of this instruction from the beginning of the method body
         /// </summary>
-        protected uint _ByteOffset;
+        internal uint _ByteOffset;
 
         /// <summary>
         /// Ordinal number of the place this instruction takes in method body, starting from one.
         /// </summary>
-        protected uint _OrdinalNumber;
+        internal uint _OrdinalNumber;
 
         /// <summary>
         /// Gets a reference to a method which this instruction belongs to
@@ -196,7 +177,14 @@ namespace CilTools.BytecodeAnalysis
             OpCode opc, T operand, uint operandsize, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
             )
         {
-            return new CilInstructionImpl<T>(opc, operand, operandsize, byteoffset, ordinalnum, mb);
+            if (typeof(T) == typeof(int) && ReferencesToken(opc))
+            {
+                return new CilTokenInstruction(opc, Convert.ToInt32(operand), operandsize, byteoffset, ordinalnum, mb);
+            }
+            else
+            {
+                return new CilInstructionImpl<T>(opc, operand, operandsize, byteoffset, ordinalnum, mb);
+            }
         }
 
         public static CilInstruction Create(
@@ -251,7 +239,6 @@ namespace CilTools.BytecodeAnalysis
         internal string ResolveStringToken(int token)
         {
             if (this.Method == null) return null;
-            if(!this.OpCode.Equals(OpCodes.Ldstr)) return null;
 
             return (Method as CustomMethod).TokenResolver.ResolveString((int)Operand);
         }
@@ -259,7 +246,6 @@ namespace CilTools.BytecodeAnalysis
         internal Signature ResolveSignatureToken(int token)
         {
             if (this.Method == null) return null;
-            if (!this.OpCode.Equals(OpCodes.Calli)) return null;
 
             //standalone signature token            
             byte[] sig = null;
@@ -271,7 +257,7 @@ namespace CilTools.BytecodeAnalysis
             catch (Exception ex)
             {
                 string error = "Exception occured when trying to resolve signature.";
-                OnError(this, new CilErrorEventArgs(ex, error));
+                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
                 return null;
             }
 
@@ -317,71 +303,21 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets the information about method parameter referenced by this instruction, if applicable
         /// </summary>
-        public ParameterInfo ReferencedParameter
+        public abstract ParameterInfo ReferencedParameter
         {
-            get
-            {
-                if (this.Operand == null) return null;
-                if (this._Method == null) return null;
-
-                if (ReferencesParam(this._OpCode))
-                {
-                    try
-                    {
-                        int param_index = Convert.ToInt32(this.Operand);
-                        ParameterInfo[] pars = this._Method.GetParameters();
-
-                        if (this._Method.IsStatic == false) param_index--;
-
-                        if (param_index >= pars.Length) return null; //prevent IndexOutOfRangeException on our ClrMD impl
-
-                        if (param_index >= 0) return pars[param_index];
-                        else return null;
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to resolve parameter.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
-                        return null;
-                    }
-                }
-                else return null;
-            }
+            get;
         }
 
         /// <summary>
         /// Gets the information about local variable referenced by this instruction, if applicable
         /// </summary>
-        public LocalVariableInfo ReferencedLocal
+        public abstract LocalVariableInfo ReferencedLocal
         {
-            get
-            {
-                if (this.Operand == null) return null;
-                if (this._Method == null) return null;
-
-                if (ReferencesLocal(this._OpCode))
-                {
-                    try
-                    {
-                        int local_index = Convert.ToInt32(this.Operand);
-                        MethodBody mb = this._Method.GetMethodBody();
-
-                        if (mb == null) return null;
-
-                        LocalVariableInfo res = mb.LocalVariables[local_index];
-                        return res;
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to resolve local variable.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
-                        return null;
-                    }
-                }
-                else return null;
-            }
+            get;
         }
 
+        public abstract void OperandToString(TextWriter target);
+        
         /// <summary>
         /// Returns a text representation of this instruction as a line of CIL code
         /// </summary>
@@ -391,214 +327,21 @@ namespace CilTools.BytecodeAnalysis
             StringBuilder sb = new StringBuilder();
 
             sb.Append(this.Name.PadRight(10));
+            sb.Append(' ');
 
-            if (Operand != null)
+            TextWriter wr = new StringWriter(sb);
+
+            using (wr)
             {
-                string stroperand = null;
-
-                if (ReferencesMethodToken(this.OpCode) && this.Method != null)
+                try
                 {
-                    //method           
-                    MethodBase called_method = this.ReferencedMember as MethodBase;
-
-                    if (called_method != null)
-                    {
-                        stroperand = CilAnalysis.MethodToString(called_method);
-                    }
-                    else
-                    {
-                        int token = (int)Operand;
-                        stroperand = "UnknownMethod" + token.ToString("X");
-                    }
-
-                    sb.Append(' ');
-                    sb.Append(stroperand);
+                    this.OperandToString(wr);
                 }
-                else if (ReferencesFieldToken(this.OpCode) && this.Method != null)
+                catch (Exception ex)
                 {
-                    //field                       
-                    FieldInfo fi = this.ReferencedMember as FieldInfo;
-                    sb.Append(' ');
-
-                    if (fi != null)
-                    {
-                        Type t = fi.DeclaringType;
-
-                        sb.Append(CilAnalysis.GetTypeName(fi.FieldType));
-                        sb.Append(' ');
-                        sb.Append(CilAnalysis.GetTypeNameInternal(t));
-                        sb.Append("::");
-                        sb.Append(fi.Name);
-                    }
-                    else
-                    {
-                        int token = (int)Operand;
-                        stroperand = "UnknownField" + token.ToString("X");
-                        sb.Append(stroperand);
-                    }
+                    string error = "Exception occured when trying to convert operand to string.";
+                    Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
                 }
-                else if (ReferencesTypeToken(this.OpCode) && this.Method != null)
-                {
-                    //type                                         
-                    Type t = this.ReferencedType;
-
-                    if (t != null)
-                    {
-                        stroperand = CilAnalysis.GetTypeNameInternal(t);
-                    }
-                    else
-                    {
-                        int token = (int)Operand;
-                        stroperand = "UnknownType" + token.ToString("X");
-                    }
-
-                    sb.Append(' ');
-                    sb.Append(stroperand);
-                }
-                else if (OpCode.Equals(OpCodes.Ldstr) && this.Method != null)
-                {
-                    //string literal
-                    int token = (int)Operand;
-
-                    try
-                    {
-                        stroperand = (Method as CustomMethod).TokenResolver.ResolveString(token);
-                        stroperand = "\"" + CilAnalysis.EscapeString(stroperand) + "\"";
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to resolve string.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
-                    }
-
-                    if (String.IsNullOrEmpty(stroperand))
-                    {
-                        stroperand = "UnknownString" + token.ToString("X");
-                    }
-
-                    sb.Append(' ');
-                    sb.Append(stroperand);
-                }
-                else if (OpCode.Equals(OpCodes.Ldtoken) && this.Method != null)
-                {
-                    //metadata token
-                    int token = (int)Operand;
-
-                    try
-                    {
-                        MemberInfo mi = (Method as CustomMethod).TokenResolver.ResolveMember(token, null, null);
-
-                        if (mi == null) stroperand = "";
-                        else if (mi is Type) stroperand = CilAnalysis.GetTypeNameInternal((Type)mi);
-                        else stroperand = mi.Name;
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to resolve token.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
-                    }
-
-                    if (String.IsNullOrEmpty(stroperand))
-                    {
-                        stroperand = "UnknownMember" + token.ToString("X");
-                    }
-
-                    sb.Append(' ');
-                    sb.Append(stroperand);
-                }
-                else if (ReferencesLocal(this.OpCode))
-                {
-                    //local variable
-                    sb.Append(" V_" + this.Operand.ToString());
-                }
-                else if (ReferencesParam(this.OpCode) && this.Method != null)
-                {
-                    //parameter
-                    ParameterInfo par = this.ReferencedParameter;
-                    sb.Append(' ');
-
-                    if (par != null)
-                    {
-                        if (String.IsNullOrEmpty(par.Name)) sb.Append("par" + (par.Position + 1).ToString());
-                        else sb.Append(par.Name);
-                    }
-                    else
-                    {
-                        sb.Append("par" + this.Operand.ToString());
-                    }
-                }
-                else if (OpCode.Equals(OpCodes.Calli) && this.Method != null)
-                {
-                    //standalone signature token
-                    int token = (int)Operand;
-                    byte[] sig = null;
-
-                    try
-                    {
-                        sig = (Method as CustomMethod).TokenResolver.ResolveSignature(token);
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to resolve signature.";
-                        OnError(this, new CilErrorEventArgs(ex, error));
-                        sb.Append(" StandAloneMethodSig" + token.ToString("X"));
-                    }
-
-                    if (sig != null) //parse signature
-                    {
-                        sb.Append(' ');
-
-                        try
-                        {
-                            sb.Append(new Signature(sig, (Method as CustomMethod).TokenResolver).ToString());
-                        }
-                        catch (Exception ex)
-                        {
-                            string error = "Exception occured when trying to parse signature.";
-                            OnError(this, new CilErrorEventArgs(ex, error));
-                            sb.Append("//StandAloneMethodSig: ( ");
-
-                            for (int i = 0; i < sig.Length; i++)
-                            {
-                                sb.Append(sig[i].ToString("X2"));
-                                sb.Append(' ');
-                            }
-
-                            sb.Append(")");
-                        }
-                    }//end if (sig != null)                    
-                }
-                else if (OpCode.OperandType == System.Reflection.Emit.OperandType.InlineSwitch)
-                {
-                    int[] labels = this.Operand as int[];
-
-                    if (labels != null)
-                    {
-                        sb.Append(' ');
-                        sb.Append('(');
-
-                        for (int i = 0; i < labels.Length; i++)
-                        {
-                            if (i >= 1) sb.Append(", ");
-                            int target = (int)this._ByteOffset + (int)this.TotalSize + labels[i];
-                            sb.Append("0x");
-                            sb.Append(target.ToString("X4"));
-                        }
-
-                        sb.Append(')');
-                    }
-                    else
-                    {
-                        sb.Append(' ');
-                        sb.Append(Convert.ToString(this.Operand, System.Globalization.CultureInfo.InvariantCulture));
-                    }
-                }
-                else
-                {
-                    sb.Append(' ');
-                    sb.Append(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
-                }
-
             }
 
             return sb.ToString();
@@ -869,7 +612,6 @@ namespace CilTools.BytecodeAnalysis
 
             OpCode op = FindOpCode(opname);
             uint opsize = GetOperandSize(op);
-            //object operand = null;
 
             var numstyle = System.Globalization.NumberStyles.Integer;
             if (args.StartsWith("0x"))
@@ -896,7 +638,6 @@ namespace CilTools.BytecodeAnalysis
                 case 1:
                     if (SByte.TryParse(args, numstyle, fmt, out byteval))
                     {
-                        //operand = (object)byteval;
                         res = new CilInstructionImpl<sbyte>(op, byteval, opsize, 0, 0, null);
                     }
                     break;
@@ -904,7 +645,6 @@ namespace CilTools.BytecodeAnalysis
                 case 2:
                     if (Int16.TryParse(args, numstyle, fmt, out shortval))
                     {
-                        //operand = (object)shortval;
                         res = new CilInstructionImpl<short>(op, shortval, opsize, 0, 0, null);
                     }
                     break;
@@ -914,7 +654,6 @@ namespace CilTools.BytecodeAnalysis
                     {
                         if (Single.TryParse(args, out floatval))
                         {
-                            //operand = (object)floatval;
                             res = new CilInstructionImpl<float>(op, floatval, opsize, 0, 0, null);
                         }
                     }
@@ -922,8 +661,7 @@ namespace CilTools.BytecodeAnalysis
                     {
                         if (Int32.TryParse(args, numstyle, fmt, out intval))
                         {
-                            //operand = (object)intval;
-                            res = new CilInstructionImpl<int>(op, intval, opsize, 0, 0, null);
+                            res = CilInstruction.Create<int>(op, intval, opsize, 0, 0, null);
                         }
                     }
                     break;
@@ -933,7 +671,6 @@ namespace CilTools.BytecodeAnalysis
                     {
                         if (Double.TryParse(args, out doubleval))
                         {
-                            //operand = (object)doubleval;
                             res = new CilInstructionImpl<double>(op, doubleval, opsize, 0, 0, null);
                         }
                     }
@@ -941,14 +678,11 @@ namespace CilTools.BytecodeAnalysis
                     {
                         if (Int64.TryParse(args, numstyle, fmt, out longval))
                         {
-                            //operand = (object)longval;
                             res = new CilInstructionImpl<long>(op, longval, opsize, 0, 0, null);
                         }
                     }
                     break;
             }
-
-            //res = new CilInstruction(op, operand, opsize, 0, 0, null);
 
             return res;
         }

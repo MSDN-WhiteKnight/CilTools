@@ -22,7 +22,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// <returns>CIL graph object</returns>
         public static CilGraph GetCilGraph(this MethodBase m)
         {
-            return CilAnalysis.GetGraph(m);
+            return CilGraph.Create(m);
         }
 
         /// <summary>
