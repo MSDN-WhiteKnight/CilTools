@@ -18,32 +18,32 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// CIL instruction associated with this node
         /// </summary>
-        protected CilInstruction _Instruction;
+        internal CilInstruction _Instruction;
 
         /// <summary>
         /// Optional label name associated with this node
         /// </summary>
-        protected string _Name;
+        internal string _Name;
 
         /// <summary>
         /// A reference to the node that represents instruction directly preceding current instruction in the method bytecode
         /// </summary>
-        protected CilGraphNode _Previous=null;
+        internal CilGraphNode _Previous = null;
 
         /// <summary>
         /// A reference to the node that represents instruction directly following current instruction in the method bytecode
         /// </summary>
-        protected CilGraphNode _Next = null;
+        internal CilGraphNode _Next = null;
 
         /// <summary>
         /// A reference to the node that represents instruction which is a target of the current instruction, if applicable
         /// </summary>
-        protected CilGraphNode _BranchTarget = null;
+        internal CilGraphNode _BranchTarget = null;
 
         /// <summary>
         /// An array of nodes that represents the jump table of the switch instruction, if applicable
         /// </summary>
-        protected CilGraphNode[] _SwitchTargets = null;
+        internal CilGraphNode[] _SwitchTargets = null;
 
         /// <summary>
         /// Gets CIL instruction associated with this node
@@ -93,7 +93,7 @@ namespace CilTools.BytecodeAnalysis
         protected CilGraphNode()
         {
             this._Name = "";
-            this._Instruction = new CilInstruction(OpCodes.Nop);
+            this._Instruction = CilInstruction.CreateEmptyInstruction(null);
         }
         
         /// <summary>

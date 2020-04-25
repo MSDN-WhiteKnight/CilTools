@@ -17,7 +17,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilGraph_HelloWorld()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
-            CilGraph graph = CilAnalysis.GetGraph(mi);
+            CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
 
             CilGraphNode[] nodes = graph.GetNodes().ToArray();
@@ -80,7 +80,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilGraph_Loop()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("PrintTenNumbers");
-            CilGraph graph = CilAnalysis.GetGraph(mi);
+            CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
 
             CilGraphNode[] nodes = graph.GetNodes().ToArray();
@@ -130,7 +130,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilGraph_Exceptions()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("DivideNumbers");
-            CilGraph graph = CilAnalysis.GetGraph(mi);
+            CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
 
             //Test conversion to string
@@ -176,6 +176,40 @@ namespace CilTools.BytecodeAnalysis.Tests
 #endif
         }
 
+        [TestMethod]
+        public void Test_CilGraph_Tokens()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("TestTokens");
+            CilGraph graph = CilGraph.Create(mi);
+            AssertThat.IsCorrect(graph);
+
+            CilGraphNode[] nodes = graph.GetNodes().ToArray();
+
+            AssertThat.NotEmpty(nodes, "The result of TestTokens method parsing should not be empty collection");
+
+            AssertThat.HasOnlyOneMatch(
+                nodes,
+                (x) => x.Instruction.OpCode == OpCodes.Ldtoken && x.Instruction.ReferencedType.FullName.Contains("System.Int32"),
+                "The result of TestTokens method parsing should contain a single 'ldtoken' instruction referencing System.Int32"
+                );
+
+            CilGraphNode last = nodes[nodes.Length - 1];
+            Assert.IsTrue(last.Instruction.OpCode == OpCodes.Ret, "The last instruction of TestTokens method should be 'ret'");
+
+            //Test conversion to string
+            string str = graph.ToString();
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal("ldtoken"), MatchElement.Any, new Literal("System.Int32") });
+            
+            //Test EmitTo: only NetFX
+#if !NETSTANDARD
+            DynamicMethod dm = new DynamicMethod("CilGraphTests_TestTokensDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            graph.EmitTo(ilg);
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();
+#endif
+        }
+
 #if !NETSTANDARD
         [TestMethod]
         public void Test_CilGraph_Emit() //Test EmitTo: only NetFX
@@ -183,7 +217,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             DynamicMethod dm = new DynamicMethod("CilGraphTests_EmitTest", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
             ILGenerator ilg = dm.GetILGenerator(512);
             MethodInfo miTemplate = typeof(SampleMethods).GetMethod("TemplateMethod");
-            CilGraph graph = CilAnalysis.GetGraph(miTemplate);
+            CilGraph graph = CilGraph.Create(miTemplate);
             MethodInfo miTarget = typeof(SampleMethods).GetMethod("IncrementCounter");
 
             graph.EmitTo(ilg, (instr) =>
@@ -214,7 +248,7 @@ namespace CilTools.BytecodeAnalysis.Tests
                 );
             ILGenerator ilg = dm.GetILGenerator(512);
             MethodInfo mi = typeof(SampleMethods).GetMethod("SwitchTest");
-            CilGraph graph = CilAnalysis.GetGraph(mi);            
+            CilGraph graph = CilGraph.Create(mi);
             
             graph.EmitTo(ilg);
 
@@ -269,7 +303,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             int res = deleg("Hello, world!");
 
             //create CilGraph from DynamicMethod
-            CilGraph graph = CilAnalysis.GetGraph(dm);
+            CilGraph graph = CilGraph.Create(dm);
 
             //verify CilGraph
             AssertThat.IsCorrect(graph);
@@ -318,7 +352,7 @@ namespace CilTools.BytecodeAnalysis.Tests
                 );
             
             //Verify CilGraph.ToString() output
-            string str = graph.ToString();            
+            string str = graph.ToString();
 
             AssertThat.IsMatch(str, new MatchElement[] { 
                 new Literal(".method"), MatchElement.Any, new Literal("int32"), MatchElement.Any, 
@@ -366,7 +400,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             deleg("Hello from System.Reflection.Emit!");
 
             //create CilGraph from DynamicMethod
-            CilGraph graph = CilAnalysis.GetGraph(dm);
+            CilGraph graph = CilGraph.Create(dm);
 
             //verify CilGraph
             AssertThat.IsCorrect(graph);
@@ -392,11 +426,12 @@ namespace CilTools.BytecodeAnalysis.Tests
                     x.Instruction.ReferencedSignature.ReturnType.Type.Name =="Void" &&
                     x.Instruction.ReferencedSignature.GetParamType(0).Type.Name == "String" &&
                     x.Instruction.ReferencedSignature.CallingConvention == CallingConvention.Default,
-                "The result of IndirectCallTest method parsing should contain a single 'calli' instruction with sugnature matching Console.WriteLine"
+                "The result of IndirectCallTest method parsing should contain a single 'calli' instruction with signature matching Console.WriteLine"
                 );
 
             AssertThat.HasOnlyOneMatch(
-                nodes,(x) => x.Instruction.OpCode == OpCodes.Ret,"The result of IndirectCallTest method parsing should contain a single 'ret' instruction"
+                nodes,(x) => x.Instruction.OpCode == OpCodes.Ret,
+                "The result of IndirectCallTest method parsing should contain a single 'ret' instruction"
                 );
 
             //Verify CilGraph.ToString() output

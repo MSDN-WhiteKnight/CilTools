@@ -254,7 +254,9 @@ namespace CilTools.BytecodeAnalysis
                         }
                         catch (Exception ex)
                         {
-                            OnError(null, new CilErrorEventArgs(ex, "Failed to resolve type token for modopt: 0x" + typetok.ToString("X")));
+                            Diagnostics.OnError(null, new CilErrorEventArgs(
+                                ex, "Failed to resolve type token for modopt: 0x" + typetok.ToString("X"))
+                                );
                             mod = new CustomModifier(false, typetok, null);
                         }
 
@@ -271,7 +273,10 @@ namespace CilTools.BytecodeAnalysis
                         }
                         catch (Exception ex)
                         {
-                            OnError(null, new CilErrorEventArgs(ex, "Failed to resolve type token for modreq: 0x" + typetok.ToString("X")));
+                            Diagnostics.OnError(
+                                null, 
+                                new CilErrorEventArgs(ex, "Failed to resolve type token for modreq: 0x" + typetok.ToString("X"))
+                                );
                             mod = new CustomModifier(true, typetok, null);
                         }
 
@@ -312,7 +317,10 @@ namespace CilTools.BytecodeAnalysis
                         }
                         catch (Exception ex)
                         {
-                            OnError(null, new CilErrorEventArgs(ex, "Failed to resolve class token: 0x" + typetok.ToString("X")));
+                            Diagnostics.OnError(
+                                null, 
+                                new CilErrorEventArgs(ex, "Failed to resolve class token: 0x" + typetok.ToString("X"))
+                                );
                         }
                         
                         break;
@@ -325,7 +333,10 @@ namespace CilTools.BytecodeAnalysis
                         }
                         catch (Exception ex)
                         {
-                            OnError(null, new CilErrorEventArgs(ex, "Failed to resolve valuetype token: 0x" + typetok.ToString("X")));
+                            Diagnostics.OnError(
+                                null, 
+                                new CilErrorEventArgs(ex, "Failed to resolve valuetype token: 0x" + typetok.ToString("X"))
+                                );
                         }
                                                 
                         break;
@@ -433,25 +444,6 @@ namespace CilTools.BytecodeAnalysis
             }
 
             return new TypeSpec(new CustomModifier[0], et,t, inner, genpos, pinned);
-        }
-
-        /// <summary>
-        /// Raised when error occurs in one of the methods in this class
-        /// </summary>
-        public static event EventHandler<CilErrorEventArgs> Error;
-
-        /// <summary>
-        /// Raises a 'Error' event
-        /// </summary>
-        /// <param name="sender">Object that caused this event</param>
-        /// <param name="e">Event arguments</param>
-        protected static void OnError(object sender, CilErrorEventArgs e)
-        {
-            EventHandler<CilErrorEventArgs> handler = Error;
-            if (handler != null)
-            {
-                handler(sender, e);
-            }
         }
 
         // *** instance members ***

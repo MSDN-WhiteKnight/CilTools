@@ -18,14 +18,14 @@ namespace CilTools.BytecodeAnalysis.Tests
         [TestMethod]
         public void Test_CilInstruction_Roundtrip()
         {
-            CilInstruction instr = new CilInstruction(OpCodes.Nop);
+            CilInstruction instr = CilInstruction.CreateEmptyInstruction(null);
             string str = instr.ToString();
             Assert.IsTrue(str.Contains("nop"), "The result of instr.ToString() should contain instruction name");
             CilInstruction instr2 = CilInstruction.Parse(str);
             Assert.AreEqual<OpCode>(OpCodes.Nop,instr2.OpCode, "The result of CilInstruction.Parse doesn't have expected opcode");
             Assert.IsNull(instr2.Operand, "The 'nop' instruction should not have operand");
-
-            instr = new CilInstruction(OpCodes.Ldc_I4, 1, sizeof(int));
+            
+            instr = CilInstruction.Create<int>(OpCodes.Ldc_I4, 1, sizeof(int));
             str = instr.ToString();
             Assert.IsTrue(str.Contains("ldc.i4"), "The result of instr.ToString() should contain instruction name");
             AssertThat.IsMatch(str, new MatchElement[] { new Literal("ldc.i4"), MatchElement.Any,new Literal("1") });

@@ -55,7 +55,7 @@ namespace CilToolsDemo
             {
                 Console.WriteLine(" Method: " + m.DeclaringType.Name + "." + m.Name);
 
-                CilGraph gr = CilAnalysis.GetGraph(m);
+                CilGraph gr = CilGraph.Create(m);
                 Console.WriteLine(gr.ToString());
 
                 Console.WriteLine();
@@ -70,7 +70,7 @@ namespace CilToolsDemo
                 {
                     Console.WriteLine("Method: " + m.DeclaringType.Name + "." + m.Name);
 
-                    CilGraph gr = CilAnalysis.GetGraph(m);
+                    CilGraph gr = CilGraph.Create(m);
                     Console.WriteLine(gr.ToString());
 
                     Console.WriteLine();
@@ -125,7 +125,7 @@ namespace CilToolsDemo
                     );
 
                 MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
-                CilGraph graph = CilAnalysis.GetGraph(mi);
+                CilGraph graph = CilGraph.Create(mi);
 
                 graph.Print(null, true, true, true, true);
             }
