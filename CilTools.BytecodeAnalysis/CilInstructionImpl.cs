@@ -245,92 +245,7 @@ namespace CilTools.BytecodeAnalysis
 
             if (typeof(T) == typeof(int))
             {
-                if (ReferencesMethodToken(this.OpCode))
-                {
-                    //method
-                    MethodBase called_method = this.ReferencedMember as MethodBase;
-
-                    if (called_method != null)
-                    {
-                        target.Write(CilAnalysis.MethodToString(called_method));
-                    }
-                    else
-                    {
-                        int token = (int)Operand;
-                        target.Write("UnknownMethod" + token.ToString("X"));
-                    }
-                }
-                else if (ReferencesFieldToken(this.OpCode))
-                {
-                    //field
-                    FieldInfo fi = this.ReferencedMember as FieldInfo;
-
-                    if (fi != null)
-                    {
-                        Type t = fi.DeclaringType;
-
-                        target.Write(CilAnalysis.GetTypeName(fi.FieldType));
-                        target.Write(' ');
-                        target.Write(CilAnalysis.GetTypeNameInternal(t));
-                        target.Write("::");
-                        target.Write(fi.Name);
-                    }
-                    else
-                    {
-                        int token = (int)Operand;
-                        target.Write("UnknownField" + token.ToString("X"));
-                    }
-                }
-                else if (ReferencesTypeToken(this.OpCode))
-                {
-                    //type
-                    Type t = this.ReferencedType;
-
-                    if (t != null)
-                    {
-                        target.Write(CilAnalysis.GetTypeNameInternal(t));
-                    }
-                    else
-                    {
-                        int token = (int)Operand;
-                        target.Write("UnknownType" + token.ToString("X"));
-                    }
-                }
-                else if (OpCode.Equals(OpCodes.Ldstr))
-                {
-                    //string literal
-                    int token = (int)Operand;
-
-                    string stroperand = this.ReferencedString;
-
-                    if (!String.IsNullOrEmpty(stroperand))
-                    {
-                        stroperand = "\"" + CilAnalysis.EscapeString(stroperand) + "\"";
-                        target.Write(stroperand);
-                    }
-                    else
-                    {
-                        target.Write("UnknownString" + token.ToString("X"));
-                    }
-                }
-                else if (OpCode.Equals(OpCodes.Ldtoken))
-                {
-                    //metadata token
-                    int token = (int)Operand;
-
-                    MemberInfo mi = this.ReferencedMember;
-
-                    if (mi != null)
-                    {
-                        if (mi is Type) target.Write(CilAnalysis.GetTypeNameInternal((Type)mi));
-                        else target.Write(mi.Name);
-                    }
-                    else
-                    {
-                        target.Write("UnknownMember" + token.ToString("X"));
-                    }
-                }
-                else if (ReferencesLocal(this.OpCode))
+                if (ReferencesLocal(this.OpCode))
                 {
                     //local variable
                     target.Write("V_" + this.Operand.ToString());
@@ -349,55 +264,6 @@ namespace CilTools.BytecodeAnalysis
                     {
                         target.Write("par" + this.Operand.ToString());
                     }
-                }
-                else if (OpCode.Equals(OpCodes.Calli) && this.Method != null)
-                {
-                    //standalone signature token
-                    int token = (int)Operand;
-                    byte[] sig = null;
-
-                    try
-                    {
-                        sig = (Method as CustomMethod).TokenResolver.ResolveSignature(token);
-                    }
-                    catch (Exception ex)
-                    {
-                        string error = "Exception occured when trying to resolve signature.";
-                        Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
-                        target.Write("StandAloneMethodSig" + token.ToString("X"));
-                    }
-
-                    if (sig != null) //parse signature
-                    {
-                        Signature sg = null;
-
-                        try
-                        {
-                            sg = new Signature(sig, (Method as CustomMethod).TokenResolver);
-                        }
-                        catch (Exception ex)
-                        {
-                            string error = "Exception occured when trying to parse signature.";
-                            Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
-                        }
-
-                        if (sg != null)
-                        {
-                            target.Write(sg.ToString());
-                        }
-                        else
-                        {
-                            target.Write("//StandAloneMethodSig: ( ");
-
-                            for (int i = 0; i < sig.Length; i++)
-                            {
-                                target.Write(sig[i].ToString("X2"));
-                                target.Write(' ');
-                            }
-
-                            target.Write(')');
-                        }
-                    }//end if (sig != null)
                 }
                 else
                 {

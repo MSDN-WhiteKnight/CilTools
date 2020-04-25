@@ -24,8 +24,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilInstruction instr2 = CilInstruction.Parse(str);
             Assert.AreEqual<OpCode>(OpCodes.Nop,instr2.OpCode, "The result of CilInstruction.Parse doesn't have expected opcode");
             Assert.IsNull(instr2.Operand, "The 'nop' instruction should not have operand");
-
-            //instr = new CilInstructionBase(OpCodes.Ldc_I4, 1, sizeof(int));
+            
             instr = CilInstruction.Create<int>(OpCodes.Ldc_I4, 1, sizeof(int));
             str = instr.ToString();
             Assert.IsTrue(str.Contains("ldc.i4"), "The result of instr.ToString() should contain instruction name");
