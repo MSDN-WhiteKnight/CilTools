@@ -154,8 +154,6 @@ namespace CilTools.BytecodeAnalysis
         /// Creates a new CilInstruction object initialized with specified field values (infrastructure)
         /// </summary>
         /// <param name="opc">Opcode</param>
-        /// <param name="operand">Operand object</param>
-        /// <param name="opsize">Operand size</param>
         /// <param name="byteoffset">Byte offset</param>
         /// <param name="ordinalnum">Ordinal number</param>
         /// <param name="mb">Owning method</param>

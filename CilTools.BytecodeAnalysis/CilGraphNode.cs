@@ -112,7 +112,7 @@ namespace CilTools.BytecodeAnalysis
     /// <summary>
     /// A mutable version of CilGraphNode class
     /// </summary>    
-    /// <remarks>Graph nodes are exposed as immutable <see cref="CilGraphNode"/> objects by API of this library, such as <see cref="CilAnalysis.GetGraph"/> method, because usually you don't need to alter their properties. However, these nodes are created as mutable objects and their actual runtime type is CilGraphNodeMutable; you can cast them to that type if you need to set their properties.</remarks>
+    /// <remarks>Graph nodes are exposed as immutable <see cref="CilGraphNode"/> objects by API of this library, such as <see cref="CilGraph.Create"/> method, because usually you don't need to alter their properties. However, these nodes are created as mutable objects and their actual runtime type is CilGraphNodeMutable; you can cast them to that type if you need to set their properties.</remarks>
     public class CilGraphNodeMutable : CilGraphNode
     {
         /// <summary>
