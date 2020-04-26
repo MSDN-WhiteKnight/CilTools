@@ -296,7 +296,81 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets a method for which this graph is built
         /// </summary>
-        public MethodBase Method { get { return this._Method; } }  
+        public MethodBase Method { get { return this._Method; } }
+
+        public void PrintSignature(TextWriter output)
+        {
+            CustomMethod cm = (CustomMethod)this._Method;
+            ParameterInfo[] pars = this._Method.GetParameters();
+            output.Write(".method "); //signature
+
+            if (this._Method.IsPublic) output.Write("public ");
+            else if (this._Method.IsPrivate) output.Write("private ");
+            else if (this._Method.IsAssembly) output.Write("assembly "); //internal
+            else if (this._Method.IsFamily) output.Write("family "); //protected
+            else output.Write("famorassem "); //protected internal
+
+            if (this._Method.IsHideBySig) output.Write("hidebysig ");
+
+            if (this._Method.IsAbstract) output.Write("abstract ");
+
+            if (this._Method.IsVirtual) output.Write("virtual ");
+
+            if (this._Method.IsStatic) output.Write("static ");
+            else output.Write("instance ");
+
+            if (this._Method.CallingConvention == CallingConventions.VarArgs)
+            {
+                output.Write("vararg ");
+            }
+
+            string rt = "";
+            if (cm.ReturnType != null) rt = CilAnalysis.GetTypeName(cm.ReturnType) + " ";
+            output.Write(rt);
+
+            output.Write(this._Method.Name);
+
+            if (this._Method.IsGenericMethod)
+            {
+                output.Write('<');
+
+                Type[] args = this._Method.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) output.Write(", ");
+
+                    if (args[i].IsGenericParameter) output.Write(args[i].Name);
+                    else output.Write(CilAnalysis.GetTypeName(args[i]));
+                }
+
+                output.Write('>');
+            }
+
+            output.Write('(');
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (i >= 1) output.WriteLine(", ");
+                else output.WriteLine();
+
+                output.Write("    ");
+                if (pars[i].IsOptional) output.Write("[opt] ");
+
+                output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
+
+                string parname;
+                if (pars[i].Name != null) parname = pars[i].Name;
+                else parname = "par" + (i + 1).ToString();
+
+                output.Write(' ');
+                output.Write(parname);
+
+            }
+
+            if (pars.Length > 0) output.WriteLine();
+            output.Write(')');
+            output.WriteLine(" cil managed");
+        }
 
         /// <summary>
         /// Writes the CIL code corresponding to this graph into the specified TextWriter, optionally including signature, 
@@ -359,74 +433,8 @@ namespace CilTools.BytecodeAnalysis
 
             if (IncludeSignature)
             {
-                output.Write(".method "); //signature
-
-                if (this._Method.IsPublic) output.Write("public ");
-                else if (this._Method.IsPrivate) output.Write("private ");
-                else if (this._Method.IsAssembly) output.Write("assembly "); //internal
-                else if (this._Method.IsFamily) output.Write("family "); //protected
-                else output.Write("famorassem "); //protected internal
-
-                if (this._Method.IsHideBySig) output.Write("hidebysig ");
-
-                if (this._Method.IsAbstract) output.Write("abstract ");
-
-                if (this._Method.IsVirtual) output.Write("virtual ");
-
-                if (this._Method.IsStatic) output.Write("static ");
-                else output.Write("instance ");
-
-                if (this._Method.CallingConvention == CallingConventions.VarArgs)
-                {
-                    output.Write("vararg ");
-                }
-                                
-                string rt = "";
-                if (cm.ReturnType != null) rt = CilAnalysis.GetTypeName(cm.ReturnType) + " ";
-                output.Write(rt);
-
-                output.Write(this._Method.Name);
-
-                if (this._Method.IsGenericMethod)
-                {
-                    output.Write('<');
-
-                    Type[] args = this._Method.GetGenericArguments();
-                    for (int i = 0; i < args.Length; i++)
-                    {
-                        if (i >= 1) output.Write(", ");
-
-                        if (args[i].IsGenericParameter) output.Write(args[i].Name);
-                        else output.Write(CilAnalysis.GetTypeName(args[i]));
-                    }
-
-                    output.Write('>');
-                }
-
-                output.Write('(');
-
-                for (int i = 0; i < pars.Length; i++)
-                {
-                    if (i >= 1) output.WriteLine(", ");
-                    else output.WriteLine();
-
-                    output.Write("    ");
-                    if (pars[i].IsOptional) output.Write("[opt] ");
-
-                    output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
-
-                    string parname;
-                    if (pars[i].Name != null) parname = pars[i].Name;
-                    else parname = "par" + (i + 1).ToString();
-
-                    output.Write(' ');
-                    output.Write(parname);
-
-                }
-
-                if (pars.Length > 0) output.WriteLine();
-                output.Write(')');
-                output.WriteLine(" cil managed {");
+                PrintSignature(output);
+                output.WriteLine(" {");
             }
 
             if (IncludeDefaults)
@@ -671,7 +679,7 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
         /// <returns>A string of CIL code</returns>
-        public override string ToString()
+        public string ToText()
         {
             StringBuilder sb = new StringBuilder(2048);
             StringWriter wr = new StringWriter(sb);
@@ -679,8 +687,22 @@ namespace CilTools.BytecodeAnalysis
             using (wr)
             {
                 this.Print(wr, true, true, true, true);
+                wr.Flush();
                 return sb.ToString();
-            }            
+            }
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(2048);
+            StringWriter wr = new StringWriter(sb);
+
+            using (wr)
+            {
+                this.PrintSignature(wr);
+                wr.Flush();
+                return sb.ToString();
+            }
         }
 
         /// <summary>

@@ -274,7 +274,7 @@ namespace CilTools.BytecodeAnalysis
         {
             if (m == null) return "(null)";
 
-            return CilGraph.Create(m).ToString();
+            return CilGraph.Create(m).ToText();
         }
 
         /// <summary>

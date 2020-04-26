@@ -56,7 +56,7 @@ namespace CilToolsDemo
                 Console.WriteLine(" Method: " + m.DeclaringType.Name + "." + m.Name);
 
                 CilGraph gr = CilGraph.Create(m);
-                Console.WriteLine(gr.ToString());
+                Console.WriteLine(gr.ToText());
 
                 Console.WriteLine();
                 //Console.ReadKey();
@@ -71,7 +71,7 @@ namespace CilToolsDemo
                     Console.WriteLine("Method: " + m.DeclaringType.Name + "." + m.Name);
 
                     CilGraph gr = CilGraph.Create(m);
-                    Console.WriteLine(gr.ToString());
+                    Console.WriteLine(gr.ToText());
 
                     Console.WriteLine();
                     //Console.ReadKey();

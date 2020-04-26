@@ -49,7 +49,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             Assert.IsNull(last.BranchTarget, "The 'ret' instruction should not have branch target");
 
             //Test conversion to string
-            string str = graph.ToString();
+            string str = graph.ToText();
             AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("public") });
             AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("static") });
 
@@ -98,7 +98,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             Assert.IsNull(last.BranchTarget, "The 'ret' instruction should not have branch target");
 
             //Test conversion to string
-            string str = graph.ToString();
+            string str = graph.ToText();
             AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("public") });
             AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("static") });
 
@@ -134,7 +134,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             AssertThat.IsCorrect(graph);
 
             //Test conversion to string
-            string str = graph.ToString();
+            string str = graph.ToText();
             AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("public") });
             AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("static") });
 
@@ -197,7 +197,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             Assert.IsTrue(last.Instruction.OpCode == OpCodes.Ret, "The last instruction of TestTokens method should be 'ret'");
 
             //Test conversion to string
-            string str = graph.ToString();
+            string str = graph.ToText();
             AssertThat.IsMatch(str, new MatchElement[] { new Literal("ldtoken"), MatchElement.Any, new Literal("System.Int32") });
             
             //Test EmitTo: only NetFX
@@ -208,6 +208,26 @@ namespace CilTools.BytecodeAnalysis.Tests
             Action deleg = (Action)dm.CreateDelegate(typeof(Action));
             deleg();
 #endif
+        }
+
+        [TestMethod]
+        public void Test_CilGraph_ToString()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
+            CilGraph graph = CilGraph.Create(mi);
+            
+            //Test that ToString returns signature
+            string str = graph.ToString();
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("public") });
+            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("static") });
+
+            AssertThat.IsMatch(str, new MatchElement[] { 
+                new Literal(".method"), MatchElement.Any, new Literal("void"), MatchElement.Any, 
+                new Literal("PrintHelloWorld"), MatchElement.Any, 
+                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any         
+            });
+
+            Assert.IsFalse(str.Contains("call"),"The result of CilGraph.ToString should not contain instructions");
         }
 
 #if !NETSTANDARD
@@ -352,7 +372,7 @@ namespace CilTools.BytecodeAnalysis.Tests
                 );
             
             //Verify CilGraph.ToString() output
-            string str = graph.ToString();
+            string str = graph.ToText();
 
             AssertThat.IsMatch(str, new MatchElement[] { 
                 new Literal(".method"), MatchElement.Any, new Literal("int32"), MatchElement.Any, 
@@ -435,7 +455,7 @@ namespace CilTools.BytecodeAnalysis.Tests
                 );
 
             //Verify CilGraph.ToString() output
-            string str = graph.ToString();
+            string str = graph.ToText();
 
             AssertThat.IsMatch(str, new MatchElement[] { 
                 new Literal(".method"), MatchElement.Any, new Literal("void"), MatchElement.Any, 
