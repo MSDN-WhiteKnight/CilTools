@@ -230,6 +230,20 @@ namespace CilTools.BytecodeAnalysis.Tests
             Assert.IsFalse(str.Contains("call"),"The result of CilGraph.ToString should not contain instructions");
         }
 
+        [TestMethod]
+        public void Test_CilGraph_EmptyString()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("TestEmptyString");
+            CilGraph graph = CilGraph.Create(mi);
+
+            //Test correct empty string output
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new MatchElement[] { 
+                MatchElement.Any, new Literal("ldstr"), MatchElement.Any, new Literal("\"\""), MatchElement.Any 
+            });
+        }
+
 #if !NETSTANDARD
         [TestMethod]
         public void Test_CilGraph_Emit() //Test EmitTo: only NetFX

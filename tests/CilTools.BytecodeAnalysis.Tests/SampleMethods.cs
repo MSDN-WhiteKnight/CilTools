@@ -116,5 +116,10 @@ namespace CilTools.BytecodeAnalysis.Tests
         {
             Console.WriteLine(typeof(int));
         }
+
+        public static bool TestEmptyString(string str)
+        {
+            return str == "";
+        }
     }
 }

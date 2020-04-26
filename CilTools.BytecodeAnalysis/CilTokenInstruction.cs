@@ -161,7 +161,7 @@ namespace CilTools.BytecodeAnalysis
 
                 string stroperand = this.ReferencedString;
 
-                if (!String.IsNullOrEmpty(stroperand))
+                if (stroperand!=null)
                 {
                     stroperand = "\"" + CilAnalysis.EscapeString(stroperand) + "\"";
                     target.Write(stroperand);
