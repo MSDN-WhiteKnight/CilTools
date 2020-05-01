@@ -10,6 +10,9 @@ using Microsoft.Diagnostics.Runtime;
 
 namespace CilTools.Runtime
 {
+    /// <summary>
+    /// Represents the pseudo-assembly that contains a collection of dynamic methods in the external process
+    /// </summary>
     public sealed class DynamicMethodsAssembly : Assembly,IDisposable
     {
         DataTarget target; //null indicates that object is disposed
@@ -17,6 +20,15 @@ namespace CilTools.Runtime
         DynamicMethodsType type;
         bool ownsTarget; //if true, automatically dispose DataTarget on Dispose()
 
+        /// <summary>
+        /// Creates new <c>DynamicMethodsAssembly</c> object for the specified data target, optionally indicating whether the created object 
+        /// owns the data target.
+        /// </summary>
+        /// <param name="dt">ClrMD data target to read information from</param>
+        /// <param name="autoDispose">
+        /// <c>true</c> if this instance owns tha data target and should dispose it automatically when it is no longer needed
+        /// </param>
+        /// <exception cref="System.ArgumentNullException">Supplied data target is null</exception>
         public DynamicMethodsAssembly(DataTarget dt, bool autoDispose)
         {
             if (dt == null) throw new ArgumentNullException("dt");
@@ -30,8 +42,14 @@ namespace CilTools.Runtime
             this.asn = n;
         }
 
+        /// <summary>
+        /// Gets pseudo-type that contains the collection of dynamic methods
+        /// </summary>
         public Type ChildType { get { return this.type; } }
 
+        /// <summary>
+        /// ClrMD data target associated with this instance
+        /// </summary>
         public DataTarget Target
         {
             get { return this.target; }

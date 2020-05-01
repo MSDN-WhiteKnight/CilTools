@@ -16,9 +16,8 @@ namespace CilTools.BytecodeAnalysis
     /// Represents a CIL graph, a graph that reflects a flow of control between CIL instructions in the method
     /// </summary>
     /// <remarks>
-    /// CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges representing how control flows between them when runtime executes method. The root of the graph is the first instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) and, if it's a jump instruction, a reference to the branch target (an instruction that would be executed if the condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, a string that identify it. The last instruction of the method has null as its next instruction reference.
-    /// 
-    /// Use <see cref="CilGraph.Create"/> method to create CIL graph for a method.
+    /// <para>CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges representing how control flows between them when runtime executes method. The root of the graph is the first instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) and, if it's a jump instruction, a reference to the branch target (an instruction that would be executed if the condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, a string that identify it. The last instruction of the method has null as its next instruction reference.</para>
+    /// <para>Use <see cref="CilGraph.Create"/> method to create CIL graph for a method.</para>
     /// </remarks>
     public class CilGraph
     {
@@ -298,6 +297,10 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         public MethodBase Method { get { return this._Method; } }
 
+        /// <summary>
+        /// Writes the signature of the method represented by this graph into the specified TextWriter
+        /// </summary>
+        /// <param name="output">The destination TextWriter</param>
         public void PrintSignature(TextWriter output)
         {
             CustomMethod cm = (CustomMethod)this._Method;
@@ -692,6 +695,10 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        /// <summary>
+        /// Returns the signature of the method represented by this graph
+        /// </summary>
+        /// <returns>The string with method signature</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(2048);

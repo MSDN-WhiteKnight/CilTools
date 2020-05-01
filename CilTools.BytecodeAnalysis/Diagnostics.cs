@@ -12,8 +12,14 @@ using CilTools.Reflection;
 
 namespace CilTools.BytecodeAnalysis
 {
+    /// <summary>
+    /// Provides tools to help investigate errors occuring in library methods.
+    /// </summary>
     public static class Diagnostics
     {
+        /// <summary>
+        /// Raised when error occurs in one of the methods in the library
+        /// </summary>
         public static event EventHandler<CilErrorEventArgs> Error;
 
         internal static void OnError(object sender, CilErrorEventArgs e)

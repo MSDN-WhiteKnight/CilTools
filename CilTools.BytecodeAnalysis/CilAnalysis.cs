@@ -22,7 +22,7 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <param name="t">Type for which name is requested</param>
         /// <exception cref="System.ArgumentNullException">t is null</exception>
-        /// <remarks>Returns short type name, such as `int32`, if it exists. Otherwise returns full name.</remarks>
+        /// <remarks>Returns short type name, such as <c>int32</c>, if it exists. Otherwise returns full name.</remarks>
         /// <returns>Short of full type name</returns>
         public static string GetTypeName(Type t)
         {            
@@ -86,7 +86,7 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <param name="t">Type for which name is requested</param>
         /// <exception cref="System.ArgumentNullException">t is null</exception>
-        /// <remarks>Returns fully qualified name, such as `class [mscorlib]System.String`</remarks>
+        /// <remarks>Returns fully qualified name, such as <c>class [mscorlib]System.String</c></remarks>
         /// <returns>Full type name</returns>
         public static string GetTypeFullName(Type t) 
         {

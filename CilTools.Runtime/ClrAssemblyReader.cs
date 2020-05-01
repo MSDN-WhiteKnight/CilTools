@@ -12,8 +12,15 @@ using Microsoft.Diagnostics.Runtime;
 
 namespace CilTools.Runtime
 {
+    /// <summary>
+    /// Reads information about assemblies in the CLR isntances of external processes using ClrMD
+    /// </summary>
     public class ClrAssemblyReader
     {
+        /// <summary>
+        /// Gets the pseudo-assembly that represents the collection of dynamic methods in the specified process
+        /// </summary>
+        /// <param name="process">Source process</param>
         public static DynamicMethodsAssembly GetDynamicMethods(Process process)
         {
             if (process == null) throw new ArgumentNullException("process");
@@ -23,6 +30,10 @@ namespace CilTools.Runtime
             return ass;
         }
 
+        /// <summary>
+        /// Gets the collection of all methods in the specified process
+        /// </summary>
+        /// <param name="process">Source process</param>
         public static IEnumerable<MethodBase> EnumerateMethods(Process process)
         {
             if (process == null) throw new ArgumentNullException("process");
@@ -61,6 +72,11 @@ namespace CilTools.Runtime
             }//end using
         }
 
+        /// <summary>
+        /// Gets the collection of all methods defined in the specified module of the process
+        /// </summary>
+        /// <param name="process">Source process</param>
+        /// <param name="modulename">Name of PE module file (without full path), or an empty string to use main module</param>
         public static IEnumerable<MethodBase> EnumerateModuleMethods(Process process, string modulename = "")
         {
             if (process == null) throw new ArgumentNullException("process");
@@ -105,6 +121,10 @@ namespace CilTools.Runtime
         ClrRuntime runtime;
         Dictionary<ulong, ClrAssemblyInfo> cache = new Dictionary<ulong, ClrAssemblyInfo>();
 
+        /// <summary>
+        /// Creates <c>ClrAssemblyReader</c> to read information from the specified CLR instance
+        /// </summary>
+        /// <param name="r">Source CLR instance</param>
         public ClrAssemblyReader(ClrRuntime r)
         {
             if (r == null) throw new ArgumentNullException("r");
@@ -112,8 +132,15 @@ namespace CilTools.Runtime
             this.runtime = r;
         }
 
+        /// <summary>
+        /// Gets the CLR instance associated with this <c>ClrAssemblyReader</c>
+        /// </summary>
         public ClrRuntime SourceRuntime { get { return this.runtime; } }
 
+        /// <summary>
+        /// Gets the assembly information object for the specified module name
+        /// </summary>
+        /// <param name="modulename">Name of PE module file (without full path)</param>
         public ClrAssemblyInfo Read(string modulename)
         {
             if (modulename == null) modulename = String.Empty;
@@ -135,6 +162,10 @@ namespace CilTools.Runtime
             return this.Read(module);
         }
 
+        /// <summary>
+        /// Gets the assembly information object for the specified ClrMD module object
+        /// </summary>
+        /// <param name="module">ClrMD module object</param>
         public ClrAssemblyInfo Read(ClrModule module)
         {
             if (module == null) throw new ArgumentNullException("module");
@@ -187,6 +218,9 @@ namespace CilTools.Runtime
             return ass;
         }
 
+        /// <summary>
+        /// Gets the pseudo-assembly that represents the collection of dynamic methods in the process containing CLR instance
+        /// </summary>
         public DynamicMethodsAssembly GetDynamicMethods()
         {
             return new DynamicMethodsAssembly(this.runtime.DataTarget, false);

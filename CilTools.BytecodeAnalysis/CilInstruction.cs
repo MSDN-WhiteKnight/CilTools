@@ -157,7 +157,6 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="byteoffset">Byte offset</param>
         /// <param name="ordinalnum">Ordinal number</param>
         /// <param name="mb">Owning method</param>
-        /// <remarks>Do not use this constructor directly. To retrieve a collection of CIL instructions for the specified method, use methods of <see cref="CilReader"/> class instead.</remarks>
         protected CilInstruction(
             OpCode opc, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
             )
@@ -179,6 +178,16 @@ namespace CilTools.BytecodeAnalysis
             return instr;
         }
 
+        /// <summary>
+        /// Creates new CilInstruction object for instruction with operand
+        /// </summary>
+        /// <typeparam name="T">Operand type</typeparam>
+        /// <param name="opc">Instruction opcode</param>
+        /// <param name="operand">Operand value</param>
+        /// <param name="operandsize">Operand size in bytes</param>
+        /// <param name="byteoffset">Byte offset</param>
+        /// <param name="ordinalnum">Ordinal number</param>
+        /// <param name="mb">Owning method</param>
         public static CilInstruction Create<T>(
             OpCode opc, T operand, uint operandsize, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
             )
@@ -193,6 +202,13 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        /// <summary>
+        /// Creates new CilInstruction object for instruction without operand
+        /// </summary>
+        /// <param name="opc">Instruction opcode</param>
+        /// <param name="byteoffset">Byte offset</param>
+        /// <param name="ordinalnum">Ordinal number</param>
+        /// <param name="mb">Owning method</param>
         public static CilInstruction Create(
             OpCode opc, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
             )
@@ -314,6 +330,10 @@ namespace CilTools.BytecodeAnalysis
             get;
         }
 
+        /// <summary>
+        /// Writes the text representation of this instruction's operand into the specified TextWriter
+        /// </summary>
+        /// <param name="target">The destination TextWriter</param>
         public abstract void OperandToString(TextWriter target);
         
         /// <summary>

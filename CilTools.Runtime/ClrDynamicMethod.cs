@@ -12,6 +12,9 @@ using Microsoft.Diagnostics.Runtime;
 
 namespace CilTools.Runtime
 {
+    /// <summary>
+    /// Represents information about a dynamic method in the external CLR instance
+    /// </summary>
     class ClrDynamicMethod : CustomMethod
     {
         ClrObject method;
