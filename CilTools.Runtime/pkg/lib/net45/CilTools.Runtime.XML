@@ -1,0 +1,337 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>CilTools.Runtime</name>
+    </assembly>
+    <members>
+        <member name="T:CilTools.Runtime.ClrAssemblyInfo">
+            <summary>
+            Represents an assembly in the external CLR instance
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.GetName">
+            <summary>
+            Gets an AssemblyName for this assembly
+            </summary>
+            <returns>An object that contains the fully parsed display name for this assembly</returns>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveType(System.Int32,System.Type[],System.Type[])">
+            <summary>
+            Returns the type identified by the specified metadata token, in the context defined by the specified generic parameters.
+            </summary>
+            <remarks>Generic parameters are ignored in this implementation.</remarks>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveType(System.Int32)">
+            <summary>
+            Returns the type identified by the specified metadata token.
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveMethod(System.Int32,System.Type[],System.Type[])">
+            <summary>
+            Returns the method or constructor identified by the specified metadata token, in the context defined by the 
+            specified generic parameters.
+            </summary>
+            <remarks>Generic parameters are ignored in this implementation.</remarks>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveMethod(System.Int32)">
+            <summary>
+            Returns the method or constructor identified by the specified metadata token.
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveField(System.Int32,System.Type[],System.Type[])">
+            <summary>
+            Returns the field identified by the specified metadata token, in the context defined by the specified generic parameters.
+            </summary>
+            <remarks>Generic parameters are ignored in this implementation.</remarks>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveField(System.Int32)">
+            <summary>
+            Returns the field identified by the specified metadata token.
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveMember(System.Int32,System.Type[],System.Type[])">
+            <summary>
+            Returns the type or member identified by the specified metadata token, in the context defined by the specified 
+            generic parameters.
+            </summary>
+            <remarks>Generic parameters are ignored in this implementation.</remarks>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveMember(System.Int32)">
+            <summary>
+            Returns the type or member identified by the specified metadata token.
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveSignature(System.Int32)">
+            <summary>
+            Returns the signature blob identified by a metadata token (not implemented).
+            </summary>
+            <exception cref="T:System.NotImplementedException">This implementation always throws</exception>
+            <returns>An array of bytes representing the signature blob.</returns>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveString(System.Int32)">
+            <summary>
+            Returns the string identified by the specified metadata token (not implemented).
+            </summary>
+            <returns>This implementation always returns <c>null</c></returns>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.EnumerateMembers">
+            <summary>
+            Gets the collection of all members defined in this assembly
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.EnumerateMethods">
+            <summary>
+            Gets the collection of all methods defined in this assembly
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.GetTypes">
+            <summary>
+            Gets the types defined in this assembly.
+            </summary>
+            <returns>An array that contains all the types that are defined in this assembly.</returns>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.GetType(System.String)">
+            <summary>
+            Gets the <c>Type</c> object that represents the specified type.
+            </summary>
+            <param name="name">The full name of the type.</param>
+            <returns>An object that represents the specified type, or <c>null</c> if the type is not found.</returns>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.GetType(System.String,System.Boolean)">
+            <summary>
+            Gets the <c>Type</c> object with the specified name in the assembly instance and optionally throws an exception if the type is not found.
+            </summary>
+            <param name="name">The full name of the type.</param>
+            <param name="throwOnError">true to throw an exception if the type is not found; false to return null.</param>
+            <returns>An object that represents the specified type.</returns>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.GetType(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Gets the <c>Type</c> object with the specified name in the assembly instance, with the options of ignoring the case, and of throwing an exception if the type is not found.
+            </summary>
+            <param name="name">The full name of the type.</param>
+            <param name="throwOnError">true to throw an exception if the type is not found; false to return null.</param>
+            <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
+            <returns>An object that represents the specified type.</returns>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyInfo.GetExportedTypes">
+            <summary>
+            Gets the public types defined in this assembly that are visible outside the assembly.
+            </summary>
+            <returns>An array that represents the types defined in this assembly that are visible outside the assembly.</returns>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.InnerModule">
+            <summary>
+            Gets the underlying ClrMD module object
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.AssemblyReader">
+            <summary>
+            Gets the assembly reader that was used to read this instance
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.FullName">
+            <summary>
+            Gets the display name of the assembly
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.Location">
+            <summary>
+            Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.CodeBase">
+            <summary>
+            Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.ExportedTypes">
+            <summary>
+            Gets a collection of the public types defined in this assembly that are visible outside the assembly.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.IsDynamic">
+            <summary>
+            Gets a value that indicates whether the current assembly was generated dynamically at runtime by using reflection emit.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.ReflectionOnly">
+            <summary>
+            Gets a boolean value indicating whether this assembly was loaded into the reflection-only context.
+            </summary>
+            <value>This implementation always returns <c>true</c></value>
+        </member>
+        <member name="T:CilTools.Runtime.ClrAssemblyReader">
+            <summary>
+            Reads information about assemblies in the CLR isntances of external processes using ClrMD
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods(System.Diagnostics.Process)">
+            <summary>
+            Gets the pseudo-assembly that represents the collection of dynamic methods in the specified process
+            </summary>
+            <param name="process">Source process</param>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.EnumerateMethods(System.Diagnostics.Process)">
+            <summary>
+            Gets the collection of all methods in the specified process
+            </summary>
+            <param name="process">Source process</param>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods(System.Diagnostics.Process,System.String)">
+            <summary>
+            Gets the collection of all methods defined in the specified module of the process
+            </summary>
+            <param name="process">Source process</param>
+            <param name="modulename">Name of PE module file (without full path), or an empty string to use main module</param>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.#ctor(Microsoft.Diagnostics.Runtime.ClrRuntime)">
+            <summary>
+            Creates <c>ClrAssemblyReader</c> to read information from the specified CLR instance
+            </summary>
+            <param name="r">Source CLR instance</param>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.Read(System.String)">
+            <summary>
+            Gets the assembly information object for the specified module name
+            </summary>
+            <param name="modulename">Name of PE module file (without full path)</param>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.Read(Microsoft.Diagnostics.Runtime.ClrModule)">
+            <summary>
+            Gets the assembly information object for the specified ClrMD module object
+            </summary>
+            <param name="module">ClrMD module object</param>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods">
+            <summary>
+            Gets the pseudo-assembly that represents the collection of dynamic methods in the process containing CLR instance
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyReader.SourceRuntime">
+            <summary>
+            Gets the CLR instance associated with this <c>ClrAssemblyReader</c>
+            </summary>
+        </member>
+        <member name="T:CilTools.Runtime.ClrDynamicMethod">
+            <summary>
+            Represents information about a dynamic method in the external CLR instance
+            </summary>
+        </member>
+        <member name="T:CilTools.Runtime.DynamicMethodsAssembly">
+            <summary>
+            Represents the pseudo-assembly that contains a collection of dynamic methods in the external process
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.#ctor(Microsoft.Diagnostics.Runtime.DataTarget,System.Boolean)">
+            <summary>
+            Creates new <c>DynamicMethodsAssembly</c> object for the specified data target, optionally indicating whether the created object 
+            owns the data target.
+            </summary>
+            <param name="dt">ClrMD data target to read information from</param>
+            <param name="autoDispose">
+            <c>true</c> if this instance owns tha data target and should dispose it automatically when it is no longer needed
+            </param>
+            <exception cref="T:System.ArgumentNullException">Supplied data target is null</exception>
+        </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.GetName">
+            <summary>
+            Gets an AssemblyName for this assembly
+            </summary>
+            <returns>An object that contains the fully parsed display name for this assembly</returns>
+        </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.EnumerateMethods">
+            <summary>
+            Gets the collection of all methods defined in this assembly
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.GetTypes">
+            <summary>
+            Gets the types defined in this assembly. 
+            </summary>
+            <returns>An array that contains all the types that are defined in this assembly.</returns>
+            <remarks>This implementation returns collection that consists of the single pseudo-type representing dynamic methods</remarks>
+        </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.GetType(System.String)">
+            <summary>
+            Gets the <c>Type</c> object that represents the specified type.
+            </summary>
+            <param name="name">The full name of the type.</param>
+            <returns>An object that represents the specified type, or <c>null</c> if the type is not found.</returns>
+        </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.GetType(System.String,System.Boolean)">
+            <summary>
+            Gets the <c>Type</c> object with the specified name in the assembly instance and optionally throws an exception if the type is not found.
+            </summary>
+            <param name="name">The full name of the type.</param>
+            <param name="throwOnError">true to throw an exception if the type is not found; false to return null.</param>
+            <returns>An object that represents the specified type.</returns>
+        </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.GetType(System.String,System.Boolean,System.Boolean)">
+            <summary>
+            Gets the <c>Type</c> object with the specified name in the assembly instance, with the options of ignoring the case, and of throwing an exception if the type is not found.
+            </summary>
+            <param name="name">The full name of the type.</param>
+            <param name="throwOnError">true to throw an exception if the type is not found; false to return null.</param>
+            <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
+            <returns>An object that represents the specified type.</returns>
+        </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.GetExportedTypes">
+            <summary>
+            Gets the public types defined in this assembly that are visible outside the assembly.
+            </summary>
+            <returns>An array that represents the types defined in this assembly that are visible outside the assembly.</returns>
+            /// <remarks>This implementation returns an empty array</remarks>
+        </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.Dispose">
+            <summary>
+            Releases unmagnaged resources associated with this assembly object
+            </summary>
+            <remarks>This method only disposes the underlying data target if this instance was constructed with the <c>autoDispose</c> 
+            parameter set to true. </remarks>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ChildType">
+            <summary>
+            Gets pseudo-type that contains the collection of dynamic methods
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.Target">
+            <summary>
+            ClrMD data target associated with this instance
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.FullName">
+            <summary>
+            Gets the display name of the assembly
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.Location">
+            <summary>
+            Gets the full path to the assembly. This implementation always returns an empty string.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.CodeBase">
+            <summary>
+            Gets the full path to the assembly. This implementation always returns an empty string.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.IsDynamic">
+            <summary>
+            Gets a value that indicates whether the current assembly was generated dynamically at runtime.
+            </summary>
+            <remarks>This implementation always returns <c>true</c></remarks>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ReflectionOnly">
+            <summary>
+            Gets a boolean value indicating whether this assembly was loaded into the reflection-only context.
+            </summary>
+            <value>This implementation always returns <c>true</c></value>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ExportedTypes">
+            <summary>
+            Gets a collection of the public types defined in this assembly that are visible outside the assembly.
+            </summary>
+            <remarks>This implementation returns an empty collection</remarks>
+        </member>
+    </members>
+</doc>
