@@ -1,0 +1,776 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Runtime.ClrAssemblyReader
+  commentId: T:CilTools.Runtime.ClrAssemblyReader
+  id: ClrAssemblyReader
+  parent: CilTools.Runtime
+  children:
+  - CilTools.Runtime.ClrAssemblyReader.#ctor(Microsoft.Diagnostics.Runtime.ClrRuntime)
+  - CilTools.Runtime.ClrAssemblyReader.EnumerateMethods(System.Diagnostics.Process)
+  - CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods(System.Diagnostics.Process,System.String)
+  - CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods
+  - CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods(System.Diagnostics.Process)
+  - CilTools.Runtime.ClrAssemblyReader.Read(Microsoft.Diagnostics.Runtime.ClrModule)
+  - CilTools.Runtime.ClrAssemblyReader.Read(System.String)
+  - CilTools.Runtime.ClrAssemblyReader.SourceRuntime
+  langs:
+  - csharp
+  - vb
+  name: ClrAssemblyReader
+  nameWithType: ClrAssemblyReader
+  fullName: CilTools.Runtime.ClrAssemblyReader
+  type: Class
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nReads information about assemblies in the CLR isntances of external processes using ClrMD\n"
+  syntax:
+    content: public class ClrAssemblyReader
+    content.vb: Public Class ClrAssemblyReader
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods(System.Diagnostics.Process)
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods(System.Diagnostics.Process)
+  id: GetDynamicMethods(System.Diagnostics.Process)
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: GetDynamicMethods(Process)
+  nameWithType: ClrAssemblyReader.GetDynamicMethods(Process)
+  fullName: CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods(System.Diagnostics.Process)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the pseudo-assembly that represents the collection of dynamic methods in the specified process\n"
+  syntax:
+    content: public static DynamicMethodsAssembly GetDynamicMethods(Process process)
+    parameters:
+    - id: process
+      type: System.Diagnostics.Process
+      description: Source process
+    return:
+      type: CilTools.Runtime.DynamicMethodsAssembly
+    content.vb: Public Shared Function GetDynamicMethods(process As Process) As DynamicMethodsAssembly
+  overload: CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Runtime.ClrAssemblyReader.EnumerateMethods(System.Diagnostics.Process)
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.EnumerateMethods(System.Diagnostics.Process)
+  id: EnumerateMethods(System.Diagnostics.Process)
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: EnumerateMethods(Process)
+  nameWithType: ClrAssemblyReader.EnumerateMethods(Process)
+  fullName: CilTools.Runtime.ClrAssemblyReader.EnumerateMethods(System.Diagnostics.Process)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the collection of all methods in the specified process\n"
+  syntax:
+    content: public static IEnumerable<MethodBase> EnumerateMethods(Process process)
+    parameters:
+    - id: process
+      type: System.Diagnostics.Process
+      description: Source process
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
+    content.vb: Public Shared Function EnumerateMethods(process As Process) As IEnumerable(Of MethodBase)
+  overload: CilTools.Runtime.ClrAssemblyReader.EnumerateMethods*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods(System.Diagnostics.Process,System.String)
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods(System.Diagnostics.Process,System.String)
+  id: EnumerateModuleMethods(System.Diagnostics.Process,System.String)
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: EnumerateModuleMethods(Process, String)
+  nameWithType: ClrAssemblyReader.EnumerateModuleMethods(Process, String)
+  fullName: CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods(System.Diagnostics.Process, System.String)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the collection of all methods defined in the specified module of the process\n"
+  syntax:
+    content: public static IEnumerable<MethodBase> EnumerateModuleMethods(Process process, string modulename = "")
+    parameters:
+    - id: process
+      type: System.Diagnostics.Process
+      description: Source process
+    - id: modulename
+      type: System.String
+      description: Name of PE module file (without full path), or an empty string to use main module
+    return:
+      type: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
+    content.vb: Public Shared Function EnumerateModuleMethods(process As Process, modulename As String = "") As IEnumerable(Of MethodBase)
+  overload: CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Runtime.ClrAssemblyReader.#ctor(Microsoft.Diagnostics.Runtime.ClrRuntime)
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.#ctor(Microsoft.Diagnostics.Runtime.ClrRuntime)
+  id: '#ctor(Microsoft.Diagnostics.Runtime.ClrRuntime)'
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: ClrAssemblyReader(ClrRuntime)
+  nameWithType: ClrAssemblyReader.ClrAssemblyReader(ClrRuntime)
+  fullName: CilTools.Runtime.ClrAssemblyReader.ClrAssemblyReader(Microsoft.Diagnostics.Runtime.ClrRuntime)
+  type: Constructor
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nCreates <code>ClrAssemblyReader</code> to read information from the specified CLR instance\n"
+  syntax:
+    content: public ClrAssemblyReader(ClrRuntime r)
+    parameters:
+    - id: r
+      type: Microsoft.Diagnostics.Runtime.ClrRuntime
+      description: Source CLR instance
+    content.vb: Public Sub New(r As ClrRuntime)
+  overload: CilTools.Runtime.ClrAssemblyReader.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Runtime.ClrAssemblyReader.Read(System.String)
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.Read(System.String)
+  id: Read(System.String)
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: Read(String)
+  nameWithType: ClrAssemblyReader.Read(String)
+  fullName: CilTools.Runtime.ClrAssemblyReader.Read(System.String)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the assembly information object for the specified module name\n"
+  syntax:
+    content: public ClrAssemblyInfo Read(string modulename)
+    parameters:
+    - id: modulename
+      type: System.String
+      description: Name of PE module file (without full path)
+    return:
+      type: CilTools.Runtime.ClrAssemblyInfo
+    content.vb: Public Function Read(modulename As String) As ClrAssemblyInfo
+  overload: CilTools.Runtime.ClrAssemblyReader.Read*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Runtime.ClrAssemblyReader.Read(Microsoft.Diagnostics.Runtime.ClrModule)
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.Read(Microsoft.Diagnostics.Runtime.ClrModule)
+  id: Read(Microsoft.Diagnostics.Runtime.ClrModule)
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: Read(ClrModule)
+  nameWithType: ClrAssemblyReader.Read(ClrModule)
+  fullName: CilTools.Runtime.ClrAssemblyReader.Read(Microsoft.Diagnostics.Runtime.ClrModule)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the assembly information object for the specified ClrMD module object\n"
+  syntax:
+    content: public ClrAssemblyInfo Read(ClrModule module)
+    parameters:
+    - id: module
+      type: Microsoft.Diagnostics.Runtime.ClrModule
+      description: ClrMD module object
+    return:
+      type: CilTools.Runtime.ClrAssemblyInfo
+    content.vb: Public Function Read(module As ClrModule) As ClrAssemblyInfo
+  overload: CilTools.Runtime.ClrAssemblyReader.Read*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods
+  id: GetDynamicMethods
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: GetDynamicMethods()
+  nameWithType: ClrAssemblyReader.GetDynamicMethods()
+  fullName: CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods()
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the pseudo-assembly that represents the collection of dynamic methods in the process containing CLR instance\n"
+  syntax:
+    content: public DynamicMethodsAssembly GetDynamicMethods()
+    return:
+      type: CilTools.Runtime.DynamicMethodsAssembly
+    content.vb: Public Function GetDynamicMethods As DynamicMethodsAssembly
+  overload: CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Runtime.ClrAssemblyReader.SourceRuntime
+  commentId: P:CilTools.Runtime.ClrAssemblyReader.SourceRuntime
+  id: SourceRuntime
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: SourceRuntime
+  nameWithType: ClrAssemblyReader.SourceRuntime
+  fullName: CilTools.Runtime.ClrAssemblyReader.SourceRuntime
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the CLR instance associated with this <code>ClrAssemblyReader</code>\n"
+  syntax:
+    content: public ClrRuntime SourceRuntime { get; }
+    parameters: []
+    return:
+      type: Microsoft.Diagnostics.Runtime.ClrRuntime
+    content.vb: Public ReadOnly Property SourceRuntime As ClrRuntime
+  overload: CilTools.Runtime.ClrAssemblyReader.SourceRuntime*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.Runtime
+  commentId: N:CilTools.Runtime
+  isExternal: true
+  name: CilTools.Runtime
+  nameWithType: CilTools.Runtime
+  fullName: CilTools.Runtime
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods*
+  commentId: Overload:CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods
+  isExternal: true
+  name: GetDynamicMethods
+  nameWithType: ClrAssemblyReader.GetDynamicMethods
+  fullName: CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods
+- uid: System.Diagnostics.Process
+  isExternal: true
+  name: Process
+  nameWithType: Process
+  fullName: System.Diagnostics.Process
+- uid: CilTools.Runtime.DynamicMethodsAssembly
+  commentId: T:CilTools.Runtime.DynamicMethodsAssembly
+  parent: CilTools.Runtime
+  isExternal: true
+  name: DynamicMethodsAssembly
+  nameWithType: DynamicMethodsAssembly
+  fullName: CilTools.Runtime.DynamicMethodsAssembly
+- uid: CilTools.Runtime.ClrAssemblyReader.EnumerateMethods*
+  commentId: Overload:CilTools.Runtime.ClrAssemblyReader.EnumerateMethods
+  isExternal: true
+  name: EnumerateMethods
+  nameWithType: ClrAssemblyReader.EnumerateMethods
+  fullName: CilTools.Runtime.ClrAssemblyReader.EnumerateMethods
+- uid: System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
+  commentId: T:System.Collections.Generic.IEnumerable{System.Reflection.MethodBase}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<MethodBase>
+  nameWithType: IEnumerable<MethodBase>
+  fullName: System.Collections.Generic.IEnumerable<System.Reflection.MethodBase>
+  nameWithType.vb: IEnumerable(Of MethodBase)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.Reflection.MethodBase)
+  name.vb: IEnumerable(Of MethodBase)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods*
+  commentId: Overload:CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods
+  isExternal: true
+  name: EnumerateModuleMethods
+  nameWithType: ClrAssemblyReader.EnumerateModuleMethods
+  fullName: CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.Runtime.ClrAssemblyReader.#ctor*
+  commentId: Overload:CilTools.Runtime.ClrAssemblyReader.#ctor
+  isExternal: true
+  name: ClrAssemblyReader
+  nameWithType: ClrAssemblyReader.ClrAssemblyReader
+  fullName: CilTools.Runtime.ClrAssemblyReader.ClrAssemblyReader
+- uid: Microsoft.Diagnostics.Runtime.ClrRuntime
+  commentId: T:Microsoft.Diagnostics.Runtime.ClrRuntime
+  parent: Microsoft.Diagnostics.Runtime
+  isExternal: true
+  name: ClrRuntime
+  nameWithType: ClrRuntime
+  fullName: Microsoft.Diagnostics.Runtime.ClrRuntime
+- uid: Microsoft.Diagnostics.Runtime
+  commentId: N:Microsoft.Diagnostics.Runtime
+  isExternal: true
+  name: Microsoft.Diagnostics.Runtime
+  nameWithType: Microsoft.Diagnostics.Runtime
+  fullName: Microsoft.Diagnostics.Runtime
+- uid: CilTools.Runtime.ClrAssemblyReader.Read*
+  commentId: Overload:CilTools.Runtime.ClrAssemblyReader.Read
+  isExternal: true
+  name: Read
+  nameWithType: ClrAssemblyReader.Read
+  fullName: CilTools.Runtime.ClrAssemblyReader.Read
+- uid: CilTools.Runtime.ClrAssemblyInfo
+  commentId: T:CilTools.Runtime.ClrAssemblyInfo
+  parent: CilTools.Runtime
+  isExternal: true
+  name: ClrAssemblyInfo
+  nameWithType: ClrAssemblyInfo
+  fullName: CilTools.Runtime.ClrAssemblyInfo
+- uid: Microsoft.Diagnostics.Runtime.ClrModule
+  commentId: T:Microsoft.Diagnostics.Runtime.ClrModule
+  parent: Microsoft.Diagnostics.Runtime
+  isExternal: true
+  name: ClrModule
+  nameWithType: ClrModule
+  fullName: Microsoft.Diagnostics.Runtime.ClrModule
+- uid: CilTools.Runtime.ClrAssemblyReader.SourceRuntime*
+  commentId: Overload:CilTools.Runtime.ClrAssemblyReader.SourceRuntime
+  isExternal: true
+  name: SourceRuntime
+  nameWithType: ClrAssemblyReader.SourceRuntime
+  fullName: CilTools.Runtime.ClrAssemblyReader.SourceRuntime

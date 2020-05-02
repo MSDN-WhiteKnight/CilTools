@@ -1,0 +1,617 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs
+  commentId: T:CilTools.BytecodeAnalysis.CilErrorEventArgs
+  id: CilErrorEventArgs
+  parent: CilTools.BytecodeAnalysis
+  children:
+  - CilTools.BytecodeAnalysis.CilErrorEventArgs.#ctor(System.Exception,System.String)
+  - CilTools.BytecodeAnalysis.CilErrorEventArgs._Exception
+  - CilTools.BytecodeAnalysis.CilErrorEventArgs._Info
+  - CilTools.BytecodeAnalysis.CilErrorEventArgs._Timestamp
+  - CilTools.BytecodeAnalysis.CilErrorEventArgs.Exception
+  - CilTools.BytecodeAnalysis.CilErrorEventArgs.Info
+  - CilTools.BytecodeAnalysis.CilErrorEventArgs.Timestamp
+  langs:
+  - csharp
+  - vb
+  name: CilErrorEventArgs
+  nameWithType: CilErrorEventArgs
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nRepresents data associated with Error event\n"
+  syntax:
+    content: 'public class CilErrorEventArgs : EventArgs'
+    content.vb: >-
+      Public Class CilErrorEventArgs
+
+          Inherits EventArgs
+  inheritance:
+  - System.Object
+  - System.EventArgs
+  inheritedMembers:
+  - System.EventArgs.Empty
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs._Exception
+  commentId: F:CilTools.BytecodeAnalysis.CilErrorEventArgs._Exception
+  id: _Exception
+  parent: CilTools.BytecodeAnalysis.CilErrorEventArgs
+  langs:
+  - csharp
+  - vb
+  name: _Exception
+  nameWithType: CilErrorEventArgs._Exception
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs._Exception
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nException associated with this event\n"
+  syntax:
+    content: protected Exception _Exception
+    return:
+      type: System.Exception
+    content.vb: Protected _Exception As Exception
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs._Info
+  commentId: F:CilTools.BytecodeAnalysis.CilErrorEventArgs._Info
+  id: _Info
+  parent: CilTools.BytecodeAnalysis.CilErrorEventArgs
+  langs:
+  - csharp
+  - vb
+  name: _Info
+  nameWithType: CilErrorEventArgs._Info
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs._Info
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nAdditional information associated with this event\n"
+  syntax:
+    content: protected string _Info
+    return:
+      type: System.String
+    content.vb: Protected _Info As String
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs._Timestamp
+  commentId: F:CilTools.BytecodeAnalysis.CilErrorEventArgs._Timestamp
+  id: _Timestamp
+  parent: CilTools.BytecodeAnalysis.CilErrorEventArgs
+  langs:
+  - csharp
+  - vb
+  name: _Timestamp
+  nameWithType: CilErrorEventArgs._Timestamp
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs._Timestamp
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nA date and time when this event occured\n"
+  syntax:
+    content: protected DateTime _Timestamp
+    return:
+      type: System.DateTime
+    content.vb: Protected _Timestamp As Date
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs.#ctor(System.Exception,System.String)
+  commentId: M:CilTools.BytecodeAnalysis.CilErrorEventArgs.#ctor(System.Exception,System.String)
+  id: '#ctor(System.Exception,System.String)'
+  parent: CilTools.BytecodeAnalysis.CilErrorEventArgs
+  langs:
+  - csharp
+  - vb
+  name: CilErrorEventArgs(Exception, String)
+  nameWithType: CilErrorEventArgs.CilErrorEventArgs(Exception, String)
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs.CilErrorEventArgs(System.Exception, System.String)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCreates new CilErrorEventArgs object with specified Exception and error information\n"
+  syntax:
+    content: public CilErrorEventArgs(Exception ex, string info)
+    parameters:
+    - id: ex
+      type: System.Exception
+      description: Exception associated with this event
+    - id: info
+      type: System.String
+      description: Additional information associated with this event
+    content.vb: Public Sub New(ex As Exception, info As String)
+  overload: CilTools.BytecodeAnalysis.CilErrorEventArgs.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs.Exception
+  commentId: P:CilTools.BytecodeAnalysis.CilErrorEventArgs.Exception
+  id: Exception
+  parent: CilTools.BytecodeAnalysis.CilErrorEventArgs
+  langs:
+  - csharp
+  - vb
+  name: Exception
+  nameWithType: CilErrorEventArgs.Exception
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs.Exception
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets exception associated with this event\n"
+  syntax:
+    content: public Exception Exception { get; }
+    parameters: []
+    return:
+      type: System.Exception
+    content.vb: Public ReadOnly Property Exception As Exception
+  overload: CilTools.BytecodeAnalysis.CilErrorEventArgs.Exception*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs.Info
+  commentId: P:CilTools.BytecodeAnalysis.CilErrorEventArgs.Info
+  id: Info
+  parent: CilTools.BytecodeAnalysis.CilErrorEventArgs
+  langs:
+  - csharp
+  - vb
+  name: Info
+  nameWithType: CilErrorEventArgs.Info
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs.Info
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets additional information associated with this event\n"
+  syntax:
+    content: public string Info { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Info As String
+  overload: CilTools.BytecodeAnalysis.CilErrorEventArgs.Info*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs.Timestamp
+  commentId: P:CilTools.BytecodeAnalysis.CilErrorEventArgs.Timestamp
+  id: Timestamp
+  parent: CilTools.BytecodeAnalysis.CilErrorEventArgs
+  langs:
+  - csharp
+  - vb
+  name: Timestamp
+  nameWithType: CilErrorEventArgs.Timestamp
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs.Timestamp
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets date and time when this event occured\n"
+  syntax:
+    content: public DateTime Timestamp { get; }
+    parameters: []
+    return:
+      type: System.DateTime
+    content.vb: Public ReadOnly Property Timestamp As Date
+  overload: CilTools.BytecodeAnalysis.CilErrorEventArgs.Timestamp*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.EventArgs
+  commentId: T:System.EventArgs
+  parent: System
+  isExternal: true
+  name: EventArgs
+  nameWithType: EventArgs
+  fullName: System.EventArgs
+- uid: System.EventArgs.Empty
+  commentId: F:System.EventArgs.Empty
+  parent: System.EventArgs
+  isExternal: true
+  name: Empty
+  nameWithType: EventArgs.Empty
+  fullName: System.EventArgs.Empty
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Exception
+  commentId: T:System.Exception
+  parent: System
+  isExternal: true
+  name: Exception
+  nameWithType: Exception
+  fullName: System.Exception
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.DateTime
+  commentId: T:System.DateTime
+  parent: System
+  isExternal: true
+  name: DateTime
+  nameWithType: DateTime
+  fullName: System.DateTime
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs.#ctor*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilErrorEventArgs.#ctor
+  isExternal: true
+  name: CilErrorEventArgs
+  nameWithType: CilErrorEventArgs.CilErrorEventArgs
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs.CilErrorEventArgs
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs.Exception*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilErrorEventArgs.Exception
+  isExternal: true
+  name: Exception
+  nameWithType: CilErrorEventArgs.Exception
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs.Exception
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs.Info*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilErrorEventArgs.Info
+  isExternal: true
+  name: Info
+  nameWithType: CilErrorEventArgs.Info
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs.Info
+- uid: CilTools.BytecodeAnalysis.CilErrorEventArgs.Timestamp*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilErrorEventArgs.Timestamp
+  isExternal: true
+  name: Timestamp
+  nameWithType: CilErrorEventArgs.Timestamp
+  fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs.Timestamp

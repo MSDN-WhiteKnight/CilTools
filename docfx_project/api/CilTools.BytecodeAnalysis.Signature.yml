@@ -1,0 +1,952 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.BytecodeAnalysis.Signature
+  commentId: T:CilTools.BytecodeAnalysis.Signature
+  id: Signature
+  parent: CilTools.BytecodeAnalysis
+  children:
+  - CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],System.Reflection.Module)
+  - CilTools.BytecodeAnalysis.Signature.CallingConvention
+  - CilTools.BytecodeAnalysis.Signature.ExplicitThis
+  - CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)
+  - CilTools.BytecodeAnalysis.Signature.GetParamTypes
+  - CilTools.BytecodeAnalysis.Signature.HasThis
+  - CilTools.BytecodeAnalysis.Signature.ParamsCount
+  - CilTools.BytecodeAnalysis.Signature.ParamTypes
+  - CilTools.BytecodeAnalysis.Signature.ReturnType
+  - CilTools.BytecodeAnalysis.Signature.ToString
+  langs:
+  - csharp
+  - vb
+  name: Signature
+  nameWithType: Signature
+  fullName: CilTools.BytecodeAnalysis.Signature
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nEncapsulates function&apos;s return type, calling convention and parameter types\n"
+  syntax:
+    content: public class Signature
+    content.vb: Public Class Signature
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],System.Reflection.Module)
+  commentId: M:CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],System.Reflection.Module)
+  id: '#ctor(System.Byte[],System.Reflection.Module)'
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: Signature(Byte[], Module)
+  nameWithType: Signature.Signature(Byte[], Module)
+  fullName: CilTools.BytecodeAnalysis.Signature.Signature(System.Byte[], System.Reflection.Module)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nInitializes a new Signature object representing a stand-alone method signature\n"
+  syntax:
+    content: public Signature(byte[] data, Module module)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: The byte array containing StandAloneMethodSig data (ECMA-335 II.23.2.3)
+    - id: module
+      type: System.Reflection.Module
+      description: Module containing the passed signature
+    content.vb: Public Sub New(data As Byte(), module As  Module)
+  overload: CilTools.BytecodeAnalysis.Signature.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source array is null
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Source array is empty
+  - type: System.IO.EndOfStreamException
+    commentId: T:System.IO.EndOfStreamException
+    description: Unexpected end of input data
+  - type: CilTools.BytecodeAnalysis.CilParserException
+    commentId: T:CilTools.BytecodeAnalysis.CilParserException
+    description: Input data is invalid
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: Signature contains generic types, function pointers or variable-bound arrays
+  nameWithType.vb: Signature.Signature(Byte(), Module)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CilTools.BytecodeAnalysis.Signature.Signature(System.Byte(), System.Reflection.Module)
+  name.vb: Signature(Byte(), Module)
+- uid: CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)
+  commentId: M:CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)
+  id: GetParamType(System.Int32)
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: GetParamType(Int32)
+  nameWithType: Signature.GetParamType(Int32)
+  fullName: CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the type of parameter with the specified index\n"
+  syntax:
+    content: public TypeSpec GetParamType(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: Index of the requested parameter
+    return:
+      type: CilTools.BytecodeAnalysis.TypeSpec
+      description: The type of requested parameter
+    content.vb: Public Function GetParamType(index As Integer) As TypeSpec
+  overload: CilTools.BytecodeAnalysis.Signature.GetParamType*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Index is negative or outside the bounds of collection
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.Signature.GetParamTypes
+  commentId: M:CilTools.BytecodeAnalysis.Signature.GetParamTypes
+  id: GetParamTypes
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: GetParamTypes()
+  nameWithType: Signature.GetParamTypes()
+  fullName: CilTools.BytecodeAnalysis.Signature.GetParamTypes()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the array of fixed parameter types that the function described by this signature takes\n"
+  syntax:
+    content: public TypeSpec[] GetParamTypes()
+    return:
+      type: CilTools.BytecodeAnalysis.TypeSpec[]
+    content.vb: Public Function GetParamTypes As TypeSpec()
+  overload: CilTools.BytecodeAnalysis.Signature.GetParamTypes*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.Signature.ToString
+  commentId: M:CilTools.BytecodeAnalysis.Signature.ToString
+  id: ToString
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: Signature.ToString()
+  fullName: CilTools.BytecodeAnalysis.Signature.ToString()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the textual representation of this signature as CIL code\n"
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString As String
+  overridden: System.Object.ToString
+  overload: CilTools.BytecodeAnalysis.Signature.ToString*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.BytecodeAnalysis.Signature.CallingConvention
+  commentId: P:CilTools.BytecodeAnalysis.Signature.CallingConvention
+  id: CallingConvention
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: CallingConvention
+  nameWithType: Signature.CallingConvention
+  fullName: CilTools.BytecodeAnalysis.Signature.CallingConvention
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReturns calling convention of the function described by this signature\n"
+  syntax:
+    content: public CallingConvention CallingConvention { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.CallingConvention
+    content.vb: Public ReadOnly Property CallingConvention As CallingConvention
+  overload: CilTools.BytecodeAnalysis.Signature.CallingConvention*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.Signature.HasThis
+  commentId: P:CilTools.BytecodeAnalysis.Signature.HasThis
+  id: HasThis
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: HasThis
+  nameWithType: Signature.HasThis
+  fullName: CilTools.BytecodeAnalysis.Signature.HasThis
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the value indicating whether the function described by this signature uses an instance pointer\n"
+  syntax:
+    content: public bool HasThis { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property HasThis As Boolean
+  overload: CilTools.BytecodeAnalysis.Signature.HasThis*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.Signature.ExplicitThis
+  commentId: P:CilTools.BytecodeAnalysis.Signature.ExplicitThis
+  id: ExplicitThis
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: ExplicitThis
+  nameWithType: Signature.ExplicitThis
+  fullName: CilTools.BytecodeAnalysis.Signature.ExplicitThis
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the value indicating whether the instance pointer is included explicitly in this signature\n"
+  syntax:
+    content: public bool ExplicitThis { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property ExplicitThis As Boolean
+  overload: CilTools.BytecodeAnalysis.Signature.ExplicitThis*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.Signature.ReturnType
+  commentId: P:CilTools.BytecodeAnalysis.Signature.ReturnType
+  id: ReturnType
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: ReturnType
+  nameWithType: Signature.ReturnType
+  fullName: CilTools.BytecodeAnalysis.Signature.ReturnType
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the return type of the function described by this signature\n"
+  syntax:
+    content: public TypeSpec ReturnType { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.TypeSpec
+    content.vb: Public ReadOnly Property ReturnType As TypeSpec
+  overload: CilTools.BytecodeAnalysis.Signature.ReturnType*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.Signature.ParamsCount
+  commentId: P:CilTools.BytecodeAnalysis.Signature.ParamsCount
+  id: ParamsCount
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: ParamsCount
+  nameWithType: Signature.ParamsCount
+  fullName: CilTools.BytecodeAnalysis.Signature.ParamsCount
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the amount of fixed parameters that the function described by this signature takes\n"
+  syntax:
+    content: public int ParamsCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property ParamsCount As Integer
+  overload: CilTools.BytecodeAnalysis.Signature.ParamsCount*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.Signature.ParamTypes
+  commentId: P:CilTools.BytecodeAnalysis.Signature.ParamTypes
+  id: ParamTypes
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: ParamTypes
+  nameWithType: Signature.ParamTypes
+  fullName: CilTools.BytecodeAnalysis.Signature.ParamTypes
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nEnumerates types of fixed parameters that the function described by this signature takes\n"
+  syntax:
+    content: public IEnumerable<TypeSpec> ParamTypes { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.TypeSpec}
+    content.vb: Public ReadOnly Property ParamTypes As IEnumerable(Of TypeSpec)
+  overload: CilTools.BytecodeAnalysis.Signature.ParamTypes*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.BytecodeAnalysis.Signature.#ctor*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.#ctor
+  isExternal: true
+  name: Signature
+  nameWithType: Signature.Signature
+  fullName: CilTools.BytecodeAnalysis.Signature.Signature
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+- uid: System.IO.EndOfStreamException
+  commentId: T:System.IO.EndOfStreamException
+  isExternal: true
+- uid: CilTools.BytecodeAnalysis.CilParserException
+  commentId: T:CilTools.BytecodeAnalysis.CilParserException
+  isExternal: true
+  name: CilParserException
+  nameWithType: CilParserException
+  fullName: CilTools.BytecodeAnalysis.CilParserException
+- uid: System.NotSupportedException
+  commentId: T:System.NotSupportedException
+  isExternal: true
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Reflection.Module
+  commentId: T:System.Reflection.Module
+  parent: System.Reflection
+  isExternal: true
+  name: Module
+  nameWithType: Module
+  fullName: System.Reflection.Module
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.BytecodeAnalysis.Signature.GetParamType*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.GetParamType
+  isExternal: true
+  name: GetParamType
+  nameWithType: Signature.GetParamType
+  fullName: CilTools.BytecodeAnalysis.Signature.GetParamType
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.BytecodeAnalysis.TypeSpec
+  commentId: T:CilTools.BytecodeAnalysis.TypeSpec
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: TypeSpec
+  nameWithType: TypeSpec
+  fullName: CilTools.BytecodeAnalysis.TypeSpec
+- uid: CilTools.BytecodeAnalysis.Signature.GetParamTypes*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.GetParamTypes
+  isExternal: true
+  name: GetParamTypes
+  nameWithType: Signature.GetParamTypes
+  fullName: CilTools.BytecodeAnalysis.Signature.GetParamTypes
+- uid: CilTools.BytecodeAnalysis.TypeSpec[]
+  isExternal: true
+  name: TypeSpec[]
+  nameWithType: TypeSpec[]
+  fullName: CilTools.BytecodeAnalysis.TypeSpec[]
+  nameWithType.vb: TypeSpec()
+  fullName.vb: CilTools.BytecodeAnalysis.TypeSpec()
+  name.vb: TypeSpec()
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.TypeSpec
+    name: TypeSpec
+    nameWithType: TypeSpec
+    fullName: CilTools.BytecodeAnalysis.TypeSpec
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.TypeSpec
+    name: TypeSpec
+    nameWithType: TypeSpec
+    fullName: CilTools.BytecodeAnalysis.TypeSpec
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.Signature.ToString*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.ToString
+  isExternal: true
+  name: ToString
+  nameWithType: Signature.ToString
+  fullName: CilTools.BytecodeAnalysis.Signature.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.BytecodeAnalysis.Signature.CallingConvention*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.CallingConvention
+  isExternal: true
+  name: CallingConvention
+  nameWithType: Signature.CallingConvention
+  fullName: CilTools.BytecodeAnalysis.Signature.CallingConvention
+- uid: CilTools.BytecodeAnalysis.CallingConvention
+  commentId: T:CilTools.BytecodeAnalysis.CallingConvention
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CallingConvention
+  nameWithType: CallingConvention
+  fullName: CilTools.BytecodeAnalysis.CallingConvention
+- uid: CilTools.BytecodeAnalysis.Signature.HasThis*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.HasThis
+  isExternal: true
+  name: HasThis
+  nameWithType: Signature.HasThis
+  fullName: CilTools.BytecodeAnalysis.Signature.HasThis
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: CilTools.BytecodeAnalysis.Signature.ExplicitThis*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.ExplicitThis
+  isExternal: true
+  name: ExplicitThis
+  nameWithType: Signature.ExplicitThis
+  fullName: CilTools.BytecodeAnalysis.Signature.ExplicitThis
+- uid: CilTools.BytecodeAnalysis.Signature.ReturnType*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.ReturnType
+  isExternal: true
+  name: ReturnType
+  nameWithType: Signature.ReturnType
+  fullName: CilTools.BytecodeAnalysis.Signature.ReturnType
+- uid: CilTools.BytecodeAnalysis.Signature.ParamsCount*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.ParamsCount
+  isExternal: true
+  name: ParamsCount
+  nameWithType: Signature.ParamsCount
+  fullName: CilTools.BytecodeAnalysis.Signature.ParamsCount
+- uid: CilTools.BytecodeAnalysis.Signature.ParamTypes*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.ParamTypes
+  isExternal: true
+  name: ParamTypes
+  nameWithType: Signature.ParamTypes
+  fullName: CilTools.BytecodeAnalysis.Signature.ParamTypes
+- uid: System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.TypeSpec}
+  commentId: T:System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.TypeSpec}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<TypeSpec>
+  nameWithType: IEnumerable<TypeSpec>
+  fullName: System.Collections.Generic.IEnumerable<CilTools.BytecodeAnalysis.TypeSpec>
+  nameWithType.vb: IEnumerable(Of TypeSpec)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilTools.BytecodeAnalysis.TypeSpec)
+  name.vb: IEnumerable(Of TypeSpec)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.BytecodeAnalysis.TypeSpec
+    name: TypeSpec
+    nameWithType: TypeSpec
+    fullName: CilTools.BytecodeAnalysis.TypeSpec
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.BytecodeAnalysis.TypeSpec
+    name: TypeSpec
+    nameWithType: TypeSpec
+    fullName: CilTools.BytecodeAnalysis.TypeSpec
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic

@@ -1,0 +1,52 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  id: CilTools.Reflection
+  children:
+  - CilTools.Reflection.CustomMethod
+  - CilTools.Reflection.ExceptionBlock
+  - CilTools.Reflection.ITokenResolver
+  - CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+  type: Namespace
+  assemblies:
+  - CilTools.BytecodeAnalysis
+references:
+- uid: CilTools.Reflection.CustomMethod
+  commentId: T:CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: CustomMethod
+  nameWithType: CustomMethod
+  fullName: CilTools.Reflection.CustomMethod
+- uid: CilTools.Reflection.ExceptionBlock
+  commentId: T:CilTools.Reflection.ExceptionBlock
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ExceptionBlock
+  nameWithType: ExceptionBlock
+  fullName: CilTools.Reflection.ExceptionBlock
+- uid: CilTools.Reflection.ITokenResolver
+  commentId: T:CilTools.Reflection.ITokenResolver
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ITokenResolver
+  nameWithType: ITokenResolver
+  fullName: CilTools.Reflection.ITokenResolver
+- uid: CilTools.Reflection.LocalVariable
+  commentId: T:CilTools.Reflection.LocalVariable
+  isExternal: true
+  name: LocalVariable
+  nameWithType: LocalVariable
+  fullName: CilTools.Reflection.LocalVariable
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection

@@ -1,0 +1,131 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.BytecodeAnalysis.CilReaderState
+  commentId: T:CilTools.BytecodeAnalysis.CilReaderState
+  id: CilReaderState
+  parent: CilTools.BytecodeAnalysis
+  children:
+  - CilTools.BytecodeAnalysis.CilReaderState.End
+  - CilTools.BytecodeAnalysis.CilReaderState.Error
+  - CilTools.BytecodeAnalysis.CilReaderState.Reading
+  langs:
+  - csharp
+  - vb
+  name: CilReaderState
+  nameWithType: CilReaderState
+  fullName: CilTools.BytecodeAnalysis.CilReaderState
+  type: Enum
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nRepresents a state of CilReader object\n"
+  syntax:
+    content: public enum CilReaderState
+    content.vb: Public Enum CilReaderState
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilTools.BytecodeAnalysis.CilReaderState.Reading
+  commentId: F:CilTools.BytecodeAnalysis.CilReaderState.Reading
+  id: Reading
+  parent: CilTools.BytecodeAnalysis.CilReaderState
+  langs:
+  - csharp
+  - vb
+  name: Reading
+  nameWithType: CilReaderState.Reading
+  fullName: CilTools.BytecodeAnalysis.CilReaderState.Reading
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCilReader can read instructions\n"
+  syntax:
+    content: Reading = 1
+    return:
+      type: CilTools.BytecodeAnalysis.CilReaderState
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.CilReaderState.Error
+  commentId: F:CilTools.BytecodeAnalysis.CilReaderState.Error
+  id: Error
+  parent: CilTools.BytecodeAnalysis.CilReaderState
+  langs:
+  - csharp
+  - vb
+  name: Error
+  nameWithType: CilReaderState.Error
+  fullName: CilTools.BytecodeAnalysis.CilReaderState.Error
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCilReader is in a faulty state, because previous read operation resulted in error\n"
+  syntax:
+    content: Error = 2
+    return:
+      type: CilTools.BytecodeAnalysis.CilReaderState
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.CilReaderState.End
+  commentId: F:CilTools.BytecodeAnalysis.CilReaderState.End
+  id: End
+  parent: CilTools.BytecodeAnalysis.CilReaderState
+  langs:
+  - csharp
+  - vb
+  name: End
+  nameWithType: CilReaderState.End
+  fullName: CilTools.BytecodeAnalysis.CilReaderState.End
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCilReader reached the end of its source data\n"
+  syntax:
+    content: End = 3
+    return:
+      type: CilTools.BytecodeAnalysis.CilReaderState
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
+- uid: CilTools.BytecodeAnalysis.CilReaderState
+  commentId: T:CilTools.BytecodeAnalysis.CilReaderState
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilReaderState
+  nameWithType: CilReaderState
+  fullName: CilTools.BytecodeAnalysis.CilReaderState

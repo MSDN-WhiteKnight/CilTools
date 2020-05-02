@@ -1,0 +1,46 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Runtime
+  commentId: N:CilTools.Runtime
+  id: CilTools.Runtime
+  children:
+  - CilTools.Runtime.ClrAssemblyInfo
+  - CilTools.Runtime.ClrAssemblyReader
+  - CilTools.Runtime.DynamicMethodsAssembly
+  langs:
+  - csharp
+  - vb
+  name: CilTools.Runtime
+  nameWithType: CilTools.Runtime
+  fullName: CilTools.Runtime
+  type: Namespace
+  assemblies:
+  - CilTools.Runtime
+references:
+- uid: CilTools.Runtime.ClrAssemblyInfo
+  commentId: T:CilTools.Runtime.ClrAssemblyInfo
+  parent: CilTools.Runtime
+  isExternal: true
+  name: ClrAssemblyInfo
+  nameWithType: ClrAssemblyInfo
+  fullName: CilTools.Runtime.ClrAssemblyInfo
+- uid: CilTools.Runtime.ClrAssemblyReader
+  commentId: T:CilTools.Runtime.ClrAssemblyReader
+  parent: CilTools.Runtime
+  isExternal: true
+  name: ClrAssemblyReader
+  nameWithType: ClrAssemblyReader
+  fullName: CilTools.Runtime.ClrAssemblyReader
+- uid: CilTools.Runtime.DynamicMethodsAssembly
+  commentId: T:CilTools.Runtime.DynamicMethodsAssembly
+  parent: CilTools.Runtime
+  isExternal: true
+  name: DynamicMethodsAssembly
+  nameWithType: DynamicMethodsAssembly
+  fullName: CilTools.Runtime.DynamicMethodsAssembly
+- uid: CilTools.Runtime
+  commentId: N:CilTools.Runtime
+  isExternal: true
+  name: CilTools.Runtime
+  nameWithType: CilTools.Runtime
+  fullName: CilTools.Runtime

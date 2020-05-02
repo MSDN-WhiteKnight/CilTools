@@ -1,0 +1,707 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.ExceptionBlock
+  commentId: T:CilTools.Reflection.ExceptionBlock
+  id: ExceptionBlock
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.ExceptionBlock.#ctor(System.Reflection.ExceptionHandlingClauseOptions,System.Int32,System.Int32,System.Type,System.Int32,System.Int32,System.Int32)
+  - CilTools.Reflection.ExceptionBlock.CatchType
+  - CilTools.Reflection.ExceptionBlock.FilterOffset
+  - CilTools.Reflection.ExceptionBlock.Flags
+  - CilTools.Reflection.ExceptionBlock.FromReflection(System.Reflection.ExceptionHandlingClause)
+  - CilTools.Reflection.ExceptionBlock.HandlerLength
+  - CilTools.Reflection.ExceptionBlock.HandlerOffset
+  - CilTools.Reflection.ExceptionBlock.TryLength
+  - CilTools.Reflection.ExceptionBlock.TryOffset
+  langs:
+  - csharp
+  - vb
+  name: ExceptionBlock
+  nameWithType: ExceptionBlock
+  fullName: CilTools.Reflection.ExceptionBlock
+  type: Struct
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents an exception handling block\n"
+  syntax:
+    content: public struct ExceptionBlock
+    content.vb: Public Structure ExceptionBlock
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetType
+  modifiers.csharp:
+  - public
+  - struct
+  modifiers.vb:
+  - Public
+  - Structure
+- uid: CilTools.Reflection.ExceptionBlock.#ctor(System.Reflection.ExceptionHandlingClauseOptions,System.Int32,System.Int32,System.Type,System.Int32,System.Int32,System.Int32)
+  commentId: M:CilTools.Reflection.ExceptionBlock.#ctor(System.Reflection.ExceptionHandlingClauseOptions,System.Int32,System.Int32,System.Type,System.Int32,System.Int32,System.Int32)
+  id: '#ctor(System.Reflection.ExceptionHandlingClauseOptions,System.Int32,System.Int32,System.Type,System.Int32,System.Int32,System.Int32)'
+  parent: CilTools.Reflection.ExceptionBlock
+  langs:
+  - csharp
+  - vb
+  name: ExceptionBlock(ExceptionHandlingClauseOptions, Int32, Int32, Type, Int32, Int32, Int32)
+  nameWithType: ExceptionBlock.ExceptionBlock(ExceptionHandlingClauseOptions, Int32, Int32, Type, Int32, Int32, Int32)
+  fullName: CilTools.Reflection.ExceptionBlock.ExceptionBlock(System.Reflection.ExceptionHandlingClauseOptions, System.Int32, System.Int32, System.Type, System.Int32, System.Int32, System.Int32)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nInitializes a new ExceptionBlock instance using provided property values\n"
+  syntax:
+    content: public ExceptionBlock(ExceptionHandlingClauseOptions pFlags, int pTryOffset, int pTryLength, Type pCatchType, int pHandlerOffset, int pHandlerLength, int pFilterOffset)
+    parameters:
+    - id: pFlags
+      type: System.Reflection.ExceptionHandlingClauseOptions
+    - id: pTryOffset
+      type: System.Int32
+    - id: pTryLength
+      type: System.Int32
+    - id: pCatchType
+      type: System.Type
+    - id: pHandlerOffset
+      type: System.Int32
+    - id: pHandlerLength
+      type: System.Int32
+    - id: pFilterOffset
+      type: System.Int32
+    content.vb: Public Sub New(pFlags As ExceptionHandlingClauseOptions, pTryOffset As Integer, pTryLength As Integer, pCatchType As Type, pHandlerOffset As Integer, pHandlerLength As Integer, pFilterOffset As Integer)
+  overload: CilTools.Reflection.ExceptionBlock.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Reflection.ExceptionBlock.FromReflection(System.Reflection.ExceptionHandlingClause)
+  commentId: M:CilTools.Reflection.ExceptionBlock.FromReflection(System.Reflection.ExceptionHandlingClause)
+  id: FromReflection(System.Reflection.ExceptionHandlingClause)
+  parent: CilTools.Reflection.ExceptionBlock
+  langs:
+  - csharp
+  - vb
+  name: FromReflection(ExceptionHandlingClause)
+  nameWithType: ExceptionBlock.FromReflection(ExceptionHandlingClause)
+  fullName: CilTools.Reflection.ExceptionBlock.FromReflection(System.Reflection.ExceptionHandlingClause)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nCreates new ExceptionBlock instance based on the specified reflection ExceptionHandlingClause object\n"
+  syntax:
+    content: public static ExceptionBlock FromReflection(ExceptionHandlingClause clause)
+    parameters:
+    - id: clause
+      type: System.Reflection.ExceptionHandlingClause
+    return:
+      type: CilTools.Reflection.ExceptionBlock
+    content.vb: Public Shared Function FromReflection(clause As ExceptionHandlingClause) As ExceptionBlock
+  overload: CilTools.Reflection.ExceptionBlock.FromReflection*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Reflection.ExceptionBlock.CatchType
+  commentId: P:CilTools.Reflection.ExceptionBlock.CatchType
+  id: CatchType
+  parent: CilTools.Reflection.ExceptionBlock
+  langs:
+  - csharp
+  - vb
+  name: CatchType
+  nameWithType: ExceptionBlock.CatchType
+  fullName: CilTools.Reflection.ExceptionBlock.CatchType
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the type of exception handled by the catch block\n"
+  syntax:
+    content: public Type CatchType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public ReadOnly Property CatchType As Type
+  overload: CilTools.Reflection.ExceptionBlock.CatchType*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.ExceptionBlock.FilterOffset
+  commentId: P:CilTools.Reflection.ExceptionBlock.FilterOffset
+  id: FilterOffset
+  parent: CilTools.Reflection.ExceptionBlock
+  langs:
+  - csharp
+  - vb
+  name: FilterOffset
+  nameWithType: ExceptionBlock.FilterOffset
+  fullName: CilTools.Reflection.ExceptionBlock.FilterOffset
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the offset of this block&apos;s exception filter within the method body, in bytes\n"
+  syntax:
+    content: public int FilterOffset { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property FilterOffset As Integer
+  overload: CilTools.Reflection.ExceptionBlock.FilterOffset*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.ExceptionBlock.Flags
+  commentId: P:CilTools.Reflection.ExceptionBlock.Flags
+  id: Flags
+  parent: CilTools.Reflection.ExceptionBlock
+  langs:
+  - csharp
+  - vb
+  name: Flags
+  nameWithType: ExceptionBlock.Flags
+  fullName: CilTools.Reflection.ExceptionBlock.Flags
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value specifying the type of exception block\n"
+  syntax:
+    content: public ExceptionHandlingClauseOptions Flags { get; }
+    parameters: []
+    return:
+      type: System.Reflection.ExceptionHandlingClauseOptions
+    content.vb: Public ReadOnly Property Flags As ExceptionHandlingClauseOptions
+  overload: CilTools.Reflection.ExceptionBlock.Flags*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.ExceptionBlock.HandlerLength
+  commentId: P:CilTools.Reflection.ExceptionBlock.HandlerLength
+  id: HandlerLength
+  parent: CilTools.Reflection.ExceptionBlock
+  langs:
+  - csharp
+  - vb
+  name: HandlerLength
+  nameWithType: ExceptionBlock.HandlerLength
+  fullName: CilTools.Reflection.ExceptionBlock.HandlerLength
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the length of this block&apos;s handler, in bytes\n"
+  syntax:
+    content: public int HandlerLength { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property HandlerLength As Integer
+  overload: CilTools.Reflection.ExceptionBlock.HandlerLength*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.ExceptionBlock.HandlerOffset
+  commentId: P:CilTools.Reflection.ExceptionBlock.HandlerOffset
+  id: HandlerOffset
+  parent: CilTools.Reflection.ExceptionBlock
+  langs:
+  - csharp
+  - vb
+  name: HandlerOffset
+  nameWithType: ExceptionBlock.HandlerOffset
+  fullName: CilTools.Reflection.ExceptionBlock.HandlerOffset
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the offset of this block&apos;s handler within the method body, in bytes\n"
+  syntax:
+    content: public int HandlerOffset { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property HandlerOffset As Integer
+  overload: CilTools.Reflection.ExceptionBlock.HandlerOffset*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.ExceptionBlock.TryLength
+  commentId: P:CilTools.Reflection.ExceptionBlock.TryLength
+  id: TryLength
+  parent: CilTools.Reflection.ExceptionBlock
+  langs:
+  - csharp
+  - vb
+  name: TryLength
+  nameWithType: ExceptionBlock.TryLength
+  fullName: CilTools.Reflection.ExceptionBlock.TryLength
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the length of this block&apos;s try clause, in bytes\n"
+  syntax:
+    content: public int TryLength { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property TryLength As Integer
+  overload: CilTools.Reflection.ExceptionBlock.TryLength*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.ExceptionBlock.TryOffset
+  commentId: P:CilTools.Reflection.ExceptionBlock.TryOffset
+  id: TryOffset
+  parent: CilTools.Reflection.ExceptionBlock
+  langs:
+  - csharp
+  - vb
+  name: TryOffset
+  nameWithType: ExceptionBlock.TryOffset
+  fullName: CilTools.Reflection.ExceptionBlock.TryOffset
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the offset of this block&apos;s try clause within the method body, in bytes\n"
+  syntax:
+    content: public int TryOffset { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property TryOffset As Integer
+  overload: CilTools.Reflection.ExceptionBlock.TryOffset*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: ValueType.Equals(Object)
+  fullName: System.ValueType.Equals(System.Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    nameWithType: ValueType.Equals
+    fullName: System.ValueType.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    nameWithType: ValueType.Equals
+    fullName: System.ValueType.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    nameWithType: ValueType.GetHashCode
+    fullName: System.ValueType.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    nameWithType: ValueType.GetHashCode
+    fullName: System.ValueType.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    nameWithType: ValueType.ToString
+    fullName: System.ValueType.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    nameWithType: ValueType.ToString
+    fullName: System.ValueType.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.ExceptionBlock.#ctor*
+  commentId: Overload:CilTools.Reflection.ExceptionBlock.#ctor
+  isExternal: true
+  name: ExceptionBlock
+  nameWithType: ExceptionBlock.ExceptionBlock
+  fullName: CilTools.Reflection.ExceptionBlock.ExceptionBlock
+- uid: System.Reflection.ExceptionHandlingClauseOptions
+  commentId: T:System.Reflection.ExceptionHandlingClauseOptions
+  parent: System.Reflection
+  isExternal: true
+  name: ExceptionHandlingClauseOptions
+  nameWithType: ExceptionHandlingClauseOptions
+  fullName: System.Reflection.ExceptionHandlingClauseOptions
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Reflection.ExceptionBlock.FromReflection*
+  commentId: Overload:CilTools.Reflection.ExceptionBlock.FromReflection
+  isExternal: true
+  name: FromReflection
+  nameWithType: ExceptionBlock.FromReflection
+  fullName: CilTools.Reflection.ExceptionBlock.FromReflection
+- uid: System.Reflection.ExceptionHandlingClause
+  commentId: T:System.Reflection.ExceptionHandlingClause
+  parent: System.Reflection
+  isExternal: true
+  name: ExceptionHandlingClause
+  nameWithType: ExceptionHandlingClause
+  fullName: System.Reflection.ExceptionHandlingClause
+- uid: CilTools.Reflection.ExceptionBlock
+  commentId: T:CilTools.Reflection.ExceptionBlock
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ExceptionBlock
+  nameWithType: ExceptionBlock
+  fullName: CilTools.Reflection.ExceptionBlock
+- uid: CilTools.Reflection.ExceptionBlock.CatchType*
+  commentId: Overload:CilTools.Reflection.ExceptionBlock.CatchType
+  isExternal: true
+  name: CatchType
+  nameWithType: ExceptionBlock.CatchType
+  fullName: CilTools.Reflection.ExceptionBlock.CatchType
+- uid: CilTools.Reflection.ExceptionBlock.FilterOffset*
+  commentId: Overload:CilTools.Reflection.ExceptionBlock.FilterOffset
+  isExternal: true
+  name: FilterOffset
+  nameWithType: ExceptionBlock.FilterOffset
+  fullName: CilTools.Reflection.ExceptionBlock.FilterOffset
+- uid: CilTools.Reflection.ExceptionBlock.Flags*
+  commentId: Overload:CilTools.Reflection.ExceptionBlock.Flags
+  isExternal: true
+  name: Flags
+  nameWithType: ExceptionBlock.Flags
+  fullName: CilTools.Reflection.ExceptionBlock.Flags
+- uid: CilTools.Reflection.ExceptionBlock.HandlerLength*
+  commentId: Overload:CilTools.Reflection.ExceptionBlock.HandlerLength
+  isExternal: true
+  name: HandlerLength
+  nameWithType: ExceptionBlock.HandlerLength
+  fullName: CilTools.Reflection.ExceptionBlock.HandlerLength
+- uid: CilTools.Reflection.ExceptionBlock.HandlerOffset*
+  commentId: Overload:CilTools.Reflection.ExceptionBlock.HandlerOffset
+  isExternal: true
+  name: HandlerOffset
+  nameWithType: ExceptionBlock.HandlerOffset
+  fullName: CilTools.Reflection.ExceptionBlock.HandlerOffset
+- uid: CilTools.Reflection.ExceptionBlock.TryLength*
+  commentId: Overload:CilTools.Reflection.ExceptionBlock.TryLength
+  isExternal: true
+  name: TryLength
+  nameWithType: ExceptionBlock.TryLength
+  fullName: CilTools.Reflection.ExceptionBlock.TryLength
+- uid: CilTools.Reflection.ExceptionBlock.TryOffset*
+  commentId: Overload:CilTools.Reflection.ExceptionBlock.TryOffset
+  isExternal: true
+  name: TryOffset
+  nameWithType: ExceptionBlock.TryOffset
+  fullName: CilTools.Reflection.ExceptionBlock.TryOffset

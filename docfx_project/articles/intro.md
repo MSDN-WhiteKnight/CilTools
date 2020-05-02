@@ -11,7 +11,7 @@ CilTools.BytecodeAnalysis library reads .NET methods' Common Intermediate Langua
 
 *Usage*
 
-Add reference to CilTools.BytecodeAnalysis.dll, import CilTools.BytecodeAnalysis namespace. Use <xref:CilTools.BytecodeAnalysis.CilReader.GetInstructions(System.Reflection.MethodBase)> to get the collection of instructions from method, <xref:CilTools.BytecodeAnalysis.CilAnalysis.GetGraph(System.Reflection.MethodBase)> to get a a graph that represents a flow of control between method's instructions, or <xref:CilTools.BytecodeAnalysis.CilAnalysis.MethodToText(System.Reflection.MethodBase)> when you need to output method's CIL code as text. <xref:CilTools.BytecodeAnalysis.Extensions> namespace provides an alternative syntax via extension methods.
+Add reference to CilTools.BytecodeAnalysis.dll, import CilTools.BytecodeAnalysis namespace. Use <xref:CilTools.BytecodeAnalysis.CilReader.GetInstructions(System.Reflection.MethodBase)> to get the collection of instructions from method, <xref:CilTools.BytecodeAnalysis.CilGraph.Create(System.Reflection.MethodBase)> to get a a graph that represents a flow of control between method's instructions, or <xref:CilTools.BytecodeAnalysis.CilAnalysis.MethodToText(System.Reflection.MethodBase)> when you need to output method's CIL code as text. <xref:CilTools.BytecodeAnalysis.Extensions> namespace provides an alternative syntax via extension methods.
 
 *Example*
 

@@ -1,0 +1,1436 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.BytecodeAnalysis.CilInstruction
+  commentId: T:CilTools.BytecodeAnalysis.CilInstruction
+  id: CilInstruction
+  parent: CilTools.BytecodeAnalysis
+  children:
+  - CilTools.BytecodeAnalysis.CilInstruction.#ctor(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  - CilTools.BytecodeAnalysis.CilInstruction.ByteOffset
+  - CilTools.BytecodeAnalysis.CilInstruction.Code
+  - CilTools.BytecodeAnalysis.CilInstruction.Create(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  - CilTools.BytecodeAnalysis.CilInstruction.Create``1(System.Reflection.Emit.OpCode,``0,System.UInt32,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  - CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction(System.Reflection.MethodBase)
+  - CilTools.BytecodeAnalysis.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  - CilTools.BytecodeAnalysis.CilInstruction.Method
+  - CilTools.BytecodeAnalysis.CilInstruction.Name
+  - CilTools.BytecodeAnalysis.CilInstruction.OpCode
+  - CilTools.BytecodeAnalysis.CilInstruction.Operand
+  - CilTools.BytecodeAnalysis.CilInstruction.OperandSize
+  - CilTools.BytecodeAnalysis.CilInstruction.OperandToString(System.IO.TextWriter)
+  - CilTools.BytecodeAnalysis.CilInstruction.OperandType
+  - CilTools.BytecodeAnalysis.CilInstruction.OrdinalNumber
+  - CilTools.BytecodeAnalysis.CilInstruction.Parse(System.String)
+  - CilTools.BytecodeAnalysis.CilInstruction.ReferencedLocal
+  - CilTools.BytecodeAnalysis.CilInstruction.ReferencedMember
+  - CilTools.BytecodeAnalysis.CilInstruction.ReferencedParameter
+  - CilTools.BytecodeAnalysis.CilInstruction.ReferencedSignature
+  - CilTools.BytecodeAnalysis.CilInstruction.ReferencedString
+  - CilTools.BytecodeAnalysis.CilInstruction.ReferencedType
+  - CilTools.BytecodeAnalysis.CilInstruction.ToString
+  - CilTools.BytecodeAnalysis.CilInstruction.TotalSize
+  langs:
+  - csharp
+  - vb
+  name: CilInstruction
+  nameWithType: CilInstruction
+  fullName: CilTools.BytecodeAnalysis.CilInstruction
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nRepresents CIL instruction, a main structural element of the method body which consists of operation code and operand.\n"
+  remarks: To retrieve a collection of CIL instructions for the specified method, use methods of <xref href="CilTools.BytecodeAnalysis.CilReader" data-throw-if-not-resolved="false"></xref> class.
+  syntax:
+    content: public abstract class CilInstruction
+    content.vb: Public MustInherit Class CilInstruction
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+- uid: CilTools.BytecodeAnalysis.CilInstruction.#ctor(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  commentId: M:CilTools.BytecodeAnalysis.CilInstruction.#ctor(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  id: '#ctor(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)'
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: CilInstruction(OpCode, UInt32, UInt32, MethodBase)
+  nameWithType: CilInstruction.CilInstruction(OpCode, UInt32, UInt32, MethodBase)
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.CilInstruction(System.Reflection.Emit.OpCode, System.UInt32, System.UInt32, System.Reflection.MethodBase)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCreates a new CilInstruction object initialized with specified field values (infrastructure)\n"
+  syntax:
+    content: protected CilInstruction(OpCode opc, uint byteoffset = 0U, uint ordinalnum = 0U, MethodBase mb = null)
+    parameters:
+    - id: opc
+      type: System.Reflection.Emit.OpCode
+      description: Opcode
+    - id: byteoffset
+      type: System.UInt32
+      description: Byte offset
+    - id: ordinalnum
+      type: System.UInt32
+      description: Ordinal number
+    - id: mb
+      type: System.Reflection.MethodBase
+      description: Owning method
+    content.vb: Protected Sub New(opc As OpCode, byteoffset As UInteger = 0UI, ordinalnum As UInteger = 0UI, mb As MethodBase = Nothing)
+  overload: CilTools.BytecodeAnalysis.CilInstruction.#ctor*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction(System.Reflection.MethodBase)
+  commentId: M:CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction(System.Reflection.MethodBase)
+  id: CreateEmptyInstruction(System.Reflection.MethodBase)
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: CreateEmptyInstruction(MethodBase)
+  nameWithType: CilInstruction.CreateEmptyInstruction(MethodBase)
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction(System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCreates new CilInstruction object that represents an empty instruction\n"
+  syntax:
+    content: public static CilInstruction CreateEmptyInstruction(MethodBase mb)
+    parameters:
+    - id: mb
+      type: System.Reflection.MethodBase
+      description: Owning method
+    return:
+      type: CilTools.BytecodeAnalysis.CilInstruction
+      description: Empty CilInstruction object
+    content.vb: Public Shared Function CreateEmptyInstruction(mb As MethodBase) As CilInstruction
+  overload: CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Create``1(System.Reflection.Emit.OpCode,``0,System.UInt32,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  commentId: M:CilTools.BytecodeAnalysis.CilInstruction.Create``1(System.Reflection.Emit.OpCode,``0,System.UInt32,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  id: Create``1(System.Reflection.Emit.OpCode,``0,System.UInt32,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: Create<T>(OpCode, T, UInt32, UInt32, UInt32, MethodBase)
+  nameWithType: CilInstruction.Create<T>(OpCode, T, UInt32, UInt32, UInt32, MethodBase)
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Create<T>(System.Reflection.Emit.OpCode, T, System.UInt32, System.UInt32, System.UInt32, System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCreates new CilInstruction object for instruction with operand\n"
+  syntax:
+    content: public static CilInstruction Create<T>(OpCode opc, T operand, uint operandsize, uint byteoffset = 0U, uint ordinalnum = 0U, MethodBase mb = null)
+    parameters:
+    - id: opc
+      type: System.Reflection.Emit.OpCode
+      description: Instruction opcode
+    - id: operand
+      type: '{T}'
+      description: Operand value
+    - id: operandsize
+      type: System.UInt32
+      description: Operand size in bytes
+    - id: byteoffset
+      type: System.UInt32
+      description: Byte offset
+    - id: ordinalnum
+      type: System.UInt32
+      description: Ordinal number
+    - id: mb
+      type: System.Reflection.MethodBase
+      description: Owning method
+    typeParameters:
+    - id: T
+      description: Operand type
+    return:
+      type: CilTools.BytecodeAnalysis.CilInstruction
+    content.vb: Public Shared Function Create(Of T)(opc As OpCode, operand As T, operandsize As UInteger, byteoffset As UInteger = 0UI, ordinalnum As UInteger = 0UI, mb As MethodBase = Nothing) As CilInstruction
+  overload: CilTools.BytecodeAnalysis.CilInstruction.Create*
+  nameWithType.vb: CilInstruction.Create(Of T)(OpCode, T, UInt32, UInt32, UInt32, MethodBase)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.BytecodeAnalysis.CilInstruction.Create(Of T)(System.Reflection.Emit.OpCode, T, System.UInt32, System.UInt32, System.UInt32, System.Reflection.MethodBase)
+  name.vb: Create(Of T)(OpCode, T, UInt32, UInt32, UInt32, MethodBase)
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Create(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  commentId: M:CilTools.BytecodeAnalysis.CilInstruction.Create(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  id: Create(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: Create(OpCode, UInt32, UInt32, MethodBase)
+  nameWithType: CilInstruction.Create(OpCode, UInt32, UInt32, MethodBase)
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Create(System.Reflection.Emit.OpCode, System.UInt32, System.UInt32, System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCreates new CilInstruction object for instruction without operand\n"
+  syntax:
+    content: public static CilInstruction Create(OpCode opc, uint byteoffset = 0U, uint ordinalnum = 0U, MethodBase mb = null)
+    parameters:
+    - id: opc
+      type: System.Reflection.Emit.OpCode
+      description: Instruction opcode
+    - id: byteoffset
+      type: System.UInt32
+      description: Byte offset
+    - id: ordinalnum
+      type: System.UInt32
+      description: Ordinal number
+    - id: mb
+      type: System.Reflection.MethodBase
+      description: Owning method
+    return:
+      type: CilTools.BytecodeAnalysis.CilInstruction
+    content.vb: Public Shared Function Create(opc As OpCode, byteoffset As UInteger = 0UI, ordinalnum As UInteger = 0UI, mb As MethodBase = Nothing) As CilInstruction
+  overload: CilTools.BytecodeAnalysis.CilInstruction.Create*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OperandToString(System.IO.TextWriter)
+  commentId: M:CilTools.BytecodeAnalysis.CilInstruction.OperandToString(System.IO.TextWriter)
+  id: OperandToString(System.IO.TextWriter)
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: OperandToString(TextWriter)
+  nameWithType: CilInstruction.OperandToString(TextWriter)
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OperandToString(System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nWrites the text representation of this instruction&apos;s operand into the specified TextWriter\n"
+  syntax:
+    content: public abstract void OperandToString(TextWriter target)
+    parameters:
+    - id: target
+      type: System.IO.TextWriter
+      description: The destination TextWriter
+    content.vb: Public MustOverride Sub OperandToString(target As TextWriter)
+  overload: CilTools.BytecodeAnalysis.CilInstruction.OperandToString*
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ToString
+  commentId: M:CilTools.BytecodeAnalysis.CilInstruction.ToString
+  id: ToString
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: CilInstruction.ToString()
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ToString()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReturns a text representation of this instruction as a line of CIL code\n"
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: String containing text representation of this instruction
+    content.vb: Public Overrides Function ToString As String
+  overridden: System.Object.ToString
+  overload: CilTools.BytecodeAnalysis.CilInstruction.ToString*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.BytecodeAnalysis.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  commentId: M:CilTools.BytecodeAnalysis.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  id: EmitTo(System.Reflection.Emit.ILGenerator)
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: EmitTo(ILGenerator)
+  nameWithType: CilInstruction.EmitTo(ILGenerator)
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nEmits CIL code for this instruction into the specified IL generator.\n"
+  syntax:
+    content: public void EmitTo(ILGenerator ilg)
+    parameters:
+    - id: ilg
+      type: System.Reflection.Emit.ILGenerator
+      description: Target IL generator.
+    content.vb: Public Sub EmitTo(ilg As ILGenerator)
+  overload: CilTools.BytecodeAnalysis.CilInstruction.EmitTo*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Parse(System.String)
+  commentId: M:CilTools.BytecodeAnalysis.CilInstruction.Parse(System.String)
+  id: Parse(System.String)
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: Parse(String)
+  nameWithType: CilInstruction.Parse(String)
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Parse(System.String)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nConverts CIL instruction textual representation into the corresponding CilInstruction object\n"
+  syntax:
+    content: public static CilInstruction Parse(string str)
+    parameters:
+    - id: str
+      type: System.String
+      description: The line of CIL code representing instruction
+    return:
+      type: CilTools.BytecodeAnalysis.CilInstruction
+      description: CilInstruction object for the specified string
+    content.vb: Public Shared Function Parse(str As String) As CilInstruction
+  overload: CilTools.BytecodeAnalysis.CilInstruction.Parse*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Method
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.Method
+  id: Method
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: Method
+  nameWithType: CilInstruction.Method
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Method
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a reference to a method which this instruction belongs to\n"
+  syntax:
+    content: public MethodBase Method { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Public ReadOnly Property Method As MethodBase
+  overload: CilTools.BytecodeAnalysis.CilInstruction.Method*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OpCode
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.OpCode
+  id: OpCode
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: OpCode
+  nameWithType: CilInstruction.OpCode
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OpCode
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the operation code (opcode) of this instruction\n"
+  syntax:
+    content: public OpCode OpCode { get; }
+    parameters: []
+    return:
+      type: System.Reflection.Emit.OpCode
+    content.vb: Public ReadOnly Property OpCode As OpCode
+  overload: CilTools.BytecodeAnalysis.CilInstruction.OpCode*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Operand
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.Operand
+  id: Operand
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: Operand
+  nameWithType: CilInstruction.Operand
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Operand
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the operand object of this instruction\n"
+  syntax:
+    content: public abstract object Operand { get; }
+    parameters: []
+    return:
+      type: System.Object
+    content.vb: Public MustOverride ReadOnly Property Operand As Object
+  overload: CilTools.BytecodeAnalysis.CilInstruction.Operand*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OperandSize
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.OperandSize
+  id: OperandSize
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: OperandSize
+  nameWithType: CilInstruction.OperandSize
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OperandSize
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the size, in bytes, of this instruction&apos;s operand\n"
+  syntax:
+    content: public abstract uint OperandSize { get; }
+    parameters: []
+    return:
+      type: System.UInt32
+    content.vb: Public MustOverride ReadOnly Property OperandSize As UInteger
+  overload: CilTools.BytecodeAnalysis.CilInstruction.OperandSize*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ByteOffset
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.ByteOffset
+  id: ByteOffset
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ByteOffset
+  nameWithType: CilInstruction.ByteOffset
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ByteOffset
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a byte offset of this instruction from the beginning of the method body\n"
+  syntax:
+    content: public uint ByteOffset { get; }
+    parameters: []
+    return:
+      type: System.UInt32
+    content.vb: Public ReadOnly Property ByteOffset As UInteger
+  overload: CilTools.BytecodeAnalysis.CilInstruction.ByteOffset*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OrdinalNumber
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.OrdinalNumber
+  id: OrdinalNumber
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: OrdinalNumber
+  nameWithType: CilInstruction.OrdinalNumber
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OrdinalNumber
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets ordinal number of the place this instruction takes in method body, starting from one.\n"
+  syntax:
+    content: public uint OrdinalNumber { get; }
+    parameters: []
+    return:
+      type: System.UInt32
+    content.vb: Public ReadOnly Property OrdinalNumber As UInteger
+  overload: CilTools.BytecodeAnalysis.CilInstruction.OrdinalNumber*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Code
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.Code
+  id: Code
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: Code
+  nameWithType: CilInstruction.Code
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Code
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets opcode of this instruction as a numerical value\n"
+  syntax:
+    content: public short Code { get; }
+    parameters: []
+    return:
+      type: System.Int16
+    content.vb: Public ReadOnly Property Code As Short
+  overload: CilTools.BytecodeAnalysis.CilInstruction.Code*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Name
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.Name
+  id: Name
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: CilInstruction.Name
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Name
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a name of this instruction\n"
+  syntax:
+    content: public string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Name As String
+  overload: CilTools.BytecodeAnalysis.CilInstruction.Name*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.TotalSize
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.TotalSize
+  id: TotalSize
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: TotalSize
+  nameWithType: CilInstruction.TotalSize
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.TotalSize
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets total size, in bytes, that this instruction occupies in the method body\n"
+  syntax:
+    content: public uint TotalSize { get; }
+    parameters: []
+    return:
+      type: System.UInt32
+    content.vb: Public ReadOnly Property TotalSize As UInteger
+  overload: CilTools.BytecodeAnalysis.CilInstruction.TotalSize*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OperandType
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.OperandType
+  id: OperandType
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: OperandType
+  nameWithType: CilInstruction.OperandType
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OperandType
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets this instruction&apos;s operand type, or null if there&apos;s no operand\n"
+  syntax:
+    content: public abstract Type OperandType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public MustOverride ReadOnly Property OperandType As Type
+  overload: CilTools.BytecodeAnalysis.CilInstruction.OperandType*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedMember
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.ReferencedMember
+  id: ReferencedMember
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ReferencedMember
+  nameWithType: CilInstruction.ReferencedMember
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedMember
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a member (type, field or method) referenced by this instruction, if applicable\n"
+  syntax:
+    content: public abstract MemberInfo ReferencedMember { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MemberInfo
+    content.vb: Public MustOverride ReadOnly Property ReferencedMember As MemberInfo
+  overload: CilTools.BytecodeAnalysis.CilInstruction.ReferencedMember*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedType
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.ReferencedType
+  id: ReferencedType
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ReferencedType
+  nameWithType: CilInstruction.ReferencedType
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedType
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a type referenced by this instruction, if applicable\n"
+  syntax:
+    content: public Type ReferencedType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public ReadOnly Property ReferencedType As Type
+  overload: CilTools.BytecodeAnalysis.CilInstruction.ReferencedType*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedString
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.ReferencedString
+  id: ReferencedString
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ReferencedString
+  nameWithType: CilInstruction.ReferencedString
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedString
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a string literal referenced by this instruction, if applicable\n"
+  syntax:
+    content: public abstract string ReferencedString { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public MustOverride ReadOnly Property ReferencedString As String
+  overload: CilTools.BytecodeAnalysis.CilInstruction.ReferencedString*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedSignature
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.ReferencedSignature
+  id: ReferencedSignature
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ReferencedSignature
+  nameWithType: CilInstruction.ReferencedSignature
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedSignature
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a signature referenced by this instruction, if applicable\n"
+  syntax:
+    content: public abstract Signature ReferencedSignature { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.Signature
+    content.vb: Public MustOverride ReadOnly Property ReferencedSignature As Signature
+  overload: CilTools.BytecodeAnalysis.CilInstruction.ReferencedSignature*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedParameter
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.ReferencedParameter
+  id: ReferencedParameter
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ReferencedParameter
+  nameWithType: CilInstruction.ReferencedParameter
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedParameter
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the information about method parameter referenced by this instruction, if applicable\n"
+  syntax:
+    content: public abstract ParameterInfo ReferencedParameter { get; }
+    parameters: []
+    return:
+      type: System.Reflection.ParameterInfo
+    content.vb: Public MustOverride ReadOnly Property ReferencedParameter As ParameterInfo
+  overload: CilTools.BytecodeAnalysis.CilInstruction.ReferencedParameter*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedLocal
+  commentId: P:CilTools.BytecodeAnalysis.CilInstruction.ReferencedLocal
+  id: ReferencedLocal
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ReferencedLocal
+  nameWithType: CilInstruction.ReferencedLocal
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedLocal
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the information about local variable referenced by this instruction, if applicable\n"
+  syntax:
+    content: public abstract LocalVariableInfo ReferencedLocal { get; }
+    parameters: []
+    return:
+      type: System.Reflection.LocalVariableInfo
+    content.vb: Public MustOverride ReadOnly Property ReferencedLocal As LocalVariableInfo
+  overload: CilTools.BytecodeAnalysis.CilInstruction.ReferencedLocal*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+references:
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.BytecodeAnalysis.CilInstruction.#ctor*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.#ctor
+  isExternal: true
+  name: CilInstruction
+  nameWithType: CilInstruction.CilInstruction
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.CilInstruction
+- uid: System.Reflection.Emit.OpCode
+  commentId: T:System.Reflection.Emit.OpCode
+  parent: System.Reflection.Emit
+  isExternal: true
+  name: OpCode
+  nameWithType: OpCode
+  fullName: System.Reflection.Emit.OpCode
+- uid: System.UInt32
+  commentId: T:System.UInt32
+  parent: System
+  isExternal: true
+  name: UInt32
+  nameWithType: UInt32
+  fullName: System.UInt32
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: System.Reflection.Emit
+  commentId: N:System.Reflection.Emit
+  isExternal: true
+  name: System.Reflection.Emit
+  nameWithType: System.Reflection.Emit
+  fullName: System.Reflection.Emit
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction
+  isExternal: true
+  name: CreateEmptyInstruction
+  nameWithType: CilInstruction.CreateEmptyInstruction
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction
+- uid: CilTools.BytecodeAnalysis.CilInstruction
+  commentId: T:CilTools.BytecodeAnalysis.CilInstruction
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilInstruction
+  nameWithType: CilInstruction
+  fullName: CilTools.BytecodeAnalysis.CilInstruction
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Create*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.Create
+  isExternal: true
+  name: Create
+  nameWithType: CilInstruction.Create
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Create
+- uid: '{T}'
+  commentId: '!:T'
+  definition: T
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: T
+  commentId: '!:T'
+  name: T
+  nameWithType: T
+  fullName: T
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OperandToString*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.OperandToString
+  isExternal: true
+  name: OperandToString
+  nameWithType: CilInstruction.OperandToString
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OperandToString
+- uid: System.IO.TextWriter
+  commentId: T:System.IO.TextWriter
+  parent: System.IO
+  isExternal: true
+  name: TextWriter
+  nameWithType: TextWriter
+  fullName: System.IO.TextWriter
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ToString*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.ToString
+  isExternal: true
+  name: ToString
+  nameWithType: CilInstruction.ToString
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.BytecodeAnalysis.CilInstruction.EmitTo*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.EmitTo
+  isExternal: true
+  name: EmitTo
+  nameWithType: CilInstruction.EmitTo
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.EmitTo
+- uid: System.Reflection.Emit.ILGenerator
+  commentId: T:System.Reflection.Emit.ILGenerator
+  parent: System.Reflection.Emit
+  isExternal: true
+  name: ILGenerator
+  nameWithType: ILGenerator
+  fullName: System.Reflection.Emit.ILGenerator
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Parse*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.Parse
+  isExternal: true
+  name: Parse
+  nameWithType: CilInstruction.Parse
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Parse
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Method*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.Method
+  isExternal: true
+  name: Method
+  nameWithType: CilInstruction.Method
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Method
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OpCode*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.OpCode
+  isExternal: true
+  name: OpCode
+  nameWithType: CilInstruction.OpCode
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OpCode
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Operand*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.Operand
+  isExternal: true
+  name: Operand
+  nameWithType: CilInstruction.Operand
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Operand
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OperandSize*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.OperandSize
+  isExternal: true
+  name: OperandSize
+  nameWithType: CilInstruction.OperandSize
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OperandSize
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ByteOffset*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.ByteOffset
+  isExternal: true
+  name: ByteOffset
+  nameWithType: CilInstruction.ByteOffset
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ByteOffset
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OrdinalNumber*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.OrdinalNumber
+  isExternal: true
+  name: OrdinalNumber
+  nameWithType: CilInstruction.OrdinalNumber
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OrdinalNumber
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Code*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.Code
+  isExternal: true
+  name: Code
+  nameWithType: CilInstruction.Code
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Code
+- uid: System.Int16
+  commentId: T:System.Int16
+  parent: System
+  isExternal: true
+  name: Int16
+  nameWithType: Int16
+  fullName: System.Int16
+- uid: CilTools.BytecodeAnalysis.CilInstruction.Name*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.Name
+  isExternal: true
+  name: Name
+  nameWithType: CilInstruction.Name
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.Name
+- uid: CilTools.BytecodeAnalysis.CilInstruction.TotalSize*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.TotalSize
+  isExternal: true
+  name: TotalSize
+  nameWithType: CilInstruction.TotalSize
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.TotalSize
+- uid: CilTools.BytecodeAnalysis.CilInstruction.OperandType*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.OperandType
+  isExternal: true
+  name: OperandType
+  nameWithType: CilInstruction.OperandType
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.OperandType
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedMember*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.ReferencedMember
+  isExternal: true
+  name: ReferencedMember
+  nameWithType: CilInstruction.ReferencedMember
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedMember
+- uid: System.Reflection.MemberInfo
+  commentId: T:System.Reflection.MemberInfo
+  parent: System.Reflection
+  isExternal: true
+  name: MemberInfo
+  nameWithType: MemberInfo
+  fullName: System.Reflection.MemberInfo
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedType*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.ReferencedType
+  isExternal: true
+  name: ReferencedType
+  nameWithType: CilInstruction.ReferencedType
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedType
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedString*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.ReferencedString
+  isExternal: true
+  name: ReferencedString
+  nameWithType: CilInstruction.ReferencedString
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedString
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedSignature*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.ReferencedSignature
+  isExternal: true
+  name: ReferencedSignature
+  nameWithType: CilInstruction.ReferencedSignature
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedSignature
+- uid: CilTools.BytecodeAnalysis.Signature
+  commentId: T:CilTools.BytecodeAnalysis.Signature
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: Signature
+  nameWithType: Signature
+  fullName: CilTools.BytecodeAnalysis.Signature
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedParameter*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.ReferencedParameter
+  isExternal: true
+  name: ReferencedParameter
+  nameWithType: CilInstruction.ReferencedParameter
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedParameter
+- uid: System.Reflection.ParameterInfo
+  commentId: T:System.Reflection.ParameterInfo
+  parent: System.Reflection
+  isExternal: true
+  name: ParameterInfo
+  nameWithType: ParameterInfo
+  fullName: System.Reflection.ParameterInfo
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ReferencedLocal*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.ReferencedLocal
+  isExternal: true
+  name: ReferencedLocal
+  nameWithType: CilInstruction.ReferencedLocal
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ReferencedLocal
+- uid: System.Reflection.LocalVariableInfo
+  commentId: T:System.Reflection.LocalVariableInfo
+  parent: System.Reflection
+  isExternal: true
+  name: LocalVariableInfo
+  nameWithType: LocalVariableInfo
+  fullName: System.Reflection.LocalVariableInfo

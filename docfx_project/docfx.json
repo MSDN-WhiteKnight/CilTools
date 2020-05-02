@@ -5,8 +5,12 @@
         {
           "files": ["*.dll"],          
           "src": "../CilTools.BytecodeAnalysis/bin/Debug"
+        },
+		{
+          "files": ["CilTools.Runtime.dll"],          
+          "src": "../CilTools.Runtime/bin/Debug"
         }
-      ],   
+      ],
       "dest": "api",
       "disableGitFeatures": false,
       "disableDefaultFilter": false

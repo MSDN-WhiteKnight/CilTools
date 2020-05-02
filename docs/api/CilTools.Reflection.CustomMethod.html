@@ -1,0 +1,618 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class CustomMethod
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class CustomMethod
+   ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.Reflection.CustomMethod">
+  
+  
+  <h1 id="CilTools_Reflection_CustomMethod" data-uid="CilTools.Reflection.CustomMethod" class="text-break">Class CustomMethod
+  </h1>
+  <div class="markdown level0 summary"><p>A base class for MethodBase implementations providing custom mechanisms for extracting bytecode data.
+Inherit from this class when you want CilBytecodeparser to process bytecode from your custom data source, instead of
+reflection.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">System.Reflection.MemberInfo</span></div>
+    <div class="level2"><span class="xref">System.Reflection.MethodBase</span></div>
+    <div class="level3"><span class="xref">CustomMethod</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.Reflection.ICustomAttributeProvider</span></div>
+    <div><span class="xref">System.Runtime.InteropServices._MemberInfo</span></div>
+    <div><span class="xref">System.Runtime.InteropServices._MethodBase</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle, System.RuntimeTypeHandle)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetCurrentMethod()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetParameters()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetMethodImplementationFlags()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetGenericArguments()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.Invoke(System.Object, System.Object[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetMethodBody()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfoCount(System.UInt32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfo(System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetIDsOfNames(System.Guid, System.IntPtr, System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.MethodImplementationFlags</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.MethodHandle</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.Attributes</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.CallingConvention</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsGenericMethodDefinition</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.ContainsGenericParameters</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsGenericMethod</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsSecurityCritical</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsSecuritySafeCritical</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsSecurityTransparent</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsPublic</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsPrivate</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsFamily</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsFamilyAndAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsFamilyOrAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsStatic</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsFinal</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsVirtual</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsHideBySig</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsAbstract</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsSpecialName</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsConstructor</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsPublic</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsPrivate</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFamily</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFamilyAndAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFamilyOrAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsStatic</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFinal</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsVirtual</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsHideBySig</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsAbstract</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsSpecialName</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsConstructor</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.GetCustomAttributes(System.Type, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.IsDefined(System.Type, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.GetCustomAttributesData()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfoCount(System.UInt32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfo(System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetIDsOfNames(System.Guid, System.IntPtr, System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.MemberType</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.Name</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.DeclaringType</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.ReflectedType</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.CustomAttributes</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.MetadataToken</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.Module</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Reflection.html">CilTools.Reflection</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
+  <h5 id="CilTools_Reflection_CustomMethod_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class CustomMethod : MethodBase, ICustomAttributeProvider, _MemberInfo, _MethodBase</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod__ctor_" data-uid="CilTools.Reflection.CustomMethod.#ctor*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod__ctor" data-uid="CilTools.Reflection.CustomMethod.#ctor">CustomMethod()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected CustomMethod()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_MaxStackSize_" data-uid="CilTools.Reflection.CustomMethod.MaxStackSize*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_MaxStackSize" data-uid="CilTools.Reflection.CustomMethod.MaxStackSize">MaxStackSize</h4>
+  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the maximum size of operand stack during method execution</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract int MaxStackSize { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_MaxStackSizeSpecified_" data-uid="CilTools.Reflection.CustomMethod.MaxStackSizeSpecified*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_MaxStackSizeSpecified" data-uid="CilTools.Reflection.CustomMethod.MaxStackSizeSpecified">MaxStackSizeSpecified</h4>
+  <div class="markdown level1 summary"><p>When overridden in the derived class, specifies whether the MaxStackSize property value is defined</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract bool MaxStackSizeSpecified { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_ReturnType_" data-uid="CilTools.Reflection.CustomMethod.ReturnType*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_ReturnType" data-uid="CilTools.Reflection.CustomMethod.ReturnType">ReturnType</h4>
+  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the type of this method's return value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract Type ReturnType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Reflection_CustomMethod_ReturnType_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Return null if the return type is not applicable (such as for constructors).</p>
+</div>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_TokenResolver_" data-uid="CilTools.Reflection.CustomMethod.TokenResolver*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_TokenResolver" data-uid="CilTools.Reflection.CustomMethod.TokenResolver">TokenResolver</h4>
+  <div class="markdown level1 summary"><p>When overridden in the derived class, returns an object that can be used to convert metadata tokens
+into corresponding reflection objects</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract ITokenResolver TokenResolver { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_GetBytecode_" data-uid="CilTools.Reflection.CustomMethod.GetBytecode*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_GetBytecode" data-uid="CilTools.Reflection.CustomMethod.GetBytecode">GetBytecode()</h4>
+  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the CIL bytecode of the method body</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract byte[] GetBytecode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>CIL bytecode as byte array</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_GetExceptionBlocks_" data-uid="CilTools.Reflection.CustomMethod.GetExceptionBlocks*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_GetExceptionBlocks" data-uid="CilTools.Reflection.CustomMethod.GetExceptionBlocks">GetExceptionBlocks()</h4>
+  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the list of exception handling blocks in the method's body</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract ExceptionBlock[] GetExceptionBlocks()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ExceptionBlock.html">ExceptionBlock</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_GetLocalVariables_" data-uid="CilTools.Reflection.CustomMethod.GetLocalVariables*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_GetLocalVariables" data-uid="CilTools.Reflection.CustomMethod.GetLocalVariables">GetLocalVariables()</h4>
+  <div class="markdown level1 summary"><p>Returns the array of local variable declarations of this method</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public virtual LocalVariable[] GetLocalVariables()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.LocalVariable.html">LocalVariable</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Reflection_CustomMethod_GetLocalVariables_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The default implementation reads local varaibles from the signature returned by GetLocalVarSignature method</p>
+</div>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_GetLocalVarSignature_" data-uid="CilTools.Reflection.CustomMethod.GetLocalVarSignature*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_GetLocalVarSignature" data-uid="CilTools.Reflection.CustomMethod.GetLocalVarSignature">GetLocalVarSignature()</h4>
+  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the local variable signature as an array of bytes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract byte[] GetLocalVarSignature()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.Reflection.ICustomAttributeProvider</span>
+  </div>
+  <div>
+      <span class="xref">System.Runtime.InteropServices._MemberInfo</span>
+  </div>
+  <div>
+      <span class="xref">System.Runtime.InteropServices._MethodBase</span>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetCilGraph_System_Reflection_MethodBase_">CilExtensions.GetCilGraph(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetCilText_System_Reflection_MethodBase_">CilExtensions.GetCilText(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetInstructions_System_Reflection_MethodBase_">CilExtensions.GetInstructions(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetReferencedMethods_System_Reflection_MethodBase_">CilExtensions.GetReferencedMethods(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetReferencedMembers_System_Reflection_MethodBase_">CilExtensions.GetReferencedMembers(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetReferencedMembers_System_Reflection_MethodBase_CilTools_BytecodeAnalysis_MemberCriteria_">CilExtensions.GetReferencedMembers(MethodBase, MemberCriteria)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

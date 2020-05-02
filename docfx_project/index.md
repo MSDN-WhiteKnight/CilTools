@@ -1,4 +1,4 @@
-# CIL bytecode parser documentation
+# CIL Tools documentation
 
 Contents:
 

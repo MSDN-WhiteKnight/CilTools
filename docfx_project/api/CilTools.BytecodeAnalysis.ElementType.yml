@@ -1,0 +1,943 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.BytecodeAnalysis.ElementType
+  commentId: T:CilTools.BytecodeAnalysis.ElementType
+  id: ElementType
+  parent: CilTools.BytecodeAnalysis
+  children:
+  - CilTools.BytecodeAnalysis.ElementType.Array
+  - CilTools.BytecodeAnalysis.ElementType.Boolean
+  - CilTools.BytecodeAnalysis.ElementType.ByRef
+  - CilTools.BytecodeAnalysis.ElementType.Char
+  - CilTools.BytecodeAnalysis.ElementType.Class
+  - CilTools.BytecodeAnalysis.ElementType.FnPtr
+  - CilTools.BytecodeAnalysis.ElementType.GenericInst
+  - CilTools.BytecodeAnalysis.ElementType.I
+  - CilTools.BytecodeAnalysis.ElementType.I1
+  - CilTools.BytecodeAnalysis.ElementType.I2
+  - CilTools.BytecodeAnalysis.ElementType.I4
+  - CilTools.BytecodeAnalysis.ElementType.I8
+  - CilTools.BytecodeAnalysis.ElementType.Internal
+  - CilTools.BytecodeAnalysis.ElementType.Modifier
+  - CilTools.BytecodeAnalysis.ElementType.MVar
+  - CilTools.BytecodeAnalysis.ElementType.Object
+  - CilTools.BytecodeAnalysis.ElementType.Ptr
+  - CilTools.BytecodeAnalysis.ElementType.R4
+  - CilTools.BytecodeAnalysis.ElementType.R8
+  - CilTools.BytecodeAnalysis.ElementType.Sentinel
+  - CilTools.BytecodeAnalysis.ElementType.String
+  - CilTools.BytecodeAnalysis.ElementType.SzArray
+  - CilTools.BytecodeAnalysis.ElementType.TypedByRef
+  - CilTools.BytecodeAnalysis.ElementType.U
+  - CilTools.BytecodeAnalysis.ElementType.U1
+  - CilTools.BytecodeAnalysis.ElementType.U2
+  - CilTools.BytecodeAnalysis.ElementType.U4
+  - CilTools.BytecodeAnalysis.ElementType.U8
+  - CilTools.BytecodeAnalysis.ElementType.ValueType
+  - CilTools.BytecodeAnalysis.ElementType.Var
+  - CilTools.BytecodeAnalysis.ElementType.Void
+  langs:
+  - csharp
+  - vb
+  name: ElementType
+  nameWithType: ElementType
+  fullName: CilTools.BytecodeAnalysis.ElementType
+  type: Enum
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nRepresents signature element type as defined in ECMA-335\n"
+  syntax:
+    content: 'public enum ElementType : byte'
+    content.vb: Public Enum ElementType As Byte
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilTools.BytecodeAnalysis.ElementType.Void
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Void
+  id: Void
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Void
+  nameWithType: ElementType.Void
+  fullName: CilTools.BytecodeAnalysis.ElementType.Void
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nThe absence of return value\n"
+  syntax:
+    content: Void = 1
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Boolean
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Boolean
+  id: Boolean
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Boolean
+  nameWithType: ElementType.Boolean
+  fullName: CilTools.BytecodeAnalysis.ElementType.Boolean
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nSystem.Boolean\n"
+  syntax:
+    content: Boolean = 2
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Char
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Char
+  id: Char
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Char
+  nameWithType: ElementType.Char
+  fullName: CilTools.BytecodeAnalysis.ElementType.Char
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nSystem.Char\n"
+  syntax:
+    content: Char = 3
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.I1
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.I1
+  id: I1
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I1
+  nameWithType: ElementType.I1
+  fullName: CilTools.BytecodeAnalysis.ElementType.I1
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nsbyte\n"
+  syntax:
+    content: I1 = 4
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.U1
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.U1
+  id: U1
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U1
+  nameWithType: ElementType.U1
+  fullName: CilTools.BytecodeAnalysis.ElementType.U1
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nbyte\n"
+  syntax:
+    content: U1 = 5
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.I2
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.I2
+  id: I2
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I2
+  nameWithType: ElementType.I2
+  fullName: CilTools.BytecodeAnalysis.ElementType.I2
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nshort\n"
+  syntax:
+    content: I2 = 6
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.U2
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.U2
+  id: U2
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U2
+  nameWithType: ElementType.U2
+  fullName: CilTools.BytecodeAnalysis.ElementType.U2
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nushort\n"
+  syntax:
+    content: U2 = 7
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.I4
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.I4
+  id: I4
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I4
+  nameWithType: ElementType.I4
+  fullName: CilTools.BytecodeAnalysis.ElementType.I4
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nint\n"
+  syntax:
+    content: I4 = 8
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.U4
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.U4
+  id: U4
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U4
+  nameWithType: ElementType.U4
+  fullName: CilTools.BytecodeAnalysis.ElementType.U4
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nuint\n"
+  syntax:
+    content: U4 = 9
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.I8
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.I8
+  id: I8
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I8
+  nameWithType: ElementType.I8
+  fullName: CilTools.BytecodeAnalysis.ElementType.I8
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nlong\n"
+  syntax:
+    content: I8 = 10
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.U8
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.U8
+  id: U8
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U8
+  nameWithType: ElementType.U8
+  fullName: CilTools.BytecodeAnalysis.ElementType.U8
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nulong\n"
+  syntax:
+    content: U8 = 11
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.R4
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.R4
+  id: R4
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: R4
+  nameWithType: ElementType.R4
+  fullName: CilTools.BytecodeAnalysis.ElementType.R4
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nfloat\n"
+  syntax:
+    content: R4 = 12
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.R8
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.R8
+  id: R8
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: R8
+  nameWithType: ElementType.R8
+  fullName: CilTools.BytecodeAnalysis.ElementType.R8
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\ndouble\n"
+  syntax:
+    content: R8 = 13
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.String
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.String
+  id: String
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: String
+  nameWithType: ElementType.String
+  fullName: CilTools.BytecodeAnalysis.ElementType.String
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nSytem.String\n"
+  syntax:
+    content: String = 14
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Ptr
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Ptr
+  id: Ptr
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Ptr
+  nameWithType: ElementType.Ptr
+  fullName: CilTools.BytecodeAnalysis.ElementType.Ptr
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nUnmanaged pointer\n"
+  syntax:
+    content: Ptr = 15
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.ByRef
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.ByRef
+  id: ByRef
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: ByRef
+  nameWithType: ElementType.ByRef
+  fullName: CilTools.BytecodeAnalysis.ElementType.ByRef
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nPassed by reference\n"
+  syntax:
+    content: ByRef = 16
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.ValueType
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.ValueType
+  id: ValueType
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: ValueType
+  nameWithType: ElementType.ValueType
+  fullName: CilTools.BytecodeAnalysis.ElementType.ValueType
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nValue type\n"
+  syntax:
+    content: ValueType = 17
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Class
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Class
+  id: Class
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Class
+  nameWithType: ElementType.Class
+  fullName: CilTools.BytecodeAnalysis.ElementType.Class
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReference type\n"
+  syntax:
+    content: Class = 18
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Var
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Var
+  id: Var
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Var
+  nameWithType: ElementType.Var
+  fullName: CilTools.BytecodeAnalysis.ElementType.Var
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGeneric parameter in a generic type definition\n"
+  syntax:
+    content: Var = 19
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Array
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Array
+  id: Array
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Array
+  nameWithType: ElementType.Array
+  fullName: CilTools.BytecodeAnalysis.ElementType.Array
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nArray\n"
+  syntax:
+    content: Array = 20
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.GenericInst
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.GenericInst
+  id: GenericInst
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: GenericInst
+  nameWithType: ElementType.GenericInst
+  fullName: CilTools.BytecodeAnalysis.ElementType.GenericInst
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGeneric type instantiation\n"
+  syntax:
+    content: GenericInst = 21
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.TypedByRef
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.TypedByRef
+  id: TypedByRef
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: TypedByRef
+  nameWithType: ElementType.TypedByRef
+  fullName: CilTools.BytecodeAnalysis.ElementType.TypedByRef
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nPassed by typed reference\n"
+  syntax:
+    content: TypedByRef = 22
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.I
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.I
+  id: I
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: I
+  nameWithType: ElementType.I
+  fullName: CilTools.BytecodeAnalysis.ElementType.I
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nSystem.IntPtr\n"
+  syntax:
+    content: I = 24
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.U
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.U
+  id: U
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: U
+  nameWithType: ElementType.U
+  fullName: CilTools.BytecodeAnalysis.ElementType.U
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nSystem.UIntPtr\n"
+  syntax:
+    content: U = 25
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.FnPtr
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.FnPtr
+  id: FnPtr
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: FnPtr
+  nameWithType: ElementType.FnPtr
+  fullName: CilTools.BytecodeAnalysis.ElementType.FnPtr
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nFunction pointer\n"
+  syntax:
+    content: FnPtr = 27
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Object
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Object
+  id: Object
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Object
+  nameWithType: ElementType.Object
+  fullName: CilTools.BytecodeAnalysis.ElementType.Object
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nSystem.Object\n"
+  syntax:
+    content: Object = 28
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.SzArray
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.SzArray
+  id: SzArray
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: SzArray
+  nameWithType: ElementType.SzArray
+  fullName: CilTools.BytecodeAnalysis.ElementType.SzArray
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nSingle-dimensional array with 0 lower bound\n"
+  syntax:
+    content: SzArray = 29
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.MVar
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.MVar
+  id: MVar
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: MVar
+  nameWithType: ElementType.MVar
+  fullName: CilTools.BytecodeAnalysis.ElementType.MVar
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGeneric parameter in a generic method definition\n"
+  syntax:
+    content: MVar = 30
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Internal
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Internal
+  id: Internal
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Internal
+  nameWithType: ElementType.Internal
+  fullName: CilTools.BytecodeAnalysis.ElementType.Internal
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nImplemented within the CLI\n"
+  syntax:
+    content: Internal = 33
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Modifier
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Modifier
+  id: Modifier
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Modifier
+  nameWithType: ElementType.Modifier
+  fullName: CilTools.BytecodeAnalysis.ElementType.Modifier
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nModifier\n"
+  syntax:
+    content: Modifier = 64
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.ElementType.Sentinel
+  commentId: F:CilTools.BytecodeAnalysis.ElementType.Sentinel
+  id: Sentinel
+  parent: CilTools.BytecodeAnalysis.ElementType
+  langs:
+  - csharp
+  - vb
+  name: Sentinel
+  nameWithType: ElementType.Sentinel
+  fullName: CilTools.BytecodeAnalysis.ElementType.Sentinel
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nSentinel for vararg method signature\n"
+  syntax:
+    content: Sentinel = 65
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
+- uid: CilTools.BytecodeAnalysis.ElementType
+  commentId: T:CilTools.BytecodeAnalysis.ElementType
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: ElementType
+  nameWithType: ElementType
+  fullName: CilTools.BytecodeAnalysis.ElementType

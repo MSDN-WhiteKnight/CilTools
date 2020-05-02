@@ -1,41 +1,63 @@
 ### YamlMime:TableOfContent
-- uid: CilBytecodeParser
-  name: CilBytecodeParser
+- uid: CilTools.BytecodeAnalysis
+  name: CilTools.BytecodeAnalysis
   items:
-  - uid: CilBytecodeParser.CallingConvention
+  - uid: CilTools.BytecodeAnalysis.CallingConvention
     name: CallingConvention
-  - uid: CilBytecodeParser.CilAnalysis
+  - uid: CilTools.BytecodeAnalysis.CilAnalysis
     name: CilAnalysis
-  - uid: CilBytecodeParser.CilErrorEventArgs
+  - uid: CilTools.BytecodeAnalysis.CilErrorEventArgs
     name: CilErrorEventArgs
-  - uid: CilBytecodeParser.CilGraph
+  - uid: CilTools.BytecodeAnalysis.CilGraph
     name: CilGraph
-  - uid: CilBytecodeParser.CilGraphNode
+  - uid: CilTools.BytecodeAnalysis.CilGraphNode
     name: CilGraphNode
-  - uid: CilBytecodeParser.CilGraphNodeMutable
+  - uid: CilTools.BytecodeAnalysis.CilGraphNodeMutable
     name: CilGraphNodeMutable
-  - uid: CilBytecodeParser.CilInstruction
+  - uid: CilTools.BytecodeAnalysis.CilInstruction
     name: CilInstruction
-  - uid: CilBytecodeParser.CilParserException
+  - uid: CilTools.BytecodeAnalysis.CilParserException
     name: CilParserException
-  - uid: CilBytecodeParser.CilReader
+  - uid: CilTools.BytecodeAnalysis.CilReader
     name: CilReader
-  - uid: CilBytecodeParser.CilReaderState
+  - uid: CilTools.BytecodeAnalysis.CilReaderState
     name: CilReaderState
-  - uid: CilBytecodeParser.CustomModifier
+  - uid: CilTools.BytecodeAnalysis.CustomModifier
     name: CustomModifier
-  - uid: CilBytecodeParser.DebugUtils
+  - uid: CilTools.BytecodeAnalysis.DebugUtils
     name: DebugUtils
-  - uid: CilBytecodeParser.ElementType
+  - uid: CilTools.BytecodeAnalysis.Diagnostics
+    name: Diagnostics
+  - uid: CilTools.BytecodeAnalysis.ElementType
     name: ElementType
-  - uid: CilBytecodeParser.MemberCriteria
+  - uid: CilTools.BytecodeAnalysis.MemberCriteria
     name: MemberCriteria
-  - uid: CilBytecodeParser.Signature
+  - uid: CilTools.BytecodeAnalysis.Signature
     name: Signature
-  - uid: CilBytecodeParser.TypeSpec
+  - uid: CilTools.BytecodeAnalysis.TypeSpec
     name: TypeSpec
-- uid: CilBytecodeParser.Extensions
-  name: CilBytecodeParser.Extensions
+- uid: CilTools.BytecodeAnalysis.Extensions
+  name: CilTools.BytecodeAnalysis.Extensions
   items:
-  - uid: CilBytecodeParser.Extensions.CilExtensions
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions
     name: CilExtensions
+- uid: CilTools.Reflection
+  name: CilTools.Reflection
+  items:
+  - uid: CilTools.Reflection.CustomMethod
+    name: CustomMethod
+  - uid: CilTools.Reflection.ExceptionBlock
+    name: ExceptionBlock
+  - uid: CilTools.Reflection.ITokenResolver
+    name: ITokenResolver
+  - uid: CilTools.Reflection.LocalVariable
+    name: LocalVariable
+- uid: CilTools.Runtime
+  name: CilTools.Runtime
+  items:
+  - uid: CilTools.Runtime.ClrAssemblyInfo
+    name: ClrAssemblyInfo
+  - uid: CilTools.Runtime.ClrAssemblyReader
+    name: ClrAssemblyReader
+  - uid: CilTools.Runtime.DynamicMethodsAssembly
+    name: DynamicMethodsAssembly

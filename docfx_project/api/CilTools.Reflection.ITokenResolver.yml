@@ -1,0 +1,488 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.ITokenResolver
+  commentId: T:CilTools.Reflection.ITokenResolver
+  id: ITokenResolver
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.ITokenResolver.ResolveField(System.Int32)
+  - CilTools.Reflection.ITokenResolver.ResolveField(System.Int32,System.Type[],System.Type[])
+  - CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32)
+  - CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32,System.Type[],System.Type[])
+  - CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32)
+  - CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32,System.Type[],System.Type[])
+  - CilTools.Reflection.ITokenResolver.ResolveSignature(System.Int32)
+  - CilTools.Reflection.ITokenResolver.ResolveString(System.Int32)
+  - CilTools.Reflection.ITokenResolver.ResolveType(System.Int32)
+  - CilTools.Reflection.ITokenResolver.ResolveType(System.Int32,System.Type[],System.Type[])
+  langs:
+  - csharp
+  - vb
+  name: ITokenResolver
+  nameWithType: ITokenResolver
+  fullName: CilTools.Reflection.ITokenResolver
+  type: Interface
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents an object that can be used to convert metadata tokens into corresponding high-level reflection objects\n"
+  syntax:
+    content: public interface ITokenResolver
+    content.vb: Public Interface ITokenResolver
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: CilTools.Reflection.ITokenResolver.ResolveType(System.Int32,System.Type[],System.Type[])
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveType(System.Int32,System.Type[],System.Type[])
+  id: ResolveType(System.Int32,System.Type[],System.Type[])
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveType(Int32, Type[], Type[])
+  nameWithType: ITokenResolver.ResolveType(Int32, Type[], Type[])
+  fullName: CilTools.Reflection.ITokenResolver.ResolveType(System.Int32, System.Type[], System.Type[])
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the type identified by the specified metadata token, in the context defined by the specified generic type parameters.\n"
+  syntax:
+    content: Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    - id: genericTypeArguments
+      type: System.Type[]
+    - id: genericMethodArguments
+      type: System.Type[]
+    return:
+      type: System.Type
+    content.vb: Function ResolveType(metadataToken As Integer, genericTypeArguments As Type(), genericMethodArguments As Type()) As Type
+  overload: CilTools.Reflection.ITokenResolver.ResolveType*
+  nameWithType.vb: ITokenResolver.ResolveType(Int32, Type(), Type())
+  fullName.vb: CilTools.Reflection.ITokenResolver.ResolveType(System.Int32, System.Type(), System.Type())
+  name.vb: ResolveType(Int32, Type(), Type())
+- uid: CilTools.Reflection.ITokenResolver.ResolveType(System.Int32)
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveType(System.Int32)
+  id: ResolveType(System.Int32)
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveType(Int32)
+  nameWithType: ITokenResolver.ResolveType(Int32)
+  fullName: CilTools.Reflection.ITokenResolver.ResolveType(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the type identified by the specified metadata token.\n"
+  syntax:
+    content: Type ResolveType(int metadataToken)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    return:
+      type: System.Type
+    content.vb: Function ResolveType(metadataToken As Integer) As Type
+  overload: CilTools.Reflection.ITokenResolver.ResolveType*
+- uid: CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32,System.Type[],System.Type[])
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32,System.Type[],System.Type[])
+  id: ResolveMethod(System.Int32,System.Type[],System.Type[])
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveMethod(Int32, Type[], Type[])
+  nameWithType: ITokenResolver.ResolveMethod(Int32, Type[], Type[])
+  fullName: CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32, System.Type[], System.Type[])
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the method or constructor identified by the specified metadata token, in the context defined by the \nspecified generic type parameters.\n"
+  syntax:
+    content: MethodBase ResolveMethod(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    - id: genericTypeArguments
+      type: System.Type[]
+    - id: genericMethodArguments
+      type: System.Type[]
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Function ResolveMethod(metadataToken As Integer, genericTypeArguments As Type(), genericMethodArguments As Type()) As MethodBase
+  overload: CilTools.Reflection.ITokenResolver.ResolveMethod*
+  nameWithType.vb: ITokenResolver.ResolveMethod(Int32, Type(), Type())
+  fullName.vb: CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32, System.Type(), System.Type())
+  name.vb: ResolveMethod(Int32, Type(), Type())
+- uid: CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32)
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32)
+  id: ResolveMethod(System.Int32)
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveMethod(Int32)
+  nameWithType: ITokenResolver.ResolveMethod(Int32)
+  fullName: CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the method or constructor identified by the specified metadata token.\n"
+  syntax:
+    content: MethodBase ResolveMethod(int metadataToken)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Function ResolveMethod(metadataToken As Integer) As MethodBase
+  overload: CilTools.Reflection.ITokenResolver.ResolveMethod*
+- uid: CilTools.Reflection.ITokenResolver.ResolveField(System.Int32,System.Type[],System.Type[])
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveField(System.Int32,System.Type[],System.Type[])
+  id: ResolveField(System.Int32,System.Type[],System.Type[])
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveField(Int32, Type[], Type[])
+  nameWithType: ITokenResolver.ResolveField(Int32, Type[], Type[])
+  fullName: CilTools.Reflection.ITokenResolver.ResolveField(System.Int32, System.Type[], System.Type[])
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the field identified by the specified metadata token, in the context defined by the specified generic type parameters.\n"
+  syntax:
+    content: FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    - id: genericTypeArguments
+      type: System.Type[]
+    - id: genericMethodArguments
+      type: System.Type[]
+    return:
+      type: System.Reflection.FieldInfo
+    content.vb: Function ResolveField(metadataToken As Integer, genericTypeArguments As Type(), genericMethodArguments As Type()) As FieldInfo
+  overload: CilTools.Reflection.ITokenResolver.ResolveField*
+  nameWithType.vb: ITokenResolver.ResolveField(Int32, Type(), Type())
+  fullName.vb: CilTools.Reflection.ITokenResolver.ResolveField(System.Int32, System.Type(), System.Type())
+  name.vb: ResolveField(Int32, Type(), Type())
+- uid: CilTools.Reflection.ITokenResolver.ResolveField(System.Int32)
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveField(System.Int32)
+  id: ResolveField(System.Int32)
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveField(Int32)
+  nameWithType: ITokenResolver.ResolveField(Int32)
+  fullName: CilTools.Reflection.ITokenResolver.ResolveField(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the field identified by the specified metadata token.\n"
+  syntax:
+    content: FieldInfo ResolveField(int metadataToken)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    return:
+      type: System.Reflection.FieldInfo
+    content.vb: Function ResolveField(metadataToken As Integer) As FieldInfo
+  overload: CilTools.Reflection.ITokenResolver.ResolveField*
+- uid: CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32,System.Type[],System.Type[])
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32,System.Type[],System.Type[])
+  id: ResolveMember(System.Int32,System.Type[],System.Type[])
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveMember(Int32, Type[], Type[])
+  nameWithType: ITokenResolver.ResolveMember(Int32, Type[], Type[])
+  fullName: CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32, System.Type[], System.Type[])
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the type or member identified by the specified metadata token, in the context defined by the specified \ngeneric type parameters.\n"
+  syntax:
+    content: MemberInfo ResolveMember(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    - id: genericTypeArguments
+      type: System.Type[]
+    - id: genericMethodArguments
+      type: System.Type[]
+    return:
+      type: System.Reflection.MemberInfo
+    content.vb: Function ResolveMember(metadataToken As Integer, genericTypeArguments As Type(), genericMethodArguments As Type()) As MemberInfo
+  overload: CilTools.Reflection.ITokenResolver.ResolveMember*
+  nameWithType.vb: ITokenResolver.ResolveMember(Int32, Type(), Type())
+  fullName.vb: CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32, System.Type(), System.Type())
+  name.vb: ResolveMember(Int32, Type(), Type())
+- uid: CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32)
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32)
+  id: ResolveMember(System.Int32)
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveMember(Int32)
+  nameWithType: ITokenResolver.ResolveMember(Int32)
+  fullName: CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the type or member identified by the specified metadata token.\n"
+  syntax:
+    content: MemberInfo ResolveMember(int metadataToken)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    return:
+      type: System.Reflection.MemberInfo
+    content.vb: Function ResolveMember(metadataToken As Integer) As MemberInfo
+  overload: CilTools.Reflection.ITokenResolver.ResolveMember*
+- uid: CilTools.Reflection.ITokenResolver.ResolveSignature(System.Int32)
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveSignature(System.Int32)
+  id: ResolveSignature(System.Int32)
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveSignature(Int32)
+  nameWithType: ITokenResolver.ResolveSignature(Int32)
+  fullName: CilTools.Reflection.ITokenResolver.ResolveSignature(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the signature blob identified by a metadata token.\n"
+  syntax:
+    content: byte[] ResolveSignature(int metadataToken)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    return:
+      type: System.Byte[]
+      description: An array of bytes representing the signature blob.
+    content.vb: Function ResolveSignature(metadataToken As Integer) As Byte()
+  overload: CilTools.Reflection.ITokenResolver.ResolveSignature*
+- uid: CilTools.Reflection.ITokenResolver.ResolveString(System.Int32)
+  commentId: M:CilTools.Reflection.ITokenResolver.ResolveString(System.Int32)
+  id: ResolveString(System.Int32)
+  parent: CilTools.Reflection.ITokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ResolveString(Int32)
+  nameWithType: ITokenResolver.ResolveString(Int32)
+  fullName: CilTools.Reflection.ITokenResolver.ResolveString(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReturns the string identified by the specified metadata token.\n"
+  syntax:
+    content: string ResolveString(int metadataToken)
+    parameters:
+    - id: metadataToken
+      type: System.Int32
+    return:
+      type: System.String
+    content.vb: Function ResolveString(metadataToken As Integer) As String
+  overload: CilTools.Reflection.ITokenResolver.ResolveString*
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: CilTools.Reflection.ITokenResolver.ResolveType*
+  commentId: Overload:CilTools.Reflection.ITokenResolver.ResolveType
+  isExternal: true
+  name: ResolveType
+  nameWithType: ITokenResolver.ResolveType
+  fullName: CilTools.Reflection.ITokenResolver.ResolveType
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System.Type[]
+  isExternal: true
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.ITokenResolver.ResolveMethod*
+  commentId: Overload:CilTools.Reflection.ITokenResolver.ResolveMethod
+  isExternal: true
+  name: ResolveMethod
+  nameWithType: ITokenResolver.ResolveMethod
+  fullName: CilTools.Reflection.ITokenResolver.ResolveMethod
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Reflection.ITokenResolver.ResolveField*
+  commentId: Overload:CilTools.Reflection.ITokenResolver.ResolveField
+  isExternal: true
+  name: ResolveField
+  nameWithType: ITokenResolver.ResolveField
+  fullName: CilTools.Reflection.ITokenResolver.ResolveField
+- uid: System.Reflection.FieldInfo
+  commentId: T:System.Reflection.FieldInfo
+  parent: System.Reflection
+  isExternal: true
+  name: FieldInfo
+  nameWithType: FieldInfo
+  fullName: System.Reflection.FieldInfo
+- uid: CilTools.Reflection.ITokenResolver.ResolveMember*
+  commentId: Overload:CilTools.Reflection.ITokenResolver.ResolveMember
+  isExternal: true
+  name: ResolveMember
+  nameWithType: ITokenResolver.ResolveMember
+  fullName: CilTools.Reflection.ITokenResolver.ResolveMember
+- uid: System.Reflection.MemberInfo
+  commentId: T:System.Reflection.MemberInfo
+  parent: System.Reflection
+  isExternal: true
+  name: MemberInfo
+  nameWithType: MemberInfo
+  fullName: System.Reflection.MemberInfo
+- uid: CilTools.Reflection.ITokenResolver.ResolveSignature*
+  commentId: Overload:CilTools.Reflection.ITokenResolver.ResolveSignature
+  isExternal: true
+  name: ResolveSignature
+  nameWithType: ITokenResolver.ResolveSignature
+  fullName: CilTools.Reflection.ITokenResolver.ResolveSignature
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.Reflection.ITokenResolver.ResolveString*
+  commentId: Overload:CilTools.Reflection.ITokenResolver.ResolveString
+  isExternal: true
+  name: ResolveString
+  nameWithType: ITokenResolver.ResolveString
+  fullName: CilTools.Reflection.ITokenResolver.ResolveString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String

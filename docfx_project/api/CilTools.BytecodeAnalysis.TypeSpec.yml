@@ -1,0 +1,851 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.BytecodeAnalysis.TypeSpec
+  commentId: T:CilTools.BytecodeAnalysis.TypeSpec
+  id: TypeSpec
+  parent: CilTools.BytecodeAnalysis
+  children:
+  - CilTools.BytecodeAnalysis.TypeSpec.ElementType
+  - CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)
+  - CilTools.BytecodeAnalysis.TypeSpec.GetModifiers
+  - CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec
+  - CilTools.BytecodeAnalysis.TypeSpec.IsPinned
+  - CilTools.BytecodeAnalysis.TypeSpec.Modifiers
+  - CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount
+  - CilTools.BytecodeAnalysis.TypeSpec.ToString
+  - CilTools.BytecodeAnalysis.TypeSpec.Type
+  langs:
+  - csharp
+  - vb
+  name: TypeSpec
+  nameWithType: TypeSpec
+  fullName: CilTools.BytecodeAnalysis.TypeSpec
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nRepresents type specification, the set of type information stored in the signature, as defined by ECMA-335\n"
+  syntax:
+    content: public class TypeSpec
+    content.vb: Public Class TypeSpec
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)
+  id: GetModifier(System.Int32)
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: GetModifier(Int32)
+  nameWithType: TypeSpec.GetModifier(Int32)
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the custom modifier with the specified index\n"
+  syntax:
+    content: public CustomModifier GetModifier(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+      description: Index of the requested modifier
+    return:
+      type: CilTools.BytecodeAnalysis.CustomModifier
+      description: The requested custom modifier
+    content.vb: Public Function GetModifier(index As Integer) As CustomModifier
+  overload: CilTools.BytecodeAnalysis.TypeSpec.GetModifier*
+  exceptions:
+  - type: System.ArgumentOutOfRangeException
+    commentId: T:System.ArgumentOutOfRangeException
+    description: Index is negative or outside the bounds of the collection
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.TypeSpec.GetModifiers
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.GetModifiers
+  id: GetModifiers
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: GetModifiers()
+  nameWithType: TypeSpec.GetModifiers()
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.GetModifiers()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the array of custom modifiers associated with this type specification\n"
+  syntax:
+    content: public CustomModifier[] GetModifiers()
+    return:
+      type: CilTools.BytecodeAnalysis.CustomModifier[]
+      description: The array of custom modifiers
+    content.vb: Public Function GetModifiers As CustomModifier()
+  overload: CilTools.BytecodeAnalysis.TypeSpec.GetModifiers*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.TypeSpec.ToString
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.ToString
+  id: ToString
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: TypeSpec.ToString()
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.ToString()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReturns textual representation of this type specification as CIL code\n"
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+    content.vb: Public Overrides Function ToString As String
+  overridden: System.Object.ToString
+  overload: CilTools.BytecodeAnalysis.TypeSpec.ToString*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.BytecodeAnalysis.TypeSpec.ElementType
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.ElementType
+  id: ElementType
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: ElementType
+  nameWithType: TypeSpec.ElementType
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.ElementType
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the element type of this type specification \n"
+  syntax:
+    content: public ElementType ElementType { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.ElementType
+    content.vb: Public ReadOnly Property ElementType As ElementType
+  overload: CilTools.BytecodeAnalysis.TypeSpec.ElementType*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount
+  id: ModifiersCount
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: ModifiersCount
+  nameWithType: TypeSpec.ModifiersCount
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the amount of custom modifiers associated with this type specification \n"
+  syntax:
+    content: public int ModifiersCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property ModifiersCount As Integer
+  overload: CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.TypeSpec.Modifiers
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.Modifiers
+  id: Modifiers
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: Modifiers
+  nameWithType: TypeSpec.Modifiers
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.Modifiers
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nEnumerates custom modifiers associated with this type specification\n"
+  syntax:
+    content: public IEnumerable<CustomModifier> Modifiers { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.CustomModifier}
+    content.vb: Public ReadOnly Property Modifiers As IEnumerable(Of CustomModifier)
+  overload: CilTools.BytecodeAnalysis.TypeSpec.Modifiers*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec
+  id: InnerTypeSpec
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: InnerTypeSpec
+  nameWithType: TypeSpec.InnerTypeSpec
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the inner type specification if this instance represents an array or pointer type. For other types, the value is null\n"
+  syntax:
+    content: public TypeSpec InnerTypeSpec { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.TypeSpec
+    content.vb: Public ReadOnly Property InnerTypeSpec As TypeSpec
+  overload: CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.TypeSpec.Type
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.Type
+  id: Type
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: TypeSpec.Type
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.Type
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the type which this type specification represents\n"
+  syntax:
+    content: public Type Type { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public ReadOnly Property Type As Type
+  overload: CilTools.BytecodeAnalysis.TypeSpec.Type*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.TypeSpec.IsPinned
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.IsPinned
+  id: IsPinned
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: IsPinned
+  nameWithType: TypeSpec.IsPinned
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.IsPinned
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the value indicating whether this TypeSpec represents pinned local variable\n"
+  syntax:
+    content: public bool IsPinned { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsPinned As Boolean
+  overload: CilTools.BytecodeAnalysis.TypeSpec.IsPinned*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.BytecodeAnalysis.TypeSpec.GetModifier*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.GetModifier
+  isExternal: true
+  name: GetModifier
+  nameWithType: TypeSpec.GetModifier
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.GetModifier
+- uid: System.ArgumentOutOfRangeException
+  commentId: T:System.ArgumentOutOfRangeException
+  isExternal: true
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.BytecodeAnalysis.CustomModifier
+  commentId: T:CilTools.BytecodeAnalysis.CustomModifier
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CustomModifier
+  nameWithType: CustomModifier
+  fullName: CilTools.BytecodeAnalysis.CustomModifier
+- uid: CilTools.BytecodeAnalysis.TypeSpec.GetModifiers*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.GetModifiers
+  isExternal: true
+  name: GetModifiers
+  nameWithType: TypeSpec.GetModifiers
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.GetModifiers
+- uid: CilTools.BytecodeAnalysis.CustomModifier[]
+  isExternal: true
+  name: CustomModifier[]
+  nameWithType: CustomModifier[]
+  fullName: CilTools.BytecodeAnalysis.CustomModifier[]
+  nameWithType.vb: CustomModifier()
+  fullName.vb: CilTools.BytecodeAnalysis.CustomModifier()
+  name.vb: CustomModifier()
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilTools.BytecodeAnalysis.CustomModifier
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilTools.BytecodeAnalysis.CustomModifier
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.TypeSpec.ToString*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.ToString
+  isExternal: true
+  name: ToString
+  nameWithType: TypeSpec.ToString
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.BytecodeAnalysis.TypeSpec.ElementType*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.ElementType
+  isExternal: true
+  name: ElementType
+  nameWithType: TypeSpec.ElementType
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.ElementType
+- uid: CilTools.BytecodeAnalysis.ElementType
+  commentId: T:CilTools.BytecodeAnalysis.ElementType
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: ElementType
+  nameWithType: ElementType
+  fullName: CilTools.BytecodeAnalysis.ElementType
+- uid: CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount
+  isExternal: true
+  name: ModifiersCount
+  nameWithType: TypeSpec.ModifiersCount
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount
+- uid: CilTools.BytecodeAnalysis.TypeSpec.Modifiers*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.Modifiers
+  isExternal: true
+  name: Modifiers
+  nameWithType: TypeSpec.Modifiers
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.Modifiers
+- uid: System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.CustomModifier}
+  commentId: T:System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.CustomModifier}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<CustomModifier>
+  nameWithType: IEnumerable<CustomModifier>
+  fullName: System.Collections.Generic.IEnumerable<CilTools.BytecodeAnalysis.CustomModifier>
+  nameWithType.vb: IEnumerable(Of CustomModifier)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilTools.BytecodeAnalysis.CustomModifier)
+  name.vb: IEnumerable(Of CustomModifier)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.BytecodeAnalysis.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilTools.BytecodeAnalysis.CustomModifier
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.BytecodeAnalysis.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilTools.BytecodeAnalysis.CustomModifier
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec
+  isExternal: true
+  name: InnerTypeSpec
+  nameWithType: TypeSpec.InnerTypeSpec
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec
+- uid: CilTools.BytecodeAnalysis.TypeSpec
+  commentId: T:CilTools.BytecodeAnalysis.TypeSpec
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: TypeSpec
+  nameWithType: TypeSpec
+  fullName: CilTools.BytecodeAnalysis.TypeSpec
+- uid: CilTools.BytecodeAnalysis.TypeSpec.Type*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.Type
+  isExternal: true
+  name: Type
+  nameWithType: TypeSpec.Type
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.Type
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: CilTools.BytecodeAnalysis.TypeSpec.IsPinned*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.IsPinned
+  isExternal: true
+  name: IsPinned
+  nameWithType: TypeSpec.IsPinned
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.IsPinned
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean

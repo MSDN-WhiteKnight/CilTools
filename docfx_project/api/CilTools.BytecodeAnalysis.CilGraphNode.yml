@@ -1,0 +1,690 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.BytecodeAnalysis.CilGraphNode
+  commentId: T:CilTools.BytecodeAnalysis.CilGraphNode
+  id: CilGraphNode
+  parent: CilTools.BytecodeAnalysis
+  children:
+  - CilTools.BytecodeAnalysis.CilGraphNode.#ctor
+  - CilTools.BytecodeAnalysis.CilGraphNode.BranchTarget
+  - CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets
+  - CilTools.BytecodeAnalysis.CilGraphNode.Instruction
+  - CilTools.BytecodeAnalysis.CilGraphNode.Name
+  - CilTools.BytecodeAnalysis.CilGraphNode.Next
+  - CilTools.BytecodeAnalysis.CilGraphNode.Previous
+  - CilTools.BytecodeAnalysis.CilGraphNode.ToString
+  langs:
+  - csharp
+  - vb
+  name: CilGraphNode
+  nameWithType: CilGraphNode
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nRepresents a node in the CIL graph. A node describes an instruction and its connection with other instructions\n"
+  remarks: See <xref href="CilTools.BytecodeAnalysis.CilGraph" data-throw-if-not-resolved="false"></xref> class documentation for more information about CIL graphs.
+  syntax:
+    content: public class CilGraphNode
+    content.vb: Public Class CilGraphNode
+  inheritance:
+  - System.Object
+  derivedClasses:
+  - CilTools.BytecodeAnalysis.CilGraphNodeMutable
+  inheritedMembers:
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets
+  commentId: M:CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets
+  id: GetSwitchTargets
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: GetSwitchTargets()
+  nameWithType: CilGraphNode.GetSwitchTargets()
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets an array of nodes that represents the jump table of the switch instruction, if applicable\n"
+  remarks: Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. For non-switch instructions, returns an empty array.
+  syntax:
+    content: public CilGraphNode[] GetSwitchTargets()
+    return:
+      type: CilTools.BytecodeAnalysis.CilGraphNode[]
+    content.vb: Public Function GetSwitchTargets As CilGraphNode()
+  overload: CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.#ctor
+  commentId: M:CilTools.BytecodeAnalysis.CilGraphNode.#ctor
+  id: '#ctor'
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: CilGraphNode()
+  nameWithType: CilGraphNode.CilGraphNode()
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.CilGraphNode()
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCreates new CilGraphNode object\n"
+  syntax:
+    content: protected CilGraphNode()
+    content.vb: Protected Sub New
+  overload: CilTools.BytecodeAnalysis.CilGraphNode.#ctor*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.ToString
+  commentId: M:CilTools.BytecodeAnalysis.CilGraphNode.ToString
+  id: ToString
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: ToString()
+  nameWithType: CilGraphNode.ToString()
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.ToString()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReturns text representation of this node as a line of CIL code\n"
+  syntax:
+    content: public override string ToString()
+    return:
+      type: System.String
+      description: String that contatins a text representation of this node
+    content.vb: Public Overrides Function ToString As String
+  overridden: System.Object.ToString
+  overload: CilTools.BytecodeAnalysis.CilGraphNode.ToString*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.Instruction
+  commentId: P:CilTools.BytecodeAnalysis.CilGraphNode.Instruction
+  id: Instruction
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: Instruction
+  nameWithType: CilGraphNode.Instruction
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.Instruction
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets CIL instruction associated with this node\n"
+  syntax:
+    content: public CilInstruction Instruction { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.CilInstruction
+    content.vb: Public ReadOnly Property Instruction As CilInstruction
+  overload: CilTools.BytecodeAnalysis.CilGraphNode.Instruction*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.Name
+  commentId: P:CilTools.BytecodeAnalysis.CilGraphNode.Name
+  id: Name
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: CilGraphNode.Name
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.Name
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets label name associated with this node\n"
+  remarks: Label names are assigned to instruction that serve as branch targets for convenience. If the instruction is not used as target, the value is empty string.
+  syntax:
+    content: public string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Name As String
+  overload: CilTools.BytecodeAnalysis.CilGraphNode.Name*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.Previous
+  commentId: P:CilTools.BytecodeAnalysis.CilGraphNode.Previous
+  id: Previous
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: Previous
+  nameWithType: CilGraphNode.Previous
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.Previous
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a reference to the node that represents instruction directly preceding current instruction in the method bytecode\n"
+  remarks: For the first instruction in the method body, the value is null.
+  syntax:
+    content: public CilGraphNode Previous { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.CilGraphNode
+    content.vb: Public ReadOnly Property Previous As CilGraphNode
+  overload: CilTools.BytecodeAnalysis.CilGraphNode.Previous*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.Next
+  commentId: P:CilTools.BytecodeAnalysis.CilGraphNode.Next
+  id: Next
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: Next
+  nameWithType: CilGraphNode.Next
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.Next
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a reference to the node that represents instruction directly following current instruction in the method bytecode\n"
+  remarks: Next instruction will be normally executed after current one, unless it is a jump instruction and the condition for jump is met. For the last instruction of the method body, the value is null.
+  syntax:
+    content: public CilGraphNode Next { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.CilGraphNode
+    content.vb: Public ReadOnly Property Next As CilGraphNode
+  overload: CilTools.BytecodeAnalysis.CilGraphNode.Next*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.BranchTarget
+  commentId: P:CilTools.BytecodeAnalysis.CilGraphNode.BranchTarget
+  id: BranchTarget
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: BranchTarget
+  nameWithType: CilGraphNode.BranchTarget
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.BranchTarget
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets a reference to the node that represents instruction which is a target of the current instruction, if applicable\n"
+  remarks: Branch target is an instruction which would be called after current one if the condition for jump instruction is met. For non-jump instructions, the value is null.
+  syntax:
+    content: public CilGraphNode BranchTarget { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.CilGraphNode
+    content.vb: Public ReadOnly Property BranchTarget As CilGraphNode
+  overload: CilTools.BytecodeAnalysis.CilGraphNode.BranchTarget*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets
+  isExternal: true
+  name: GetSwitchTargets
+  nameWithType: CilGraphNode.GetSwitchTargets
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets
+- uid: CilTools.BytecodeAnalysis.CilGraphNode[]
+  isExternal: true
+  name: CilGraphNode[]
+  nameWithType: CilGraphNode[]
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode[]
+  nameWithType.vb: CilGraphNode()
+  fullName.vb: CilTools.BytecodeAnalysis.CilGraphNode()
+  name.vb: CilGraphNode()
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.CilGraphNode
+    name: CilGraphNode
+    nameWithType: CilGraphNode
+    fullName: CilTools.BytecodeAnalysis.CilGraphNode
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.CilGraphNode
+    name: CilGraphNode
+    nameWithType: CilGraphNode
+    fullName: CilTools.BytecodeAnalysis.CilGraphNode
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.#ctor*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraphNode.#ctor
+  isExternal: true
+  name: CilGraphNode
+  nameWithType: CilGraphNode.CilGraphNode
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.CilGraphNode
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.ToString*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraphNode.ToString
+  isExternal: true
+  name: ToString
+  nameWithType: CilGraphNode.ToString
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.ToString
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.Instruction*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraphNode.Instruction
+  isExternal: true
+  name: Instruction
+  nameWithType: CilGraphNode.Instruction
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.Instruction
+- uid: CilTools.BytecodeAnalysis.CilInstruction
+  commentId: T:CilTools.BytecodeAnalysis.CilInstruction
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilInstruction
+  nameWithType: CilInstruction
+  fullName: CilTools.BytecodeAnalysis.CilInstruction
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.Name*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraphNode.Name
+  isExternal: true
+  name: Name
+  nameWithType: CilGraphNode.Name
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.Name
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.Previous*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraphNode.Previous
+  isExternal: true
+  name: Previous
+  nameWithType: CilGraphNode.Previous
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.Previous
+- uid: CilTools.BytecodeAnalysis.CilGraphNode
+  commentId: T:CilTools.BytecodeAnalysis.CilGraphNode
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilGraphNode
+  nameWithType: CilGraphNode
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.Next*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraphNode.Next
+  isExternal: true
+  name: Next
+  nameWithType: CilGraphNode.Next
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.Next
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.BranchTarget*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraphNode.BranchTarget
+  isExternal: true
+  name: BranchTarget
+  nameWithType: CilGraphNode.BranchTarget
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.BranchTarget

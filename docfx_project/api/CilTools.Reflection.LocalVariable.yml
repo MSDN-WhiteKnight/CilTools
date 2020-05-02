@@ -1,0 +1,680 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.LocalVariable
+  commentId: T:CilTools.Reflection.LocalVariable
+  id: LocalVariable
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.LocalVariable.IsPinned
+  - CilTools.Reflection.LocalVariable.LocalIndex
+  - CilTools.Reflection.LocalVariable.LocalType
+  - CilTools.Reflection.LocalVariable.LocalTypeSpec
+  - CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver)
+  - CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)
+  langs:
+  - csharp
+  - vb
+  name: LocalVariable
+  nameWithType: LocalVariable
+  fullName: CilTools.Reflection.LocalVariable
+  type: Struct
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents local variable declaration in the method body\n"
+  syntax:
+    content: public struct LocalVariable
+    content.vb: Public Structure LocalVariable
+  inheritedMembers:
+  - System.ValueType.Equals(System.Object)
+  - System.ValueType.GetHashCode
+  - System.ValueType.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetType
+  modifiers.csharp:
+  - public
+  - struct
+  modifiers.vb:
+  - Public
+  - Structure
+- uid: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver)
+  commentId: M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver)
+  id: ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver)
+  parent: CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: ReadSignature(Byte[], ITokenResolver)
+  nameWithType: LocalVariable.ReadSignature(Byte[], ITokenResolver)
+  fullName: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[], CilTools.Reflection.ITokenResolver)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReads local variables from the specified signature, resolving tokens using the specified ITokenResolver\n"
+  syntax:
+    content: public static LocalVariable[] ReadSignature(byte[] data, ITokenResolver resolver)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: Local variable signature as byte array
+    - id: resolver
+      type: CilTools.Reflection.ITokenResolver
+      description: The object used to resolve metadata tokens
+    return:
+      type: CilTools.Reflection.LocalVariable[]
+      description: An array of local variables read from the signature
+    content.vb: Public Shared Function ReadSignature(data As Byte(), resolver As ITokenResolver) As LocalVariable()
+  overload: CilTools.Reflection.LocalVariable.ReadSignature*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Input array is null
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: Signature contains unsupported types
+  nameWithType.vb: LocalVariable.ReadSignature(Byte(), ITokenResolver)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte(), CilTools.Reflection.ITokenResolver)
+  name.vb: ReadSignature(Byte(), ITokenResolver)
+- uid: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)
+  commentId: M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)
+  id: ReadSignature(System.Byte[],System.Reflection.Module)
+  parent: CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: ReadSignature(Byte[], Module)
+  nameWithType: LocalVariable.ReadSignature(Byte[], Module)
+  fullName: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[], System.Reflection.Module)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReads local variables from the specified signature, resolving tokens within the scope of the specified module\n"
+  syntax:
+    content: public static LocalVariable[] ReadSignature(byte[] data, Module module)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: Local variable signature as byte array
+    - id: module
+      type: System.Reflection.Module
+      description: Module in which to resolve metadata tokens
+    return:
+      type: CilTools.Reflection.LocalVariable[]
+      description: An array of local variables read from the signature
+    content.vb: Public Shared Function ReadSignature(data As Byte(), module As  Module) As LocalVariable()
+  overload: CilTools.Reflection.LocalVariable.ReadSignature*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Input array is null
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: Signature contains unsupported types
+  nameWithType.vb: LocalVariable.ReadSignature(Byte(), Module)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte(), System.Reflection.Module)
+  name.vb: ReadSignature(Byte(), Module)
+- uid: CilTools.Reflection.LocalVariable.LocalTypeSpec
+  commentId: P:CilTools.Reflection.LocalVariable.LocalTypeSpec
+  id: LocalTypeSpec
+  parent: CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: LocalTypeSpec
+  nameWithType: LocalVariable.LocalTypeSpec
+  fullName: CilTools.Reflection.LocalVariable.LocalTypeSpec
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the TypeSpec object representing the variable type\n"
+  syntax:
+    content: public TypeSpec LocalTypeSpec { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.TypeSpec
+    content.vb: Public ReadOnly Property LocalTypeSpec As TypeSpec
+  overload: CilTools.Reflection.LocalVariable.LocalTypeSpec*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.LocalVariable.LocalType
+  commentId: P:CilTools.Reflection.LocalVariable.LocalType
+  id: LocalType
+  parent: CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: LocalType
+  nameWithType: LocalVariable.LocalType
+  fullName: CilTools.Reflection.LocalVariable.LocalType
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the variable type\n"
+  syntax:
+    content: public Type LocalType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public ReadOnly Property LocalType As Type
+  overload: CilTools.Reflection.LocalVariable.LocalType*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.LocalVariable.LocalIndex
+  commentId: P:CilTools.Reflection.LocalVariable.LocalIndex
+  id: LocalIndex
+  parent: CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: LocalIndex
+  nameWithType: LocalVariable.LocalIndex
+  fullName: CilTools.Reflection.LocalVariable.LocalIndex
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the index of local variable within the containing method body\n"
+  syntax:
+    content: public int LocalIndex { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property LocalIndex As Integer
+  overload: CilTools.Reflection.LocalVariable.LocalIndex*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.LocalVariable.IsPinned
+  commentId: P:CilTools.Reflection.LocalVariable.IsPinned
+  id: IsPinned
+  parent: CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: IsPinned
+  nameWithType: LocalVariable.IsPinned
+  fullName: CilTools.Reflection.LocalVariable.IsPinned
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value indicating whether the object pointed by local variable is pinned in memory\n"
+  syntax:
+    content: public bool IsPinned { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsPinned As Boolean
+  overload: CilTools.Reflection.LocalVariable.IsPinned*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: System.ValueType.Equals(System.Object)
+  commentId: M:System.ValueType.Equals(System.Object)
+  parent: System.ValueType
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: ValueType.Equals(Object)
+  fullName: System.ValueType.Equals(System.Object)
+  spec.csharp:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    nameWithType: ValueType.Equals
+    fullName: System.ValueType.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.Equals(System.Object)
+    name: Equals
+    nameWithType: ValueType.Equals
+    fullName: System.ValueType.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType.GetHashCode
+  commentId: M:System.ValueType.GetHashCode
+  parent: System.ValueType
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: ValueType.GetHashCode()
+  fullName: System.ValueType.GetHashCode()
+  spec.csharp:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    nameWithType: ValueType.GetHashCode
+    fullName: System.ValueType.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.GetHashCode
+    name: GetHashCode
+    nameWithType: ValueType.GetHashCode
+    fullName: System.ValueType.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType.ToString
+  commentId: M:System.ValueType.ToString
+  parent: System.ValueType
+  isExternal: true
+  name: ToString()
+  nameWithType: ValueType.ToString()
+  fullName: System.ValueType.ToString()
+  spec.csharp:
+  - uid: System.ValueType.ToString
+    name: ToString
+    nameWithType: ValueType.ToString
+    fullName: System.ValueType.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.ValueType.ToString
+    name: ToString
+    nameWithType: ValueType.ToString
+    fullName: System.ValueType.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.ValueType
+  commentId: T:System.ValueType
+  parent: System
+  isExternal: true
+  name: ValueType
+  nameWithType: ValueType
+  fullName: System.ValueType
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.LocalVariable.ReadSignature*
+  commentId: Overload:CilTools.Reflection.LocalVariable.ReadSignature
+  isExternal: true
+  name: ReadSignature
+  nameWithType: LocalVariable.ReadSignature
+  fullName: CilTools.Reflection.LocalVariable.ReadSignature
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.NotSupportedException
+  commentId: T:System.NotSupportedException
+  isExternal: true
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.Reflection.ITokenResolver
+  commentId: T:CilTools.Reflection.ITokenResolver
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ITokenResolver
+  nameWithType: ITokenResolver
+  fullName: CilTools.Reflection.ITokenResolver
+- uid: CilTools.Reflection.LocalVariable[]
+  isExternal: true
+  name: LocalVariable[]
+  nameWithType: LocalVariable[]
+  fullName: CilTools.Reflection.LocalVariable[]
+  nameWithType.vb: LocalVariable()
+  fullName.vb: CilTools.Reflection.LocalVariable()
+  name.vb: LocalVariable()
+  spec.csharp:
+  - uid: CilTools.Reflection.LocalVariable
+    name: LocalVariable
+    nameWithType: LocalVariable
+    fullName: CilTools.Reflection.LocalVariable
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilTools.Reflection.LocalVariable
+    name: LocalVariable
+    nameWithType: LocalVariable
+    fullName: CilTools.Reflection.LocalVariable
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Reflection.Module
+  commentId: T:System.Reflection.Module
+  parent: System.Reflection
+  isExternal: true
+  name: Module
+  nameWithType: Module
+  fullName: System.Reflection.Module
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Reflection.LocalVariable.LocalTypeSpec*
+  commentId: Overload:CilTools.Reflection.LocalVariable.LocalTypeSpec
+  isExternal: true
+  name: LocalTypeSpec
+  nameWithType: LocalVariable.LocalTypeSpec
+  fullName: CilTools.Reflection.LocalVariable.LocalTypeSpec
+- uid: CilTools.BytecodeAnalysis.TypeSpec
+  commentId: T:CilTools.BytecodeAnalysis.TypeSpec
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: TypeSpec
+  nameWithType: TypeSpec
+  fullName: CilTools.BytecodeAnalysis.TypeSpec
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
+- uid: CilTools.Reflection.LocalVariable.LocalType*
+  commentId: Overload:CilTools.Reflection.LocalVariable.LocalType
+  isExternal: true
+  name: LocalType
+  nameWithType: LocalVariable.LocalType
+  fullName: CilTools.Reflection.LocalVariable.LocalType
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: CilTools.Reflection.LocalVariable.LocalIndex*
+  commentId: Overload:CilTools.Reflection.LocalVariable.LocalIndex
+  isExternal: true
+  name: LocalIndex
+  nameWithType: LocalVariable.LocalIndex
+  fullName: CilTools.Reflection.LocalVariable.LocalIndex
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.Reflection.LocalVariable.IsPinned*
+  commentId: Overload:CilTools.Reflection.LocalVariable.IsPinned
+  isExternal: true
+  name: IsPinned
+  nameWithType: LocalVariable.IsPinned
+  fullName: CilTools.Reflection.LocalVariable.IsPinned
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean

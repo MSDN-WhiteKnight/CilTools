@@ -1,0 +1,171 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.BytecodeAnalysis.MemberCriteria
+  commentId: T:CilTools.BytecodeAnalysis.MemberCriteria
+  id: MemberCriteria
+  parent: CilTools.BytecodeAnalysis
+  children:
+  - CilTools.BytecodeAnalysis.MemberCriteria.External
+  - CilTools.BytecodeAnalysis.MemberCriteria.Fields
+  - CilTools.BytecodeAnalysis.MemberCriteria.Internal
+  - CilTools.BytecodeAnalysis.MemberCriteria.Methods
+  langs:
+  - csharp
+  - vb
+  name: MemberCriteria
+  nameWithType: MemberCriteria
+  fullName: CilTools.BytecodeAnalysis.MemberCriteria
+  type: Enum
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nRepresents bitwise flags that define what kinds of members are requested \n"
+  remarks: External members are members defined in different assembly then the method which references them, not to be confused with `external` keyword in C#. Internal members are members defined in the same assembly as referencing method, similarly, not to be confused with `internal` keyword or `InternalCall` attribute.  If you specify a combination of flags that does not match anything (i.e., if you define neither external nor internal members, or neither methods nor fields) when requesting referenced members, empty collection is returned.
+  syntax:
+    content: >-
+      [Flags]
+
+      public enum MemberCriteria
+    content.vb: >-
+      <Flags>
+
+      Public Enum MemberCriteria
+  attributes:
+  - type: System.FlagsAttribute
+    ctor: System.FlagsAttribute.#ctor
+    arguments: []
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilTools.BytecodeAnalysis.MemberCriteria.External
+  commentId: F:CilTools.BytecodeAnalysis.MemberCriteria.External
+  id: External
+  parent: CilTools.BytecodeAnalysis.MemberCriteria
+  langs:
+  - csharp
+  - vb
+  name: External
+  nameWithType: MemberCriteria.External
+  fullName: CilTools.BytecodeAnalysis.MemberCriteria.External
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReturn external (not from the same assembly as containing method) members\n"
+  syntax:
+    content: External = 1
+    return:
+      type: CilTools.BytecodeAnalysis.MemberCriteria
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.MemberCriteria.Internal
+  commentId: F:CilTools.BytecodeAnalysis.MemberCriteria.Internal
+  id: Internal
+  parent: CilTools.BytecodeAnalysis.MemberCriteria
+  langs:
+  - csharp
+  - vb
+  name: Internal
+  nameWithType: MemberCriteria.Internal
+  fullName: CilTools.BytecodeAnalysis.MemberCriteria.Internal
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReturn internal (from the same assembly as containing method) members \n"
+  syntax:
+    content: Internal = 2
+    return:
+      type: CilTools.BytecodeAnalysis.MemberCriteria
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.MemberCriteria.Methods
+  commentId: F:CilTools.BytecodeAnalysis.MemberCriteria.Methods
+  id: Methods
+  parent: CilTools.BytecodeAnalysis.MemberCriteria
+  langs:
+  - csharp
+  - vb
+  name: Methods
+  nameWithType: MemberCriteria.Methods
+  fullName: CilTools.BytecodeAnalysis.MemberCriteria.Methods
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReturn methods (including constructors)\n"
+  syntax:
+    content: Methods = 4
+    return:
+      type: CilTools.BytecodeAnalysis.MemberCriteria
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.BytecodeAnalysis.MemberCriteria.Fields
+  commentId: F:CilTools.BytecodeAnalysis.MemberCriteria.Fields
+  id: Fields
+  parent: CilTools.BytecodeAnalysis.MemberCriteria
+  langs:
+  - csharp
+  - vb
+  name: Fields
+  nameWithType: MemberCriteria.Fields
+  fullName: CilTools.BytecodeAnalysis.MemberCriteria.Fields
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReturn fields\n"
+  syntax:
+    content: Fields = 8
+    return:
+      type: CilTools.BytecodeAnalysis.MemberCriteria
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
+- uid: CilTools.BytecodeAnalysis.MemberCriteria
+  commentId: T:CilTools.BytecodeAnalysis.MemberCriteria
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: MemberCriteria
+  nameWithType: MemberCriteria
+  fullName: CilTools.BytecodeAnalysis.MemberCriteria

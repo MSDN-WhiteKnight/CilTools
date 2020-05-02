@@ -1,0 +1,1407 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ClrAssemblyInfo
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ClrAssemblyInfo
+   ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.Runtime.ClrAssemblyInfo">
+  
+  
+  <h1 id="CilTools_Runtime_ClrAssemblyInfo" data-uid="CilTools.Runtime.ClrAssemblyInfo" class="text-break">Class ClrAssemblyInfo
+  </h1>
+  <div class="markdown level0 summary"><p>Represents an assembly in the external CLR instance</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">System.Reflection.Assembly</span></div>
+    <div class="level2"><span class="xref">ClrAssemblyInfo</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.Runtime.InteropServices._Assembly</span></div>
+    <div><span class="xref">System.Security.IEvidenceFactory</span></div>
+    <div><span class="xref">System.Reflection.ICustomAttributeProvider</span></div>
+    <div><span class="xref">System.Runtime.Serialization.ISerializable</span></div>
+    <div><a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Reflection.Assembly.CreateQualifiedName(System.String, System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetAssembly(System.Type)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadFrom(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.ReflectionOnlyLoadFrom(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadFrom(System.String, System.Security.Policy.Evidence)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadFrom(System.String, System.Security.Policy.Evidence, System.Byte[], System.Configuration.Assemblies.AssemblyHashAlgorithm)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadFrom(System.String, System.Byte[], System.Configuration.Assemblies.AssemblyHashAlgorithm)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.UnsafeLoadFrom(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Load(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.ReflectionOnlyLoad(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Load(System.String, System.Security.Policy.Evidence)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Load(System.Reflection.AssemblyName)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Load(System.Reflection.AssemblyName, System.Security.Policy.Evidence)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadWithPartialName(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadWithPartialName(System.String, System.Security.Policy.Evidence)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Load(System.Byte[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.ReflectionOnlyLoad(System.Byte[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Load(System.Byte[], System.Byte[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Load(System.Byte[], System.Byte[], System.Security.SecurityContextSource)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Load(System.Byte[], System.Byte[], System.Security.Policy.Evidence)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadFile(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadFile(System.String, System.Security.Policy.Evidence)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetExecutingAssembly()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetCallingAssembly()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetEntryAssembly()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetName(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.System.Runtime.InteropServices._Assembly.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetManifestResourceStream(System.Type, System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetManifestResourceStream(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetSatelliteAssembly(System.Globalization.CultureInfo)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetSatelliteAssembly(System.Globalization.CultureInfo, System.Version)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetObjectData(System.Runtime.Serialization.SerializationInfo, System.Runtime.Serialization.StreamingContext)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetCustomAttributes(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetCustomAttributes(System.Type, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.IsDefined(System.Type, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetCustomAttributesData()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadModule(System.String, System.Byte[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.LoadModule(System.String, System.Byte[], System.Byte[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.CreateInstance(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.CreateInstance(System.String, System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.CreateInstance(System.String, System.Boolean, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo, System.Object[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetLoadedModules()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetLoadedModules(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetModules()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetModules(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetModule(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetFile(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetFiles()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetFiles(System.Boolean)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetManifestResourceNames()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetReferencedAssemblies()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GetManifestResourceInfo(System.String)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.EscapedCodeBase</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.EntryPoint</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.DefinedTypes</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Evidence</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.PermissionSet</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.IsFullyTrusted</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.SecurityRuleSet</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.ManifestModule</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.CustomAttributes</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.Modules</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.ImageRuntimeVersion</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.GlobalAssemblyCache</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.HostContext</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.Assembly.ModuleResolve</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Runtime.html">CilTools.Runtime</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.Runtime.dll</h6>
+  <h5 id="CilTools_Runtime_ClrAssemblyInfo_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ClrAssemblyInfo : Assembly, _Assembly, IEvidenceFactory, ICustomAttributeProvider, ISerializable, ITokenResolver</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_AssemblyReader_" data-uid="CilTools.Runtime.ClrAssemblyInfo.AssemblyReader*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_AssemblyReader" data-uid="CilTools.Runtime.ClrAssemblyInfo.AssemblyReader">AssemblyReader</h4>
+  <div class="markdown level1 summary"><p>Gets the assembly reader that was used to read this instance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ClrAssemblyReader AssemblyReader { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Runtime.ClrAssemblyReader.html">ClrAssemblyReader</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_CodeBase_" data-uid="CilTools.Runtime.ClrAssemblyInfo.CodeBase*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_CodeBase" data-uid="CilTools.Runtime.ClrAssemblyInfo.CodeBase">CodeBase</h4>
+  <div class="markdown level1 summary"><p>Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string CodeBase { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.CodeBase</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ExportedTypes_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ExportedTypes*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ExportedTypes" data-uid="CilTools.Runtime.ClrAssemblyInfo.ExportedTypes">ExportedTypes</h4>
+  <div class="markdown level1 summary"><p>Gets a collection of the public types defined in this assembly that are visible outside the assembly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;Type&gt; ExportedTypes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Type</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.ExportedTypes</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_FullName_" data-uid="CilTools.Runtime.ClrAssemblyInfo.FullName*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_FullName" data-uid="CilTools.Runtime.ClrAssemblyInfo.FullName">FullName</h4>
+  <div class="markdown level1 summary"><p>Gets the display name of the assembly</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string FullName { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.FullName</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_InnerModule_" data-uid="CilTools.Runtime.ClrAssemblyInfo.InnerModule*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_InnerModule" data-uid="CilTools.Runtime.ClrAssemblyInfo.InnerModule">InnerModule</h4>
+  <div class="markdown level1 summary"><p>Gets the underlying ClrMD module object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ClrModule InnerModule { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Microsoft.Diagnostics.Runtime.ClrModule</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_IsDynamic_" data-uid="CilTools.Runtime.ClrAssemblyInfo.IsDynamic*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_IsDynamic" data-uid="CilTools.Runtime.ClrAssemblyInfo.IsDynamic">IsDynamic</h4>
+  <div class="markdown level1 summary"><p>Gets a value that indicates whether the current assembly was generated dynamically at runtime by using reflection emit.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool IsDynamic { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.IsDynamic</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_Location_" data-uid="CilTools.Runtime.ClrAssemblyInfo.Location*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_Location" data-uid="CilTools.Runtime.ClrAssemblyInfo.Location">Location</h4>
+  <div class="markdown level1 summary"><p>Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string Location { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.Location</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ReflectionOnly_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ReflectionOnly*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ReflectionOnly" data-uid="CilTools.Runtime.ClrAssemblyInfo.ReflectionOnly">ReflectionOnly</h4>
+  <div class="markdown level1 summary"><p>Gets a boolean value indicating whether this assembly was loaded into the reflection-only context.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool ReflectionOnly { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><p>This implementation always returns <code>true</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.ReflectionOnly</span></div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_EnumerateMembers_" data-uid="CilTools.Runtime.ClrAssemblyInfo.EnumerateMembers*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_EnumerateMembers" data-uid="CilTools.Runtime.ClrAssemblyInfo.EnumerateMembers">EnumerateMembers()</h4>
+  <div class="markdown level1 summary"><p>Gets the collection of all members defined in this assembly</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;MemberInfo&gt; EnumerateMembers()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.MemberInfo</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_EnumerateMethods_" data-uid="CilTools.Runtime.ClrAssemblyInfo.EnumerateMethods*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_EnumerateMethods" data-uid="CilTools.Runtime.ClrAssemblyInfo.EnumerateMethods">EnumerateMethods()</h4>
+  <div class="markdown level1 summary"><p>Gets the collection of all methods defined in this assembly</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;MethodBase&gt; EnumerateMethods()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.MethodBase</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_GetExportedTypes_" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetExportedTypes*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_GetExportedTypes" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetExportedTypes">GetExportedTypes()</h4>
+  <div class="markdown level1 summary"><p>Gets the public types defined in this assembly that are visible outside the assembly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type[] GetExportedTypes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><p>An array that represents the types defined in this assembly that are visible outside the assembly.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.GetExportedTypes()</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_GetName_" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetName*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_GetName" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetName">GetName()</h4>
+  <div class="markdown level1 summary"><p>Gets an AssemblyName for this assembly</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override AssemblyName GetName()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.AssemblyName</span></td>
+        <td><p>An object that contains the fully parsed display name for this assembly</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.GetName()</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_GetType_" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetType*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_GetType_System_String_" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetType(System.String)">GetType(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the <code>Type</code> object that represents the specified type.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type GetType(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The full name of the type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>An object that represents the specified type, or <code>null</code> if the type is not found.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.GetType(System.String)</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_GetType_" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetType*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_GetType_System_String_System_Boolean_" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetType(System.String,System.Boolean)">GetType(String, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Gets the <code>Type</code> object with the specified name in the assembly instance and optionally throws an exception if the type is not found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type GetType(string name, bool throwOnError)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The full name of the type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">throwOnError</span></td>
+        <td><p>true to throw an exception if the type is not found; false to return null.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>An object that represents the specified type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.GetType(System.String, System.Boolean)</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_GetType_" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetType*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_GetType_System_String_System_Boolean_System_Boolean_" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetType(System.String,System.Boolean,System.Boolean)">GetType(String, Boolean, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Gets the <code>Type</code> object with the specified name in the assembly instance, with the options of ignoring the case, and of throwing an exception if the type is not found.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type GetType(string name, bool throwOnError, bool ignoreCase)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>The full name of the type.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">throwOnError</span></td>
+        <td><p>true to throw an exception if the type is not found; false to return null.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">ignoreCase</span></td>
+        <td><p>true to ignore the case of the type name; otherwise, false.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><p>An object that represents the specified type.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.GetType(System.String, System.Boolean, System.Boolean)</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_GetTypes_" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetTypes*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_GetTypes" data-uid="CilTools.Runtime.ClrAssemblyInfo.GetTypes">GetTypes()</h4>
+  <div class="markdown level1 summary"><p>Gets the types defined in this assembly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type[] GetTypes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><p>An array that contains all the types that are defined in this assembly.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.GetTypes()</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveField_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveField*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveField_System_Int32_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveField(System.Int32)">ResolveField(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns the field identified by the specified metadata token.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FieldInfo ResolveField(int metadataToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.FieldInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveField_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveField*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveField_System_Int32_System_Type___System_Type___" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveField(System.Int32,System.Type[],System.Type[])">ResolveField(Int32, Type[], Type[])</h4>
+  <div class="markdown level1 summary"><p>Returns the field identified by the specified metadata token, in the context defined by the specified generic parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">genericTypeArguments</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">genericMethodArguments</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.FieldInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Runtime_ClrAssemblyInfo_ResolveField_System_Int32_System_Type___System_Type____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Generic parameters are ignored in this implementation.</p>
+</div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveMember_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveMember*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveMember_System_Int32_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveMember(System.Int32)">ResolveMember(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns the type or member identified by the specified metadata token.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MemberInfo ResolveMember(int metadataToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveMember_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveMember*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveMember_System_Int32_System_Type___System_Type___" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveMember(System.Int32,System.Type[],System.Type[])">ResolveMember(Int32, Type[], Type[])</h4>
+  <div class="markdown level1 summary"><p>Returns the type or member identified by the specified metadata token, in the context defined by the specified
+generic parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MemberInfo ResolveMember(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">genericTypeArguments</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">genericMethodArguments</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Runtime_ClrAssemblyInfo_ResolveMember_System_Int32_System_Type___System_Type____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Generic parameters are ignored in this implementation.</p>
+</div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveMethod_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveMethod*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveMethod_System_Int32_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveMethod(System.Int32)">ResolveMethod(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns the method or constructor identified by the specified metadata token.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MethodBase ResolveMethod(int metadataToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveMethod_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveMethod*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveMethod_System_Int32_System_Type___System_Type___" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveMethod(System.Int32,System.Type[],System.Type[])">ResolveMethod(Int32, Type[], Type[])</h4>
+  <div class="markdown level1 summary"><p>Returns the method or constructor identified by the specified metadata token, in the context defined by the
+specified generic parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MethodBase ResolveMethod(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">genericTypeArguments</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">genericMethodArguments</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Runtime_ClrAssemblyInfo_ResolveMethod_System_Int32_System_Type___System_Type____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Generic parameters are ignored in this implementation.</p>
+</div>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveSignature_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveSignature*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveSignature_System_Int32_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveSignature(System.Int32)">ResolveSignature(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns the signature blob identified by a metadata token (not implemented).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] ResolveSignature(int metadataToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>An array of bytes representing the signature blob.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.NotImplementedException</span></td>
+        <td><p>This implementation always throws</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveString_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveString*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveString_System_Int32_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveString(System.Int32)">ResolveString(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns the string identified by the specified metadata token (not implemented).</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string ResolveString(int metadataToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>This implementation always returns <code>null</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveType_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveType*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveType_System_Int32_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveType(System.Int32)">ResolveType(Int32)</h4>
+  <div class="markdown level1 summary"><p>Returns the type identified by the specified metadata token.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type ResolveType(int metadataToken)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyInfo_ResolveType_" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveType*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyInfo_ResolveType_System_Int32_System_Type___System_Type___" data-uid="CilTools.Runtime.ClrAssemblyInfo.ResolveType(System.Int32,System.Type[],System.Type[])">ResolveType(Int32, Type[], Type[])</h4>
+  <div class="markdown level1 summary"><p>Returns the type identified by the specified metadata token, in the context defined by the specified generic parameters.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">metadataToken</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">genericTypeArguments</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">genericMethodArguments</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Runtime_ClrAssemblyInfo_ResolveType_System_Int32_System_Type___System_Type____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Generic parameters are ignored in this implementation.</p>
+</div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.Runtime.InteropServices._Assembly</span>
+  </div>
+  <div>
+      <span class="xref">System.Security.IEvidenceFactory</span>
+  </div>
+  <div>
+      <span class="xref">System.Reflection.ICustomAttributeProvider</span>
+  </div>
+  <div>
+      <span class="xref">System.Runtime.Serialization.ISerializable</span>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetReferencedMethods_System_Reflection_Assembly_">CilExtensions.GetReferencedMethods(Assembly)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetReferencedMembers_System_Reflection_Assembly_">CilExtensions.GetReferencedMembers(Assembly)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetReferencedMembers_System_Reflection_Assembly_CilTools_BytecodeAnalysis_MemberCriteria_">CilExtensions.GetReferencedMembers(Assembly, MemberCriteria)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

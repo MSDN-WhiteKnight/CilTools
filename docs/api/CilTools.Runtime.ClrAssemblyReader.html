@@ -1,0 +1,462 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ClrAssemblyReader
+   </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ClrAssemblyReader
+   ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.Runtime.ClrAssemblyReader">
+  
+  
+  <h1 id="CilTools_Runtime_ClrAssemblyReader" data-uid="CilTools.Runtime.ClrAssemblyReader" class="text-break">Class ClrAssemblyReader
+  </h1>
+  <div class="markdown level0 summary"><p>Reads information about assemblies in the CLR isntances of external processes using ClrMD</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">ClrAssemblyReader</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Runtime.html">CilTools.Runtime</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.Runtime.dll</h6>
+  <h5 id="CilTools_Runtime_ClrAssemblyReader_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ClrAssemblyReader</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyReader__ctor_" data-uid="CilTools.Runtime.ClrAssemblyReader.#ctor*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader__ctor_Microsoft_Diagnostics_Runtime_ClrRuntime_" data-uid="CilTools.Runtime.ClrAssemblyReader.#ctor(Microsoft.Diagnostics.Runtime.ClrRuntime)">ClrAssemblyReader(ClrRuntime)</h4>
+  <div class="markdown level1 summary"><p>Creates <code>ClrAssemblyReader</code> to read information from the specified CLR instance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ClrAssemblyReader(ClrRuntime r)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Microsoft.Diagnostics.Runtime.ClrRuntime</span></td>
+        <td><span class="parametername">r</span></td>
+        <td><p>Source CLR instance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyReader_SourceRuntime_" data-uid="CilTools.Runtime.ClrAssemblyReader.SourceRuntime*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_SourceRuntime" data-uid="CilTools.Runtime.ClrAssemblyReader.SourceRuntime">SourceRuntime</h4>
+  <div class="markdown level1 summary"><p>Gets the CLR instance associated with this <code>ClrAssemblyReader</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ClrRuntime SourceRuntime { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Microsoft.Diagnostics.Runtime.ClrRuntime</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyReader_EnumerateMethods_" data-uid="CilTools.Runtime.ClrAssemblyReader.EnumerateMethods*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_EnumerateMethods_System_Diagnostics_Process_" data-uid="CilTools.Runtime.ClrAssemblyReader.EnumerateMethods(System.Diagnostics.Process)">EnumerateMethods(Process)</h4>
+  <div class="markdown level1 summary"><p>Gets the collection of all methods in the specified process</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;MethodBase&gt; EnumerateMethods(Process process)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Diagnostics.Process</span></td>
+        <td><span class="parametername">process</span></td>
+        <td><p>Source process</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.MethodBase</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyReader_EnumerateModuleMethods_" data-uid="CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_EnumerateModuleMethods_System_Diagnostics_Process_System_String_" data-uid="CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods(System.Diagnostics.Process,System.String)">EnumerateModuleMethods(Process, String)</h4>
+  <div class="markdown level1 summary"><p>Gets the collection of all methods defined in the specified module of the process</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;MethodBase&gt; EnumerateModuleMethods(Process process, string modulename = &quot;&quot;)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Diagnostics.Process</span></td>
+        <td><span class="parametername">process</span></td>
+        <td><p>Source process</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">modulename</span></td>
+        <td><p>Name of PE module file (without full path), or an empty string to use main module</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.Reflection.MethodBase</span>&gt;</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyReader_GetDynamicMethods_" data-uid="CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_GetDynamicMethods" data-uid="CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods">GetDynamicMethods()</h4>
+  <div class="markdown level1 summary"><p>Gets the pseudo-assembly that represents the collection of dynamic methods in the process containing CLR instance</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DynamicMethodsAssembly GetDynamicMethods()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Runtime.DynamicMethodsAssembly.html">DynamicMethodsAssembly</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyReader_GetDynamicMethods_" data-uid="CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_GetDynamicMethods_System_Diagnostics_Process_" data-uid="CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods(System.Diagnostics.Process)">GetDynamicMethods(Process)</h4>
+  <div class="markdown level1 summary"><p>Gets the pseudo-assembly that represents the collection of dynamic methods in the specified process</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static DynamicMethodsAssembly GetDynamicMethods(Process process)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Diagnostics.Process</span></td>
+        <td><span class="parametername">process</span></td>
+        <td><p>Source process</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Runtime.DynamicMethodsAssembly.html">DynamicMethodsAssembly</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyReader_Read_" data-uid="CilTools.Runtime.ClrAssemblyReader.Read*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_Read_Microsoft_Diagnostics_Runtime_ClrModule_" data-uid="CilTools.Runtime.ClrAssemblyReader.Read(Microsoft.Diagnostics.Runtime.ClrModule)">Read(ClrModule)</h4>
+  <div class="markdown level1 summary"><p>Gets the assembly information object for the specified ClrMD module object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ClrAssemblyInfo Read(ClrModule module)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Microsoft.Diagnostics.Runtime.ClrModule</span></td>
+        <td><span class="parametername">module</span></td>
+        <td><p>ClrMD module object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Runtime.ClrAssemblyInfo.html">ClrAssemblyInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyReader_Read_" data-uid="CilTools.Runtime.ClrAssemblyReader.Read*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_Read_System_String_" data-uid="CilTools.Runtime.ClrAssemblyReader.Read(System.String)">Read(String)</h4>
+  <div class="markdown level1 summary"><p>Gets the assembly information object for the specified module name</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ClrAssemblyInfo Read(string modulename)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">modulename</span></td>
+        <td><p>Name of PE module file (without full path)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Runtime.ClrAssemblyInfo.html">ClrAssemblyInfo</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            
+            <span>Generated by <strong>DocFX</strong></span>
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
