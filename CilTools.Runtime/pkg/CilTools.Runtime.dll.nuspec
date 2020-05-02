@@ -1,0 +1,25 @@
+﻿<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>CilTools.Runtime</id>
+    <version>1.0.0</version>
+    <authors>MSDN-WhiteKnight</authors>
+    <owners>MSDN-WhiteKnight</owners>
+    <title>CilTools.Runtime</title>
+    <licenseUrl>https://github.com/MSDN-WhiteKnight/CilTools/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/MSDN-WhiteKnight/CilTools</projectUrl>
+    <iconUrl>https://msdn-whiteknight.github.io/CilTools/images/IL.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>CilTools.Runtime reads Common Intermediate Language (CIL) bytecode of methods in external process's CLR instance using ClrMD.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright (c) 2020, MSDN.WhiteKnight</copyright>
+    <tags>dotnet cil msil bytecode diagnostics clrmd process</tags>
+    <dependencies>
+	    <dependency id="Microsoft.Diagnostics.Runtime" version="1.1.61812" />
+    </dependencies>    
+  </metadata>
+<files>
+        <file src="lib\net45\*" target="lib/net45/" />
+        <file src="ReadMe.txt" target="" />  
+</files>
+</package>
