@@ -55,6 +55,9 @@ namespace CilTools.Runtime
             get { return this.target; }
         }
 
+        /// <summary>
+        /// Gets the display name of the assembly
+        /// </summary>
         public override string FullName
         {
             get
@@ -63,11 +66,18 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Gets an AssemblyName for this assembly
+        /// </summary>
+        /// <returns>An object that contains the fully parsed display name for this assembly</returns>
         public override AssemblyName GetName()
         {
             return this.asn;
         }
 
+        /// <summary>
+        /// Gets the full path to the assembly. This implementation always returns an empty string.
+        /// </summary>
         public override string Location
         {
             get
@@ -76,6 +86,9 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Gets the full path to the assembly. This implementation always returns an empty string.
+        /// </summary>
         public override string CodeBase
         {
             get
@@ -84,6 +97,10 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Gets a value that indicates whether the current assembly was generated dynamically at runtime.
+        /// </summary>
+        /// <remarks>This implementation always returns <c>true</c></remarks>
         public override bool IsDynamic
         {
             get
@@ -92,8 +109,15 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Gets a boolean value indicating whether this assembly was loaded into the reflection-only context.
+        /// </summary>
+        /// <value>This implementation always returns <c>true</c></value>
         public override bool ReflectionOnly { get { return true; } }
 
+        /// <summary>
+        /// Gets the collection of all methods defined in this assembly
+        /// </summary>
         public IEnumerable<MethodBase> EnumerateMethods()
         {
             if (this.target == null) throw new ObjectDisposedException("DataTarget");
@@ -120,21 +144,44 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Gets the types defined in this assembly. 
+        /// </summary>
+        /// <returns>An array that contains all the types that are defined in this assembly.</returns>
+        /// <remarks>This implementation returns collection that consists of the single pseudo-type representing dynamic methods</remarks>
         public override Type[] GetTypes()
         {
             return new Type[] { this.type };
         }
 
+        /// <summary>
+        /// Gets the <c>Type</c> object that represents the specified type.
+        /// </summary>
+        /// <param name="name">The full name of the type.</param>
+        /// <returns>An object that represents the specified type, or <c>null</c> if the type is not found.</returns>
         public override Type GetType(string name)
         {
             return GetType(name, false, false);
         }
 
+        /// <summary>
+        /// Gets the <c>Type</c> object with the specified name in the assembly instance and optionally throws an exception if the type is not found.
+        /// </summary>
+        /// <param name="name">The full name of the type.</param>
+        /// <param name="throwOnError">true to throw an exception if the type is not found; false to return null.</param>
+        /// <returns>An object that represents the specified type.</returns>
         public override Type GetType(string name, bool throwOnError)
         {
             return GetType(name, throwOnError, false);
         }
 
+        /// <summary>
+        /// Gets the <c>Type</c> object with the specified name in the assembly instance, with the options of ignoring the case, and of throwing an exception if the type is not found.
+        /// </summary>
+        /// <param name="name">The full name of the type.</param>
+        /// <param name="throwOnError">true to throw an exception if the type is not found; false to return null.</param>
+        /// <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
+        /// <returns>An object that represents the specified type.</returns>
         public override Type GetType(string name, bool throwOnError, bool ignoreCase)
         {
             StringComparison comp;
@@ -153,6 +200,10 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Gets a collection of the public types defined in this assembly that are visible outside the assembly.
+        /// </summary>
+        /// <remarks>This implementation returns an empty collection</remarks>
         public override IEnumerable<Type> ExportedTypes
         {
             get
@@ -161,11 +212,21 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Gets the public types defined in this assembly that are visible outside the assembly.
+        /// </summary>
+        /// <returns>An array that represents the types defined in this assembly that are visible outside the assembly.</returns>
+        /// /// <remarks>This implementation returns an empty array</remarks>
         public override Type[] GetExportedTypes()
         {
             return new Type[] { };
         }
 
+        /// <summary>
+        /// Releases unmagnaged resources associated with this assembly object
+        /// </summary>
+        /// <remarks>This method only disposes the underlying data target if this instance was constructed with the <c>autoDispose</c> 
+        /// parameter set to true. </remarks>
         public void Dispose()
         {
             if (this.target == null) return; //already disposed
