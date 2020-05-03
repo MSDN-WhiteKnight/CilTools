@@ -375,6 +375,131 @@ namespace CilTools.BytecodeAnalysis
             output.Write(" cil managed");
         }
 
+        public void PrintDefaults(TextWriter output)
+        {
+            ParameterInfo[] pars = this._Method.GetParameters();
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                {
+                    output.Write(" .param [");
+                    output.Write((i + 1).ToString());
+                    output.Write("] = ");
+
+                    if (pars[i].RawDefaultValue != null)
+                    {
+                        if (pars[i].RawDefaultValue.GetType() == typeof(string))
+                        {
+                            output.Write('"');
+                            output.Write(CilAnalysis.EscapeString(pars[i].RawDefaultValue.ToString()));
+                            output.Write('"');
+                        }
+                        else //most of the types...
+                        {
+                            output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
+                            output.Write('(');
+                            output.Write(Convert.ToString(pars[i].RawDefaultValue, System.Globalization.CultureInfo.InvariantCulture));
+                            output.Write(')');
+                        }
+                    }
+                    else output.Write("nullref");
+
+                    output.WriteLine();
+                }
+            }
+        }
+
+        public void PrintAttributes(TextWriter output)
+        {
+            object[] attrs = this._Method.GetCustomAttributes(false);
+            for (int i = 0; i < attrs.Length; i++)
+            {
+                Type t = attrs[i].GetType();
+                ConstructorInfo[] constr = t.GetConstructors();
+                string s_attr;
+
+                if (constr.Length == 1)
+                {
+                    s_attr = CilAnalysis.MethodToString(constr[0]);
+                    int parcount = constr[0].GetParameters().Length;
+
+                    if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
+                        t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
+                        Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
+                        )
+                    {
+                        output.Write(" .custom ");
+                        output.Write(s_attr);
+                        output.WriteLine(" = ( 01 00 00 00 )"); //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
+                    }
+                    else
+                    {
+                        output.Write(" //.custom ");
+                        output.Write(s_attr);
+                        output.WriteLine();
+                    }
+                }
+                else
+                {
+                    output.Write(" //.custom ");
+                    s_attr = CilAnalysis.GetTypeNameInternal(t);
+                    output.WriteLine(s_attr);
+                }
+            }
+        }
+
+        public void PrintHeader(TextWriter output)
+        {
+            CustomMethod cm = (CustomMethod)this._Method;
+            int maxstack = 0;
+            bool has_maxstack = false;
+            LocalVariable[] locals = null;
+
+            try
+            {
+                has_maxstack = cm.MaxStackSizeSpecified;
+
+                if (has_maxstack)
+                {
+                    maxstack = cm.MaxStackSize;
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to get method header.";
+                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
+            }
+
+            try
+            {
+                locals = cm.GetLocalVariables();
+            }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to get local variables.";
+                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
+            }
+
+            if (has_maxstack) output.WriteLine(" .maxstack " + maxstack.ToString());
+
+            //local variables
+            if (locals != null && locals.Length > 0)
+            {
+                output.Write(" .locals ");
+
+                output.Write('(');
+                for (int i = 0; i < locals.Length; i++)
+                {
+                    if (i >= 1) output.Write(",\r\n   ");
+                    LocalVariable local = locals[i];
+                    output.Write(local.LocalTypeSpec.ToString());
+                    output.Write(" V_" + local.LocalIndex.ToString());
+                }
+                output.Write(')');
+            }
+        }
+
         /// <summary>
         /// Writes the CIL code corresponding to this graph into the specified TextWriter, optionally including signature, 
         /// default parameter values, attributes and method header
@@ -398,24 +523,15 @@ namespace CilTools.BytecodeAnalysis
             if (output == null) output = Console.Out;
 
             CilGraphNode node = this._Root;
-                        
+            
             int n_iter = 0;
             IList<ExceptionBlock> trys = new List<ExceptionBlock>();            
             LocalVariable[] locals = null;
-            int maxstack=0;
-            bool has_maxstack=false;
             ParameterInfo[] pars = this._Method.GetParameters();
             CustomMethod cm = (CustomMethod)this._Method;
             
             try
-            {                
-                has_maxstack = cm.MaxStackSizeSpecified;
-
-                if (has_maxstack)
-                {
-                    maxstack = cm.MaxStackSize;
-                }
-
+            {
                 trys = cm.GetExceptionBlocks();                
             }
             catch (Exception ex)
@@ -443,35 +559,7 @@ namespace CilTools.BytecodeAnalysis
             if (IncludeDefaults)
             {
                 //optional parameters
-                for (int i = 0; i < pars.Length; i++)
-                {
-                    if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
-                    {
-                        output.Write(" .param [");
-                        output.Write((i + 1).ToString());
-                        output.Write("] = ");
-
-                        if (pars[i].RawDefaultValue != null)
-                        {
-                            if (pars[i].RawDefaultValue.GetType() == typeof(string))
-                            {
-                                output.Write('"');
-                                output.Write(CilAnalysis.EscapeString(pars[i].RawDefaultValue.ToString()));
-                                output.Write('"');
-                            }
-                            else //most of the types...
-                            {
-                                output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
-                                output.Write('(');
-                                output.Write(Convert.ToString(pars[i].RawDefaultValue, System.Globalization.CultureInfo.InvariantCulture));
-                                output.Write(')');
-                            }
-                        }
-                        else output.Write("nullref");
-
-                        output.WriteLine();
-                    }
-                }
+                PrintDefaults(output);
             }
 
             if (IncludeAttributes)
@@ -479,41 +567,7 @@ namespace CilTools.BytecodeAnalysis
                 //attributes
                 try
                 {
-                    object[] attrs = this._Method.GetCustomAttributes(false);
-                    for (int i = 0; i < attrs.Length; i++)
-                    {
-                        Type t = attrs[i].GetType();
-                        ConstructorInfo[] constr = t.GetConstructors();
-                        string s_attr;
-
-                        if (constr.Length == 1)
-                        {
-                            s_attr = CilAnalysis.MethodToString(constr[0]);
-                            int parcount = constr[0].GetParameters().Length;      
-
-                            if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
-                                t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
-                                Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
-                                )
-                            {
-                                output.Write(" .custom ");
-                                output.Write(s_attr);
-                                output.WriteLine(" = ( 01 00 00 00 )"); //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
-                            }
-                            else
-                            {
-                                output.Write(" //.custom ");
-                                output.Write(s_attr);
-                                output.WriteLine();
-                            }                            
-                        }
-                        else
-                        {
-                            output.Write(" //.custom ");
-                            s_attr = CilAnalysis.GetTypeNameInternal(t);
-                            output.WriteLine(s_attr);
-                        }
-                    }
+                    PrintAttributes(output);
                 }
                 catch (InvalidOperationException) { }
                 catch (TypeLoadException ex)
@@ -528,24 +582,8 @@ namespace CilTools.BytecodeAnalysis
             //method header           
             if (IncludeHeader)
             {
-                if(has_maxstack) output.WriteLine(" .maxstack " + maxstack.ToString());
-
-                //local variables
-                if(locals!=null && locals.Length>0)
-                {
-                    output.Write(" .locals ");
-
-                    output.Write('(');
-                    for (int i = 0; i < locals.Length; i++)
-                    {
-                        if (i >= 1) output.Write(",\r\n   ");
-                        LocalVariable local = locals[i];
-                        output.Write(local.LocalTypeSpec.ToString());                        
-                        output.Write(" V_" + local.LocalIndex.ToString());
-                    }
-                    output.Write(')');
-                    output.WriteLine();
-                }
+                PrintHeader(output);
+                output.WriteLine();
             }
 
             //instructions
