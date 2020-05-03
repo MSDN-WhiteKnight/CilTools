@@ -43,6 +43,11 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ITokenResolver.cs" Link="ITokenResolver.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\LocalVariable.cs" Link="LocalVariable.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ExceptionBlock.cs" Link="ExceptionBlock.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockNode.cs" Link="BlockNode.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\CommentNode.cs"  Link="CommentNode.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\DirectiveNode.cs"  Link="DirectiveNode.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\InstructionNode.cs"  Link="InstructionNode.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\SyntaxTreeNode.cs"  Link="SyntaxTreeNode.cs"/>
   </ItemGroup>
 
   <ItemGroup>
