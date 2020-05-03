@@ -16,6 +16,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.Win32;
+using System.Windows.Input;
 
 namespace CilView
 {
@@ -79,12 +80,8 @@ namespace CilView
             source.Methods = AssemblySource.LoadMethods(t);
         }
 
-        private void lbMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        void NavigateToMethod(MethodBase mb)
         {
-            MethodBase mb = (MethodBase)lbMethod.SelectedItem;
-
-            if (mb == null) return;
-
             StringBuilder sb = new StringBuilder(1000);
             StringWriter wr = new StringWriter(sb);
 
@@ -94,7 +91,30 @@ namespace CilView
                 gr.Print(wr, true, true, true, true);
                 wr.Flush();
                 tbMainContent.Text = sb.ToString();
+
+                UIElement elem = CilVisualization.VisualizeGraph(gr, tbl_MouseDown);
+                gridStructure.Children.Clear();
+                gridStructure.Children.Add(elem);
             }
+        }
+
+        private void lbMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            MethodBase mb = (MethodBase)lbMethod.SelectedItem;
+
+            if (mb == null) return;
+
+            this.NavigateToMethod(mb);
+        }
+
+        void tbl_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            TextBlock tbl = (TextBlock)sender;
+            MethodBase mb = (MethodBase)(tbl.Tag);
+
+            if (mb == null) return;
+
+            this.NavigateToMethod(mb);
         }
 
         private void bOpenFile_Click(object sender, RoutedEventArgs e)
