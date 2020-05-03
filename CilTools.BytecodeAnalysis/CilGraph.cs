@@ -372,7 +372,7 @@ namespace CilTools.BytecodeAnalysis
 
             if (pars.Length > 0) output.WriteLine();
             output.Write(')');
-            output.WriteLine(" cil managed");
+            output.Write(" cil managed");
         }
 
         /// <summary>
