@@ -36,9 +36,122 @@ namespace CilView
 
             foreach(SyntaxElement elem in gr.ToSyntax())
             {
-                tbl = new TextBlock();
-                tbl.Text = elem.ToString();
-                pan.Children.Add(tbl);
+                if (elem is InstructionSyntax)
+                {
+                    InstructionSyntax ins = (InstructionSyntax)elem;
+                    StackPanel line = new StackPanel();
+                    line.Orientation = Orientation.Horizontal;
+
+                    /*TextBox tb = new TextBox();
+                    tb.Width = Double.NaN;
+                    tb.Height = Double.NaN;
+                    tb.BorderThickness = new Thickness(0);*/
+
+                    tbl = new TextBlock();
+                    ins.WriteLead(wr);
+                    ins.WriteLabel(wr);
+                    ins.WriteOperation(wr);
+                    wr.Flush();
+                    tbl.Text = sb.ToString();
+                    line.Children.Add(tbl);
+
+                    sb.Clear();
+                    ins.WriteOperand(wr);
+                    wr.Flush();
+                    tbl = new TextBlock();
+                    tbl.Text = sb.ToString();
+                    //tbl.VerticalAlignment = VerticalAlignment.Stretch;
+
+                    if (ins.Instruction.ReferencedMember is MethodBase)
+                    {
+                        //if operand is method, enable navigation functionality
+                        tbl.TextDecorations.Add(TextDecorations.Underline);
+                        tbl.Foreground = Brushes.Blue;
+
+                        tbl.MouseDown += navigation;
+                        tbl.Cursor = Cursors.Hand;
+                        tbl.Tag = (MethodBase)ins.Instruction.ReferencedMember;
+                        line.Children.Add(tbl);
+                    }
+                    else if (ins.Instruction.ReferencedString != null)
+                    {
+                        //render string literal
+                        tbl.Foreground = Brushes.Red;
+                        line.Children.Add(tbl);
+                    }
+                    else if (sb.Length > 0)
+                    {
+                        //render regular operand
+                        tbl.Foreground = Brushes.CornflowerBlue;
+                        line.Children.Add(tbl);
+                    }
+                    
+                    pan.Children.Add(line);
+                    sb.Clear();
+                }
+                else if (elem is DirectiveSyntax)
+                {
+                    DirectiveSyntax dir = (DirectiveSyntax)elem;
+                    StackPanel line = new StackPanel();
+                    line.Orientation = Orientation.Horizontal;
+
+                    tbl = new TextBlock();
+                    dir.WriteLead(wr);
+                    wr.Write('.');
+                    wr.Flush();
+                    tbl.Text = sb.ToString();
+                    line.Children.Add(tbl);
+                    sb.Clear();
+
+                    tbl = new TextBlock();
+                    tbl.Text = dir.Name+" ";
+                    tbl.Foreground = Brushes.Magenta;
+                    line.Children.Add(tbl);
+
+                    tbl = new TextBlock();
+                    tbl.Text = dir.Content;
+                    tbl.Foreground = Brushes.MediumAquamarine;
+                    line.Children.Add(tbl);
+
+                    pan.Children.Add(line);
+                }
+                else if (elem is BlockStartSyntax)
+                {
+                    BlockStartSyntax bss = (BlockStartSyntax)elem;
+                    StackPanel line = new StackPanel();
+                    line.Orientation = Orientation.Horizontal;
+
+                    tbl = new TextBlock();
+                    bss.WriteHeader(wr);
+                    wr.Flush();
+                    tbl.Text = sb.ToString();
+                    tbl.Foreground = Brushes.MediumAquamarine;
+                    line.Children.Add(tbl);
+                    sb.Clear();
+
+                    tbl = new TextBlock();
+                    tbl.Text = "{";
+                    line.Children.Add(tbl);
+
+                    pan.Children.Add(line);
+                }
+                else if (elem is CommentSyntax)
+                {
+                    CommentSyntax c = (CommentSyntax)elem;
+                    tbl = new TextBlock();
+                    c.ToText(wr);
+                    wr.Flush();
+                    tbl.Text = sb.ToString();
+                    tbl.Foreground = Brushes.Green;
+                    pan.Children.Add(tbl);
+                    sb.Clear();
+                }
+                else
+                {
+                    tbl = new TextBlock();
+                    tbl.Text = elem.ToString();
+                    pan.Children.Add(tbl);
+                }
             }
 
             //signature

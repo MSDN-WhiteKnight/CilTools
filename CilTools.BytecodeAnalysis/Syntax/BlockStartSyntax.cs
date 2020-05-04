@@ -22,7 +22,7 @@ namespace CilTools.Syntax
             this._header = header;
         }
 
-        public override void ToText(TextWriter target)
+        public void WriteHeader(TextWriter target)
         {
             target.Write(this._lead);
 
@@ -31,7 +31,11 @@ namespace CilTools.Syntax
                 target.Write(this._header);
                 target.Write(' ');
             }
+        }
 
+        public override void ToText(TextWriter target)
+        {
+            this.WriteHeader(target);
             target.Write('{');
         }
     }

@@ -29,14 +29,15 @@
                  DisplayMemberPath="Name" SelectionChanged="lbMethod_SelectionChanged"/>
         
         <TabControl HorizontalAlignment="Stretch" Margin="230,90,20,20" VerticalAlignment="Stretch" >
+            <TabItem Header="Structure">
+                <Grid x:Name="gridStructure" Background="White"/>
+            </TabItem>
             <TabItem Header="Text">
                 <TextBox x:Name="tbMainContent" HorizontalAlignment="Stretch"  Margin="0,0,0,0" TextWrapping="Wrap" Text="..." 
                  VerticalAlignment="Stretch" IsReadOnly="True" FontFamily="Courier New" FontSize="14" 
                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" />
             </TabItem>
-            <TabItem Header="Structure">
-                <Grid x:Name="gridStructure" Background="White"/>
-            </TabItem>
+            
         </TabControl>
 
 

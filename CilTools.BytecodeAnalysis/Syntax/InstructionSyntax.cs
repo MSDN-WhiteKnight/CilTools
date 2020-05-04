@@ -73,7 +73,7 @@ namespace CilTools.Syntax
         public void WriteLabel(TextWriter target)
         {
             //if instruction is referenced as branch target, prepend label to it
-            if (!String.IsNullOrEmpty(this.Label)) target.Write(this.Label + ": ");
+            if (!String.IsNullOrEmpty(this.Label)) target.Write(" " + this.Label + ": ");
             else target.Write("".PadLeft(10, ' '));
             target.Flush();
         }
@@ -90,7 +90,7 @@ namespace CilTools.Syntax
         {
             if (this._node.BranchTarget != null) 
             {
-                target.Write(this.Operation.PadRight(9));
+                target.Write(this.Operation.PadRight(11));
             }
             else
             {

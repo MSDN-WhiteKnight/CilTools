@@ -188,7 +188,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (instr.ByteOffset == labels[i])
                     {
-                        node.Name = " IL_" + (i + 1).ToString().PadLeft(4, '0');
+                        node.Name = "IL_" + (i + 1).ToString().PadLeft(4, '0');
                         targets[i] = node;
                         break;
                     }
@@ -375,6 +375,7 @@ namespace CilTools.BytecodeAnalysis
             if (pars.Length > 0) output.WriteLine();
             output.Write(')');
             output.Write(" cil managed");
+            //this.SignatureAsSyntax().ToText(output);
         }
 
         DirectiveSyntax SignatureAsSyntax()
@@ -436,7 +437,7 @@ namespace CilTools.BytecodeAnalysis
                 if (i >= 1) output.WriteLine(", ");
                 else output.WriteLine();
 
-                output.Write("    ");
+                //output.Write("    ");
                 if (pars[i].IsOptional) output.Write("[opt] ");
 
                 output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
@@ -460,36 +461,12 @@ namespace CilTools.BytecodeAnalysis
 
         public void PrintDefaults(TextWriter output)
         {
-            ParameterInfo[] pars = this._Method.GetParameters();
+            SyntaxElement[] elems = this.DefaultsAsSyntax();
 
-            for (int i = 0; i < pars.Length; i++)
+            for (int i = 0; i < elems.Length; i++)
             {
-                if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
-                {
-                    output.Write(" .param [");
-                    output.Write((i + 1).ToString());
-                    output.Write("] = ");
-
-                    if (pars[i].RawDefaultValue != null)
-                    {
-                        if (pars[i].RawDefaultValue.GetType() == typeof(string))
-                        {
-                            output.Write('"');
-                            output.Write(CilAnalysis.EscapeString(pars[i].RawDefaultValue.ToString()));
-                            output.Write('"');
-                        }
-                        else //most of the types...
-                        {
-                            output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
-                            output.Write('(');
-                            output.Write(Convert.ToString(pars[i].RawDefaultValue, System.Globalization.CultureInfo.InvariantCulture));
-                            output.Write(')');
-                        }
-                    }
-                    else output.Write("nullref");
-
-                    output.WriteLine();
-                }
+                elems[i].ToText(output);
+                output.WriteLine();
             }
         }
 
@@ -733,7 +710,7 @@ namespace CilTools.BytecodeAnalysis
                 output.Write('(');
                 for (int i = 0; i < locals.Length; i++)
                 {
-                    if (i >= 1) output.Write(",\r\n   ");
+                    if (i >= 1) output.Write(",\r\n ");
                     LocalVariable local = locals[i];
                     output.Write(local.LocalTypeSpec.ToString());
                     output.Write(" V_" + local.LocalIndex.ToString());
@@ -916,12 +893,12 @@ namespace CilTools.BytecodeAnalysis
                     output.Write(new String(indent.ToArray()));
 
                     //if instruction is referenced as branch target, prepend label to it
-                    if (!String.IsNullOrEmpty(node.Name)) output.Write(node.Name + ": ");
+                    if (!String.IsNullOrEmpty(node.Name)) output.Write(" "+node.Name + ": ");
                     else output.Write("".PadLeft(10, ' '));
 
                     if (node.BranchTarget != null) //if instruction itself targets branch, append its label
                     {
-                        output.Write(instr.Name.PadRight(9) + " " + node.BranchTarget.Name);
+                        output.Write(instr.Name.PadRight(10) + " " + node.BranchTarget.Name);
                     }
                     else
                     {
