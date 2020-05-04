@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,7 +12,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
-using System.Reflection;
+using CilTools.Syntax;
 
 namespace CilView
 {
@@ -29,20 +30,28 @@ namespace CilView
             StackPanel pan = new StackPanel();
             pan.Orientation = Orientation.Vertical;
 
+            TextBlock tbl;
+            StringBuilder sb = new StringBuilder(500);
+            StringWriter wr = new StringWriter(sb);
+
+            foreach(SyntaxElement elem in gr.ToSyntax())
+            {
+                tbl = new TextBlock();
+                tbl.Text = elem.ToString();
+                pan.Children.Add(tbl);
+            }
+
             //signature
-            TextBlock tbl = new TextBlock();
+            /*TextBlock tbl = new TextBlock();
             tbl.Text = gr.ToString();
             tbl.Foreground = Brushes.Magenta;
             pan.Children.Add(tbl);
             tbl = new TextBlock();
             tbl.Text = "{";
-            pan.Children.Add(tbl);
-
-            StringBuilder sb = new StringBuilder(500);
-            StringWriter wr = new StringWriter(sb);
+            pan.Children.Add(tbl);*/                        
 
             //defaults
-            gr.PrintDefaults(wr);
+            /*gr.PrintDefaults(wr);
             wr.Flush();
             if (sb.Length > 0)
             {
@@ -51,29 +60,29 @@ namespace CilView
                 tbl.Foreground = Brushes.DarkGray;
                 pan.Children.Add(tbl);
                 sb.Clear();
-            }
+            }*/
 
             //attributes
-            gr.PrintAttributes(wr);
+            /*gr.PrintAttributes(wr);
             wr.Flush();
             tbl = new TextBlock();
             tbl.Text = sb.ToString();
             tbl.Foreground = Brushes.DarkGray;
             pan.Children.Add(tbl);
-            sb.Clear();
+            sb.Clear();*/
 
             //header
-            gr.PrintHeader(wr);
+            /*gr.PrintHeader(wr);
             wr.WriteLine();
             wr.Flush();
             tbl = new TextBlock();
             tbl.Text = sb.ToString();
             tbl.Foreground = Brushes.DarkGray;
             pan.Children.Add(tbl);
-            sb.Clear();
+            sb.Clear();*/
 
             //instructions
-            foreach (var ins in gr.GetInstructions())
+            /*foreach (var ins in gr.GetInstructions())
             {
                 StackPanel line = new StackPanel();
                 line.Orientation = Orientation.Horizontal;
@@ -110,7 +119,8 @@ namespace CilView
 
             tbl = new TextBlock();
             tbl.Text = "}";
-            pan.Children.Add(tbl);
+            pan.Children.Add(tbl);*/
+
             scroll.Content = pan;
             return scroll;
         }

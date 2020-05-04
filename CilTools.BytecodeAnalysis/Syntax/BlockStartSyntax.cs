@@ -25,8 +25,13 @@ namespace CilTools.Syntax
         public override void ToText(TextWriter target)
         {
             target.Write(this._lead);
-            target.Write(this._header);
-            target.Write(' ');
+
+            if (this._header.Length > 0)
+            {
+                target.Write(this._header);
+                target.Write(' ');
+            }
+
             target.Write('{');
         }
     }

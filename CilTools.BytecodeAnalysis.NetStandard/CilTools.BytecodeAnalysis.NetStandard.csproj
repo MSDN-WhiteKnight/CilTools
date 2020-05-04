@@ -50,6 +50,7 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\SyntaxElement.cs"  Link="SyntaxElement.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockEndSyntax.cs"  Link="BlockEndSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockStartSyntax.cs"  Link="BlockStartSyntax.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\EmptyLineSyntax.cs"  Link="EmptyLineSyntax.cs"/>
   </ItemGroup>
 
   <ItemGroup>

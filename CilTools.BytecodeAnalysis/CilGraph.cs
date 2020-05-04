@@ -377,6 +377,87 @@ namespace CilTools.BytecodeAnalysis
             output.Write(" cil managed");
         }
 
+        DirectiveSyntax SignatureAsSyntax()
+        {
+            CustomMethod cm = (CustomMethod)this._Method;
+            ParameterInfo[] pars = this._Method.GetParameters();
+
+            StringBuilder sb = new StringBuilder(100);
+            StringWriter output = new StringWriter(sb);
+
+            //output.Write(".method ");
+
+            if (this._Method.IsPublic) output.Write("public ");
+            else if (this._Method.IsPrivate) output.Write("private ");
+            else if (this._Method.IsAssembly) output.Write("assembly "); //internal
+            else if (this._Method.IsFamily) output.Write("family "); //protected
+            else output.Write("famorassem "); //protected internal
+
+            if (this._Method.IsHideBySig) output.Write("hidebysig ");
+
+            if (this._Method.IsAbstract) output.Write("abstract ");
+
+            if (this._Method.IsVirtual) output.Write("virtual ");
+
+            if (this._Method.IsStatic) output.Write("static ");
+            else output.Write("instance ");
+
+            if (this._Method.CallingConvention == CallingConventions.VarArgs)
+            {
+                output.Write("vararg ");
+            }
+
+            string rt = "";
+            if (cm.ReturnType != null) rt = CilAnalysis.GetTypeName(cm.ReturnType) + " ";
+            output.Write(rt);
+
+            output.Write(this._Method.Name);
+
+            if (this._Method.IsGenericMethod)
+            {
+                output.Write('<');
+
+                Type[] args = this._Method.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) output.Write(", ");
+
+                    if (args[i].IsGenericParameter) output.Write(args[i].Name);
+                    else output.Write(CilAnalysis.GetTypeName(args[i]));
+                }
+
+                output.Write('>');
+            }
+
+            output.Write('(');
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (i >= 1) output.WriteLine(", ");
+                else output.WriteLine();
+
+                output.Write("    ");
+                if (pars[i].IsOptional) output.Write("[opt] ");
+
+                output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
+
+                string parname;
+                if (pars[i].Name != null) parname = pars[i].Name;
+                else parname = "par" + (i + 1).ToString();
+
+                output.Write(' ');
+                output.Write(parname);
+
+            }
+
+            if (pars.Length > 0) output.WriteLine();
+            output.Write(')');
+            output.Write(" cil managed");
+            output.Flush();
+
+            return new DirectiveSyntax("", "method", sb.ToString());
+        }
+
         public void PrintDefaults(TextWriter output)
         {
             ParameterInfo[] pars = this._Method.GetParameters();
@@ -661,6 +742,7 @@ namespace CilTools.BytecodeAnalysis
                 output.Write(')');
                 output.Flush();
                 DirectiveSyntax dir = new DirectiveSyntax(" ", "locals", sb.ToString());
+                ret.Add(dir);
             }
 
             return ret.ToArray();
@@ -880,7 +962,175 @@ namespace CilTools.BytecodeAnalysis
 
             if (IncludeSignature) output.WriteLine("}");            
         }
-                
+
+        SyntaxElement[] BodyAsSyntax()
+        {
+            CilGraphNode node = this._Root;
+            if (node == null) return new SyntaxElement[] { };
+
+            int n_iter = 0;
+            IList<ExceptionBlock> trys = new List<ExceptionBlock>();
+            ParameterInfo[] pars = this._Method.GetParameters();
+            CustomMethod cm = (CustomMethod)this._Method;
+            List<SyntaxElement> ret = new List<SyntaxElement>(100);
+
+            try
+            {
+                trys = cm.GetExceptionBlocks();
+            }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to get method header.";
+                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
+            }
+            
+            Stack<char> indent = new Stack<char>();
+
+            while (true)
+            {
+                CilInstruction instr = node.Instruction;
+
+                //exception handling clauses
+                IList<ExceptionBlock> started_trys = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                HashSet<ExceptionBlock> distinct_starts = FindDistinctTryBlocks(started_trys);
+
+                IList<ExceptionBlock> ended_trys = FindTryBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                HashSet<ExceptionBlock> distinct_ends = FindDistinctTryBlocks(ended_trys);
+
+                IList<ExceptionBlock> filters = FindFilterBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                IList<ExceptionBlock> ended_blocks = FindBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+
+                // try
+                for (int i = 0; i < distinct_starts.Count; i++)
+                {
+                    indent.Push(' ');
+                    //output.WriteLine(new String(indent.ToArray()) + " .try     {");
+
+                    DirectiveSyntax dir = new DirectiveSyntax(new String(indent.ToArray()), "try", "");
+                    ret.Add(dir);
+                    BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "");
+                    ret.Add(bss);
+                }
+
+                for (int i = 0; i < distinct_ends.Count; i++)
+                {
+                    //output.WriteLine(new String(indent.ToArray()) + " }");
+                    BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
+                    ret.Add(bes);
+                    if (indent.Count > 0) indent.Pop();
+                }
+
+                // end handler
+                for (int i = 0; i < ended_blocks.Count; i++)
+                {
+                    //output.WriteLine(new String(indent.ToArray()) + " }");
+                    BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
+                    ret.Add(bes);
+                    if (indent.Count > 0) indent.Pop();
+                }
+
+                // filter
+                for (int i = 0; i < filters.Count; i++)
+                {
+                    indent.Push(' ');
+                    //output.WriteLine(new String(indent.ToArray()) + " filter   {");
+                    BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "filter");
+                    ret.Add(bss);
+                }
+
+                // handler start
+                var blocks = FindHandlerBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+
+                foreach (var block in blocks)
+                {
+                    indent.Push(' ');
+
+                    if (block.Flags == ExceptionHandlingClauseOptions.Clause)
+                    {
+                        string st = "";
+                        Type t = block.CatchType;
+                        if (t != null) st = CilAnalysis.GetTypeNameInternal(t);
+
+                        BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "catch " + st);
+                        ret.Add(bss);
+                        //output.WriteLine(new String(indent.ToArray()) + " catch " + st + " {");
+                    }
+                    else if ((block.Flags & ExceptionHandlingClauseOptions.Filter) != 0)
+                    {
+                        if (indent.Count > 0) indent.Pop();
+                        //output.WriteLine(new String(indent.ToArray()) + " }");
+                        ret.Add(new BlockEndSyntax(new String(indent.ToArray())));
+
+                        //output.WriteLine(new String(indent.ToArray()) + " {");
+                        ret.Add(new BlockStartSyntax(new String(indent.ToArray()),""));
+                    }
+                    else if ((block.Flags & ExceptionHandlingClauseOptions.Finally) != 0)
+                    {
+                        //output.WriteLine(new String(indent.ToArray()) + " finally  {");
+                        ret.Add(new BlockStartSyntax(new String(indent.ToArray()), "finally"));
+                    }
+                    else if ((block.Flags & ExceptionHandlingClauseOptions.Fault) != 0)
+                    {
+                        //output.WriteLine(new String(indent.ToArray()) + " fault    {");
+                        ret.Add(new BlockStartSyntax(new String(indent.ToArray()), "fault"));
+                    }
+                }
+
+                ret.Add(new InstructionSyntax(new String(indent.ToArray()),node));
+
+                if (node.Next == null) break; //last instruction
+                else node = node.Next;
+
+                n_iter++;
+                if (n_iter > 100000)
+                {
+                    throw new CilParserException(
+                        "Error: Too many iterations while trying to process graph (possibly a cyclic or extremely large graph)"
+                        );
+                }
+            }// end while
+
+            return ret.ToArray();
+        }
+
+        public IEnumerable<SyntaxElement> ToSyntax()
+        {
+            yield return this.SignatureAsSyntax();
+            yield return new BlockStartSyntax("", "");
+
+            SyntaxElement[] arr = this.DefaultsAsSyntax();
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                yield return arr[i];
+            }
+
+            arr = this.AttributesAsSyntax();
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                yield return arr[i];
+            }
+
+            arr = this.HeaderAsSyntax();
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                yield return arr[i];
+            }
+
+            yield return new EmptyLineSyntax();
+
+            arr = this.BodyAsSyntax();
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                yield return arr[i];
+            }
+
+            yield return new BlockEndSyntax("");
+        }
+
         /// <summary>
         /// Returns CIL code corresponding to this graph as a string
         /// </summary>

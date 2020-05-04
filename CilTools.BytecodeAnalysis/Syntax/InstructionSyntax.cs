@@ -144,10 +144,5 @@ namespace CilTools.Syntax
                 return sb.ToString();
             }
         }
-
-        public override string ToString()
-        {
-            return _node.ToString();
-        }
     }
 }

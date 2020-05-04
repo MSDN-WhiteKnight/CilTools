@@ -13,5 +13,14 @@ namespace CilTools.Syntax
         protected string _lead;
 
         public abstract void ToText(TextWriter target);
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(60);
+            StringWriter wr = new StringWriter(sb);
+            this.ToText(wr);
+            wr.Flush();
+            return sb.ToString();
+        }
     }
 }
