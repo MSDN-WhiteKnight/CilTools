@@ -8,9 +8,10 @@ using System.Text;
 
 namespace CilTools.Syntax
 {
-    public abstract class SyntaxTreeNode
+    public abstract class SyntaxElement
     {
-        public abstract IEnumerable<SyntaxTreeNode> Children { get; }
+        protected string _lead;
+
         public abstract void ToText(TextWriter target);
     }
 }

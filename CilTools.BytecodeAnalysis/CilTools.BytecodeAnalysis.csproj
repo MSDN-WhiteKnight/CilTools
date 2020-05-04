@@ -65,11 +65,13 @@
     <Compile Include="Reflection\ModuleWrapperDynamic.cs" />
     <Compile Include="Reflection\Types.cs" />
     <Compile Include="Signature.cs" />
-    <Compile Include="Syntax\BlockNode.cs" />
-    <Compile Include="Syntax\CommentNode.cs" />
-    <Compile Include="Syntax\DirectiveNode.cs" />
-    <Compile Include="Syntax\InstructionNode.cs" />
-    <Compile Include="Syntax\SyntaxTreeNode.cs" />
+    <Compile Include="Syntax\BlockEndSyntax.cs" />
+    <Compile Include="Syntax\BlockStartSyntax.cs" />
+    <Compile Include="Syntax\BlockSyntax.cs" />
+    <Compile Include="Syntax\CommentSyntax.cs" />
+    <Compile Include="Syntax\DirectiveSyntax.cs" />
+    <Compile Include="Syntax\InstructionSyntax.cs" />
+    <Compile Include="Syntax\SyntaxElement.cs" />
     <Compile Include="TypeSpec.cs" />
   </ItemGroup>
   <ItemGroup>

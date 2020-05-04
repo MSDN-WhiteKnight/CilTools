@@ -9,22 +9,22 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class CommentNode:SyntaxTreeNode
+    public class CommentSyntax:SyntaxElement
     {
         string _content;
 
-        internal CommentNode(string content)
+        internal CommentSyntax(string lead,string content)
         {
+            if (lead == null) lead = "";
+            this._lead = lead;
             this._content = content;
-        }
-
-        public override IEnumerable<SyntaxTreeNode> Children
-        {
-            get { return new SyntaxTreeNode[] { }; }
         }
 
         public override void ToText(TextWriter target)
         {
+            target.Write(this._lead);
+            target.Write('/');
+            target.Write('/');
             target.Write(this._content);
             target.Flush();
         }

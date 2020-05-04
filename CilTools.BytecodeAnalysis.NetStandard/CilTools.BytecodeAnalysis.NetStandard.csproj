@@ -43,11 +43,13 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ITokenResolver.cs" Link="ITokenResolver.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\LocalVariable.cs" Link="LocalVariable.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ExceptionBlock.cs" Link="ExceptionBlock.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockNode.cs" Link="BlockNode.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\CommentNode.cs"  Link="CommentNode.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\DirectiveNode.cs"  Link="DirectiveNode.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\InstructionNode.cs"  Link="InstructionNode.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\SyntaxTreeNode.cs"  Link="SyntaxTreeNode.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockSyntax.cs" Link="BlockSyntax.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\CommentSyntax.cs"  Link="CommentSyntax.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\DirectiveSyntax.cs"  Link="DirectiveSyntax.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\InstructionSyntax.cs"  Link="InstructionSyntax.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\SyntaxElement.cs"  Link="SyntaxElement.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockEndSyntax.cs"  Link="BlockEndSyntax.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockStartSyntax.cs"  Link="BlockStartSyntax.cs"/>
   </ItemGroup>
 
   <ItemGroup>
