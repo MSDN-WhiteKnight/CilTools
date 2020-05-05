@@ -210,40 +210,6 @@ namespace CilTools.BytecodeAnalysis.Tests
 #endif
         }
 
-        [TestMethod]
-        public void Test_CilGraph_ToString()
-        {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
-            CilGraph graph = CilGraph.Create(mi);
-            
-            //Test that ToString returns signature
-            string str = graph.ToString();
-            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("public") });
-            AssertThat.IsMatch(str, new MatchElement[] { new Literal(".method"), MatchElement.Any, new Literal("static") });
-
-            AssertThat.IsMatch(str, new MatchElement[] { 
-                new Literal(".method"), MatchElement.Any, new Literal("void"), MatchElement.Any, 
-                new Literal("PrintHelloWorld"), MatchElement.Any, 
-                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any         
-            });
-
-            Assert.IsFalse(str.Contains("call"),"The result of CilGraph.ToString should not contain instructions");
-        }
-
-        [TestMethod]
-        public void Test_CilGraph_EmptyString()
-        {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("TestEmptyString");
-            CilGraph graph = CilGraph.Create(mi);
-
-            //Test correct empty string output
-            string str = graph.ToText();
-
-            AssertThat.IsMatch(str, new MatchElement[] { 
-                MatchElement.Any, new Literal("ldstr"), MatchElement.Any, new Literal("\"\""), MatchElement.Any 
-            });
-        }
-
 #if !NETSTANDARD
         [TestMethod]
         public void Test_CilGraph_Emit() //Test EmitTo: only NetFX

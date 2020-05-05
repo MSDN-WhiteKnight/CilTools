@@ -363,7 +363,9 @@ namespace CilTools.BytecodeAnalysis
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.SzArray:
                         ts = TypeSpec.ReadFromStream(source, resolver);
-                        restype = ts.Type.MakeArrayType();                        
+
+                        if(ts.Type!=null) restype = ts.Type.MakeArrayType();
+
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Ptr:
                         ts = TypeSpec.ReadFromStream(source, resolver);

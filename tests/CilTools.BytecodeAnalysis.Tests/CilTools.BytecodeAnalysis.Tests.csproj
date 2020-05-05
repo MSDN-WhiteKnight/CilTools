@@ -57,6 +57,7 @@
     <Compile Include="AssertThat.cs" />
     <Compile Include="SampleMethods.cs" />
     <Compile Include="CilAnalysisTests.cs" />
+    <Compile Include="CilGraphTests_Text.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj">
