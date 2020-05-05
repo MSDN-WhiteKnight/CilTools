@@ -121,5 +121,10 @@ namespace CilTools.BytecodeAnalysis.Tests
         {
             return str == "";
         }
+
+        public static void TestOptionalParams(string str="",int x=0)
+        {
+            Console.WriteLine(str + x.ToString());
+        }
     }
 }
