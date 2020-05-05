@@ -126,5 +126,20 @@ namespace CilTools.BytecodeAnalysis.Tests
         {
             Console.WriteLine(str + x.ToString());
         }
+
+        public static MyPoint CreatePoint(float x, float y)
+        {
+            MyPoint p;
+            p = new MyPoint();
+            p.X = x;
+            p.Y = y;
+            return p;
+        }
+    }
+
+    public class MyPoint
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
     }
 }

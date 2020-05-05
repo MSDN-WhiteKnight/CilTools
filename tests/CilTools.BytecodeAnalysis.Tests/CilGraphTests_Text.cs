@@ -7,6 +7,8 @@ using System.Reflection;
 using System.Reflection.Emit;
 using CilTools.BytecodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Text;
+using System.IO;
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
@@ -64,6 +66,25 @@ namespace CilTools.BytecodeAnalysis.Tests
                 MatchElement.Any, new Literal("\"\""), 
                 MatchElement.Any, new Literal(".param"), MatchElement.Any, new Literal("[2]"),
                 MatchElement.Any, new Literal("int32(0)"), 
+                MatchElement.Any 
+            });
+        }
+
+        [TestMethod]
+        public void Test_CilGraph_Locals()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("CreatePoint");
+            CilGraph graph = CilGraph.Create(mi);
+
+            StringBuilder sb = new StringBuilder(100);
+            StringWriter wr = new StringWriter(sb);
+            graph.PrintHeader(wr);
+            wr.Flush();
+            string str = sb.ToString();
+
+            AssertThat.IsMatch(str, new MatchElement[] { 
+                MatchElement.Any, new Literal(".locals"),MatchElement.Any, new Literal("("),
+                MatchElement.Any, new Literal("MyPoint"),MatchElement.Any, new Literal(")"),
                 MatchElement.Any 
             });
         }
