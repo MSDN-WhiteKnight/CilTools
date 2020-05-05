@@ -207,6 +207,13 @@ namespace CilTools.BytecodeAnalysis
         static int DecodeToken(uint decompressed) //ECMA-335 II.23.2.8 TypeDefOrRefOrSpecEncoded
         {
             byte table_index = (byte)((int)decompressed & 0x03);
+
+            //decode table index
+
+            if(table_index == 2) table_index = 0x1B; //TypeSpec
+            else if (table_index == 0) table_index = 0x02;//TypeDef
+            //TypeRef index is unchanged by encoding
+
             int value_index = ((int)decompressed & ~0x03) >> 2;
 
             byte[] value_bytes = BitConverter.GetBytes(value_index);
@@ -358,8 +365,9 @@ namespace CilTools.BytecodeAnalysis
 
                         uint numbounds = MetadataReader.ReadCompressed(source);
                         if (numbounds > 0) throw new NotSupportedException("Parsing array shapes that specify lower bounds is not supported");
-                                                
-                        restype = ts.Type.MakeArrayType((int)rank);                        
+
+                        if (ts.Type != null) restype = ts.Type.MakeArrayType((int)rank);
+                        
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.SzArray:
                         ts = TypeSpec.ReadFromStream(source, resolver);
@@ -369,7 +377,9 @@ namespace CilTools.BytecodeAnalysis
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Ptr:
                         ts = TypeSpec.ReadFromStream(source, resolver);
-                        restype = ts.Type.MakePointerType();
+
+                        if (ts.Type != null) restype = ts.Type.MakePointerType();
+
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Var: //generic type arg
                         paramnum = MetadataReader.ReadCompressed(source);                        
