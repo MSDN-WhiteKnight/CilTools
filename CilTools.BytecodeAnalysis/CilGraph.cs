@@ -305,163 +305,13 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="output">The destination TextWriter</param>
         public void PrintSignature(TextWriter output)
         {
-            CustomMethod cm = (CustomMethod)this._Method;
-            ParameterInfo[] pars = this._Method.GetParameters();
-            output.Write(".method "); //signature
-
-            if (this._Method.IsPublic) output.Write("public ");
-            else if (this._Method.IsPrivate) output.Write("private ");
-            else if (this._Method.IsAssembly) output.Write("assembly "); //internal
-            else if (this._Method.IsFamily) output.Write("family "); //protected
-            else output.Write("famorassem "); //protected internal
-
-            if (this._Method.IsHideBySig) output.Write("hidebysig ");
-
-            if (this._Method.IsAbstract) output.Write("abstract ");
-
-            if (this._Method.IsVirtual) output.Write("virtual ");
-
-            if (this._Method.IsStatic) output.Write("static ");
-            else output.Write("instance ");
-
-            if (this._Method.CallingConvention == CallingConventions.VarArgs)
-            {
-                output.Write("vararg ");
-            }
-
-            string rt = "";
-            if (cm.ReturnType != null) rt = CilAnalysis.GetTypeName(cm.ReturnType) + " ";
-            output.Write(rt);
-
-            output.Write(this._Method.Name);
-
-            if (this._Method.IsGenericMethod)
-            {
-                output.Write('<');
-
-                Type[] args = this._Method.GetGenericArguments();
-                for (int i = 0; i < args.Length; i++)
-                {
-                    if (i >= 1) output.Write(", ");
-
-                    if (args[i].IsGenericParameter) output.Write(args[i].Name);
-                    else output.Write(CilAnalysis.GetTypeName(args[i]));
-                }
-
-                output.Write('>');
-            }
-
-            output.Write('(');
-
-            for (int i = 0; i < pars.Length; i++)
-            {
-                if (i >= 1) output.WriteLine(", ");
-                else output.WriteLine();
-
-                output.Write("    ");
-                if (pars[i].IsOptional) output.Write("[opt] ");
-
-                output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
-
-                string parname;
-                if (pars[i].Name != null) parname = pars[i].Name;
-                else parname = "par" + (i + 1).ToString();
-
-                output.Write(' ');
-                output.Write(parname);
-
-            }
-
-            if (pars.Length > 0) output.WriteLine();
-            output.Write(')');
-            output.Write(" cil managed");
-            //this.SignatureAsSyntax().ToText(output);
+            DirectiveSyntax.FromMethodSignature(this._Method).ToText(output);
         }
-
-        DirectiveSyntax SignatureAsSyntax()
-        {
-            CustomMethod cm = (CustomMethod)this._Method;
-            ParameterInfo[] pars = this._Method.GetParameters();
-
-            StringBuilder sb = new StringBuilder(100);
-            StringWriter output = new StringWriter(sb);
-
-            //output.Write(".method ");
-
-            if (this._Method.IsPublic) output.Write("public ");
-            else if (this._Method.IsPrivate) output.Write("private ");
-            else if (this._Method.IsAssembly) output.Write("assembly "); //internal
-            else if (this._Method.IsFamily) output.Write("family "); //protected
-            else output.Write("famorassem "); //protected internal
-
-            if (this._Method.IsHideBySig) output.Write("hidebysig ");
-
-            if (this._Method.IsAbstract) output.Write("abstract ");
-
-            if (this._Method.IsVirtual) output.Write("virtual ");
-
-            if (this._Method.IsStatic) output.Write("static ");
-            else output.Write("instance ");
-
-            if (this._Method.CallingConvention == CallingConventions.VarArgs)
-            {
-                output.Write("vararg ");
-            }
-
-            string rt = "";
-            if (cm.ReturnType != null) rt = CilAnalysis.GetTypeName(cm.ReturnType) + " ";
-            output.Write(rt);
-
-            output.Write(this._Method.Name);
-
-            if (this._Method.IsGenericMethod)
-            {
-                output.Write('<');
-
-                Type[] args = this._Method.GetGenericArguments();
-                for (int i = 0; i < args.Length; i++)
-                {
-                    if (i >= 1) output.Write(", ");
-
-                    if (args[i].IsGenericParameter) output.Write(args[i].Name);
-                    else output.Write(CilAnalysis.GetTypeName(args[i]));
-                }
-
-                output.Write('>');
-            }
-
-            output.Write('(');
-
-            for (int i = 0; i < pars.Length; i++)
-            {
-                if (i >= 1) output.WriteLine(", ");
-                else output.WriteLine();
-
-                //output.Write("    ");
-                if (pars[i].IsOptional) output.Write("[opt] ");
-
-                output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
-
-                string parname;
-                if (pars[i].Name != null) parname = pars[i].Name;
-                else parname = "par" + (i + 1).ToString();
-
-                output.Write(' ');
-                output.Write(parname);
-
-            }
-
-            if (pars.Length > 0) output.WriteLine();
-            output.Write(')');
-            output.Write(" cil managed");
-            output.Flush();
-
-            return new DirectiveSyntax("", "method", sb.ToString());
-        }
+        
 
         public void PrintDefaults(TextWriter output)
         {
-            SyntaxElement[] elems = this.DefaultsAsSyntax();
+            SyntaxElement[] elems = SyntaxElement.GetDefaultsSyntax(this._Method);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -470,193 +320,29 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
-        SyntaxElement[] DefaultsAsSyntax()
-        {
-            ParameterInfo[] pars = this._Method.GetParameters();
-            List<SyntaxElement> ret = new List<SyntaxElement>(pars.Length);
-
-            for (int i = 0; i < pars.Length; i++)
-            {
-                if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
-                {
-                    StringBuilder sb = new StringBuilder(100);
-                    StringWriter output = new StringWriter(sb);
-                    output.Write('[');
-                    output.Write((i + 1).ToString());
-                    output.Write("] = ");
-
-                    if (pars[i].RawDefaultValue != null)
-                    {
-                        if (pars[i].RawDefaultValue.GetType() == typeof(string))
-                        {
-                            output.Write('"');
-                            output.Write(CilAnalysis.EscapeString(pars[i].RawDefaultValue.ToString()));
-                            output.Write('"');
-                        }
-                        else //most of the types...
-                        {
-                            output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
-                            output.Write('(');
-                            output.Write(Convert.ToString(pars[i].RawDefaultValue, System.Globalization.CultureInfo.InvariantCulture));
-                            output.Write(')');
-                        }
-                    }
-                    else output.Write("nullref");
-                    output.Flush();
-
-                    string content = sb.ToString();
-                    DirectiveSyntax dir = new DirectiveSyntax(" ", "param", content);
-                    ret.Add(dir);
-                }
-            }//end for
-
-            return ret.ToArray();
-        }
+        
 
         public void PrintAttributes(TextWriter output)
         {
-            object[] attrs = this._Method.GetCustomAttributes(false);
-            for (int i = 0; i < attrs.Length; i++)
+            SyntaxElement[] elems = SyntaxElement.GetAttributesSyntax(this._Method);
+
+            for (int i = 0; i < elems.Length; i++)
             {
-                Type t = attrs[i].GetType();
-                ConstructorInfo[] constr = t.GetConstructors();
-                string s_attr;
-
-                if (constr.Length == 1)
-                {
-                    s_attr = CilAnalysis.MethodToString(constr[0]);
-                    int parcount = constr[0].GetParameters().Length;
-
-                    if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
-                        t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
-                        Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
-                        )
-                    {
-                        output.Write(" .custom ");
-                        output.Write(s_attr);
-                        output.WriteLine(" = ( 01 00 00 00 )"); //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
-                    }
-                    else
-                    {
-                        output.Write(" //.custom ");
-                        output.Write(s_attr);
-                        output.WriteLine();
-                    }
-                }
-                else
-                {
-                    output.Write(" //.custom ");
-                    s_attr = CilAnalysis.GetTypeNameInternal(t);
-                    output.WriteLine(s_attr);
-                }
+                elems[i].ToText(output);
+                output.WriteLine();
             }
         }
 
-        SyntaxElement[] AttributesAsSyntax()
-        {
-            object[] attrs = this._Method.GetCustomAttributes(false);
-            List<SyntaxElement> ret = new List<SyntaxElement>(attrs.Length);
-            string content;
-
-            for (int i = 0; i < attrs.Length; i++)
-            {
-                Type t = attrs[i].GetType();
-                ConstructorInfo[] constr = t.GetConstructors();
-                string s_attr;
-                StringBuilder sb = new StringBuilder(100);
-                StringWriter output = new StringWriter(sb);
-
-                if (constr.Length == 1)
-                {
-                    s_attr = CilAnalysis.MethodToString(constr[0]);
-                    int parcount = constr[0].GetParameters().Length;
-
-                    if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
-                        t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
-                        Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
-                        )
-                    {
-                        //output.Write(" .custom ");
-                        output.Write(s_attr);
-                        output.Write(" = ( 01 00 00 00 )"); //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
-                        output.Flush();
-                        content = sb.ToString();
-                        DirectiveSyntax dir = new DirectiveSyntax(" ", "custom", content);
-                        ret.Add(dir);
-                    }
-                    else
-                    {
-                        output.Write(".custom ");
-                        output.Write(s_attr);
-                        output.Flush();
-                        content = sb.ToString();
-                        CommentSyntax node = new CommentSyntax(" ",content);
-                        ret.Add(node);
-                    }
-                }
-                else
-                {
-                    output.Write(".custom ");
-                    s_attr = CilAnalysis.GetTypeNameInternal(t);
-                    output.Write(s_attr);
-                    output.Flush();
-                    content = sb.ToString();
-                    CommentSyntax node = new CommentSyntax(" ",content);
-                    ret.Add(node);
-                }
-            }//end for
-
-            return ret.ToArray();
-        }
+        
 
         public void PrintHeader(TextWriter output)
         {
-            CustomMethod cm = (CustomMethod)this._Method;
-            int maxstack = 0;
-            bool has_maxstack = false;
-            LocalVariable[] locals = null;
+            SyntaxElement[] elems = this.HeaderAsSyntax();
 
-            try
+            for (int i = 0; i < elems.Length; i++)
             {
-                has_maxstack = cm.MaxStackSizeSpecified;
-
-                if (has_maxstack)
-                {
-                    maxstack = cm.MaxStackSize;
-                }
-            }
-            catch (Exception ex)
-            {
-                string error = "Exception occured when trying to get method header.";
-                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
-            }
-
-            try
-            {
-                locals = cm.GetLocalVariables();
-            }
-            catch (Exception ex)
-            {
-                string error = "Exception occured when trying to get local variables.";
-                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
-            }
-
-            if (has_maxstack) output.WriteLine(" .maxstack " + maxstack.ToString());
-
-            //local variables
-            if (locals != null && locals.Length > 0)
-            {
-                output.Write(" .locals ");
-
-                output.Write('(');
-                for (int i = 0; i < locals.Length; i++)
-                {
-                    if (i >= 1) output.Write(",\r\n   ");
-                    LocalVariable local = locals[i];
-                    output.Write(local.LocalTypeSpec.ToString());
-                    output.Write(" V_" + local.LocalIndex.ToString());
-                }
-                output.Write(')');
+                elems[i].ToText(output);
+                output.WriteLine();
             }
         }
 
@@ -695,7 +381,6 @@ namespace CilTools.BytecodeAnalysis
 
             if (has_maxstack)
             {
-                //output.WriteLine(" .maxstack " + maxstack.ToString());
                 DirectiveSyntax dir = new DirectiveSyntax(" ", "maxstack", maxstack.ToString());
                 ret.Add(dir);
             }
@@ -705,12 +390,11 @@ namespace CilTools.BytecodeAnalysis
             {
                 StringBuilder sb=new StringBuilder(400);
                 StringWriter output=new StringWriter(sb);
-                //output.Write(" .locals ");
 
                 output.Write('(');
                 for (int i = 0; i < locals.Length; i++)
                 {
-                    if (i >= 1) output.Write(",\r\n ");
+                    if (i >= 1) output.Write(",\r\n    ");
                     LocalVariable local = locals[i];
                     output.Write(local.LocalTypeSpec.ToString());
                     output.Write(" V_" + local.LocalIndex.ToString());
@@ -748,32 +432,6 @@ namespace CilTools.BytecodeAnalysis
             if (output == null) output = Console.Out;
 
             CilGraphNode node = this._Root;
-            
-            int n_iter = 0;
-            IList<ExceptionBlock> trys = new List<ExceptionBlock>();            
-            LocalVariable[] locals = null;
-            ParameterInfo[] pars = this._Method.GetParameters();
-            CustomMethod cm = (CustomMethod)this._Method;
-            
-            try
-            {
-                trys = cm.GetExceptionBlocks();                
-            }
-            catch (Exception ex)
-            {
-                string error = "Exception occured when trying to get method header.";
-                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
-            }
-
-            try
-            {
-                locals = cm.GetLocalVariables();
-            }
-            catch (Exception ex)
-            {
-                string error = "Exception occured when trying to get local variables.";
-                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
-            }
 
             if (IncludeSignature)
             {
@@ -815,126 +473,15 @@ namespace CilTools.BytecodeAnalysis
             if (node != null)
             {
                 output.WriteLine();
-                Stack<char> indent=new Stack<char>();
-                                
-                while (true)
-                {                    
-                    CilInstruction instr = node.Instruction;
 
-                    //exception handling clauses
-                    IList<ExceptionBlock> started_trys = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-                    HashSet<ExceptionBlock> distinct_starts = FindDistinctTryBlocks(started_trys);
+                SyntaxElement[] elems = this.BodyAsSyntax();
 
-                    IList<ExceptionBlock> ended_trys = FindTryBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-                    HashSet<ExceptionBlock> distinct_ends = FindDistinctTryBlocks(ended_trys);
-
-                    IList<ExceptionBlock> filters = FindFilterBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-                    IList<ExceptionBlock> ended_blocks = FindBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-
-                    // try
-                    for (int i = 0; i < distinct_starts.Count; i++)
-                    {
-                        output.WriteLine(new String(indent.ToArray())+" .try     {");
-                        indent.Push(' ');
-                    }
-
-                    for (int i = 0; i < distinct_ends.Count; i++)
-                    {
-                        if (indent.Count > 0) indent.Pop();
-                        output.WriteLine(new String(indent.ToArray()) + " }");                        
-                    }
-
-                    // end handler
-                    for (int i = 0; i < ended_blocks.Count; i++)
-                    {
-                        if(indent.Count>0)indent.Pop();
-                        output.WriteLine(new String(indent.ToArray()) + " }");                        
-                    }
-
-                    // filter
-                    for (int i = 0; i < filters.Count; i++)
-                    {                        
-                        output.WriteLine(new String(indent.ToArray()) + " filter   {");
-                        indent.Push(' ');
-                    }
-
-                    // handler start
-                    var blocks = FindHandlerBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
-
-                    foreach (var block in blocks)
-                    {                                                                        
-                        if ( block.Flags == ExceptionHandlingClauseOptions.Clause)
-                        {
-                            string st = "";
-                            Type t = block.CatchType;
-                            if (t != null) st = CilAnalysis.GetTypeNameInternal(t);
-
-                            output.WriteLine(new String(indent.ToArray()) + " catch " + st + " {");                            
-                        }
-                        else if ( (block.Flags & ExceptionHandlingClauseOptions.Filter) != 0)
-                        {
-                            if (indent.Count > 0) indent.Pop();
-                            output.WriteLine(new String(indent.ToArray()) + " }");
-
-                            output.WriteLine(new String(indent.ToArray()) + " {");
-                        }
-                        else if ( (block.Flags & ExceptionHandlingClauseOptions.Finally) != 0)
-                        {
-                            output.WriteLine(new String(indent.ToArray()) + " finally  {");
-                        }
-                        else if ( (block.Flags & ExceptionHandlingClauseOptions.Fault) != 0)
-                        {
-                            output.WriteLine(new String(indent.ToArray()) + " fault    {");
-                        }
-
-                        indent.Push(' ');                        
-                    }
-
-                    output.Write(new String(indent.ToArray()));
-
-                    //if instruction is referenced as branch target, prepend label to it
-                    if (!String.IsNullOrEmpty(node.Name)) output.Write(" "+node.Name + ": ");
-                    else output.Write("".PadLeft(10, ' '));
-
-                    if (node.BranchTarget != null) //if instruction itself targets branch, append its label
-                    {
-                        output.Write(instr.Name.PadRight(10) + " " + node.BranchTarget.Name);
-                    }
-                    else
-                    {
-                        CilGraphNode[] swtargets = node.GetSwitchTargets();
-
-                        if (swtargets.Length > 0) //append switch target list
-                        {
-                            output.Write(instr.Name.PadRight(11));
-                            output.Write('(');
-
-                            for (int i = 0; i < swtargets.Length; i++)
-                            {
-                                if (i >= 1) output.Write(",");
-                                output.Write(swtargets[i].Name);
-                            }
-
-                            output.Write(' ');
-                            output.Write(')');
-                        }
-                        else output.Write(instr.ToString()); //print regular instruction
-                    }
-
+                for (int i = 0; i < elems.Length; i++)
+                {
+                    elems[i].ToText(output);
                     output.WriteLine();
+                }
 
-                    if (node.Next == null) break; //last instruction
-                    else node = node.Next;
-
-                    n_iter++;
-                    if (n_iter > 100000)
-                    {
-                        output.WriteLine(
-                            "Error: Too many iterations while trying to process graph (possibly a cyclic or extremely large graph)"
-                            );
-                        break;
-                    }
-                }// end while
             }//endif
 
             if (IncludeSignature) output.WriteLine("}");            
@@ -981,7 +528,6 @@ namespace CilTools.BytecodeAnalysis
                 for (int i = 0; i < distinct_starts.Count; i++)
                 {
                     indent.Push(' ');
-                    //output.WriteLine(new String(indent.ToArray()) + " .try     {");
 
                     DirectiveSyntax dir = new DirectiveSyntax(new String(indent.ToArray()), "try", "");
                     ret.Add(dir);
@@ -991,7 +537,6 @@ namespace CilTools.BytecodeAnalysis
 
                 for (int i = 0; i < distinct_ends.Count; i++)
                 {
-                    //output.WriteLine(new String(indent.ToArray()) + " }");
                     BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
                     ret.Add(bes);
                     if (indent.Count > 0) indent.Pop();
@@ -1000,7 +545,6 @@ namespace CilTools.BytecodeAnalysis
                 // end handler
                 for (int i = 0; i < ended_blocks.Count; i++)
                 {
-                    //output.WriteLine(new String(indent.ToArray()) + " }");
                     BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
                     ret.Add(bes);
                     if (indent.Count > 0) indent.Pop();
@@ -1010,7 +554,7 @@ namespace CilTools.BytecodeAnalysis
                 for (int i = 0; i < filters.Count; i++)
                 {
                     indent.Push(' ');
-                    //output.WriteLine(new String(indent.ToArray()) + " filter   {");
+                    
                     BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "filter");
                     ret.Add(bss);
                 }
@@ -1030,25 +574,21 @@ namespace CilTools.BytecodeAnalysis
 
                         BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "catch " + st);
                         ret.Add(bss);
-                        //output.WriteLine(new String(indent.ToArray()) + " catch " + st + " {");
                     }
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Filter) != 0)
                     {
                         if (indent.Count > 0) indent.Pop();
-                        //output.WriteLine(new String(indent.ToArray()) + " }");
+                        
                         ret.Add(new BlockEndSyntax(new String(indent.ToArray())));
-
-                        //output.WriteLine(new String(indent.ToArray()) + " {");
+                        
                         ret.Add(new BlockStartSyntax(new String(indent.ToArray()),""));
                     }
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Finally) != 0)
                     {
-                        //output.WriteLine(new String(indent.ToArray()) + " finally  {");
                         ret.Add(new BlockStartSyntax(new String(indent.ToArray()), "finally"));
                     }
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Fault) != 0)
                     {
-                        //output.WriteLine(new String(indent.ToArray()) + " fault    {");
                         ret.Add(new BlockStartSyntax(new String(indent.ToArray()), "fault"));
                     }
                 }
@@ -1072,17 +612,17 @@ namespace CilTools.BytecodeAnalysis
 
         public IEnumerable<SyntaxElement> ToSyntax()
         {
-            yield return this.SignatureAsSyntax();
+            yield return DirectiveSyntax.FromMethodSignature(this._Method);
             yield return new BlockStartSyntax("", "");
 
-            SyntaxElement[] arr = this.DefaultsAsSyntax();
+            SyntaxElement[] arr = SyntaxElement.GetDefaultsSyntax(this._Method);
 
             for (int i = 0; i < arr.Length; i++)
             {
                 yield return arr[i];
             }
 
-            arr = this.AttributesAsSyntax();
+            arr = SyntaxElement.GetAttributesSyntax(this._Method);
 
             for (int i = 0; i < arr.Length; i++)
             {

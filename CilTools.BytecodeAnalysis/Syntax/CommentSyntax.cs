@@ -22,6 +22,8 @@ namespace CilTools.Syntax
 
         public override void ToText(TextWriter target)
         {
+            if (target == null) throw new ArgumentNullException("target");
+
             target.Write(this._lead);
             target.Write('/');
             target.Write('/');

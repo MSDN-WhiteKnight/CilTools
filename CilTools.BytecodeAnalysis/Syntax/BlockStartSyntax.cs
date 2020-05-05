@@ -24,6 +24,8 @@ namespace CilTools.Syntax
 
         public void WriteHeader(TextWriter target)
         {
+            if (target == null) throw new ArgumentNullException("target");
+            
             target.Write(this._lead);
 
             if (this._header.Length > 0)
@@ -35,6 +37,8 @@ namespace CilTools.Syntax
 
         public override void ToText(TextWriter target)
         {
+            if (target == null) throw new ArgumentNullException("target");
+
             this.WriteHeader(target);
             target.Write('{');
         }

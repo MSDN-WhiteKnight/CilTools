@@ -22,35 +22,12 @@ namespace CilTools.Syntax
 
         public override void ToText(TextWriter target)
         {
+            if (target == null) throw new ArgumentNullException("target");
+
             this.WriteLead(target);
 
             //if instruction is referenced as branch target, prepend label to it
             this.WriteLabel(target);
-
-            /*if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
-            {
-                target.Write(this.Operation.PadRight(9) + " " + this._node.BranchTarget.Name);
-            }
-            else
-            {
-                CilGraphNode[] swtargets = this._node.GetSwitchTargets();
-
-                if (swtargets.Length > 0) //append switch target list
-                {
-                    target.Write(this.Operation.PadRight(11));
-                    target.Write('(');
-
-                    for (int i = 0; i < swtargets.Length; i++)
-                    {
-                        if (i >= 1) target.Write(',');
-                        target.Write(swtargets[i].Name);
-                    }
-
-                    target.Write(' ');
-                    target.Write(')');
-                }
-                else target.Write(this.Instruction.ToString()); //print regular instruction
-            }*/
 
             this.WriteOperation(target);
             this.WriteOperand(target);
@@ -58,6 +35,7 @@ namespace CilTools.Syntax
 
         public void WriteLead(TextWriter target)
         {
+            if (target == null) throw new ArgumentNullException("target");
             target.Write(this._lead);
             target.Flush();
         }
@@ -72,6 +50,8 @@ namespace CilTools.Syntax
 
         public void WriteLabel(TextWriter target)
         {
+            if (target == null) throw new ArgumentNullException("target");
+
             //if instruction is referenced as branch target, prepend label to it
             if (!String.IsNullOrEmpty(this.Label)) target.Write(" " + this.Label + ": ");
             else target.Write("".PadLeft(10, ' '));
@@ -88,6 +68,8 @@ namespace CilTools.Syntax
 
         public void WriteOperation(TextWriter target)
         {
+            if (target == null) throw new ArgumentNullException("target");
+
             if (this._node.BranchTarget != null) 
             {
                 target.Write(this.Operation.PadRight(11));
@@ -104,6 +86,8 @@ namespace CilTools.Syntax
 
         public void WriteOperand(TextWriter target)
         {
+            if (target == null) throw new ArgumentNullException("target");
+
             if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
             {
                 target.Write(this._node.BranchTarget.Name);
