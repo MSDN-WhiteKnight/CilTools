@@ -27,7 +27,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             AssertThat.IsMatch(str, new MatchElement[] { 
                 new Literal(".method"), MatchElement.Any, new Literal("void"), MatchElement.Any, 
                 new Literal("PrintHelloWorld"), MatchElement.Any, 
-                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any         
+                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any
             });
 
             Assert.IsFalse(str.Contains("call"), "The result of CilGraph.ToString should not contain instructions");
