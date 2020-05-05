@@ -18,19 +18,18 @@ namespace CilView
 {
     static class CilVisualization
     {
-        public static UIElement VisualizeGraph(CilGraph gr, MouseButtonEventHandler navigation)
+        public static UIElement VisualizeGraph(CilGraph gr, RoutedEventHandler navigation)
         {
-            ScrollViewer scroll = new ScrollViewer();
+            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
             scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
             scroll.VerticalAlignment = VerticalAlignment.Stretch;            
             scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-            scroll.FontSize = 14.0;
-            scroll.FontFamily = new FontFamily("Courier New");
 
-            StackPanel pan = new StackPanel();
-            pan.Orientation = Orientation.Vertical;
+            FlowDocument fd = new FlowDocument();
+            fd.TextAlignment = TextAlignment.Left;
+            fd.FontFamily = new FontFamily("Courier New");
 
-            TextBlock tbl;
+            Run r;
             StringBuilder sb = new StringBuilder(500);
             StringWriter wr = new StringWriter(sb);
 
@@ -39,202 +38,113 @@ namespace CilView
                 if (elem is InstructionSyntax)
                 {
                     InstructionSyntax ins = (InstructionSyntax)elem;
-                    StackPanel line = new StackPanel();
-                    line.Orientation = Orientation.Horizontal;
+                    Paragraph line = new Paragraph();
+                    line.Margin = new Thickness(0);
 
-                    /*TextBox tb = new TextBox();
-                    tb.Width = Double.NaN;
-                    tb.Height = Double.NaN;
-                    tb.BorderThickness = new Thickness(0);*/
-
-                    tbl = new TextBlock();
+                    r = new Run();
                     ins.WriteLead(wr);
                     ins.WriteLabel(wr);
                     ins.WriteOperation(wr);
                     wr.Flush();
-                    tbl.Text = sb.ToString();
-                    line.Children.Add(tbl);
+                    r.Text = sb.ToString();
+                    line.Inlines.Add(r);
 
                     sb.Clear();
                     ins.WriteOperand(wr);
                     wr.Flush();
-                    tbl = new TextBlock();
-                    tbl.Text = sb.ToString();
-                    //tbl.VerticalAlignment = VerticalAlignment.Stretch;
+                    r = new Run();
+                    r.Text = sb.ToString();
 
                     if (ins.Instruction.ReferencedMember is MethodBase)
                     {
                         //if operand is method, enable navigation functionality
-                        tbl.TextDecorations.Add(TextDecorations.Underline);
-                        tbl.Foreground = Brushes.Blue;
-
-                        tbl.MouseDown += navigation;
-                        tbl.Cursor = Cursors.Hand;
-                        tbl.Tag = (MethodBase)ins.Instruction.ReferencedMember;
-                        line.Children.Add(tbl);
+                        Hyperlink lnk = new Hyperlink(r);
+                        lnk.Tag = (MethodBase)ins.Instruction.ReferencedMember;
+                        lnk.Click += navigation;
+                        line.Inlines.Add(lnk);
                     }
                     else if (ins.Instruction.ReferencedString != null)
                     {
                         //render string literal
-                        tbl.Foreground = Brushes.Red;
-                        line.Children.Add(tbl);
+                        r.Foreground = Brushes.Red;
+                        line.Inlines.Add(r);
                     }
                     else if (sb.Length > 0)
                     {
                         //render regular operand
-                        tbl.Foreground = Brushes.CornflowerBlue;
-                        line.Children.Add(tbl);
+                        r.Foreground = Brushes.CornflowerBlue;
+                        line.Inlines.Add(r);
                     }
                     
-                    pan.Children.Add(line);
+                    fd.Blocks.Add(line);
                     sb.Clear();
                 }
                 else if (elem is DirectiveSyntax)
                 {
                     DirectiveSyntax dir = (DirectiveSyntax)elem;
-                    StackPanel line = new StackPanel();
-                    line.Orientation = Orientation.Horizontal;
+                    Paragraph line = new Paragraph();
+                    line.Margin = new Thickness(0);
 
-                    tbl = new TextBlock();
+                    r = new Run();
                     dir.WriteLead(wr);
                     wr.Write('.');
                     wr.Flush();
-                    tbl.Text = sb.ToString();
-                    line.Children.Add(tbl);
+                    r.Text = sb.ToString();
+                    line.Inlines.Add(r);
                     sb.Clear();
 
-                    tbl = new TextBlock();
-                    tbl.Text = dir.Name+" ";
-                    tbl.Foreground = Brushes.Magenta;
-                    line.Children.Add(tbl);
+                    r = new Run();
+                    r.Text = dir.Name+" ";
+                    r.Foreground = Brushes.Magenta;
+                    line.Inlines.Add(r);
 
-                    tbl = new TextBlock();
-                    tbl.Text = dir.Content;
-                    tbl.Foreground = Brushes.MediumAquamarine;
-                    line.Children.Add(tbl);
+                    r = new Run();
+                    r.Text = dir.Content;
+                    r.Foreground = Brushes.MediumAquamarine;
+                    line.Inlines.Add(r);
 
-                    pan.Children.Add(line);
+                    fd.Blocks.Add(line);
                 }
                 else if (elem is BlockStartSyntax)
                 {
                     BlockStartSyntax bss = (BlockStartSyntax)elem;
-                    StackPanel line = new StackPanel();
-                    line.Orientation = Orientation.Horizontal;
+                    Paragraph line = new Paragraph();
+                    line.Margin = new Thickness(0);
 
-                    tbl = new TextBlock();
+                    r = new Run();
                     bss.WriteHeader(wr);
                     wr.Flush();
-                    tbl.Text = sb.ToString();
-                    tbl.Foreground = Brushes.MediumAquamarine;
-                    line.Children.Add(tbl);
+                    r.Text = sb.ToString();
+                    r.Foreground = Brushes.MediumAquamarine;
+                    line.Inlines.Add(r);
                     sb.Clear();
 
-                    tbl = new TextBlock();
-                    tbl.Text = "{";
-                    line.Children.Add(tbl);
+                    r = new Run();
+                    r.Text = "{";
+                    line.Inlines.Add(r);
 
-                    pan.Children.Add(line);
+                    fd.Blocks.Add(line);
                 }
                 else if (elem is CommentSyntax)
                 {
                     CommentSyntax c = (CommentSyntax)elem;
-                    tbl = new TextBlock();
+                    r = new Run();
                     c.ToText(wr);
                     wr.Flush();
-                    tbl.Text = sb.ToString();
-                    tbl.Foreground = Brushes.Green;
-                    pan.Children.Add(tbl);
+                    r.Text = sb.ToString();
+                    r.Foreground = Brushes.Green;
+                    fd.Blocks.Add(new Paragraph(r) { Margin = new Thickness(0) });
                     sb.Clear();
                 }
                 else
                 {
-                    tbl = new TextBlock();
-                    tbl.Text = elem.ToString();
-                    pan.Children.Add(tbl);
+                    r = new Run();
+                    r.Text = elem.ToString();
+                    fd.Blocks.Add(new Paragraph(r) { Margin = new Thickness(0) });
                 }
             }
 
-            //signature
-            /*TextBlock tbl = new TextBlock();
-            tbl.Text = gr.ToString();
-            tbl.Foreground = Brushes.Magenta;
-            pan.Children.Add(tbl);
-            tbl = new TextBlock();
-            tbl.Text = "{";
-            pan.Children.Add(tbl);*/                        
-
-            //defaults
-            /*gr.PrintDefaults(wr);
-            wr.Flush();
-            if (sb.Length > 0)
-            {
-                tbl = new TextBlock();
-                tbl.Text = sb.ToString();
-                tbl.Foreground = Brushes.DarkGray;
-                pan.Children.Add(tbl);
-                sb.Clear();
-            }*/
-
-            //attributes
-            /*gr.PrintAttributes(wr);
-            wr.Flush();
-            tbl = new TextBlock();
-            tbl.Text = sb.ToString();
-            tbl.Foreground = Brushes.DarkGray;
-            pan.Children.Add(tbl);
-            sb.Clear();*/
-
-            //header
-            /*gr.PrintHeader(wr);
-            wr.WriteLine();
-            wr.Flush();
-            tbl = new TextBlock();
-            tbl.Text = sb.ToString();
-            tbl.Foreground = Brushes.DarkGray;
-            pan.Children.Add(tbl);
-            sb.Clear();*/
-
-            //instructions
-            /*foreach (var ins in gr.GetInstructions())
-            {
-                StackPanel line = new StackPanel();
-                line.Orientation = Orientation.Horizontal;
-                tbl = new TextBlock();
-                tbl.Text = ins.OpCode.Name+" ";
-                line.Children.Add(tbl);
-
-                ins.OperandToString(wr);
-                wr.Flush();
-                tbl = new TextBlock();
-                tbl.Text = sb.ToString();
-                tbl.VerticalAlignment = VerticalAlignment.Stretch;
-
-                if (ins.ReferencedMember is MethodBase)
-                {
-                    //if operand is method, enable navigation functionality
-                    tbl.TextDecorations.Add(TextDecorations.Underline);
-                    tbl.Foreground = Brushes.Blue;
-                    line.Children.Add(tbl);
-                    tbl.MouseDown += navigation;
-                    tbl.Cursor = Cursors.Hand;
-                    tbl.Tag = (MethodBase)ins.ReferencedMember;
-                }
-                else if (sb.Length > 0) 
-                {
-                    //render regular operand
-                    tbl.Foreground = Brushes.CornflowerBlue;
-                    line.Children.Add(tbl);
-                }
-
-                pan.Children.Add(line);
-                sb.Clear();
-            }
-
-            tbl = new TextBlock();
-            tbl.Text = "}";
-            pan.Children.Add(tbl);*/
-
-            scroll.Content = pan;
+            scroll.Document = fd;
             return scroll;
         }
     }

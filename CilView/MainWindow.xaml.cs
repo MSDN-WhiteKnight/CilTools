@@ -92,10 +92,28 @@ namespace CilView
                 wr.Flush();
                 tbMainContent.Text = sb.ToString();
 
-                UIElement elem = CilVisualization.VisualizeGraph(gr, tbl_MouseDown);
+                UIElement elem = CilVisualization.VisualizeGraph(gr, Navigated);
                 gridStructure.Children.Clear();
                 gridStructure.Children.Add(elem);
             }
+
+            sb.Clear();
+            Type t = mb.DeclaringType;
+            Assembly ass=null;
+            if(t!=null) ass = t.Assembly;
+
+            if (ass != null) sb.Append(ass.GetName().Name);
+            else sb.Append("???");
+
+            sb.Append(" / ");
+
+            if (t != null) sb.Append(t.FullName);
+            else sb.Append("???");
+
+            sb.Append(" / ");
+            sb.Append(mb.Name);
+
+            tbCurrLocation.Text = sb.ToString();
         }
 
         private void lbMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -107,10 +125,10 @@ namespace CilView
             this.NavigateToMethod(mb);
         }
 
-        void tbl_MouseDown(object sender, MouseButtonEventArgs e)
+        void Navigated(object sender, RoutedEventArgs e)
         {
-            TextBlock tbl = (TextBlock)sender;
-            MethodBase mb = (MethodBase)(tbl.Tag);
+            FrameworkContentElement elem = (FrameworkContentElement)sender;
+            MethodBase mb = (MethodBase)(elem.Tag);
 
             if (mb == null) return;
 
