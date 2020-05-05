@@ -253,6 +253,7 @@ namespace CilTools.BytecodeAnalysis
         internal string ResolveStringToken(int token)
         {
             if (this.Method == null) return null;
+            if (!(this.OpCode.OperandType == System.Reflection.Emit.OperandType.InlineString)) return null;
 
             return (Method as CustomMethod).TokenResolver.ResolveString((int)Operand);
         }
@@ -260,6 +261,7 @@ namespace CilTools.BytecodeAnalysis
         internal Signature ResolveSignatureToken(int token)
         {
             if (this.Method == null) return null;
+            if (!(this.OpCode.OperandType == System.Reflection.Emit.OperandType.InlineSig)) return null;
 
             //standalone signature token            
             byte[] sig = null;
