@@ -24,7 +24,7 @@
         <ComboBox x:Name="cbType" HorizontalAlignment="Left" Height="21" Margin="250,60,0,0" ItemsSource="{Binding Types}"
                   VerticalAlignment="Top" Width="190"
                    SelectionChanged="cbType_SelectionChanged"/>
-        <Border x:Name="ccMethodsList" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="10,90,0,20.4" 
+        <Border x:Name="ccMethodsList" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="10,90,20,20" 
                         VerticalAlignment="Stretch" Width="230" Padding="5 5 5 5"/>
         <TextBox HorizontalAlignment="Stretch" Height="25" Margin="250,90,20,20" TextWrapping="NoWrap" Text="" 
                  VerticalAlignment="Top" IsReadOnly="True" x:Name="tbCurrLocation" />
