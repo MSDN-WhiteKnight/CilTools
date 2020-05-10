@@ -24,20 +24,13 @@ namespace CilTools.Syntax
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            this.WriteLead(target);
+            target.Write(this._lead);
 
             //if instruction is referenced as branch target, prepend label to it
             this.WriteLabel(target);
 
             this.WriteOperation(target);
             this.WriteOperand(target);
-        }
-
-        public void WriteLead(TextWriter target)
-        {
-            if (target == null) throw new ArgumentNullException("target");
-            target.Write(this._lead);
-            target.Flush();
         }
 
         public string Label

@@ -33,18 +33,12 @@ namespace CilTools.Syntax
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            this.WriteLead(target);
+            target.Write(this._lead);
             target.Write('.');
             target.Write(this._name);
             target.Write(' ');
             target.Write(this._content);
             target.Flush();
-        }
-
-        public void WriteLead(TextWriter target)
-        {
-            if (target == null) throw new ArgumentNullException("target");
-            target.Write(this._lead);
         }
 
         internal static DirectiveSyntax FromMethodSignature(MethodBase m)

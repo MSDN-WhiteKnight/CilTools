@@ -42,7 +42,7 @@ namespace CilView
                     line.Margin = new Thickness(0);
 
                     r = new Run();
-                    ins.WriteLead(wr);
+                    wr.Write(ins.LeadingTrivia);
                     ins.WriteLabel(wr);
                     ins.WriteOperation(wr);
                     wr.Flush();
@@ -86,7 +86,7 @@ namespace CilView
                     line.Margin = new Thickness(0);
 
                     r = new Run();
-                    dir.WriteLead(wr);
+                    wr.Write(dir.LeadingTrivia);
                     wr.Write('.');
                     wr.Flush();
                     r.Text = sb.ToString();

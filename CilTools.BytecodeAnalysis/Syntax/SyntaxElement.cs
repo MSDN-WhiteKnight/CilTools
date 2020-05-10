@@ -13,9 +13,11 @@ namespace CilTools.Syntax
 {
     public abstract class SyntaxElement
     {
-        protected string _lead;
+        protected string _lead="";
 
         public abstract void ToText(TextWriter target);
+
+        public string LeadingTrivia { get { return this._lead; } }
 
         public override string ToString()
         {
