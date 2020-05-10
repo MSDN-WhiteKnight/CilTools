@@ -258,6 +258,7 @@ namespace CilTools.Reflection
                 ret = base.GetLocalVariables();
             }
             catch (NotSupportedException) { }
+            catch (ArgumentOutOfRangeException) { }
 
             if (ret != null) return ret;
             else return LocalVariable.FromReflection(this.srcmethod);

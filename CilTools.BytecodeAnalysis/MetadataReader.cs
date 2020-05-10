@@ -28,7 +28,7 @@ namespace CilTools.BytecodeAnalysis
             {
                 b2 = ReadByte(source);
 
-                if ((b2 & 0x40) == 0x40) //4 bytes
+                if ((b1 & 0x40) == 0x40) //4 bytes
                 {
                     b3 = ReadByte(source);
                     b4 = ReadByte(source);

@@ -328,6 +328,8 @@ namespace CilTools.BytecodeAnalysis
                                 null, 
                                 new CilErrorEventArgs(ex, "Failed to resolve class token: 0x" + typetok.ToString("X"))
                                 );
+
+                            throw new NotSupportedException("The signature contains TypeSpec that cannot be parsed");
                         }
                         
                         break;
@@ -344,6 +346,8 @@ namespace CilTools.BytecodeAnalysis
                                 null, 
                                 new CilErrorEventArgs(ex, "Failed to resolve valuetype token: 0x" + typetok.ToString("X"))
                                 );
+
+                            throw new NotSupportedException("The signature contains TypeSpec that cannot be parsed");
                         }
                                                 
                         break;
