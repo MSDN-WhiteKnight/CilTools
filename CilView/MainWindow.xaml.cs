@@ -17,6 +17,8 @@ using CilTools.Runtime;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.Win32;
 using System.Windows.Input;
+using System.Windows.Documents;
+using System.Windows.Media;
 
 namespace CilView
 {
@@ -78,6 +80,8 @@ namespace CilView
 
             source.Methods.Clear();
             source.Methods = AssemblySource.LoadMethods(t);
+            
+            ccMethodsList.Child = CilVisualization.VisualizeMethodList(source.Methods,Navigated);
         }
 
         void NavigateToMethod(MethodBase mb)
@@ -114,15 +118,6 @@ namespace CilView
             sb.Append(mb.Name);
 
             tbCurrLocation.Text = sb.ToString();
-        }
-
-        private void lbMethod_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            MethodBase mb = (MethodBase)lbMethod.SelectedItem;
-
-            if (mb == null) return;
-
-            this.NavigateToMethod(mb);
         }
 
         void Navigated(object sender, RoutedEventArgs e)
