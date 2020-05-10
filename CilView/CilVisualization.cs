@@ -2,6 +2,7 @@
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.Collections.ObjectModel;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
@@ -18,6 +19,81 @@ namespace CilView
 {
     static class CilVisualization
     {
+        static string MethodToString(MethodBase m)
+        {
+            if (m is CilTools.Runtime.ClrMethodInfo)
+            {
+                string sig = ((CilTools.Runtime.ClrMethodInfo)m).InnerMethod.GetFullSignature();
+                string name = m.Name;
+                int param_start = sig.IndexOf('(');
+                int param_end = sig.IndexOf(')')+1;
+                string parstr = sig.Substring(param_start, param_end - param_start);
+                return name + parstr;
+            }
+
+            StringBuilder sb = new StringBuilder();
+            Type t = m.DeclaringType;
+            ParameterInfo[] pars = m.GetParameters();
+
+            MethodInfo mi = m as MethodInfo;
+
+            sb.Append(m.Name);
+
+            if (m.IsGenericMethod)
+            {
+                sb.Append('<');
+
+                Type[] args = m.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) sb.Append(", ");
+
+                    sb.Append(args[i].Name);
+                }
+
+                sb.Append('>');
+            }
+
+            sb.Append('(');
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (i >= 1) sb.Append(", ");
+                sb.Append(pars[i].ParameterType.Name);
+            }
+
+            sb.Append(')');
+            return sb.ToString();
+        }
+
+        public static UIElement VisualizeMethodList(ObservableCollection<MethodBase> methods, RoutedEventHandler navigation)
+        {
+            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
+            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
+            scroll.VerticalAlignment = VerticalAlignment.Stretch;
+            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
+
+            FlowDocument fd = new FlowDocument();
+            fd.TextAlignment = TextAlignment.Left;
+            fd.MinPageWidth = 400;
+            fd.PagePadding = new Thickness(0);
+            
+            foreach (MethodBase m in methods)
+            {
+                Paragraph line = new Paragraph();
+                Run r = new Run(MethodToString(m));
+                Hyperlink lnk = new Hyperlink(r);
+                lnk.Tag = m;
+                lnk.Click += navigation;
+                line.Inlines.Add(lnk);
+                fd.Blocks.Add(line);
+            }
+            
+            scroll.Document = fd;
+            return scroll;
+        }
+
         public static UIElement VisualizeGraph(CilGraph gr, RoutedEventHandler navigation)
         {
             FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();

@@ -13,14 +13,14 @@ using CilTools.Reflection;
 
 namespace CilTools.Runtime
 {
-    class ClrMethodInfo : CustomMethod
+    public class ClrMethodInfo : CustomMethod
     {
         ClrMethod method;
         ClrAssemblyInfo assembly;
         DataTarget target;
         ClrTypeInfo type;
 
-        public ClrMethodInfo(ClrMethod m, ClrTypeInfo owner)
+        internal ClrMethodInfo(ClrMethod m, ClrTypeInfo owner)
         {
             this.method = m;
             this.assembly = (ClrAssemblyInfo)owner.Assembly;
