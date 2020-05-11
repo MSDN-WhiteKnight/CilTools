@@ -404,6 +404,11 @@ namespace CilTools.Runtime
 
             return this.type.Name.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return type.Name;
+        }
               
     }
 }

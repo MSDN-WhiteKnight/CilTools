@@ -66,7 +66,10 @@ namespace CilView
             return sb.ToString();
         }
 
-        public static UIElement VisualizeMethodList(ObservableCollection<MethodBase> methods, RoutedEventHandler navigation)
+        public static UIElement VisualizeMethodList(
+            ObservableCollection<MethodBase> methods, 
+            RoutedEventHandler navigation,
+            MethodBase selected=null)
         {
             FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
             scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -84,6 +87,9 @@ namespace CilView
                 Paragraph line = new Paragraph();
                 Run r = new Run(MethodToString(m));
                 Hyperlink lnk = new Hyperlink(r);
+
+                if (MethodBase.ReferenceEquals(m, selected)) lnk.FontWeight = FontWeights.Bold;
+
                 lnk.Tag = m;
                 lnk.Click += navigation;
                 line.Inlines.Add(lnk);

@@ -4,7 +4,7 @@
         Title="Attach to process" Height="300" Width="400" Closed="Window_Closed" WindowStartupLocation="CenterOwner">
     <Grid>
         <TextBox x:Name="tbSearch" HorizontalAlignment="Left" Height="25" Margin="10,10,0,0" TextWrapping="Wrap" Text="" 
-                 VerticalAlignment="Top" Width="123"/>
+                 VerticalAlignment="Top" Width="123" AcceptsReturn="False" KeyDown="tbSearch_KeyDown"/>
         <Button x:Name="bSearch" Content="Search" HorizontalAlignment="Left" Height="25" Margin="150,10,10,10" VerticalAlignment="Top" 
                 Width="60" Click="bSearch_Click"/>
         <ListBox x:Name="lbProcesses" HorizontalAlignment="Stretch" Margin="10,45,10,77" VerticalAlignment="Stretch" 

@@ -102,6 +102,9 @@ namespace CilView
             }
 
             sb.Clear();
+
+            ccMethodsList.Child = CilVisualization.VisualizeMethodList(source.Methods, Navigated,mb);
+
             Type t = mb.DeclaringType;
             Assembly ass=null;
             if(t!=null) ass = t.Assembly;

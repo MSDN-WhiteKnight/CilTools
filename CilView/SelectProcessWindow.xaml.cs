@@ -109,13 +109,13 @@ namespace CilView
             }
         }
 
-        private void bSearch_Click(object sender, RoutedEventArgs e)
+        void OnSearchClick()
         {
             if (this.processes == null) return;
 
             string text = tbSearch.Text.Trim();
             int id;
-            bool has_id = Int32.TryParse(text,out id);
+            bool has_id = Int32.TryParse(text, out id);
 
             if (text == String.Empty)
             {
@@ -123,7 +123,7 @@ namespace CilView
                 return;
             }
 
-            int start_index = lbProcesses.SelectedIndex+1;
+            int start_index = lbProcesses.SelectedIndex + 1;
 
             if (start_index < 0) start_index = 0;
             if (start_index >= lbProcesses.Items.Count) start_index = 0;
@@ -152,8 +152,18 @@ namespace CilView
                 }
             }
 
-            MessageBox.Show(this, "Nothing found for: "+text, "Information");
+            MessageBox.Show(this, "Nothing found for: " + text, "Information");
             lbProcesses.SelectedItem = null;
+        }
+
+        private void bSearch_Click(object sender, RoutedEventArgs e)
+        {
+            OnSearchClick();
+        }
+
+        private void tbSearch_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter) OnSearchClick();
         }
     }
 }

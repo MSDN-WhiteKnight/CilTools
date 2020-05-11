@@ -11,8 +11,11 @@ namespace CilView
     {
         public static ObservableCollection<Type> LoadTypes(Assembly ass)
         {
-            ObservableCollection<Type> ret = new ObservableCollection<Type>(ass.GetTypes());
-            return ret;
+            List<Type> ret = new List<Type>(ass.GetTypes());
+
+            ret.Sort((x, y) => String.Compare( x.ToString(), y.ToString(), StringComparison.InvariantCulture ));
+
+            return new ObservableCollection<Type>(ret);
         }
 
         public static ObservableCollection<MethodBase> LoadMethods(Type t)
