@@ -20,6 +20,8 @@ namespace CilTools.Reflection
         byte[] _code;
         byte[] _localssig;
         ExceptionBlock[] _blocks;
+        bool _localsinit;
+        bool _haslocalsinit;
 
         public MethodBaseWrapper(MethodBase mb) : base()
         {
@@ -131,6 +133,7 @@ namespace CilTools.Reflection
                 {
                     this._localssig = new byte[0];
                     this._hasstacksize = false;
+                    this._haslocalsinit = false;
                 }
             }
             else //regular method
@@ -154,6 +157,9 @@ namespace CilTools.Reflection
                     {
                         this._blocks[i] = ExceptionBlock.FromReflection(body.ExceptionHandlingClauses[i]);
                     }
+
+                    this._localsinit = body.InitLocals;
+                    this._haslocalsinit = true;
                 }
                 else
                 {
@@ -161,6 +167,7 @@ namespace CilTools.Reflection
                     this._localssig = new byte[0];
                     this._blocks = new ExceptionBlock[0];
                     this._hasstacksize = false;
+                    this._haslocalsinit = false;
                 }
             }
         }
@@ -277,6 +284,16 @@ namespace CilTools.Reflection
         public override ExceptionBlock[] GetExceptionBlocks()
         {
             return this._blocks;
+        }
+
+        public override bool InitLocals
+        {
+            get { return this._localsinit; }
+        }
+
+        public override bool InitLocalsSpecified
+        {
+            get { return this._haslocalsinit; }
         }
     }
 }

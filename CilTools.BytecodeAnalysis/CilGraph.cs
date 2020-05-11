@@ -381,28 +381,35 @@ namespace CilTools.BytecodeAnalysis
 
             if (has_maxstack)
             {
-                DirectiveSyntax dir = new DirectiveSyntax(" ", "maxstack", maxstack.ToString());
+                DirectiveSyntax dir = new DirectiveSyntax(
+                    " ", "maxstack", new SyntaxElement[] { new GenericSyntax(maxstack.ToString()) }
+                    );
                 ret.Add(dir);
             }
 
             //local variables
             if (locals != null && locals.Length > 0)
             {
-                StringBuilder sb=new StringBuilder(400);
-                StringWriter output=new StringWriter(sb);
+                List<SyntaxElement> inner = new List<SyntaxElement>(locals.Length * 4);
 
-                output.Write('(');
-                for (int i = 0; i < locals.Length; i++)
+                if (cm.InitLocalsSpecified)
                 {
-                    if (i >= 1) output.Write(",\r\n    ");
-                    LocalVariable local = locals[i];
-                    output.Write(local.LocalTypeSpec.ToString());
-                    output.Write(" V_" + local.LocalIndex.ToString());
+                    if (cm.InitLocals)inner.Add(new KeywordSyntax("init "));
                 }
 
-                output.Write(')');
-                output.Flush();
-                DirectiveSyntax dir = new DirectiveSyntax(" ", "locals", sb.ToString());
+                inner.Add(new GenericSyntax("("));
+
+                for (int i = 0; i < locals.Length; i++)
+                {
+                    if (i >= 1) inner.Add(new GenericSyntax(",\r\n    "));
+                    LocalVariable local = locals[i];
+                    inner.Add(new VarDeclSyntax(local.LocalTypeSpec.ToString(), " V_" + local.LocalIndex.ToString()));
+                }
+
+                inner.Add(new GenericSyntax(")"));
+
+                DirectiveSyntax dir = new DirectiveSyntax( " ", "locals", inner.ToArray());
+
                 ret.Add(dir);
             }
 
@@ -529,7 +536,10 @@ namespace CilTools.BytecodeAnalysis
                 {
                     indent.Push(' ');
 
-                    DirectiveSyntax dir = new DirectiveSyntax(new String(indent.ToArray()), "try", "");
+                    DirectiveSyntax dir = new DirectiveSyntax(
+                        new String(indent.ToArray()), "try", SyntaxElement.EmptySyntax 
+                        );
+
                     ret.Add(dir);
                     BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "");
                     ret.Add(bss);

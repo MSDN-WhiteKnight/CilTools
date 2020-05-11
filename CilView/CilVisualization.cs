@@ -180,10 +180,37 @@ namespace CilView
                     r.Foreground = Brushes.Magenta;
                     line.Inlines.Add(r);
 
-                    r = new Run();
-                    r.Text = dir.Content;
-                    r.Foreground = Brushes.MediumAquamarine;
-                    line.Inlines.Add(r);
+                    if (dir.InnerElementsCount > 1)
+                    {
+                        foreach (SyntaxElement subelem in dir.InnerSyntax)
+                        {
+                            if (subelem is VarDeclSyntax)
+                            {
+                                VarDeclSyntax vdc = (VarDeclSyntax)subelem;
+                                r = new Run();
+                                r.Text = vdc.Type;
+                                r.Foreground = Brushes.CornflowerBlue;
+                                line.Inlines.Add(r);
+                                r = new Run();
+                                r.Text = vdc.Name;
+                                line.Inlines.Add(r);
+                            }
+                            else
+                            {
+                                r = new Run();
+                                r.Text = subelem.ToString();
+                                if (subelem is KeywordSyntax) r.Foreground = Brushes.Blue;
+                                line.Inlines.Add(r);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        r = new Run();
+                        r.Text = dir.Content;
+                        r.Foreground = Brushes.MediumAquamarine;
+                        line.Inlines.Add(r);
+                    }
 
                     fd.Blocks.Add(line);
                 }

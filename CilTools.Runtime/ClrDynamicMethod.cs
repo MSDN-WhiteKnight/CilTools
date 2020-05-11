@@ -205,5 +205,15 @@ namespace CilTools.Runtime
         {
             get { return UnknownType.Value; }
         }
+
+        public override bool InitLocals
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override bool InitLocalsSpecified
+        {
+            get { return false; }
+        }
     }
 }

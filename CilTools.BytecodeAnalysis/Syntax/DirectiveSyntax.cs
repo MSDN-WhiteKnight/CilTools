@@ -14,15 +14,47 @@ namespace CilTools.Syntax
     public class DirectiveSyntax:SyntaxElement
     {        
         string _name;
-        string _content;        
-                
+        SyntaxElement[] _content;
+        
         public string Name { get { return this._name; } }
-        public string Content { get { return this._content; } }        
 
-        internal DirectiveSyntax(string lead,string name, string content)
+        public void WriteContent(TextWriter target)
+        {
+            if (target == null) throw new ArgumentNullException("target");
+            if (this._content.Length == 0) return;
+
+            for (int i = 0; i < this._content.Length; i++) this._content[i].ToText(target);
+
+            target.Flush();
+        }
+
+        public string Content 
+        { 
+            get 
+            {
+                if (this._content.Length == 0) return String.Empty;
+
+                StringBuilder sb = new StringBuilder(200);
+                StringWriter wr = new StringWriter(sb);
+                this.WriteContent(wr);
+                return sb.ToString();
+            } 
+        }
+
+        public IEnumerable<SyntaxElement> InnerSyntax 
+        { 
+            get 
+            {
+                for (int i = 0; i < this._content.Length; i++) yield return this._content[i];
+            } 
+        }
+
+        public int InnerElementsCount { get { return this._content.Length; } }
+
+        internal DirectiveSyntax(string lead, string name, SyntaxElement[] content)
         {
             if (lead == null) lead = "";
-            if (content == null) content = "";            
+            if (content == null) content = new SyntaxElement[0];            
 
             this._lead = lead;
             this._name = name;
@@ -37,8 +69,7 @@ namespace CilTools.Syntax
             target.Write('.');
             target.Write(this._name);
             target.Write(' ');
-            target.Write(this._content);
-            target.Flush();
+            this.WriteContent(target);
         }
 
         internal static DirectiveSyntax FromMethodSignature(MethodBase m)
@@ -117,7 +148,7 @@ namespace CilTools.Syntax
             output.Write(" cil managed");
             output.Flush();
 
-            return new DirectiveSyntax("", "method", sb.ToString());
+            return new DirectiveSyntax("", "method", new SyntaxElement[]{new GenericSyntax(sb.ToString())});
         }
     }
 }

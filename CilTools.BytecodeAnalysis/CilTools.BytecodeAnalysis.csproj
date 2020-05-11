@@ -71,8 +71,11 @@
     <Compile Include="Syntax\CommentSyntax.cs" />
     <Compile Include="Syntax\DirectiveSyntax.cs" />
     <Compile Include="Syntax\EmptyLineSyntax.cs" />
+    <Compile Include="Syntax\GenericSyntax.cs" />
     <Compile Include="Syntax\InstructionSyntax.cs" />
+    <Compile Include="Syntax\KeywordSyntax.cs" />
     <Compile Include="Syntax\SyntaxElement.cs" />
+    <Compile Include="Syntax\VarDeclSyntax.cs" />
     <Compile Include="TypeSpec.cs" />
   </ItemGroup>
   <ItemGroup>

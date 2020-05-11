@@ -67,16 +67,7 @@ namespace CilTools.Runtime
         {
             get
             {
-                ILInfo ildata = method.IL;
-
-                if (ildata == null)
-                {
-                    throw new CilParserException("Cannot read IL of the method " + method.Name);
-                }
-                else
-                {
-                    return ildata.MaxStack;
-                }
+                throw new NotImplementedException();
             }
         }
 
@@ -84,16 +75,7 @@ namespace CilTools.Runtime
         {
             get
             {
-                ILInfo ildata = method.IL;
-
-                if (ildata == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    return true;
-                }
+                return false;
             }
         }
 
@@ -189,6 +171,16 @@ namespace CilTools.Runtime
             {
                 return (int)method.MetadataToken;
             }
+        }
+
+        public override bool InitLocals
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        public override bool InitLocalsSpecified
+        {
+            get { return false; }
         }
     }
 }
