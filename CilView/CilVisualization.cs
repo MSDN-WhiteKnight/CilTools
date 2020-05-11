@@ -19,7 +19,7 @@ namespace CilView
 {
     static class CilVisualization
     {
-        static string MethodToString(MethodBase m)
+        internal static string MethodToString(MethodBase m)
         {
             if (m is CilTools.Runtime.ClrMethodInfo)
             {

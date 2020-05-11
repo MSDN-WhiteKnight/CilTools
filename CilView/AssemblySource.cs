@@ -17,7 +17,7 @@ namespace CilView
 
         public static ObservableCollection<MethodBase> LoadMethods(Type t)
         {
-            ObservableCollection<MethodBase> ret = new ObservableCollection<MethodBase>();
+            List<MethodBase> ret = new List<MethodBase>();
             MemberInfo[] members = t.GetMembers(
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
                 );
@@ -27,7 +27,13 @@ namespace CilView
                 if (member is MethodBase) ret.Add((MethodBase)member);
             }
 
-            return ret;
+            ret.Sort((x, y) => String.Compare(
+                 CilVisualization.MethodToString(x),
+                 CilVisualization.MethodToString(y),
+                 StringComparison.InvariantCulture
+                ));
+
+            return new ObservableCollection<MethodBase>(ret);
         }
 
         protected ObservableCollection<Assembly> assemblies = new ObservableCollection<Assembly>();
