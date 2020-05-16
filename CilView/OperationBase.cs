@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CilView
 {
-    class OperationBase
+    public abstract class OperationBase
     {
         volatile bool shouldStop=false;
 

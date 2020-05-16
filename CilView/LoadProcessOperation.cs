@@ -23,7 +23,7 @@ namespace CilView
 
         //public ProcessAssemblySource Result { get { return this.result; } }
 
-        public abstract Task Start()
+        public override Task Start()
         {
             return Task.FromResult<bool>(true);
         }
