@@ -1,22 +1,24 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Windows;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using Microsoft.Diagnostics.Runtime;
-using System.Windows;
 
 namespace CilView
 {
     sealed class ProcessAssemblySource:AssemblySource
     {
         DataTarget dt;
+        OperationBase op;
 
-        public static ObservableCollection<Assembly> LoadAssemblies(DataTarget dt)
+        public static ObservableCollection<Assembly> LoadAssemblies(DataTarget dt, OperationBase op = null)
         {
             ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
 
@@ -28,17 +30,44 @@ namespace CilView
 
             ClrInfo runtimeInfo = dt.ClrVersions[0];
             ClrRuntime runtime = runtimeInfo.CreateRuntime();
-            return LoadAssemblies(runtime);
+            return LoadAssemblies(runtime,op);
         }
 
-        public static ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime)
+        public static ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime, OperationBase op = null)
         {
             ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
+
+            if (op != null)
+            {
+                op.ReportProgress("Loading modules...", 0, 0);
+                op.DoEvents();
+                if (op.Stopped) return ret;
+            }
+
             ClrAssemblyReader reader = new ClrAssemblyReader(runtime);
+
+            double max = runtime.Modules.Count;
+            int c = 0;
 
             foreach (ClrModule x in runtime.Modules)
             {
-                ret.Add(reader.Read(x));
+                if (op != null)
+                {
+                    op.Window.ReportProgress("Loading " + Path.GetFileName(x.Name) + "...", c, max);
+                    op.DoEvents();
+                    if (op.Stopped) return ret;
+                }
+
+                ClrAssemblyInfo item = reader.Read(x);
+                ret.Add(item);
+                c++;
+            }
+
+            if (op != null)
+            {
+                op.Window.ReportProgress("Loading dynamic methods...", c, max);
+                op.DoEvents();
+                if (op.Stopped) return ret;
             }
 
             DynamicMethodsAssembly dynass = reader.GetDynamicMethods();
@@ -49,10 +78,10 @@ namespace CilView
         void Init(ClrRuntime runtime)
         {
             this.dt = runtime.DataTarget;
-            this.Assemblies = LoadAssemblies(runtime);
+            this.Assemblies = LoadAssemblies(runtime,op);
         }
 
-        public ProcessAssemblySource(ClrRuntime runtime)
+        public ProcessAssemblySource(ClrRuntime runtime, OperationBase op = null)
         {
             this.Init(runtime);
         }
@@ -60,10 +89,10 @@ namespace CilView
         void Init(DataTarget dtSource)
         {
             this.dt = dtSource;
-            this.Assemblies = LoadAssemblies(dtSource);
+            this.Assemblies = LoadAssemblies(dtSource,op);
         }
 
-        public ProcessAssemblySource(DataTarget dtSource)
+        public ProcessAssemblySource(DataTarget dtSource, OperationBase op = null)
         {
             this.Init(dtSource);
         }
@@ -82,13 +111,15 @@ namespace CilView
             this.Init(dt);
         }
 
-        public ProcessAssemblySource(Process pr, bool active)
+        public ProcessAssemblySource(Process pr, bool active, OperationBase op = null)
         {
+            this.op = op;
             this.Init(pr, active);
         }
-                
-        public ProcessAssemblySource(string processname, bool active)
+
+        public ProcessAssemblySource(string processname, bool active, OperationBase op = null)
         {
+            this.op = op;
             Process[] processes = Process.GetProcessesByName(processname);
 
             if (processes.Length == 0)
@@ -106,8 +137,9 @@ namespace CilView
             }
         }
 
-        public ProcessAssemblySource(int pid, bool active)
+        public ProcessAssemblySource(int pid, bool active, OperationBase op = null)
         {
+            this.op = op;
             Process process = Process.GetProcessById(pid);
 
             if (process == null)

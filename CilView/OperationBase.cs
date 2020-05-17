@@ -12,6 +12,8 @@ namespace CilView
     {
         volatile bool shouldStop=false;
 
+        public ProgressWindow Window { get; set; }
+
         public abstract Task Start();
 
         public void Stop()
@@ -19,6 +21,16 @@ namespace CilView
             this.shouldStop = true;
         }
 
-        protected bool ShouldStop { get { return this.shouldStop; } }
+        public bool Stopped { get { return this.shouldStop; } }
+
+        public virtual void DoEvents()
+        {
+            
+        }
+
+        public void ReportProgress(string txt, double curr, double max)
+        {
+            if (this.Window != null) this.Window.ReportProgress(txt,curr,max);
+        }
     }
 }

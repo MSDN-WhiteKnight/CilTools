@@ -55,8 +55,15 @@ namespace CilView
 
             if (res == true)
             {
-                SetSource(new ProcessAssemblySource(wnd.SelectedProcess, wnd.ActiveMode));
-            }
+                OpenProcessOperation op = new OpenProcessOperation(wnd.SelectedProcess, wnd.ActiveMode);
+                ProgressWindow pwnd = new ProgressWindow(op);
+                pwnd.Owner = this;
+                res = pwnd.ShowDialog();
+
+                if (res != true) return;
+
+                SetSource(op.Result);
+             }
         }
 
         private void cbAssembly_SelectionChanged(object sender, SelectionChangedEventArgs e)

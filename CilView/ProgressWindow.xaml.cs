@@ -26,6 +26,7 @@ namespace CilView
         public ProgressWindow(OperationBase op)
         {
             InitializeComponent();
+            op.Window = this;
             this.operation = op;
             this.progress.IsIndeterminate = true;
         }
@@ -46,17 +47,44 @@ namespace CilView
             this.Close();
         }
 
+        public void ReportProgress(string txt,double curr,double max)
+        {
+            this.Dispatcher.Invoke(() => { 
+
+                this.textblock.Text = txt;
+
+                if (max > 0.0)
+                {
+                    this.progress.IsIndeterminate = false;
+                    this.progress.Maximum = max;
+                    this.progress.Value = curr;
+                }
+                else this.progress.IsIndeterminate = true;
+
+            });
+        }
+
         private async void Window_Loaded_1(object sender, RoutedEventArgs e)
         {
             try
             {
+                await Task.Yield();
+
                 await operation.Start();
+                
+                if (operation.Stopped) return;
+
                 this.DialogResult = true;
                 this.Close();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.ToString());
+                if (operation.Stopped) return;
+
+                MessageBox.Show(
+                    this,ex.GetType().ToString()+": "+ex.Message,"Error",MessageBoxButton.OK,MessageBoxImage.Error
+                    );
+
                 this.DialogResult = false;
                 this.Close();
             }
