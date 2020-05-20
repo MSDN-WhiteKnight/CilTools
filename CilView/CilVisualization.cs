@@ -88,7 +88,11 @@ namespace CilView
                 Run r = new Run(MethodToString(m));
                 Hyperlink lnk = new Hyperlink(r);
 
-                if (MethodBase.ReferenceEquals(m, selected)) lnk.FontWeight = FontWeights.Bold;
+                if (MethodBase.ReferenceEquals(m, selected))
+                {
+                    lnk.FontWeight = FontWeights.Bold;
+                    line.Loaded += BringToViewOnLoaded;
+                }
 
                 lnk.Tag = m;
                 lnk.Click += navigation;
@@ -98,6 +102,11 @@ namespace CilView
             
             scroll.Document = fd;
             return scroll;
+        }
+
+        static void BringToViewOnLoaded(object sender, RoutedEventArgs e)
+        {
+            (sender as FrameworkContentElement).BringIntoView();
         }
 
         public static UIElement VisualizeGraph(CilGraph gr, RoutedEventHandler navigation)
