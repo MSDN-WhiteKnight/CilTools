@@ -148,7 +148,14 @@ namespace CilView
 
             if (dlg.ShowDialog(this) == true)
             {
-                SetSource(new FileAssemblySource(dlg.FileName));
+                OpenFileOperation op = new OpenFileOperation(dlg.FileName);
+                ProgressWindow pwnd = new ProgressWindow(op);
+                pwnd.Owner = this;
+                bool? res = pwnd.ShowDialog();
+
+                if (res != true) return;
+
+                SetSource(op.Result);
 
                 if (this.source.Assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
             }

@@ -57,7 +57,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CilVisualization.cs" />
-    <Compile Include="LoadProcessOperation.cs" />
+    <Compile Include="OpenFileOperation.cs" />
+    <Compile Include="OpenProcessOperation.cs" />
     <Compile Include="OperationBase.cs" />
     <Compile Include="ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
