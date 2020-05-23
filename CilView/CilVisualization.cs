@@ -66,47 +66,31 @@ namespace CilView
             return sb.ToString();
         }
 
-        public static UIElement VisualizeMethodList(
+        public static TextListViewer VisualizeMethodList(
             ObservableCollection<MethodBase> methods, 
             RoutedEventHandler navigation,
             MethodBase selected=null)
         {
-            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
-            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            scroll.VerticalAlignment = VerticalAlignment.Stretch;
-            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-            scroll.HorizontalScrollBarVisibility = ScrollBarVisibility.Visible;
-
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.MinPageWidth = 400;
-            fd.PagePadding = new Thickness(0);
+            TextListViewer tlv = new TextListViewer();
             
-            foreach (MethodBase m in methods)
+            for (int i=0;i<methods.Count;i++ )
             {
-                Paragraph line = new Paragraph();
+                MethodBase m = methods[i];
                 Run r = new Run(MethodToString(m));
                 Hyperlink lnk = new Hyperlink(r);
+                lnk.Tag = m;
+                lnk.Click += navigation;
+                tlv.AddItem(lnk);
+
+                if (selected == null) continue;
 
                 if (MethodBase.ReferenceEquals(m, selected))
                 {
-                    lnk.FontWeight = FontWeights.Bold;
-                    line.Loaded += BringToViewOnLoaded;
+                    tlv.SelectedIndex = i;
                 }
-
-                lnk.Tag = m;
-                lnk.Click += navigation;
-                line.Inlines.Add(lnk);
-                fd.Blocks.Add(line);
             }
-            
-            scroll.Document = fd;
-            return scroll;
-        }
-
-        static void BringToViewOnLoaded(object sender, RoutedEventArgs e)
-        {
-            (sender as FrameworkContentElement).BringIntoView();
+                        
+            return tlv;
         }
 
         public static UIElement VisualizeGraph(CilGraph gr, RoutedEventHandler navigation)

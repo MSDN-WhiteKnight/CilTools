@@ -28,6 +28,7 @@ namespace CilView
     public partial class MainWindow : Window
     {
         AssemblySource source;
+        TextListViewer tlv;
 
         void SetSource(AssemblySource newval)
         {
@@ -88,7 +89,8 @@ namespace CilView
             source.Methods.Clear();
             source.Methods = AssemblySource.LoadMethods(t);
             
-            ccMethodsList.Child = CilVisualization.VisualizeMethodList(source.Methods,Navigated);
+            this.tlv = CilVisualization.VisualizeMethodList(source.Methods,Navigated);
+            ccMethodsList.Child = this.tlv;
         }
 
         void NavigateToMethod(MethodBase mb)
@@ -109,9 +111,25 @@ namespace CilView
             }
 
             sb.Clear();
+            
+            //select method in method list
+            this.tlv.SelectedItem = null;
 
-            ccMethodsList.Child = CilVisualization.VisualizeMethodList(source.Methods, Navigated,mb);
+            for (int i = 0; i < this.tlv.ItemCount; i++)
+            {
+                Inline item = this.tlv.GetItem(i);
+                MethodBase itemmethod = item.Tag as MethodBase;
 
+                if (itemmethod == null) continue;
+
+                if(ReferenceEquals(itemmethod, mb))
+                {
+                    this.tlv.SelectedIndex = i;
+                    break;
+                }
+            }
+
+            //display method location
             Type t = mb.DeclaringType;
             Assembly ass=null;
             if(t!=null) ass = t.Assembly;

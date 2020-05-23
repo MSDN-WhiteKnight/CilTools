@@ -57,6 +57,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CilVisualization.cs" />
+    <Compile Include="TextListViewer.cs" />
     <Compile Include="OpenFileOperation.cs" />
     <Compile Include="OpenProcessOperation.cs" />
     <Compile Include="OperationBase.cs" />
