@@ -54,6 +54,7 @@ namespace CilView
 
         public void Clear()
         {
+            UnselectItem();
             this.items.Clear();
             doc.Blocks.Clear();
         }

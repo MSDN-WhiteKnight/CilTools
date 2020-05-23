@@ -39,11 +39,16 @@ namespace CilView
             set { this.textblock.Text = value; }
         }
 
-        private void bCancel_Click(object sender, RoutedEventArgs e)
+        void Cancel()
         {
             this.progress.IsIndeterminate = false;
             operation.Stop();
             this.DialogResult = false;
+        }
+
+        private void bCancel_Click(object sender, RoutedEventArgs e)
+        {
+            Cancel();
             this.Close();
         }
 
@@ -88,6 +93,11 @@ namespace CilView
                 this.DialogResult = false;
                 this.Close();
             }
+        }
+
+        private void Window_Closed_1(object sender, EventArgs e)
+        {
+            Cancel();
         }
     }
 }

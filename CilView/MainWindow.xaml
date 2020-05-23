@@ -18,11 +18,14 @@
                 Width="90" Click="bOpenProcess_Click"/>
         <Button x:Name="bOpenFile" Content="Open file" HorizontalAlignment="Left" Height="24" Margin="120,30,0,0" VerticalAlignment="Top" 
                 Width="90" Click="bOpenFile_Click" />
-        <ComboBox x:Name="cbAssembly" HorizontalAlignment="Left" Height="21" Margin="10,60,0,0" ItemsSource="{Binding Assemblies}"
-                  VerticalAlignment="Top" Width="230"
+        <Label Content="Assembly" HorizontalAlignment="Left" Height="25" Margin="10,57,0,0" VerticalAlignment="Top" Width="65"/>
+        
+        <ComboBox x:Name="cbAssembly" HorizontalAlignment="Left" Height="21" Margin="80,60,0,0" ItemsSource="{Binding Assemblies}"
+                  VerticalAlignment="Top" Width="160"
                   DisplayMemberPath="FullName" SelectionChanged="cbAssembly_SelectionChanged"/>
-        <ComboBox x:Name="cbType" HorizontalAlignment="Left" Height="21" Margin="250,60,0,0" ItemsSource="{Binding Types}"
-                  VerticalAlignment="Top" Width="190"
+        <Label Content="Type" HorizontalAlignment="Left" Height="25" Margin="255,57,0,0" VerticalAlignment="Top" Width="40"/>
+        <ComboBox x:Name="cbType" HorizontalAlignment="Left" Height="21" Margin="303,60,0,0" ItemsSource="{Binding Types}"
+                  VerticalAlignment="Top" Width="160"
                    SelectionChanged="cbType_SelectionChanged"/>
         <Border x:Name="ccMethodsList" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Left" Margin="10,90,20,20" 
                         VerticalAlignment="Stretch" Width="230" Padding="5 5 5 5"/>
@@ -38,5 +41,6 @@
                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" />
             </TabItem>
         </TabControl>
+        
     </Grid>
 </Window>

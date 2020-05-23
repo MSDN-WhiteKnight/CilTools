@@ -35,13 +35,13 @@ namespace CilView
 
         public static ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime, OperationBase op = null)
         {
-            ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
+            List<Assembly> ret = new List<Assembly>();
 
             if (op != null)
             {
                 op.ReportProgress("Loading modules...", 0, 0);
                 op.DoEvents();
-                if (op.Stopped) return ret;
+                if (op.Stopped) return new ObservableCollection<Assembly>(ret);
             }
 
             ClrAssemblyReader reader = new ClrAssemblyReader(runtime);
@@ -55,7 +55,7 @@ namespace CilView
                 {
                     op.Window.ReportProgress("Loading " + Path.GetFileName(x.Name) + "...", c, max);
                     op.DoEvents();
-                    if (op.Stopped) return ret;
+                    if (op.Stopped) return new ObservableCollection<Assembly>(ret);
                 }
 
                 ClrAssemblyInfo item = reader.Read(x);
@@ -63,16 +63,18 @@ namespace CilView
                 c++;
             }
 
+            ret.Sort((x, y) => String.Compare(x.FullName, y.FullName, StringComparison.InvariantCulture));
+
             if (op != null)
             {
                 op.Window.ReportProgress("Loading dynamic methods...", c, max);
                 op.DoEvents();
-                if (op.Stopped) return ret;
+                if (op.Stopped) return new ObservableCollection<Assembly>(ret);
             }
 
             DynamicMethodsAssembly dynass = reader.GetDynamicMethods();
             ret.Add(dynass);
-            return ret;
+            return new ObservableCollection<Assembly>(ret);
         }
 
         void Init(ClrRuntime runtime)

@@ -38,6 +38,12 @@ namespace CilView
                 this.source = null;
                 this.DataContext = null;
             }
+
+            if(tlv!=null)tlv.Clear();
+
+            tbCurrLocation.Text = String.Empty;
+            tbMainContent.Text = String.Empty;
+            gridStructure.Children.Clear();
             
             this.source = newval;
             this.DataContext = newval;
