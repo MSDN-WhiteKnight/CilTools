@@ -514,8 +514,143 @@ namespace CilTools.BytecodeAnalysis
                 string error = "Exception occured when trying to get method header.";
                 Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
             }
+
+            Stack<char> indent = new Stack<char>();
+
+            while (true)
+            {
+                CilInstruction instr = node.Instruction;
+
+                //exception handling clauses
+                IList<ExceptionBlock> started_trys = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                HashSet<ExceptionBlock> distinct_starts = FindDistinctTryBlocks(started_trys);
+
+                IList<ExceptionBlock> ended_trys = FindTryBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                HashSet<ExceptionBlock> distinct_ends = FindDistinctTryBlocks(ended_trys);
+
+                IList<ExceptionBlock> filters = FindFilterBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+                IList<ExceptionBlock> ended_blocks = FindBlockEnds(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+
+                // try
+                for (int i = 0; i < distinct_starts.Count; i++)
+                {
+                    indent.Push(' ');
+
+                    DirectiveSyntax dir = new DirectiveSyntax(
+                        new String(indent.ToArray()), "try", SyntaxElement.EmptySyntax
+                        );
+
+                    ret.Add(dir);
+                    BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "");
+                    ret.Add(bss);
+                }
+
+                for (int i = 0; i < distinct_ends.Count; i++)
+                {
+                    BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
+                    ret.Add(bes);
+                    if (indent.Count > 0) indent.Pop();
+                }
+
+                // end handler
+                for (int i = 0; i < ended_blocks.Count; i++)
+                {
+                    BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
+                    ret.Add(bes);
+                    if (indent.Count > 0) indent.Pop();
+                }
+
+                // filter
+                for (int i = 0; i < filters.Count; i++)
+                {
+                    indent.Push(' ');
+
+                    BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "filter");
+                    ret.Add(bss);
+                }
+
+                // handler start
+                var blocks = FindHandlerBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
+
+                foreach (var block in blocks)
+                {
+                    indent.Push(' ');
+
+                    if (block.Flags == ExceptionHandlingClauseOptions.Clause)
+                    {
+                        string st = "";
+                        Type t = block.CatchType;
+                        if (t != null) st = CilAnalysis.GetTypeNameInternal(t);
+
+                        BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "catch " + st);
+                        ret.Add(bss);
+                    }
+                    else if ((block.Flags & ExceptionHandlingClauseOptions.Filter) != 0)
+                    {
+                        if (indent.Count > 0) indent.Pop();
+
+                        ret.Add(new BlockEndSyntax(new String(indent.ToArray())));
+
+                        ret.Add(new BlockStartSyntax(new String(indent.ToArray()), ""));
+                    }
+                    else if ((block.Flags & ExceptionHandlingClauseOptions.Finally) != 0)
+                    {
+                        ret.Add(new BlockStartSyntax(new String(indent.ToArray()), "finally"));
+                    }
+                    else if ((block.Flags & ExceptionHandlingClauseOptions.Fault) != 0)
+                    {
+                        ret.Add(new BlockStartSyntax(new String(indent.ToArray()), "fault"));
+                    }
+                }
+
+                ret.Add(new InstructionSyntax(new String(indent.ToArray()), node));
+
+                if (node.Next == null) break; //last instruction
+                else node = node.Next;
+
+                n_iter++;
+                if (n_iter > 100000)
+                {
+                    throw new CilParserException(
+                        "Error: Too many iterations while trying to process graph (possibly a cyclic or extremely large graph)"
+                        );
+                }
+            }// end while
+
+            return ret.ToArray();
+        }
+
+        
+
+        SyntaxElement[] BodyAsSyntaxTree()
+        {
+            CilGraphNode node = this._Root;
+            if (node == null) return new SyntaxElement[] { };
+
+            int n_iter = 0;
+            IList<ExceptionBlock> trys = new List<ExceptionBlock>();
+            ParameterInfo[] pars = this._Method.GetParameters();
+            CustomMethod cm = (CustomMethod)this._Method;
+            List<SyntaxElement> ret = new List<SyntaxElement>(100);
+
+            try
+            {
+                trys = cm.GetExceptionBlocks();
+            }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to get method header.";
+                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
+            }
             
             Stack<char> indent = new Stack<char>();
+
+            BlockSyntax root=new BlockSyntax("","",new SyntaxElement[0]);
+            List<BlockSyntax> currentpath = new List<BlockSyntax>(20);
+            bool in_try = false;
+            bool in_handler = false;
+            BlockSyntax curr_node = root;
+            BlockSyntax new_node;
 
             while (true)
             {
@@ -540,15 +675,41 @@ namespace CilTools.BytecodeAnalysis
                         new String(indent.ToArray()), "try", SyntaxElement.EmptySyntax 
                         );
 
-                    ret.Add(dir);
-                    BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "");
-                    ret.Add(bss);
+                    curr_node.ContentArray.Add(dir);
+
+                    /*BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "");
+                    ret.Add(bss);*/
+
+                    new_node = new BlockSyntax(new String(indent.ToArray()),"",new SyntaxElement[0]);
+                    
+                    in_try = true;
+                    in_handler = false;
+                    currentpath.Add(new_node);
                 }
 
                 for (int i = 0; i < distinct_ends.Count; i++)
                 {
-                    BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
-                    ret.Add(bes);
+                    /*BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
+                    ret.Add(bes);*/
+
+                    if (currentpath.Count == 0) {
+                        throw new CilParserException("Parse error: Unexpected block end");
+                    }
+
+                    new_node = currentpath[currentpath.Count - 1];
+
+                    in_try = false;
+                    in_handler = false;
+                    currentpath.RemoveAt(currentpath.Count - 1);
+                                        
+                    if (currentpath.Count > 0)
+                        curr_node = currentpath[currentpath.Count - 1];
+                    else
+                        curr_node = root;
+
+                    curr_node.ContentArray.Add(new_node);
+
+                    //***
                     if (indent.Count > 0) indent.Pop();
                 }
 
