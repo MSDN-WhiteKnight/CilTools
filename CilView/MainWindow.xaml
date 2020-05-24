@@ -8,6 +8,8 @@
                 <MenuItem Header="Open" Click="bOpenFile_Click"/>
                 <MenuItem Header="Open process" Click="bOpenProcess_Click"/>
                 <Separator/>
+                <MenuItem x:Name="miExportMethod" Header="Export method code" Click="miExportMethod_Click"/>
+                <Separator/>
                 <MenuItem x:Name="miExit" Header="Exit" Click="miExit_Click"/>
             </MenuItem>
             <MenuItem Header="Help">
@@ -36,7 +38,7 @@
                 <Grid x:Name="gridStructure" Background="White"/>
             </TabItem>
             <TabItem Header="Text">
-                <TextBox x:Name="tbMainContent" HorizontalAlignment="Stretch"  Margin="0,0,0,0" TextWrapping="Wrap" Text="..." 
+                <TextBox x:Name="tbMainContent" HorizontalAlignment="Stretch"  Margin="0,0,0,0" TextWrapping="Wrap" Text="" 
                  VerticalAlignment="Stretch" IsReadOnly="True" FontFamily="Courier New" FontSize="14" 
                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" />
             </TabItem>

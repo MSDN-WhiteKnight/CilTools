@@ -29,6 +29,7 @@ namespace CilView
     {
         AssemblySource source;
         TextListViewer tlv;
+        MethodBase current_method = null;
 
         void SetSource(AssemblySource newval)
         {
@@ -44,6 +45,7 @@ namespace CilView
             tbCurrLocation.Text = String.Empty;
             tbMainContent.Text = String.Empty;
             gridStructure.Children.Clear();
+            this.current_method = null;
             
             this.source = newval;
             this.DataContext = newval;
@@ -114,6 +116,8 @@ namespace CilView
                 UIElement elem = CilVisualization.VisualizeGraph(gr, Navigated);
                 gridStructure.Children.Clear();
                 gridStructure.Children.Add(elem);
+
+                this.current_method = mb;
             }
 
             sb.Clear();
@@ -202,6 +206,32 @@ namespace CilView
         private void miExit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private async void miExportMethod_Click(object sender, RoutedEventArgs e)
+        {
+            if (tbMainContent.Text == String.Empty)
+            {
+                MessageBox.Show(this, "No content to export. Open method first to export its code", "Error");
+                return;
+            }
+
+            SaveFileDialog dlg = new SaveFileDialog();
+            dlg.RestoreDirectory = true;
+            dlg.DefaultExt = ".il";
+            dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
+
+            if (this.current_method != null) dlg.FileName = this.current_method.Name;
+
+            if (dlg.ShowDialog(this) == true)
+            {
+                StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
+
+                using (wr)
+                {
+                    await wr.WriteAsync(tbMainContent.Text);
+                }
+            }
         }
     }
 }
