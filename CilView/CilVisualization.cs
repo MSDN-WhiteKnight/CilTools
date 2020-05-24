@@ -181,7 +181,7 @@ namespace CilView
                             {
                                 VarDeclSyntax vdc = (VarDeclSyntax)subelem;
                                 r = new Run();
-                                r.Text = vdc.Type;
+                                r.Text = vdc.Type+" ";
                                 r.Foreground = Brushes.CornflowerBlue;
                                 line.Inlines.Add(r);
                                 r = new Run();
@@ -201,7 +201,6 @@ namespace CilView
                     {
                         r = new Run();
                         r.Text = dir.Content;
-                        r.Foreground = Brushes.MediumAquamarine;
                         line.Inlines.Add(r);
                     }
 

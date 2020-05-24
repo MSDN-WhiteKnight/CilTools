@@ -76,79 +76,77 @@ namespace CilTools.Syntax
         {
             CustomMethod cm = (CustomMethod)m;
             ParameterInfo[] pars = m.GetParameters();
+            
+            List<SyntaxElement> inner = new List<SyntaxElement>(100);
 
-            StringBuilder sb = new StringBuilder(100);
-            StringWriter output = new StringWriter(sb);
+            if (m.IsPublic) inner.Add(new KeywordSyntax("public "));
+            else if (m.IsPrivate) inner.Add(new KeywordSyntax("private "));
+            else if (m.IsAssembly) inner.Add(new KeywordSyntax("assembly ")); //internal
+            else if (m.IsFamily) inner.Add(new KeywordSyntax("family ")); //protected
+            else inner.Add(new KeywordSyntax("famorassem ")); //protected internal
+            
+            if (m.IsHideBySig) inner.Add(new KeywordSyntax("hidebysig "));
 
-            if (m.IsPublic) output.Write("public ");
-            else if (m.IsPrivate) output.Write("private ");
-            else if (m.IsAssembly) output.Write("assembly "); //internal
-            else if (m.IsFamily) output.Write("family "); //protected
-            else output.Write("famorassem "); //protected internal
+            if (m.IsAbstract) inner.Add(new KeywordSyntax("abstract "));
 
-            if (m.IsHideBySig) output.Write("hidebysig ");
+            if (m.IsVirtual) inner.Add(new KeywordSyntax("virtual "));
 
-            if (m.IsAbstract) output.Write("abstract ");
-
-            if (m.IsVirtual) output.Write("virtual ");
-
-            if (m.IsStatic) output.Write("static ");
-            else output.Write("instance ");
+            if (m.IsStatic) inner.Add(new KeywordSyntax("static "));
+            else inner.Add(new KeywordSyntax("instance "));
 
             if (m.CallingConvention == CallingConventions.VarArgs)
             {
-                output.Write("vararg ");
+                inner.Add(new KeywordSyntax("vararg "));
             }
 
             string rt = "";
             if (cm.ReturnType != null) rt = CilAnalysis.GetTypeName(cm.ReturnType) + " ";
-            output.Write(rt);
+            inner.Add(new GenericSyntax(rt));
 
-            output.Write(m.Name);
+            inner.Add(new GenericSyntax(m.Name));
 
             if (m.IsGenericMethod)
             {
-                output.Write('<');
+                inner.Add(new GenericSyntax("<"));
 
                 Type[] args = m.GetGenericArguments();
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) output.Write(", ");
+                    if (i >= 1) inner.Add(new GenericSyntax(", "));
 
-                    if (args[i].IsGenericParameter) output.Write(args[i].Name);
-                    else output.Write(CilAnalysis.GetTypeName(args[i]));
+                    if (args[i].IsGenericParameter) inner.Add(new GenericSyntax(args[i].Name));
+                    else inner.Add(new GenericSyntax(CilAnalysis.GetTypeName(args[i])));
                 }
 
-                output.Write('>');
+                inner.Add(new GenericSyntax(">"));
             }
 
-            output.Write('(');
+            inner.Add(new GenericSyntax("("));
 
             for (int i = 0; i < pars.Length; i++)
             {
-                if (i >= 1) output.WriteLine(", ");
-                else output.WriteLine();
+                if (i >= 1) inner.Add(new GenericSyntax(", " + Environment.NewLine));
+                else inner.Add(new GenericSyntax(Environment.NewLine));
 
-                output.Write("    ");
-                if (pars[i].IsOptional) output.Write("[opt] ");
+                inner.Add(new GenericSyntax("    "));
 
-                output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
+                if (pars[i].IsOptional) inner.Add(new GenericSyntax("[opt] "));
+
+                string partype = CilAnalysis.GetTypeName(pars[i].ParameterType);
 
                 string parname;
                 if (pars[i].Name != null) parname = pars[i].Name;
                 else parname = "par" + (i + 1).ToString();
 
-                output.Write(' ');
-                output.Write(parname);
-
+                inner.Add(new VarDeclSyntax(partype, parname));
             }
 
-            if (pars.Length > 0) output.WriteLine();
-            output.Write(')');
-            output.Write(" cil managed");
-            output.Flush();
-
-            return new DirectiveSyntax("", "method", new SyntaxElement[]{new GenericSyntax(sb.ToString())});
+            if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine));
+            inner.Add(new GenericSyntax(")"));
+            inner.Add(new KeywordSyntax(" cil"));
+            inner.Add(new KeywordSyntax(" managed"));            
+            
+            return new DirectiveSyntax("", "method", inner.ToArray());
         }
     }
 }

@@ -403,7 +403,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (i >= 1) inner.Add(new GenericSyntax(",\r\n    "));
                     LocalVariable local = locals[i];
-                    inner.Add(new VarDeclSyntax(local.LocalTypeSpec.ToString(), " V_" + local.LocalIndex.ToString()));
+                    inner.Add(new VarDeclSyntax(local.LocalTypeSpec.ToString(), "V_" + local.LocalIndex.ToString()));
                 }
 
                 inner.Add(new GenericSyntax(")"));
