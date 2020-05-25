@@ -9,26 +9,26 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class BlockSyntax:SyntaxElement
+    public class BlockSyntax:SyntaxNode
     {
         string _header;
-        List<SyntaxElement> _children;
+        List<SyntaxNode> _children;
         
-        internal List<SyntaxElement> ContentArray { get { return this._children; } set { this._children = value; } }
+        internal List<SyntaxNode> ContentArray { get { return this._children; } set { this._children = value; } }
 
-        internal BlockSyntax(string lead, string header, SyntaxElement[] children)
+        internal BlockSyntax(string lead, string header, SyntaxNode[] children)
         {
             if (lead == null) lead = "";
             if (header == null) header = "";
 
             this._lead = lead;
             this._header = header;
-            this._children = new List<SyntaxElement>(children);
+            this._children = new List<SyntaxNode>(children);
         }
 
         public string Header { get { return this._header; } }
 
-        public IEnumerable<SyntaxElement> Content
+        public IEnumerable<SyntaxNode> Content
         {
             get 
             {
@@ -42,9 +42,15 @@ namespace CilTools.Syntax
         public override void ToText(TextWriter target)
         {
             target.Write(this._lead);
-            target.Write(this._header);
-            target.Write(' ');
+
+            if (this._header.Length > 0)
+            {
+                target.Write(this._header);
+                target.Write(' ');
+            }
+
             target.Write('{');
+            target.WriteLine();
 
             for (int i = 0; i < _children.Count; i++)
             {
@@ -52,6 +58,7 @@ namespace CilTools.Syntax
                 target.WriteLine();
             }
 
+            target.Write(this._lead);
             target.Write('}');
             target.Flush();
         }
