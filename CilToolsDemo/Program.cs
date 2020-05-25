@@ -126,7 +126,7 @@ namespace CilToolsDemo
 
                 MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
                 CilGraph graph = CilGraph.Create(mi);
-
+                
                 graph.Print(null, true, true, true, true);
             }
             catch (Exception ex)

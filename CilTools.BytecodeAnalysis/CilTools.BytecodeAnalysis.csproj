@@ -74,7 +74,7 @@
     <Compile Include="Syntax\GenericSyntax.cs" />
     <Compile Include="Syntax\InstructionSyntax.cs" />
     <Compile Include="Syntax\KeywordSyntax.cs" />
-    <Compile Include="Syntax\SyntaxElement.cs" />
+    <Compile Include="Syntax\SyntaxNode.cs" />
     <Compile Include="Syntax\VarDeclSyntax.cs" />
     <Compile Include="TypeSpec.cs" />
   </ItemGroup>

@@ -11,7 +11,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class KeywordSyntax:SyntaxElement
+    public class KeywordSyntax:SyntaxNode
     {
         string _content;
 

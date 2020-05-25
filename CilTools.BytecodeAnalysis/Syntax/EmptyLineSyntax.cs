@@ -9,7 +9,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class EmptyLineSyntax:SyntaxElement
+    public class EmptyLineSyntax:SyntaxNode
     {
         internal EmptyLineSyntax()
         {

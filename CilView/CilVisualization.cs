@@ -108,7 +108,7 @@ namespace CilView
             StringBuilder sb = new StringBuilder(500);
             StringWriter wr = new StringWriter(sb);
 
-            foreach(SyntaxElement elem in gr.ToSyntax())
+            foreach(SyntaxNode elem in gr.ToSyntax())
             {
                 if (elem is InstructionSyntax)
                 {
@@ -175,7 +175,7 @@ namespace CilView
 
                     if (dir.InnerElementsCount > 1)
                     {
-                        foreach (SyntaxElement subelem in dir.InnerSyntax)
+                        foreach (SyntaxNode subelem in dir.InnerSyntax)
                         {
                             if (subelem is VarDeclSyntax)
                             {

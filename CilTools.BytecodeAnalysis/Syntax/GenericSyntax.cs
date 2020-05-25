@@ -11,7 +11,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    internal class GenericSyntax:SyntaxElement
+    internal class GenericSyntax:SyntaxNode
     {
         string _content;
 

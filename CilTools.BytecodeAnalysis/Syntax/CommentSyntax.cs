@@ -9,7 +9,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class CommentSyntax:SyntaxElement
+    public class CommentSyntax:SyntaxNode
     {
         string _content;
 

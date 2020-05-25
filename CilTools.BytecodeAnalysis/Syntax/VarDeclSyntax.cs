@@ -11,7 +11,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class VarDeclSyntax:SyntaxElement
+    public class VarDeclSyntax:SyntaxNode
     {
         string _type;
         string _name;

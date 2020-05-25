@@ -9,7 +9,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class BlockEndSyntax : SyntaxElement
+    public class BlockEndSyntax : SyntaxNode
     {
         internal BlockEndSyntax(string lead)
         {

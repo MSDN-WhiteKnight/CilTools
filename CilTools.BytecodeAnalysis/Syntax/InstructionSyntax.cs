@@ -9,7 +9,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class InstructionSyntax:SyntaxElement
+    public class InstructionSyntax:SyntaxNode
     {        
         CilGraphNode _node;
 

@@ -11,7 +11,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public abstract class SyntaxElement
+    public abstract class SyntaxNode
     {
         protected string _lead="";
 
@@ -28,12 +28,12 @@ namespace CilTools.Syntax
             return sb.ToString();
         }
 
-        internal static readonly SyntaxElement[] EmptySyntax = new SyntaxElement[] { new GenericSyntax(String.Empty) };
+        internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
 
-        internal static SyntaxElement[] GetAttributesSyntax(MethodBase m)
+        internal static SyntaxNode[] GetAttributesSyntax(MethodBase m)
         {
             object[] attrs = m.GetCustomAttributes(false);
-            List<SyntaxElement> ret = new List<SyntaxElement>(attrs.Length);
+            List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
             string content;
 
             for (int i = 0; i < attrs.Length; i++)
@@ -58,7 +58,7 @@ namespace CilTools.Syntax
                         output.Write(" = ( 01 00 00 00 )"); //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
                         output.Flush();
                         content = sb.ToString();
-                        DirectiveSyntax dir = new DirectiveSyntax(" ", "custom", new SyntaxElement[] { new GenericSyntax(content) });
+                        DirectiveSyntax dir = new DirectiveSyntax(" ", "custom", new SyntaxNode[] { new GenericSyntax(content) });
                         ret.Add(dir);
                     }
                     else
@@ -86,10 +86,10 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
-        internal static SyntaxElement[] GetDefaultsSyntax(MethodBase m)
+        internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m)
         {
             ParameterInfo[] pars = m.GetParameters();
-            List<SyntaxElement> ret = new List<SyntaxElement>(pars.Length);
+            List<SyntaxNode> ret = new List<SyntaxNode>(pars.Length);
 
             for (int i = 0; i < pars.Length; i++)
             {
@@ -121,7 +121,7 @@ namespace CilTools.Syntax
                     output.Flush();
 
                     string content = sb.ToString();
-                    DirectiveSyntax dir = new DirectiveSyntax(" ", "param", new SyntaxElement[] { new GenericSyntax(content) });
+                    DirectiveSyntax dir = new DirectiveSyntax(" ", "param", new SyntaxNode[] { new GenericSyntax(content) });
                     ret.Add(dir);
                 }
             }//end for

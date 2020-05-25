@@ -11,10 +11,10 @@ using CilTools.Reflection;
 
 namespace CilTools.Syntax
 {
-    public class DirectiveSyntax:SyntaxElement
+    public class DirectiveSyntax:SyntaxNode
     {        
         string _name;
-        SyntaxElement[] _content;
+        SyntaxNode[] _content;
         
         public string Name { get { return this._name; } }
 
@@ -41,7 +41,7 @@ namespace CilTools.Syntax
             } 
         }
 
-        public IEnumerable<SyntaxElement> InnerSyntax 
+        public IEnumerable<SyntaxNode> InnerSyntax 
         { 
             get 
             {
@@ -51,10 +51,10 @@ namespace CilTools.Syntax
 
         public int InnerElementsCount { get { return this._content.Length; } }
 
-        internal DirectiveSyntax(string lead, string name, SyntaxElement[] content)
+        internal DirectiveSyntax(string lead, string name, SyntaxNode[] content)
         {
             if (lead == null) lead = "";
-            if (content == null) content = new SyntaxElement[0];            
+            if (content == null) content = new SyntaxNode[0];            
 
             this._lead = lead;
             this._name = name;
@@ -77,7 +77,7 @@ namespace CilTools.Syntax
             CustomMethod cm = (CustomMethod)m;
             ParameterInfo[] pars = m.GetParameters();
             
-            List<SyntaxElement> inner = new List<SyntaxElement>(100);
+            List<SyntaxNode> inner = new List<SyntaxNode>(100);
 
             if (m.IsPublic) inner.Add(new KeywordSyntax("public "));
             else if (m.IsPrivate) inner.Add(new KeywordSyntax("private "));
