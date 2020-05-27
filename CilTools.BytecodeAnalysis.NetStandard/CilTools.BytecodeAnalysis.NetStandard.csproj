@@ -51,7 +51,9 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockEndSyntax.cs"  Link="BlockEndSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockStartSyntax.cs"  Link="BlockStartSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\EmptyLineSyntax.cs"  Link="EmptyLineSyntax.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\VarDeclSyntax.cs"  Link="VarDeclSyntax.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\TypeRefSyntax.cs"  Link="TypeRefSyntax.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\PunctuationSyntax.cs"  Link="PunctuationSyntax.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\IdentifierSyntax.cs"  Link="IdentifierSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\KeywordSyntax.cs"  Link="KeywordSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\GenericSyntax.cs"  Link="GenericSyntax.cs"/>
   </ItemGroup>

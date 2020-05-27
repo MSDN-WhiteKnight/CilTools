@@ -397,16 +397,17 @@ namespace CilTools.BytecodeAnalysis
                     if (cm.InitLocals)inner.Add(new KeywordSyntax("init "));
                 }
 
-                inner.Add(new GenericSyntax("("));
+                inner.Add(new PunctuationSyntax("("));
 
                 for (int i = 0; i < locals.Length; i++)
                 {
-                    if (i >= 1) inner.Add(new GenericSyntax(",\r\n    "));
+                    if (i >= 1) inner.Add(new PunctuationSyntax(",\r\n    "));
                     LocalVariable local = locals[i];
-                    inner.Add(new VarDeclSyntax(local.LocalTypeSpec.ToString(), "V_" + local.LocalIndex.ToString()));
+                    inner.Add(new TypeRefSyntax(local.LocalTypeSpec.ToString()));
+                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString()));
                 }
 
-                inner.Add(new GenericSyntax(")"));
+                inner.Add(new PunctuationSyntax(")"));
 
                 DirectiveSyntax dir = new DirectiveSyntax( " ", "locals", inner.ToArray());
 

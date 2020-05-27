@@ -177,24 +177,11 @@ namespace CilView
                     {
                         foreach (SyntaxNode subelem in dir.InnerSyntax)
                         {
-                            if (subelem is VarDeclSyntax)
-                            {
-                                VarDeclSyntax vdc = (VarDeclSyntax)subelem;
-                                r = new Run();
-                                r.Text = vdc.Type+" ";
-                                r.Foreground = Brushes.CornflowerBlue;
-                                line.Inlines.Add(r);
-                                r = new Run();
-                                r.Text = vdc.Name;
-                                line.Inlines.Add(r);
-                            }
-                            else
-                            {
-                                r = new Run();
-                                r.Text = subelem.ToString();
-                                if (subelem is KeywordSyntax) r.Foreground = Brushes.Blue;
-                                line.Inlines.Add(r);
-                            }
+                            r = new Run();
+                            r.Text = subelem.ToString();
+                            if (subelem is KeywordSyntax) r.Foreground = Brushes.Blue;
+                            else if (subelem is TypeRefSyntax) r.Foreground = Brushes.CornflowerBlue;
+                            line.Inlines.Add(r);
                         }
                     }
                     else

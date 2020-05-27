@@ -101,31 +101,31 @@ namespace CilTools.Syntax
 
             string rt = "";
             if (cm.ReturnType != null) rt = CilAnalysis.GetTypeName(cm.ReturnType) + " ";
-            inner.Add(new GenericSyntax(rt));
+            inner.Add(new TypeRefSyntax(rt));
 
-            inner.Add(new GenericSyntax(m.Name));
+            inner.Add(new IdentifierSyntax(String.Empty,m.Name));
 
             if (m.IsGenericMethod)
             {
-                inner.Add(new GenericSyntax("<"));
+                inner.Add(new PunctuationSyntax("<"));
 
                 Type[] args = m.GetGenericArguments();
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) inner.Add(new GenericSyntax(", "));
+                    if (i >= 1) inner.Add(new PunctuationSyntax(", "));
 
                     if (args[i].IsGenericParameter) inner.Add(new GenericSyntax(args[i].Name));
                     else inner.Add(new GenericSyntax(CilAnalysis.GetTypeName(args[i])));
                 }
 
-                inner.Add(new GenericSyntax(">"));
+                inner.Add(new PunctuationSyntax(">"));
             }
 
-            inner.Add(new GenericSyntax("("));
+            inner.Add(new PunctuationSyntax("("));
 
             for (int i = 0; i < pars.Length; i++)
             {
-                if (i >= 1) inner.Add(new GenericSyntax(", " + Environment.NewLine));
+                if (i >= 1) inner.Add(new PunctuationSyntax(", " + Environment.NewLine));
                 else inner.Add(new GenericSyntax(Environment.NewLine));
 
                 inner.Add(new GenericSyntax("    "));
@@ -138,11 +138,12 @@ namespace CilTools.Syntax
                 if (pars[i].Name != null) parname = pars[i].Name;
                 else parname = "par" + (i + 1).ToString();
 
-                inner.Add(new VarDeclSyntax(partype, parname));
+                inner.Add(new TypeRefSyntax(partype));
+                inner.Add(new IdentifierSyntax(" ",parname));
             }
 
             if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine));
-            inner.Add(new GenericSyntax(")"));
+            inner.Add(new PunctuationSyntax(")"));
             inner.Add(new KeywordSyntax(" cil"));
             inner.Add(new KeywordSyntax(" managed"));            
             
