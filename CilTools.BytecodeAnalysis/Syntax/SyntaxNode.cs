@@ -13,12 +13,21 @@ namespace CilTools.Syntax
 {
     public abstract class SyntaxNode
     {
-        protected string _lead="";
+        protected string _lead=String.Empty;
+        protected string _trail = String.Empty;
+
+        internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
+
+        internal static readonly SyntaxNode[] EmptyArray = new SyntaxNode[] { };
 
         public abstract void ToText(TextWriter target);
 
+        public abstract IEnumerable<SyntaxNode> EnumerateChildNodes();
+
         public string LeadingTrivia { get { return this._lead; } }
 
+        public string TrailingTrivia { get { return this._trail; } }
+        
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(60);
@@ -28,11 +37,18 @@ namespace CilTools.Syntax
             return sb.ToString();
         }
 
-        public abstract IEnumerable<SyntaxNode> EnumerateChildNodes();
+        public SyntaxNode[] GetChildNodes()
+        {
+            IEnumerable<SyntaxNode> ienum = this.EnumerateChildNodes();
 
-        internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
+            if (ienum is SyntaxNode[]) return (SyntaxNode[])ienum;
 
-        internal static readonly SyntaxNode[] EmptyArray = new SyntaxNode[] {  };
+            List<SyntaxNode> ret = new List<SyntaxNode>(50);
+
+            foreach (SyntaxNode node in ienum) ret.Add(node);
+
+            return ret.ToArray();
+        }
 
         internal static SyntaxNode[] GetAttributesSyntax(MethodBase m)
         {
@@ -58,8 +74,10 @@ namespace CilTools.Syntax
                         Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
                         )
                     {
+                        output.Write(' ');
                         output.Write(s_attr);
                         output.Write(" = ( 01 00 00 00 )"); //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
+                        output.WriteLine();
                         output.Flush();
                         content = sb.ToString();
                         DirectiveSyntax dir = new DirectiveSyntax(" ", "custom", new SyntaxNode[] { new GenericSyntax(content) });
@@ -69,6 +87,7 @@ namespace CilTools.Syntax
                     {
                         output.Write(".custom ");
                         output.Write(s_attr);
+                        output.WriteLine();
                         output.Flush();
                         content = sb.ToString();
                         CommentSyntax node = new CommentSyntax(" ", content);
@@ -80,6 +99,7 @@ namespace CilTools.Syntax
                     output.Write(".custom ");
                     s_attr = CilAnalysis.GetTypeNameInternal(t);
                     output.Write(s_attr);
+                    output.WriteLine();
                     output.Flush();
                     content = sb.ToString();
                     CommentSyntax node = new CommentSyntax(" ", content);
@@ -101,6 +121,7 @@ namespace CilTools.Syntax
                 {
                     StringBuilder sb = new StringBuilder(100);
                     StringWriter output = new StringWriter(sb);
+                    output.Write(' ');
                     output.Write('[');
                     output.Write((i + 1).ToString());
                     output.Write("] = ");
@@ -122,6 +143,7 @@ namespace CilTools.Syntax
                         }
                     }
                     else output.Write("nullref");
+                    output.WriteLine();
                     output.Flush();
 
                     string content = sb.ToString();

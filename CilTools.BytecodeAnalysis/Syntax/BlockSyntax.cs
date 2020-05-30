@@ -67,17 +67,20 @@ namespace CilTools.Syntax
         {
             if (this._header.Length > 0)
             {
-                yield return new GenericSyntax(this._header);
+                yield return new GenericSyntax(this._lead + this._header + " ");
+                yield return new PunctuationSyntax(String.Empty, "{", Environment.NewLine);
             }
-
-            yield return new PunctuationSyntax("{");
+            else
+            {
+                yield return new PunctuationSyntax(this._lead, "{", Environment.NewLine);
+            }
 
             for (int i = 0; i < _children.Count; i++)
             {
                 yield return _children[i];
             }
 
-            yield return new PunctuationSyntax("}");
+            yield return new PunctuationSyntax(this._lead, "}", Environment.NewLine);
         }
     }
 }

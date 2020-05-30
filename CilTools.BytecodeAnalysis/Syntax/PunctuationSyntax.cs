@@ -15,9 +15,14 @@ namespace CilTools.Syntax
 
         public string Content { get { return this._content; } }
 
-        internal PunctuationSyntax(string content)
+        internal PunctuationSyntax(string lead, string content, string trail)
         {
+            if (lead == null) lead = String.Empty;
+            if (trail == null) trail = String.Empty;
+
+            this._lead = lead;
             this._content = content;
+            this._trail = trail;
         }
         
         public override void ToText(TextWriter target)
@@ -26,6 +31,7 @@ namespace CilTools.Syntax
 
             target.Write(this._lead);
             target.Write(this._content);
+            target.Write(this._trail);
             target.Flush();
         }
 

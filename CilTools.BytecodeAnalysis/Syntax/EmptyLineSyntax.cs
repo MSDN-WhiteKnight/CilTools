@@ -18,7 +18,8 @@ namespace CilTools.Syntax
 
         public override void ToText(TextWriter target)
         {
-            //do nothing
+            target.Write(Environment.NewLine);
+            target.Flush();
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()

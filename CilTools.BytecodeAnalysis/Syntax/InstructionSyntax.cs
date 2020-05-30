@@ -39,7 +39,7 @@ namespace CilTools.Syntax
 
             if (!String.IsNullOrEmpty(this.Label)) {
                 yield return new IdentifierSyntax(" ", this.Label);
-                yield return new PunctuationSyntax(": ");
+                yield return new PunctuationSyntax(String.Empty,":"," ");
                 pad = "";
             }
             else pad = "".PadLeft(10, ' ');
@@ -56,15 +56,15 @@ namespace CilTools.Syntax
 
                 if (swtargets.Length > 0) //append switch target list
                 {
-                    yield return new PunctuationSyntax("(");
+                    yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
 
                     for (int i = 0; i < swtargets.Length; i++)
                     {
-                        if (i >= 1) yield return new PunctuationSyntax(",");
+                        if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", String.Empty);
                         yield return new IdentifierSyntax(String.Empty,swtargets[i].Name);
                     }
 
-                    yield return new PunctuationSyntax(")");
+                    yield return new PunctuationSyntax(String.Empty, ")", String.Empty);
                 }
                 else
                 {

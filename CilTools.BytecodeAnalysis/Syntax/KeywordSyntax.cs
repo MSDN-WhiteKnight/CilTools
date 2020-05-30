@@ -17,11 +17,14 @@ namespace CilTools.Syntax
 
         public string Content { get { return this._content; } }
 
-        internal KeywordSyntax(string content)
+        internal KeywordSyntax(string lead, string content, string trail)
         {
-            if (content == null) content = "";
+            if (lead == null) lead = "";
+            if (trail == null) trail = "";
 
+            this._lead = lead;
             this._content = content;
+            this._trail = trail;
         }
 
         public override void ToText(TextWriter target)
@@ -30,6 +33,7 @@ namespace CilTools.Syntax
 
             target.Write(this._lead);
             target.Write(this._content);
+            target.Write(this._trail);
             target.Flush();
         }
 
