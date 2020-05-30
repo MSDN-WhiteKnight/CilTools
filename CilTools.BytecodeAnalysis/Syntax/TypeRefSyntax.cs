@@ -28,5 +28,10 @@ namespace CilTools.Syntax
             target.Write(this._content);
             target.Flush();
         }
+
+        public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+        {
+            return SyntaxNode.EmptyArray;
+        }
     }
 }

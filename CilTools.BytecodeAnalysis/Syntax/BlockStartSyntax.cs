@@ -42,5 +42,10 @@ namespace CilTools.Syntax
             this.WriteHeader(target);
             target.Write('{');
         }
+
+        public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+        {
+            return SyntaxNode.EmptyArray;
+        }
     }
 }

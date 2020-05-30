@@ -72,6 +72,13 @@ namespace CilTools.Syntax
             this.WriteContent(target);
         }
 
+        public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+        {
+            yield return new KeywordSyntax("."+this._name);
+
+            for (int i = 0; i < this._content.Length; i++) yield return this._content[i];
+        }
+
         internal static DirectiveSyntax FromMethodSignature(MethodBase m)
         {
             CustomMethod cm = (CustomMethod)m;

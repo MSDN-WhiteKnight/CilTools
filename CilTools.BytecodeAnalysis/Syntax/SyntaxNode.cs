@@ -28,7 +28,11 @@ namespace CilTools.Syntax
             return sb.ToString();
         }
 
+        public abstract IEnumerable<SyntaxNode> EnumerateChildNodes();
+
         internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
+
+        internal static readonly SyntaxNode[] EmptyArray = new SyntaxNode[] {  };
 
         internal static SyntaxNode[] GetAttributesSyntax(MethodBase m)
         {

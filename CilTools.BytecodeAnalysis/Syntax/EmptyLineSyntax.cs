@@ -20,5 +20,10 @@ namespace CilTools.Syntax
         {
             //do nothing
         }
+
+        public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+        {
+            return SyntaxNode.EmptyArray;
+        }
     }
 }

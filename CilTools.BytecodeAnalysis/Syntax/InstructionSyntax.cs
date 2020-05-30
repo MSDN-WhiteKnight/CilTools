@@ -33,6 +33,46 @@ namespace CilTools.Syntax
             this.WriteOperand(target);
         }
 
+        public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+        {
+            string pad;
+
+            if (!String.IsNullOrEmpty(this.Label)) {
+                yield return new IdentifierSyntax(" ", this.Label);
+                yield return new PunctuationSyntax(": ");
+                pad = "";
+            }
+            else pad = "".PadLeft(10, ' ');
+            
+            yield return new GenericSyntax(pad + this.Operation.PadRight(11));
+
+            if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
+            {
+                yield return new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name);
+            }
+            else
+            {
+                CilGraphNode[] swtargets = this._node.GetSwitchTargets();
+
+                if (swtargets.Length > 0) //append switch target list
+                {
+                    yield return new PunctuationSyntax("(");
+
+                    for (int i = 0; i < swtargets.Length; i++)
+                    {
+                        if (i >= 1) yield return new PunctuationSyntax(",");
+                        yield return new IdentifierSyntax(String.Empty,swtargets[i].Name);
+                    }
+
+                    yield return new PunctuationSyntax(")");
+                }
+                else
+                {
+                    yield return new GenericSyntax(this.Operand); //print regular instruction operand
+                }
+            }
+        }
+
         public string Label
         {
             get
@@ -63,15 +103,7 @@ namespace CilTools.Syntax
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            if (this._node.BranchTarget != null) 
-            {
-                target.Write(this.Operation.PadRight(11));
-            }
-            else
-            {
-                target.Write(this.Operation.PadRight(11));
-            }
-
+            target.Write(this.Operation.PadRight(11));
             target.Flush();
         }
 
