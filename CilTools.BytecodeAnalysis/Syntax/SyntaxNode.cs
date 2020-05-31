@@ -24,9 +24,9 @@ namespace CilTools.Syntax
 
         public abstract IEnumerable<SyntaxNode> EnumerateChildNodes();
 
-        public string LeadingTrivia { get { return this._lead; } }
+        public string LeadingWhitespace { get { return this._lead; } }
 
-        public string TrailingTrivia { get { return this._trail; } }
+        public string TrailingWhitespace { get { return this._trail; } }
         
         public override string ToString()
         {
