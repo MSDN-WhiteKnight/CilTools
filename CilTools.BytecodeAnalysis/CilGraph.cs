@@ -401,7 +401,7 @@ namespace CilTools.BytecodeAnalysis
                     if (i >= 1) inner.Add(new PunctuationSyntax(String.Empty,",","\r\n    "));
                     LocalVariable local = locals[i];
                     inner.Add(new TypeRefSyntax(local.LocalTypeSpec.ToString()));
-                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString()));
+                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), String.Empty));
                 }
 
                 inner.Add(new PunctuationSyntax(String.Empty, ")", Environment.NewLine));
@@ -483,7 +483,6 @@ namespace CilTools.BytecodeAnalysis
                 for (int i = 0; i < elems.Length; i++)
                 {
                     elems[i].ToText(output);
-                    output.WriteLine();
                 }
 
             }//endif
@@ -539,11 +538,8 @@ namespace CilTools.BytecodeAnalysis
                 {
                     indent.Push(' ');
 
-                    /*BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "");
-                    ret.Add(bss);*/
-
                     DirectiveSyntax dir = new DirectiveSyntax(
-                        new String(indent.ToArray()), "try", SyntaxNode.EmptySyntax 
+                        new String(indent.ToArray()), "try", SyntaxNode.EmptyArray 
                         );
 
                     curr_node.ContentArray.Add(dir);
@@ -556,9 +552,6 @@ namespace CilTools.BytecodeAnalysis
 
                 for (int i = 0; i < distinct_ends.Count; i++)
                 {
-                    /*BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
-                    ret.Add(bes);*/
-
                     if (currentpath.Count == 0) {
                         throw new CilParserException("Parse error: Unexpected block end");
                     }
@@ -574,16 +567,12 @@ namespace CilTools.BytecodeAnalysis
 
                     curr_node.ContentArray.Add(new_node);
 
-                    //***
                     if (indent.Count > 0) indent.Pop();
                 }
 
                 // end handler
                 for (int i = 0; i < ended_blocks.Count; i++)
                 {
-                    /*BlockEndSyntax bes = new BlockEndSyntax(new String(indent.ToArray()));
-                    ret.Add(bes);*/
-
                     if (currentpath.Count == 0)
                     {
                         throw new CilParserException("Parse error: Unexpected block end");
@@ -612,9 +601,6 @@ namespace CilTools.BytecodeAnalysis
                     new_node = new BlockSyntax(new String(indent.ToArray()), "filter", new SyntaxNode[0]);
                     currentpath.Add(new_node);
                     curr_node = new_node;
-                    
-                    /*BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "filter");
-                    ret.Add(bss);*/
                 }
 
                 // handler start
@@ -633,16 +619,11 @@ namespace CilTools.BytecodeAnalysis
                         new_node = new BlockSyntax(new String(indent.ToArray()), "catch " + st, new SyntaxNode[0]);
                         currentpath.Add(new_node);
                         curr_node = new_node;
-
-                        /*BlockStartSyntax bss = new BlockStartSyntax(new String(indent.ToArray()), "catch " + st);
-                        ret.Add(bss);*/
                     }
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Filter) != 0)
                     {
                         if (indent.Count > 0) indent.Pop();
                         
-                        //ret.Add(new BlockEndSyntax(new String(indent.ToArray())));
-
                         if (currentpath.Count == 0)
                         {
                             throw new CilParserException("Parse error: Unexpected block end");
@@ -658,27 +639,19 @@ namespace CilTools.BytecodeAnalysis
                             curr_node = root;
 
                         curr_node.ContentArray.Add(new_node);
-
-                        //***
-
+                        
                         new_node = new BlockSyntax(new String(indent.ToArray()), "", new SyntaxNode[0]);
                         currentpath.Add(new_node);
                         curr_node = new_node;
-                        
-                        //ret.Add(new BlockStartSyntax(new String(indent.ToArray()),""));
                     }
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Finally) != 0)
                     {
-                        //ret.Add(new BlockStartSyntax(new String(indent.ToArray()), "finally"));
-
                         new_node = new BlockSyntax(new String(indent.ToArray()), "finally", new SyntaxNode[0]);
                         currentpath.Add(new_node);
                         curr_node = new_node;
                     }
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Fault) != 0)
                     {
-                        //ret.Add(new BlockStartSyntax(new String(indent.ToArray()), "fault"));
-
                         new_node = new BlockSyntax(new String(indent.ToArray()), "fault", new SyntaxNode[0]);
                         currentpath.Add(new_node);
                         curr_node = new_node;
@@ -686,8 +659,7 @@ namespace CilTools.BytecodeAnalysis
                 }
 
                 curr_node.ContentArray.Add(new InstructionSyntax(new String(indent.ToArray()), node));
-                //ret.Add(new InstructionSyntax(new String(indent.ToArray()),node));
-
+                
                 if (node.Next == null) break; //last instruction
                 else node = node.Next;
 
@@ -703,14 +675,11 @@ namespace CilTools.BytecodeAnalysis
             if (currentpath.Count > 0) throw new CilParserException("Parse error: Not all blocks are closed");
 
             return root.ContentArray.ToArray();
-
-            //return ret.ToArray();
         }
 
-        public SyntaxNode[] ToSyntaxTree()
+        public MethodDefSyntax ToSyntaxTree()
         {
-            SyntaxNode[] res = new SyntaxNode[2];
-            res[0] = DirectiveSyntax.FromMethodSignature(this._Method);
+            DirectiveSyntax sig = DirectiveSyntax.FromMethodSignature(this._Method);
 
             List<SyntaxNode> nodes = new List<SyntaxNode>(100);
 
@@ -744,8 +713,7 @@ namespace CilTools.BytecodeAnalysis
                 nodes.Add(arr[i]);
             }
 
-            res[1] = new BlockSyntax("", "", nodes.ToArray());
-            return res;
+            return new MethodDefSyntax(sig, new BlockSyntax("", "", nodes.ToArray()));
         }
 
         /// <summary>

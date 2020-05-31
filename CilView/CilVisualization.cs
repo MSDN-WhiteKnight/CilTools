@@ -192,7 +192,7 @@ namespace CilView
             fd.TextAlignment = TextAlignment.Left;
             fd.FontFamily = new FontFamily("Courier New");
             
-            SyntaxNode[] tree = gr.ToSyntaxTree();
+            SyntaxNode[] tree = gr.ToSyntaxTree().GetChildNodes();
             Paragraph par = new Paragraph();
 
             for (int i = 0; i < tree.Length; i++) VisualizeNode(tree[i], par, navigation);

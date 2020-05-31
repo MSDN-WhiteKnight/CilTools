@@ -18,6 +18,7 @@ namespace CilTools.Syntax
             if (lead == null) lead = "";
             this._lead = lead;
             this._node = node;
+            this._trail = Environment.NewLine;
         }
 
         public override void ToText(TextWriter target)
@@ -31,6 +32,7 @@ namespace CilTools.Syntax
 
             this.WriteOperation(target);
             this.WriteOperand(target);
+            target.Write(this._trail);
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
@@ -38,7 +40,7 @@ namespace CilTools.Syntax
             string pad;
 
             if (!String.IsNullOrEmpty(this.Label)) {
-                yield return new IdentifierSyntax(" ", this.Label);
+                yield return new IdentifierSyntax(" ", this.Label, String.Empty);
                 yield return new PunctuationSyntax(String.Empty,":"," ");
                 pad = "";
             }
@@ -48,7 +50,7 @@ namespace CilTools.Syntax
 
             if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
             {
-                yield return new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name);
+                yield return new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, this._trail);
             }
             else
             {
@@ -61,14 +63,14 @@ namespace CilTools.Syntax
                     for (int i = 0; i < swtargets.Length; i++)
                     {
                         if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", String.Empty);
-                        yield return new IdentifierSyntax(String.Empty,swtargets[i].Name);
+                        yield return new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty);
                     }
 
-                    yield return new PunctuationSyntax(String.Empty, ")", String.Empty);
+                    yield return new PunctuationSyntax(String.Empty, ")", this._trail);
                 }
                 else
                 {
-                    yield return new GenericSyntax(this.Operand); //print regular instruction operand
+                    yield return new GenericSyntax(this.Operand + this._trail); //print regular instruction operand
                 }
             }
         }

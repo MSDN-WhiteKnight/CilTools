@@ -24,7 +24,6 @@ namespace CilTools.Syntax
             if (this._content.Length == 0) return;
 
             for (int i = 0; i < this._content.Length; i++) this._content[i].ToText(target);
-
             target.Flush();
         }
 
@@ -68,14 +67,30 @@ namespace CilTools.Syntax
             target.Write(this._lead);
             target.Write('.');
             target.Write(this._name);
-            this.WriteContent(target);
+
+            if (this._content.Length > 0)
+            {
+                target.Write(' ');
+                this.WriteContent(target);
+            }
+            else
+            {
+                target.WriteLine();
+            }
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
-            yield return new KeywordSyntax(this._lead, "." + this._name, String.Empty);
+            if (this._content.Length > 0)
+            {
+                yield return new KeywordSyntax(this._lead, "." + this._name, " ");
 
-            for (int i = 0; i < this._content.Length; i++) yield return this._content[i];
+                for (int i = 0; i < this._content.Length; i++) yield return this._content[i];
+            }
+            else
+            {
+                yield return new KeywordSyntax(this._lead, "." + this._name, Environment.NewLine);
+            }
         }
 
         internal static DirectiveSyntax FromMethodSignature(MethodBase m)
@@ -109,7 +124,7 @@ namespace CilTools.Syntax
             if (cm.ReturnType != null) rt = " "+CilAnalysis.GetTypeName(cm.ReturnType);
             inner.Add(new TypeRefSyntax(rt));
 
-            inner.Add(new IdentifierSyntax(" ", m.Name));
+            inner.Add(new IdentifierSyntax(" ", m.Name, String.Empty));
 
             if (m.IsGenericMethod)
             {
@@ -145,13 +160,13 @@ namespace CilTools.Syntax
                 else parname = "par" + (i + 1).ToString();
 
                 inner.Add(new TypeRefSyntax(partype));
-                inner.Add(new IdentifierSyntax(" ",parname));
+                inner.Add(new IdentifierSyntax(" ", parname, String.Empty));
             }
 
             if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine));
             inner.Add(new PunctuationSyntax(String.Empty, ")", String.Empty));
             inner.Add(new KeywordSyntax(" ", "cil", String.Empty));
-            inner.Add(new KeywordSyntax(" ", "managed",Environment.NewLine));
+            inner.Add(new KeywordSyntax(" ", "managed", Environment.NewLine));
             
             return new DirectiveSyntax("", "method", inner.ToArray());
         }

@@ -41,25 +41,26 @@ namespace CilTools.Syntax
 
         public override void ToText(TextWriter target)
         {
-            target.Write(this._lead);
-
             if (this._header.Length > 0)
             {
-                target.Write(this._header);
-                target.Write(' ');
+                target.Write(this._lead);
+                target.WriteLine(this._header);
+                target.Write(this._lead);
+                target.WriteLine('{');
             }
-
-            target.Write('{');
-            target.WriteLine();
+            else
+            {
+                target.Write(this._lead);
+                target.WriteLine('{');
+            }
 
             for (int i = 0; i < _children.Count; i++)
             {
                 _children[i].ToText(target);
-                target.WriteLine();
             }
 
             target.Write(this._lead);
-            target.Write('}');
+            target.WriteLine('}');
             target.Flush();
         }
 
@@ -67,8 +68,8 @@ namespace CilTools.Syntax
         {
             if (this._header.Length > 0)
             {
-                yield return new GenericSyntax(this._lead + this._header + " ");
-                yield return new PunctuationSyntax(String.Empty, "{", Environment.NewLine);
+                yield return new GenericSyntax(this._lead + this._header);
+                yield return new PunctuationSyntax(Environment.NewLine + this._lead, "{", Environment.NewLine);
             }
             else
             {

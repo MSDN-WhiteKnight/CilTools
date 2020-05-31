@@ -75,6 +75,7 @@
     <Compile Include="Syntax\IdentifierSyntax.cs" />
     <Compile Include="Syntax\InstructionSyntax.cs" />
     <Compile Include="Syntax\KeywordSyntax.cs" />
+    <Compile Include="Syntax\MethodDefSyntax.cs" />
     <Compile Include="Syntax\PunctuationSyntax.cs" />
     <Compile Include="Syntax\SyntaxNode.cs" />
     <Compile Include="Syntax\TypeRefSyntax.cs" />

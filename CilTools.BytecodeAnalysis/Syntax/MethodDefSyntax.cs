@@ -4,39 +4,47 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Reflection;
 using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class IdentifierSyntax : SyntaxNode
+    public class MethodDefSyntax : SyntaxNode
     {
-        string _content;
+        DirectiveSyntax _sig;
+        BlockSyntax _body;
 
-        public string Content { get { return this._content; } }
-
-        internal IdentifierSyntax(string lead, string content, string trail)
+        public DirectiveSyntax Signature
         {
-            if (lead == null) lead = "";
-            if (trail == null) trail = "";
-            this._lead = lead;
-            this._content = content;
-            this._trail = trail;
+            get { return this._sig; }
         }
-        
+
+        public BlockSyntax Body
+        {
+            get { return this._body; }
+        }
+
+        internal MethodDefSyntax(DirectiveSyntax sig, BlockSyntax body)
+        {
+            this._sig = sig;
+            this._body = body;
+        }
+
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
 
             target.Write(this._lead);
-            target.Write(this._content);
+            this._sig.ToText(target);
+            this._body.ToText(target);
             target.Write(this._trail);
-            target.Flush();
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
-            return SyntaxNode.EmptyArray;
+            return new SyntaxNode[] { this._sig, this._body };
         }
     }
 }
