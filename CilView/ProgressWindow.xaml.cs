@@ -43,7 +43,6 @@ namespace CilView
         {
             this.progress.IsIndeterminate = false;
             operation.Stop();
-            this.DialogResult = false;
         }
 
         private void bCancel_Click(object sender, RoutedEventArgs e)

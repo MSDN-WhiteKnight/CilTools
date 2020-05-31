@@ -9,7 +9,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class EmptyLineSyntax:SyntaxElement
+    public class EmptyLineSyntax:SyntaxNode
     {
         internal EmptyLineSyntax()
         {
@@ -18,7 +18,13 @@ namespace CilTools.Syntax
 
         public override void ToText(TextWriter target)
         {
-            //do nothing
+            target.Write(Environment.NewLine);
+            target.Flush();
+        }
+
+        public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+        {
+            return SyntaxNode.EmptyArray;
         }
     }
 }

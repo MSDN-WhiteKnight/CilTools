@@ -11,17 +11,25 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    internal class GenericSyntax:SyntaxNode
+    public class MethodDefSyntax : SyntaxNode
     {
-        string _content;
+        DirectiveSyntax _sig;
+        BlockSyntax _body;
 
-        public string Content { get { return this._content; } }
-
-        internal GenericSyntax(string content)
+        public DirectiveSyntax Signature
         {
-            if (content == null) content = "";
+            get { return this._sig; }
+        }
 
-            this._content = content;
+        public BlockSyntax Body
+        {
+            get { return this._body; }
+        }
+
+        internal MethodDefSyntax(DirectiveSyntax sig, BlockSyntax body)
+        {
+            this._sig = sig;
+            this._body = body;
         }
 
         public override void ToText(TextWriter target)
@@ -29,13 +37,14 @@ namespace CilTools.Syntax
             if (target == null) throw new ArgumentNullException("target");
 
             target.Write(this._lead);
-            target.Write(this._content);
-            target.Flush();
+            this._sig.ToText(target);
+            this._body.ToText(target);
+            target.Write(this._trail);
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
-            return SyntaxNode.EmptyArray;
+            return new SyntaxNode[] { this._sig, this._body };
         }
     }
 }

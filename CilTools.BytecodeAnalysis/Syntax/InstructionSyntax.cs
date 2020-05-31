@@ -9,7 +9,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class InstructionSyntax:SyntaxElement
+    public class InstructionSyntax:SyntaxNode
     {        
         CilGraphNode _node;
 
@@ -18,6 +18,7 @@ namespace CilTools.Syntax
             if (lead == null) lead = "";
             this._lead = lead;
             this._node = node;
+            this._trail = Environment.NewLine;
         }
 
         public override void ToText(TextWriter target)
@@ -31,6 +32,47 @@ namespace CilTools.Syntax
 
             this.WriteOperation(target);
             this.WriteOperand(target);
+            target.Write(this._trail);
+        }
+
+        public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+        {
+            string pad;
+
+            if (!String.IsNullOrEmpty(this.Label)) {
+                yield return new IdentifierSyntax(" ", this.Label, String.Empty);
+                yield return new PunctuationSyntax(String.Empty,":"," ");
+                pad = "";
+            }
+            else pad = "".PadLeft(10, ' ');
+            
+            yield return new GenericSyntax(pad + this.Operation.PadRight(11));
+
+            if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
+            {
+                yield return new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, this._trail);
+            }
+            else
+            {
+                CilGraphNode[] swtargets = this._node.GetSwitchTargets();
+
+                if (swtargets.Length > 0) //append switch target list
+                {
+                    yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
+
+                    for (int i = 0; i < swtargets.Length; i++)
+                    {
+                        if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", String.Empty);
+                        yield return new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty);
+                    }
+
+                    yield return new PunctuationSyntax(String.Empty, ")", this._trail);
+                }
+                else
+                {
+                    yield return new GenericSyntax(this.Operand + this._trail); //print regular instruction operand
+                }
+            }
         }
 
         public string Label
@@ -63,15 +105,7 @@ namespace CilTools.Syntax
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            if (this._node.BranchTarget != null) 
-            {
-                target.Write(this.Operation.PadRight(11));
-            }
-            else
-            {
-                target.Write(this.Operation.PadRight(11));
-            }
-
+            target.Write(this.Operation.PadRight(11));
             target.Flush();
         }
 

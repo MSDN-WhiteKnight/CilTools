@@ -9,7 +9,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class CommentSyntax:SyntaxElement
+    public class CommentSyntax:SyntaxNode
     {
         string _content;
 
@@ -18,6 +18,7 @@ namespace CilTools.Syntax
             if (lead == null) lead = "";
             this._lead = lead;
             this._content = content;
+            this._trail = Environment.NewLine;
         }
 
         public override void ToText(TextWriter target)
@@ -28,7 +29,13 @@ namespace CilTools.Syntax
             target.Write('/');
             target.Write('/');
             target.Write(this._content);
+            target.Write(this._trail);
             target.Flush();
+        }
+
+        public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+        {
+            return SyntaxNode.EmptyArray;
         }
     }
 }

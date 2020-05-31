@@ -9,38 +9,29 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public class BlockStartSyntax:SyntaxNode
+    public class IdentifierSyntax : SyntaxNode
     {
-        string _header;
+        string _content;
 
-        internal BlockStartSyntax(string lead, string header)
+        public string Content { get { return this._content; } }
+
+        internal IdentifierSyntax(string lead, string content, string trail)
         {
             if (lead == null) lead = "";
-            if (header == null) header = "";
-
+            if (trail == null) trail = "";
             this._lead = lead;
-            this._header = header;
+            this._content = content;
+            this._trail = trail;
         }
-
-        public void WriteHeader(TextWriter target)
-        {
-            if (target == null) throw new ArgumentNullException("target");
-            
-            target.Write(this._lead);
-
-            if (this._header.Length > 0)
-            {
-                target.Write(this._header);
-                target.Write(' ');
-            }
-        }
-
+        
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            this.WriteHeader(target);
-            target.Write('{');
+            target.Write(this._lead);
+            target.Write(this._content);
+            target.Write(this._trail);
+            target.Flush();
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()

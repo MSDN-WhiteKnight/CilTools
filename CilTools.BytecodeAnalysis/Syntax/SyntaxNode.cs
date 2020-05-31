@@ -11,14 +11,23 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    public abstract class SyntaxElement
+    public abstract class SyntaxNode
     {
-        protected string _lead="";
+        protected string _lead=String.Empty;
+        protected string _trail = String.Empty;
+
+        internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
+
+        internal static readonly SyntaxNode[] EmptyArray = new SyntaxNode[] { };
 
         public abstract void ToText(TextWriter target);
 
-        public string LeadingTrivia { get { return this._lead; } }
+        public abstract IEnumerable<SyntaxNode> EnumerateChildNodes();
 
+        public string LeadingWhitespace { get { return this._lead; } }
+
+        public string TrailingWhitespace { get { return this._trail; } }
+        
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(60);
@@ -28,12 +37,23 @@ namespace CilTools.Syntax
             return sb.ToString();
         }
 
-        internal static readonly SyntaxElement[] EmptySyntax = new SyntaxElement[] { new GenericSyntax(String.Empty) };
+        public SyntaxNode[] GetChildNodes()
+        {
+            IEnumerable<SyntaxNode> ienum = this.EnumerateChildNodes();
 
-        internal static SyntaxElement[] GetAttributesSyntax(MethodBase m)
+            if (ienum is SyntaxNode[]) return (SyntaxNode[])ienum;
+
+            List<SyntaxNode> ret = new List<SyntaxNode>(50);
+
+            foreach (SyntaxNode node in ienum) ret.Add(node);
+
+            return ret.ToArray();
+        }
+
+        internal static SyntaxNode[] GetAttributesSyntax(MethodBase m)
         {
             object[] attrs = m.GetCustomAttributes(false);
-            List<SyntaxElement> ret = new List<SyntaxElement>(attrs.Length);
+            List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
             string content;
 
             for (int i = 0; i < attrs.Length; i++)
@@ -54,11 +74,13 @@ namespace CilTools.Syntax
                         Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
                         )
                     {
+                        output.Write(' ');
                         output.Write(s_attr);
                         output.Write(" = ( 01 00 00 00 )"); //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
+                        output.WriteLine();
                         output.Flush();
                         content = sb.ToString();
-                        DirectiveSyntax dir = new DirectiveSyntax(" ", "custom", new SyntaxElement[] { new GenericSyntax(content) });
+                        DirectiveSyntax dir = new DirectiveSyntax(" ", "custom", new SyntaxNode[] { new GenericSyntax(content) });
                         ret.Add(dir);
                     }
                     else
@@ -86,10 +108,10 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
-        internal static SyntaxElement[] GetDefaultsSyntax(MethodBase m)
+        internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m)
         {
             ParameterInfo[] pars = m.GetParameters();
-            List<SyntaxElement> ret = new List<SyntaxElement>(pars.Length);
+            List<SyntaxNode> ret = new List<SyntaxNode>(pars.Length);
 
             for (int i = 0; i < pars.Length; i++)
             {
@@ -97,6 +119,7 @@ namespace CilTools.Syntax
                 {
                     StringBuilder sb = new StringBuilder(100);
                     StringWriter output = new StringWriter(sb);
+                    output.Write(' ');
                     output.Write('[');
                     output.Write((i + 1).ToString());
                     output.Write("] = ");
@@ -118,10 +141,11 @@ namespace CilTools.Syntax
                         }
                     }
                     else output.Write("nullref");
+                    output.WriteLine();
                     output.Flush();
 
                     string content = sb.ToString();
-                    DirectiveSyntax dir = new DirectiveSyntax(" ", "param", new SyntaxElement[] { new GenericSyntax(content) });
+                    DirectiveSyntax dir = new DirectiveSyntax(" ", "param", new SyntaxNode[] { new GenericSyntax(content) });
                     ret.Add(dir);
                 }
             }//end for

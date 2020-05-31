@@ -4,26 +4,22 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Reflection;
 using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
-    internal class GenericSyntax:SyntaxNode
+    public class TypeRefSyntax : SyntaxNode
     {
         string _content;
 
         public string Content { get { return this._content; } }
 
-        internal GenericSyntax(string content)
+        internal TypeRefSyntax(string content)
         {
-            if (content == null) content = "";
-
             this._content = content;
         }
-
+        
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");

@@ -93,158 +93,111 @@ namespace CilView
             return tlv;
         }
 
+        static void VisualizeNode(SyntaxNode node, Paragraph target, RoutedEventHandler navigation)
+        {
+            Run r;
+            StringBuilder sb = new StringBuilder(500);
+            StringWriter wr = new StringWriter(sb);
+
+            if (node is InstructionSyntax)
+            {
+                InstructionSyntax ins = (InstructionSyntax)node;
+                
+                r = new Run();
+                wr.Write(ins.LeadingWhitespace);
+                ins.WriteLabel(wr);
+                ins.WriteOperation(wr);
+                wr.Flush();
+                r.Text = sb.ToString();
+                target.Inlines.Add(r);
+
+                sb.Clear();
+                ins.WriteOperand(wr);
+                wr.Flush();
+                r = new Run();
+                r.Text = sb.ToString();
+
+                if (ins.Instruction.ReferencedMember is MethodBase)
+                {
+                    //if operand is method, enable navigation functionality
+                    Hyperlink lnk = new Hyperlink(r);
+                    lnk.Tag = (MethodBase)ins.Instruction.ReferencedMember;
+                    lnk.Click += navigation;
+                    target.Inlines.Add(lnk);
+                }
+                else if (ins.Instruction.ReferencedString != null)
+                {
+                    //render string literal
+                    r.Foreground = Brushes.Red;
+                    target.Inlines.Add(r);
+                }
+                else if (sb.Length > 0)
+                {
+                    //render regular operand
+                    r.Foreground = Brushes.CornflowerBlue;
+                    target.Inlines.Add(r);
+                }
+
+                target.Inlines.Add(new LineBreak());
+            }
+            else if (node is KeywordSyntax)
+            {
+                r = new Run();
+                r.Foreground = Brushes.Blue;
+                r.Text = node.ToString();
+                target.Inlines.Add(r);
+            }
+            else if (node is TypeRefSyntax)
+            {
+                r = new Run();
+                r.Foreground = Brushes.CornflowerBlue;
+                r.Text = node.ToString();
+                target.Inlines.Add(r);
+            }
+            else if (node is CommentSyntax)
+            {
+                r = new Run();
+                r.Foreground = Brushes.Green;
+                r.Text = node.ToString();
+                target.Inlines.Add(r);
+            }
+            else
+            {
+                SyntaxNode[] children = node.GetChildNodes();
+
+                if (children.Length > 0)
+                {
+                    for (int i = 0; i < children.Length; i++)
+                    {
+                        VisualizeNode(children[i], target, navigation);
+                    }
+                }
+                else
+                {
+                    r = new Run();
+                    r.Text = node.ToString();
+                    target.Inlines.Add(r);
+                }
+            }
+        }
+
         public static UIElement VisualizeGraph(CilGraph gr, RoutedEventHandler navigation)
         {
             FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
             scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            scroll.VerticalAlignment = VerticalAlignment.Stretch;            
+            scroll.VerticalAlignment = VerticalAlignment.Stretch;
             scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
 
             FlowDocument fd = new FlowDocument();
             fd.TextAlignment = TextAlignment.Left;
             fd.FontFamily = new FontFamily("Courier New");
+            
+            SyntaxNode[] tree = gr.ToSyntaxTree().GetChildNodes();
+            Paragraph par = new Paragraph();
 
-            Run r;
-            StringBuilder sb = new StringBuilder(500);
-            StringWriter wr = new StringWriter(sb);
+            for (int i = 0; i < tree.Length; i++) VisualizeNode(tree[i], par, navigation);
 
-            foreach(SyntaxElement elem in gr.ToSyntax())
-            {
-                if (elem is InstructionSyntax)
-                {
-                    InstructionSyntax ins = (InstructionSyntax)elem;
-                    Paragraph line = new Paragraph();
-                    line.Margin = new Thickness(0);
-
-                    r = new Run();
-                    wr.Write(ins.LeadingTrivia);
-                    ins.WriteLabel(wr);
-                    ins.WriteOperation(wr);
-                    wr.Flush();
-                    r.Text = sb.ToString();
-                    line.Inlines.Add(r);
-
-                    sb.Clear();
-                    ins.WriteOperand(wr);
-                    wr.Flush();
-                    r = new Run();
-                    r.Text = sb.ToString();
-
-                    if (ins.Instruction.ReferencedMember is MethodBase)
-                    {
-                        //if operand is method, enable navigation functionality
-                        Hyperlink lnk = new Hyperlink(r);
-                        lnk.Tag = (MethodBase)ins.Instruction.ReferencedMember;
-                        lnk.Click += navigation;
-                        line.Inlines.Add(lnk);
-                    }
-                    else if (ins.Instruction.ReferencedString != null)
-                    {
-                        //render string literal
-                        r.Foreground = Brushes.Red;
-                        line.Inlines.Add(r);
-                    }
-                    else if (sb.Length > 0)
-                    {
-                        //render regular operand
-                        r.Foreground = Brushes.CornflowerBlue;
-                        line.Inlines.Add(r);
-                    }
-                    
-                    fd.Blocks.Add(line);
-                    sb.Clear();
-                }
-                else if (elem is DirectiveSyntax)
-                {
-                    DirectiveSyntax dir = (DirectiveSyntax)elem;
-                    Paragraph line = new Paragraph();
-                    line.Margin = new Thickness(0);
-
-                    r = new Run();
-                    wr.Write(dir.LeadingTrivia);
-                    wr.Write('.');
-                    wr.Flush();
-                    r.Text = sb.ToString();
-                    line.Inlines.Add(r);
-                    sb.Clear();
-
-                    r = new Run();
-                    r.Text = dir.Name+" ";
-                    r.Foreground = Brushes.Magenta;
-                    line.Inlines.Add(r);
-
-                    if (dir.InnerElementsCount > 1)
-                    {
-                        foreach (SyntaxElement subelem in dir.InnerSyntax)
-                        {
-                            if (subelem is VarDeclSyntax)
-                            {
-                                VarDeclSyntax vdc = (VarDeclSyntax)subelem;
-                                r = new Run();
-                                r.Text = vdc.Type+" ";
-                                r.Foreground = Brushes.CornflowerBlue;
-                                line.Inlines.Add(r);
-                                r = new Run();
-                                r.Text = vdc.Name;
-                                line.Inlines.Add(r);
-                            }
-                            else
-                            {
-                                r = new Run();
-                                r.Text = subelem.ToString();
-                                if (subelem is KeywordSyntax) r.Foreground = Brushes.Blue;
-                                line.Inlines.Add(r);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        r = new Run();
-                        r.Text = dir.Content;
-                        line.Inlines.Add(r);
-                    }
-
-                    fd.Blocks.Add(line);
-                }
-                else if (elem is BlockStartSyntax)
-                {
-                    BlockStartSyntax bss = (BlockStartSyntax)elem;
-                    Paragraph line = new Paragraph();
-                    line.Margin = new Thickness(0);
-
-                    r = new Run();
-                    bss.WriteHeader(wr);
-                    wr.Flush();
-                    r.Text = sb.ToString();
-                    r.Foreground = Brushes.MediumAquamarine;
-                    line.Inlines.Add(r);
-                    sb.Clear();
-
-                    r = new Run();
-                    r.Text = "{";
-                    line.Inlines.Add(r);
-
-                    fd.Blocks.Add(line);
-                }
-                else if (elem is CommentSyntax)
-                {
-                    CommentSyntax c = (CommentSyntax)elem;
-                    r = new Run();
-                    c.ToText(wr);
-                    wr.Flush();
-                    r.Text = sb.ToString();
-                    r.Foreground = Brushes.Green;
-                    fd.Blocks.Add(new Paragraph(r) { Margin = new Thickness(0) });
-                    sb.Clear();
-                }
-                else
-                {
-                    r = new Run();
-                    r.Text = elem.ToString();
-                    fd.Blocks.Add(new Paragraph(r) { Margin = new Thickness(0) });
-                }
-            }
-
+            fd.Blocks.Add(par);
             scroll.Document = fd;
             return scroll;
         }
