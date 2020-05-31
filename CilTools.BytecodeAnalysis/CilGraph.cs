@@ -589,7 +589,6 @@ namespace CilTools.BytecodeAnalysis
 
                     curr_node.ContentArray.Add(new_node);
                     
-                    //***
                     if (indent.Count > 0) indent.Pop();
                 }
 
