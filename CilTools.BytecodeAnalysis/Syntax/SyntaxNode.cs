@@ -87,7 +87,6 @@ namespace CilTools.Syntax
                     {
                         output.Write(".custom ");
                         output.Write(s_attr);
-                        output.WriteLine();
                         output.Flush();
                         content = sb.ToString();
                         CommentSyntax node = new CommentSyntax(" ", content);
@@ -99,7 +98,6 @@ namespace CilTools.Syntax
                     output.Write(".custom ");
                     s_attr = CilAnalysis.GetTypeNameInternal(t);
                     output.Write(s_attr);
-                    output.WriteLine();
                     output.Flush();
                     content = sb.ToString();
                     CommentSyntax node = new CommentSyntax(" ", content);
