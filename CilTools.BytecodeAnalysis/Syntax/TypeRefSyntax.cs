@@ -11,11 +11,9 @@ namespace CilTools.Syntax
 {
     public class TypeRefSyntax : SyntaxNode
     {
-        string _content;
+        SyntaxNode[] _content;
 
-        public string Content { get { return this._content; } }
-
-        internal TypeRefSyntax(string content)
+        internal TypeRefSyntax(SyntaxNode[] content)
         {
             this._content = content;
         }
@@ -25,13 +23,15 @@ namespace CilTools.Syntax
             if (target == null) throw new ArgumentNullException("target");
 
             target.Write(this._lead);
-            target.Write(this._content);
+
+            for (int i = 0; i < this._content.Length; i++) this._content[i].ToText(target);
+            
             target.Flush();
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
-            return SyntaxNode.EmptyArray;
+            for (int i = 0; i < this._content.Length; i++) yield return this._content[i]; 
         }
     }
 }

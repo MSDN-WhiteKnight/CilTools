@@ -12,16 +12,20 @@ namespace CilTools.Syntax
     public class IdentifierSyntax : SyntaxNode
     {
         string _content;
+        bool _ismember;
 
         public string Content { get { return this._content; } }
 
-        internal IdentifierSyntax(string lead, string content, string trail)
+        public bool IsMemberName { get { return this._ismember; } }
+
+        internal IdentifierSyntax(string lead, string content, string trail, bool ismember)
         {
             if (lead == null) lead = "";
             if (trail == null) trail = "";
             this._lead = lead;
             this._content = content;
             this._trail = trail;
+            this._ismember = ismember;
         }
         
         public override void ToText(TextWriter target)

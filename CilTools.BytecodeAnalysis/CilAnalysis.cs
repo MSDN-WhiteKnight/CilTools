@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Diagnostics;
 using CilTools.Reflection;
+using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -81,6 +82,89 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        internal static IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t)
+        {
+            if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
+            {
+                string prefix;
+
+                if (t.DeclaringMethod == null) prefix = "!";
+                else prefix = "!!";
+
+                if (String.IsNullOrEmpty(t.Name)) yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
+                else yield return new GenericSyntax(prefix + t.Name);
+
+                yield break;
+            }
+
+            if (t.IsByRef)
+            {
+                Type et = t.GetElementType();
+                if (et != null)
+                {
+                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
+
+                    foreach(SyntaxNode x in nodes) yield return x;
+
+                    yield return new PunctuationSyntax(String.Empty, "&", String.Empty);
+                    yield break;
+                }
+            }
+
+            if (t.IsArray && t.GetArrayRank() == 1)
+            {
+                Type et = t.GetElementType();
+                if (et != null)
+                {
+                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
+
+                    foreach (SyntaxNode x in nodes) yield return x;
+
+                    yield return new PunctuationSyntax(String.Empty, "[]", String.Empty);
+                    yield break;
+                }
+            }
+
+            if (t.IsPointer)
+            {
+                Type et = t.GetElementType();
+                if (et != null)
+                {
+                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
+
+                    foreach (SyntaxNode x in nodes) yield return x;
+
+                    yield return new PunctuationSyntax(String.Empty, "*", String.Empty);
+                    yield break;
+                }
+            }
+
+            if (t.Equals(typeof(void))) yield return new KeywordSyntax(String.Empty,"void",String.Empty);
+            else if (t.Equals(typeof(bool))) yield return new KeywordSyntax(String.Empty,"bool",String.Empty);
+            else if (t.Equals(typeof(int))) yield return new KeywordSyntax(String.Empty,"int32",String.Empty);
+            else if (t.Equals(typeof(uint))) yield return new KeywordSyntax(String.Empty, "uint32", String.Empty);
+            else if (t.Equals(typeof(long))) yield return new KeywordSyntax(String.Empty, "int64", String.Empty);
+            else if (t.Equals(typeof(ulong))) yield return new KeywordSyntax(String.Empty, "uint64", String.Empty);
+            else if (t.Equals(typeof(short))) yield return new KeywordSyntax(String.Empty, "int16", String.Empty);
+            else if (t.Equals(typeof(ushort))) yield return new KeywordSyntax(String.Empty, "uint16", String.Empty);
+            else if (t.Equals(typeof(byte))) yield return new KeywordSyntax(String.Empty, "uint8", String.Empty);
+            else if (t.Equals(typeof(sbyte))) yield return new KeywordSyntax(String.Empty, "int8", String.Empty);
+            else if (t.Equals(typeof(float))) yield return new KeywordSyntax(String.Empty, "float32", String.Empty);
+            else if (t.Equals(typeof(double))) yield return new KeywordSyntax(String.Empty, "float64", String.Empty);
+            else if (t.Equals(typeof(string))) yield return new KeywordSyntax(String.Empty, "string", String.Empty);
+            else if (t.Equals(typeof(char))) yield return new KeywordSyntax(String.Empty, "char", String.Empty);
+            else if (t.Equals(typeof(object))) yield return new KeywordSyntax(String.Empty, "object", String.Empty);
+            else if (t.Equals(typeof(IntPtr))) yield return new KeywordSyntax(String.Empty, "native int", String.Empty);
+            else if (t.Equals(typeof(UIntPtr))) yield return new KeywordSyntax(String.Empty, "native uint", String.Empty);
+            else if (t.Equals(typeof(System.TypedReference))) yield return new KeywordSyntax(String.Empty, "typedref", String.Empty);
+            else
+            {
+                IEnumerable<SyntaxNode> nodes = GetTypeFullNameSyntax(t);
+
+                foreach (SyntaxNode x in nodes) yield return x;
+            }
+        }
+
         /// <summary>
         /// Gets the full name of .NET type in CIL notation
         /// </summary>
@@ -127,6 +211,50 @@ namespace CilTools.BytecodeAnalysis
             }
 
             return sb.ToString();
+        }
+
+        internal static IEnumerable<SyntaxNode> GetTypeFullNameSyntax(Type t)
+        {
+            if (t.IsValueType) yield return new KeywordSyntax(String.Empty,"valuetype"," ");
+            else if (t.IsClass) yield return new KeywordSyntax(String.Empty, "class", " ");
+
+            Assembly ass = t.Assembly;
+            
+            yield return new PunctuationSyntax(String.Empty, "[", String.Empty);
+            yield return new IdentifierSyntax(String.Empty, ass.GetName().Name, String.Empty,false);
+            yield return new PunctuationSyntax(String.Empty, "]", String.Empty);
+
+            StringBuilder sb=new StringBuilder();
+
+            if (!String.IsNullOrEmpty(t.Namespace))
+            {
+                sb.Append(t.Namespace);
+                sb.Append('.');
+            }
+
+            if (t.IsNested && t.DeclaringType != null)
+            {
+                sb.Append(t.DeclaringType.Name);
+                sb.Append('/');                
+            }
+
+            sb.Append(t.Name);
+            yield return new IdentifierSyntax(String.Empty, sb.ToString(), String.Empty,true);
+
+            if (t.IsGenericType)
+            {
+                yield return new PunctuationSyntax(String.Empty, "<", String.Empty);
+
+                Type[] args = t.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
+                    
+                    yield return new IdentifierSyntax(String.Empty, GetTypeName(args[i]), String.Empty,true);
+                }
+
+                yield return new PunctuationSyntax(String.Empty, ">", String.Empty);
+            }
         }
 
         /// <summary>

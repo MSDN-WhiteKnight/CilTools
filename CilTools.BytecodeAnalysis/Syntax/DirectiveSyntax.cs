@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using System.Linq;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 
@@ -112,19 +113,20 @@ namespace CilTools.Syntax
 
             if (m.IsVirtual) inner.Add(new KeywordSyntax(" ", "virtual", String.Empty));
 
-            if (m.IsStatic) inner.Add(new KeywordSyntax(" ", "static", String.Empty));
-            else inner.Add(new KeywordSyntax(" ", "instance", String.Empty));
+            if (m.IsStatic) inner.Add(new KeywordSyntax(" ", "static", " "));
+            else inner.Add(new KeywordSyntax(" ", "instance", " "));
 
             if (m.CallingConvention == CallingConventions.VarArgs)
             {
-                inner.Add(new KeywordSyntax(" ", "vararg", String.Empty));
+                inner.Add(new KeywordSyntax(String.Empty, "vararg", " "));
             }
-
-            string rt = "";
-            if (cm.ReturnType != null) rt = " "+CilAnalysis.GetTypeName(cm.ReturnType);
-            inner.Add(new TypeRefSyntax(rt));
-
-            inner.Add(new IdentifierSyntax(" ", m.Name, String.Empty));
+                        
+            if (cm.ReturnType != null)
+            {
+                inner.Add(new TypeRefSyntax(CilAnalysis.GetTypeNameSyntax(cm.ReturnType).ToArray()));
+            }
+            
+            inner.Add(new IdentifierSyntax(" ", m.Name, String.Empty, true));
 
             if (m.IsGenericMethod)
             {
@@ -153,14 +155,14 @@ namespace CilTools.Syntax
 
                 if (pars[i].IsOptional) inner.Add(new GenericSyntax("[opt] "));
 
-                string partype = CilAnalysis.GetTypeName(pars[i].ParameterType);
+                SyntaxNode[] partype = CilAnalysis.GetTypeNameSyntax(pars[i].ParameterType).ToArray();
 
                 string parname;
                 if (pars[i].Name != null) parname = pars[i].Name;
                 else parname = "par" + (i + 1).ToString();
 
                 inner.Add(new TypeRefSyntax(partype));
-                inner.Add(new IdentifierSyntax(" ", parname, String.Empty));
+                inner.Add(new IdentifierSyntax(" ", parname, String.Empty,false));
             }
 
             if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine));

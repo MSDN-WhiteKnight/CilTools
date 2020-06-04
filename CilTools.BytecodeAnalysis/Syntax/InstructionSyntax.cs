@@ -40,7 +40,7 @@ namespace CilTools.Syntax
             string pad;
 
             if (!String.IsNullOrEmpty(this.Label)) {
-                yield return new IdentifierSyntax(" ", this.Label, String.Empty);
+                yield return new IdentifierSyntax(" ", this.Label, String.Empty,false);
                 yield return new PunctuationSyntax(String.Empty,":"," ");
                 pad = "";
             }
@@ -50,7 +50,7 @@ namespace CilTools.Syntax
 
             if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
             {
-                yield return new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, this._trail);
+                yield return new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, this._trail,false);
             }
             else
             {
@@ -63,7 +63,7 @@ namespace CilTools.Syntax
                     for (int i = 0; i < swtargets.Length; i++)
                     {
                         if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", String.Empty);
-                        yield return new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty);
+                        yield return new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty,false);
                     }
 
                     yield return new PunctuationSyntax(String.Empty, ")", this._trail);

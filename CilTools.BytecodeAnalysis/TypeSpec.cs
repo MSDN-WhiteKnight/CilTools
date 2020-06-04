@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using CilTools.Reflection;
+using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -599,6 +600,61 @@ namespace CilTools.BytecodeAnalysis
             }
 
             return sb.ToString();
+        }
+
+        internal TypeRefSyntax ToSyntax()
+        {
+            List<SyntaxNode> ret = new List<SyntaxNode>();
+
+            if (this._InnerSpec != null && this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.SzArray)
+            {
+                ret.Add(this._InnerSpec.ToSyntax());
+                ret.Add(new PunctuationSyntax(String.Empty, "[]", String.Empty));
+
+                if (this._Type != null)
+                {
+                    if (this._Type.IsByRef) ret.Add(new PunctuationSyntax(String.Empty, "&", String.Empty));
+                }
+            }
+            else if (this._InnerSpec != null && this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.Ptr)
+            {
+                ret.Add(this._InnerSpec.ToSyntax());
+                ret.Add(new PunctuationSyntax(String.Empty, "*", String.Empty));
+
+                if (this._Type != null)
+                {
+                    if (this._Type.IsByRef) ret.Add(new PunctuationSyntax(String.Empty, "&", String.Empty));
+                }
+            }
+            else if (this._Type != null)
+            {
+                IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(this._Type);
+
+                foreach (SyntaxNode x in nodes) ret.Add(x);
+            }
+            else if (this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.Var) //generic type arg
+            {
+                ret.Add(new GenericSyntax("!" + this._paramnum.ToString()));
+            }
+            else if (this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.MVar) //generic method arg
+            {
+                ret.Add(new GenericSyntax("!!" + this._paramnum.ToString()));
+            }
+            else if (this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.Internal)
+            {
+                ret.Add(new GenericSyntax("ClrInternal"));
+            }
+            else
+            {
+                ret.Add(new GenericSyntax("Type" + this._ElementType.ToString("X")));
+            }
+
+            foreach (CustomModifier mod in this._Modifiers)
+            {
+                ret.Add(new GenericSyntax(" "+mod.ToString()));
+            }
+
+            return new TypeRefSyntax(ret.ToArray());
         }
     }
 }

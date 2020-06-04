@@ -400,8 +400,8 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (i >= 1) inner.Add(new PunctuationSyntax(String.Empty,",","\r\n    "));
                     LocalVariable local = locals[i];
-                    inner.Add(new TypeRefSyntax(local.LocalTypeSpec.ToString()));
-                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), String.Empty));
+                    inner.Add(local.LocalTypeSpec.ToSyntax());
+                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), String.Empty,false));
                 }
 
                 inner.Add(new PunctuationSyntax(String.Empty, ")", Environment.NewLine));

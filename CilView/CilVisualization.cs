@@ -147,10 +147,11 @@ namespace CilView
                 r.Text = node.ToString();
                 target.Inlines.Add(r);
             }
-            else if (node is TypeRefSyntax)
+            else if (node is IdentifierSyntax)
             {
+                IdentifierSyntax id = (IdentifierSyntax)node;
                 r = new Run();
-                r.Foreground = Brushes.CornflowerBlue;
+                if(id.IsMemberName) r.Foreground = Brushes.CornflowerBlue;
                 r.Text = node.ToString();
                 target.Inlines.Add(r);
             }
