@@ -689,11 +689,18 @@ namespace CilTools.BytecodeAnalysis
                 nodes.Add( arr[i]);
             }
 
-            arr = SyntaxNode.GetAttributesSyntax(this._Method);
-
-            for (int i = 0; i < arr.Length; i++)
+            try
             {
-                nodes.Add(arr[i]);
+                arr = SyntaxNode.GetAttributesSyntax(this._Method);
+
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    nodes.Add(arr[i]);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                nodes.Add(new CommentSyntax(" ","NOTE: Assembly loaded in reflection-only mode. Custom attributes are not shown.")); 
             }
 
             arr = this.HeaderAsSyntax();
