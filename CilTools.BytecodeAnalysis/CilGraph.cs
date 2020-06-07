@@ -700,7 +700,7 @@ namespace CilTools.BytecodeAnalysis
             }
             catch (InvalidOperationException)
             {
-                nodes.Add(new CommentSyntax(" ","NOTE: Assembly loaded in reflection-only mode. Custom attributes are not shown.")); 
+                nodes.Add(new CommentSyntax(" ","NOTE: Custom attributes are not shown.")); 
             }
 
             arr = this.HeaderAsSyntax();

@@ -91,7 +91,14 @@ namespace CilView
                         tlv.SelectedIndex = i;
                     }
                 }
-                catch (TypeLoadException){}
+                catch (TypeLoadException ex) 
+                {
+                    tlv.AddItem(new Run("[ERROR] TypeLoadException: "+ex.Message));
+                }
+                catch (FileNotFoundException ex) 
+                {
+                    tlv.AddItem(new Run("[ERROR] FileNotFoundException: " + ex.Message));
+                }
             }
                         
             return tlv;

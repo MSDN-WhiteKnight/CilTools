@@ -75,7 +75,8 @@ namespace CilView
                     s1 = CilVisualization.MethodToString(x);
                     s2 = CilVisualization.MethodToString(y);
                 }
-                catch (TypeLoadException){}
+                catch (TypeLoadException) { }
+                catch (System.IO.FileNotFoundException) { }
 
                 return String.Compare(s1,s2,StringComparison.InvariantCulture);
             });
