@@ -4,6 +4,7 @@ using System.Reflection;
 using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 
 namespace CilView
 {
@@ -11,8 +12,36 @@ namespace CilView
     {
         public static ObservableCollection<Type> LoadTypes(Assembly ass)
         {
-            List<Type> ret = new List<Type>(ass.GetTypes());
+            List<Type> ret;
+            
+            try
+            {
+                ret = new List<Type>(ass.GetTypes());
+            }
+            catch (ReflectionTypeLoadException e)
+            {
+                StringBuilder sb = new StringBuilder(500);
+                sb.Append(e.GetType().ToString());
+                sb.Append(':');
+                sb.Append(' ');
+                sb.AppendLine(e.Message);
+                sb.Append(e.LoaderExceptions.Length.ToString());
+                sb.AppendLine(" total errors. First error is:");
 
+                if (e.LoaderExceptions.Length > 0)
+                {
+                    sb.AppendLine(e.LoaderExceptions[0].GetType() + " - " + e.LoaderExceptions[0].Message);
+                }
+                
+                MessageBox.Show(sb.ToString(), "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+
+                ret = new List<Type>();
+                for (int i = 0; i < e.Types.Length; i++)
+                {
+                    if(e.Types[i]!=null) ret.Add(e.Types[i]);
+                }
+            }
+            
             ret.Sort((x, y) => String.Compare( x.ToString(), y.ToString(), StringComparison.InvariantCulture ));
 
             return new ObservableCollection<Type>(ret);
@@ -30,11 +59,20 @@ namespace CilView
                 if (member is MethodBase) ret.Add((MethodBase)member);
             }
 
-            ret.Sort((x, y) => String.Compare(
-                 CilVisualization.MethodToString(x),
-                 CilVisualization.MethodToString(y),
-                 StringComparison.InvariantCulture
-                ));
+            ret.Sort((x, y) =>
+            {
+                string s1="",s2="";
+
+                try
+                {
+                    s1 = CilVisualization.MethodToString(x);
+                    s2 = CilVisualization.MethodToString(y);
+                }
+                catch (TypeLoadException) { }
+                catch (System.IO.FileNotFoundException) { }
+
+                return String.Compare(s1,s2,StringComparison.InvariantCulture);
+            });
 
             return new ObservableCollection<MethodBase>(ret);
         }

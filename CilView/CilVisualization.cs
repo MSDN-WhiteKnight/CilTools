@@ -75,18 +75,29 @@ namespace CilView
             
             for (int i=0;i<methods.Count;i++ )
             {
-                MethodBase m = methods[i];
-                Run r = new Run(MethodToString(m));
-                Hyperlink lnk = new Hyperlink(r);
-                lnk.Tag = m;
-                lnk.Click += navigation;
-                tlv.AddItem(lnk);
-
-                if (selected == null) continue;
-
-                if (MethodBase.ReferenceEquals(m, selected))
+                try
                 {
-                    tlv.SelectedIndex = i;
+                    MethodBase m = methods[i];
+                    Run r = new Run(MethodToString(m));
+                    Hyperlink lnk = new Hyperlink(r);
+                    lnk.Tag = m;
+                    lnk.Click += navigation;
+                    tlv.AddItem(lnk);
+
+                    if (selected == null) continue;
+
+                    if (MethodBase.ReferenceEquals(m, selected))
+                    {
+                        tlv.SelectedIndex = i;
+                    }
+                }
+                catch (TypeLoadException ex) 
+                {
+                    tlv.AddItem(new Run("[ERROR] TypeLoadException: "+ex.Message));
+                }
+                catch (FileNotFoundException ex) 
+                {
+                    tlv.AddItem(new Run("[ERROR] FileNotFoundException: " + ex.Message));
                 }
             }
                         
