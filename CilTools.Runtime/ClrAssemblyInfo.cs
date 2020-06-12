@@ -38,6 +38,12 @@ namespace CilTools.Runtime
             {
                 n.Name = Path.GetFileNameWithoutExtension(this.module.AssemblyName);
 
+                if (String.IsNullOrEmpty(m.Name))
+                {
+                    if (m.IsDynamic) n.Name = "<DynamicAssembly>";
+                    else n.Name = "???";
+                }
+
                 if (this.module.IsFile) n.CodeBase = this.module.FileName;
                 else n.CodeBase = "";
             }
