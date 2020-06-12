@@ -74,13 +74,16 @@ namespace CilTools.Syntax
                         Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
                         )
                     {
-                        output.Write(' ');
-                        output.Write(s_attr);
-                        output.Write(" = ( 01 00 00 00 )"); //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
-                        output.WriteLine();
-                        output.Flush();
-                        content = sb.ToString();
-                        DirectiveSyntax dir = new DirectiveSyntax(" ", "custom", new SyntaxNode[] { new GenericSyntax(content) });
+                        //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
+                        List<SyntaxNode> children = new List<SyntaxNode>();
+                        MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0]);
+                        children.Add(mref);
+                        children.Add(new PunctuationSyntax(" ", "=", " "));
+                        children.Add(new PunctuationSyntax("", "(", " "));
+                        children.Add(new GenericSyntax("01 00 00 00"));
+                        children.Add(new PunctuationSyntax(" ", ")", Environment.NewLine));
+                        
+                        DirectiveSyntax dir = new DirectiveSyntax(" ", "custom", children.ToArray());
                         ret.Add(dir);
                     }
                     else

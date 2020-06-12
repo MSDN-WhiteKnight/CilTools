@@ -341,6 +341,58 @@ namespace CilTools.BytecodeAnalysis
 
         }
 
+        internal static IEnumerable<SyntaxNode> GetTypeNameSyntaxInternal(Type t)
+        {
+            //this is used when we don't need class/valuetype prefix, such as for method calls
+            Debug.Assert(t != null, "GetTypeNameSyntaxInternal: Source type cannot be null");
+
+            if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
+            {
+                string prefix;
+
+                if (t.DeclaringMethod == null) prefix = "!";
+                else prefix = "!!";
+
+                if (String.IsNullOrEmpty(t.Name)) yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
+                else yield return new GenericSyntax( prefix + t.Name );
+
+                yield break;
+            }
+            
+            Assembly ass = t.Assembly;
+            yield return new PunctuationSyntax("", "[", "");
+            yield return new IdentifierSyntax("", ass.GetName().Name, "",false);
+            yield return new PunctuationSyntax("", "]", "");
+
+            if (!String.IsNullOrEmpty(t.Namespace))
+            {
+                yield return new IdentifierSyntax("", t.Namespace, "", true);
+                yield return new PunctuationSyntax("", ".", "");
+            }
+
+            if (t.IsNested && t.DeclaringType != null)
+            {
+                yield return new IdentifierSyntax("", t.DeclaringType.Name, "", true);
+                yield return new PunctuationSyntax("", "/", "");
+            }
+
+            yield return new IdentifierSyntax("", t.Name, "", true);
+
+            if (t.IsGenericType)
+            {
+                yield return new PunctuationSyntax("", "<", "");
+
+                Type[] args = t.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) yield return new PunctuationSyntax("", ",", " ");
+                    yield return new GenericSyntax(GetTypeName(args[i]));
+                }
+
+                yield return new PunctuationSyntax("", ">", "");
+            }
+        }
+
         internal static string MethodToString(MethodBase m)
         {
             StringBuilder sb = new StringBuilder();                        
@@ -390,6 +442,68 @@ namespace CilTools.BytecodeAnalysis
 
             sb.Append(')');
             return sb.ToString();
+        }
+
+        internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m)
+        {
+            List<SyntaxNode> children = new List<SyntaxNode>(50);
+            Type t = m.DeclaringType;
+            ParameterInfo[] pars = m.GetParameters();
+
+            MethodInfo mi = m as MethodInfo;
+            IEnumerable<SyntaxNode> rt;
+
+            if (mi != null) rt = CilAnalysis.GetTypeNameSyntax(mi.ReturnType);
+            else rt = new SyntaxNode[]{new KeywordSyntax("","void","")};
+
+            if (!m.IsStatic) children.Add(new KeywordSyntax("", "instance", " "));
+
+            foreach (SyntaxNode node in rt) children.Add(node);
+
+            if (t != null)
+            {
+                children.Add(new GenericSyntax(" "));
+
+                IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntaxInternal(t);
+
+                foreach (SyntaxNode node in syntax) children.Add(node);
+                
+                children.Add(new PunctuationSyntax("","::",""));
+            }
+
+            children.Add(new IdentifierSyntax("",m.Name,"",true));
+
+            if (m.IsGenericMethod)
+            {
+                children.Add(new PunctuationSyntax("","<",""));
+
+                Type[] args = m.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) children.Add(new PunctuationSyntax("",","," "));
+
+                    IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(args[i]);
+
+                    foreach(SyntaxNode node in syntax) children.Add(node);
+                }
+
+                children.Add(new PunctuationSyntax("",">",""));
+            }
+
+            children.Add(new PunctuationSyntax("","(",""));
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (i >= 1) children.Add(new PunctuationSyntax("",","," "));
+
+                 IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(pars[i].ParameterType);
+
+                 foreach(SyntaxNode node in syntax) children.Add(node);
+            }
+
+            children.Add(new PunctuationSyntax("",")",""));
+
+            return new MemberRefSyntax(children.ToArray());
         }
 
         /// <summary>
