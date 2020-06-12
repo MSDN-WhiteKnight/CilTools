@@ -503,7 +503,7 @@ namespace CilTools.BytecodeAnalysis
 
             children.Add(new PunctuationSyntax("",")",""));
 
-            return new MemberRefSyntax(children.ToArray());
+            return new MemberRefSyntax(children.ToArray(),MemberTypes.Method);
         }
 
         /// <summary>

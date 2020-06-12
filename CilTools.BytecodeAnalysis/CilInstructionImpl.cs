@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using CilTools.Reflection;
 using System.Diagnostics;
+using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -66,6 +67,11 @@ namespace CilTools.BytecodeAnalysis
         public override void OperandToString(TextWriter target)
         {
             //do nothing
+        }
+
+        internal override IEnumerable<SyntaxNode> OperandToSyntax()
+        {
+            return SyntaxNode.EmptyArray;
         }
     }
 
@@ -289,6 +295,63 @@ namespace CilTools.BytecodeAnalysis
             else
             {
                 target.Write(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
+            }
+        }
+
+        internal override IEnumerable<SyntaxNode> OperandToSyntax()
+        {
+            if (typeof(T) == typeof(int))
+            {
+                if (ReferencesLocal(this.OpCode))
+                {
+                    //local variable
+                    yield return new IdentifierSyntax("", "V_" + this.Operand.ToString(), "", false);
+                }
+                else if (ReferencesParam(this.OpCode) && this.Method != null)
+                {
+                    //parameter
+                    ParameterInfo par = this.ReferencedParameter;
+
+                    if (par != null)
+                    {
+                        if (String.IsNullOrEmpty(par.Name))
+                        {
+                            yield return new IdentifierSyntax("", "par" + (par.Position + 1).ToString(), "", false);
+                        }
+                        else
+                        {
+                            yield return new IdentifierSyntax("", par.Name, "", false);
+                        }
+                        
+                    }
+                    else
+                    {
+                        yield return new IdentifierSyntax("", "par" + this.Operand.ToString(), "", false);
+                    }
+                }
+                else
+                {
+                    yield return new GenericSyntax(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
+                }
+            }
+            else if (typeof(T) == typeof(int[]) && OpCode.OperandType == System.Reflection.Emit.OperandType.InlineSwitch)
+            {
+                int[] labels = (int[])this.Operand;
+
+                yield return new PunctuationSyntax("", "(", "");
+
+                for (int i = 0; i < labels.Length; i++)
+                {
+                    if (i >= 1) yield return new PunctuationSyntax("", ",", " ");
+                    int targ = (int)this._ByteOffset + (int)this.TotalSize + labels[i];
+                    yield return new GenericSyntax("0x" + targ.ToString("X4"));
+                }
+
+                yield return new PunctuationSyntax("", ")", "");
+            }
+            else
+            {
+                yield return new GenericSyntax(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
             }
         }
     }

@@ -145,11 +145,11 @@ namespace CilView
                 else if (sb.Length > 0)
                 {
                     //render regular operand
-                    r.Foreground = Brushes.CornflowerBlue;
-                    target.Inlines.Add(r);
-                }
+                    
+                    IEnumerable<SyntaxNode> children = ins.OperandSyntax;
 
-                target.Inlines.Add(new LineBreak());
+                    foreach (SyntaxNode child in children) VisualizeNode(child, target, navigation);
+                }
             }
             else if (node is KeywordSyntax)
             {

@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using CilTools.BytecodeAnalysis;
@@ -32,7 +33,6 @@ namespace CilTools.Syntax
 
             this.WriteOperation(target);
             this.WriteOperand(target);
-            target.Write(this._trail);
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
@@ -47,32 +47,14 @@ namespace CilTools.Syntax
             else pad = "".PadLeft(10, ' ');
             
             yield return new GenericSyntax(pad + this.Operation.PadRight(11));
+            
+            SyntaxNode[] nodes = this.OperandSyntax.ToArray();
 
-            if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
+            if (nodes.Length > 0)
             {
-                yield return new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, this._trail,false);
+                for (int i = 0; i < nodes.Length; i++) yield return nodes[i];
             }
-            else
-            {
-                CilGraphNode[] swtargets = this._node.GetSwitchTargets();
-
-                if (swtargets.Length > 0) //append switch target list
-                {
-                    yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
-
-                    for (int i = 0; i < swtargets.Length; i++)
-                    {
-                        if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", String.Empty);
-                        yield return new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty,false);
-                    }
-
-                    yield return new PunctuationSyntax(String.Empty, ")", this._trail);
-                }
-                else
-                {
-                    yield return new GenericSyntax(this.Operand + this._trail); //print regular instruction operand
-                }
-            }
+            else yield return new GenericSyntax(this._trail);
         }
 
         public string Label
@@ -142,10 +124,11 @@ namespace CilTools.Syntax
                 }
             }
 
+            target.Write(this._trail);
             target.Flush();
         }
 
-        public string Operand
+        public string OperandString
         {
             get
             {
@@ -153,6 +136,43 @@ namespace CilTools.Syntax
                 StringWriter wr = new StringWriter(sb);
                 this.WriteOperand(wr);                
                 return sb.ToString();
+            }
+        }
+
+        public IEnumerable<SyntaxNode> OperandSyntax
+        {
+            get
+            {
+                if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
+                {
+                    yield return new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, this._trail, false);
+                }
+                else
+                {
+                    CilGraphNode[] swtargets = this._node.GetSwitchTargets();
+
+                    if (swtargets.Length > 0) //append switch target list
+                    {
+                        yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
+
+                        for (int i = 0; i < swtargets.Length; i++)
+                        {
+                            if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", String.Empty);
+                            yield return new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty, false);
+                        }
+
+                        yield return new PunctuationSyntax(String.Empty, ")", this._trail);
+                    }
+                    else
+                    {
+                        //print regular instruction operand
+                        IEnumerable<SyntaxNode> nodes = this.Instruction.OperandToSyntax();
+
+                        foreach (SyntaxNode node in nodes) yield return node;
+
+                        yield return new GenericSyntax(this._trail);
+                    }
+                }//endif
             }
         }
     }

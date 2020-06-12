@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using CilTools.Reflection;
 using System.Diagnostics;
+using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -337,6 +338,8 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <param name="target">The destination TextWriter</param>
         public abstract void OperandToString(TextWriter target);
+
+        internal abstract IEnumerable<SyntaxNode> OperandToSyntax();
         
         /// <summary>
         /// Returns a text representation of this instruction as a line of CIL code

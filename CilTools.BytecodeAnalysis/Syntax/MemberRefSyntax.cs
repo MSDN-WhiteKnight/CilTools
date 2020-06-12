@@ -5,17 +5,20 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
 using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
     public class MemberRefSyntax:SyntaxNode
     {
+        MemberTypes _membertype;
         SyntaxNode[] _content;
 
-        internal MemberRefSyntax(SyntaxNode[] content)
+        internal MemberRefSyntax(SyntaxNode[] content, MemberTypes t)
         {
             this._content = content;
+            this._membertype = t;
         }
         
         public override void ToText(TextWriter target)
