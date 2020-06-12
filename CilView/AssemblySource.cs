@@ -25,21 +25,14 @@ namespace CilView
                 sb.Append(':');
                 sb.Append(' ');
                 sb.AppendLine(e.Message);
-                sb.Append('[');
                 sb.Append(e.LoaderExceptions.Length.ToString());
-                sb.AppendLine(" errors]");
+                sb.AppendLine(" total errors. First error is:");
 
-                for (int i = 0; i < e.LoaderExceptions.Length; i++)
+                if (e.LoaderExceptions.Length > 0)
                 {
-                    sb.AppendLine(e.LoaderExceptions[i].GetType() + " - " + e.LoaderExceptions[i].Message);
-
-                    if (i > 5)
-                    {
-                        sb.AppendLine("...");
-                        break;
-                    }
+                    sb.AppendLine(e.LoaderExceptions[0].GetType() + " - " + e.LoaderExceptions[0].Message);
                 }
-
+                
                 MessageBox.Show(sb.ToString(), "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 
                 ret = new List<Type>();
