@@ -13,6 +13,8 @@ namespace CilView
     {
         string _path; //assembly directory
 
+        HashSet<string> resolved = new HashSet<string>();
+
         Assembly LoadAssembly(string filepath)
         {
             Assembly main = null;
@@ -84,7 +86,10 @@ namespace CilView
 
             if (ret != null) return ret;
 
+            if(resolved.Contains(args.Name)) return null; //prevent stack overflow
+
             //if failed, resolve by full assembly name
+            resolved.Add(args.Name);
             return Assembly.Load(args.Name);
         }
 
@@ -106,7 +111,10 @@ namespace CilView
 
             if (ret != null) return ret;
 
+            if (resolved.Contains(args.Name)) return null; //prevent stack overflow
+
             //if failed, resolve by full assembly name
+            resolved.Add(args.Name);
             return Assembly.ReflectionOnlyLoad(args.Name);
         }
 
