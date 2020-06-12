@@ -17,8 +17,10 @@ namespace CilView
     {
         DataTarget dt;
         OperationBase op;
+        HashSet<string> paths=new HashSet<string>();
+        HashSet<string> resolved=new HashSet<string>();
 
-        public static ObservableCollection<Assembly> LoadAssemblies(DataTarget dt, OperationBase op = null)
+        public ObservableCollection<Assembly> LoadAssemblies(DataTarget dt, OperationBase op = null)
         {
             ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
 
@@ -33,7 +35,34 @@ namespace CilView
             return LoadAssemblies(runtime,op);
         }
 
-        public static ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime, OperationBase op = null)
+        Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            AssemblyName an = new AssemblyName(args.Name);
+            Assembly ret = null;
+            
+            foreach (string dir in this.paths)
+            {
+                string path = Path.Combine(dir, an.Name + ".dll");
+
+                try
+                {
+                    if (File.Exists(path)) ret = Assembly.ReflectionOnlyLoadFrom(path);
+                }
+                catch (FileNotFoundException) { }
+                catch (FileLoadException) { }
+                catch (BadImageFormatException) { }
+
+                if (ret != null) return ret;
+            }
+
+            if (resolved.Contains(args.Name)) return null; //prevent stack overflow
+
+            //if failed, resolve by full assembly name
+            resolved.Add(args.Name);
+            return Assembly.ReflectionOnlyLoad(args.Name);
+        }
+
+        public ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime, OperationBase op = null)
         {
             List<Assembly> ret = new List<Assembly>();
 
@@ -48,18 +77,52 @@ namespace CilView
 
             double max = runtime.Modules.Count;
             int c = 0;
+            bool added_resolver = false;
 
             foreach (ClrModule x in runtime.Modules)
             {
+                string path = x.Name;
+                if (path == null) path = "";
+
+                if (path != "")
+                {
+                    string dir = Path.GetDirectoryName(path).ToLower();
+                    this.paths.Add(dir);
+                }
+
                 if (op != null)
                 {
-                    op.Window.ReportProgress("Loading " + Path.GetFileName(x.Name) + "...", c, max);
+                    op.Window.ReportProgress("Loading " + Path.GetFileName(path) + "...", c, max);
                     op.DoEvents();
                     if (op.Stopped) return new ObservableCollection<Assembly>(ret);
                 }
 
-                ClrAssemblyInfo item = reader.Read(x);
-                ret.Add(item);
+                Assembly ass=null;
+                string name = Path.GetFileNameWithoutExtension(path.Trim());
+
+                if (path != "" &&  !String.Equals(name, "mscorlib", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    try
+                    {
+                        ass = Assembly.ReflectionOnlyLoadFrom(path);
+
+                        if (ass != null && !added_resolver)
+                        {
+                            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+                            added_resolver = true;
+                        }
+                    }
+                    catch (FileNotFoundException) { }
+                    catch (FileLoadException) { }
+                    catch (BadImageFormatException) { }
+                    catch (NotSupportedException) { }
+                }
+
+                if (ass == null)
+                {
+                    ass = reader.Read(x);
+                }
+                ret.Add(ass);
                 c++;
             }
 
