@@ -249,8 +249,10 @@ namespace CilTools.BytecodeAnalysis
                 for (int i = 0; i < args.Length; i++)
                 {
                     if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
-                    
-                    yield return new IdentifierSyntax(String.Empty, GetTypeName(args[i]), String.Empty,true);
+
+                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(args[i]);
+
+                    foreach (SyntaxNode node in nodes) yield return node;
                 }
 
                 yield return new PunctuationSyntax(String.Empty, ">", String.Empty);
@@ -386,7 +388,10 @@ namespace CilTools.BytecodeAnalysis
                 for (int i = 0; i < args.Length; i++)
                 {
                     if (i >= 1) yield return new PunctuationSyntax("", ",", " ");
-                    yield return new GenericSyntax(GetTypeName(args[i]));
+
+                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(args[i]);
+
+                    foreach (SyntaxNode node in nodes) yield return node;
                 }
 
                 yield return new PunctuationSyntax("", ">", "");
