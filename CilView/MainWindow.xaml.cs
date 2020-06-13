@@ -98,7 +98,7 @@ namespace CilView
             source.Methods = AssemblySource.LoadMethods(t);
             
             this.tlv = CilVisualization.VisualizeMethodList(source.Methods,Navigated);
-            ccMethodsList.Child = this.tlv;
+            cMethodsList.Child = this.tlv;
         }
 
         void NavigateToMethod(MethodBase mb)
@@ -189,7 +189,7 @@ namespace CilView
             }
         }
 
-        private void Window_Closed_1(object sender, EventArgs e)
+        private void Window_Closed(object sender, EventArgs e)
         {
             SetSource(null);
         }

@@ -72,6 +72,7 @@ namespace CilView
             MethodBase selected=null)
         {
             TextListViewer tlv = new TextListViewer();
+            tlv.Document.PagePadding = new Thickness(0,5,5,5);
             
             for (int i=0;i<methods.Count;i++ )
             {
