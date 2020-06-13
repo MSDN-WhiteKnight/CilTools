@@ -11,22 +11,22 @@ namespace CilTools.Syntax
 {
     public class BlockSyntax:SyntaxNode
     {
-        string _header;
+        SyntaxNode[] _header;
         List<SyntaxNode> _children;
         
         internal List<SyntaxNode> ContentArray { get { return this._children; } set { this._children = value; } }
 
-        internal BlockSyntax(string lead, string header, SyntaxNode[] children)
+        internal BlockSyntax(string lead, SyntaxNode[] header, SyntaxNode[] children)
         {
             if (lead == null) lead = "";
-            if (header == null) header = "";
+            if (header == null) header = SyntaxNode.EmptySyntax;
 
             this._lead = lead;
             this._header = header;
             this._children = new List<SyntaxNode>(children);
         }
 
-        public string Header { get { return this._header; } }
+        public SyntaxNode[] HeaderSyntax { get { return this._header; } }
 
         public IEnumerable<SyntaxNode> Content
         {
@@ -44,7 +44,10 @@ namespace CilTools.Syntax
             if (this._header.Length > 0)
             {
                 target.Write(this._lead);
-                target.WriteLine(this._header);
+
+                for (int i = 0; i < this._header.Length; i++) _header[i].ToText(target);
+
+                target.WriteLine();
                 target.Write(this._lead);
                 target.WriteLine('{');
             }
@@ -68,7 +71,13 @@ namespace CilTools.Syntax
         {
             if (this._header.Length > 0)
             {
-                yield return new GenericSyntax(this._lead + this._header);
+                yield return new GenericSyntax(this._lead);
+
+                for (int i = 0; i < _header.Length; i++)
+                {
+                    yield return _header[i];
+                }
+
                 yield return new PunctuationSyntax(Environment.NewLine + this._lead, "{", Environment.NewLine);
             }
             else
