@@ -35,16 +35,15 @@ namespace CilTools.Syntax
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
-
-            target.Write(this._lead);
+            
             this._sig.ToText(target);
             this._body.ToText(target);
-            target.Write(this._trail);
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
-            return new SyntaxNode[] { this._sig, this._body };
+            yield return this._sig;
+            yield return this._body;
         }
     }
 }

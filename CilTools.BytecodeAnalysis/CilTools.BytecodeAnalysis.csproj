@@ -65,8 +65,6 @@
     <Compile Include="Reflection\ModuleWrapperDynamic.cs" />
     <Compile Include="Reflection\Types.cs" />
     <Compile Include="Signature.cs" />
-    <Compile Include="Syntax\BlockEndSyntax.cs" />
-    <Compile Include="Syntax\BlockStartSyntax.cs" />
     <Compile Include="Syntax\BlockSyntax.cs" />
     <Compile Include="Syntax\CommentSyntax.cs" />
     <Compile Include="Syntax\DirectiveSyntax.cs" />

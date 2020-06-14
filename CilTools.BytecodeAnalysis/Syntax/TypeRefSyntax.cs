@@ -22,8 +22,6 @@ namespace CilTools.Syntax
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            target.Write(this._lead);
-
             for (int i = 0; i < this._content.Length; i++) this._content[i].ToText(target);
             
             target.Flush();

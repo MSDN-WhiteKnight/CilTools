@@ -11,17 +11,18 @@ namespace CilTools.Syntax
 {
     public class BlockSyntax:SyntaxNode
     {
+        string _indent;
         SyntaxNode[] _header;
         List<SyntaxNode> _children;
         
         internal List<SyntaxNode> ContentArray { get { return this._children; } set { this._children = value; } }
 
-        internal BlockSyntax(string lead, SyntaxNode[] header, SyntaxNode[] children)
+        internal BlockSyntax(string indent, SyntaxNode[] header, SyntaxNode[] children)
         {
-            if (lead == null) lead = "";
+            if (indent == null) indent = "";
             if (header == null) header = SyntaxNode.EmptySyntax;
 
-            this._lead = lead;
+            this._indent = indent;
             this._header = header;
             this._children = new List<SyntaxNode>(children);
         }
@@ -43,17 +44,17 @@ namespace CilTools.Syntax
         {
             if (this._header.Length > 0)
             {
-                target.Write(this._lead);
+                target.Write(this._indent);
 
                 for (int i = 0; i < this._header.Length; i++) _header[i].ToText(target);
 
                 target.WriteLine();
-                target.Write(this._lead);
+                target.Write(this._indent);
                 target.WriteLine('{');
             }
             else
             {
-                target.Write(this._lead);
+                target.Write(this._indent);
                 target.WriteLine('{');
             }
 
@@ -62,7 +63,7 @@ namespace CilTools.Syntax
                 _children[i].ToText(target);
             }
 
-            target.Write(this._lead);
+            target.Write(this._indent);
             target.WriteLine('}');
             target.Flush();
         }
@@ -71,18 +72,18 @@ namespace CilTools.Syntax
         {
             if (this._header.Length > 0)
             {
-                yield return new GenericSyntax(this._lead);
+                yield return new GenericSyntax(this._indent);
 
                 for (int i = 0; i < _header.Length; i++)
                 {
                     yield return _header[i];
                 }
 
-                yield return new PunctuationSyntax(Environment.NewLine + this._lead, "{", Environment.NewLine);
+                yield return new PunctuationSyntax(Environment.NewLine + this._indent, "{", Environment.NewLine);
             }
             else
             {
-                yield return new PunctuationSyntax(this._lead, "{", Environment.NewLine);
+                yield return new PunctuationSyntax(this._indent, "{", Environment.NewLine);
             }
 
             for (int i = 0; i < _children.Count; i++)
@@ -90,7 +91,7 @@ namespace CilTools.Syntax
                 yield return _children[i];
             }
 
-            yield return new PunctuationSyntax(this._lead, "}", Environment.NewLine);
+            yield return new PunctuationSyntax(this._indent, "}", Environment.NewLine);
         }
     }
 }

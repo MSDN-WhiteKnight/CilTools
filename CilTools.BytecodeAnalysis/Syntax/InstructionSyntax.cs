@@ -13,21 +13,80 @@ namespace CilTools.Syntax
     public class InstructionSyntax:SyntaxNode
     {        
         CilGraphNode _node;
+        SyntaxNode[] _labelnodes;
+        SyntaxNode[] _operationnodes;
+        SyntaxNode[] _operandnodes;
 
-        internal InstructionSyntax(string lead,CilGraphNode node)
+        void CreateNodes(string lead, CilGraphNode graphnode)
+        {
+            List<SyntaxNode> labelnodes = new List<SyntaxNode>();
+            string pad;
+
+            //label and operation nodes
+            if (!String.IsNullOrEmpty(graphnode.Name))
+            {
+                labelnodes.Add(new IdentifierSyntax(lead+" ", graphnode.Name, String.Empty, false));
+                labelnodes.Add(new PunctuationSyntax(String.Empty, ":", " "));
+                pad = "";
+            }
+            else pad = lead+"".PadLeft(10, ' ');
+
+            List<SyntaxNode> operationnodes = new List<SyntaxNode>();
+            operationnodes.Add(new GenericSyntax(pad + graphnode.Instruction.OpCode.Name.PadRight(11)));
+
+            //operand nodes
+            List<SyntaxNode> operandnodes = new List<SyntaxNode>();
+            
+            if (graphnode.BranchTarget != null) //if instruction itself targets branch, append its label
+            {
+                operandnodes.Add(new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, Environment.NewLine, false));
+            }
+            else
+            {
+                CilGraphNode[] swtargets = graphnode.GetSwitchTargets();
+
+                if (swtargets.Length > 0) //append switch target list
+                {
+                    operandnodes.Add(new PunctuationSyntax(String.Empty, "(", String.Empty));
+
+                    for (int i = 0; i < swtargets.Length; i++)
+                    {
+                        if (i >= 1) operandnodes.Add(new PunctuationSyntax(String.Empty, ",", String.Empty));
+                        operandnodes.Add(new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty, false));
+                    }
+
+                    operandnodes.Add(new PunctuationSyntax(String.Empty, ")", Environment.NewLine));
+                }
+                else
+                {
+                    //print regular instruction operand
+                    IEnumerable<SyntaxNode> syntax = graphnode.Instruction.OperandToSyntax();
+
+                    foreach (SyntaxNode item in syntax) operandnodes.Add(item);
+
+                    operandnodes.Add(new GenericSyntax(Environment.NewLine));
+                }
+            }//endif
+
+            if (operandnodes.Count == 0) operationnodes.Add(new GenericSyntax(Environment.NewLine));
+
+            this._labelnodes = labelnodes.ToArray();
+            this._operationnodes = operationnodes.ToArray();
+            this._operandnodes = operandnodes.ToArray();
+        }
+
+        internal InstructionSyntax(string lead,CilGraphNode graphnode)
         {
             if (lead == null) lead = "";
-            this._lead = lead;
-            this._node = node;
-            this._trail = Environment.NewLine;
+            
+            this._node = graphnode;
+            this.CreateNodes(lead, graphnode);
         }
 
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
-
-            target.Write(this._lead);
-
+            
             //if instruction is referenced as branch target, prepend label to it
             this.WriteLabel(target);
 
@@ -37,24 +96,11 @@ namespace CilTools.Syntax
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
-            string pad;
+            for (int i = 0; i < this._labelnodes.Length; i++) yield return this._labelnodes[i];
 
-            if (!String.IsNullOrEmpty(this.Label)) {
-                yield return new IdentifierSyntax(" ", this.Label, String.Empty,false);
-                yield return new PunctuationSyntax(String.Empty,":"," ");
-                pad = "";
-            }
-            else pad = "".PadLeft(10, ' ');
-            
-            yield return new GenericSyntax(pad + this.Operation.PadRight(11));
-            
-            SyntaxNode[] nodes = this.OperandSyntax.ToArray();
+            for (int i = 0; i < this._operationnodes.Length; i++) yield return this._operationnodes[i];
 
-            if (nodes.Length > 0)
-            {
-                for (int i = 0; i < nodes.Length; i++) yield return nodes[i];
-            }
-            else yield return new GenericSyntax(this._trail);
+            for (int i = 0; i < this._operandnodes.Length; i++) yield return this._operandnodes[i];
         }
 
         public string Label
@@ -70,8 +116,7 @@ namespace CilTools.Syntax
             if (target == null) throw new ArgumentNullException("target");
 
             //if instruction is referenced as branch target, prepend label to it
-            if (!String.IsNullOrEmpty(this.Label)) target.Write(" " + this.Label + ": ");
-            else target.Write("".PadLeft(10, ' '));
+            for (int i = 0; i < this._labelnodes.Length; i++) this._labelnodes[i].ToText(target);
             target.Flush();
         }
 
@@ -87,7 +132,7 @@ namespace CilTools.Syntax
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            target.Write(this.Operation.PadRight(11));
+            for (int i = 0; i < this._operationnodes.Length; i++) this._operationnodes[i].ToText(target);
             target.Flush();
         }
 
@@ -97,34 +142,7 @@ namespace CilTools.Syntax
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
-            {
-                target.Write(this._node.BranchTarget.Name);
-            }
-            else
-            {
-                CilGraphNode[] swtargets = this._node.GetSwitchTargets();
-
-                if (swtargets.Length > 0) //append switch target list
-                {
-                    target.Write('(');
-
-                    for (int i = 0; i < swtargets.Length; i++)
-                    {
-                        if (i >= 1) target.Write(',');
-                        target.Write(swtargets[i].Name);
-                    }
-
-                    target.Write(' ');
-                    target.Write(')');
-                }
-                else
-                {
-                    this.Instruction.OperandToString(target); //print regular instruction operand
-                }
-            }
-
-            target.Write(this._trail);
+            for (int i = 0; i < this._operandnodes.Length; i++) this._operandnodes[i].ToText(target);
             target.Flush();
         }
 
@@ -143,36 +161,7 @@ namespace CilTools.Syntax
         {
             get
             {
-                if (this._node.BranchTarget != null) //if instruction itself targets branch, append its label
-                {
-                    yield return new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, this._trail, false);
-                }
-                else
-                {
-                    CilGraphNode[] swtargets = this._node.GetSwitchTargets();
-
-                    if (swtargets.Length > 0) //append switch target list
-                    {
-                        yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
-
-                        for (int i = 0; i < swtargets.Length; i++)
-                        {
-                            if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", String.Empty);
-                            yield return new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty, false);
-                        }
-
-                        yield return new PunctuationSyntax(String.Empty, ")", this._trail);
-                    }
-                    else
-                    {
-                        //print regular instruction operand
-                        IEnumerable<SyntaxNode> nodes = this.Instruction.OperandToSyntax();
-
-                        foreach (SyntaxNode node in nodes) yield return node;
-
-                        yield return new GenericSyntax(this._trail);
-                    }
-                }//endif
+                for (int i = 0; i < this._operandnodes.Length; i++) yield return this._operandnodes[i];
             }
         }
     }

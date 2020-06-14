@@ -116,7 +116,6 @@ namespace CilView
                 InstructionSyntax ins = (InstructionSyntax)node;
                 
                 r = new Run();
-                wr.Write(ins.LeadingWhitespace);
                 ins.WriteLabel(wr);
                 ins.WriteOperation(wr);
                 wr.Flush();

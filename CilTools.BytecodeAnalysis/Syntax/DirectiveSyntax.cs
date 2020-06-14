@@ -14,10 +14,10 @@ namespace CilTools.Syntax
 {
     public class DirectiveSyntax:SyntaxNode
     {        
-        string _name;
+        KeywordSyntax _name;
         SyntaxNode[] _content;
         
-        public string Name { get { return this._name; } }
+        public string Name { get { return this._name.Content; } }
 
         public void WriteContent(TextWriter target)
         {
@@ -28,7 +28,7 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
-        public string Content 
+        public string ContentString 
         { 
             get 
             {
@@ -41,7 +41,7 @@ namespace CilTools.Syntax
             } 
         }
 
-        public IEnumerable<SyntaxNode> InnerSyntax 
+        public IEnumerable<SyntaxNode> ContentSyntax 
         { 
             get 
             {
@@ -49,15 +49,20 @@ namespace CilTools.Syntax
             } 
         }
 
-        public int InnerElementsCount { get { return this._content.Length; } }
-
         internal DirectiveSyntax(string lead, string name, SyntaxNode[] content)
         {
             if (lead == null) lead = "";
-            if (content == null) content = new SyntaxNode[0];            
+            if (content == null) content = new SyntaxNode[0];
 
-            this._lead = lead;
-            this._name = name;
+            if (content.Length > 0)
+            {
+                this._name = new KeywordSyntax(lead, "." + name, " ");
+            }
+            else
+            {
+                this._name = new KeywordSyntax(lead, "." + name, Environment.NewLine);
+            }
+            
             this._content = content;            
         }
 
@@ -65,32 +70,22 @@ namespace CilTools.Syntax
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            target.Write(this._lead);
-            target.Write('.');
-            target.Write(this._name);
-
+            this._name.ToText(target);
+            
             if (this._content.Length > 0)
             {
                 target.Write(' ');
                 this.WriteContent(target);
             }
-            else
-            {
-                target.WriteLine();
-            }
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
+            yield return this._name;
+
             if (this._content.Length > 0)
             {
-                yield return new KeywordSyntax(this._lead, "." + this._name, " ");
-
                 for (int i = 0; i < this._content.Length; i++) yield return this._content[i];
-            }
-            else
-            {
-                yield return new KeywordSyntax(this._lead, "." + this._name, Environment.NewLine);
             }
         }
 
