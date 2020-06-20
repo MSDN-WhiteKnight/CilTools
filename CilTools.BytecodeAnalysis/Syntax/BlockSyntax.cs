@@ -13,10 +13,8 @@ namespace CilTools.Syntax
     {
         string _indent;
         SyntaxNode[] _header;
-        List<SyntaxNode> _children;
+        internal List<SyntaxNode> _children;
         
-        internal List<SyntaxNode> ContentArray { get { return this._children; } set { this._children = value; } }
-
         internal BlockSyntax(string indent, SyntaxNode[] header, SyntaxNode[] children)
         {
             if (indent == null) indent = "";

@@ -542,7 +542,7 @@ namespace CilTools.BytecodeAnalysis
                         new String(indent.ToArray()), "try", SyntaxNode.EmptyArray 
                         );
 
-                    curr_node.ContentArray.Add(dir);
+                    curr_node._children.Add(dir);
 
                     new_node = new BlockSyntax(new String(indent.ToArray()),SyntaxNode.EmptyArray,new SyntaxNode[0]);
                     
@@ -565,7 +565,7 @@ namespace CilTools.BytecodeAnalysis
                     else
                         curr_node = root;
 
-                    curr_node.ContentArray.Add(new_node);
+                    curr_node._children.Add(new_node);
 
                     if (indent.Count > 0) indent.Pop();
                 }
@@ -587,7 +587,7 @@ namespace CilTools.BytecodeAnalysis
                     else
                         curr_node = root;
 
-                    curr_node.ContentArray.Add(new_node);
+                    curr_node._children.Add(new_node);
                     
                     if (indent.Count > 0) indent.Pop();
                 }
@@ -652,7 +652,7 @@ namespace CilTools.BytecodeAnalysis
                         else
                             curr_node = root;
 
-                        curr_node.ContentArray.Add(new_node);
+                        curr_node._children.Add(new_node);
                         
                         new_node = new BlockSyntax(new String(indent.ToArray()), SyntaxNode.EmptyArray, new SyntaxNode[0]);
                         currentpath.Add(new_node);
@@ -680,7 +680,7 @@ namespace CilTools.BytecodeAnalysis
                     }
                 }
 
-                curr_node.ContentArray.Add(new InstructionSyntax(new String(indent.ToArray()), node));
+                curr_node._children.Add(new InstructionSyntax(new String(indent.ToArray()), node));
                 
                 if (node.Next == null) break; //last instruction
                 else node = node.Next;
@@ -696,7 +696,7 @@ namespace CilTools.BytecodeAnalysis
 
             if (currentpath.Count > 0) throw new CilParserException("Parse error: Not all blocks are closed");
 
-            return root.ContentArray.ToArray();
+            return root._children.ToArray();
         }
 
         public MethodDefSyntax ToSyntaxTree()

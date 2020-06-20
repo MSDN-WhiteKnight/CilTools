@@ -13,8 +13,8 @@ namespace CilTools.Syntax
 {
     public abstract class SyntaxNode
     {
-        protected string _lead=String.Empty;
-        protected string _trail = String.Empty;
+        internal string _lead=String.Empty;
+        internal string _trail = String.Empty;
 
         internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
 
