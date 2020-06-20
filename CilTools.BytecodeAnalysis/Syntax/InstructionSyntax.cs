@@ -20,7 +20,7 @@ namespace CilTools.Syntax
         void CreateNodes(string lead, CilGraphNode graphnode)
         {
             List<SyntaxNode> labelnodes = new List<SyntaxNode>();
-            string pad;
+            string pad,pad2;
 
             //label and operation nodes
             if (!String.IsNullOrEmpty(graphnode.Name))
@@ -31,8 +31,15 @@ namespace CilTools.Syntax
             }
             else pad = lead+"".PadLeft(10, ' ');
 
+            string name = graphnode.Instruction.OpCode.Name;
+            int len = 12 - name.Length;
+
+            if (len < 1) len = 1;
+
+            pad2 = "".PadLeft(len);
+
             List<SyntaxNode> operationnodes = new List<SyntaxNode>();
-            operationnodes.Add(new GenericSyntax(pad + graphnode.Instruction.OpCode.Name.PadRight(11)));
+            operationnodes.Add(new KeywordSyntax(pad,name,pad2,KeywordKind.InstructionName));
 
             //operand nodes
             List<SyntaxNode> operandnodes = new List<SyntaxNode>();

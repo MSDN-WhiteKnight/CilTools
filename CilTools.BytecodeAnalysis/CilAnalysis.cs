@@ -139,24 +139,42 @@ namespace CilTools.BytecodeAnalysis
                 }
             }
 
-            if (t.Equals(typeof(void))) yield return new KeywordSyntax(String.Empty,"void",String.Empty);
-            else if (t.Equals(typeof(bool))) yield return new KeywordSyntax(String.Empty,"bool",String.Empty);
-            else if (t.Equals(typeof(int))) yield return new KeywordSyntax(String.Empty,"int32",String.Empty);
-            else if (t.Equals(typeof(uint))) yield return new KeywordSyntax(String.Empty, "uint32", String.Empty);
-            else if (t.Equals(typeof(long))) yield return new KeywordSyntax(String.Empty, "int64", String.Empty);
-            else if (t.Equals(typeof(ulong))) yield return new KeywordSyntax(String.Empty, "uint64", String.Empty);
-            else if (t.Equals(typeof(short))) yield return new KeywordSyntax(String.Empty, "int16", String.Empty);
-            else if (t.Equals(typeof(ushort))) yield return new KeywordSyntax(String.Empty, "uint16", String.Empty);
-            else if (t.Equals(typeof(byte))) yield return new KeywordSyntax(String.Empty, "uint8", String.Empty);
-            else if (t.Equals(typeof(sbyte))) yield return new KeywordSyntax(String.Empty, "int8", String.Empty);
-            else if (t.Equals(typeof(float))) yield return new KeywordSyntax(String.Empty, "float32", String.Empty);
-            else if (t.Equals(typeof(double))) yield return new KeywordSyntax(String.Empty, "float64", String.Empty);
-            else if (t.Equals(typeof(string))) yield return new KeywordSyntax(String.Empty, "string", String.Empty);
-            else if (t.Equals(typeof(char))) yield return new KeywordSyntax(String.Empty, "char", String.Empty);
-            else if (t.Equals(typeof(object))) yield return new KeywordSyntax(String.Empty, "object", String.Empty);
-            else if (t.Equals(typeof(IntPtr))) yield return new KeywordSyntax(String.Empty, "native int", String.Empty);
-            else if (t.Equals(typeof(UIntPtr))) yield return new KeywordSyntax(String.Empty, "native uint", String.Empty);
-            else if (t.Equals(typeof(System.TypedReference))) yield return new KeywordSyntax(String.Empty, "typedref", String.Empty);
+            if (t.Equals(typeof(void))) 
+                yield return new KeywordSyntax(String.Empty, "void", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(bool))) 
+                yield return new KeywordSyntax(String.Empty, "bool", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(int)))
+                yield return new KeywordSyntax(String.Empty, "int32", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(uint)))
+                yield return new KeywordSyntax(String.Empty, "uint32", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(long)))
+                yield return new KeywordSyntax(String.Empty, "int64", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(ulong)))
+                yield return new KeywordSyntax(String.Empty, "uint64", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(short)))
+                yield return new KeywordSyntax(String.Empty, "int16", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(ushort)))
+                yield return new KeywordSyntax(String.Empty, "uint16", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(byte)))
+                yield return new KeywordSyntax(String.Empty, "uint8", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(sbyte)))
+                yield return new KeywordSyntax(String.Empty, "int8", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(float)))
+                yield return new KeywordSyntax(String.Empty, "float32", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(double)))
+                yield return new KeywordSyntax(String.Empty, "float64", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(string)))
+                yield return new KeywordSyntax(String.Empty, "string", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(char)))
+                yield return new KeywordSyntax(String.Empty, "char", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(object)))
+                yield return new KeywordSyntax(String.Empty, "object", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(IntPtr)))
+                yield return new KeywordSyntax(String.Empty, "native int", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(UIntPtr)))
+                yield return new KeywordSyntax(String.Empty, "native uint", String.Empty, KeywordKind.Other);
+            else if (t.Equals(typeof(System.TypedReference)))
+                yield return new KeywordSyntax(String.Empty, "typedref", String.Empty, KeywordKind.Other);
             else
             {
                 IEnumerable<SyntaxNode> nodes = GetTypeFullNameSyntax(t);
@@ -215,8 +233,8 @@ namespace CilTools.BytecodeAnalysis
 
         internal static IEnumerable<SyntaxNode> GetTypeFullNameSyntax(Type t)
         {
-            if (t.IsValueType) yield return new KeywordSyntax(String.Empty,"valuetype"," ");
-            else if (t.IsClass) yield return new KeywordSyntax(String.Empty, "class", " ");
+            if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);
+            else if (t.IsClass) yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
 
             Assembly ass = t.Assembly;
             
@@ -459,9 +477,9 @@ namespace CilTools.BytecodeAnalysis
             IEnumerable<SyntaxNode> rt;
 
             if (mi != null) rt = CilAnalysis.GetTypeNameSyntax(mi.ReturnType);
-            else rt = new SyntaxNode[]{new KeywordSyntax("","void","")};
+            else rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
 
-            if (!m.IsStatic) children.Add(new KeywordSyntax("", "instance", " "));
+            if (!m.IsStatic) children.Add(new KeywordSyntax("", "instance", " ", KeywordKind.Other));
 
             foreach (SyntaxNode node in rt) children.Add(node);
 

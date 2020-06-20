@@ -72,6 +72,7 @@
     <Compile Include="Syntax\GenericSyntax.cs" />
     <Compile Include="Syntax\IdentifierSyntax.cs" />
     <Compile Include="Syntax\InstructionSyntax.cs" />
+    <Compile Include="Syntax\KeywordKind.cs" />
     <Compile Include="Syntax\KeywordSyntax.cs" />
     <Compile Include="Syntax\MemberRefSyntax.cs" />
     <Compile Include="Syntax\MethodDefSyntax.cs" />

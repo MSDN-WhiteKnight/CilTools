@@ -56,11 +56,11 @@ namespace CilTools.Syntax
 
             if (content.Length > 0)
             {
-                this._name = new KeywordSyntax(lead, "." + name, " ");
+                this._name = new KeywordSyntax(lead, "." + name, " ",KeywordKind.DirectiveName);
             }
             else
             {
-                this._name = new KeywordSyntax(lead, "." + name, Environment.NewLine);
+                this._name = new KeywordSyntax(lead, "." + name, Environment.NewLine,KeywordKind.DirectiveName);
             }
             
             this._content = content;            
@@ -96,24 +96,24 @@ namespace CilTools.Syntax
             
             List<SyntaxNode> inner = new List<SyntaxNode>(100);
 
-            if (m.IsPublic) inner.Add(new KeywordSyntax(" ", "public", String.Empty));
-            else if (m.IsPrivate) inner.Add(new KeywordSyntax(" ", "private", String.Empty));
-            else if (m.IsAssembly) inner.Add(new KeywordSyntax(" ", "assembly", String.Empty)); //internal
-            else if (m.IsFamily) inner.Add(new KeywordSyntax(" ", "family", String.Empty)); //protected
-            else inner.Add(new KeywordSyntax(" ", "famorassem", String.Empty)); //protected internal
+            if (m.IsPublic) inner.Add(new KeywordSyntax(" ", "public", String.Empty, KeywordKind.Other));
+            else if (m.IsPrivate) inner.Add(new KeywordSyntax(" ", "private", String.Empty, KeywordKind.Other));
+            else if (m.IsAssembly) inner.Add(new KeywordSyntax(" ", "assembly", String.Empty, KeywordKind.Other)); //internal
+            else if (m.IsFamily) inner.Add(new KeywordSyntax(" ", "family", String.Empty, KeywordKind.Other)); //protected
+            else inner.Add(new KeywordSyntax(" ", "famorassem", String.Empty, KeywordKind.Other)); //protected internal
 
-            if (m.IsHideBySig) inner.Add(new KeywordSyntax(" ", "hidebysig", String.Empty));
+            if (m.IsHideBySig) inner.Add(new KeywordSyntax(" ", "hidebysig", String.Empty, KeywordKind.Other));
 
-            if (m.IsAbstract) inner.Add(new KeywordSyntax(" ", "abstract", String.Empty));
+            if (m.IsAbstract) inner.Add(new KeywordSyntax(" ", "abstract", String.Empty, KeywordKind.Other));
 
-            if (m.IsVirtual) inner.Add(new KeywordSyntax(" ", "virtual", String.Empty));
+            if (m.IsVirtual) inner.Add(new KeywordSyntax(" ", "virtual", String.Empty, KeywordKind.Other));
 
-            if (m.IsStatic) inner.Add(new KeywordSyntax(" ", "static", " "));
-            else inner.Add(new KeywordSyntax(" ", "instance", " "));
+            if (m.IsStatic) inner.Add(new KeywordSyntax(" ", "static", " ", KeywordKind.Other));
+            else inner.Add(new KeywordSyntax(" ", "instance", " ", KeywordKind.Other));
 
             if (m.CallingConvention == CallingConventions.VarArgs)
             {
-                inner.Add(new KeywordSyntax(String.Empty, "vararg", " "));
+                inner.Add(new KeywordSyntax(String.Empty, "vararg", " ", KeywordKind.Other));
             }
                         
             if (cm.ReturnType != null)
@@ -162,8 +162,8 @@ namespace CilTools.Syntax
 
             if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine));
             inner.Add(new PunctuationSyntax(String.Empty, ")", String.Empty));
-            inner.Add(new KeywordSyntax(" ", "cil", String.Empty));
-            inner.Add(new KeywordSyntax(" ", "managed", Environment.NewLine));
+            inner.Add(new KeywordSyntax(" ", "cil", String.Empty, KeywordKind.Other));
+            inner.Add(new KeywordSyntax(" ", "managed", Environment.NewLine, KeywordKind.Other));
             
             return new DirectiveSyntax("", "method", inner.ToArray());
         }

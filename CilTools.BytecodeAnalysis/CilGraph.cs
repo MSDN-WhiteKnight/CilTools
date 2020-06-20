@@ -391,7 +391,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (cm.InitLocalsSpecified)
                 {
-                    if (cm.InitLocals) inner.Add(new KeywordSyntax(" ", "init",String.Empty));
+                    if (cm.InitLocals) inner.Add(new KeywordSyntax(" ", "init",String.Empty,KeywordKind.Other));
                 }
 
                 inner.Add(new PunctuationSyntax(" ", "(", String.Empty));
@@ -598,8 +598,8 @@ namespace CilTools.BytecodeAnalysis
                     indent.Push(' ');
 
                     new_node = new BlockSyntax(
-                        new String(indent.ToArray()), 
-                        new SyntaxNode[]{new KeywordSyntax("","filter","")}, 
+                        new String(indent.ToArray()),
+                        new SyntaxNode[] { new KeywordSyntax("", "filter", "", KeywordKind.Other) }, 
                         new SyntaxNode[0]);
 
                     currentpath.Add(new_node);
@@ -618,7 +618,7 @@ namespace CilTools.BytecodeAnalysis
                         Type t = block.CatchType;
 
                         List<SyntaxNode> header_nodes = new List<SyntaxNode>();
-                        header_nodes.Add(new KeywordSyntax("", "catch", " "));
+                        header_nodes.Add(new KeywordSyntax("", "catch", " ", KeywordKind.Other));
 
                         if (t != null)
                         {
@@ -661,8 +661,8 @@ namespace CilTools.BytecodeAnalysis
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Finally) != 0)
                     {
                         new_node = new BlockSyntax(
-                            new String(indent.ToArray()), 
-                            new SyntaxNode[]{new KeywordSyntax("","finally","")}, 
+                            new String(indent.ToArray()),
+                            new SyntaxNode[] { new KeywordSyntax("", "finally", "", KeywordKind.Other) }, 
                             new SyntaxNode[0]);
 
                         currentpath.Add(new_node);
@@ -671,8 +671,8 @@ namespace CilTools.BytecodeAnalysis
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Fault) != 0)
                     {
                         new_node = new BlockSyntax(
-                            new String(indent.ToArray()), 
-                            new SyntaxNode[]{new KeywordSyntax("","fault","")}, 
+                            new String(indent.ToArray()),
+                            new SyntaxNode[] { new KeywordSyntax("", "fault", "", KeywordKind.Other) }, 
                             new SyntaxNode[0]);
 
                         currentpath.Add(new_node);

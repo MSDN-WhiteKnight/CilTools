@@ -14,10 +14,13 @@ namespace CilTools.Syntax
     public class KeywordSyntax:SyntaxNode
     {
         string _content;
+        KeywordKind _kind;
 
         public string Content { get { return this._content; } }
 
-        internal KeywordSyntax(string lead, string content, string trail)
+        public KeywordKind Kind { get { return this._kind; } }
+
+        internal KeywordSyntax(string lead, string content, string trail, KeywordKind kind)
         {
             if (lead == null) lead = "";
             if (trail == null) trail = "";
@@ -25,6 +28,7 @@ namespace CilTools.Syntax
             this._lead = lead;
             this._content = content;
             this._trail = trail;
+            this._kind = kind;
         }
 
         public override void ToText(TextWriter target)

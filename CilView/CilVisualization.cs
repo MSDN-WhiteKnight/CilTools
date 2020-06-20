@@ -154,7 +154,12 @@ namespace CilView
             else if (node is KeywordSyntax)
             {
                 r = new Run();
-                r.Foreground = Brushes.Blue;
+
+                if(((KeywordSyntax)node).Kind == KeywordKind.Other)
+                    r.Foreground = Brushes.Blue;
+                else if (((KeywordSyntax)node).Kind == KeywordKind.DirectiveName)
+                    r.Foreground = Brushes.Magenta;
+
                 r.Text = node.ToString();
                 target.Inlines.Add(r);
             }
