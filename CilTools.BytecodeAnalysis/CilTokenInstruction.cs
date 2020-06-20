@@ -279,9 +279,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     int token = this._operand;
 
-                    yield return new MemberRefSyntax(
-                        new SyntaxNode[]{ new IdentifierSyntax("","UnknownMethod" + token.ToString("X"),"",true)},
-                        MemberTypes.Method);
+                    yield return new IdentifierSyntax("","UnknownMethod" + token.ToString("X"),"",true);
                 }
             }
             else if (ReferencesFieldToken(this.OpCode))
@@ -305,15 +303,13 @@ namespace CilTools.BytecodeAnalysis
                     children.Add(new PunctuationSyntax("", "::", ""));
                     children.Add(new IdentifierSyntax("", fi.Name, "",true));
 
-                    yield return new MemberRefSyntax(children.ToArray(), MemberTypes.Field);
+                    yield return new MemberRefSyntax(children.ToArray(), fi);
                 }
                 else
                 {
                     int token = this._operand;
-
-                    yield return new MemberRefSyntax(
-                        new SyntaxNode[] { new IdentifierSyntax("", "UnknownField" + token.ToString("X"), "", true) },
-                        MemberTypes.Field);
+                    
+                    yield return new IdentifierSyntax("", "UnknownField" + token.ToString("X"), "", true);
                 }
             }
             else if (ReferencesTypeToken(this.OpCode))
@@ -323,15 +319,13 @@ namespace CilTools.BytecodeAnalysis
 
                 if (t != null)
                 {
-                    yield return new TypeRefSyntax(CilAnalysis.GetTypeNameSyntaxInternal(t).ToArray());
+                    yield return new MemberRefSyntax(CilAnalysis.GetTypeNameSyntaxInternal(t).ToArray(),t);
                 }
                 else
                 {
                     int token = this._operand;
-
-                    yield return new TypeRefSyntax(
-                        new SyntaxNode[] { new IdentifierSyntax("", "UnknownType" + token.ToString("X"), "", true) }
-                        );
+                    
+                    yield return new IdentifierSyntax("", "UnknownType" + token.ToString("X"), "", true);
                 }
             }
             else if (OpCode.Equals(OpCodes.Ldstr))
@@ -361,13 +355,13 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (mi is Type)
                     {
-                        yield return new TypeRefSyntax(CilAnalysis.GetTypeNameSyntaxInternal((Type)mi).ToArray());
+                        yield return new MemberRefSyntax(CilAnalysis.GetTypeNameSyntaxInternal((Type)mi).ToArray(),mi);
                     }
                     else
                     {
                         yield return new MemberRefSyntax(
                             new SyntaxNode[] { new IdentifierSyntax("", mi.Name, "", true) },
-                            mi.MemberType);
+                            mi);
                     }
                 }
                 else

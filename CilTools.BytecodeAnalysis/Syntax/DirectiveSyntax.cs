@@ -118,7 +118,7 @@ namespace CilTools.Syntax
                         
             if (cm.ReturnType != null)
             {
-                inner.Add(new TypeRefSyntax(CilAnalysis.GetTypeNameSyntax(cm.ReturnType).ToArray()));
+                inner.Add(new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(cm.ReturnType).ToArray(), cm.ReturnType));
             }
             
             inner.Add(new IdentifierSyntax(" ", m.Name, String.Empty, true));
@@ -156,7 +156,7 @@ namespace CilTools.Syntax
                 if (pars[i].Name != null) parname = pars[i].Name;
                 else parname = "par" + (i + 1).ToString();
 
-                inner.Add(new TypeRefSyntax(partype));
+                inner.Add(new MemberRefSyntax(partype, pars[i].ParameterType));
                 inner.Add(new IdentifierSyntax(" ", parname, String.Empty,false));
             }
 

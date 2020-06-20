@@ -12,13 +12,15 @@ namespace CilTools.Syntax
 {
     public class MemberRefSyntax:SyntaxNode
     {
-        MemberTypes _membertype;
+        MemberInfo _member;
         SyntaxNode[] _content;
 
-        internal MemberRefSyntax(SyntaxNode[] content, MemberTypes t)
+        public MemberInfo Member { get { return this._member; } }
+
+        internal MemberRefSyntax(SyntaxNode[] content, MemberInfo m)
         {
             this._content = content;
-            this._membertype = t;
+            this._member = m;
         }
         
         public override void ToText(TextWriter target)

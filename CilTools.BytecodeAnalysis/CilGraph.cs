@@ -733,7 +733,7 @@ namespace CilTools.BytecodeAnalysis
                 nodes.Add(arr[i]);
             }
 
-            nodes.Add( new EmptyLineSyntax());
+            nodes.Add( new GenericSyntax(Environment.NewLine));
 
             arr = this.BodyAsSyntaxTree();
 

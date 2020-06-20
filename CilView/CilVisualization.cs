@@ -111,42 +111,29 @@ namespace CilView
             StringBuilder sb = new StringBuilder(500);
             StringWriter wr = new StringWriter(sb);
 
-            if (node is InstructionSyntax)
+            if (node is MemberRefSyntax)
             {
-                InstructionSyntax ins = (InstructionSyntax)node;
+                MemberRefSyntax mrs = (MemberRefSyntax)node;
                 
-                r = new Run();
-                ins.WriteLabel(wr);
-                ins.WriteOperation(wr);
-                wr.Flush();
-                r.Text = sb.ToString();
-                target.Inlines.Add(r);
-
-                sb.Clear();
-                ins.WriteOperand(wr);
-                wr.Flush();
-                r = new Run();
-                r.Text = sb.ToString();
-
-                if (ins.Instruction.ReferencedMember is MethodBase)
+                if (mrs.Member != null && mrs.Member is MethodBase)
                 {
                     //if operand is method, enable navigation functionality
+
+                    r = new Run();
+                    sb.Clear();
+                    node.ToText(wr);
+                    wr.Flush();
+                    r.Text = sb.ToString();
+
                     Hyperlink lnk = new Hyperlink(r);
-                    lnk.Tag = (MethodBase)ins.Instruction.ReferencedMember;
+                    lnk.Tag = (MethodBase)mrs.Member;
                     lnk.Click += navigation;
                     target.Inlines.Add(lnk);
                 }
-                else if (ins.Instruction.ReferencedString != null)
-                {
-                    //render string literal
-                    r.Foreground = Brushes.Red;
-                    target.Inlines.Add(r);
-                }
-                else if (sb.Length > 0)
+                else
                 {
                     //render regular operand
-                    
-                    IEnumerable<SyntaxNode> children = ins.OperandSyntax;
+                    IEnumerable<SyntaxNode> children = mrs.EnumerateChildNodes();
 
                     foreach (SyntaxNode child in children) VisualizeNode(child, target, navigation);
                 }
@@ -155,7 +142,7 @@ namespace CilView
             {
                 r = new Run();
 
-                if(((KeywordSyntax)node).Kind == KeywordKind.Other)
+                if (((KeywordSyntax)node).Kind == KeywordKind.Other)
                     r.Foreground = Brushes.Blue;
                 else if (((KeywordSyntax)node).Kind == KeywordKind.DirectiveName)
                     r.Foreground = Brushes.Magenta;
@@ -167,7 +154,7 @@ namespace CilView
             {
                 IdentifierSyntax id = (IdentifierSyntax)node;
                 r = new Run();
-                if(id.IsMemberName) r.Foreground = Brushes.CornflowerBlue;
+                if (id.IsMemberName) r.Foreground = Brushes.CornflowerBlue;
                 r.Text = node.ToString();
                 target.Inlines.Add(r);
             }
@@ -175,7 +162,7 @@ namespace CilView
             {
                 LiteralSyntax lit = (LiteralSyntax)node;
                 r = new Run();
-                if(lit.Value is string) r.Foreground = Brushes.Red;
+                if (lit.Value is string) r.Foreground = Brushes.Red;
                 r.Text = node.ToString();
                 target.Inlines.Add(r);
             }

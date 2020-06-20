@@ -602,7 +602,7 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
-        internal TypeRefSyntax ToSyntax()
+        internal MemberRefSyntax ToSyntax()
         {
             List<SyntaxNode> ret = new List<SyntaxNode>();
 
@@ -654,7 +654,7 @@ namespace CilTools.BytecodeAnalysis
                 ret.Add(new GenericSyntax(" "+mod.ToString()));
             }
 
-            return new TypeRefSyntax(ret.ToArray());
+            return new MemberRefSyntax(ret.ToArray(), this._Type);
         }
     }
 }

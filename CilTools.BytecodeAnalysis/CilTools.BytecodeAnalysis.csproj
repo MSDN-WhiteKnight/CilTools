@@ -68,7 +68,6 @@
     <Compile Include="Syntax\BlockSyntax.cs" />
     <Compile Include="Syntax\CommentSyntax.cs" />
     <Compile Include="Syntax\DirectiveSyntax.cs" />
-    <Compile Include="Syntax\EmptyLineSyntax.cs" />
     <Compile Include="Syntax\GenericSyntax.cs" />
     <Compile Include="Syntax\IdentifierSyntax.cs" />
     <Compile Include="Syntax\InstructionSyntax.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="Syntax\MethodDefSyntax.cs" />
     <Compile Include="Syntax\PunctuationSyntax.cs" />
     <Compile Include="Syntax\SyntaxNode.cs" />
-    <Compile Include="Syntax\TypeRefSyntax.cs" />
     <Compile Include="TypeSpec.cs" />
   </ItemGroup>
   <ItemGroup>

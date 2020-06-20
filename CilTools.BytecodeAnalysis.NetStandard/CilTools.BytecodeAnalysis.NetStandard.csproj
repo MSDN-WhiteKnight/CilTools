@@ -48,8 +48,6 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\DirectiveSyntax.cs"  Link="DirectiveSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\InstructionSyntax.cs"  Link="InstructionSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\SyntaxNode.cs"  Link="SyntaxNode.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\EmptyLineSyntax.cs"  Link="EmptyLineSyntax.cs"/>
-    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\TypeRefSyntax.cs"  Link="TypeRefSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\PunctuationSyntax.cs"  Link="PunctuationSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\IdentifierSyntax.cs"  Link="IdentifierSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\KeywordSyntax.cs"  Link="KeywordSyntax.cs"/>

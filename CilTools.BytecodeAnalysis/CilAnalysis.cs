@@ -526,7 +526,7 @@ namespace CilTools.BytecodeAnalysis
 
             children.Add(new PunctuationSyntax("",")",""));
 
-            return new MemberRefSyntax(children.ToArray(),MemberTypes.Method);
+            return new MemberRefSyntax(children.ToArray(),m);
         }
 
         /// <summary>
