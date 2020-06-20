@@ -77,28 +77,42 @@ namespace CilView
 
         private void cbAssembly_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Assembly ass = (Assembly)cbAssembly.SelectedItem;
+            try
+            {
+                Assembly ass = (Assembly)cbAssembly.SelectedItem;
 
-            if (ass == null) return;
-            if (source == null) return;
+                if (ass == null) return;
+                if (source == null) return;
 
-            source.Types.Clear();
-            source.Methods.Clear();
-            source.Types = AssemblySource.LoadTypes(ass);
+                source.Types.Clear();
+                source.Methods.Clear();
+                source.Types = AssemblySource.LoadTypes(ass);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.ToString(), "Error",MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void cbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Type t = (Type)cbType.SelectedItem;
+            try
+            {
+                Type t = (Type)cbType.SelectedItem;
 
-            if (t == null) return;
-            if (source == null) return;
+                if (t == null) return;
+                if (source == null) return;
 
-            source.Methods.Clear();
-            source.Methods = AssemblySource.LoadMethods(t);
-            
-            this.tlv = CilVisualization.VisualizeMethodList(source.Methods,Navigated);
-            cMethodsList.Child = this.tlv;
+                source.Methods.Clear();
+                source.Methods = AssemblySource.LoadMethods(t);
+
+                this.tlv = CilVisualization.VisualizeMethodList(source.Methods, Navigated);
+                cMethodsList.Child = this.tlv;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         void NavigateToMethod(MethodBase mb)
@@ -160,12 +174,19 @@ namespace CilView
 
         void Navigated(object sender, RoutedEventArgs e)
         {
-            FrameworkContentElement elem = (FrameworkContentElement)sender;
-            MethodBase mb = (MethodBase)(elem.Tag);
+            try
+            {
+                FrameworkContentElement elem = (FrameworkContentElement)sender;
+                MethodBase mb = (MethodBase)(elem.Tag);
 
-            if (mb == null) return;
+                if (mb == null) return;
 
-            this.NavigateToMethod(mb);
+                this.NavigateToMethod(mb);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private void bOpenFile_Click(object sender, RoutedEventArgs e)
@@ -198,9 +219,9 @@ namespace CilView
         {
             MessageBox.Show(this, 
                 "CIL View "+typeof(MainWindow).Assembly.GetName().Version.ToString()+Environment.NewLine+
-                "CIL Tools project"+Environment.NewLine+
+                "CIL Tools project: https://github.com/MSDN-WhiteKnight/CilTools" + Environment.NewLine +
                 "License: BSD 2.0", 
-                "About");
+                "About",MessageBoxButton.OK,MessageBoxImage.Information);
         }
 
         private void miExit_Click(object sender, RoutedEventArgs e)
@@ -216,21 +237,73 @@ namespace CilView
                 return;
             }
 
-            SaveFileDialog dlg = new SaveFileDialog();
-            dlg.RestoreDirectory = true;
-            dlg.DefaultExt = ".il";
-            dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
-
-            if (this.current_method != null) dlg.FileName = this.current_method.Name;
-
-            if (dlg.ShowDialog(this) == true)
+            try
             {
-                StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
 
-                using (wr)
+                SaveFileDialog dlg = new SaveFileDialog();
+                dlg.RestoreDirectory = true;
+                dlg.DefaultExt = ".il";
+                dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
+
+                if (this.current_method != null) dlg.FileName = this.current_method.Name;
+
+                if (dlg.ShowDialog(this) == true)
                 {
-                    await wr.WriteAsync(tbMainContent.Text);
+                    StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
+
+                    using (wr)
+                    {
+                        await wr.WriteAsync(tbMainContent.Text);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void miLicense_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                Process.Start(Path.Combine(path, "license.txt"));
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void miSource_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("https://github.com/MSDN-WhiteKnight/CilTools");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, 
+"Failed to open URL. Navigate to https://github.com/MSDN-WhiteKnight/CilTools manually in browser to access source code"+
+                    Environment.NewLine+ Environment.NewLine+ ex.ToString(),
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void miFeedback_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                Process.Start("https://github.com/MSDN-WhiteKnight/CilTools/issues/new");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this,
+@"Failed to open URL. Navigate to https://github.com/MSDN-WhiteKnight/CilTools/issues/new manually in browser
+to provide feedback" +
+                    Environment.NewLine + Environment.NewLine + ex.ToString(),
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

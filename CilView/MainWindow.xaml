@@ -12,16 +12,26 @@
                 <Separator/>
                 <MenuItem x:Name="miExit" Header="Exit" Click="miExit_Click"/>
             </MenuItem>
-            <MenuItem Header="Help">
+            <MenuItem Header="Help" > 
+                <MenuItem x:Name="miLicense" Header="License" Click="miLicense_Click"/>
+                <MenuItem x:Name="miSource" Header="Source code" Click="miSource_Click"/>
+                <MenuItem x:Name="miFeedback" Header="Feedback" Click="miFeedback_Click"/>
+                <Separator/>
                 <MenuItem x:Name="miAbout" Header="About" Click="miAbout_Click"/>
             </MenuItem>
         </Menu>
-        <Button x:Name="bOpenProcess" Content="Open process" HorizontalAlignment="Left" Height="24" Margin="10,30,0,0" VerticalAlignment="Top" 
-                Width="90" Click="bOpenProcess_Click"/>
-        <Button x:Name="bOpenFile" Content="Open file" HorizontalAlignment="Left" Height="24" Margin="120,30,0,0" VerticalAlignment="Top" 
+        <Button x:Name="bOpenFile" Content="Open file" HorizontalAlignment="Left" Height="24" Margin="10,30,0,0" VerticalAlignment="Top" 
                 Width="90" Click="bOpenFile_Click" />
-        <Label Content="Assembly" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="65"/>
+        <Button x:Name="bOpenProcess" Content="Open process" HorizontalAlignment="Left" Height="24" Margin="120,30,0,0" VerticalAlignment="Top" 
+                Width="90" Click="bOpenProcess_Click"/> 
+        <Button x:Name="bExport" Content="Export" HorizontalAlignment="Left" Height="24" Margin="230,30,0,0" VerticalAlignment="Top" 
+                Width="90" Click="miExportMethod_Click" />
+        <Button x:Name="bAbout" Content="About" HorizontalAlignment="Left" Height="24" Margin="340,30,0,0" VerticalAlignment="Top" 
+                Width="90" Click="miAbout_Click" />
+        <Button x:Name="bExit" Content="Exit" HorizontalAlignment="Left" Height="24" Margin="450,30,0,0" VerticalAlignment="Top" 
+                Width="90" Click="miExit_Click" />
         
+        <Label Content="Assembly" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="65"/>
         <ComboBox x:Name="cbAssembly" HorizontalAlignment="Left" Height="21" Margin="80,60,0,0" ItemsSource="{Binding Assemblies}"
                   VerticalAlignment="Top" Width="160"
                   DisplayMemberPath="FullName" SelectionChanged="cbAssembly_SelectionChanged"/>
@@ -42,10 +52,10 @@
                  VerticalAlignment="Top" IsReadOnly="True" x:Name="tbCurrLocation" Grid.Column="1"/>
             <TabControl HorizontalAlignment="Stretch" Margin="0,35,5,5" VerticalAlignment="Stretch" 
                         Grid.Column="1" BorderBrush="Black">
-                <TabItem Header="Structure">
+                <TabItem Header="Formatted">
                     <Grid x:Name="gridStructure" Background="White"/>
                 </TabItem>
-                <TabItem Header="Text">
+                <TabItem Header="Plain text">
                     <TextBox x:Name="tbMainContent" HorizontalAlignment="Stretch"  Margin="0,0,0,0" TextWrapping="Wrap" Text="" 
                  VerticalAlignment="Stretch" IsReadOnly="True" FontFamily="Courier New" FontSize="14" 
                  VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" />
