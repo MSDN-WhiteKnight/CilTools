@@ -57,6 +57,7 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\MethodDefSyntax.cs"  Link="MethodDefSyntax.cs" />
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\MemberRefSyntax.cs"  Link="MemberRefSyntax.cs" />
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\KeywordKind.cs"  Link="KeywordKind.cs" />
+    <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\LiteralSyntax.cs"  Link="LiteralSyntax.cs" />
   </ItemGroup>
 
   <ItemGroup>

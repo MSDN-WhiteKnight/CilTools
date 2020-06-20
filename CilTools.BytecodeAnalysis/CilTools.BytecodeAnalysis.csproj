@@ -74,6 +74,7 @@
     <Compile Include="Syntax\InstructionSyntax.cs" />
     <Compile Include="Syntax\KeywordKind.cs" />
     <Compile Include="Syntax\KeywordSyntax.cs" />
+    <Compile Include="Syntax\LiteralSyntax.cs" />
     <Compile Include="Syntax\MemberRefSyntax.cs" />
     <Compile Include="Syntax\MethodDefSyntax.cs" />
     <Compile Include="Syntax\PunctuationSyntax.cs" />

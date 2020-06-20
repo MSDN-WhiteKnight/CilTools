@@ -343,8 +343,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (stroperand != null)
                 {
-                    stroperand = "\"" + CilAnalysis.EscapeString(stroperand) + "\"";
-                    yield return new GenericSyntax(stroperand); 
+                    yield return new LiteralSyntax("", stroperand, "");
                 }
                 else
                 {

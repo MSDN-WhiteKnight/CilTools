@@ -171,6 +171,14 @@ namespace CilView
                 r.Text = node.ToString();
                 target.Inlines.Add(r);
             }
+            else if (node is LiteralSyntax)
+            {
+                LiteralSyntax lit = (LiteralSyntax)node;
+                r = new Run();
+                if(lit.Value is string) r.Foreground = Brushes.Red;
+                r.Text = node.ToString();
+                target.Inlines.Add(r);
+            }
             else if (node is CommentSyntax)
             {
                 r = new Run();

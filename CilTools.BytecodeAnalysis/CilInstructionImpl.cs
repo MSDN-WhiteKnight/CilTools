@@ -331,7 +331,7 @@ namespace CilTools.BytecodeAnalysis
                 }
                 else
                 {
-                    yield return new GenericSyntax(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
+                    yield return new LiteralSyntax("",this.Operand,"");
                 }
             }
             else if (typeof(T) == typeof(int[]) && OpCode.OperandType == System.Reflection.Emit.OperandType.InlineSwitch)
@@ -351,7 +351,7 @@ namespace CilTools.BytecodeAnalysis
             }
             else
             {
-                yield return new GenericSyntax(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
+                yield return new LiteralSyntax("", this.Operand, "");
             }
         }
     }
