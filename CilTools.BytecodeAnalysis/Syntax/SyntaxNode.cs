@@ -15,6 +15,7 @@ namespace CilTools.Syntax
     {
         internal string _lead=String.Empty;
         internal string _trail = String.Empty;
+        internal SyntaxNode _parent;
 
         internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
 
@@ -27,6 +28,8 @@ namespace CilTools.Syntax
         public string LeadingWhitespace { get { return this._lead; } }
 
         public string TrailingWhitespace { get { return this._trail; } }
+
+        public SyntaxNode Parent { get { return this._parent; } }
         
         public override string ToString()
         {

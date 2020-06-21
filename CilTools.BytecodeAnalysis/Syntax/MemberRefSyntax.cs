@@ -21,8 +21,10 @@ namespace CilTools.Syntax
         {
             this._content = content;
             this._member = m;
+
+            for (int i = 0; i < this._content.Length; i++) this._content[i]._parent = this;
         }
-        
+
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");

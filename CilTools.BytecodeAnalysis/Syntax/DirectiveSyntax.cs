@@ -62,8 +62,11 @@ namespace CilTools.Syntax
             {
                 this._name = new KeywordSyntax(lead, "." + name, Environment.NewLine,KeywordKind.DirectiveName);
             }
-            
-            this._content = content;            
+
+            this._name._parent = this;
+            this._content = content;
+
+            for (int i = 0; i < this._content.Length; i++) this._content[i]._parent = this;
         }
 
         public override void ToText(TextWriter target)

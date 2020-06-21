@@ -25,8 +25,8 @@ namespace CilTools.Syntax
             //label and operation nodes
             if (!String.IsNullOrEmpty(graphnode.Name))
             {
-                labelnodes.Add(new IdentifierSyntax(lead+" ", graphnode.Name, String.Empty, false));
-                labelnodes.Add(new PunctuationSyntax(String.Empty, ":", " "));
+                labelnodes.Add(new IdentifierSyntax(lead + " ", graphnode.Name, String.Empty, false) { _parent = this });
+                labelnodes.Add(new PunctuationSyntax(String.Empty, ":", " ") { _parent = this });
                 pad = "";
             }
             else pad = lead+"".PadLeft(10, ' ');
@@ -39,14 +39,17 @@ namespace CilTools.Syntax
             pad2 = "".PadLeft(len);
 
             List<SyntaxNode> operationnodes = new List<SyntaxNode>();
-            operationnodes.Add(new KeywordSyntax(pad,name,pad2,KeywordKind.InstructionName));
+            operationnodes.Add(new KeywordSyntax(pad, name, pad2, KeywordKind.InstructionName) { _parent = this });
 
             //operand nodes
             List<SyntaxNode> operandnodes = new List<SyntaxNode>();
             
             if (graphnode.BranchTarget != null) //if instruction itself targets branch, append its label
             {
-                operandnodes.Add(new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, Environment.NewLine, false));
+                operandnodes.Add( 
+                    new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, Environment.NewLine, false) { 
+                        _parent = this 
+                    });
             }
             else
             {
@@ -77,6 +80,8 @@ namespace CilTools.Syntax
 
             if (operandnodes.Count == 0) operationnodes.Add(new GenericSyntax(Environment.NewLine));
 
+            for (int i = 0; i < operandnodes.Count; i++) operandnodes[i]._parent = this;
+            
             this._labelnodes = labelnodes.ToArray();
             this._operationnodes = operationnodes.ToArray();
             this._operandnodes = operandnodes.ToArray();

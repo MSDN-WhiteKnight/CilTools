@@ -543,6 +543,7 @@ namespace CilTools.BytecodeAnalysis
                         );
 
                     curr_node._children.Add(dir);
+                    dir._parent = curr_node;
 
                     new_node = new BlockSyntax(new String(indent.ToArray()),SyntaxNode.EmptyArray,new SyntaxNode[0]);
                     
@@ -566,6 +567,7 @@ namespace CilTools.BytecodeAnalysis
                         curr_node = root;
 
                     curr_node._children.Add(new_node);
+                    new_node._parent = curr_node;
 
                     if (indent.Count > 0) indent.Pop();
                 }
@@ -588,6 +590,7 @@ namespace CilTools.BytecodeAnalysis
                         curr_node = root;
 
                     curr_node._children.Add(new_node);
+                    new_node._parent = curr_node;
                     
                     if (indent.Count > 0) indent.Pop();
                 }
@@ -653,6 +656,7 @@ namespace CilTools.BytecodeAnalysis
                             curr_node = root;
 
                         curr_node._children.Add(new_node);
+                        new_node._parent = curr_node;
                         
                         new_node = new BlockSyntax(new String(indent.ToArray()), SyntaxNode.EmptyArray, new SyntaxNode[0]);
                         currentpath.Add(new_node);
@@ -680,7 +684,9 @@ namespace CilTools.BytecodeAnalysis
                     }
                 }
 
-                curr_node._children.Add(new InstructionSyntax(new String(indent.ToArray()), node));
+                curr_node._children.Add(
+                    new InstructionSyntax(new String(indent.ToArray()), node){_parent = curr_node}
+                    );
                 
                 if (node.Next == null) break; //last instruction
                 else node = node.Next;
@@ -742,7 +748,11 @@ namespace CilTools.BytecodeAnalysis
                 nodes.Add(arr[i]);
             }
 
-            return new MethodDefSyntax(sig, new BlockSyntax("", SyntaxNode.EmptyArray, nodes.ToArray()));
+            BlockSyntax body = new BlockSyntax("", SyntaxNode.EmptyArray, nodes.ToArray());
+
+            for (int i = 0; i < body._children.Count; i++) body._children[i]._parent = body;
+
+            return new MethodDefSyntax(sig, body);
         }
 
         /// <summary>

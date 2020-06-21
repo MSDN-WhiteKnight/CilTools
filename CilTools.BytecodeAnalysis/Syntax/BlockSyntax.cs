@@ -23,9 +23,17 @@ namespace CilTools.Syntax
             this._indent = indent;
             this._header = header;
             this._children = new List<SyntaxNode>(children);
+
+            for (int i = 0; i < this._header.Length; i++) this._header[i]._parent = this;
         }
 
-        public SyntaxNode[] HeaderSyntax { get { return this._header; } }
+        public IEnumerable<SyntaxNode> HeaderSyntax
+        {
+            get
+            {
+                for (int i = 0; i < this._header.Length; i++) yield return this._header[i];
+            }
+        }
 
         public IEnumerable<SyntaxNode> Content
         {
@@ -70,18 +78,24 @@ namespace CilTools.Syntax
         {
             if (this._header.Length > 0)
             {
-                yield return new GenericSyntax(this._indent);
+                yield return new GenericSyntax(this._indent) { _parent = this };
 
                 for (int i = 0; i < _header.Length; i++)
                 {
                     yield return _header[i];
                 }
 
-                yield return new PunctuationSyntax(Environment.NewLine + this._indent, "{", Environment.NewLine);
+                yield return new PunctuationSyntax(Environment.NewLine + this._indent, "{", Environment.NewLine) 
+                { 
+                    _parent = this 
+                };
             }
             else
             {
-                yield return new PunctuationSyntax(this._indent, "{", Environment.NewLine);
+                yield return new PunctuationSyntax(this._indent, "{", Environment.NewLine)
+                {
+                    _parent = this
+                };
             }
 
             for (int i = 0; i < _children.Count; i++)
@@ -89,7 +103,10 @@ namespace CilTools.Syntax
                 yield return _children[i];
             }
 
-            yield return new PunctuationSyntax(this._indent, "}", Environment.NewLine);
+            yield return new PunctuationSyntax(this._indent, "}", Environment.NewLine)
+            {
+                _parent = this
+            };
         }
     }
 }
