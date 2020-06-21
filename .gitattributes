@@ -1,0 +1,13 @@
+* text=auto
+
+*.cs text
+*.txt text
+
+*.png binary
+*.jpg binary
+*.ico binary
+*.application binary
+*.exe binary
+*.zip binary
+*.manifest binary
+*.deploy binary
