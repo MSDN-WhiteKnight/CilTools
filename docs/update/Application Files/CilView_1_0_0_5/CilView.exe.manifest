@@ -62,7 +62,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>Z4fHMxju2P50fS2nlsZO2evSFWBAAoc9MRwZpAXPIy4=</dsig:DigestValue>
+        <dsig:DigestValue>gNaS+D50TcMgd9V6MetfeLej2pgoA1DmkS54eYGpTBM=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -74,7 +74,7 @@
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-        <dsig:DigestValue>jkUozQub/DdhaPqZkHLOdYUctdN1wsPZt/HroJnj5yY=</dsig:DigestValue>
+        <dsig:DigestValue>ITFq7RITK3OrdlZQipk9I03bIniAlwl6DI8kI702RYg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -105,7 +105,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>/PLUHqMAGnlsO2XvsldCZ7a5zHenUMBueYtN6Q/4JBM=</dsig:DigestValue>
+      <dsig:DigestValue>YcjO1c8jzAcq3ZPaU2ZEnMmrDp267G7/fVRipcyPOuI=</dsig:DigestValue>
     </hash>
   </file>
   <file name="CilView.exe.config" size="187">
@@ -123,7 +123,7 @@
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
-      <dsig:DigestValue>/Z/wJ4MjanBkGp/QAW/pFCu+vDoypVkHDrO4UVg37NI=</dsig:DigestValue>
+      <dsig:DigestValue>b3mgss5L3U8lRE+suhpelcCsmL1ctj8eupHlZGUabFE=</dsig:DigestValue>
     </hash>
   </file>
   <file name="Image\IL.ico" size="105008">
