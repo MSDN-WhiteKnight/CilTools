@@ -1,4 +1,7 @@
-﻿using System;
+﻿/* CIL Tools 
+ * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * License: BSD 2.0 */
+using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
@@ -6,6 +9,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using CilTools.BytecodeAnalysis;
+using System.Runtime.InteropServices;
 
 namespace CilView
 {
@@ -86,6 +90,21 @@ namespace CilView
 
             if (ret != null) return ret;
 
+            //attempt to resolve assembly from runtime directory
+
+            path = Path.Combine(RuntimeEnvironment.GetRuntimeDirectory(), an.Name + ".dll");
+
+            try
+            {
+                if (File.Exists(path)) ret = Assembly.LoadFile(path);
+            }
+            catch (FileNotFoundException) { }
+            catch (FileLoadException) { }
+            catch (BadImageFormatException) { }
+            catch (NotSupportedException) { }
+
+            if (ret != null) return ret;
+
             if(resolved.Contains(args.Name)) return null; //prevent stack overflow
 
             //if failed, resolve by full assembly name
@@ -108,6 +127,21 @@ namespace CilView
             catch (FileNotFoundException) { }
             catch (FileLoadException) { }
             catch (BadImageFormatException) { }
+
+            if (ret != null) return ret;
+
+            //attempt to resolve assembly from runtime directory
+
+            path = Path.Combine(RuntimeEnvironment.GetRuntimeDirectory(), an.Name + ".dll");
+
+            try
+            {
+                if (File.Exists(path)) ret = Assembly.ReflectionOnlyLoadFrom(path);
+            }
+            catch (FileNotFoundException) { }
+            catch (FileLoadException) { }
+            catch (BadImageFormatException) { }
+            catch (NotSupportedException) { }
 
             if (ret != null) return ret;
 
