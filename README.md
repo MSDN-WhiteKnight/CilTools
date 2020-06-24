@@ -97,4 +97,16 @@ ret
 
 CilTools.Runtime loads CIL bytecode of methods in external process's CLR instance using ClrMD. This enables processing bytecode from external process with CilTools.BytecodeAnalysis library.
 
+## CilView
+
+**Requirements:** .NET Framework 4.5+
+
+**Download:** [ClickOnce installer](https://msdn-whiteknight.github.io/CilTools/update/)
+
+A windows application to display CIL code of methods in the given assembly file or process. Supports syntax highlighting and navigating to method code by clicking on its reference.
+
+![cilview](docfx_project/images/cilview.png)
+
+---
+
 Copyright (c) 2020,  MSDN.WhiteKnight
