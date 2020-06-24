@@ -19,14 +19,15 @@ namespace CilTools.Syntax
     /// The directive provides meta-information, such as the method's signature or the declarations of local variables.
     /// </remarks>
     public class DirectiveSyntax:SyntaxNode
-    {        
-        KeywordSyntax _name;
+    {
+        string _name;
+        KeywordSyntax _namesyntax;
         SyntaxNode[] _content;
         
         /// <summary>
         /// Gets the name of this directive
         /// </summary>
-        public string Name { get { return this._name.Content; } }
+        public string Name { get { return this._name; } }
 
         /// <summary>
         /// Writes text representation of this directive's content into the specified TextWriter
@@ -74,14 +75,15 @@ namespace CilTools.Syntax
 
             if (content.Length > 0)
             {
-                this._name = new KeywordSyntax(lead, "." + name, " ",KeywordKind.DirectiveName);
+                this._namesyntax = new KeywordSyntax(lead, "." + name, " ",KeywordKind.DirectiveName);
             }
             else
             {
-                this._name = new KeywordSyntax(lead, "." + name, Environment.NewLine,KeywordKind.DirectiveName);
+                this._namesyntax = new KeywordSyntax(lead, "." + name, Environment.NewLine,KeywordKind.DirectiveName);
             }
 
-            this._name._parent = this;
+            this._name = name;
+            this._namesyntax._parent = this;
             this._content = content;
 
             for (int i = 0; i < this._content.Length; i++) this._content[i]._parent = this;
@@ -92,7 +94,7 @@ namespace CilTools.Syntax
         {
             if (target == null) throw new ArgumentNullException("target");
 
-            this._name.ToText(target);
+            this._namesyntax.ToText(target);
             
             if (this._content.Length > 0)
             {
@@ -104,7 +106,7 @@ namespace CilTools.Syntax
         /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
-            yield return this._name;
+            yield return this._namesyntax;
 
             if (this._content.Length > 0)
             {
