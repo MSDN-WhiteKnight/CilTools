@@ -9,6 +9,9 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents the comment in the CIL assembler code. The comment does not impact code semantics in any way, but may provide extra information.
+    /// </summary>
     public class CommentSyntax:SyntaxNode
     {
         string _content;
@@ -21,6 +24,7 @@ namespace CilTools.Syntax
             this._trail = Environment.NewLine;
         }
 
+        /// <inheritdoc/>
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -33,6 +37,7 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
             return SyntaxNode.EmptyArray;

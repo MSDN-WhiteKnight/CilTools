@@ -9,13 +9,22 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents identifier in CIL assembler. Identifier is a name of the member or variable.
+    /// </summary>
     public class IdentifierSyntax : SyntaxNode
     {
         string _content;
         bool _ismember;
 
+        /// <summary>
+        /// Gets the content of this identifier as string
+        /// </summary>
         public string Content { get { return this._content; } }
 
+        /// <summary>
+        /// Gets the value indicating whether this identifier represents assembly member name
+        /// </summary>
         public bool IsMemberName { get { return this._ismember; } }
 
         internal IdentifierSyntax(string lead, string content, string trail, bool ismember)
@@ -27,7 +36,8 @@ namespace CilTools.Syntax
             this._trail = trail;
             this._ismember = ismember;
         }
-        
+
+        /// <inheritdoc/>
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -38,6 +48,7 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
             return SyntaxNode.EmptyArray;

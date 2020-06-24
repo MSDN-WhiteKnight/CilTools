@@ -12,13 +12,25 @@ using CilTools.Reflection;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents the directive in CIL assembler. The directive declaration starts from the dotted name.
+    /// </summary>
+    /// <remarks>
+    /// The directive provides meta-information, such as the method's signature or the declarations of local variables.
+    /// </remarks>
     public class DirectiveSyntax:SyntaxNode
     {        
         KeywordSyntax _name;
         SyntaxNode[] _content;
         
+        /// <summary>
+        /// Gets the name of this directive
+        /// </summary>
         public string Name { get { return this._name.Content; } }
 
+        /// <summary>
+        /// Writes text representation of this directive's content into the specified TextWriter
+        /// </summary>
         public void WriteContent(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -28,6 +40,9 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <summary>
+        /// Gets the text representation of this directive's content
+        /// </summary>
         public string ContentString 
         { 
             get 
@@ -41,6 +56,9 @@ namespace CilTools.Syntax
             } 
         }
 
+        /// <summary>
+        /// Gets the collection of nodes that represent this directive's content
+        /// </summary>
         public IEnumerable<SyntaxNode> ContentSyntax 
         { 
             get 
@@ -69,6 +87,7 @@ namespace CilTools.Syntax
             for (int i = 0; i < this._content.Length; i++) this._content[i]._parent = this;
         }
 
+        /// <inheritdoc/>
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -82,6 +101,7 @@ namespace CilTools.Syntax
             }
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
             yield return this._name;

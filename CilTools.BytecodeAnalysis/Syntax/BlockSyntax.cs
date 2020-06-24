@@ -9,6 +9,13 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents the block syntax in the CIL assembler. The block contains child directive and instruction nodes.
+    /// </summary>
+    /// <remarks>
+    /// The examples of block syntax are method body or exception handler blocks. The block consists of the optional header, opening curly brace, content nodes 
+    /// (directives and statements) and closing curly brace.
+    /// </remarks>
     public class BlockSyntax:SyntaxNode
     {
         string _indent;
@@ -27,6 +34,12 @@ namespace CilTools.Syntax
             for (int i = 0; i < this._header.Length; i++) this._header[i]._parent = this;
         }
 
+        /// <summary>
+        /// Gets the header syntax of this, or an empty collection if this block has no header
+        /// </summary>
+        /// <remarks>
+        /// For the exception handler blocks, the header represents the exception clause. Other types of blocks does not have headers.
+        /// </remarks>
         public IEnumerable<SyntaxNode> HeaderSyntax
         {
             get
@@ -35,6 +48,12 @@ namespace CilTools.Syntax
             }
         }
 
+        /// <summary>
+        /// Returns the collection of the syntax nodes contained within this block (content nodes)
+        /// </summary>
+        /// <remarks>
+        /// The content nodes are located between opening and closing curly braces. They include instructions and directives.
+        /// </remarks>
         public IEnumerable<SyntaxNode> Content
         {
             get 
@@ -46,6 +65,7 @@ namespace CilTools.Syntax
             }
         }
 
+        /// <inheritdoc/>
         public override void ToText(TextWriter target)
         {
             if (this._header.Length > 0)
@@ -74,6 +94,7 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
             if (this._header.Length > 0)

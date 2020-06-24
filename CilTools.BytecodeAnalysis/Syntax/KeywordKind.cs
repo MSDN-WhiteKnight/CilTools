@@ -7,6 +7,9 @@ using System.Text;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents the kind of keyword in the <see cref="KeywordSyntax"/> node
+    /// </summary>
     public enum KeywordKind
     {
         Other = 0,

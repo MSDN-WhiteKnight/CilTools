@@ -11,6 +11,18 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent concrete language constructs derive from this class. 
+    /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The <c>SyntaxNode</c> class instance contains all information required to produce the source code of the corresponding language construct, including whitespaces. 
+    /// The <see cref="EnumerateChildNodes"/> method returns all child nodes of this node, or an empty collection if it is a leaf (terminal node). 
+    /// Some child nodes may be exposed via specific properties as well. 
+    /// The text representation for non-terminal node is a string concetanation of all its child nodes' text representations. 
+    /// </para>
+    /// <para>Use <see cref="CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree"/> method to get the syntax tree for the specified method.</para>
+    /// </remarks>
     public abstract class SyntaxNode
     {
         internal string _lead=String.Empty;
@@ -21,16 +33,44 @@ namespace CilTools.Syntax
 
         internal static readonly SyntaxNode[] EmptyArray = new SyntaxNode[] { };
 
+        /// <summary>
+        /// Writes text representation of this node into the specified TextWriter
+        /// </summary>
         public abstract void ToText(TextWriter target);
 
+        /// <summary>
+        /// Enumerates child nodes of this node. For the leaf node, returns an empty collection.
+        /// </summary>
+        /// <returns>The collection of child syntax nodes</returns>
         public abstract IEnumerable<SyntaxNode> EnumerateChildNodes();
 
+        /// <summary>
+        /// Gets whitespace content at the beginning of this node's code
+        /// </summary>
+        /// <remarks>
+        /// Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
+        /// content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
+        /// </remarks>
         public string LeadingWhitespace { get { return this._lead; } }
 
+        /// <summary>
+        /// Gets whitespace content at the end of this node's code
+        /// </summary>
+        /// <remarks>
+        /// Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
+        /// content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
+        /// </remarks>
         public string TrailingWhitespace { get { return this._trail; } }
 
+        /// <summary>
+        /// Gets the parent node of this syntax node, or null if this node is root or not included in syntax tree.
+        /// </summary>
         public SyntaxNode Parent { get { return this._parent; } }
         
+        /// <summary>
+        /// Gets the text representation of this node, including whitespace content
+        /// </summary>
+        /// <returns>The string containing CIL code of this syntax node</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder(60);
@@ -40,6 +80,10 @@ namespace CilTools.Syntax
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the array of this node's child nodes. For the leaf node, returns an empty array.
+        /// </summary>
+        /// <returns>The array of child syntax nodes</returns>
         public SyntaxNode[] GetChildNodes()
         {
             IEnumerable<SyntaxNode> ienum = this.EnumerateChildNodes();

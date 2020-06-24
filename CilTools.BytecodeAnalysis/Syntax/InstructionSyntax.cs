@@ -10,6 +10,10 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents instruction syntax in CIL assembler
+    /// </summary>
+    /// <remarks>The instruction syntax consists of the optional label, operation name, and the optional operand</remarks>
     public class InstructionSyntax:SyntaxNode
     {        
         CilGraphNode _node;
@@ -95,6 +99,7 @@ namespace CilTools.Syntax
             this.CreateNodes(lead, graphnode);
         }
 
+        /// <inheritdoc/>
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -106,6 +111,7 @@ namespace CilTools.Syntax
             this.WriteOperand(target);
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
             for (int i = 0; i < this._labelnodes.Length; i++) yield return this._labelnodes[i];
@@ -115,6 +121,9 @@ namespace CilTools.Syntax
             for (int i = 0; i < this._operandnodes.Length; i++) yield return this._operandnodes[i];
         }
 
+        /// <summary>
+        /// Gets the label name of this instruction
+        /// </summary>
         public string Label
         {
             get
@@ -123,6 +132,9 @@ namespace CilTools.Syntax
             }
         }
 
+        /// <summary>
+        /// Writes the label name of this instruction into the specified TextWriter
+        /// </summary>
         public void WriteLabel(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -132,6 +144,9 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <summary>
+        /// Gets the operation name of this instruction
+        /// </summary>
         public string Operation
         {
             get
@@ -140,6 +155,9 @@ namespace CilTools.Syntax
             }
         }
 
+        /// <summary>
+        /// Writes the operation name of this instruction into the specified TextWriter
+        /// </summary>
         public void WriteOperation(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -148,8 +166,14 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <summary>
+        /// Returns the instruction instance corresponding to this node
+        /// </summary>
         public CilInstruction Instruction { get { return _node.Instruction; } }
 
+        /// <summary>
+        /// Writes the operand of this instruction into the specified TextWriter
+        /// </summary>
         public void WriteOperand(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -158,6 +182,9 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <summary>
+        /// Gets the text representation of this instruction's operand 
+        /// </summary>
         public string OperandString
         {
             get
@@ -169,6 +196,9 @@ namespace CilTools.Syntax
             }
         }
 
+        /// <summary>
+        /// Gets the collection of nodes representing this instruction operand's syntax
+        /// </summary>
         public IEnumerable<SyntaxNode> OperandSyntax
         {
             get
