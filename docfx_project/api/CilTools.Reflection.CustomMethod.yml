@@ -10,6 +10,8 @@ items:
   - CilTools.Reflection.CustomMethod.GetExceptionBlocks
   - CilTools.Reflection.CustomMethod.GetLocalVariables
   - CilTools.Reflection.CustomMethod.GetLocalVarSignature
+  - CilTools.Reflection.CustomMethod.InitLocals
+  - CilTools.Reflection.CustomMethod.InitLocalsSpecified
   - CilTools.Reflection.CustomMethod.MaxStackSize
   - CilTools.Reflection.CustomMethod.MaxStackSizeSpecified
   - CilTools.Reflection.CustomMethod.ReturnType
@@ -32,14 +34,14 @@ items:
     content: 'public abstract class CustomMethod : MethodBase, ICustomAttributeProvider, _MemberInfo, _MethodBase'
     content.vb: >-
       Public MustInherit Class CustomMethod
-
           Inherits MethodBase
-
           Implements ICustomAttributeProvider, _MemberInfo, _MethodBase
   inheritance:
   - System.Object
   - System.Reflection.MemberInfo
   - System.Reflection.MethodBase
+  derivedClasses:
+  - CilTools.Runtime.ClrMethodInfo
   implements:
   - System.Reflection.ICustomAttributeProvider
   - System.Runtime.InteropServices._MemberInfo
@@ -405,6 +407,72 @@ items:
       type: System.Boolean
     content.vb: Public MustOverride ReadOnly Property MaxStackSizeSpecified As Boolean
   overload: CilTools.Reflection.CustomMethod.MaxStackSizeSpecified*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: CilTools.Reflection.CustomMethod.InitLocals
+  commentId: P:CilTools.Reflection.CustomMethod.InitLocals
+  id: InitLocals
+  parent: CilTools.Reflection.CustomMethod
+  langs:
+  - csharp
+  - vb
+  name: InitLocals
+  nameWithType: CustomMethod.InitLocals
+  fullName: CilTools.Reflection.CustomMethod.InitLocals
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nWhen overridden in the derived class, specifies whether the local variables are initialized\n"
+  syntax:
+    content: public abstract bool InitLocals { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public MustOverride ReadOnly Property InitLocals As Boolean
+  overload: CilTools.Reflection.CustomMethod.InitLocals*
+  modifiers.csharp:
+  - public
+  - abstract
+  - get
+  modifiers.vb:
+  - Public
+  - MustOverride
+  - ReadOnly
+- uid: CilTools.Reflection.CustomMethod.InitLocalsSpecified
+  commentId: P:CilTools.Reflection.CustomMethod.InitLocalsSpecified
+  id: InitLocalsSpecified
+  parent: CilTools.Reflection.CustomMethod
+  langs:
+  - csharp
+  - vb
+  name: InitLocalsSpecified
+  nameWithType: CustomMethod.InitLocalsSpecified
+  fullName: CilTools.Reflection.CustomMethod.InitLocalsSpecified
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nWhen overridden in the derived class, specifies whether the <code>InitLocals</code> property value is defined\n"
+  syntax:
+    content: public abstract bool InitLocalsSpecified { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public MustOverride ReadOnly Property InitLocalsSpecified As Boolean
+  overload: CilTools.Reflection.CustomMethod.InitLocalsSpecified*
   modifiers.csharp:
   - public
   - abstract
@@ -3156,3 +3224,15 @@ references:
   name: Boolean
   nameWithType: Boolean
   fullName: System.Boolean
+- uid: CilTools.Reflection.CustomMethod.InitLocals*
+  commentId: Overload:CilTools.Reflection.CustomMethod.InitLocals
+  isExternal: true
+  name: InitLocals
+  nameWithType: CustomMethod.InitLocals
+  fullName: CilTools.Reflection.CustomMethod.InitLocals
+- uid: CilTools.Reflection.CustomMethod.InitLocalsSpecified*
+  commentId: Overload:CilTools.Reflection.CustomMethod.InitLocalsSpecified
+  isExternal: true
+  name: InitLocalsSpecified
+  nameWithType: CustomMethod.InitLocalsSpecified
+  fullName: CilTools.Reflection.CustomMethod.InitLocalsSpecified

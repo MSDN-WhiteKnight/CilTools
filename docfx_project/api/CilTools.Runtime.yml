@@ -6,6 +6,7 @@ items:
   children:
   - CilTools.Runtime.ClrAssemblyInfo
   - CilTools.Runtime.ClrAssemblyReader
+  - CilTools.Runtime.ClrMethodInfo
   - CilTools.Runtime.DynamicMethodsAssembly
   langs:
   - csharp
@@ -31,6 +32,12 @@ references:
   name: ClrAssemblyReader
   nameWithType: ClrAssemblyReader
   fullName: CilTools.Runtime.ClrAssemblyReader
+- uid: CilTools.Runtime.ClrMethodInfo
+  commentId: T:CilTools.Runtime.ClrMethodInfo
+  isExternal: true
+  name: ClrMethodInfo
+  nameWithType: ClrMethodInfo
+  fullName: CilTools.Runtime.ClrMethodInfo
 - uid: CilTools.Runtime.DynamicMethodsAssembly
   commentId: T:CilTools.Runtime.DynamicMethodsAssembly
   parent: CilTools.Runtime

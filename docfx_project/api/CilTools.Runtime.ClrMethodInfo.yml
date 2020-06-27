@@ -1,0 +1,3995 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Runtime.ClrMethodInfo
+  commentId: T:CilTools.Runtime.ClrMethodInfo
+  id: ClrMethodInfo
+  parent: CilTools.Runtime
+  children:
+  - CilTools.Runtime.ClrMethodInfo.Attributes
+  - CilTools.Runtime.ClrMethodInfo.DeclaringType
+  - CilTools.Runtime.ClrMethodInfo.GetBytecode
+  - CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Boolean)
+  - CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Type,System.Boolean)
+  - CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks
+  - CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature
+  - CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags
+  - CilTools.Runtime.ClrMethodInfo.GetParameters
+  - CilTools.Runtime.ClrMethodInfo.InitLocals
+  - CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified
+  - CilTools.Runtime.ClrMethodInfo.InnerMethod
+  - CilTools.Runtime.ClrMethodInfo.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)
+  - CilTools.Runtime.ClrMethodInfo.IsDefined(System.Type,System.Boolean)
+  - CilTools.Runtime.ClrMethodInfo.MaxStackSize
+  - CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified
+  - CilTools.Runtime.ClrMethodInfo.MemberType
+  - CilTools.Runtime.ClrMethodInfo.MetadataToken
+  - CilTools.Runtime.ClrMethodInfo.MethodHandle
+  - CilTools.Runtime.ClrMethodInfo.Name
+  - CilTools.Runtime.ClrMethodInfo.ReflectedType
+  - CilTools.Runtime.ClrMethodInfo.ReturnType
+  - CilTools.Runtime.ClrMethodInfo.TokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ClrMethodInfo
+  nameWithType: ClrMethodInfo
+  fullName: CilTools.Runtime.ClrMethodInfo
+  type: Class
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nRepresents information about the method in an external CLR instance\n"
+  syntax:
+    content: 'public class ClrMethodInfo : CustomMethod, ICustomAttributeProvider, _MemberInfo, _MethodBase'
+    content.vb: >-
+      Public Class ClrMethodInfo
+          Inherits CustomMethod
+          Implements ICustomAttributeProvider, _MemberInfo, _MethodBase
+  inheritance:
+  - System.Object
+  - System.Reflection.MemberInfo
+  - System.Reflection.MethodBase
+  - CilTools.Reflection.CustomMethod
+  implements:
+  - System.Reflection.ICustomAttributeProvider
+  - System.Runtime.InteropServices._MemberInfo
+  - System.Runtime.InteropServices._MethodBase
+  inheritedMembers:
+  - CilTools.Reflection.CustomMethod.GetLocalVariables
+  - System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)
+  - System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle,System.RuntimeTypeHandle)
+  - System.Reflection.MethodBase.GetCurrentMethod
+  - System.Reflection.MethodBase.Equals(System.Object)
+  - System.Reflection.MethodBase.GetHashCode
+  - System.Reflection.MethodBase.GetGenericArguments
+  - System.Reflection.MethodBase.Invoke(System.Object,System.Object[])
+  - System.Reflection.MethodBase.GetMethodBody
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetType
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfoCount(System.UInt32@)
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+  - System.Reflection.MethodBase.MethodImplementationFlags
+  - System.Reflection.MethodBase.CallingConvention
+  - System.Reflection.MethodBase.IsGenericMethodDefinition
+  - System.Reflection.MethodBase.ContainsGenericParameters
+  - System.Reflection.MethodBase.IsGenericMethod
+  - System.Reflection.MethodBase.IsSecurityCritical
+  - System.Reflection.MethodBase.IsSecuritySafeCritical
+  - System.Reflection.MethodBase.IsSecurityTransparent
+  - System.Reflection.MethodBase.IsPublic
+  - System.Reflection.MethodBase.IsPrivate
+  - System.Reflection.MethodBase.IsFamily
+  - System.Reflection.MethodBase.IsAssembly
+  - System.Reflection.MethodBase.IsFamilyAndAssembly
+  - System.Reflection.MethodBase.IsFamilyOrAssembly
+  - System.Reflection.MethodBase.IsStatic
+  - System.Reflection.MethodBase.IsFinal
+  - System.Reflection.MethodBase.IsVirtual
+  - System.Reflection.MethodBase.IsHideBySig
+  - System.Reflection.MethodBase.IsAbstract
+  - System.Reflection.MethodBase.IsSpecialName
+  - System.Reflection.MethodBase.IsConstructor
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsPublic
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsPrivate
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFamily
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsAssembly
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFamilyAndAssembly
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFamilyOrAssembly
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsStatic
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFinal
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsVirtual
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsHideBySig
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsAbstract
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsSpecialName
+  - System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsConstructor
+  - System.Reflection.MemberInfo.GetCustomAttributesData
+  - System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetType
+  - System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfoCount(System.UInt32@)
+  - System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+  - System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+  - System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+  - System.Reflection.MemberInfo.CustomAttributes
+  - System.Reflection.MemberInfo.Module
+  - System.Object.ToString
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  extensionMethods:
+  - System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph
+  - System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText
+  - System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions
+  - System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods
+  - System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+  - System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(CilTools.BytecodeAnalysis.MemberCriteria)
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Runtime.ClrMethodInfo.GetBytecode
+  commentId: M:CilTools.Runtime.ClrMethodInfo.GetBytecode
+  id: GetBytecode
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: GetBytecode()
+  nameWithType: ClrMethodInfo.GetBytecode()
+  fullName: CilTools.Runtime.ClrMethodInfo.GetBytecode()
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nWhen overridden in the derived class, returns the CIL bytecode of the method body\n"
+  syntax:
+    content: public override byte[] GetBytecode()
+    return:
+      type: System.Byte[]
+      description: CIL bytecode as byte array
+    content.vb: Public Overrides Function GetBytecode As Byte()
+  overridden: CilTools.Reflection.CustomMethod.GetBytecode
+  overload: CilTools.Runtime.ClrMethodInfo.GetBytecode*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature
+  commentId: M:CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature
+  id: GetLocalVarSignature
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: GetLocalVarSignature()
+  nameWithType: ClrMethodInfo.GetLocalVarSignature()
+  fullName: CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature()
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nWhen overridden in the derived class, returns the local variable signature as an array of bytes\n"
+  syntax:
+    content: public override byte[] GetLocalVarSignature()
+    return:
+      type: System.Byte[]
+    content.vb: Public Overrides Function GetLocalVarSignature As Byte()
+  overridden: CilTools.Reflection.CustomMethod.GetLocalVarSignature
+  overload: CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks
+  commentId: M:CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks
+  id: GetExceptionBlocks
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: GetExceptionBlocks()
+  nameWithType: ClrMethodInfo.GetExceptionBlocks()
+  fullName: CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks()
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nWhen overridden in the derived class, returns the list of exception handling blocks in the method&apos;s body\n"
+  syntax:
+    content: public override ExceptionBlock[] GetExceptionBlocks()
+    return:
+      type: CilTools.Reflection.ExceptionBlock[]
+    content.vb: Public Overrides Function GetExceptionBlocks As ExceptionBlock()
+  overridden: CilTools.Reflection.CustomMethod.GetExceptionBlocks
+  overload: CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags
+  commentId: M:CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags
+  id: GetMethodImplementationFlags
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: GetMethodImplementationFlags()
+  nameWithType: ClrMethodInfo.GetMethodImplementationFlags()
+  fullName: CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags()
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override MethodImplAttributes GetMethodImplementationFlags()
+    return:
+      type: System.Reflection.MethodImplAttributes
+    content.vb: Public Overrides Function GetMethodImplementationFlags As MethodImplAttributes
+  overridden: System.Reflection.MethodBase.GetMethodImplementationFlags
+  overload: CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Runtime.ClrMethodInfo.GetParameters
+  commentId: M:CilTools.Runtime.ClrMethodInfo.GetParameters
+  id: GetParameters
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: GetParameters()
+  nameWithType: ClrMethodInfo.GetParameters()
+  fullName: CilTools.Runtime.ClrMethodInfo.GetParameters()
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override ParameterInfo[] GetParameters()
+    return:
+      type: System.Reflection.ParameterInfo[]
+    content.vb: Public Overrides Function GetParameters As ParameterInfo()
+  overridden: System.Reflection.MethodBase.GetParameters
+  overload: CilTools.Runtime.ClrMethodInfo.GetParameters*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Runtime.ClrMethodInfo.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)
+  commentId: M:CilTools.Runtime.ClrMethodInfo.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)
+  id: Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: Invoke(Object, BindingFlags, Binder, Object[], CultureInfo)
+  nameWithType: ClrMethodInfo.Invoke(Object, BindingFlags, Binder, Object[], CultureInfo)
+  fullName: CilTools.Runtime.ClrMethodInfo.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
+    parameters:
+    - id: obj
+      type: System.Object
+    - id: invokeAttr
+      type: System.Reflection.BindingFlags
+    - id: binder
+      type: System.Reflection.Binder
+    - id: parameters
+      type: System.Object[]
+    - id: culture
+      type: System.Globalization.CultureInfo
+    return:
+      type: System.Object
+    content.vb: Public Overrides Function Invoke(obj As Object, invokeAttr As BindingFlags, binder As Binder, parameters As Object(), culture As CultureInfo) As Object
+  overridden: System.Reflection.MethodBase.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)
+  overload: CilTools.Runtime.ClrMethodInfo.Invoke*
+  nameWithType.vb: ClrMethodInfo.Invoke(Object, BindingFlags, Binder, Object(), CultureInfo)
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+  fullName.vb: CilTools.Runtime.ClrMethodInfo.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object(), System.Globalization.CultureInfo)
+  name.vb: Invoke(Object, BindingFlags, Binder, Object(), CultureInfo)
+- uid: CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Type,System.Boolean)
+  commentId: M:CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Type,System.Boolean)
+  id: GetCustomAttributes(System.Type,System.Boolean)
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: GetCustomAttributes(Type, Boolean)
+  nameWithType: ClrMethodInfo.GetCustomAttributes(Type, Boolean)
+  fullName: CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Type, System.Boolean)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override object[] GetCustomAttributes(Type attributeType, bool inherit)
+    parameters:
+    - id: attributeType
+      type: System.Type
+    - id: inherit
+      type: System.Boolean
+    return:
+      type: System.Object[]
+    content.vb: Public Overrides Function GetCustomAttributes(attributeType As Type, inherit As Boolean) As Object()
+  overridden: System.Reflection.MemberInfo.GetCustomAttributes(System.Type,System.Boolean)
+  overload: CilTools.Runtime.ClrMethodInfo.GetCustomAttributes*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Boolean)
+  commentId: M:CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Boolean)
+  id: GetCustomAttributes(System.Boolean)
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: GetCustomAttributes(Boolean)
+  nameWithType: ClrMethodInfo.GetCustomAttributes(Boolean)
+  fullName: CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Boolean)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override object[] GetCustomAttributes(bool inherit)
+    parameters:
+    - id: inherit
+      type: System.Boolean
+    return:
+      type: System.Object[]
+    content.vb: Public Overrides Function GetCustomAttributes(inherit As Boolean) As Object()
+  overridden: System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)
+  overload: CilTools.Runtime.ClrMethodInfo.GetCustomAttributes*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Runtime.ClrMethodInfo.IsDefined(System.Type,System.Boolean)
+  commentId: M:CilTools.Runtime.ClrMethodInfo.IsDefined(System.Type,System.Boolean)
+  id: IsDefined(System.Type,System.Boolean)
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: IsDefined(Type, Boolean)
+  nameWithType: ClrMethodInfo.IsDefined(Type, Boolean)
+  fullName: CilTools.Runtime.ClrMethodInfo.IsDefined(System.Type, System.Boolean)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override bool IsDefined(Type attributeType, bool inherit)
+    parameters:
+    - id: attributeType
+      type: System.Type
+    - id: inherit
+      type: System.Boolean
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function IsDefined(attributeType As Type, inherit As Boolean) As Boolean
+  overridden: System.Reflection.MemberInfo.IsDefined(System.Type,System.Boolean)
+  overload: CilTools.Runtime.ClrMethodInfo.IsDefined*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Runtime.ClrMethodInfo.InnerMethod
+  commentId: P:CilTools.Runtime.ClrMethodInfo.InnerMethod
+  id: InnerMethod
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: InnerMethod
+  nameWithType: ClrMethodInfo.InnerMethod
+  fullName: CilTools.Runtime.ClrMethodInfo.InnerMethod
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the underlying ClrMD method object\n"
+  syntax:
+    content: public ClrMethod InnerMethod { get; }
+    parameters: []
+    return:
+      type: Microsoft.Diagnostics.Runtime.ClrMethod
+    content.vb: Public ReadOnly Property InnerMethod As ClrMethod
+  overload: CilTools.Runtime.ClrMethodInfo.InnerMethod*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.ReturnType
+  commentId: P:CilTools.Runtime.ClrMethodInfo.ReturnType
+  id: ReturnType
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: ReturnType
+  nameWithType: ClrMethodInfo.ReturnType
+  fullName: CilTools.Runtime.ClrMethodInfo.ReturnType
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the method&apos;s returned type\n"
+  syntax:
+    content: public override Type ReturnType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public Overrides ReadOnly Property ReturnType As Type
+  overridden: CilTools.Reflection.CustomMethod.ReturnType
+  overload: CilTools.Runtime.ClrMethodInfo.ReturnType*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.TokenResolver
+  commentId: P:CilTools.Runtime.ClrMethodInfo.TokenResolver
+  id: TokenResolver
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: TokenResolver
+  nameWithType: ClrMethodInfo.TokenResolver
+  fullName: CilTools.Runtime.ClrMethodInfo.TokenResolver
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nWhen overridden in the derived class, returns an object that can be used to convert metadata tokens \ninto corresponding reflection objects\n"
+  syntax:
+    content: public override ITokenResolver TokenResolver { get; }
+    parameters: []
+    return:
+      type: CilTools.Reflection.ITokenResolver
+    content.vb: Public Overrides ReadOnly Property TokenResolver As ITokenResolver
+  overridden: CilTools.Reflection.CustomMethod.TokenResolver
+  overload: CilTools.Runtime.ClrMethodInfo.TokenResolver*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.MaxStackSize
+  commentId: P:CilTools.Runtime.ClrMethodInfo.MaxStackSize
+  id: MaxStackSize
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: MaxStackSize
+  nameWithType: ClrMethodInfo.MaxStackSize
+  fullName: CilTools.Runtime.ClrMethodInfo.MaxStackSize
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nWhen overridden in the derived class, returns the maximum size of operand stack during method execution\n"
+  syntax:
+    content: public override int MaxStackSize { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overrides ReadOnly Property MaxStackSize As Integer
+  overridden: CilTools.Reflection.CustomMethod.MaxStackSize
+  overload: CilTools.Runtime.ClrMethodInfo.MaxStackSize*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified
+  commentId: P:CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified
+  id: MaxStackSizeSpecified
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: MaxStackSizeSpecified
+  nameWithType: ClrMethodInfo.MaxStackSizeSpecified
+  fullName: CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nWhen overridden in the derived class, specifies whether the MaxStackSize property value is defined\n"
+  syntax:
+    content: public override bool MaxStackSizeSpecified { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides ReadOnly Property MaxStackSizeSpecified As Boolean
+  overridden: CilTools.Reflection.CustomMethod.MaxStackSizeSpecified
+  overload: CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.Attributes
+  commentId: P:CilTools.Runtime.ClrMethodInfo.Attributes
+  id: Attributes
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: Attributes
+  nameWithType: ClrMethodInfo.Attributes
+  fullName: CilTools.Runtime.ClrMethodInfo.Attributes
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override MethodAttributes Attributes { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodAttributes
+    content.vb: Public Overrides ReadOnly Property Attributes As MethodAttributes
+  overridden: System.Reflection.MethodBase.Attributes
+  overload: CilTools.Runtime.ClrMethodInfo.Attributes*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.MethodHandle
+  commentId: P:CilTools.Runtime.ClrMethodInfo.MethodHandle
+  id: MethodHandle
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: MethodHandle
+  nameWithType: ClrMethodInfo.MethodHandle
+  fullName: CilTools.Runtime.ClrMethodInfo.MethodHandle
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override RuntimeMethodHandle MethodHandle { get; }
+    parameters: []
+    return:
+      type: System.RuntimeMethodHandle
+    content.vb: Public Overrides ReadOnly Property MethodHandle As RuntimeMethodHandle
+  overridden: System.Reflection.MethodBase.MethodHandle
+  overload: CilTools.Runtime.ClrMethodInfo.MethodHandle*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.DeclaringType
+  commentId: P:CilTools.Runtime.ClrMethodInfo.DeclaringType
+  id: DeclaringType
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: DeclaringType
+  nameWithType: ClrMethodInfo.DeclaringType
+  fullName: CilTools.Runtime.ClrMethodInfo.DeclaringType
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override Type DeclaringType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public Overrides ReadOnly Property DeclaringType As Type
+  overridden: System.Reflection.MemberInfo.DeclaringType
+  overload: CilTools.Runtime.ClrMethodInfo.DeclaringType*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.MemberType
+  commentId: P:CilTools.Runtime.ClrMethodInfo.MemberType
+  id: MemberType
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: MemberType
+  nameWithType: ClrMethodInfo.MemberType
+  fullName: CilTools.Runtime.ClrMethodInfo.MemberType
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override MemberTypes MemberType { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MemberTypes
+    content.vb: Public Overrides ReadOnly Property MemberType As MemberTypes
+  overridden: System.Reflection.MemberInfo.MemberType
+  overload: CilTools.Runtime.ClrMethodInfo.MemberType*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.Name
+  commentId: P:CilTools.Runtime.ClrMethodInfo.Name
+  id: Name
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: ClrMethodInfo.Name
+  fullName: CilTools.Runtime.ClrMethodInfo.Name
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override string Name { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Overrides ReadOnly Property Name As String
+  overridden: System.Reflection.MemberInfo.Name
+  overload: CilTools.Runtime.ClrMethodInfo.Name*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.ReflectedType
+  commentId: P:CilTools.Runtime.ClrMethodInfo.ReflectedType
+  id: ReflectedType
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: ReflectedType
+  nameWithType: ClrMethodInfo.ReflectedType
+  fullName: CilTools.Runtime.ClrMethodInfo.ReflectedType
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override Type ReflectedType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public Overrides ReadOnly Property ReflectedType As Type
+  overridden: System.Reflection.MemberInfo.ReflectedType
+  overload: CilTools.Runtime.ClrMethodInfo.ReflectedType*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.MetadataToken
+  commentId: P:CilTools.Runtime.ClrMethodInfo.MetadataToken
+  id: MetadataToken
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: MetadataToken
+  nameWithType: ClrMethodInfo.MetadataToken
+  fullName: CilTools.Runtime.ClrMethodInfo.MetadataToken
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  syntax:
+    content: public override int MetadataToken { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Overrides ReadOnly Property MetadataToken As Integer
+  overridden: System.Reflection.MemberInfo.MetadataToken
+  overload: CilTools.Runtime.ClrMethodInfo.MetadataToken*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.InitLocals
+  commentId: P:CilTools.Runtime.ClrMethodInfo.InitLocals
+  id: InitLocals
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: InitLocals
+  nameWithType: ClrMethodInfo.InitLocals
+  fullName: CilTools.Runtime.ClrMethodInfo.InitLocals
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nWhen overridden in the derived class, specifies whether the local variables are initialized\n"
+  syntax:
+    content: public override bool InitLocals { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides ReadOnly Property InitLocals As Boolean
+  overridden: CilTools.Reflection.CustomMethod.InitLocals
+  overload: CilTools.Runtime.ClrMethodInfo.InitLocals*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified
+  commentId: P:CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified
+  id: InitLocalsSpecified
+  parent: CilTools.Runtime.ClrMethodInfo
+  langs:
+  - csharp
+  - vb
+  name: InitLocalsSpecified
+  nameWithType: ClrMethodInfo.InitLocalsSpecified
+  fullName: CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nWhen overridden in the derived class, specifies whether the <code>InitLocals</code> property value is defined\n"
+  syntax:
+    content: public override bool InitLocalsSpecified { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides ReadOnly Property InitLocalsSpecified As Boolean
+  overridden: CilTools.Reflection.CustomMethod.InitLocalsSpecified
+  overload: CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+references:
+- uid: CilTools.Runtime
+  commentId: N:CilTools.Runtime
+  isExternal: true
+  name: CilTools.Runtime
+  nameWithType: CilTools.Runtime
+  fullName: CilTools.Runtime
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Reflection.MemberInfo
+  commentId: T:System.Reflection.MemberInfo
+  parent: System.Reflection
+  isExternal: true
+  name: MemberInfo
+  nameWithType: MemberInfo
+  fullName: System.Reflection.MemberInfo
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: CilTools.Reflection.CustomMethod
+  commentId: T:CilTools.Reflection.CustomMethod
+  parent: CilTools.Reflection
+  isExternal: true
+  name: CustomMethod
+  nameWithType: CustomMethod
+  fullName: CilTools.Reflection.CustomMethod
+- uid: System.Reflection.ICustomAttributeProvider
+  commentId: T:System.Reflection.ICustomAttributeProvider
+  parent: System.Reflection
+  isExternal: true
+  name: ICustomAttributeProvider
+  nameWithType: ICustomAttributeProvider
+  fullName: System.Reflection.ICustomAttributeProvider
+- uid: System.Runtime.InteropServices._MemberInfo
+  commentId: T:System.Runtime.InteropServices._MemberInfo
+  parent: System.Runtime.InteropServices
+  isExternal: true
+  name: _MemberInfo
+  nameWithType: _MemberInfo
+  fullName: System.Runtime.InteropServices._MemberInfo
+- uid: System.Runtime.InteropServices._MethodBase
+  commentId: T:System.Runtime.InteropServices._MethodBase
+  parent: System.Runtime.InteropServices
+  isExternal: true
+  name: _MethodBase
+  nameWithType: _MethodBase
+  fullName: System.Runtime.InteropServices._MethodBase
+- uid: CilTools.Reflection.CustomMethod.GetLocalVariables
+  commentId: M:CilTools.Reflection.CustomMethod.GetLocalVariables
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: GetLocalVariables()
+  nameWithType: CustomMethod.GetLocalVariables()
+  fullName: CilTools.Reflection.CustomMethod.GetLocalVariables()
+  spec.csharp:
+  - uid: CilTools.Reflection.CustomMethod.GetLocalVariables
+    name: GetLocalVariables
+    nameWithType: CustomMethod.GetLocalVariables
+    fullName: CilTools.Reflection.CustomMethod.GetLocalVariables
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Reflection.CustomMethod.GetLocalVariables
+    name: GetLocalVariables
+    nameWithType: CustomMethod.GetLocalVariables
+    fullName: CilTools.Reflection.CustomMethod.GetLocalVariables
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)
+  commentId: M:System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: GetMethodFromHandle(RuntimeMethodHandle)
+  nameWithType: MethodBase.GetMethodFromHandle(RuntimeMethodHandle)
+  fullName: System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)
+    name: GetMethodFromHandle
+    nameWithType: MethodBase.GetMethodFromHandle
+    fullName: System.Reflection.MethodBase.GetMethodFromHandle
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.RuntimeMethodHandle
+    name: RuntimeMethodHandle
+    nameWithType: RuntimeMethodHandle
+    fullName: System.RuntimeMethodHandle
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)
+    name: GetMethodFromHandle
+    nameWithType: MethodBase.GetMethodFromHandle
+    fullName: System.Reflection.MethodBase.GetMethodFromHandle
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.RuntimeMethodHandle
+    name: RuntimeMethodHandle
+    nameWithType: RuntimeMethodHandle
+    fullName: System.RuntimeMethodHandle
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle,System.RuntimeTypeHandle)
+  commentId: M:System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle,System.RuntimeTypeHandle)
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: GetMethodFromHandle(RuntimeMethodHandle, RuntimeTypeHandle)
+  nameWithType: MethodBase.GetMethodFromHandle(RuntimeMethodHandle, RuntimeTypeHandle)
+  fullName: System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle, System.RuntimeTypeHandle)
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle,System.RuntimeTypeHandle)
+    name: GetMethodFromHandle
+    nameWithType: MethodBase.GetMethodFromHandle
+    fullName: System.Reflection.MethodBase.GetMethodFromHandle
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.RuntimeMethodHandle
+    name: RuntimeMethodHandle
+    nameWithType: RuntimeMethodHandle
+    fullName: System.RuntimeMethodHandle
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.RuntimeTypeHandle
+    name: RuntimeTypeHandle
+    nameWithType: RuntimeTypeHandle
+    fullName: System.RuntimeTypeHandle
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle,System.RuntimeTypeHandle)
+    name: GetMethodFromHandle
+    nameWithType: MethodBase.GetMethodFromHandle
+    fullName: System.Reflection.MethodBase.GetMethodFromHandle
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.RuntimeMethodHandle
+    name: RuntimeMethodHandle
+    nameWithType: RuntimeMethodHandle
+    fullName: System.RuntimeMethodHandle
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.RuntimeTypeHandle
+    name: RuntimeTypeHandle
+    nameWithType: RuntimeTypeHandle
+    fullName: System.RuntimeTypeHandle
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.GetCurrentMethod
+  commentId: M:System.Reflection.MethodBase.GetCurrentMethod
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: GetCurrentMethod()
+  nameWithType: MethodBase.GetCurrentMethod()
+  fullName: System.Reflection.MethodBase.GetCurrentMethod()
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.GetCurrentMethod
+    name: GetCurrentMethod
+    nameWithType: MethodBase.GetCurrentMethod
+    fullName: System.Reflection.MethodBase.GetCurrentMethod
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.GetCurrentMethod
+    name: GetCurrentMethod
+    nameWithType: MethodBase.GetCurrentMethod
+    fullName: System.Reflection.MethodBase.GetCurrentMethod
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.Equals(System.Object)
+  commentId: M:System.Reflection.MethodBase.Equals(System.Object)
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: MethodBase.Equals(Object)
+  fullName: System.Reflection.MethodBase.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.Equals(System.Object)
+    name: Equals
+    nameWithType: MethodBase.Equals
+    fullName: System.Reflection.MethodBase.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.Equals(System.Object)
+    name: Equals
+    nameWithType: MethodBase.Equals
+    fullName: System.Reflection.MethodBase.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.GetHashCode
+  commentId: M:System.Reflection.MethodBase.GetHashCode
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: MethodBase.GetHashCode()
+  fullName: System.Reflection.MethodBase.GetHashCode()
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.GetHashCode
+    name: GetHashCode
+    nameWithType: MethodBase.GetHashCode
+    fullName: System.Reflection.MethodBase.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.GetHashCode
+    name: GetHashCode
+    nameWithType: MethodBase.GetHashCode
+    fullName: System.Reflection.MethodBase.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.GetGenericArguments
+  commentId: M:System.Reflection.MethodBase.GetGenericArguments
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: GetGenericArguments()
+  nameWithType: MethodBase.GetGenericArguments()
+  fullName: System.Reflection.MethodBase.GetGenericArguments()
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.GetGenericArguments
+    name: GetGenericArguments
+    nameWithType: MethodBase.GetGenericArguments
+    fullName: System.Reflection.MethodBase.GetGenericArguments
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.GetGenericArguments
+    name: GetGenericArguments
+    nameWithType: MethodBase.GetGenericArguments
+    fullName: System.Reflection.MethodBase.GetGenericArguments
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.Invoke(System.Object,System.Object[])
+  commentId: M:System.Reflection.MethodBase.Invoke(System.Object,System.Object[])
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: Invoke(Object, Object[])
+  nameWithType: MethodBase.Invoke(Object, Object[])
+  fullName: System.Reflection.MethodBase.Invoke(System.Object, System.Object[])
+  nameWithType.vb: MethodBase.Invoke(Object, Object())
+  fullName.vb: System.Reflection.MethodBase.Invoke(System.Object, System.Object())
+  name.vb: Invoke(Object, Object())
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.Invoke(System.Object,System.Object[])
+    name: Invoke
+    nameWithType: MethodBase.Invoke
+    fullName: System.Reflection.MethodBase.Invoke
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.Invoke(System.Object,System.Object[])
+    name: Invoke
+    nameWithType: MethodBase.Invoke
+    fullName: System.Reflection.MethodBase.Invoke
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.GetMethodBody
+  commentId: M:System.Reflection.MethodBase.GetMethodBody
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: GetMethodBody()
+  nameWithType: MethodBase.GetMethodBody()
+  fullName: System.Reflection.MethodBase.GetMethodBody()
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.GetMethodBody
+    name: GetMethodBody
+    nameWithType: MethodBase.GetMethodBody
+    fullName: System.Reflection.MethodBase.GetMethodBody
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.GetMethodBody
+    name: GetMethodBody
+    nameWithType: MethodBase.GetMethodBody
+    fullName: System.Reflection.MethodBase.GetMethodBody
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetType
+  commentId: M:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetType
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.GetType()
+  nameWithType: MethodBase._MethodBase.GetType()
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetType()
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.GetType()
+  name.vb: System.Runtime.InteropServices._MethodBase.GetType()
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetType
+    name: _MethodBase.GetType
+    nameWithType: MethodBase._MethodBase.GetType
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetType
+    name: System.Runtime.InteropServices._MethodBase.GetType
+    nameWithType: MethodBase.System.Runtime.InteropServices._MethodBase.GetType
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfoCount(System.UInt32@)
+  commentId: M:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfoCount(System.UInt32@)
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.GetTypeInfoCount(UInt32)
+  nameWithType: MethodBase._MethodBase.GetTypeInfoCount(UInt32)
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfoCount(System.UInt32)
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfoCount(UInt32)
+  name.vb: System.Runtime.InteropServices._MethodBase.GetTypeInfoCount(UInt32)
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfoCount(System.UInt32@)
+    name: _MethodBase.GetTypeInfoCount
+    nameWithType: MethodBase._MethodBase.GetTypeInfoCount
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfoCount
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfoCount(System.UInt32@)
+    name: System.Runtime.InteropServices._MethodBase.GetTypeInfoCount
+    nameWithType: MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfoCount
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfoCount
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+  commentId: M:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.GetTypeInfo(UInt32, UInt32, IntPtr)
+  nameWithType: MethodBase._MethodBase.GetTypeInfo(UInt32, UInt32, IntPtr)
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfo(System.UInt32, System.UInt32, System.IntPtr)
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfo(UInt32, UInt32, IntPtr)
+  name.vb: System.Runtime.InteropServices._MethodBase.GetTypeInfo(UInt32, UInt32, IntPtr)
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+    name: _MethodBase.GetTypeInfo
+    nameWithType: MethodBase._MethodBase.GetTypeInfo
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+    name: System.Runtime.InteropServices._MethodBase.GetTypeInfo
+    nameWithType: MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfo
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+  commentId: M:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.GetIDsOfNames(Guid, IntPtr, UInt32, UInt32, IntPtr)
+  nameWithType: MethodBase._MethodBase.GetIDsOfNames(Guid, IntPtr, UInt32, UInt32, IntPtr)
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetIDsOfNames(System.Guid, System.IntPtr, System.UInt32, System.UInt32, System.IntPtr)
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.GetIDsOfNames(Guid, IntPtr, UInt32, UInt32, IntPtr)
+  name.vb: System.Runtime.InteropServices._MethodBase.GetIDsOfNames(Guid, IntPtr, UInt32, UInt32, IntPtr)
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+    name: _MethodBase.GetIDsOfNames
+    nameWithType: MethodBase._MethodBase.GetIDsOfNames
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetIDsOfNames
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+    name: System.Runtime.InteropServices._MethodBase.GetIDsOfNames
+    nameWithType: MethodBase.System.Runtime.InteropServices._MethodBase.GetIDsOfNames
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetIDsOfNames
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+  commentId: M:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.Invoke(UInt32, Guid, UInt32, Int16, IntPtr, IntPtr, IntPtr, IntPtr)
+  nameWithType: MethodBase._MethodBase.Invoke(UInt32, Guid, UInt32, Int16, IntPtr, IntPtr, IntPtr, IntPtr)
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.Invoke(UInt32, Guid, UInt32, Int16, IntPtr, IntPtr, IntPtr, IntPtr)
+  name.vb: System.Runtime.InteropServices._MethodBase.Invoke(UInt32, Guid, UInt32, Int16, IntPtr, IntPtr, IntPtr, IntPtr)
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+    name: _MethodBase.Invoke
+    nameWithType: MethodBase._MethodBase.Invoke
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.Invoke
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int16
+    name: Int16
+    nameWithType: Int16
+    fullName: System.Int16
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+    name: System.Runtime.InteropServices._MethodBase.Invoke
+    nameWithType: MethodBase.System.Runtime.InteropServices._MethodBase.Invoke
+    fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.Invoke
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int16
+    name: Int16
+    nameWithType: Int16
+    fullName: System.Int16
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.MethodImplementationFlags
+  commentId: P:System.Reflection.MethodBase.MethodImplementationFlags
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: MethodImplementationFlags
+  nameWithType: MethodBase.MethodImplementationFlags
+  fullName: System.Reflection.MethodBase.MethodImplementationFlags
+- uid: System.Reflection.MethodBase.CallingConvention
+  commentId: P:System.Reflection.MethodBase.CallingConvention
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: CallingConvention
+  nameWithType: MethodBase.CallingConvention
+  fullName: System.Reflection.MethodBase.CallingConvention
+- uid: System.Reflection.MethodBase.IsGenericMethodDefinition
+  commentId: P:System.Reflection.MethodBase.IsGenericMethodDefinition
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsGenericMethodDefinition
+  nameWithType: MethodBase.IsGenericMethodDefinition
+  fullName: System.Reflection.MethodBase.IsGenericMethodDefinition
+- uid: System.Reflection.MethodBase.ContainsGenericParameters
+  commentId: P:System.Reflection.MethodBase.ContainsGenericParameters
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: ContainsGenericParameters
+  nameWithType: MethodBase.ContainsGenericParameters
+  fullName: System.Reflection.MethodBase.ContainsGenericParameters
+- uid: System.Reflection.MethodBase.IsGenericMethod
+  commentId: P:System.Reflection.MethodBase.IsGenericMethod
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsGenericMethod
+  nameWithType: MethodBase.IsGenericMethod
+  fullName: System.Reflection.MethodBase.IsGenericMethod
+- uid: System.Reflection.MethodBase.IsSecurityCritical
+  commentId: P:System.Reflection.MethodBase.IsSecurityCritical
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsSecurityCritical
+  nameWithType: MethodBase.IsSecurityCritical
+  fullName: System.Reflection.MethodBase.IsSecurityCritical
+- uid: System.Reflection.MethodBase.IsSecuritySafeCritical
+  commentId: P:System.Reflection.MethodBase.IsSecuritySafeCritical
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsSecuritySafeCritical
+  nameWithType: MethodBase.IsSecuritySafeCritical
+  fullName: System.Reflection.MethodBase.IsSecuritySafeCritical
+- uid: System.Reflection.MethodBase.IsSecurityTransparent
+  commentId: P:System.Reflection.MethodBase.IsSecurityTransparent
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsSecurityTransparent
+  nameWithType: MethodBase.IsSecurityTransparent
+  fullName: System.Reflection.MethodBase.IsSecurityTransparent
+- uid: System.Reflection.MethodBase.IsPublic
+  commentId: P:System.Reflection.MethodBase.IsPublic
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsPublic
+  nameWithType: MethodBase.IsPublic
+  fullName: System.Reflection.MethodBase.IsPublic
+- uid: System.Reflection.MethodBase.IsPrivate
+  commentId: P:System.Reflection.MethodBase.IsPrivate
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsPrivate
+  nameWithType: MethodBase.IsPrivate
+  fullName: System.Reflection.MethodBase.IsPrivate
+- uid: System.Reflection.MethodBase.IsFamily
+  commentId: P:System.Reflection.MethodBase.IsFamily
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsFamily
+  nameWithType: MethodBase.IsFamily
+  fullName: System.Reflection.MethodBase.IsFamily
+- uid: System.Reflection.MethodBase.IsAssembly
+  commentId: P:System.Reflection.MethodBase.IsAssembly
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsAssembly
+  nameWithType: MethodBase.IsAssembly
+  fullName: System.Reflection.MethodBase.IsAssembly
+- uid: System.Reflection.MethodBase.IsFamilyAndAssembly
+  commentId: P:System.Reflection.MethodBase.IsFamilyAndAssembly
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsFamilyAndAssembly
+  nameWithType: MethodBase.IsFamilyAndAssembly
+  fullName: System.Reflection.MethodBase.IsFamilyAndAssembly
+- uid: System.Reflection.MethodBase.IsFamilyOrAssembly
+  commentId: P:System.Reflection.MethodBase.IsFamilyOrAssembly
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsFamilyOrAssembly
+  nameWithType: MethodBase.IsFamilyOrAssembly
+  fullName: System.Reflection.MethodBase.IsFamilyOrAssembly
+- uid: System.Reflection.MethodBase.IsStatic
+  commentId: P:System.Reflection.MethodBase.IsStatic
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsStatic
+  nameWithType: MethodBase.IsStatic
+  fullName: System.Reflection.MethodBase.IsStatic
+- uid: System.Reflection.MethodBase.IsFinal
+  commentId: P:System.Reflection.MethodBase.IsFinal
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsFinal
+  nameWithType: MethodBase.IsFinal
+  fullName: System.Reflection.MethodBase.IsFinal
+- uid: System.Reflection.MethodBase.IsVirtual
+  commentId: P:System.Reflection.MethodBase.IsVirtual
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsVirtual
+  nameWithType: MethodBase.IsVirtual
+  fullName: System.Reflection.MethodBase.IsVirtual
+- uid: System.Reflection.MethodBase.IsHideBySig
+  commentId: P:System.Reflection.MethodBase.IsHideBySig
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsHideBySig
+  nameWithType: MethodBase.IsHideBySig
+  fullName: System.Reflection.MethodBase.IsHideBySig
+- uid: System.Reflection.MethodBase.IsAbstract
+  commentId: P:System.Reflection.MethodBase.IsAbstract
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsAbstract
+  nameWithType: MethodBase.IsAbstract
+  fullName: System.Reflection.MethodBase.IsAbstract
+- uid: System.Reflection.MethodBase.IsSpecialName
+  commentId: P:System.Reflection.MethodBase.IsSpecialName
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsSpecialName
+  nameWithType: MethodBase.IsSpecialName
+  fullName: System.Reflection.MethodBase.IsSpecialName
+- uid: System.Reflection.MethodBase.IsConstructor
+  commentId: P:System.Reflection.MethodBase.IsConstructor
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: IsConstructor
+  nameWithType: MethodBase.IsConstructor
+  fullName: System.Reflection.MethodBase.IsConstructor
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsPublic
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsPublic
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsPublic
+  nameWithType: MethodBase._MethodBase.IsPublic
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsPublic
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsPublic
+  name.vb: System.Runtime.InteropServices._MethodBase.IsPublic
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsPrivate
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsPrivate
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsPrivate
+  nameWithType: MethodBase._MethodBase.IsPrivate
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsPrivate
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsPrivate
+  name.vb: System.Runtime.InteropServices._MethodBase.IsPrivate
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFamily
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFamily
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsFamily
+  nameWithType: MethodBase._MethodBase.IsFamily
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFamily
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsFamily
+  name.vb: System.Runtime.InteropServices._MethodBase.IsFamily
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsAssembly
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsAssembly
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsAssembly
+  nameWithType: MethodBase._MethodBase.IsAssembly
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsAssembly
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsAssembly
+  name.vb: System.Runtime.InteropServices._MethodBase.IsAssembly
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFamilyAndAssembly
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFamilyAndAssembly
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsFamilyAndAssembly
+  nameWithType: MethodBase._MethodBase.IsFamilyAndAssembly
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFamilyAndAssembly
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsFamilyAndAssembly
+  name.vb: System.Runtime.InteropServices._MethodBase.IsFamilyAndAssembly
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFamilyOrAssembly
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFamilyOrAssembly
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsFamilyOrAssembly
+  nameWithType: MethodBase._MethodBase.IsFamilyOrAssembly
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFamilyOrAssembly
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsFamilyOrAssembly
+  name.vb: System.Runtime.InteropServices._MethodBase.IsFamilyOrAssembly
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsStatic
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsStatic
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsStatic
+  nameWithType: MethodBase._MethodBase.IsStatic
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsStatic
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsStatic
+  name.vb: System.Runtime.InteropServices._MethodBase.IsStatic
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFinal
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsFinal
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsFinal
+  nameWithType: MethodBase._MethodBase.IsFinal
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFinal
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsFinal
+  name.vb: System.Runtime.InteropServices._MethodBase.IsFinal
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsVirtual
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsVirtual
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsVirtual
+  nameWithType: MethodBase._MethodBase.IsVirtual
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsVirtual
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsVirtual
+  name.vb: System.Runtime.InteropServices._MethodBase.IsVirtual
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsHideBySig
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsHideBySig
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsHideBySig
+  nameWithType: MethodBase._MethodBase.IsHideBySig
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsHideBySig
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsHideBySig
+  name.vb: System.Runtime.InteropServices._MethodBase.IsHideBySig
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsAbstract
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsAbstract
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsAbstract
+  nameWithType: MethodBase._MethodBase.IsAbstract
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsAbstract
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsAbstract
+  name.vb: System.Runtime.InteropServices._MethodBase.IsAbstract
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsSpecialName
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsSpecialName
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsSpecialName
+  nameWithType: MethodBase._MethodBase.IsSpecialName
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsSpecialName
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsSpecialName
+  name.vb: System.Runtime.InteropServices._MethodBase.IsSpecialName
+- uid: System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsConstructor
+  commentId: P:System.Reflection.MethodBase.System#Runtime#InteropServices#_MethodBase#IsConstructor
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: _MethodBase.IsConstructor
+  nameWithType: MethodBase._MethodBase.IsConstructor
+  fullName: System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsConstructor
+  nameWithType.vb: MethodBase.System.Runtime.InteropServices._MethodBase.IsConstructor
+  name.vb: System.Runtime.InteropServices._MethodBase.IsConstructor
+- uid: System.Reflection.MemberInfo.GetCustomAttributesData
+  commentId: M:System.Reflection.MemberInfo.GetCustomAttributesData
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: GetCustomAttributesData()
+  nameWithType: MemberInfo.GetCustomAttributesData()
+  fullName: System.Reflection.MemberInfo.GetCustomAttributesData()
+  spec.csharp:
+  - uid: System.Reflection.MemberInfo.GetCustomAttributesData
+    name: GetCustomAttributesData
+    nameWithType: MemberInfo.GetCustomAttributesData
+    fullName: System.Reflection.MemberInfo.GetCustomAttributesData
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MemberInfo.GetCustomAttributesData
+    name: GetCustomAttributesData
+    nameWithType: MemberInfo.GetCustomAttributesData
+    fullName: System.Reflection.MemberInfo.GetCustomAttributesData
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetType
+  commentId: M:System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetType
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: _MemberInfo.GetType()
+  nameWithType: MemberInfo._MemberInfo.GetType()
+  fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetType()
+  nameWithType.vb: MemberInfo.System.Runtime.InteropServices._MemberInfo.GetType()
+  name.vb: System.Runtime.InteropServices._MemberInfo.GetType()
+  spec.csharp:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetType
+    name: _MemberInfo.GetType
+    nameWithType: MemberInfo._MemberInfo.GetType
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetType
+    name: System.Runtime.InteropServices._MemberInfo.GetType
+    nameWithType: MemberInfo.System.Runtime.InteropServices._MemberInfo.GetType
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfoCount(System.UInt32@)
+  commentId: M:System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfoCount(System.UInt32@)
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: _MemberInfo.GetTypeInfoCount(UInt32)
+  nameWithType: MemberInfo._MemberInfo.GetTypeInfoCount(UInt32)
+  fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfoCount(System.UInt32)
+  nameWithType.vb: MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfoCount(UInt32)
+  name.vb: System.Runtime.InteropServices._MemberInfo.GetTypeInfoCount(UInt32)
+  spec.csharp:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfoCount(System.UInt32@)
+    name: _MemberInfo.GetTypeInfoCount
+    nameWithType: MemberInfo._MemberInfo.GetTypeInfoCount
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfoCount
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfoCount(System.UInt32@)
+    name: System.Runtime.InteropServices._MemberInfo.GetTypeInfoCount
+    nameWithType: MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfoCount
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfoCount
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+  commentId: M:System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: _MemberInfo.GetTypeInfo(UInt32, UInt32, IntPtr)
+  nameWithType: MemberInfo._MemberInfo.GetTypeInfo(UInt32, UInt32, IntPtr)
+  fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfo(System.UInt32, System.UInt32, System.IntPtr)
+  nameWithType.vb: MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfo(UInt32, UInt32, IntPtr)
+  name.vb: System.Runtime.InteropServices._MemberInfo.GetTypeInfo(UInt32, UInt32, IntPtr)
+  spec.csharp:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+    name: _MemberInfo.GetTypeInfo
+    nameWithType: MemberInfo._MemberInfo.GetTypeInfo
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetTypeInfo(System.UInt32,System.UInt32,System.IntPtr)
+    name: System.Runtime.InteropServices._MemberInfo.GetTypeInfo
+    nameWithType: MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfo
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+  commentId: M:System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: _MemberInfo.GetIDsOfNames(Guid, IntPtr, UInt32, UInt32, IntPtr)
+  nameWithType: MemberInfo._MemberInfo.GetIDsOfNames(Guid, IntPtr, UInt32, UInt32, IntPtr)
+  fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetIDsOfNames(System.Guid, System.IntPtr, System.UInt32, System.UInt32, System.IntPtr)
+  nameWithType.vb: MemberInfo.System.Runtime.InteropServices._MemberInfo.GetIDsOfNames(Guid, IntPtr, UInt32, UInt32, IntPtr)
+  name.vb: System.Runtime.InteropServices._MemberInfo.GetIDsOfNames(Guid, IntPtr, UInt32, UInt32, IntPtr)
+  spec.csharp:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+    name: _MemberInfo.GetIDsOfNames
+    nameWithType: MemberInfo._MemberInfo.GetIDsOfNames
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetIDsOfNames
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
+    name: System.Runtime.InteropServices._MemberInfo.GetIDsOfNames
+    nameWithType: MemberInfo.System.Runtime.InteropServices._MemberInfo.GetIDsOfNames
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetIDsOfNames
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+  commentId: M:System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: _MemberInfo.Invoke(UInt32, Guid, UInt32, Int16, IntPtr, IntPtr, IntPtr, IntPtr)
+  nameWithType: MemberInfo._MemberInfo.Invoke(UInt32, Guid, UInt32, Int16, IntPtr, IntPtr, IntPtr, IntPtr)
+  fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)
+  nameWithType.vb: MemberInfo.System.Runtime.InteropServices._MemberInfo.Invoke(UInt32, Guid, UInt32, Int16, IntPtr, IntPtr, IntPtr, IntPtr)
+  name.vb: System.Runtime.InteropServices._MemberInfo.Invoke(UInt32, Guid, UInt32, Int16, IntPtr, IntPtr, IntPtr, IntPtr)
+  spec.csharp:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+    name: _MemberInfo.Invoke
+    nameWithType: MemberInfo._MemberInfo.Invoke
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.Invoke
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int16
+    name: Int16
+    nameWithType: Int16
+    fullName: System.Int16
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MemberInfo.System#Runtime#InteropServices#_MemberInfo#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
+    name: System.Runtime.InteropServices._MemberInfo.Invoke
+    nameWithType: MemberInfo.System.Runtime.InteropServices._MemberInfo.Invoke
+    fullName: System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.Invoke
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Guid
+    name: Guid
+    nameWithType: Guid
+    fullName: System.Guid
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.UInt32
+    name: UInt32
+    nameWithType: UInt32
+    fullName: System.UInt32
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Int16
+    name: Int16
+    nameWithType: Int16
+    fullName: System.Int16
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IntPtr
+    name: IntPtr
+    nameWithType: IntPtr
+    fullName: System.IntPtr
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MemberInfo.CustomAttributes
+  commentId: P:System.Reflection.MemberInfo.CustomAttributes
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: CustomAttributes
+  nameWithType: MemberInfo.CustomAttributes
+  fullName: System.Reflection.MemberInfo.CustomAttributes
+- uid: System.Reflection.MemberInfo.Module
+  commentId: P:System.Reflection.MemberInfo.Module
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: Module
+  nameWithType: MemberInfo.Module
+  fullName: System.Reflection.MemberInfo.Module
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph(System.Reflection.MethodBase)
+  parent: CilTools.BytecodeAnalysis.Extensions.CilExtensions
+  definition: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph(System.Reflection.MethodBase)
+  name: GetCilGraph()
+  nameWithType: CilExtensions.GetCilGraph()
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph()
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph
+    name: GetCilGraph
+    nameWithType: CilExtensions.GetCilGraph
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph
+    name: GetCilGraph
+    nameWithType: CilExtensions.GetCilGraph
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText(System.Reflection.MethodBase)
+  parent: CilTools.BytecodeAnalysis.Extensions.CilExtensions
+  definition: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText(System.Reflection.MethodBase)
+  name: GetCilText()
+  nameWithType: CilExtensions.GetCilText()
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText()
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText
+    name: GetCilText
+    nameWithType: CilExtensions.GetCilText
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText
+    name: GetCilText
+    nameWithType: CilExtensions.GetCilText
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions(System.Reflection.MethodBase)
+  parent: CilTools.BytecodeAnalysis.Extensions.CilExtensions
+  definition: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions(System.Reflection.MethodBase)
+  name: GetInstructions()
+  nameWithType: CilExtensions.GetInstructions()
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions()
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions
+    name: GetInstructions
+    nameWithType: CilExtensions.GetInstructions
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions
+    name: GetInstructions
+    nameWithType: CilExtensions.GetInstructions
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods(System.Reflection.MethodBase)
+  parent: CilTools.BytecodeAnalysis.Extensions.CilExtensions
+  definition: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods(System.Reflection.MethodBase)
+  name: GetReferencedMethods()
+  nameWithType: CilExtensions.GetReferencedMethods()
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods()
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods
+    name: GetReferencedMethods
+    nameWithType: CilExtensions.GetReferencedMethods
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods
+    name: GetReferencedMethods
+    nameWithType: CilExtensions.GetReferencedMethods
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase)
+  parent: CilTools.BytecodeAnalysis.Extensions.CilExtensions
+  definition: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase)
+  name: GetReferencedMembers()
+  nameWithType: CilExtensions.GetReferencedMembers()
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers()
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    name: GetReferencedMembers
+    nameWithType: CilExtensions.GetReferencedMembers
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    name: GetReferencedMembers
+    nameWithType: CilExtensions.GetReferencedMembers
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MethodBase.CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(CilTools.BytecodeAnalysis.MemberCriteria)
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase,CilTools.BytecodeAnalysis.MemberCriteria)
+  parent: CilTools.BytecodeAnalysis.Extensions.CilExtensions
+  definition: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase,CilTools.BytecodeAnalysis.MemberCriteria)
+  name: GetReferencedMembers(MemberCriteria)
+  nameWithType: CilExtensions.GetReferencedMembers(MemberCriteria)
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(CilTools.BytecodeAnalysis.MemberCriteria)
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(CilTools.BytecodeAnalysis.MemberCriteria)
+    name: GetReferencedMembers
+    nameWithType: CilExtensions.GetReferencedMembers
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.BytecodeAnalysis.MemberCriteria
+    name: MemberCriteria
+    nameWithType: MemberCriteria
+    fullName: CilTools.BytecodeAnalysis.MemberCriteria
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(CilTools.BytecodeAnalysis.MemberCriteria)
+    name: GetReferencedMembers
+    nameWithType: CilExtensions.GetReferencedMembers
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.BytecodeAnalysis.MemberCriteria
+    name: MemberCriteria
+    nameWithType: MemberCriteria
+    fullName: CilTools.BytecodeAnalysis.MemberCriteria
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: System.Runtime.InteropServices
+  commentId: N:System.Runtime.InteropServices
+  isExternal: true
+  name: System.Runtime.InteropServices
+  nameWithType: System.Runtime.InteropServices
+  fullName: System.Runtime.InteropServices
+- uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph(System.Reflection.MethodBase)
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph(System.Reflection.MethodBase)
+  isExternal: true
+  name: GetCilGraph(MethodBase)
+  nameWithType: CilExtensions.GetCilGraph(MethodBase)
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph(System.Reflection.MethodBase)
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph(System.Reflection.MethodBase)
+    name: GetCilGraph
+    nameWithType: CilExtensions.GetCilGraph
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph(System.Reflection.MethodBase)
+    name: GetCilGraph
+    nameWithType: CilExtensions.GetCilGraph
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilGraph
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions
+  commentId: T:CilTools.BytecodeAnalysis.Extensions.CilExtensions
+  parent: CilTools.BytecodeAnalysis.Extensions
+  isExternal: true
+  name: CilExtensions
+  nameWithType: CilExtensions
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions
+- uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText(System.Reflection.MethodBase)
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText(System.Reflection.MethodBase)
+  isExternal: true
+  name: GetCilText(MethodBase)
+  nameWithType: CilExtensions.GetCilText(MethodBase)
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText(System.Reflection.MethodBase)
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText(System.Reflection.MethodBase)
+    name: GetCilText
+    nameWithType: CilExtensions.GetCilText
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText(System.Reflection.MethodBase)
+    name: GetCilText
+    nameWithType: CilExtensions.GetCilText
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetCilText
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions(System.Reflection.MethodBase)
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions(System.Reflection.MethodBase)
+  isExternal: true
+  name: GetInstructions(MethodBase)
+  nameWithType: CilExtensions.GetInstructions(MethodBase)
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions(System.Reflection.MethodBase)
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions(System.Reflection.MethodBase)
+    name: GetInstructions
+    nameWithType: CilExtensions.GetInstructions
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions(System.Reflection.MethodBase)
+    name: GetInstructions
+    nameWithType: CilExtensions.GetInstructions
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetInstructions
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods(System.Reflection.MethodBase)
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods(System.Reflection.MethodBase)
+  isExternal: true
+  name: GetReferencedMethods(MethodBase)
+  nameWithType: CilExtensions.GetReferencedMethods(MethodBase)
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods(System.Reflection.MethodBase)
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods(System.Reflection.MethodBase)
+    name: GetReferencedMethods
+    nameWithType: CilExtensions.GetReferencedMethods
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods(System.Reflection.MethodBase)
+    name: GetReferencedMethods
+    nameWithType: CilExtensions.GetReferencedMethods
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMethods
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase)
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase)
+  isExternal: true
+  name: GetReferencedMembers(MethodBase)
+  nameWithType: CilExtensions.GetReferencedMembers(MethodBase)
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase)
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase)
+    name: GetReferencedMembers
+    nameWithType: CilExtensions.GetReferencedMembers
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase)
+    name: GetReferencedMembers
+    nameWithType: CilExtensions.GetReferencedMembers
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase,CilTools.BytecodeAnalysis.MemberCriteria)
+  commentId: M:CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase,CilTools.BytecodeAnalysis.MemberCriteria)
+  isExternal: true
+  name: GetReferencedMembers(MethodBase, MemberCriteria)
+  nameWithType: CilExtensions.GetReferencedMembers(MethodBase, MemberCriteria)
+  fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase, CilTools.BytecodeAnalysis.MemberCriteria)
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase,CilTools.BytecodeAnalysis.MemberCriteria)
+    name: GetReferencedMembers
+    nameWithType: CilExtensions.GetReferencedMembers
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.BytecodeAnalysis.MemberCriteria
+    name: MemberCriteria
+    nameWithType: MemberCriteria
+    fullName: CilTools.BytecodeAnalysis.MemberCriteria
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers(System.Reflection.MethodBase,CilTools.BytecodeAnalysis.MemberCriteria)
+    name: GetReferencedMembers
+    nameWithType: CilExtensions.GetReferencedMembers
+    fullName: CilTools.BytecodeAnalysis.Extensions.CilExtensions.GetReferencedMembers
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Reflection.MethodBase
+    name: MethodBase
+    nameWithType: MethodBase
+    fullName: System.Reflection.MethodBase
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.BytecodeAnalysis.MemberCriteria
+    name: MemberCriteria
+    nameWithType: MemberCriteria
+    fullName: CilTools.BytecodeAnalysis.MemberCriteria
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.Extensions
+  commentId: N:CilTools.BytecodeAnalysis.Extensions
+  isExternal: true
+  name: CilTools.BytecodeAnalysis.Extensions
+  nameWithType: CilTools.BytecodeAnalysis.Extensions
+  fullName: CilTools.BytecodeAnalysis.Extensions
+- uid: CilTools.Reflection.CustomMethod.GetBytecode
+  commentId: M:CilTools.Reflection.CustomMethod.GetBytecode
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: GetBytecode()
+  nameWithType: CustomMethod.GetBytecode()
+  fullName: CilTools.Reflection.CustomMethod.GetBytecode()
+  spec.csharp:
+  - uid: CilTools.Reflection.CustomMethod.GetBytecode
+    name: GetBytecode
+    nameWithType: CustomMethod.GetBytecode
+    fullName: CilTools.Reflection.CustomMethod.GetBytecode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Reflection.CustomMethod.GetBytecode
+    name: GetBytecode
+    nameWithType: CustomMethod.GetBytecode
+    fullName: CilTools.Reflection.CustomMethod.GetBytecode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Runtime.ClrMethodInfo.GetBytecode*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.GetBytecode
+  isExternal: true
+  name: GetBytecode
+  nameWithType: ClrMethodInfo.GetBytecode
+  fullName: CilTools.Runtime.ClrMethodInfo.GetBytecode
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.Reflection.CustomMethod.GetLocalVarSignature
+  commentId: M:CilTools.Reflection.CustomMethod.GetLocalVarSignature
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: GetLocalVarSignature()
+  nameWithType: CustomMethod.GetLocalVarSignature()
+  fullName: CilTools.Reflection.CustomMethod.GetLocalVarSignature()
+  spec.csharp:
+  - uid: CilTools.Reflection.CustomMethod.GetLocalVarSignature
+    name: GetLocalVarSignature
+    nameWithType: CustomMethod.GetLocalVarSignature
+    fullName: CilTools.Reflection.CustomMethod.GetLocalVarSignature
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Reflection.CustomMethod.GetLocalVarSignature
+    name: GetLocalVarSignature
+    nameWithType: CustomMethod.GetLocalVarSignature
+    fullName: CilTools.Reflection.CustomMethod.GetLocalVarSignature
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature
+  isExternal: true
+  name: GetLocalVarSignature
+  nameWithType: ClrMethodInfo.GetLocalVarSignature
+  fullName: CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature
+- uid: CilTools.Reflection.CustomMethod.GetExceptionBlocks
+  commentId: M:CilTools.Reflection.CustomMethod.GetExceptionBlocks
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: GetExceptionBlocks()
+  nameWithType: CustomMethod.GetExceptionBlocks()
+  fullName: CilTools.Reflection.CustomMethod.GetExceptionBlocks()
+  spec.csharp:
+  - uid: CilTools.Reflection.CustomMethod.GetExceptionBlocks
+    name: GetExceptionBlocks
+    nameWithType: CustomMethod.GetExceptionBlocks
+    fullName: CilTools.Reflection.CustomMethod.GetExceptionBlocks
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Reflection.CustomMethod.GetExceptionBlocks
+    name: GetExceptionBlocks
+    nameWithType: CustomMethod.GetExceptionBlocks
+    fullName: CilTools.Reflection.CustomMethod.GetExceptionBlocks
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks
+  isExternal: true
+  name: GetExceptionBlocks
+  nameWithType: ClrMethodInfo.GetExceptionBlocks
+  fullName: CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks
+- uid: CilTools.Reflection.ExceptionBlock[]
+  isExternal: true
+  name: ExceptionBlock[]
+  nameWithType: ExceptionBlock[]
+  fullName: CilTools.Reflection.ExceptionBlock[]
+  nameWithType.vb: ExceptionBlock()
+  fullName.vb: CilTools.Reflection.ExceptionBlock()
+  name.vb: ExceptionBlock()
+  spec.csharp:
+  - uid: CilTools.Reflection.ExceptionBlock
+    name: ExceptionBlock
+    nameWithType: ExceptionBlock
+    fullName: CilTools.Reflection.ExceptionBlock
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilTools.Reflection.ExceptionBlock
+    name: ExceptionBlock
+    nameWithType: ExceptionBlock
+    fullName: CilTools.Reflection.ExceptionBlock
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Reflection.MethodBase.GetMethodImplementationFlags
+  commentId: M:System.Reflection.MethodBase.GetMethodImplementationFlags
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: GetMethodImplementationFlags()
+  nameWithType: MethodBase.GetMethodImplementationFlags()
+  fullName: System.Reflection.MethodBase.GetMethodImplementationFlags()
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.GetMethodImplementationFlags
+    name: GetMethodImplementationFlags
+    nameWithType: MethodBase.GetMethodImplementationFlags
+    fullName: System.Reflection.MethodBase.GetMethodImplementationFlags
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.GetMethodImplementationFlags
+    name: GetMethodImplementationFlags
+    nameWithType: MethodBase.GetMethodImplementationFlags
+    fullName: System.Reflection.MethodBase.GetMethodImplementationFlags
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags
+  isExternal: true
+  name: GetMethodImplementationFlags
+  nameWithType: ClrMethodInfo.GetMethodImplementationFlags
+  fullName: CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags
+- uid: System.Reflection.MethodImplAttributes
+  commentId: T:System.Reflection.MethodImplAttributes
+  parent: System.Reflection
+  isExternal: true
+  name: MethodImplAttributes
+  nameWithType: MethodImplAttributes
+  fullName: System.Reflection.MethodImplAttributes
+- uid: System.Reflection.MethodBase.GetParameters
+  commentId: M:System.Reflection.MethodBase.GetParameters
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: GetParameters()
+  nameWithType: MethodBase.GetParameters()
+  fullName: System.Reflection.MethodBase.GetParameters()
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.GetParameters
+    name: GetParameters
+    nameWithType: MethodBase.GetParameters
+    fullName: System.Reflection.MethodBase.GetParameters
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.GetParameters
+    name: GetParameters
+    nameWithType: MethodBase.GetParameters
+    fullName: System.Reflection.MethodBase.GetParameters
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Runtime.ClrMethodInfo.GetParameters*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.GetParameters
+  isExternal: true
+  name: GetParameters
+  nameWithType: ClrMethodInfo.GetParameters
+  fullName: CilTools.Runtime.ClrMethodInfo.GetParameters
+- uid: System.Reflection.ParameterInfo[]
+  isExternal: true
+  name: ParameterInfo[]
+  nameWithType: ParameterInfo[]
+  fullName: System.Reflection.ParameterInfo[]
+  nameWithType.vb: ParameterInfo()
+  fullName.vb: System.Reflection.ParameterInfo()
+  name.vb: ParameterInfo()
+  spec.csharp:
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    nameWithType: ParameterInfo
+    fullName: System.Reflection.ParameterInfo
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    nameWithType: ParameterInfo
+    fullName: System.Reflection.ParameterInfo
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Reflection.MethodBase.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)
+  commentId: M:System.Reflection.MethodBase.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: Invoke(Object, BindingFlags, Binder, Object[], CultureInfo)
+  nameWithType: MethodBase.Invoke(Object, BindingFlags, Binder, Object[], CultureInfo)
+  fullName: System.Reflection.MethodBase.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)
+  nameWithType.vb: MethodBase.Invoke(Object, BindingFlags, Binder, Object(), CultureInfo)
+  fullName.vb: System.Reflection.MethodBase.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object(), System.Globalization.CultureInfo)
+  name.vb: Invoke(Object, BindingFlags, Binder, Object(), CultureInfo)
+  spec.csharp:
+  - uid: System.Reflection.MethodBase.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)
+    name: Invoke
+    nameWithType: MethodBase.Invoke
+    fullName: System.Reflection.MethodBase.Invoke
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    nameWithType: BindingFlags
+    fullName: System.Reflection.BindingFlags
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Reflection.Binder
+    name: Binder
+    nameWithType: Binder
+    fullName: System.Reflection.Binder
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Globalization.CultureInfo
+    name: CultureInfo
+    nameWithType: CultureInfo
+    fullName: System.Globalization.CultureInfo
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MethodBase.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)
+    name: Invoke
+    nameWithType: MethodBase.Invoke
+    fullName: System.Reflection.MethodBase.Invoke
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Reflection.BindingFlags
+    name: BindingFlags
+    nameWithType: BindingFlags
+    fullName: System.Reflection.BindingFlags
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Reflection.Binder
+    name: Binder
+    nameWithType: Binder
+    fullName: System.Reflection.Binder
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Globalization.CultureInfo
+    name: CultureInfo
+    nameWithType: CultureInfo
+    fullName: System.Globalization.CultureInfo
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Runtime.ClrMethodInfo.Invoke*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.Invoke
+  isExternal: true
+  name: Invoke
+  nameWithType: ClrMethodInfo.Invoke
+  fullName: CilTools.Runtime.ClrMethodInfo.Invoke
+- uid: System.Reflection.BindingFlags
+  commentId: T:System.Reflection.BindingFlags
+  parent: System.Reflection
+  isExternal: true
+  name: BindingFlags
+  nameWithType: BindingFlags
+  fullName: System.Reflection.BindingFlags
+- uid: System.Reflection.Binder
+  commentId: T:System.Reflection.Binder
+  parent: System.Reflection
+  isExternal: true
+  name: Binder
+  nameWithType: Binder
+  fullName: System.Reflection.Binder
+- uid: System.Object[]
+  isExternal: true
+  name: Object[]
+  nameWithType: Object[]
+  fullName: System.Object[]
+  nameWithType.vb: Object()
+  fullName.vb: System.Object()
+  name.vb: Object()
+  spec.csharp:
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.Globalization.CultureInfo
+  commentId: T:System.Globalization.CultureInfo
+  parent: System.Globalization
+  isExternal: true
+  name: CultureInfo
+  nameWithType: CultureInfo
+  fullName: System.Globalization.CultureInfo
+- uid: System.Globalization
+  commentId: N:System.Globalization
+  isExternal: true
+  name: System.Globalization
+  nameWithType: System.Globalization
+  fullName: System.Globalization
+- uid: System.Reflection.MemberInfo.GetCustomAttributes(System.Type,System.Boolean)
+  commentId: M:System.Reflection.MemberInfo.GetCustomAttributes(System.Type,System.Boolean)
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: GetCustomAttributes(Type, Boolean)
+  nameWithType: MemberInfo.GetCustomAttributes(Type, Boolean)
+  fullName: System.Reflection.MemberInfo.GetCustomAttributes(System.Type, System.Boolean)
+  spec.csharp:
+  - uid: System.Reflection.MemberInfo.GetCustomAttributes(System.Type,System.Boolean)
+    name: GetCustomAttributes
+    nameWithType: MemberInfo.GetCustomAttributes
+    fullName: System.Reflection.MemberInfo.GetCustomAttributes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MemberInfo.GetCustomAttributes(System.Type,System.Boolean)
+    name: GetCustomAttributes
+    nameWithType: MemberInfo.GetCustomAttributes
+    fullName: System.Reflection.MemberInfo.GetCustomAttributes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Runtime.ClrMethodInfo.GetCustomAttributes*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.GetCustomAttributes
+  isExternal: true
+  name: GetCustomAttributes
+  nameWithType: ClrMethodInfo.GetCustomAttributes
+  fullName: CilTools.Runtime.ClrMethodInfo.GetCustomAttributes
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)
+  commentId: M:System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: GetCustomAttributes(Boolean)
+  nameWithType: MemberInfo.GetCustomAttributes(Boolean)
+  fullName: System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)
+  spec.csharp:
+  - uid: System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)
+    name: GetCustomAttributes
+    nameWithType: MemberInfo.GetCustomAttributes
+    fullName: System.Reflection.MemberInfo.GetCustomAttributes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)
+    name: GetCustomAttributes
+    nameWithType: MemberInfo.GetCustomAttributes
+    fullName: System.Reflection.MemberInfo.GetCustomAttributes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection.MemberInfo.IsDefined(System.Type,System.Boolean)
+  commentId: M:System.Reflection.MemberInfo.IsDefined(System.Type,System.Boolean)
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: IsDefined(Type, Boolean)
+  nameWithType: MemberInfo.IsDefined(Type, Boolean)
+  fullName: System.Reflection.MemberInfo.IsDefined(System.Type, System.Boolean)
+  spec.csharp:
+  - uid: System.Reflection.MemberInfo.IsDefined(System.Type,System.Boolean)
+    name: IsDefined
+    nameWithType: MemberInfo.IsDefined
+    fullName: System.Reflection.MemberInfo.IsDefined
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.MemberInfo.IsDefined(System.Type,System.Boolean)
+    name: IsDefined
+    nameWithType: MemberInfo.IsDefined
+    fullName: System.Reflection.MemberInfo.IsDefined
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Runtime.ClrMethodInfo.IsDefined*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.IsDefined
+  isExternal: true
+  name: IsDefined
+  nameWithType: ClrMethodInfo.IsDefined
+  fullName: CilTools.Runtime.ClrMethodInfo.IsDefined
+- uid: CilTools.Runtime.ClrMethodInfo.InnerMethod*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.InnerMethod
+  isExternal: true
+  name: InnerMethod
+  nameWithType: ClrMethodInfo.InnerMethod
+  fullName: CilTools.Runtime.ClrMethodInfo.InnerMethod
+- uid: Microsoft.Diagnostics.Runtime.ClrMethod
+  commentId: '!:Microsoft.Diagnostics.Runtime.ClrMethod'
+  isExternal: true
+  name: ClrMethod
+  nameWithType: ClrMethod
+  fullName: Microsoft.Diagnostics.Runtime.ClrMethod
+- uid: CilTools.Reflection.CustomMethod.ReturnType
+  commentId: P:CilTools.Reflection.CustomMethod.ReturnType
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: ReturnType
+  nameWithType: CustomMethod.ReturnType
+  fullName: CilTools.Reflection.CustomMethod.ReturnType
+- uid: CilTools.Runtime.ClrMethodInfo.ReturnType*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.ReturnType
+  isExternal: true
+  name: ReturnType
+  nameWithType: ClrMethodInfo.ReturnType
+  fullName: CilTools.Runtime.ClrMethodInfo.ReturnType
+- uid: CilTools.Reflection.CustomMethod.TokenResolver
+  commentId: P:CilTools.Reflection.CustomMethod.TokenResolver
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: TokenResolver
+  nameWithType: CustomMethod.TokenResolver
+  fullName: CilTools.Reflection.CustomMethod.TokenResolver
+- uid: CilTools.Runtime.ClrMethodInfo.TokenResolver*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.TokenResolver
+  isExternal: true
+  name: TokenResolver
+  nameWithType: ClrMethodInfo.TokenResolver
+  fullName: CilTools.Runtime.ClrMethodInfo.TokenResolver
+- uid: CilTools.Reflection.ITokenResolver
+  commentId: T:CilTools.Reflection.ITokenResolver
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ITokenResolver
+  nameWithType: ITokenResolver
+  fullName: CilTools.Reflection.ITokenResolver
+- uid: CilTools.Reflection.CustomMethod.MaxStackSize
+  commentId: P:CilTools.Reflection.CustomMethod.MaxStackSize
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: MaxStackSize
+  nameWithType: CustomMethod.MaxStackSize
+  fullName: CilTools.Reflection.CustomMethod.MaxStackSize
+- uid: CilTools.Runtime.ClrMethodInfo.MaxStackSize*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.MaxStackSize
+  isExternal: true
+  name: MaxStackSize
+  nameWithType: ClrMethodInfo.MaxStackSize
+  fullName: CilTools.Runtime.ClrMethodInfo.MaxStackSize
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.Reflection.CustomMethod.MaxStackSizeSpecified
+  commentId: P:CilTools.Reflection.CustomMethod.MaxStackSizeSpecified
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: MaxStackSizeSpecified
+  nameWithType: CustomMethod.MaxStackSizeSpecified
+  fullName: CilTools.Reflection.CustomMethod.MaxStackSizeSpecified
+- uid: CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified
+  isExternal: true
+  name: MaxStackSizeSpecified
+  nameWithType: ClrMethodInfo.MaxStackSizeSpecified
+  fullName: CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified
+- uid: System.Reflection.MethodBase.Attributes
+  commentId: P:System.Reflection.MethodBase.Attributes
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: Attributes
+  nameWithType: MethodBase.Attributes
+  fullName: System.Reflection.MethodBase.Attributes
+- uid: CilTools.Runtime.ClrMethodInfo.Attributes*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.Attributes
+  isExternal: true
+  name: Attributes
+  nameWithType: ClrMethodInfo.Attributes
+  fullName: CilTools.Runtime.ClrMethodInfo.Attributes
+- uid: System.Reflection.MethodAttributes
+  commentId: T:System.Reflection.MethodAttributes
+  parent: System.Reflection
+  isExternal: true
+  name: MethodAttributes
+  nameWithType: MethodAttributes
+  fullName: System.Reflection.MethodAttributes
+- uid: System.Reflection.MethodBase.MethodHandle
+  commentId: P:System.Reflection.MethodBase.MethodHandle
+  parent: System.Reflection.MethodBase
+  isExternal: true
+  name: MethodHandle
+  nameWithType: MethodBase.MethodHandle
+  fullName: System.Reflection.MethodBase.MethodHandle
+- uid: CilTools.Runtime.ClrMethodInfo.MethodHandle*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.MethodHandle
+  isExternal: true
+  name: MethodHandle
+  nameWithType: ClrMethodInfo.MethodHandle
+  fullName: CilTools.Runtime.ClrMethodInfo.MethodHandle
+- uid: System.RuntimeMethodHandle
+  commentId: T:System.RuntimeMethodHandle
+  parent: System
+  isExternal: true
+  name: RuntimeMethodHandle
+  nameWithType: RuntimeMethodHandle
+  fullName: System.RuntimeMethodHandle
+- uid: System.Reflection.MemberInfo.DeclaringType
+  commentId: P:System.Reflection.MemberInfo.DeclaringType
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: DeclaringType
+  nameWithType: MemberInfo.DeclaringType
+  fullName: System.Reflection.MemberInfo.DeclaringType
+- uid: CilTools.Runtime.ClrMethodInfo.DeclaringType*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.DeclaringType
+  isExternal: true
+  name: DeclaringType
+  nameWithType: ClrMethodInfo.DeclaringType
+  fullName: CilTools.Runtime.ClrMethodInfo.DeclaringType
+- uid: System.Reflection.MemberInfo.MemberType
+  commentId: P:System.Reflection.MemberInfo.MemberType
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: MemberType
+  nameWithType: MemberInfo.MemberType
+  fullName: System.Reflection.MemberInfo.MemberType
+- uid: CilTools.Runtime.ClrMethodInfo.MemberType*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.MemberType
+  isExternal: true
+  name: MemberType
+  nameWithType: ClrMethodInfo.MemberType
+  fullName: CilTools.Runtime.ClrMethodInfo.MemberType
+- uid: System.Reflection.MemberTypes
+  commentId: T:System.Reflection.MemberTypes
+  parent: System.Reflection
+  isExternal: true
+  name: MemberTypes
+  nameWithType: MemberTypes
+  fullName: System.Reflection.MemberTypes
+- uid: System.Reflection.MemberInfo.Name
+  commentId: P:System.Reflection.MemberInfo.Name
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: Name
+  nameWithType: MemberInfo.Name
+  fullName: System.Reflection.MemberInfo.Name
+- uid: CilTools.Runtime.ClrMethodInfo.Name*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.Name
+  isExternal: true
+  name: Name
+  nameWithType: ClrMethodInfo.Name
+  fullName: CilTools.Runtime.ClrMethodInfo.Name
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Reflection.MemberInfo.ReflectedType
+  commentId: P:System.Reflection.MemberInfo.ReflectedType
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: ReflectedType
+  nameWithType: MemberInfo.ReflectedType
+  fullName: System.Reflection.MemberInfo.ReflectedType
+- uid: CilTools.Runtime.ClrMethodInfo.ReflectedType*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.ReflectedType
+  isExternal: true
+  name: ReflectedType
+  nameWithType: ClrMethodInfo.ReflectedType
+  fullName: CilTools.Runtime.ClrMethodInfo.ReflectedType
+- uid: System.Reflection.MemberInfo.MetadataToken
+  commentId: P:System.Reflection.MemberInfo.MetadataToken
+  parent: System.Reflection.MemberInfo
+  isExternal: true
+  name: MetadataToken
+  nameWithType: MemberInfo.MetadataToken
+  fullName: System.Reflection.MemberInfo.MetadataToken
+- uid: CilTools.Runtime.ClrMethodInfo.MetadataToken*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.MetadataToken
+  isExternal: true
+  name: MetadataToken
+  nameWithType: ClrMethodInfo.MetadataToken
+  fullName: CilTools.Runtime.ClrMethodInfo.MetadataToken
+- uid: CilTools.Reflection.CustomMethod.InitLocals
+  commentId: P:CilTools.Reflection.CustomMethod.InitLocals
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: InitLocals
+  nameWithType: CustomMethod.InitLocals
+  fullName: CilTools.Reflection.CustomMethod.InitLocals
+- uid: CilTools.Runtime.ClrMethodInfo.InitLocals*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.InitLocals
+  isExternal: true
+  name: InitLocals
+  nameWithType: ClrMethodInfo.InitLocals
+  fullName: CilTools.Runtime.ClrMethodInfo.InitLocals
+- uid: CilTools.Reflection.CustomMethod.InitLocalsSpecified
+  commentId: P:CilTools.Reflection.CustomMethod.InitLocalsSpecified
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: InitLocalsSpecified
+  nameWithType: CustomMethod.InitLocalsSpecified
+  fullName: CilTools.Reflection.CustomMethod.InitLocalsSpecified
+- uid: CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified*
+  commentId: Overload:CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified
+  isExternal: true
+  name: InitLocalsSpecified
+  nameWithType: ClrMethodInfo.InitLocalsSpecified
+  fullName: CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified

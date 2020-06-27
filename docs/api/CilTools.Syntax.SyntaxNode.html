@@ -1,0 +1,377 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SyntaxNode
+   | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SyntaxNode
+   | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.Syntax.SyntaxNode">
+  
+  
+  <h1 id="CilTools_Syntax_SyntaxNode" data-uid="CilTools.Syntax.SyntaxNode" class="text-break">Class SyntaxNode
+  </h1>
+  <div class="markdown level0 summary"><p>Represents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent concrete language constructs derive from this class.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">SyntaxNode</span></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.BlockSyntax.html">BlockSyntax</a></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.CommentSyntax.html">CommentSyntax</a></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.DirectiveSyntax.html">DirectiveSyntax</a></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.IdentifierSyntax.html">IdentifierSyntax</a></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.InstructionSyntax.html">InstructionSyntax</a></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.KeywordSyntax.html">KeywordSyntax</a></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.LiteralSyntax.html">LiteralSyntax</a></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.MemberRefSyntax.html">MemberRefSyntax</a></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.MethodDefSyntax.html">MethodDefSyntax</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Syntax.html">CilTools.Syntax</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
+  <h5 id="CilTools_Syntax_SyntaxNode_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract class SyntaxNode</code></pre>
+  </div>
+  <h5 id="CilTools_Syntax_SyntaxNode_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>
+The <code>SyntaxNode</code> class instance contains all information required to produce the source code of the corresponding language construct, including whitespaces. 
+The <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EnumerateChildNodes">EnumerateChildNodes()</a> method returns all child nodes of this node, or an empty collection if it is a leaf (terminal node). 
+Some child nodes may be exposed via specific properties as well. 
+The text representation for non-terminal node is a string concetanation of all its child nodes&apos; text representations. 
+</p>
+<p>Use <a class="xref" href="CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_ToSyntaxTree">ToSyntaxTree()</a> method to get the syntax tree for the specified method.</p>
+</div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode__ctor_" data-uid="CilTools.Syntax.SyntaxNode.#ctor*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode__ctor" data-uid="CilTools.Syntax.SyntaxNode.#ctor">SyntaxNode()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SyntaxNode()</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode_LeadingWhitespace_" data-uid="CilTools.Syntax.SyntaxNode.LeadingWhitespace*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_LeadingWhitespace" data-uid="CilTools.Syntax.SyntaxNode.LeadingWhitespace">LeadingWhitespace</h4>
+  <div class="markdown level1 summary"><p>Gets whitespace content at the beginning of this node's code</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string LeadingWhitespace { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Syntax_SyntaxNode_LeadingWhitespace_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace
+content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.</p>
+</div>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode_Parent_" data-uid="CilTools.Syntax.SyntaxNode.Parent*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_Parent" data-uid="CilTools.Syntax.SyntaxNode.Parent">Parent</h4>
+  <div class="markdown level1 summary"><p>Gets the parent node of this syntax node, or null if this node is root or not included in syntax tree.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SyntaxNode Parent { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode_TrailingWhitespace_" data-uid="CilTools.Syntax.SyntaxNode.TrailingWhitespace*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_TrailingWhitespace" data-uid="CilTools.Syntax.SyntaxNode.TrailingWhitespace">TrailingWhitespace</h4>
+  <div class="markdown level1 summary"><p>Gets whitespace content at the end of this node's code</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string TrailingWhitespace { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Syntax_SyntaxNode_TrailingWhitespace_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace
+content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.</p>
+</div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode_EnumerateChildNodes_" data-uid="CilTools.Syntax.SyntaxNode.EnumerateChildNodes*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_EnumerateChildNodes" data-uid="CilTools.Syntax.SyntaxNode.EnumerateChildNodes">EnumerateChildNodes()</h4>
+  <div class="markdown level1 summary"><p>Enumerates child nodes of this node. For the leaf node, returns an empty collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract IEnumerable&lt;SyntaxNode&gt; EnumerateChildNodes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>&gt;</td>
+        <td><p>The collection of child syntax nodes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode_GetChildNodes_" data-uid="CilTools.Syntax.SyntaxNode.GetChildNodes*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_GetChildNodes" data-uid="CilTools.Syntax.SyntaxNode.GetChildNodes">GetChildNodes()</h4>
+  <div class="markdown level1 summary"><p>Gets the array of this node's child nodes. For the leaf node, returns an empty array.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SyntaxNode[] GetChildNodes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>[]</td>
+        <td><p>The array of child syntax nodes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode_ToString_" data-uid="CilTools.Syntax.SyntaxNode.ToString*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_ToString" data-uid="CilTools.Syntax.SyntaxNode.ToString">ToString()</h4>
+  <div class="markdown level1 summary"><p>Gets the text representation of this node, including whitespace content</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The string containing CIL code of this syntax node</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Object.ToString()</span></div>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode_ToText_" data-uid="CilTools.Syntax.SyntaxNode.ToText*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_ToText_System_IO_TextWriter_" data-uid="CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)">ToText(TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Writes text representation of this node into the specified TextWriter</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract void ToText(TextWriter target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

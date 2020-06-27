@@ -736,18 +736,10 @@ references:
   nameWithType: ClrAssemblyReader.ClrAssemblyReader
   fullName: CilTools.Runtime.ClrAssemblyReader.ClrAssemblyReader
 - uid: Microsoft.Diagnostics.Runtime.ClrRuntime
-  commentId: T:Microsoft.Diagnostics.Runtime.ClrRuntime
-  parent: Microsoft.Diagnostics.Runtime
   isExternal: true
   name: ClrRuntime
   nameWithType: ClrRuntime
   fullName: Microsoft.Diagnostics.Runtime.ClrRuntime
-- uid: Microsoft.Diagnostics.Runtime
-  commentId: N:Microsoft.Diagnostics.Runtime
-  isExternal: true
-  name: Microsoft.Diagnostics.Runtime
-  nameWithType: Microsoft.Diagnostics.Runtime
-  fullName: Microsoft.Diagnostics.Runtime
 - uid: CilTools.Runtime.ClrAssemblyReader.Read*
   commentId: Overload:CilTools.Runtime.ClrAssemblyReader.Read
   isExternal: true
@@ -762,8 +754,6 @@ references:
   nameWithType: ClrAssemblyInfo
   fullName: CilTools.Runtime.ClrAssemblyInfo
 - uid: Microsoft.Diagnostics.Runtime.ClrModule
-  commentId: T:Microsoft.Diagnostics.Runtime.ClrModule
-  parent: Microsoft.Diagnostics.Runtime
   isExternal: true
   name: ClrModule
   nameWithType: ClrModule

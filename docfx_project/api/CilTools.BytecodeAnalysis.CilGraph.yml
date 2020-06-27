@@ -11,9 +11,13 @@ items:
   - CilTools.BytecodeAnalysis.CilGraph.GetNodes
   - CilTools.BytecodeAnalysis.CilGraph.Method
   - CilTools.BytecodeAnalysis.CilGraph.Print(System.IO.TextWriter,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
+  - CilTools.BytecodeAnalysis.CilGraph.PrintAttributes(System.IO.TextWriter)
+  - CilTools.BytecodeAnalysis.CilGraph.PrintDefaults(System.IO.TextWriter)
+  - CilTools.BytecodeAnalysis.CilGraph.PrintHeader(System.IO.TextWriter)
   - CilTools.BytecodeAnalysis.CilGraph.PrintSignature(System.IO.TextWriter)
   - CilTools.BytecodeAnalysis.CilGraph.Root
   - CilTools.BytecodeAnalysis.CilGraph.ToString
+  - CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree
   - CilTools.BytecodeAnalysis.CilGraph.ToText
   langs:
   - csharp
@@ -117,6 +121,97 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilTools.BytecodeAnalysis.CilGraph.PrintDefaults(System.IO.TextWriter)
+  commentId: M:CilTools.BytecodeAnalysis.CilGraph.PrintDefaults(System.IO.TextWriter)
+  id: PrintDefaults(System.IO.TextWriter)
+  parent: CilTools.BytecodeAnalysis.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: PrintDefaults(TextWriter)
+  nameWithType: CilGraph.PrintDefaults(TextWriter)
+  fullName: CilTools.BytecodeAnalysis.CilGraph.PrintDefaults(System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nWrites default parameter values of the method represented by this graph into the specified TextWriter\n"
+  syntax:
+    content: public void PrintDefaults(TextWriter output)
+    parameters:
+    - id: output
+      type: System.IO.TextWriter
+      description: The destination TextWriter
+    content.vb: Public Sub PrintDefaults(output As TextWriter)
+  overload: CilTools.BytecodeAnalysis.CilGraph.PrintDefaults*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.CilGraph.PrintAttributes(System.IO.TextWriter)
+  commentId: M:CilTools.BytecodeAnalysis.CilGraph.PrintAttributes(System.IO.TextWriter)
+  id: PrintAttributes(System.IO.TextWriter)
+  parent: CilTools.BytecodeAnalysis.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: PrintAttributes(TextWriter)
+  nameWithType: CilGraph.PrintAttributes(TextWriter)
+  fullName: CilTools.BytecodeAnalysis.CilGraph.PrintAttributes(System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nWrites custom attributes of the method represented by this graph into the specified TextWriter\n"
+  syntax:
+    content: public void PrintAttributes(TextWriter output)
+    parameters:
+    - id: output
+      type: System.IO.TextWriter
+      description: The destination TextWriter
+    content.vb: Public Sub PrintAttributes(output As TextWriter)
+  overload: CilTools.BytecodeAnalysis.CilGraph.PrintAttributes*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.CilGraph.PrintHeader(System.IO.TextWriter)
+  commentId: M:CilTools.BytecodeAnalysis.CilGraph.PrintHeader(System.IO.TextWriter)
+  id: PrintHeader(System.IO.TextWriter)
+  parent: CilTools.BytecodeAnalysis.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: PrintHeader(TextWriter)
+  nameWithType: CilGraph.PrintHeader(TextWriter)
+  fullName: CilTools.BytecodeAnalysis.CilGraph.PrintHeader(System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nWrites the method header code of the method represented by this graph into the specified TextWriter\n"
+  remarks: "\nThe method header in CLI contains information such as stack size and local variables.\n"
+  syntax:
+    content: public void PrintHeader(TextWriter output)
+    parameters:
+    - id: output
+      type: System.IO.TextWriter
+      description: The destination TextWriter
+    content.vb: Public Sub PrintHeader(output As TextWriter)
+  overload: CilTools.BytecodeAnalysis.CilGraph.PrintHeader*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 - uid: CilTools.BytecodeAnalysis.CilGraph.Print(System.IO.TextWriter,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
   commentId: M:CilTools.BytecodeAnalysis.CilGraph.Print(System.IO.TextWriter,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
   id: Print(System.IO.TextWriter,System.Boolean,System.Boolean,System.Boolean,System.Boolean)
@@ -156,6 +251,35 @@ items:
       description: Indicates that method header should be included in the output
     content.vb: Public Sub Print(output As TextWriter = Nothing, IncludeSignature As Boolean = False, IncludeDefaults As Boolean = False, IncludeAttributes As Boolean = False, IncludeHeader As Boolean = False)
   overload: CilTools.BytecodeAnalysis.CilGraph.Print*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree
+  commentId: M:CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree
+  id: ToSyntaxTree
+  parent: CilTools.BytecodeAnalysis.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: ToSyntaxTree()
+  nameWithType: CilGraph.ToSyntaxTree()
+  fullName: CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the syntax tree for the method represented by this graph\n"
+  syntax:
+    content: public MethodDefSyntax ToSyntaxTree()
+    return:
+      type: CilTools.Syntax.MethodDefSyntax
+      description: The root method definition node of the syntax tree
+    content.vb: Public Function ToSyntaxTree As MethodDefSyntax
+  overload: CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree*
   modifiers.csharp:
   - public
   modifiers.vb:
@@ -695,6 +819,24 @@ references:
   name: System.IO
   nameWithType: System.IO
   fullName: System.IO
+- uid: CilTools.BytecodeAnalysis.CilGraph.PrintDefaults*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraph.PrintDefaults
+  isExternal: true
+  name: PrintDefaults
+  nameWithType: CilGraph.PrintDefaults
+  fullName: CilTools.BytecodeAnalysis.CilGraph.PrintDefaults
+- uid: CilTools.BytecodeAnalysis.CilGraph.PrintAttributes*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraph.PrintAttributes
+  isExternal: true
+  name: PrintAttributes
+  nameWithType: CilGraph.PrintAttributes
+  fullName: CilTools.BytecodeAnalysis.CilGraph.PrintAttributes
+- uid: CilTools.BytecodeAnalysis.CilGraph.PrintHeader*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraph.PrintHeader
+  isExternal: true
+  name: PrintHeader
+  nameWithType: CilGraph.PrintHeader
+  fullName: CilTools.BytecodeAnalysis.CilGraph.PrintHeader
 - uid: CilTools.BytecodeAnalysis.CilGraph.Print*
   commentId: Overload:CilTools.BytecodeAnalysis.CilGraph.Print
   isExternal: true
@@ -708,6 +850,25 @@ references:
   name: Boolean
   nameWithType: Boolean
   fullName: System.Boolean
+- uid: CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree
+  isExternal: true
+  name: ToSyntaxTree
+  nameWithType: CilGraph.ToSyntaxTree
+  fullName: CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree
+- uid: CilTools.Syntax.MethodDefSyntax
+  commentId: T:CilTools.Syntax.MethodDefSyntax
+  parent: CilTools.Syntax
+  isExternal: true
+  name: MethodDefSyntax
+  nameWithType: MethodDefSyntax
+  fullName: CilTools.Syntax.MethodDefSyntax
+- uid: CilTools.Syntax
+  commentId: N:CilTools.Syntax
+  isExternal: true
+  name: CilTools.Syntax
+  nameWithType: CilTools.Syntax
+  fullName: CilTools.Syntax
 - uid: CilTools.BytecodeAnalysis.CilGraph.ToText*
   commentId: Overload:CilTools.BytecodeAnalysis.CilGraph.ToText
   isExternal: true

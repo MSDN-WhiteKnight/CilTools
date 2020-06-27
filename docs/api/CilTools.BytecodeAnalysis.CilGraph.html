@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>Class CilGraph
-   </title>
+   | CIL Tools </title>
     <meta name="viewport" content="width=device-width">
     <meta name="title" content="Class CilGraph
-   ">
+   | CIL Tools ">
     <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -384,6 +384,96 @@ default parameter values, attributes and method header</p>
 </div>
   
   
+  <a id="CilTools_BytecodeAnalysis_CilGraph_PrintAttributes_" data-uid="CilTools.BytecodeAnalysis.CilGraph.PrintAttributes*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_CilGraph_PrintAttributes_System_IO_TextWriter_" data-uid="CilTools.BytecodeAnalysis.CilGraph.PrintAttributes(System.IO.TextWriter)">PrintAttributes(TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Writes custom attributes of the method represented by this graph into the specified TextWriter</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PrintAttributes(TextWriter output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The destination TextWriter</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_CilGraph_PrintDefaults_" data-uid="CilTools.BytecodeAnalysis.CilGraph.PrintDefaults*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_CilGraph_PrintDefaults_System_IO_TextWriter_" data-uid="CilTools.BytecodeAnalysis.CilGraph.PrintDefaults(System.IO.TextWriter)">PrintDefaults(TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Writes default parameter values of the method represented by this graph into the specified TextWriter</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PrintDefaults(TextWriter output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The destination TextWriter</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_CilGraph_PrintHeader_" data-uid="CilTools.BytecodeAnalysis.CilGraph.PrintHeader*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_CilGraph_PrintHeader_System_IO_TextWriter_" data-uid="CilTools.BytecodeAnalysis.CilGraph.PrintHeader(System.IO.TextWriter)">PrintHeader(TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Writes the method header code of the method represented by this graph into the specified TextWriter</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void PrintHeader(TextWriter output)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">output</span></td>
+        <td><p>The destination TextWriter</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_BytecodeAnalysis_CilGraph_PrintHeader_System_IO_TextWriter__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The method header in CLI contains information such as stack size and local variables.</p>
+</div>
+  
+  
   <a id="CilTools_BytecodeAnalysis_CilGraph_PrintSignature_" data-uid="CilTools.BytecodeAnalysis.CilGraph.PrintSignature*"></a>
   <h4 id="CilTools_BytecodeAnalysis_CilGraph_PrintSignature_System_IO_TextWriter_" data-uid="CilTools.BytecodeAnalysis.CilGraph.PrintSignature(System.IO.TextWriter)">PrintSignature(TextWriter)</h4>
   <div class="markdown level1 summary"><p>Writes the signature of the method represented by this graph into the specified TextWriter</p>
@@ -442,6 +532,33 @@ default parameter values, attributes and method header</p>
   <div><span class="xref">System.Object.ToString()</span></div>
   
   
+  <a id="CilTools_BytecodeAnalysis_CilGraph_ToSyntaxTree_" data-uid="CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_CilGraph_ToSyntaxTree" data-uid="CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree">ToSyntaxTree()</h4>
+  <div class="markdown level1 summary"><p>Gets the syntax tree for the method represented by this graph</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MethodDefSyntax ToSyntaxTree()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.MethodDefSyntax.html">MethodDefSyntax</a></td>
+        <td><p>The root method definition node of the syntax tree</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="CilTools_BytecodeAnalysis_CilGraph_ToText_" data-uid="CilTools.BytecodeAnalysis.CilGraph.ToText*"></a>
   <h4 id="CilTools_BytecodeAnalysis_CilGraph_ToText" data-uid="CilTools.BytecodeAnalysis.CilGraph.ToText">ToText()</h4>
   <div class="markdown level1 summary"><p>Returns CIL code corresponding to this graph as a string</p>
@@ -494,8 +611,8 @@ default parameter values, attributes and method header</p>
             <span class="pull-right">
               <a href="#top">Back to top</a>
             </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
             
-            <span>Generated by <strong>DocFX</strong></span>
           </div>
         </div>
       </footer>

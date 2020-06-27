@@ -40,9 +40,7 @@ items:
     content: 'public sealed class DynamicMethodsAssembly : Assembly, _Assembly, IEvidenceFactory, ICustomAttributeProvider, ISerializable, IDisposable'
     content.vb: >-
       Public NotInheritable Class DynamicMethodsAssembly
-
           Inherits Assembly
-
           Implements _Assembly, IEvidenceFactory, ICustomAttributeProvider, ISerializable, IDisposable
   inheritance:
   - System.Object
@@ -4092,8 +4090,6 @@ references:
   commentId: T:System.ArgumentNullException
   isExternal: true
 - uid: Microsoft.Diagnostics.Runtime.DataTarget
-  commentId: T:Microsoft.Diagnostics.Runtime.DataTarget
-  parent: Microsoft.Diagnostics.Runtime
   isExternal: true
   name: DataTarget
   nameWithType: DataTarget
@@ -4105,12 +4101,6 @@ references:
   name: Boolean
   nameWithType: Boolean
   fullName: System.Boolean
-- uid: Microsoft.Diagnostics.Runtime
-  commentId: N:Microsoft.Diagnostics.Runtime
-  isExternal: true
-  name: Microsoft.Diagnostics.Runtime
-  nameWithType: Microsoft.Diagnostics.Runtime
-  fullName: Microsoft.Diagnostics.Runtime
 - uid: System.Reflection.Assembly.GetName
   commentId: M:System.Reflection.Assembly.GetName
   parent: System.Reflection.Assembly

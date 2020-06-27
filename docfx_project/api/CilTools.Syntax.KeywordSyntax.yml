@@ -1,0 +1,748 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Syntax.KeywordSyntax
+  commentId: T:CilTools.Syntax.KeywordSyntax
+  id: KeywordSyntax
+  parent: CilTools.Syntax
+  children:
+  - CilTools.Syntax.KeywordSyntax.Content
+  - CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
+  - CilTools.Syntax.KeywordSyntax.Kind
+  - CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)
+  langs:
+  - csharp
+  - vb
+  name: KeywordSyntax
+  nameWithType: KeywordSyntax
+  fullName: CilTools.Syntax.KeywordSyntax
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nRepresents the keyword token in CIL assembler. \n"
+  remarks: "\nThe keyword is a special sequence of characters that can&apos;t be used as identifier. \nThe list of keywords is predefined by specification. \nThe keyword could represent the directive name, access modifier, instruction name \nor other special syntactic element.\n"
+  syntax:
+    content: 'public class KeywordSyntax : SyntaxNode'
+    content.vb: >-
+      Public Class KeywordSyntax
+          Inherits SyntaxNode
+  inheritance:
+  - System.Object
+  - CilTools.Syntax.SyntaxNode
+  inheritedMembers:
+  - CilTools.Syntax.SyntaxNode.ToString
+  - CilTools.Syntax.SyntaxNode.GetChildNodes
+  - CilTools.Syntax.SyntaxNode.LeadingWhitespace
+  - CilTools.Syntax.SyntaxNode.TrailingWhitespace
+  - CilTools.Syntax.SyntaxNode.Parent
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)
+  commentId: M:CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)
+  id: ToText(System.IO.TextWriter)
+  parent: CilTools.Syntax.KeywordSyntax
+  langs:
+  - csharp
+  - vb
+  name: ToText(TextWriter)
+  nameWithType: KeywordSyntax.ToText(TextWriter)
+  fullName: CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nWrites text representation of this node into the specified TextWriter\n"
+  syntax:
+    content: public override void ToText(TextWriter target)
+    parameters:
+    - id: target
+      type: System.IO.TextWriter
+    content.vb: Public Overrides Sub ToText(target As TextWriter)
+  overridden: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+  overload: CilTools.Syntax.KeywordSyntax.ToText*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
+  commentId: M:CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
+  id: EnumerateChildNodes
+  parent: CilTools.Syntax.KeywordSyntax
+  langs:
+  - csharp
+  - vb
+  name: EnumerateChildNodes()
+  nameWithType: KeywordSyntax.EnumerateChildNodes()
+  fullName: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nEnumerates child nodes of this node. For the leaf node, returns an empty collection.\n"
+  syntax:
+    content: public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+      description: The collection of child syntax nodes
+    content.vb: Public Overrides Function EnumerateChildNodes As IEnumerable(Of SyntaxNode)
+  overridden: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
+  overload: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Syntax.KeywordSyntax.Content
+  commentId: P:CilTools.Syntax.KeywordSyntax.Content
+  id: Content
+  parent: CilTools.Syntax.KeywordSyntax
+  langs:
+  - csharp
+  - vb
+  name: Content
+  nameWithType: KeywordSyntax.Content
+  fullName: CilTools.Syntax.KeywordSyntax.Content
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nGets the value of this keyword as string\n"
+  syntax:
+    content: public string Content { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property Content As String
+  overload: CilTools.Syntax.KeywordSyntax.Content*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Syntax.KeywordSyntax.Kind
+  commentId: P:CilTools.Syntax.KeywordSyntax.Kind
+  id: Kind
+  parent: CilTools.Syntax.KeywordSyntax
+  langs:
+  - csharp
+  - vb
+  name: Kind
+  nameWithType: KeywordSyntax.Kind
+  fullName: CilTools.Syntax.KeywordSyntax.Kind
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nGets the keyword kind\n"
+  syntax:
+    content: public KeywordKind Kind { get; }
+    parameters: []
+    return:
+      type: CilTools.Syntax.KeywordKind
+    content.vb: Public ReadOnly Property Kind As KeywordKind
+  overload: CilTools.Syntax.KeywordSyntax.Kind*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.Syntax
+  commentId: N:CilTools.Syntax
+  isExternal: true
+  name: CilTools.Syntax
+  nameWithType: CilTools.Syntax
+  fullName: CilTools.Syntax
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: CilTools.Syntax.SyntaxNode
+  commentId: T:CilTools.Syntax.SyntaxNode
+  parent: CilTools.Syntax
+  isExternal: true
+  name: SyntaxNode
+  nameWithType: SyntaxNode
+  fullName: CilTools.Syntax.SyntaxNode
+- uid: CilTools.Syntax.SyntaxNode.ToString
+  commentId: M:CilTools.Syntax.SyntaxNode.ToString
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: ToString()
+  nameWithType: SyntaxNode.ToString()
+  fullName: CilTools.Syntax.SyntaxNode.ToString()
+  spec.csharp:
+  - uid: CilTools.Syntax.SyntaxNode.ToString
+    name: ToString
+    nameWithType: SyntaxNode.ToString
+    fullName: CilTools.Syntax.SyntaxNode.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.SyntaxNode.ToString
+    name: ToString
+    nameWithType: SyntaxNode.ToString
+    fullName: CilTools.Syntax.SyntaxNode.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.SyntaxNode.GetChildNodes
+  commentId: M:CilTools.Syntax.SyntaxNode.GetChildNodes
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: GetChildNodes()
+  nameWithType: SyntaxNode.GetChildNodes()
+  fullName: CilTools.Syntax.SyntaxNode.GetChildNodes()
+  spec.csharp:
+  - uid: CilTools.Syntax.SyntaxNode.GetChildNodes
+    name: GetChildNodes
+    nameWithType: SyntaxNode.GetChildNodes
+    fullName: CilTools.Syntax.SyntaxNode.GetChildNodes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.SyntaxNode.GetChildNodes
+    name: GetChildNodes
+    nameWithType: SyntaxNode.GetChildNodes
+    fullName: CilTools.Syntax.SyntaxNode.GetChildNodes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.SyntaxNode.LeadingWhitespace
+  commentId: P:CilTools.Syntax.SyntaxNode.LeadingWhitespace
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: LeadingWhitespace
+  nameWithType: SyntaxNode.LeadingWhitespace
+  fullName: CilTools.Syntax.SyntaxNode.LeadingWhitespace
+- uid: CilTools.Syntax.SyntaxNode.TrailingWhitespace
+  commentId: P:CilTools.Syntax.SyntaxNode.TrailingWhitespace
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: TrailingWhitespace
+  nameWithType: SyntaxNode.TrailingWhitespace
+  fullName: CilTools.Syntax.SyntaxNode.TrailingWhitespace
+- uid: CilTools.Syntax.SyntaxNode.Parent
+  commentId: P:CilTools.Syntax.SyntaxNode.Parent
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: Parent
+  nameWithType: SyntaxNode.Parent
+  fullName: CilTools.Syntax.SyntaxNode.Parent
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+  commentId: M:CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: ToText(TextWriter)
+  nameWithType: SyntaxNode.ToText(TextWriter)
+  fullName: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+  spec.csharp:
+  - uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+    name: ToText
+    nameWithType: SyntaxNode.ToText
+    fullName: CilTools.Syntax.SyntaxNode.ToText
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+    name: ToText
+    nameWithType: SyntaxNode.ToText
+    fullName: CilTools.Syntax.SyntaxNode.ToText
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.KeywordSyntax.ToText*
+  commentId: Overload:CilTools.Syntax.KeywordSyntax.ToText
+  isExternal: true
+  name: ToText
+  nameWithType: KeywordSyntax.ToText
+  fullName: CilTools.Syntax.KeywordSyntax.ToText
+- uid: System.IO.TextWriter
+  commentId: T:System.IO.TextWriter
+  parent: System.IO
+  isExternal: true
+  name: TextWriter
+  nameWithType: TextWriter
+  fullName: System.IO.TextWriter
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+- uid: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
+  commentId: M:CilTools.Syntax.SyntaxNode.EnumerateChildNodes
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: EnumerateChildNodes()
+  nameWithType: SyntaxNode.EnumerateChildNodes()
+  fullName: CilTools.Syntax.SyntaxNode.EnumerateChildNodes()
+  spec.csharp:
+  - uid: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
+    name: EnumerateChildNodes
+    nameWithType: SyntaxNode.EnumerateChildNodes
+    fullName: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
+    name: EnumerateChildNodes
+    nameWithType: SyntaxNode.EnumerateChildNodes
+    fullName: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes*
+  commentId: Overload:CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
+  isExternal: true
+  name: EnumerateChildNodes
+  nameWithType: KeywordSyntax.EnumerateChildNodes
+  fullName: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
+- uid: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+  commentId: T:System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<SyntaxNode>
+  nameWithType: IEnumerable<SyntaxNode>
+  fullName: System.Collections.Generic.IEnumerable<CilTools.Syntax.SyntaxNode>
+  nameWithType.vb: IEnumerable(Of SyntaxNode)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilTools.Syntax.SyntaxNode)
+  name.vb: IEnumerable(Of SyntaxNode)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilTools.Syntax.KeywordSyntax.Content*
+  commentId: Overload:CilTools.Syntax.KeywordSyntax.Content
+  isExternal: true
+  name: Content
+  nameWithType: KeywordSyntax.Content
+  fullName: CilTools.Syntax.KeywordSyntax.Content
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.Syntax.KeywordSyntax.Kind*
+  commentId: Overload:CilTools.Syntax.KeywordSyntax.Kind
+  isExternal: true
+  name: Kind
+  nameWithType: KeywordSyntax.Kind
+  fullName: CilTools.Syntax.KeywordSyntax.Kind
+- uid: CilTools.Syntax.KeywordKind
+  commentId: T:CilTools.Syntax.KeywordKind
+  parent: CilTools.Syntax
+  isExternal: true
+  name: KeywordKind
+  nameWithType: KeywordKind
+  fullName: CilTools.Syntax.KeywordKind

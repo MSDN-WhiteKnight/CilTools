@@ -49,9 +49,7 @@ items:
     content: 'public class ClrAssemblyInfo : Assembly, _Assembly, IEvidenceFactory, ICustomAttributeProvider, ISerializable, ITokenResolver'
     content.vb: >-
       Public Class ClrAssemblyInfo
-
           Inherits Assembly
-
           Implements _Assembly, IEvidenceFactory, ICustomAttributeProvider, ISerializable, ITokenResolver
   inheritance:
   - System.Object
@@ -5606,18 +5604,10 @@ references:
   nameWithType: ClrAssemblyInfo.InnerModule
   fullName: CilTools.Runtime.ClrAssemblyInfo.InnerModule
 - uid: Microsoft.Diagnostics.Runtime.ClrModule
-  commentId: T:Microsoft.Diagnostics.Runtime.ClrModule
-  parent: Microsoft.Diagnostics.Runtime
   isExternal: true
   name: ClrModule
   nameWithType: ClrModule
   fullName: Microsoft.Diagnostics.Runtime.ClrModule
-- uid: Microsoft.Diagnostics.Runtime
-  commentId: N:Microsoft.Diagnostics.Runtime
-  isExternal: true
-  name: Microsoft.Diagnostics.Runtime
-  nameWithType: Microsoft.Diagnostics.Runtime
-  fullName: Microsoft.Diagnostics.Runtime
 - uid: CilTools.Runtime.ClrAssemblyInfo.AssemblyReader*
   commentId: Overload:CilTools.Runtime.ClrAssemblyInfo.AssemblyReader
   isExternal: true

@@ -59,5 +59,32 @@
     name: ClrAssemblyInfo
   - uid: CilTools.Runtime.ClrAssemblyReader
     name: ClrAssemblyReader
+  - uid: CilTools.Runtime.ClrMethodInfo
+    name: ClrMethodInfo
   - uid: CilTools.Runtime.DynamicMethodsAssembly
     name: DynamicMethodsAssembly
+- uid: CilTools.Syntax
+  name: CilTools.Syntax
+  items:
+  - uid: CilTools.Syntax.BlockSyntax
+    name: BlockSyntax
+  - uid: CilTools.Syntax.CommentSyntax
+    name: CommentSyntax
+  - uid: CilTools.Syntax.DirectiveSyntax
+    name: DirectiveSyntax
+  - uid: CilTools.Syntax.IdentifierSyntax
+    name: IdentifierSyntax
+  - uid: CilTools.Syntax.InstructionSyntax
+    name: InstructionSyntax
+  - uid: CilTools.Syntax.KeywordKind
+    name: KeywordKind
+  - uid: CilTools.Syntax.KeywordSyntax
+    name: KeywordSyntax
+  - uid: CilTools.Syntax.LiteralSyntax
+    name: LiteralSyntax
+  - uid: CilTools.Syntax.MemberRefSyntax
+    name: MemberRefSyntax
+  - uid: CilTools.Syntax.MethodDefSyntax
+    name: MethodDefSyntax
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode

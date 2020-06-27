@@ -1,0 +1,131 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Syntax.KeywordKind
+  commentId: T:CilTools.Syntax.KeywordKind
+  id: KeywordKind
+  parent: CilTools.Syntax
+  children:
+  - CilTools.Syntax.KeywordKind.DirectiveName
+  - CilTools.Syntax.KeywordKind.InstructionName
+  - CilTools.Syntax.KeywordKind.Other
+  langs:
+  - csharp
+  - vb
+  name: KeywordKind
+  nameWithType: KeywordKind
+  fullName: CilTools.Syntax.KeywordKind
+  type: Enum
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nRepresents the kind of keyword in the <xref href=\"CilTools.Syntax.KeywordSyntax\" data-throw-if-not-resolved=\"false\"></xref> node\n"
+  syntax:
+    content: public enum KeywordKind
+    content.vb: Public Enum KeywordKind
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilTools.Syntax.KeywordKind.Other
+  commentId: F:CilTools.Syntax.KeywordKind.Other
+  id: Other
+  parent: CilTools.Syntax.KeywordKind
+  langs:
+  - csharp
+  - vb
+  name: Other
+  nameWithType: KeywordKind.Other
+  fullName: CilTools.Syntax.KeywordKind.Other
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nUnclassifed\n"
+  syntax:
+    content: Other = 0
+    return:
+      type: CilTools.Syntax.KeywordKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Syntax.KeywordKind.DirectiveName
+  commentId: F:CilTools.Syntax.KeywordKind.DirectiveName
+  id: DirectiveName
+  parent: CilTools.Syntax.KeywordKind
+  langs:
+  - csharp
+  - vb
+  name: DirectiveName
+  nameWithType: KeywordKind.DirectiveName
+  fullName: CilTools.Syntax.KeywordKind.DirectiveName
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nThe name of directive\n"
+  syntax:
+    content: DirectiveName = 1
+    return:
+      type: CilTools.Syntax.KeywordKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Syntax.KeywordKind.InstructionName
+  commentId: F:CilTools.Syntax.KeywordKind.InstructionName
+  id: InstructionName
+  parent: CilTools.Syntax.KeywordKind
+  langs:
+  - csharp
+  - vb
+  name: InstructionName
+  nameWithType: KeywordKind.InstructionName
+  fullName: CilTools.Syntax.KeywordKind.InstructionName
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nThe name of instruction\n"
+  syntax:
+    content: InstructionName = 2
+    return:
+      type: CilTools.Syntax.KeywordKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilTools.Syntax
+  commentId: N:CilTools.Syntax
+  isExternal: true
+  name: CilTools.Syntax
+  nameWithType: CilTools.Syntax
+  fullName: CilTools.Syntax
+- uid: CilTools.Syntax.KeywordKind
+  commentId: T:CilTools.Syntax.KeywordKind
+  parent: CilTools.Syntax
+  isExternal: true
+  name: KeywordKind
+  nameWithType: KeywordKind
+  fullName: CilTools.Syntax.KeywordKind
