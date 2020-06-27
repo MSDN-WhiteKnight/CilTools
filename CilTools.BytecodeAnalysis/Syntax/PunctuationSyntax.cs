@@ -9,10 +9,20 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents the punctuation sign token in CIL assembler
+    /// </summary>
+    /// <remarks>
+    /// Punctuation signs divide other tokens in syntax constructs. Punctuation signs used in CIL are colons, 
+    /// braces, angle braces and others. 
+    /// </remarks>
     class PunctuationSyntax : SyntaxNode
     {
         string _content;
 
+        /// <summary>
+        /// Gets the value of this punctuation sign as string
+        /// </summary>
         public string Content { get { return this._content; } }
 
         internal PunctuationSyntax(string lead, string content, string trail)
@@ -24,7 +34,8 @@ namespace CilTools.Syntax
             this._content = content;
             this._trail = trail;
         }
-        
+
+        /// <inheritdoc/>
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -35,6 +46,7 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
             return SyntaxNode.EmptyArray;

@@ -12,8 +12,19 @@ namespace CilTools.Syntax
     /// </summary>
     public enum KeywordKind
     {
+        /// <summary>
+        /// Unclassifed
+        /// </summary>
         Other = 0,
+
+        /// <summary>
+        /// The name of directive
+        /// </summary>
         DirectiveName = 1,
+
+        /// <summary>
+        /// The name of instruction
+        /// </summary>
         InstructionName = 2
     }
 }

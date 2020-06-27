@@ -12,12 +12,22 @@ using System.Globalization;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents the syntax of literal constant (such as numeric or string) in CIL assembler
+    /// </summary>
+    /// <remarks>
+    /// Literal constant value is inlined directly in the source code. Typically literal syntax is used to 
+    /// represent the operand of the instruction.
+    /// </remarks>
     public class LiteralSyntax:SyntaxNode
     {
         object _value;
 
+        /// <summary>
+        /// Gets the value represented by this literal
+        /// </summary>
         public object Value { get { return this._value; } }
-
+        
         internal LiteralSyntax(string lead, object value, string trail)
         {
             if (lead == null) lead = "";
@@ -28,6 +38,7 @@ namespace CilTools.Syntax
             this._trail = trail;
         }
 
+        /// <inheritdoc/>
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -45,6 +56,7 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
             return SyntaxNode.EmptyArray;

@@ -308,7 +308,10 @@ namespace CilTools.BytecodeAnalysis
             DirectiveSyntax.FromMethodSignature(this._Method).ToText(output);
         }
         
-
+        /// <summary>
+        /// Writes default parameter values of the method represented by this graph into the specified TextWriter
+        /// </summary>
+        /// <param name="output">The destination TextWriter</param>
         public void PrintDefaults(TextWriter output)
         {
             SyntaxNode[] elems = SyntaxNode.GetDefaultsSyntax(this._Method);
@@ -319,8 +322,10 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
-        
-
+        /// <summary>
+        /// Writes custom attributes of the method represented by this graph into the specified TextWriter
+        /// </summary>
+        /// <param name="output">The destination TextWriter</param>
         public void PrintAttributes(TextWriter output)
         {
             SyntaxNode[] elems = SyntaxNode.GetAttributesSyntax(this._Method);
@@ -331,8 +336,13 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
-        
-
+        /// <summary>
+        /// Writes the method header code of the method represented by this graph into the specified TextWriter
+        /// </summary>
+        /// <param name="output">The destination TextWriter</param>
+        /// <remarks>
+        /// The method header in CLI contains information such as stack size and local variables.
+        /// </remarks>
         public void PrintHeader(TextWriter output)
         {
             SyntaxNode[] elems = this.HeaderAsSyntax();
@@ -705,6 +715,10 @@ namespace CilTools.BytecodeAnalysis
             return root._children.ToArray();
         }
 
+        /// <summary>
+        /// Gets the syntax tree for the method represented by this graph
+        /// </summary>
+        /// <returns>The root method definition node of the syntax tree</returns>
         public MethodDefSyntax ToSyntaxTree()
         {
             DirectiveSyntax sig = DirectiveSyntax.FromMethodSignature(this._Method);

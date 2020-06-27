@@ -11,16 +11,29 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents the syntax of the method definition in CIL assembler
+    /// </summary>
+    /// <remarks>
+    /// Method definition consists of the signature ("header") and the body. The body can contain directives 
+    /// (such as custom attributes or local variable declarations) and instructions.
+    /// </remarks>
     public class MethodDefSyntax : SyntaxNode
     {
         DirectiveSyntax _sig;
         BlockSyntax _body;
 
+        /// <summary>
+        /// Gets the directive representing the signature of the defined method
+        /// </summary>
         public DirectiveSyntax Signature
         {
             get { return this._sig; }
         }
 
+        /// <summary>
+        /// Gets the block the forms the body of the defined method
+        /// </summary>
         public BlockSyntax Body
         {
             get { return this._body; }
@@ -34,6 +47,7 @@ namespace CilTools.Syntax
             this._body._parent = this;
         }
 
+        /// <inheritdoc/>
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -42,6 +56,7 @@ namespace CilTools.Syntax
             this._body.ToText(target);
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
             yield return this._sig;

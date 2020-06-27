@@ -10,11 +10,20 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Represents the reference to the assembly member (such as type, method or field) in CIL assembler
+    /// </summary>
+    /// <remarks>
+    /// The member reference syntax is used as instruction operand or in variable declarations. 
+    /// </remarks>
     public class MemberRefSyntax:SyntaxNode
     {
         MemberInfo _member;
         SyntaxNode[] _content;
 
+        /// <summary>
+        /// Gets the reflection construct representing the referenced member
+        /// </summary>
         public MemberInfo Member { get { return this._member; } }
 
         internal MemberRefSyntax(SyntaxNode[] content, MemberInfo m)
@@ -25,6 +34,7 @@ namespace CilTools.Syntax
             for (int i = 0; i < this._content.Length; i++) this._content[i]._parent = this;
         }
 
+        /// <inheritdoc/>
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
@@ -34,6 +44,7 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
             for (int i = 0; i < this._content.Length; i++) yield return this._content[i]; 

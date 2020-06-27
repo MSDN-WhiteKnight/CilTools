@@ -44,8 +44,14 @@ namespace CilTools.Reflection
         /// </summary>
         public abstract bool MaxStackSizeSpecified { get; }
 
+        /// <summary>
+        /// When overridden in the derived class, specifies whether the local variables are initialized
+        /// </summary>
         public abstract bool InitLocals { get; }
 
+        /// <summary>
+        /// When overridden in the derived class, specifies whether the <c>InitLocals</c> property value is defined
+        /// </summary>
         public abstract bool InitLocalsSpecified { get; }
         
         /// <summary>
