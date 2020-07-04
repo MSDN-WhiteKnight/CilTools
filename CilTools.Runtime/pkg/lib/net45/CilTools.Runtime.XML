@@ -218,6 +218,84 @@
             Represents information about a dynamic method in the external CLR instance
             </summary>
         </member>
+        <member name="T:CilTools.Runtime.ClrMethodInfo">
+            <summary>
+            Represents information about the method in an external CLR instance
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetBytecode">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetParameters">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.IsDefined(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.InnerMethod">
+            <summary>
+            Gets the underlying ClrMD method object
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.ReturnType">
+            <summary>
+            Gets the method's returned type
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.TokenResolver">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.MaxStackSize">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.Attributes">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.MethodHandle">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.DeclaringType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.MemberType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.ReflectedType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.MetadataToken">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.InitLocals">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified">
+            <inheritdoc/>
+        </member>
         <member name="T:CilTools.Runtime.DynamicMethodsAssembly">
             <summary>
             Represents the pseudo-assembly that contains a collection of dynamic methods in the external process
