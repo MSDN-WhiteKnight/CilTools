@@ -39,6 +39,13 @@
         <ComboBox x:Name="cbType" HorizontalAlignment="Left" Height="21" Margin="303,60,0,0" ItemsSource="{Binding Types}"
                   VerticalAlignment="Top" Width="160"
                    SelectionChanged="cbType_SelectionChanged"/>
+
+        <Label Content="Find" HorizontalAlignment="Left" Margin="500,57,0,0" VerticalAlignment="Top" Width="40"/>
+        <TextBox x:Name="tbFind" HorizontalAlignment="Left" Height="22" Margin="545,60,0,0" TextWrapping="Wrap" Text="" 
+                 VerticalAlignment="Top" Width="100" AcceptsReturn="False" KeyDown="tbFind_KeyDown"/>
+        <Button x:Name="bFind" Content=">" HorizontalAlignment="Left" Height="24" Margin="650,58,0,0" VerticalAlignment="Top" 
+                Width="24" Click="bFind_Click"/>
+
         <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,90,0,0" 
               Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
             <Grid.ColumnDefinitions>
