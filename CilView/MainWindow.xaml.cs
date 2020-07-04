@@ -55,6 +55,57 @@ namespace CilView
         {
             InitializeComponent();
         }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            string[] args = Environment.GetCommandLineArgs();
+
+            if (args.Length >= 2)
+            {
+                string first = args[1];
+
+                if (first.Length <= 1) return;
+
+                if (first[0] == '-' || first[0] == '/')
+                {
+                    //option
+                    string option = first.Substring(1);
+                    string help = "Usage: \n\n\"CilView <filepath>\" - open file";
+                    this.Visibility = Visibility.Hidden;
+
+                    if (String.Equals(option, "help", StringComparison.InvariantCulture) ||
+                        String.Equals(option, "?", StringComparison.InvariantCulture))
+                    {
+                        MessageBox.Show(help, "CilView command line");
+                    }
+                    else
+                    {
+                        MessageBox.Show("Unrecognized command line\n\n"+help, "CilView command line");
+                    }
+
+                    this.Close();
+                }
+                else
+                {
+                    //file path
+                    this.OpenFile(first);
+                }
+            }
+        }
+
+        void OpenFile(string file)
+        {
+            OpenFileOperation op = new OpenFileOperation(file);
+            ProgressWindow pwnd = new ProgressWindow(op);
+            pwnd.Owner = this;
+            bool? res = pwnd.ShowDialog();
+
+            if (res != true) return;
+
+            SetSource(op.Result);
+
+            if (this.source.Assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
+        }
         
         private void bOpenProcess_Click(object sender, RoutedEventArgs e)
         {
@@ -197,16 +248,7 @@ namespace CilView
 
             if (dlg.ShowDialog(this) == true)
             {
-                OpenFileOperation op = new OpenFileOperation(dlg.FileName);
-                ProgressWindow pwnd = new ProgressWindow(op);
-                pwnd.Owner = this;
-                bool? res = pwnd.ShowDialog();
-
-                if (res != true) return;
-
-                SetSource(op.Result);
-
-                if (this.source.Assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
+                this.OpenFile(dlg.FileName);
             }
         }
 
