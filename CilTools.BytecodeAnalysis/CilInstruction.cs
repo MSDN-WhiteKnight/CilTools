@@ -28,8 +28,7 @@ namespace CilTools.BytecodeAnalysis
 
         internal static bool ReferencesFieldToken(OpCode op)
         {
-            return (op.Equals(OpCodes.Stfld) || op.Equals(OpCodes.Stsfld) ||
-                    op.Equals(OpCodes.Ldsfld) || op.Equals(OpCodes.Ldfld));
+            return op.OperandType == System.Reflection.Emit.OperandType.InlineField;
         }
 
         internal static bool ReferencesTypeToken(OpCode op)

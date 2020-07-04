@@ -135,6 +135,15 @@ namespace CilTools.BytecodeAnalysis.Tests
             p.Y = y;
             return p;
         }
+
+        public static unsafe int PointerTest()
+        {
+            fixed (int* p = &f)
+            {
+                int* q = p + 1;
+                return *q;
+            }
+        }
     }
 
     public class MyPoint

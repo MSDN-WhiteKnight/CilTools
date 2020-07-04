@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using CilTools.BytecodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
@@ -208,6 +209,52 @@ namespace CilTools.BytecodeAnalysis.Tests
             Action deleg = (Action)dm.CreateDelegate(typeof(Action));
             deleg();
 #endif
+        }
+
+        [TestMethod]
+        public void Test_CilGraph_Pointer()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("PointerTest");
+            CilGraph graph = CilGraph.Create(mi);
+            AssertThat.IsCorrect(graph);
+
+            CilGraphNode[] nodes = graph.GetNodes().ToArray();
+
+            AssertThat.NotEmpty(nodes, "The result of PointerTest method parsing should not be empty collection");
+
+            AssertThat.HasOnlyOneMatch(
+                nodes,
+                (x) => x.Instruction.OpCode == OpCodes.Ldsflda && x.Instruction.ReferencedMember.Name == "f",
+                "The result of PointerTest method parsing should contain a single 'ldsflda' instruction referencing field 'f'"
+                );
+
+            //text
+            string str = graph.ToText();
+            Assert.IsTrue(str.Contains("int32*"), "PointerTest disassembled code should contain 'int32*'");
+            
+            AssertThat.IsMatch(str, new MatchElement[] { 
+                MatchElement.Any, new Literal("ldsflda"), MatchElement.Any,
+                new Literal("SampleMethods"), MatchElement.Any,new Literal("::"), MatchElement.Any,
+                new Literal("f"), MatchElement.Any
+            });
+
+            //syntax
+            MethodDefSyntax mds = graph.ToSyntaxTree();
+            SyntaxNode[] chilren = mds.Body.GetChildNodes();
+
+            AssertThat.HasOnlyOneMatch(
+                chilren,
+                (x) => x is InstructionSyntax && ((InstructionSyntax)x).Operation == "ldsflda" &&
+                ((InstructionSyntax)x).OperandString.Contains("f"),
+                "PointerTest syntax tree should contain a single 'ldsflda' instruction referencing field 'f'"
+                );
+
+            AssertThat.HasAtLeastOneMatch(
+                chilren,
+                (x) => x is DirectiveSyntax && ((DirectiveSyntax)x).Name == "locals" &&
+                ((DirectiveSyntax)x).ContentString.Contains("int32*"),
+                "PointerTest syntax tree should contain a single '.locals' directive with 'int32*' variable"
+                );
         }
 
 #if !NETSTANDARD
