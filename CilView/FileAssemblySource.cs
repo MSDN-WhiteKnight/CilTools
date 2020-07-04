@@ -17,8 +17,6 @@ namespace CilView
     {
         string _path; //assembly directory
 
-        HashSet<string> resolved = new HashSet<string>();
-
         Assembly LoadAssembly(string filepath)
         {
             Assembly main = null;
@@ -103,13 +101,7 @@ namespace CilView
             catch (BadImageFormatException) { }
             catch (NotSupportedException) { }
 
-            if (ret != null) return ret;
-
-            if(resolved.Contains(args.Name)) return null; //prevent stack overflow
-
-            //if failed, resolve by full assembly name
-            resolved.Add(args.Name);
-            return Assembly.Load(args.Name);
+            return ret;
         }
 
         Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
@@ -143,13 +135,7 @@ namespace CilView
             catch (BadImageFormatException) { }
             catch (NotSupportedException) { }
 
-            if (ret != null) return ret;
-
-            if (resolved.Contains(args.Name)) return null; //prevent stack overflow
-
-            //if failed, resolve by full assembly name
-            resolved.Add(args.Name);
-            return Assembly.ReflectionOnlyLoad(args.Name);
+            return ret;
         }
 
         public override void Dispose()
