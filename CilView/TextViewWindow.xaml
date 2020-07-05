@@ -1,7 +1,7 @@
 ﻿<Window x:Class="CilView.TextViewWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="TextViewWindow" Height="300" Width="400" WindowStartupLocation="CenterOwner">
+        Title="TextViewWindow" Height="350" Width="500" WindowStartupLocation="CenterOwner">
     <Grid>
         <TextBox x:Name="tbContent" HorizontalAlignment="Stretch"  Margin="10,10,10,45" TextWrapping="Wrap" 
                    Text="" VerticalAlignment="Stretch" IsReadOnly="True" VerticalScrollBarVisibility="Visible"/>

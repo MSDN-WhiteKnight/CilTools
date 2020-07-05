@@ -20,9 +20,16 @@ namespace CilView
     sealed class ProcessAssemblySource:AssemblySource
     {
         DataTarget dt;
+        Process process;
         OperationBase op;
         HashSet<string> paths=new HashSet<string>();
-        HashSet<string> resolved=new HashSet<string>();
+        ClrAssemblyReader reader;
+
+        public ProcessAssemblySource(Process pr, bool active, OperationBase op = null)
+        {
+            this.op = op;
+            this.Init(pr, active);
+        }
 
         public ObservableCollection<Assembly> LoadAssemblies(DataTarget dt, OperationBase op = null)
         {
@@ -59,11 +66,7 @@ namespace CilView
                 if (ret != null) return ret;
             }
 
-            if (resolved.Contains(args.Name)) return null; //prevent stack overflow
-
-            //if failed, resolve by full assembly name
-            resolved.Add(args.Name);
-            return Assembly.ReflectionOnlyLoad(args.Name);
+            return null;
         }
 
         public ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime, OperationBase op = null)
@@ -77,7 +80,7 @@ namespace CilView
                 if (op.Stopped) return new ObservableCollection<Assembly>(ret);
             }
 
-            ClrAssemblyReader reader = new ClrAssemblyReader(runtime);
+            reader = new ClrAssemblyReader(runtime);
 
             double max = runtime.Modules.Count;
             int c = 0;
@@ -150,26 +153,17 @@ namespace CilView
             this.Assemblies = LoadAssemblies(runtime,op);
         }
 
-        public ProcessAssemblySource(ClrRuntime runtime, OperationBase op = null)
-        {
-            this.Init(runtime);
-        }
-
         void Init(DataTarget dtSource)
         {
             this.dt = dtSource;
             this.Assemblies = LoadAssemblies(dtSource,op);
         }
 
-        public ProcessAssemblySource(DataTarget dtSource, OperationBase op = null)
-        {
-            this.Init(dtSource);
-        }
-
         void Init(Process pr, bool active)
         {
             this.Types = new ObservableCollection<Type>();
             this.Methods = new ObservableCollection<MethodBase>();
+            this.process = pr;
 
             AttachFlag at;
 
@@ -180,50 +174,6 @@ namespace CilView
             this.Init(dt);
         }
 
-        public ProcessAssemblySource(Process pr, bool active, OperationBase op = null)
-        {
-            this.op = op;
-            this.Init(pr, active);
-        }
-
-        public ProcessAssemblySource(string processname, bool active, OperationBase op = null)
-        {
-            this.op = op;
-            Process[] processes = Process.GetProcessesByName(processname);
-
-            if (processes.Length == 0)
-            {
-                MessageBox.Show("Process not found");
-                this.Assemblies = new ObservableCollection<Assembly>();
-                return;
-            }
-
-            Process process = processes[0];
-
-            using (process)
-            {
-                this.Init(process, active);
-            }
-        }
-
-        public ProcessAssemblySource(int pid, bool active, OperationBase op = null)
-        {
-            this.op = op;
-            Process process = Process.GetProcessById(pid);
-
-            if (process == null)
-            {
-                MessageBox.Show("Process not found");
-                this.Assemblies = new ObservableCollection<Assembly>();
-                return;
-            }
-
-            using (process)
-            {
-                this.Init(process, active);
-            }
-        }
-
         public override bool HasProcessInfo
         {
             get { return true; }
@@ -231,9 +181,39 @@ namespace CilView
 
         public override string GetProcessInfoString()
         {
+            if (this.dt == null) throw new ObjectDisposedException("Data target");
+
             StringBuilder sb = new StringBuilder();
 
             sb.AppendLine("Process ID: " + dt.ProcessId.ToString());
+            sb.AppendLine("Process name: " + process.ProcessName);
+
+            string mainmodule="";
+            string descr = "";
+            string fver = "";
+            string pver = "";
+            string vendor = "";
+
+            try
+            {
+                mainmodule = process.MainModule.FileName;
+                
+                FileVersionInfo vinfo = process.MainModule.FileVersionInfo;
+                descr = vinfo.FileDescription;
+                vendor = vinfo.CompanyName;
+                fver = vinfo.FileVersion;
+                pver = vinfo.ProductVersion;
+            }
+            catch (NotSupportedException) { }
+            catch (Win32Exception) { }
+            catch (InvalidOperationException) { }
+
+            sb.AppendLine("Program location: " + mainmodule);
+            sb.AppendLine("Description: " + descr);
+            sb.AppendLine("Vendor: " + vendor);
+            sb.AppendLine("File version: " + fver);
+            sb.AppendLine("Product version: " + pver);
+
             ClrInfo runtimeInfo = dt.ClrVersions[0];
             ClrRuntime runtime = runtimeInfo.CreateRuntime();
             sb.AppendLine("CLR type: " + runtimeInfo.Flavor.ToString());
@@ -243,125 +223,23 @@ namespace CilView
             if (runtime.ServerGC) sb.AppendLine("GC type: Server");
             else sb.AppendLine("GC type: Workstation");
 
+            sb.AppendLine("AppDomain count: " + runtime.AppDomains.Count.ToString());
+
             sb.AppendLine();
 
             sb.AppendLine("Managed threads:");
             sb.AppendLine();
 
-            for (int i = 0; i < runtime.Threads.Count; i++)
+            if (this.reader == null) this.reader = new ClrAssemblyReader(runtime);
+
+            ClrThreadInfo[] threads = ClrThreadInfo.Get(runtime, this.Assemblies, this.reader);
+            StringWriter wr = new StringWriter(sb);
+
+            for (int i = 0; i < threads.Length; i++)
             {
-                if (runtime.Threads[i].IsAlive == false || runtime.Threads[i].IsUnstarted) continue;
-
-                sb.Append("ID: " + runtime.Threads[i].OSThreadId.ToString()+" ");
-
-                if (runtime.Threads[i].IsGC) sb.Append("[GC] ");
-                if (runtime.Threads[i].IsFinalizer) sb.Append("[Finalizer] ");
-                if (runtime.Threads[i].IsThreadpoolWorker) sb.Append("[Thread pool worker] ");
-                if (runtime.Threads[i].IsThreadpoolCompletionPort) sb.Append("[Thread pool completion port] ");
-                if (runtime.Threads[i].IsDebuggerHelper) sb.Append("[Debug] ");
-
-                if (runtime.Threads[i].IsMTA) sb.Append("[MTA] ");
-                else if (runtime.Threads[i].IsSTA) sb.Append("[STA] ");
-
-                sb.AppendLine();
-
-                IList<ClrStackFrame> stack = runtime.Threads[i].StackTrace;
-
-                for (int j = 0; j < stack.Count; j++)
-                {
-                    ClrMethod m = stack[j].Method;
-                    /*sb.Append(stack[j].DisplayString+" ");
-                    if (m != null) sb.Append(m.Name);*/
-                    sb.Append(" "+stack[j].ToString());
-
-                    if (m != null)
-                    {
-                        ulong pos = stack[j].InstructionPointer;
-
-                        ILToNativeMap[] map = m.ILOffsetMap;
-                        if (map == null) map = new ILToNativeMap[0];
-
-                        int offset = -1;
-                        int offset2 = Int32.MaxValue;
-                        bool found = false;
-
-                        for (int k = 0; k < map.Length; k++)
-                        {
-                            if (pos < map[k].EndAddress && pos >= map[k].StartAddress)
-                            {
-                                offset = map[k].ILOffset;
-                                if(k<map.Length-1) offset2 = map[k + 1].ILOffset;
-                                found = true;
-                            }
-                        }
-
-                        if (found && offset>=0) sb.Append(" +"+offset.ToString());
-
-                        string module = stack[j].ModuleName;
-                        Assembly ass = null;
-
-                        for (int k = 0; k < this.assemblies.Count; k++)
-                        {
-                            string an = this.assemblies[k].GetName().Name;
-                            
-                            if (String.Equals(an, module, StringComparison.InvariantCultureIgnoreCase))
-                            {
-                                ass = this.assemblies[k];
-                                break;
-                            }
-                        }
-
-                        Type t=null;
-                        MemberInfo mi = null;
-                        string tn = m.Type.Name;
-
-                        if (ass != null && ass is ClrAssemblyInfo)
-                        {
-                            mi = ((ClrAssemblyInfo)ass).ResolveMember((int)m.MetadataToken);
-                        }
-                        else
-                        {
-                            if (ass != null && !String.IsNullOrEmpty(tn))
-                            {
-                                t = ass.GetType(tn);
-                            }
-
-                            if (t != null)
-                            {
-                                MemberInfo[] arr = t.GetMember(m.Name,
-                                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
-                                    );
-
-                                if (arr.Length == 1)
-                                {                                    
-                                    mi = arr[0];
-                                }
-                            }
-                        }
-
-                        if (mi != null && mi is MethodBase)
-                        {
-                            CilGraph gr = CilGraph.Create((MethodBase)mi);
-                            CilInstruction[] instructions = gr.GetInstructions().ToArray();
-
-                            /*sb.AppendLine();
-                            sb.AppendLine(" IL:");
-                            for (int k = 0; k < instructions.Length;k++ )
-                            {
-                                CilInstruction instr = instructions[k];
-                                if (instr.ByteOffset >= offset && instr.ByteOffset<=offset2)
-                                {                                    
-                                    sb.AppendLine(instr.ToString());
-                                } 
-                            }
-                            sb.AppendLine();*/
-                        }
-                    }
-                    
-                    sb.AppendLine();
-                }
-
-                sb.AppendLine();
+                wr.Write('-');
+                threads[i].Print(wr);
+                wr.WriteLine();
             }
 
             return sb.ToString();
@@ -372,6 +250,7 @@ namespace CilView
             if (this.dt != null)
             {
                 this.dt.Dispose();
+                this.process.Dispose();
                 this.Assemblies.Clear();
                 this.Types.Clear();
                 this.Methods.Clear();

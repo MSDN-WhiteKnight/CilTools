@@ -307,7 +307,17 @@ namespace CilView
 
         private void bProcessInfo_Click(object sender, RoutedEventArgs e)
         {
-            string s = this.source.GetProcessInfoString();
+            string s="";
+            this.Cursor = Cursors.Wait;
+
+            try
+            {
+                s = this.source.GetProcessInfoString();
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
+            }
 
             TextViewWindow wnd = new TextViewWindow();
             wnd.Title = "Process info";
