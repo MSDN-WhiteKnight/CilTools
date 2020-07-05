@@ -305,6 +305,17 @@ namespace CilView
             }
         }
 
+        private void bProcessInfo_Click(object sender, RoutedEventArgs e)
+        {
+            string s = this.source.GetProcessInfoString();
+
+            TextViewWindow wnd = new TextViewWindow();
+            wnd.Title = "Process info";
+            wnd.Text = s;
+            wnd.Owner = this;
+            wnd.Show();
+        }
+
         private void miLicense_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -473,5 +484,7 @@ to provide feedback" +
         {
             if (e.Key == Key.Enter) OnSearchClick();
         }
+
+        
     }
 }

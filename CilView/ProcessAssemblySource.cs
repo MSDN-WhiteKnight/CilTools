@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -221,6 +222,149 @@ namespace CilView
             {
                 this.Init(process, active);
             }
+        }
+
+        public override bool HasProcessInfo
+        {
+            get { return true; }
+        }
+
+        public override string GetProcessInfoString()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Process ID: " + dt.ProcessId.ToString());
+            ClrInfo runtimeInfo = dt.ClrVersions[0];
+            ClrRuntime runtime = runtimeInfo.CreateRuntime();
+            sb.AppendLine("CLR type: " + runtimeInfo.Flavor.ToString());
+            sb.AppendLine("CLR location: " + runtimeInfo.ModuleInfo.FileName);
+            sb.AppendLine("CLR version: " + runtimeInfo.Version.ToString());
+
+            if (runtime.ServerGC) sb.AppendLine("GC type: Server");
+            else sb.AppendLine("GC type: Workstation");
+
+            sb.AppendLine();
+
+            sb.AppendLine("Managed threads:");
+            sb.AppendLine();
+
+            for (int i = 0; i < runtime.Threads.Count; i++)
+            {
+                if (runtime.Threads[i].IsAlive == false || runtime.Threads[i].IsUnstarted) continue;
+
+                sb.Append("ID: " + runtime.Threads[i].OSThreadId.ToString()+" ");
+
+                if (runtime.Threads[i].IsGC) sb.Append("[GC] ");
+                if (runtime.Threads[i].IsFinalizer) sb.Append("[Finalizer] ");
+                if (runtime.Threads[i].IsThreadpoolWorker) sb.Append("[Thread pool worker] ");
+                if (runtime.Threads[i].IsThreadpoolCompletionPort) sb.Append("[Thread pool completion port] ");
+                if (runtime.Threads[i].IsDebuggerHelper) sb.Append("[Debug] ");
+
+                if (runtime.Threads[i].IsMTA) sb.Append("[MTA] ");
+                else if (runtime.Threads[i].IsSTA) sb.Append("[STA] ");
+
+                sb.AppendLine();
+
+                IList<ClrStackFrame> stack = runtime.Threads[i].StackTrace;
+
+                for (int j = 0; j < stack.Count; j++)
+                {
+                    ClrMethod m = stack[j].Method;
+                    /*sb.Append(stack[j].DisplayString+" ");
+                    if (m != null) sb.Append(m.Name);*/
+                    sb.Append(" "+stack[j].ToString());
+
+                    if (m != null)
+                    {
+                        ulong pos = stack[j].InstructionPointer;
+
+                        ILToNativeMap[] map = m.ILOffsetMap;
+                        if (map == null) map = new ILToNativeMap[0];
+
+                        int offset = -1;
+                        int offset2 = Int32.MaxValue;
+                        bool found = false;
+
+                        for (int k = 0; k < map.Length; k++)
+                        {
+                            if (pos < map[k].EndAddress && pos >= map[k].StartAddress)
+                            {
+                                offset = map[k].ILOffset;
+                                if(k<map.Length-1) offset2 = map[k + 1].ILOffset;
+                                found = true;
+                            }
+                        }
+
+                        if (found && offset>=0) sb.Append(" +"+offset.ToString());
+
+                        string module = stack[j].ModuleName;
+                        Assembly ass = null;
+
+                        for (int k = 0; k < this.assemblies.Count; k++)
+                        {
+                            string an = this.assemblies[k].GetName().Name;
+                            
+                            if (String.Equals(an, module, StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                ass = this.assemblies[k];
+                                break;
+                            }
+                        }
+
+                        Type t=null;
+                        MemberInfo mi = null;
+                        string tn = m.Type.Name;
+
+                        if (ass != null && ass is ClrAssemblyInfo)
+                        {
+                            mi = ((ClrAssemblyInfo)ass).ResolveMember((int)m.MetadataToken);
+                        }
+                        else
+                        {
+                            if (ass != null && !String.IsNullOrEmpty(tn))
+                            {
+                                t = ass.GetType(tn);
+                            }
+
+                            if (t != null)
+                            {
+                                MemberInfo[] arr = t.GetMember(m.Name,
+                                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
+                                    );
+
+                                if (arr.Length == 1)
+                                {                                    
+                                    mi = arr[0];
+                                }
+                            }
+                        }
+
+                        if (mi != null && mi is MethodBase)
+                        {
+                            CilGraph gr = CilGraph.Create((MethodBase)mi);
+                            CilInstruction[] instructions = gr.GetInstructions().ToArray();
+
+                            /*sb.AppendLine();
+                            sb.AppendLine(" IL:");
+                            for (int k = 0; k < instructions.Length;k++ )
+                            {
+                                CilInstruction instr = instructions[k];
+                                if (instr.ByteOffset >= offset && instr.ByteOffset<=offset2)
+                                {                                    
+                                    sb.AppendLine(instr.ToString());
+                                } 
+                            }
+                            sb.AppendLine();*/
+                        }
+                    }
+                    
+                    sb.AppendLine();
+                }
+
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
         }
 
         public override void Dispose()

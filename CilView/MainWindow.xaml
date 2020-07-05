@@ -26,9 +26,13 @@
                 Width="90" Click="bOpenProcess_Click"/> 
         <Button x:Name="bExport" Content="Export" HorizontalAlignment="Left" Height="24" Margin="230,30,0,0" VerticalAlignment="Top" 
                 Width="90" Click="miExportMethod_Click" />
-        <Button x:Name="bAbout" Content="About" HorizontalAlignment="Left" Height="24" Margin="340,30,0,0" VerticalAlignment="Top" 
+        <Button x:Name="bProcessInfo" Content="Process Info" HorizontalAlignment="Left" Height="24" Margin="340,30,0,0" 
+                VerticalAlignment="Top" IsEnabled="{Binding HasProcessInfo, FallbackValue=False}"
+                Width="90" Click="bProcessInfo_Click" />
+        
+        <Button x:Name="bAbout" Content="About" HorizontalAlignment="Left" Height="24" Margin="475,30,0,0" VerticalAlignment="Top" 
                 Width="90" Click="miAbout_Click" />
-        <Button x:Name="bExit" Content="Exit" HorizontalAlignment="Left" Height="24" Margin="450,30,0,0" VerticalAlignment="Top" 
+        <Button x:Name="bExit" Content="Exit" HorizontalAlignment="Left" Height="24" Margin="585,30,0,0" VerticalAlignment="Top" 
                 Width="90" Click="miExit_Click" />
         
         <Label Content="Assembly" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="65"/>

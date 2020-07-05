@@ -138,6 +138,16 @@ namespace CilView
             return ret;
         }
 
+        public override bool HasProcessInfo
+        {
+            get { return false; }
+        }
+
+        public override string GetProcessInfoString()
+        {
+            return "";
+        }
+
         public override void Dispose()
         {
             //just do nothing

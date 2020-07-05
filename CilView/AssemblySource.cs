@@ -85,7 +85,9 @@ namespace CilView
         protected ObservableCollection<MethodBase> methods = new ObservableCollection<MethodBase>();
 
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
+        public abstract bool HasProcessInfo { get; }
+        public abstract string GetProcessInfoString();
         public abstract void Dispose();
 
         public ObservableCollection<Assembly> Assemblies
