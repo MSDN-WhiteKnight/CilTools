@@ -69,6 +69,12 @@ namespace CilView
             return null;
         }
 
+        static bool IsCoreLib(string name)
+        {
+            return String.Equals(name, "mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+                String.Equals(name, "System.Private.CoreLib", StringComparison.InvariantCultureIgnoreCase);
+        }
+
         public ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime, OperationBase op = null)
         {
             List<Assembly> ret = new List<Assembly>();
@@ -105,30 +111,62 @@ namespace CilView
                 }
 
                 Assembly ass=null;
+                Type[] preloaded = null;
                 string name = Path.GetFileNameWithoutExtension(path.Trim());
 
-                if (path != "" &&  !String.Equals(name, "mscorlib", StringComparison.InvariantCultureIgnoreCase))
+                //try reflection-only load first
+
+                if (path != "" && !IsCoreLib(name))
                 {
                     try
                     {
                         ass = Assembly.ReflectionOnlyLoadFrom(path);
 
-                        if (ass != null && !added_resolver)
+                        if (ass != null)
                         {
-                            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
-                            added_resolver = true;
+                            if (!added_resolver)
+                            {
+                                AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+                                added_resolver = true;
+                            }                      
+
+                            //try to preload types from assembly
+                            try { preloaded = ass.GetTypes(); }
+                            catch (ReflectionTypeLoadException ex)
+                            {
+                                //if there's at least one exception not related to ReflectionOnly load missing dependendencies
+                                //go AssemblyReader route
+
+                                for (int i = 0; i < ex.LoaderExceptions.Length; i++)
+                                {
+                                    if (!ex.LoaderExceptions[i].Message.Contains("ReflectionOnly"))
+                                    {
+                                        ass = null;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (ass != null && preloaded != null)
+                        {
+                            AssemblySource.TypeCacheSetValue(ass, preloaded); //cache preload type array
                         }
                     }
                     catch (FileNotFoundException) { }
                     catch (FileLoadException) { }
                     catch (BadImageFormatException) { }
                     catch (NotSupportedException) { }
+                    
                 }
+
+                //if failed, try AssemblyReader
 
                 if (ass == null)
                 {
                     ass = reader.Read(x);
                 }
+
                 ret.Add(ass);
                 c++;
             }
