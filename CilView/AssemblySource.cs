@@ -45,6 +45,11 @@ namespace CilView
             }
         }
 
+        public static void TypeCacheClear()
+        {
+            lock (sync) { typecache.Clear(); }
+        }
+
         public static ObservableCollection<Type> LoadTypes(Assembly ass)
         {
             Type[] cached = TypeCacheGetValue(ass);

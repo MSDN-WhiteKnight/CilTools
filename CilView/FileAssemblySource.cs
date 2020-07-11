@@ -54,6 +54,8 @@ namespace CilView
 
         public FileAssemblySource(string filepath)
         {
+            AssemblySource.TypeCacheClear();
+
             this._path = Path.GetDirectoryName(filepath);
             ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
 
