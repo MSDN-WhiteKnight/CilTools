@@ -314,6 +314,13 @@ namespace CilView
             {
                 s = this.source.GetProcessInfoString();
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    this, ex.GetType().ToString() + ": " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error
+                    );
+                return;
+            }
             finally
             {
                 this.Cursor = Cursors.Arrow;
@@ -334,6 +341,13 @@ namespace CilView
             try
             {
                 threads = this.source.GetProcessThreads();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    this, ex.GetType().ToString() + ": " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error
+                    );
+                return;
             }
             finally
             {

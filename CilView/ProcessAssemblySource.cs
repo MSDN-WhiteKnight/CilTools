@@ -130,17 +130,7 @@ namespace CilView
                             try { preloaded = ass.GetTypes(); }
                             catch (ReflectionTypeLoadException ex)
                             {
-                                //if there's at least one exception not related to ReflectionOnly load missing dependendencies
-                                //go AssemblyReader route
-
-                                for (int i = 0; i < ex.LoaderExceptions.Length; i++)
-                                {
-                                    if (!ex.LoaderExceptions[i].Message.Contains("ReflectionOnly"))
-                                    {
-                                        ass = null;
-                                        break;
-                                    }
-                                }
+                                ass = null;
                             }
                         }
 

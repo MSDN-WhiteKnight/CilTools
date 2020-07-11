@@ -33,20 +33,27 @@ namespace CilView
 
         private void cbThread_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ClrThreadInfo item = (ClrThreadInfo)cbThread.SelectedItem;
-
-            if (item == null) return;
-
-            StringBuilder sb = new StringBuilder(500);
-            StringWriter sw = new StringWriter(sb);
-
-            foreach (ClrStackFrameInfo frame in item.StackTrace)
+            try
             {
-                sw.WriteLine(frame.ToString());
-            }
+                ClrThreadInfo item = (ClrThreadInfo)cbThread.SelectedItem;
 
-            this.tlv = CilVisualization.VisualizeStackTrace(item, navigation, null);
-            cStackTrace.Child = this.tlv;
+                if (item == null) return;
+
+                StringBuilder sb = new StringBuilder(500);
+                StringWriter sw = new StringWriter(sb);
+
+                foreach (ClrStackFrameInfo frame in item.StackTrace)
+                {
+                    sw.WriteLine(frame.ToString());
+                }
+
+                this.tlv = CilVisualization.VisualizeStackTrace(item, navigation, null);
+                cStackTrace.Child = this.tlv;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.GetType().ToString() + ": " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         MethodBase ExtractMethod(FrameworkContentElement fce)
@@ -100,23 +107,30 @@ namespace CilView
 
         private void navigation(object sender, RoutedEventArgs e)
         {
-            FrameworkContentElement elem = (FrameworkContentElement)sender;
-            MethodBase mb;
-            ClrStackFrameInfo frame = elem.Tag as ClrStackFrameInfo;
-
-            if (frame != null)
+            try
             {
-                mb = frame.Method;
-                int start = frame.ILOffset;
-                int end = frame.ILOffsetEnd;
+                FrameworkContentElement elem = (FrameworkContentElement)sender;
+                MethodBase mb;
+                ClrStackFrameInfo frame = elem.Tag as ClrStackFrameInfo;
 
-                this.NavigateToMethod(mb, start, end);
+                if (frame != null)
+                {
+                    mb = frame.Method;
+                    int start = frame.ILOffset;
+                    int end = frame.ILOffsetEnd;
+
+                    this.NavigateToMethod(mb, start, end);
+                }
+                else
+                {
+                    mb = elem.Tag as MethodBase;
+
+                    this.NavigateToMethod(mb, -1, Int32.MaxValue);
+                }
             }
-            else
+            catch (Exception ex)
             {
-                mb = elem.Tag as MethodBase;
-
-                this.NavigateToMethod(mb, -1, Int32.MaxValue);
+                MessageBox.Show(this, ex.GetType().ToString()+": "+ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
