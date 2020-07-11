@@ -139,7 +139,14 @@ namespace CilTools.Runtime
 
         public int ILOffset { get { return this.il_start; } }
 
+        public int ILOffsetEnd { get { return this.il_end; } }
+
         public override string ToString()
+        {
+            return this.ToString(true);
+        }
+
+        public string ToString(bool full)
         {
             ClrType clrtype = null;
             ClrModule clrmodule = null;
@@ -164,7 +171,24 @@ namespace CilTools.Runtime
             }
             else
             {
-                sb.AppendFormat("{0}!{1}", moduleDisplayName, this.frame.ToString());
+                string name = "";
+
+                if (full)
+                {
+                    name = this.frame.ToString();
+                }
+                else
+                {
+                    if (m != null)
+                    {
+                        if (clrtype != null) name += clrtype.Name + ".";
+
+                        name += m.Name;
+                    }
+                    else name = this.frame.ToString();
+                }
+
+                sb.AppendFormat("{0}!{1}", moduleDisplayName, name);
             }
 
             //print IL offset

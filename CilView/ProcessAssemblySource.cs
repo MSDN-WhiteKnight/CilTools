@@ -288,6 +288,19 @@ namespace CilView
             return sb.ToString();
         }
 
+        public override ClrThreadInfo[] GetProcessThreads()
+        {
+            if (this.dt == null) throw new ObjectDisposedException("Data target");
+            
+            ClrInfo runtimeInfo = dt.ClrVersions[0];
+            ClrRuntime runtime = runtimeInfo.CreateRuntime();
+            
+            if (this.reader == null) this.reader = new ClrAssemblyReader(runtime);
+
+            ClrThreadInfo[] threads = ClrThreadInfo.Get(runtime, this.Assemblies, this.reader);
+            return threads;
+        }
+
         public override void Dispose()
         {
             if (this.dt != null)

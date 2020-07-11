@@ -112,6 +112,9 @@
     <Compile Include="TextViewWindow.xaml.cs">
       <DependentUpon>TextViewWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ThreadsWindow.xaml.cs">
+      <DependentUpon>ThreadsWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -135,6 +138,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TextViewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ThreadsWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

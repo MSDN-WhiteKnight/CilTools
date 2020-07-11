@@ -8,6 +8,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using CilTools.Runtime;
 
 namespace CilView
 {
@@ -127,6 +128,7 @@ namespace CilView
 
         public abstract bool HasProcessInfo { get; }
         public abstract string GetProcessInfoString();
+        public abstract ClrThreadInfo[] GetProcessThreads();
         public abstract void Dispose();
 
         public ObservableCollection<Assembly> Assemblies

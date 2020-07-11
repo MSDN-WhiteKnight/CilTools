@@ -150,6 +150,11 @@ namespace CilView
             return "";
         }
 
+        public override CilTools.Runtime.ClrThreadInfo[] GetProcessThreads()
+        {
+            return new CilTools.Runtime.ClrThreadInfo[0];
+        }
+
         public override void Dispose()
         {
             //just do nothing

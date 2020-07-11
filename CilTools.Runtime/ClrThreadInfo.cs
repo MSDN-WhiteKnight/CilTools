@@ -79,6 +79,25 @@ namespace CilTools.Runtime
                 if (thread.IsMTA) sb.Append("[MTA] ");
                 else if (thread.IsSTA) sb.Append("[STA] ");
 
+                if (this.stacktrace.Length > 0)
+                {
+                    string framestr = null;
+
+                    for (int i = 0; i < this.stacktrace.Length; i++)
+                    {
+                        if (this.stacktrace[i].Method != null)
+                        {
+                            framestr = this.stacktrace[i].ToString(false);
+                            break;
+                        }
+                    }
+
+                    if (framestr == null) framestr = this.stacktrace[0].ToString(false);
+
+                    sb.Append(" In: ");
+                    sb.Append(framestr);
+                }
+
                 return sb.ToString();
             }
         }

@@ -326,6 +326,25 @@ namespace CilView
             wnd.Show();
         }
 
+        private void miThreads_Click(object sender, RoutedEventArgs e)
+        {
+            ClrThreadInfo[] threads;
+            this.Cursor = Cursors.Wait;
+
+            try
+            {
+                threads = this.source.GetProcessThreads();
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
+            }
+
+            ThreadsWindow wnd = new ThreadsWindow(threads);
+            wnd.Owner = this;
+            wnd.Show();
+        }
+
         private void miLicense_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -494,7 +513,5 @@ to provide feedback" +
         {
             if (e.Key == Key.Enter) OnSearchClick();
         }
-
-        
     }
 }
