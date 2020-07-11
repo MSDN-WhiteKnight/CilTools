@@ -77,6 +77,8 @@ namespace CilView
 
         public ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime, OperationBase op = null)
         {
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+
             List<Assembly> ret = new List<Assembly>();
 
             if (op != null)
@@ -90,7 +92,6 @@ namespace CilView
 
             double max = runtime.Modules.Count;
             int c = 0;
-            bool added_resolver = false;
 
             foreach (ClrModule x in runtime.Modules)
             {
@@ -100,7 +101,8 @@ namespace CilView
                 if (path != "")
                 {
                     string dir = Path.GetDirectoryName(path).ToLower();
-                    this.paths.Add(dir);
+
+                    if(!dir.Contains("assembly\\gac"))this.paths.Add(dir);
                 }
 
                 if (op != null)
@@ -124,12 +126,6 @@ namespace CilView
 
                         if (ass != null)
                         {
-                            if (!added_resolver)
-                            {
-                                AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
-                                added_resolver = true;
-                            }                      
-
                             //try to preload types from assembly
                             try { preloaded = ass.GetTypes(); }
                             catch (ReflectionTypeLoadException ex)
@@ -150,7 +146,7 @@ namespace CilView
 
                         if (ass != null && preloaded != null)
                         {
-                            AssemblySource.TypeCacheSetValue(ass, preloaded); //cache preload type array
+                            AssemblySource.TypeCacheSetValue(ass, preloaded); //cache preloaded type array
                         }
                     }
                     catch (FileNotFoundException) { }
@@ -202,6 +198,15 @@ namespace CilView
             this.Types = new ObservableCollection<Type>();
             this.Methods = new ObservableCollection<MethodBase>();
             this.process = pr;
+
+            try
+            {
+                string mainmodule = pr.MainModule.FileName;
+                this.paths.Add(Path.GetDirectoryName(mainmodule).ToLower());
+            }
+            catch (NotSupportedException) { }
+            catch (Win32Exception) { }
+            catch (InvalidOperationException) { }
 
             AttachFlag at;
 
