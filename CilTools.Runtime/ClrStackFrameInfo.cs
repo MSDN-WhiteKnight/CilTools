@@ -115,21 +115,6 @@ namespace CilTools.Runtime
 
                 if (mi != null && mi is MethodBase)
                 {
-                    /*CilGraph gr = CilGraph.Create((MethodBase)mi);
-                    CilInstruction[] instructions = gr.GetInstructions().ToArray();
-
-                    sb.AppendLine();
-                    sb.AppendLine(" IL:");
-                    for (int k = 0; k < instructions.Length;k++ )
-                    {
-                        CilInstruction instr = instructions[k];
-                        if (instr.ByteOffset >= offset && instr.ByteOffset<=offset2)
-                        {                                    
-                            sb.AppendLine(instr.ToString());
-                        } 
-                    }
-                    sb.AppendLine();*/
-
                     this.method = (MethodBase)mi;
                 }
             } 
