@@ -49,6 +49,8 @@
     <Compile Include="ClrDynamicMethod.cs" />
     <Compile Include="ClrFieldInfo.cs" />
     <Compile Include="ClrMethodInfo.cs" />
+    <Compile Include="ClrStackFrameInfo.cs" />
+    <Compile Include="ClrThreadInfo.cs" />
     <Compile Include="ClrTypeInfo.cs" />
     <Compile Include="DynamicMethodsAssembly.cs" />
     <Compile Include="DynamicMethodsType.cs" />

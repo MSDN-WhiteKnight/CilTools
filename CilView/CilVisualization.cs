@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
+using CilTools.Runtime;
 
 namespace CilView
 {
@@ -105,7 +106,66 @@ namespace CilView
             return tlv;
         }
 
-        static void VisualizeNode(SyntaxNode node, Paragraph target, RoutedEventHandler navigation)
+        public static TextListViewer VisualizeStackTrace(
+            ClrThreadInfo thread,
+            RoutedEventHandler navigation,
+            MethodBase selected = null)
+        {
+            TextListViewer tlv = new TextListViewer();
+            tlv.Document.PagePadding = new Thickness(0, 5, 5, 5);
+            int i = 0;
+
+            foreach (ClrStackFrameInfo frame in thread.StackTrace)
+            {
+                try
+                {
+                    MethodBase m = frame.Method;
+                    
+                    if (m != null)
+                    {
+                        Run r;
+                        r = new Run(frame.ToString(false));
+
+                        Hyperlink lnk = new Hyperlink(r);
+                        lnk.Tag = frame;
+                        lnk.Click += navigation;
+                        tlv.AddItem(lnk);
+
+                        if (selected == null) continue;
+
+                        if (MethodBase.ReferenceEquals(m, selected))
+                        {
+                            tlv.SelectedIndex = i;
+                        }
+                    }
+                    else
+                    {
+                        tlv.AddItem(new Run(frame.ToString(false)));
+                    }
+                }
+                catch (TypeLoadException ex)
+                {
+                    tlv.AddItem(new Run("[ERROR] TypeLoadException: " + ex.Message));
+                }
+                catch (FileNotFoundException ex)
+                {
+                    tlv.AddItem(new Run("[ERROR] FileNotFoundException: " + ex.Message));
+                }
+
+                i++;
+            }
+
+            return tlv;
+        }
+
+        static void BringToViewOnLoaded(object sender, RoutedEventArgs e)
+        {
+            (sender as FrameworkContentElement).BringIntoView();
+        }
+
+        static void VisualizeNode(
+            SyntaxNode node, Paragraph target, VisualizeGraphContext ctx
+            )
         {
             Run r;
             StringBuilder sb = new StringBuilder(500);
@@ -127,7 +187,7 @@ namespace CilView
 
                     Hyperlink lnk = new Hyperlink(r);
                     lnk.Tag = (MethodBase)mrs.Member;
-                    lnk.Click += navigation;
+                    lnk.Click += ctx.navigation;
                     target.Inlines.Add(lnk);
                 }
                 else
@@ -135,18 +195,45 @@ namespace CilView
                     //render regular operand
                     IEnumerable<SyntaxNode> children = mrs.EnumerateChildNodes();
 
-                    foreach (SyntaxNode child in children) VisualizeNode(child, target, navigation);
+                    foreach (SyntaxNode child in children) VisualizeNode(child, target, ctx);
                 }
             }
             else if (node is KeywordSyntax)
             {
+                KeywordSyntax ks = (KeywordSyntax)node;
                 r = new Run();
 
-                if (((KeywordSyntax)node).Kind == KeywordKind.Other)
-                    r.Foreground = Brushes.Blue;
-                else if (((KeywordSyntax)node).Kind == KeywordKind.DirectiveName)
-                    r.Foreground = Brushes.Magenta;
+                if (ks.Kind == KeywordKind.InstructionName && ctx.highlight_start >= 0)
+                {
+                    InstructionSyntax par = ks.Parent as InstructionSyntax;
+                    CilInstruction instr=null;
 
+                    if (par != null)
+                    {
+                        instr = par.Instruction;
+                    }
+
+                    if (instr != null)
+                    {
+                        if (instr.ByteOffset >= ctx.highlight_start && instr.ByteOffset < ctx.highlight_end)
+                        {
+                            r.Foreground = Brushes.Red;
+                            r.FontWeight = FontWeights.Bold;
+
+                            //on first highlighted instruction, apply callback that scrolls FlowDocument to current line
+                            if (!ctx.ScrollCallbackApplied)
+                            {
+                                r.Loaded += BringToViewOnLoaded;
+                                ctx.ScrollCallbackApplied = true;
+                            }
+                        }
+                    }
+                }
+                else if (ks.Kind == KeywordKind.Other)
+                    r.Foreground = Brushes.Blue;
+                else if (ks.Kind == KeywordKind.DirectiveName)
+                    r.Foreground = Brushes.Magenta;
+                
                 r.Text = node.ToString();
                 target.Inlines.Add(r);
             }
@@ -181,7 +268,7 @@ namespace CilView
                 {
                     for (int i = 0; i < children.Length; i++)
                     {
-                        VisualizeNode(children[i], target, navigation);
+                        VisualizeNode(children[i], target, ctx);
                     }
                 }
                 else
@@ -193,7 +280,17 @@ namespace CilView
             }
         }
 
-        public static UIElement VisualizeGraph(CilGraph gr, RoutedEventHandler navigation)
+        class VisualizeGraphContext
+        {
+            public RoutedEventHandler navigation;
+            public int highlight_start=-1;
+            public int highlight_end = Int32.MaxValue;
+            public bool ScrollCallbackApplied = false;
+        }
+
+        public static UIElement VisualizeGraph(
+            CilGraph gr, RoutedEventHandler navigation,int highlight_start=-1,int highlight_end=Int32.MaxValue
+            )
         {
             FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
             scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -207,7 +304,12 @@ namespace CilView
             SyntaxNode[] tree = gr.ToSyntaxTree().GetChildNodes();
             Paragraph par = new Paragraph();
 
-            for (int i = 0; i < tree.Length; i++) VisualizeNode(tree[i], par, navigation);
+            VisualizeGraphContext ctx = new VisualizeGraphContext();
+            ctx.navigation = navigation;
+            ctx.highlight_start = highlight_start;
+            ctx.highlight_end = highlight_end;
+
+            for (int i = 0; i < tree.Length; i++) VisualizeNode(tree[i], par, ctx);
 
             fd.Blocks.Add(par);
             scroll.Document = fd;

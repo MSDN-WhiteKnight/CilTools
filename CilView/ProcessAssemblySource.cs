@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.IO;
+using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -19,9 +20,16 @@ namespace CilView
     sealed class ProcessAssemblySource:AssemblySource
     {
         DataTarget dt;
+        Process process;
         OperationBase op;
         HashSet<string> paths=new HashSet<string>();
-        HashSet<string> resolved=new HashSet<string>();
+        ClrAssemblyReader reader;
+
+        public ProcessAssemblySource(Process pr, bool active, OperationBase op = null)
+        {
+            this.op = op;
+            this.Init(pr, active);
+        }
 
         public ObservableCollection<Assembly> LoadAssemblies(DataTarget dt, OperationBase op = null)
         {
@@ -58,15 +66,19 @@ namespace CilView
                 if (ret != null) return ret;
             }
 
-            if (resolved.Contains(args.Name)) return null; //prevent stack overflow
+            return null;
+        }
 
-            //if failed, resolve by full assembly name
-            resolved.Add(args.Name);
-            return Assembly.ReflectionOnlyLoad(args.Name);
+        static bool IsCoreLib(string name)
+        {
+            return String.Equals(name, "mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
+                String.Equals(name, "System.Private.CoreLib", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime, OperationBase op = null)
         {
+            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
+
             List<Assembly> ret = new List<Assembly>();
 
             if (op != null)
@@ -76,11 +88,10 @@ namespace CilView
                 if (op.Stopped) return new ObservableCollection<Assembly>(ret);
             }
 
-            ClrAssemblyReader reader = new ClrAssemblyReader(runtime);
+            reader = new ClrAssemblyReader(runtime);
 
             double max = runtime.Modules.Count;
             int c = 0;
-            bool added_resolver = false;
 
             foreach (ClrModule x in runtime.Modules)
             {
@@ -90,7 +101,8 @@ namespace CilView
                 if (path != "")
                 {
                     string dir = Path.GetDirectoryName(path).ToLower();
-                    this.paths.Add(dir);
+
+                    if(!dir.Contains("assembly\\gac"))this.paths.Add(dir);
                 }
 
                 if (op != null)
@@ -101,30 +113,46 @@ namespace CilView
                 }
 
                 Assembly ass=null;
+                Type[] preloaded = null;
                 string name = Path.GetFileNameWithoutExtension(path.Trim());
 
-                if (path != "" &&  !String.Equals(name, "mscorlib", StringComparison.InvariantCultureIgnoreCase))
+                //try reflection-only load first
+
+                if (path != "" && !IsCoreLib(name))
                 {
                     try
                     {
                         ass = Assembly.ReflectionOnlyLoadFrom(path);
 
-                        if (ass != null && !added_resolver)
+                        if (ass != null)
                         {
-                            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
-                            added_resolver = true;
+                            //try to preload types from assembly
+                            try { preloaded = ass.GetTypes(); }
+                            catch (ReflectionTypeLoadException ex)
+                            {
+                                ass = null;
+                            }
+                        }
+
+                        if (ass != null && preloaded != null)
+                        {
+                            AssemblySource.TypeCacheSetValue(ass, preloaded); //cache preloaded type array
                         }
                     }
                     catch (FileNotFoundException) { }
                     catch (FileLoadException) { }
                     catch (BadImageFormatException) { }
                     catch (NotSupportedException) { }
+                    
                 }
+
+                //if failed, try AssemblyReader
 
                 if (ass == null)
                 {
                     ass = reader.Read(x);
                 }
+
                 ret.Add(ass);
                 c++;
             }
@@ -149,26 +177,26 @@ namespace CilView
             this.Assemblies = LoadAssemblies(runtime,op);
         }
 
-        public ProcessAssemblySource(ClrRuntime runtime, OperationBase op = null)
-        {
-            this.Init(runtime);
-        }
-
         void Init(DataTarget dtSource)
         {
             this.dt = dtSource;
             this.Assemblies = LoadAssemblies(dtSource,op);
         }
 
-        public ProcessAssemblySource(DataTarget dtSource, OperationBase op = null)
-        {
-            this.Init(dtSource);
-        }
-
         void Init(Process pr, bool active)
         {
             this.Types = new ObservableCollection<Type>();
             this.Methods = new ObservableCollection<MethodBase>();
+            this.process = pr;
+
+            try
+            {
+                string mainmodule = pr.MainModule.FileName;
+                this.paths.Add(Path.GetDirectoryName(mainmodule).ToLower());
+            }
+            catch (NotSupportedException) { }
+            catch (Win32Exception) { }
+            catch (InvalidOperationException) { }
 
             AttachFlag at;
 
@@ -179,48 +207,88 @@ namespace CilView
             this.Init(dt);
         }
 
-        public ProcessAssemblySource(Process pr, bool active, OperationBase op = null)
+        public override bool HasProcessInfo
         {
-            this.op = op;
-            this.Init(pr, active);
+            get { return true; }
         }
 
-        public ProcessAssemblySource(string processname, bool active, OperationBase op = null)
+        public override string GetProcessInfoString()
         {
-            this.op = op;
-            Process[] processes = Process.GetProcessesByName(processname);
+            if (this.dt == null) throw new ObjectDisposedException("Data target");
 
-            if (processes.Length == 0)
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Process ID: " + dt.ProcessId.ToString());
+            sb.AppendLine("Process name: " + process.ProcessName);
+
+            string mainmodule="";
+            string descr = "";
+            string fver = "";
+            string pver = "";
+            string vendor = "";
+
+            try
             {
-                MessageBox.Show("Process not found");
-                this.Assemblies = new ObservableCollection<Assembly>();
-                return;
+                mainmodule = process.MainModule.FileName;
+                
+                FileVersionInfo vinfo = process.MainModule.FileVersionInfo;
+                descr = vinfo.FileDescription;
+                vendor = vinfo.CompanyName;
+                fver = vinfo.FileVersion;
+                pver = vinfo.ProductVersion;
+            }
+            catch (NotSupportedException) { }
+            catch (Win32Exception) { }
+            catch (InvalidOperationException) { }
+
+            sb.AppendLine("Program location: " + mainmodule);
+            sb.AppendLine("Description: " + descr);
+            sb.AppendLine("Vendor: " + vendor);
+            sb.AppendLine("File version: " + fver);
+            sb.AppendLine("Product version: " + pver);
+
+            ClrInfo runtimeInfo = dt.ClrVersions[0];
+            ClrRuntime runtime = runtimeInfo.CreateRuntime();
+            sb.AppendLine("CLR type: " + runtimeInfo.Flavor.ToString());
+            sb.AppendLine("CLR location: " + runtimeInfo.ModuleInfo.FileName);
+            sb.AppendLine("CLR version: " + runtimeInfo.Version.ToString());
+
+            if (runtime.ServerGC) sb.AppendLine("GC type: Server");
+            else sb.AppendLine("GC type: Workstation");
+
+            sb.AppendLine("AppDomain count: " + runtime.AppDomains.Count.ToString());
+
+            sb.AppendLine();
+
+            sb.AppendLine("Managed threads:");
+            sb.AppendLine();
+
+            if (this.reader == null) this.reader = new ClrAssemblyReader(runtime);
+
+            ClrThreadInfo[] threads = ClrThreadInfo.Get(runtime, this.Assemblies, this.reader);
+            StringWriter wr = new StringWriter(sb);
+
+            for (int i = 0; i < threads.Length; i++)
+            {
+                wr.Write('-');
+                threads[i].Print(wr);
+                wr.WriteLine();
             }
 
-            Process process = processes[0];
-
-            using (process)
-            {
-                this.Init(process, active);
-            }
+            return sb.ToString();
         }
 
-        public ProcessAssemblySource(int pid, bool active, OperationBase op = null)
+        public override ClrThreadInfo[] GetProcessThreads()
         {
-            this.op = op;
-            Process process = Process.GetProcessById(pid);
+            if (this.dt == null) throw new ObjectDisposedException("Data target");
+            
+            ClrInfo runtimeInfo = dt.ClrVersions[0];
+            ClrRuntime runtime = runtimeInfo.CreateRuntime();
+            
+            if (this.reader == null) this.reader = new ClrAssemblyReader(runtime);
 
-            if (process == null)
-            {
-                MessageBox.Show("Process not found");
-                this.Assemblies = new ObservableCollection<Assembly>();
-                return;
-            }
-
-            using (process)
-            {
-                this.Init(process, active);
-            }
+            ClrThreadInfo[] threads = ClrThreadInfo.Get(runtime, this.Assemblies, this.reader);
+            return threads;
         }
 
         public override void Dispose()
@@ -228,6 +296,7 @@ namespace CilView
             if (this.dt != null)
             {
                 this.dt.Dispose();
+                this.process.Dispose();
                 this.Assemblies.Clear();
                 this.Types.Clear();
                 this.Methods.Clear();

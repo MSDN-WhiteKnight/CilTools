@@ -54,6 +54,8 @@ namespace CilView
 
         public FileAssemblySource(string filepath)
         {
+            AssemblySource.TypeCacheClear();
+
             this._path = Path.GetDirectoryName(filepath);
             ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
 
@@ -136,6 +138,21 @@ namespace CilView
             catch (NotSupportedException) { }
 
             return ret;
+        }
+
+        public override bool HasProcessInfo
+        {
+            get { return false; }
+        }
+
+        public override string GetProcessInfoString()
+        {
+            return "";
+        }
+
+        public override CilTools.Runtime.ClrThreadInfo[] GetProcessThreads()
+        {
+            return new CilTools.Runtime.ClrThreadInfo[0];
         }
 
         public override void Dispose()

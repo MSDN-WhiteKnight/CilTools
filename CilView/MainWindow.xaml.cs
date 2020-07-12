@@ -305,6 +305,60 @@ namespace CilView
             }
         }
 
+        private void bProcessInfo_Click(object sender, RoutedEventArgs e)
+        {
+            string s="";
+            this.Cursor = Cursors.Wait;
+
+            try
+            {
+                s = this.source.GetProcessInfoString();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    this, ex.GetType().ToString() + ": " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error
+                    );
+                return;
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
+            }
+
+            TextViewWindow wnd = new TextViewWindow();
+            wnd.Title = "Process info";
+            wnd.Text = s;
+            wnd.Owner = this;
+            wnd.Show();
+        }
+
+        private void miThreads_Click(object sender, RoutedEventArgs e)
+        {
+            ClrThreadInfo[] threads;
+            this.Cursor = Cursors.Wait;
+
+            try
+            {
+                threads = this.source.GetProcessThreads();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    this, ex.GetType().ToString() + ": " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error
+                    );
+                return;
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
+            }
+
+            ThreadsWindow wnd = new ThreadsWindow(threads);
+            wnd.Owner = this;
+            wnd.Show();
+        }
+
         private void miLicense_Click(object sender, RoutedEventArgs e)
         {
             try

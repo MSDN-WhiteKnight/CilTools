@@ -8,18 +8,62 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
+using CilTools.Runtime;
 
 namespace CilView
 {
     abstract class AssemblySource:IDisposable,INotifyPropertyChanged 
     {
+        static Dictionary<string, Type[]> typecache = new Dictionary<string, Type[]>();
+        static readonly object sync = new object();
+
+        protected ObservableCollection<Assembly> assemblies = new ObservableCollection<Assembly>();
+        protected ObservableCollection<Type> types = new ObservableCollection<Type>();
+        protected ObservableCollection<MethodBase> methods = new ObservableCollection<MethodBase>();
+
+        public static void TypeCacheSetValue(Assembly ass, Type[] types)
+        {
+            if (types.Length == 0) return;
+
+            string key = ass.Location;
+            if (String.IsNullOrEmpty(key)) return;
+
+            lock (sync)
+            {
+                typecache[key] = types;
+            }
+        }
+
+        public static Type[] TypeCacheGetValue(Assembly ass)
+        {
+            string key = ass.Location;
+            if (String.IsNullOrEmpty(key)) return null;
+            
+            lock (sync)
+            {
+                if (typecache.ContainsKey(key)) return typecache[key];
+                else return null;
+            }
+        }
+
+        public static void TypeCacheClear()
+        {
+            lock (sync) { typecache.Clear(); }
+        }
+
         public static ObservableCollection<Type> LoadTypes(Assembly ass)
         {
+            Type[] cached = TypeCacheGetValue(ass);
+
+            if (cached != null) return new ObservableCollection<Type>(cached);
+
             List<Type> ret;
             
             try
             {
                 ret = new List<Type>(ass.GetTypes());
+
+                if(ret!=null) TypeCacheSetValue(ass, ret.ToArray());
             }
             catch (ReflectionTypeLoadException e)
             {
@@ -80,12 +124,11 @@ namespace CilView
             return new ObservableCollection<MethodBase>(ret);
         }
 
-        protected ObservableCollection<Assembly> assemblies = new ObservableCollection<Assembly>();
-        protected ObservableCollection<Type> types = new ObservableCollection<Type>();
-        protected ObservableCollection<MethodBase> methods = new ObservableCollection<MethodBase>();
-
         public event PropertyChangedEventHandler PropertyChanged;
-        
+
+        public abstract bool HasProcessInfo { get; }
+        public abstract string GetProcessInfoString();
+        public abstract ClrThreadInfo[] GetProcessThreads();
         public abstract void Dispose();
 
         public ObservableCollection<Assembly> Assemblies
