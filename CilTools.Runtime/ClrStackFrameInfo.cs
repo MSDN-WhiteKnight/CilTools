@@ -13,6 +13,10 @@ using Microsoft.Diagnostics.Runtime;
 
 namespace CilTools.Runtime
 {
+    /// <summary>
+    /// Represents a single frame in the callstack of .NET application. The stack frame contains information about the called method 
+    /// and the location of the IL code executed within that method
+    /// </summary>
     public class ClrStackFrameInfo
     {
         ClrStackFrame frame;
@@ -120,17 +124,51 @@ namespace CilTools.Runtime
             } 
         }
 
+        /// <summary>
+        /// Gets the method corresponding to this stack frame. The value could be null if this frame is a special frame not 
+        /// corresponding to a managed method, or if the library failed to construct MethodBase object for the called method.
+        /// </summary>
         public MethodBase Method { get { return this.method; } }
 
+        /// <summary>
+        /// Gets the offset, in bytes, of the beginning of the IL code executed by this frame, relative to the beginning of the method body. 
+        /// </summary>
+        /// <remarks>
+        /// The library cannot accurately determine the currently executed instruction in every case, because the resulting native code 
+        /// could be optimized by JIT. As a result, the currently executed code is presented as the starting and ending offsets.
+        /// </remarks>
         public int ILOffset { get { return this.il_start; } }
 
+        /// <summary>
+        /// Gets the offset, in bytes, of the end of the IL code executed by this frame, relative to the beginning of the method body. 
+        /// </summary>
+        /// <remarks>
+        /// The library cannot accurately determine the currently executed instruction in every case, because the resulting native code 
+        /// could be optimized by JIT. As a result, the currently executed code is presented as the starting and ending offsets.
+        /// </remarks>
         public int ILOffsetEnd { get { return this.il_end; } }
 
+        /// <summary>
+        /// Gets the full text representation of this stack frame 
+        /// </summary>
+        /// <remarks>
+        /// The full text representation contains full signature of the called method, including argument types. 
+        /// If this frame is not a call to a managed method, returns the name of the special frame from debugger API.
+        /// </remarks>
         public override string ToString()
         {
             return this.ToString(true);
         }
 
+        /// <summary>
+        /// Gets the text representation of this stack frame 
+        /// </summary>
+        /// <param name="full">Indicates whether the method should return full text representation</param>
+        /// <remarks>
+        /// The full text representation contains full signature of the called method, including argument types. 
+        /// The short text representation only contains the method's name. 
+        /// If this frame is not a call to a managed method, returns the name of the special frame from debugger API.
+        /// </remarks>
         public string ToString(bool full)
         {
             ClrType clrtype = null;

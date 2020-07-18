@@ -13,6 +13,9 @@ using Microsoft.Diagnostics.Runtime;
 
 namespace CilTools.Runtime
 {
+    /// <summary>
+    /// Represents the information about the managed thread in the external process CLR instance
+    /// </summary>
     public class ClrThreadInfo
     {
         ClrThread thread;
@@ -33,6 +36,23 @@ namespace CilTools.Runtime
             this.stacktrace = frames.ToArray();
         }
 
+        /// <summary>
+        /// Gets the information about managed threads in the specified CLR instance 
+        /// </summary>
+        /// <param name="runtime">The CLR isntance to fetch thread information from</param>
+        /// <param name="assemblies">
+        /// The optional collection of assemblies preloaded from the target CLR instance, or null if you don't have any
+        /// </param>
+        /// <param name="reader">
+        /// The optional <see cref="ClrAssemblyReader"/> object to be used for reading assemblies from the target CLR isntance, 
+        /// or null if you don't have one
+        /// </param>
+        /// <returns>
+        /// The array of <see cref="ClrThreadInfo"/> objects containing information about managed threads
+        /// </returns>
+        /// <exception cref="System.ArgumentNullException">
+        /// The value of <paramref name="runtime"/> parameter is null 
+        /// </exception>
         public static ClrThreadInfo[] Get(ClrRuntime runtime, IEnumerable<Assembly> assemblies, ClrAssemblyReader reader)
         {
             if (runtime == null) throw new ArgumentNullException("runtime");
@@ -52,6 +72,13 @@ namespace CilTools.Runtime
             return ret.ToArray();
         }
 
+        /// <summary>
+        /// Gets the stack trace of the current thread
+        /// </summary>
+        /// <remarks>
+        /// The stack trace is the sequence of the nested method calls made in the thread before it reached the current point 
+        /// of execution.
+        /// </remarks>
         public IEnumerable<ClrStackFrameInfo> StackTrace
         {
             get
@@ -63,6 +90,9 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Gets the information about the current thread
+        /// </summary>
         public string DisplayString
         {
             get
@@ -102,6 +132,12 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Prints the information about the current thread to the specified TextWriter
+        /// </summary>
+        /// <exception cref="System.ArgumentNullException">
+        /// The value of <paramref name="output"/> parameter is null 
+        /// </exception>
         public void Print(TextWriter output)
         {
             if (output == null) throw new ArgumentNullException("output");
@@ -117,6 +153,9 @@ namespace CilTools.Runtime
             }
         }
 
+        /// <summary>
+        /// Gets the information about the current thread
+        /// </summary>
         public override string ToString()
         {
             return this.DisplayString;
