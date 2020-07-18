@@ -128,10 +128,7 @@ namespace CilView
                         {
                             //try to preload types from assembly
                             try { preloaded = ass.GetTypes(); }
-                            catch (ReflectionTypeLoadException ex)
-                            {
-                                ass = null;
-                            }
+                            catch (ReflectionTypeLoadException){ass = null;}
                         }
 
                         if (ass != null && preloaded != null)
