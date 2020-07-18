@@ -1,28 +1,25 @@
 ﻿<Window x:Class="CilView.wndError"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Error" Height="340" Width="470"  WindowStartupLocation="CenterScreen" 
-        >
+        Title="Error" Height="340" Width="470" WindowStartupLocation="CenterScreen">
     <Grid Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-        <DockPanel Margin="0 0 0 40">
+        <DockPanel Margin="0 0 0 40" VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
             <ScrollViewer DockPanel.Dock="Top" HorizontalScrollBarVisibility="Disabled"
-                          VerticalScrollBarVisibility="Auto" MinHeight="30" MaxHeight="150">
+               VerticalScrollBarVisibility="Auto" MinHeight="30" MaxHeight="150">
                 <TextBlock x:Name="txtErrorMessage" HorizontalAlignment="Stretch" 
                    VerticalAlignment="Top" TextWrapping="Wrap" Text="Unknown error" Margin="10" 
-                    FontSize="14"/>
+                   FontSize="14"/>
             </ScrollViewer>
             <Label Content="Error details: " HorizontalAlignment="Left" Margin="10,0,0,0" 
                VerticalAlignment="Top" DockPanel.Dock="Top"/>
-        
             <TextBox x:Name="txtErrorDetails" HorizontalAlignment="Stretch"
                  ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                  ScrollViewer.VerticalScrollBarVisibility="Visible"
                  IsReadOnly="True" IsReadOnlyCaretVisible="True"
-                 Margin="10,10,10,0" TextWrapping="Wrap" Text="..." 
+                 Margin="10,10,10,0" TextWrapping="Wrap" Text="" 
                  VerticalAlignment="Stretch" />
         </DockPanel>
-        <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Left"
-                Width="75" Margin="10 0 0 10" Grid.Row="1"
-                  VerticalAlignment="Bottom" Click="btnOK_Click"/>
+        <Button x:Name="btnOK" Content="OK" HorizontalAlignment="Center"
+                Width="75" Margin="10 0 0 10" VerticalAlignment="Bottom" Click="btnOK_Click"/>
     </Grid>
 </Window>
