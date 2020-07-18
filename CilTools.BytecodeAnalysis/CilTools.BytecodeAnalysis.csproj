@@ -86,9 +86,7 @@
   <ItemGroup>
     <None Include="pkg\CilTools.BytecodeAnalysis.dll.nuspec" />
     <None Include="pkg\package.cmd" />
-    <None Include="ReadMe.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -16,7 +16,8 @@
                 <MenuItem Header="Process info" Click="bProcessInfo_Click"/>
                 <MenuItem x:Name="miThreads" Header="Threads" Click="miThreads_Click" />
             </MenuItem>
-            <MenuItem Header="Help" > 
+            <MenuItem Header="Help" >
+                <MenuItem x:Name="miHelp" Header="Show help" Click="miHelp_Click"/>
                 <MenuItem x:Name="miLicense" Header="License" Click="miLicense_Click"/>
                 <MenuItem x:Name="miSource" Header="Source code" Click="miSource_Click"/>
                 <MenuItem x:Name="miFeedback" Header="Feedback" Click="miFeedback_Click"/>

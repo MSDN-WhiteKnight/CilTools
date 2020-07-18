@@ -69,9 +69,7 @@
     <None Include="pkg\package.cmd" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ReadMe.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="ReadMe.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

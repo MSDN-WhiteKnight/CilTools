@@ -259,11 +259,19 @@ namespace CilView
 
         private void miAbout_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(this, 
-                "CIL View "+typeof(MainWindow).Assembly.GetName().Version.ToString()+Environment.NewLine+
-                "CIL Tools project: https://github.com/MSDN-WhiteKnight/CilTools" + Environment.NewLine +
-                "License: BSD 2.0", 
-                "About",MessageBoxButton.OK,MessageBoxImage.Information);
+            string text = String.Format(@"CIL View {0}
+Windows application to display CIL code of methods in the .NET assemblies
+
+Author: MSDN.WhiteKnight
+Repository: https://github.com/MSDN-WhiteKnight/CilTools
+License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
+
+            TextViewWindow wnd = new TextViewWindow();
+            wnd.Owner = this;
+            wnd.Text = text;
+            wnd.Title = "About";
+            wnd.Height = 250;
+            wnd.Show();
         }
 
         private void miExit_Click(object sender, RoutedEventArgs e)
@@ -359,16 +367,45 @@ namespace CilView
             wnd.Show();
         }
 
+        private void miHelp_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string text = "";
+                string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string path = Path.Combine(dir, "readme.txt");
+                text = File.ReadAllText(path);
+
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Text = text;
+                wnd.Title = "CIL View Help";
+                wnd.Show();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(this, ex.GetType().ToString() + ":" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void miLicense_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                string path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                Process.Start(Path.Combine(path, "license.txt"));
+                string text = "";
+                string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string path = Path.Combine(dir, "license.txt");
+                text = File.ReadAllText(path);
+
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Text = text;
+                wnd.Title = "License";
+                wnd.Show();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, ex.GetType().ToString() + ":" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
