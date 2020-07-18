@@ -141,7 +141,7 @@ namespace CilView
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.ToString(), "Error",MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorHandler.Current.Error(ex);
             }
         }
 
@@ -162,7 +162,7 @@ namespace CilView
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorHandler.Current.Error(ex);
             }
         }
 
@@ -236,7 +236,7 @@ namespace CilView
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorHandler.Current.Error(ex);
             }
         }
 
@@ -289,7 +289,6 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
 
             try
             {
-
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.RestoreDirectory = true;
                 dlg.DefaultExt = ".il";
@@ -309,7 +308,7 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorHandler.Current.Error(ex);
             }
         }
 
@@ -324,9 +323,7 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    this, ex.GetType().ToString() + ": " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error
-                    );
+                ErrorHandler.Current.Error(ex);
                 return;
             }
             finally
@@ -352,9 +349,7 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             }
             catch (Exception ex)
             {
-                MessageBox.Show(
-                    this, ex.GetType().ToString() + ": " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error
-                    );
+                ErrorHandler.Current.Error(ex);
                 return;
             }
             finally
@@ -384,7 +379,7 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.GetType().ToString() + ":" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorHandler.Current.Error(ex);
             }
         }
 
@@ -405,7 +400,7 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.GetType().ToString() + ":" + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorHandler.Current.Error(ex);
             }
         }
 
@@ -419,7 +414,7 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             {
                 MessageBox.Show(this, 
 "Failed to open URL. Navigate to https://github.com/MSDN-WhiteKnight/CilTools manually in browser to access source code"+
-                    Environment.NewLine+ Environment.NewLine+ ex.ToString(),
+                    Environment.NewLine+ Environment.NewLine+ ex.Message,
                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -435,7 +430,7 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
                 MessageBox.Show(this,
 @"Failed to open URL. Navigate to https://github.com/MSDN-WhiteKnight/CilTools/issues/new manually in browser
 to provide feedback" +
-                    Environment.NewLine + Environment.NewLine + ex.ToString(),
+                    Environment.NewLine + Environment.NewLine + ex.Message,
                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
@@ -551,7 +546,7 @@ to provide feedback" +
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.ToString(), "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorHandler.Current.Error(ex);
             }
         }
 

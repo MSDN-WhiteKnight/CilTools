@@ -85,9 +85,7 @@ namespace CilView
             {
                 if (operation.Stopped) return;
 
-                MessageBox.Show(
-                    this,ex.GetType().ToString()+": "+ex.Message,"Error",MessageBoxButton.OK,MessageBoxImage.Error
-                    );
+                ErrorHandler.Current.Error(ex);
 
                 this.DialogResult = false;
                 this.Close();

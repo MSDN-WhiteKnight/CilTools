@@ -52,7 +52,7 @@ namespace CilView
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.GetType().ToString() + ": " + ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorHandler.Current.Error(ex);
             }
         }
 
@@ -130,7 +130,7 @@ namespace CilView
             }
             catch (Exception ex)
             {
-                MessageBox.Show(this, ex.GetType().ToString()+": "+ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                ErrorHandler.Current.Error(ex);
             }
         }
     }
