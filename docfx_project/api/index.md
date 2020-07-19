@@ -9,3 +9,5 @@ CIL Tools has following namespaces:
 <xref:CilTools.Reflection>
 
 <xref:CilTools.Runtime>
+
+<xref:CilTools.Syntax>
