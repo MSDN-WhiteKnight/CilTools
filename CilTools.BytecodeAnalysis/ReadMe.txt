@@ -123,3 +123,17 @@ v1.9
 - Add proper handling of duplicate try blocks
 - Indent exception blocks when outtputting them as text
 - Add switch instruction support
+
+v2.0
+- Rename CilBytecodeParser to CilTools.BytecodeAnalysis
+- Add dynamic method parsing support
+- Add syntax API
+- Rework CilInstruction with generics
+- Change the behaviour of CilGraph.ToString method to include only signature instead of full method code
+- Add CilGraph.ToText method to return full code
+- Add CilGraph.PrintSignature to output signature into target TextWriter
+- Fix bug that prevented correct decoding of TypeDef or TypeSpec tokens during signature parsing
+- Fix possible null refs in signature parser
+- Avoid first-chance ArgumentException when resolving tokens
+- Fix bug in MetadataReader.ReadCompressed
+- Fix ldflda/ldsflda instructions handling

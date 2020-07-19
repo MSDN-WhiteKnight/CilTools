@@ -296,6 +296,107 @@
         <member name="P:CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified">
             <inheritdoc/>
         </member>
+        <member name="T:CilTools.Runtime.ClrStackFrameInfo">
+            <summary>
+            Represents a single frame in the callstack of .NET application. The stack frame contains information about the called method 
+            and the location of the IL code executed within that method
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrStackFrameInfo.ToString">
+            <summary>
+            Gets the full text representation of this stack frame 
+            </summary>
+            <remarks>
+            The full text representation contains full signature of the called method, including argument types. 
+            If this frame is not a call to a managed method, returns the name of the special frame from debugger API.
+            </remarks>
+        </member>
+        <member name="M:CilTools.Runtime.ClrStackFrameInfo.ToString(System.Boolean)">
+            <summary>
+            Gets the text representation of this stack frame 
+            </summary>
+            <param name="full">Indicates whether the method should return full text representation</param>
+            <remarks>
+            The full text representation contains full signature of the called method, including argument types. 
+            The short text representation only contains the method's name. 
+            If this frame is not a call to a managed method, returns the name of the special frame from debugger API.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Runtime.ClrStackFrameInfo.Method">
+            <summary>
+            Gets the method corresponding to this stack frame. The value could be null if this frame is a special frame not 
+            corresponding to a managed method, or if the library failed to construct MethodBase object for the called method.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrStackFrameInfo.ILOffset">
+            <summary>
+            Gets the offset, in bytes, of the beginning of the IL code executed by this frame, relative to the beginning of the method body. 
+            </summary>
+            <remarks>
+            The library cannot accurately determine the currently executed instruction in every case, because the resulting native code 
+            could be optimized by JIT. As a result, the currently executed code is presented as the starting and ending offsets.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Runtime.ClrStackFrameInfo.ILOffsetEnd">
+            <summary>
+            Gets the offset, in bytes, of the end of the IL code executed by this frame, relative to the beginning of the method body. 
+            </summary>
+            <remarks>
+            The library cannot accurately determine the currently executed instruction in every case, because the resulting native code 
+            could be optimized by JIT. As a result, the currently executed code is presented as the starting and ending offsets.
+            </remarks>
+        </member>
+        <member name="T:CilTools.Runtime.ClrThreadInfo">
+            <summary>
+            Represents the information about the managed thread in the external process CLR instance
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrThreadInfo.Get(Microsoft.Diagnostics.Runtime.ClrRuntime,System.Collections.Generic.IEnumerable{System.Reflection.Assembly},CilTools.Runtime.ClrAssemblyReader)">
+            <summary>
+            Gets the information about managed threads in the specified CLR instance 
+            </summary>
+            <param name="runtime">The CLR isntance to fetch thread information from</param>
+            <param name="assemblies">
+            The optional collection of assemblies preloaded from the target CLR instance, or null if you don't have any
+            </param>
+            <param name="reader">
+            The optional <see cref="T:CilTools.Runtime.ClrAssemblyReader"/> object to be used for reading assemblies from the target CLR isntance, 
+            or null if you don't have one
+            </param>
+            <returns>
+            The array of <see cref="T:CilTools.Runtime.ClrThreadInfo"/> objects containing information about managed threads
+            </returns>
+            <exception cref="T:System.ArgumentNullException">
+            The value of <paramref name="runtime"/> parameter is null 
+            </exception>
+        </member>
+        <member name="M:CilTools.Runtime.ClrThreadInfo.Print(System.IO.TextWriter)">
+            <summary>
+            Prints the information about the current thread to the specified TextWriter
+            </summary>
+            <exception cref="T:System.ArgumentNullException">
+            The value of <paramref name="output"/> parameter is null 
+            </exception>
+        </member>
+        <member name="M:CilTools.Runtime.ClrThreadInfo.ToString">
+            <summary>
+            Gets the information about the current thread
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrThreadInfo.StackTrace">
+            <summary>
+            Gets the stack trace of the current thread
+            </summary>
+            <remarks>
+            The stack trace is the sequence of the nested method calls made in the thread before it reached the current point 
+            of execution.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Runtime.ClrThreadInfo.DisplayString">
+            <summary>
+            Gets the information about the current thread
+            </summary>
+        </member>
         <member name="T:CilTools.Runtime.DynamicMethodsAssembly">
             <summary>
             Represents the pseudo-assembly that contains a collection of dynamic methods in the external process

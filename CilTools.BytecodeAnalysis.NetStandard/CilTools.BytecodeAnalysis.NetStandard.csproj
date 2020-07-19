@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>1.9.0</Version>
+    <Version>2.0.0</Version>
     <Authors>MSDN-WhiteKnight</Authors>
     <Product>CilTools.BytecodeAnalysis</Product>
     <Description>.NET Standard version of CIL bytecode analysis library.</Description>
