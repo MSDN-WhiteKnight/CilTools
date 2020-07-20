@@ -61,6 +61,10 @@
     name: ClrAssemblyReader
   - uid: CilTools.Runtime.ClrMethodInfo
     name: ClrMethodInfo
+  - uid: CilTools.Runtime.ClrStackFrameInfo
+    name: ClrStackFrameInfo
+  - uid: CilTools.Runtime.ClrThreadInfo
+    name: ClrThreadInfo
   - uid: CilTools.Runtime.DynamicMethodsAssembly
     name: DynamicMethodsAssembly
 - uid: CilTools.Syntax

@@ -7,6 +7,8 @@ items:
   - CilTools.Runtime.ClrAssemblyInfo
   - CilTools.Runtime.ClrAssemblyReader
   - CilTools.Runtime.ClrMethodInfo
+  - CilTools.Runtime.ClrStackFrameInfo
+  - CilTools.Runtime.ClrThreadInfo
   - CilTools.Runtime.DynamicMethodsAssembly
   langs:
   - csharp
@@ -38,6 +40,18 @@ references:
   name: ClrMethodInfo
   nameWithType: ClrMethodInfo
   fullName: CilTools.Runtime.ClrMethodInfo
+- uid: CilTools.Runtime.ClrStackFrameInfo
+  commentId: T:CilTools.Runtime.ClrStackFrameInfo
+  isExternal: true
+  name: ClrStackFrameInfo
+  nameWithType: ClrStackFrameInfo
+  fullName: CilTools.Runtime.ClrStackFrameInfo
+- uid: CilTools.Runtime.ClrThreadInfo
+  commentId: T:CilTools.Runtime.ClrThreadInfo
+  isExternal: true
+  name: ClrThreadInfo
+  nameWithType: ClrThreadInfo
+  fullName: CilTools.Runtime.ClrThreadInfo
 - uid: CilTools.Runtime.DynamicMethodsAssembly
   commentId: T:CilTools.Runtime.DynamicMethodsAssembly
   parent: CilTools.Runtime
