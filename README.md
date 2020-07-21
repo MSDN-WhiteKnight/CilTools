@@ -16,13 +16,7 @@ CIL tools is a set of software to work with Common Intermediate Language in .NET
 
 **Requirements:** .NET Framework 3.5+  
 
-CilBytecodeParser: 
-
-[![Nuget](https://img.shields.io/nuget/v/CilBytecodeParser)](https://www.nuget.org/packages/CilBytecodeParser/) &nbsp; [![GitHub release (latest by date)](https://img.shields.io/github/v/release/MSDN-WhiteKnight/CilTools)](https://github.com/MSDN-WhiteKnight/CilTools/releases)
-
-CilTools.BytecodeAnalysis:
-
-[![Nuget](https://img.shields.io/nuget/v/CilTools.BytecodeAnalysis)](https://www.nuget.org/packages/CilTools.BytecodeAnalysis/)
+[![Nuget](https://img.shields.io/nuget/v/CilTools.BytecodeAnalysis)](https://www.nuget.org/packages/CilTools.BytecodeAnalysis/) &nbsp; [![GitHub release (latest by date)](https://img.shields.io/github/v/release/MSDN-WhiteKnight/CilTools)](https://github.com/MSDN-WhiteKnight/CilTools/releases)
 
 CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
