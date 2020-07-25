@@ -95,7 +95,7 @@ CilTools.Runtime loads CIL bytecode of methods in external process's CLR instanc
 
 **Requirements:** .NET Framework 4.5+
 
-**Download:** [ClickOnce installer](https://msdn-whiteknight.github.io/CilTools/update/)
+**Download:** [ClickOnce installer](https://msdn-whiteknight.github.io/CilTools/update/), [Releases](https://github.com/MSDN-WhiteKnight/CilTools/releases)
 
 A windows application to display CIL code of methods in the given assembly file or process. Supports syntax highlighting and navigating to method code by clicking on its reference.
 
