@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmitSampleApp", "tests\Emit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilView", "CilView\CilView.csproj", "{6B539538-E819-4F47-AB9B-6768F5FF6E0F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Metadata", "CilTools.Metadata\CilTools.Metadata.csproj", "{7EC7D947-C802-4384-A438-25DB46539A88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -83,6 +85,16 @@ Global
 		{6B539538-E819-4F47-AB9B-6768F5FF6E0F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6B539538-E819-4F47-AB9B-6768F5FF6E0F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6B539538-E819-4F47-AB9B-6768F5FF6E0F}.Release|Win32.ActiveCfg = Release|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Win32.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
