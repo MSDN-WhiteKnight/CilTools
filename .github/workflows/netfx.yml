@@ -11,7 +11,7 @@ jobs:
     - uses: actions/checkout@v1
     - uses: nuget/setup-nuget@v1
     - name: Restore NuGet packages
-      run: nuget restore CilTools.Runtime\CilTools.Runtime.csproj -PackagesDirectory packages
+      run: nuget restore CilTools.sln -PackagesDirectory packages
     - name: Build with MSBuild
       run: |
         & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe"
