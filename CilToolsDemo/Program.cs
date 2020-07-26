@@ -112,19 +112,16 @@ namespace CilToolsDemo
                     Console.WriteLine();
                     Console.WriteLine("When called without arguments, prints yourself");
                     Console.WriteLine();
+                    Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);
 
                     asspath = "";
                     type = "CilToolsDemo.Program";
-                    method = "Main";
-
-                    Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);
+                    method = "Main";                    
                     ass = Assembly.GetExecutingAssembly();
 
                     /*asspath = Assembly.GetExecutingAssembly().Location;
                     type = "CilToolsDemo.Program";
-                    method = "Main";
-
-                    Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);
+                    method = "Main";                                        
                     ass = MetadataLoader.Load(asspath);*/
                 }
                 else

@@ -28,7 +28,17 @@ namespace CilTools.Metadata
 
         public override Assembly Assembly
         {
-            get { return MetadataAssembly.UnknownAssembly; }
+            get 
+            {
+                EntityHandle eh = this.tref.ResolutionScope;
+
+                if (!eh.IsNil && eh.Kind == HandleKind.AssemblyReference)
+                {
+                    AssemblyReference ar = assembly.MetadataReader.GetAssemblyReference((AssemblyReferenceHandle)eh);
+                    return new ExternalAssembly(ar, (AssemblyReferenceHandle)eh, this.assembly);
+                }
+                else return MetadataAssembly.UnknownAssembly;
+            }
         }
 
         public override string AssemblyQualifiedName
