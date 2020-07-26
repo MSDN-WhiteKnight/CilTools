@@ -184,13 +184,6 @@
             A date and time when this event occured
             </summary>
         </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilErrorEventArgs.#ctor(System.Exception,System.String)">
-            <summary>
-            Creates new CilErrorEventArgs object with specified Exception and error information
-            </summary>
-            <param name="ex">Exception associated with this event</param>
-            <param name="info">Additional information associated with this event</param>
-        </member>
         <member name="P:CilTools.BytecodeAnalysis.CilErrorEventArgs.Exception">
             <summary>
             Gets exception associated with this event
@@ -205,6 +198,13 @@
             <summary>
             Gets date and time when this event occured
             </summary>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.CilErrorEventArgs.#ctor(System.Exception,System.String)">
+            <summary>
+            Creates new CilErrorEventArgs object with specified Exception and error information
+            </summary>
+            <param name="ex">Exception associated with this event</param>
+            <param name="info">Additional information associated with this event</param>
         </member>
         <member name="T:CilTools.BytecodeAnalysis.CilInstruction">
             <summary>
@@ -231,68 +231,6 @@
             <summary>
             Ordinal number of the place this instruction takes in method body, starting from one.
             </summary>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.#ctor(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)">
-            <summary>
-            Creates a new CilInstruction object initialized with specified field values (infrastructure)
-            </summary>
-            <param name="opc">Opcode</param>
-            <param name="byteoffset">Byte offset</param>
-            <param name="ordinalnum">Ordinal number</param>
-            <param name="mb">Owning method</param>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction(System.Reflection.MethodBase)">
-            <summary>
-            Creates new CilInstruction object that represents an empty instruction
-            </summary>
-            <param name="mb">Owning method</param>
-            <returns>Empty CilInstruction object</returns>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.Create``1(System.Reflection.Emit.OpCode,``0,System.UInt32,System.UInt32,System.UInt32,System.Reflection.MethodBase)">
-            <summary>
-            Creates new CilInstruction object for instruction with operand
-            </summary>
-            <typeparam name="T">Operand type</typeparam>
-            <param name="opc">Instruction opcode</param>
-            <param name="operand">Operand value</param>
-            <param name="operandsize">Operand size in bytes</param>
-            <param name="byteoffset">Byte offset</param>
-            <param name="ordinalnum">Ordinal number</param>
-            <param name="mb">Owning method</param>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.Create(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)">
-            <summary>
-            Creates new CilInstruction object for instruction without operand
-            </summary>
-            <param name="opc">Instruction opcode</param>
-            <param name="byteoffset">Byte offset</param>
-            <param name="ordinalnum">Ordinal number</param>
-            <param name="mb">Owning method</param>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.OperandToString(System.IO.TextWriter)">
-            <summary>
-            Writes the text representation of this instruction's operand into the specified TextWriter
-            </summary>
-            <param name="target">The destination TextWriter</param>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.ToString">
-            <summary>
-            Returns a text representation of this instruction as a line of CIL code
-            </summary>
-            <returns>String containing text representation of this instruction</returns>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)">
-            <summary>
-            Emits CIL code for this instruction into the specified IL generator.
-            </summary>
-            <param name="ilg">Target IL generator.</param>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.Parse(System.String)">
-            <summary>
-            Converts CIL instruction textual representation into the corresponding CilInstruction object
-            </summary>
-            <param name="str">The line of CIL code representing instruction</param>
-            <returns>CilInstruction object for the specified string</returns>
         </member>
         <member name="P:CilTools.BytecodeAnalysis.CilInstruction.Method">
             <summary>
@@ -339,6 +277,43 @@
             Gets total size, in bytes, that this instruction occupies in the method body
             </summary>
         </member>
+        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.#ctor(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)">
+            <summary>
+            Creates a new CilInstruction object initialized with specified field values (infrastructure)
+            </summary>
+            <param name="opc">Opcode</param>
+            <param name="byteoffset">Byte offset</param>
+            <param name="ordinalnum">Ordinal number</param>
+            <param name="mb">Owning method</param>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.CreateEmptyInstruction(System.Reflection.MethodBase)">
+            <summary>
+            Creates new CilInstruction object that represents an empty instruction
+            </summary>
+            <param name="mb">Owning method</param>
+            <returns>Empty CilInstruction object</returns>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.Create``1(System.Reflection.Emit.OpCode,``0,System.UInt32,System.UInt32,System.UInt32,System.Reflection.MethodBase)">
+            <summary>
+            Creates new CilInstruction object for instruction with operand
+            </summary>
+            <typeparam name="T">Operand type</typeparam>
+            <param name="opc">Instruction opcode</param>
+            <param name="operand">Operand value</param>
+            <param name="operandsize">Operand size in bytes</param>
+            <param name="byteoffset">Byte offset</param>
+            <param name="ordinalnum">Ordinal number</param>
+            <param name="mb">Owning method</param>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.Create(System.Reflection.Emit.OpCode,System.UInt32,System.UInt32,System.Reflection.MethodBase)">
+            <summary>
+            Creates new CilInstruction object for instruction without operand
+            </summary>
+            <param name="opc">Instruction opcode</param>
+            <param name="byteoffset">Byte offset</param>
+            <param name="ordinalnum">Ordinal number</param>
+            <param name="mb">Owning method</param>
+        </member>
         <member name="P:CilTools.BytecodeAnalysis.CilInstruction.OperandType">
             <summary>
             Gets this instruction's operand type, or null if there's no operand
@@ -374,30 +349,30 @@
             Gets the information about local variable referenced by this instruction, if applicable
             </summary>
         </member>
-        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedMember">
+        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.OperandToString(System.IO.TextWriter)">
             <summary>
-            Gets a member (type, field or method) referenced by this instruction, if applicable
+            Writes the text representation of this instruction's operand into the specified TextWriter
             </summary>
+            <param name="target">The destination TextWriter</param>
         </member>
-        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedString">
+        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.ToString">
             <summary>
-            Gets a string literal referenced by this instruction, if applicable
+            Returns a text representation of this instruction as a line of CIL code
             </summary>
+            <returns>String containing text representation of this instruction</returns>
         </member>
-        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedSignature">
+        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)">
             <summary>
-            Gets a signature referenced by this instruction, if applicable
+            Emits CIL code for this instruction into the specified IL generator.
             </summary>
+            <param name="ilg">Target IL generator.</param>
         </member>
-        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedParameter">
+        <member name="M:CilTools.BytecodeAnalysis.CilInstruction.Parse(System.String)">
             <summary>
-            Gets the information about method parameter referenced by this instruction, if applicable
+            Converts CIL instruction textual representation into the corresponding CilInstruction object
             </summary>
-        </member>
-        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedLocal">
-            <summary>
-            Gets the information about local variable referenced by this instruction, if applicable
-            </summary>
+            <param name="str">The line of CIL code representing instruction</param>
+            <returns>CilInstruction object for the specified string</returns>
         </member>
         <member name="P:CilTools.BytecodeAnalysis.CilTokenInstruction.ReferencedString">
             <summary>
@@ -414,12 +389,6 @@
             Represents custom modifier, an object used to associate a special information with the type specification, as defined by ECMA-335
             </summary>
         </member>
-        <member name="M:CilTools.BytecodeAnalysis.CustomModifier.ToString">
-            <summary>
-            Gets the textual representation of this modifier as CIL code
-            </summary>
-            <returns></returns>
-        </member>
         <member name="P:CilTools.BytecodeAnalysis.CustomModifier.IsRequired">
             <summary>
             Gets the value indicating whether this modifier is required or optional
@@ -435,6 +404,12 @@
             <summary>
             Gets the type of this modifier
             </summary>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.CustomModifier.ToString">
+            <summary>
+            Gets the textual representation of this modifier as CIL code
+            </summary>
+            <returns></returns>
         </member>
         <member name="T:CilTools.BytecodeAnalysis.DebugUtils">
             <summary>
@@ -526,6 +501,16 @@
             <remarks>Use <see cref="M:CilTools.BytecodeAnalysis.CilGraph.Create(System.Reflection.MethodBase)"/> method to create CIL graph for a method instead of using this 
             contructor.</remarks>
         </member>
+        <member name="P:CilTools.BytecodeAnalysis.CilGraph.Root">
+            <summary>
+            Gets a root node of this graph (the first instruction in the method)
+            </summary>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.CilGraph.Method">
+            <summary>
+            Gets a method for which this graph is built
+            </summary>
+        </member>
         <member name="M:CilTools.BytecodeAnalysis.CilGraph.PrintSignature(System.IO.TextWriter)">
             <summary>
             Writes the signature of the method represented by this graph into the specified TextWriter
@@ -610,16 +595,6 @@
             into target IL generator. 
             Return <see langword="true"/> to skip emitting instruction, or <see langword="false"/> to emit instruction.</remarks>
         </member>
-        <member name="P:CilTools.BytecodeAnalysis.CilGraph.Root">
-            <summary>
-            Gets a root node of this graph (the first instruction in the method)
-            </summary>
-        </member>
-        <member name="P:CilTools.BytecodeAnalysis.CilGraph.Method">
-            <summary>
-            Gets a method for which this graph is built
-            </summary>
-        </member>
         <member name="T:CilTools.BytecodeAnalysis.CilGraphNode">
             <summary>
             Represents a node in the CIL graph. A node describes an instruction and its connection with other instructions
@@ -656,23 +631,6 @@
             An array of nodes that represents the jump table of the switch instruction, if applicable
             </summary>
         </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets">
-            <summary>
-            Gets an array of nodes that represents the jump table of the switch instruction, if applicable
-            </summary>
-            <remarks>Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. For non-switch instructions, returns an empty array.</remarks>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilGraphNode.#ctor">
-            <summary>
-            Creates new CilGraphNode object
-            </summary>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilGraphNode.ToString">
-            <summary>
-            Returns text representation of this node as a line of CIL code
-            </summary>
-            <returns>String that contatins a text representation of this node</returns>
-        </member>
         <member name="P:CilTools.BytecodeAnalysis.CilGraphNode.Instruction">
             <summary>
             Gets CIL instruction associated with this node
@@ -702,6 +660,23 @@
             </summary>
             <remarks>Branch target is an instruction which would be called after current one if the condition for jump instruction is met. For non-jump instructions, the value is null.</remarks>
         </member>
+        <member name="M:CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets">
+            <summary>
+            Gets an array of nodes that represents the jump table of the switch instruction, if applicable
+            </summary>
+            <remarks>Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. For non-switch instructions, returns an empty array.</remarks>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.CilGraphNode.#ctor">
+            <summary>
+            Creates new CilGraphNode object
+            </summary>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.CilGraphNode.ToString">
+            <summary>
+            Returns text representation of this node as a line of CIL code
+            </summary>
+            <returns>String that contatins a text representation of this node</returns>
+        </member>
         <member name="T:CilTools.BytecodeAnalysis.CilGraphNodeMutable">
             <summary>
             A mutable version of CilGraphNode class
@@ -714,12 +689,6 @@
             </summary>
             <param name="instr">An instruction associated with this node</param>
             <exception cref="T:System.ArgumentNullException">instr argument is null</exception>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.CilGraphNodeMutable.SetSwitchTargets(CilTools.BytecodeAnalysis.CilGraphNode[])">
-            <summary>
-            Sets the array of nodes that represents the jump table of the switch instruction
-            </summary>
-            <remarks>Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. </remarks>
         </member>
         <member name="P:CilTools.BytecodeAnalysis.CilGraphNodeMutable.Instruction">
             <summary>
@@ -749,6 +718,37 @@
             Gets or sets a reference to the node that represents instruction which is a target of the current instruction, if applicable
             </summary>
             <remarks>Branch target is an instruction which would be called after current one if the condition for jump instruction is met. For non-jump instructions, the value is null.</remarks>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.CilGraphNodeMutable.SetSwitchTargets(CilTools.BytecodeAnalysis.CilGraphNode[])">
+            <summary>
+            Sets the array of nodes that represents the jump table of the switch instruction
+            </summary>
+            <remarks>Jump table is the sequence of instructions corresponding to the switch instruction. When runtime processes switch instruction, it will transfer control to one of the instructions based on the value pushed to the stack. </remarks>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedMember">
+            <summary>
+            Gets a member (type, field or method) referenced by this instruction, if applicable
+            </summary>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedString">
+            <summary>
+            Gets a string literal referenced by this instruction, if applicable
+            </summary>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedSignature">
+            <summary>
+            Gets a signature referenced by this instruction, if applicable
+            </summary>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedParameter">
+            <summary>
+            Gets the information about method parameter referenced by this instruction, if applicable
+            </summary>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.CilInstructionImpl`1.ReferencedLocal">
+            <summary>
+            Gets the information about local variable referenced by this instruction, if applicable
+            </summary>
         </member>
         <member name="T:CilTools.BytecodeAnalysis.CilReaderState">
             <summary>
@@ -811,6 +811,16 @@
             A method which body this object reads
             </summary>
         </member>
+        <member name="P:CilTools.BytecodeAnalysis.CilReader.Method">
+            <summary>
+            Gets a method which body this CilReader object reads
+            </summary>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.CilReader.State">
+            <summary>
+            Gets a current state of this CilReader object
+            </summary>
+        </member>
         <member name="M:CilTools.BytecodeAnalysis.CilReader.#ctor(System.Byte[])">
             <summary>
             Creates new CilReader object that uses specified byte array as source
@@ -863,16 +873,6 @@
             <exception cref="T:System.NotSupportedException">CilReader encountered unknown opcode</exception>
             <exception cref="T:CilTools.BytecodeAnalysis.CilParserException">Failed to retrieve method body for the method</exception>
             <returns>A collection of CIL instructions that form the body of this method</returns>
-        </member>
-        <member name="P:CilTools.BytecodeAnalysis.CilReader.Method">
-            <summary>
-            Gets a method which body this CilReader object reads
-            </summary>
-        </member>
-        <member name="P:CilTools.BytecodeAnalysis.CilReader.State">
-            <summary>
-            Gets a current state of this CilReader object
-            </summary>
         </member>
         <member name="T:CilTools.BytecodeAnalysis.Extensions.CilExtensions">
             <summary>
@@ -1031,267 +1031,6 @@
             into target IL generator. 
             Return <see langword="true"/> to skip emitting instruction, or <see langword="false"/> to emit instruction.</remarks>
         </member>
-        <member name="T:CilTools.Reflection.CustomMethod">
-            <summary>
-            A base class for MethodBase implementations providing custom mechanisms for extracting bytecode data. 
-            Inherit from this class when you want CilBytecodeparser to process bytecode from your custom data source, instead of 
-            reflection.
-            </summary>
-        </member>
-        <member name="M:CilTools.Reflection.CustomMethod.GetBytecode">
-            <summary>
-            When overridden in the derived class, returns the CIL bytecode of the method body
-            </summary>
-            <returns>CIL bytecode as byte array</returns>
-        </member>
-        <member name="M:CilTools.Reflection.CustomMethod.GetLocalVarSignature">
-            <summary>
-            When overridden in the derived class, returns the local variable signature as an array of bytes
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CilTools.Reflection.CustomMethod.GetExceptionBlocks">
-            <summary>
-            When overridden in the derived class, returns the list of exception handling blocks in the method's body
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.CustomMethod.GetLocalVariables">
-            <summary>
-            Returns the array of local variable declarations of this method
-            </summary>
-            <remarks>
-            The default implementation reads local varaibles from the signature returned by GetLocalVarSignature method
-            </remarks>
-        </member>
-        <member name="M:CilTools.Reflection.CustomMethod.PrepareMethod(System.Reflection.MethodBase)">
-            <summary>
-            Converts MethodBase into the form suitable for processing by CilBytecodeParser
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.CustomMethod.CreateResolver(System.Reflection.MethodBase)">
-            <summary>
-            Creates an object that can be used to resolve tokens in the context of specified method
-            </summary>        
-        </member>
-        <member name="P:CilTools.Reflection.CustomMethod.ReturnType">
-            <summary>
-            When overridden in the derived class, returns the type of this method's return value
-            </summary>
-            <remarks>Return null if the return type is not applicable (such as for constructors).</remarks>
-        </member>
-        <member name="P:CilTools.Reflection.CustomMethod.TokenResolver">
-            <summary>
-            When overridden in the derived class, returns an object that can be used to convert metadata tokens 
-            into corresponding reflection objects
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.CustomMethod.MaxStackSize">
-            <summary>
-            When overridden in the derived class, returns the maximum size of operand stack during method execution
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.CustomMethod.MaxStackSizeSpecified">
-            <summary>
-            When overridden in the derived class, specifies whether the MaxStackSize property value is defined
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.CustomMethod.InitLocals">
-            <summary>
-            When overridden in the derived class, specifies whether the local variables are initialized
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.CustomMethod.InitLocalsSpecified">
-            <summary>
-            When overridden in the derived class, specifies whether the <c>InitLocals</c> property value is defined
-            </summary>
-        </member>
-        <member name="T:CilTools.Reflection.ExceptionBlock">
-            <summary>
-            Represents an exception handling block
-            </summary>
-        </member>
-        <member name="M:CilTools.Reflection.ExceptionBlock.#ctor(System.Reflection.ExceptionHandlingClauseOptions,System.Int32,System.Int32,System.Type,System.Int32,System.Int32,System.Int32)">
-            <summary>
-            Initializes a new ExceptionBlock instance using provided property values
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ExceptionBlock.FromReflection(System.Reflection.ExceptionHandlingClause)">
-            <summary>
-            Creates new ExceptionBlock instance based on the specified reflection ExceptionHandlingClause object
-            </summary>        
-        </member>
-        <member name="P:CilTools.Reflection.ExceptionBlock.CatchType">
-            <summary>
-            Gets the type of exception handled by the catch block
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.ExceptionBlock.FilterOffset">
-            <summary>
-            Gets the offset of this block's exception filter within the method body, in bytes
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.ExceptionBlock.Flags">
-            <summary>
-            Gets the value specifying the type of exception block
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.ExceptionBlock.HandlerLength">
-            <summary>
-            Gets the length of this block's handler, in bytes
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.ExceptionBlock.HandlerOffset">
-            <summary>
-            Gets the offset of this block's handler within the method body, in bytes
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.ExceptionBlock.TryLength">
-            <summary>
-            Gets the length of this block's try clause, in bytes
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.ExceptionBlock.TryOffset">
-            <summary>
-            Gets the offset of this block's try clause within the method body, in bytes
-            </summary>
-        </member>
-        <member name="T:CilTools.Reflection.ITokenResolver">
-            <summary>
-            Represents an object that can be used to convert metadata tokens into corresponding high-level reflection objects
-            </summary>
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveType(System.Int32,System.Type[],System.Type[])">
-            <summary>
-            Returns the type identified by the specified metadata token, in the context defined by the specified generic type parameters.
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveType(System.Int32)">
-            <summary>
-            Returns the type identified by the specified metadata token.
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32,System.Type[],System.Type[])">
-            <summary>
-            Returns the method or constructor identified by the specified metadata token, in the context defined by the 
-            specified generic type parameters.
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32)">
-            <summary>
-            Returns the method or constructor identified by the specified metadata token.
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveField(System.Int32,System.Type[],System.Type[])">
-            <summary>
-            Returns the field identified by the specified metadata token, in the context defined by the specified generic type parameters.
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveField(System.Int32)">
-            <summary>
-            Returns the field identified by the specified metadata token.
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32,System.Type[],System.Type[])">
-            <summary>
-            Returns the type or member identified by the specified metadata token, in the context defined by the specified 
-            generic type parameters.
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32)">
-            <summary>
-            Returns the type or member identified by the specified metadata token.
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveSignature(System.Int32)">
-            <summary>
-            Returns the signature blob identified by a metadata token.
-            </summary>        
-            <returns>An array of bytes representing the signature blob.</returns>
-        </member>
-        <member name="M:CilTools.Reflection.ITokenResolver.ResolveString(System.Int32)">
-            <summary>
-            Returns the string identified by the specified metadata token.
-            </summary>        
-        </member>
-        <member name="T:CilTools.Reflection.LocalVariable">
-            <summary>
-            Represents local variable declaration in the method body
-            </summary>
-        </member>
-        <member name="M:CilTools.Reflection.LocalVariable.#ctor(CilTools.BytecodeAnalysis.TypeSpec,System.Int32)">
-            <summary>
-            Initializes a new LocalVariable instance with the specified TypeSpec and index
-            </summary>
-            <param name="ptype">TypeSpec object representing the variable type</param>
-            <param name="pindex">Index of local variable within method body</param>
-        </member>
-        <member name="M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver)">
-            <summary>
-            Reads local variables from the specified signature, resolving tokens using the specified ITokenResolver
-            </summary>
-            <param name="data">Local variable signature as byte array</param>
-            <param name="resolver">The object used to resolve metadata tokens</param>
-            <returns>An array of local variables read from the signature</returns>
-            <exception cref="T:System.ArgumentNullException">Input array is null</exception>
-            <exception cref="T:System.NotSupportedException">Signature contains unsupported types</exception>
-        </member>
-        <member name="M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)">
-            <summary>
-            Reads local variables from the specified signature, resolving tokens within the scope of the specified module
-            </summary>
-            <param name="data">Local variable signature as byte array</param>
-            <param name="module">Module in which to resolve metadata tokens</param>
-            <returns>An array of local variables read from the signature</returns>
-            <exception cref="T:System.ArgumentNullException">Input array is null</exception>
-            <exception cref="T:System.NotSupportedException">Signature contains unsupported types</exception>
-        </member>
-        <member name="M:CilTools.Reflection.LocalVariable.FromReflection(System.Reflection.MethodBase)">
-            <summary>
-            Reads local variables from the specified method's body
-            </summary>
-            <param name="mb">Source method</param>
-            <returns>An array of local variables read from the method body</returns>
-        </member>
-        <member name="P:CilTools.Reflection.LocalVariable.LocalTypeSpec">
-            <summary>
-            Gets the TypeSpec object representing the variable type
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.LocalVariable.LocalType">
-            <summary>
-            Gets the variable type
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.LocalVariable.LocalIndex">
-            <summary>
-            Gets the index of local variable within the containing method body
-            </summary>
-        </member>
-        <member name="P:CilTools.Reflection.LocalVariable.IsPinned">
-            <summary>
-            Gets the value indicating whether the object pointed by local variable is pinned in memory
-            </summary>
-        </member>
-        <member name="T:CilTools.Reflection.ModuleWrapper">
-            <summary>
-            Resolves metadata tokens in the context of the specified module
-            </summary>
-        </member>
-        <member name="M:CilTools.Reflection.ModuleWrapper.#ctor(System.Reflection.MethodBase)">
-            <summary>
-            Creates ModuleWrapper object using the module containing the specified method
-            </summary>        
-        </member>
-        <member name="M:CilTools.Reflection.ModuleWrapper.#ctor(System.Reflection.Module)">
-            <summary>
-            Creates ModuleWrapper object using the explicitly specified module
-            </summary>        
-        </member>
-        <member name="T:CilTools.Reflection.ModuleWrapperDynamic">
-            <summary>
-            Resolves metadata tokens in the context of specified dynamic method
-            </summary>
-        </member>
         <member name="T:CilTools.BytecodeAnalysis.CallingConvention">
             <summary>
             Represents calling convention, a set of rules defining how the function interacts with its caller, as defined by ECMA-335
@@ -1344,25 +1083,6 @@
             <exception cref="T:CilTools.BytecodeAnalysis.CilParserException">Input data is invalid</exception>
             <exception cref="T:System.NotSupportedException">Signature contains generic types, function pointers or variable-bound arrays</exception>
         </member>
-        <member name="M:CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)">
-            <summary>
-            Gets the type of parameter with the specified index
-            </summary>
-            <param name="index">Index of the requested parameter</param>
-            <returns>The type of requested parameter</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">Index is negative or outside the bounds of collection</exception>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.Signature.GetParamTypes">
-            <summary>
-            Gets the array of fixed parameter types that the function described by this signature takes
-            </summary>
-            <returns></returns>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.Signature.ToString">
-            <summary>
-            Gets the textual representation of this signature as CIL code
-            </summary>        
-        </member>
         <member name="P:CilTools.BytecodeAnalysis.Signature.CallingConvention">
             <summary>
             Returns calling convention of the function described by this signature
@@ -1388,350 +1108,29 @@
             Gets the amount of fixed parameters that the function described by this signature takes
             </summary>
         </member>
+        <member name="M:CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)">
+            <summary>
+            Gets the type of parameter with the specified index
+            </summary>
+            <param name="index">Index of the requested parameter</param>
+            <returns>The type of requested parameter</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Index is negative or outside the bounds of collection</exception>
+        </member>
         <member name="P:CilTools.BytecodeAnalysis.Signature.ParamTypes">
             <summary>
             Enumerates types of fixed parameters that the function described by this signature takes
             </summary>
         </member>
-        <member name="T:CilTools.Syntax.BlockSyntax">
+        <member name="M:CilTools.BytecodeAnalysis.Signature.GetParamTypes">
             <summary>
-            Represents the block syntax in the CIL assembler. The block contains child directive and instruction nodes.
+            Gets the array of fixed parameter types that the function described by this signature takes
             </summary>
-            <remarks>
-            The examples of block syntax are method body or exception handler blocks. The block consists of the optional header, opening curly brace, content nodes 
-            (directives and statements) and closing curly brace.
-            </remarks>
+            <returns></returns>
         </member>
-        <member name="T:CilTools.Syntax.SyntaxNode">
+        <member name="M:CilTools.BytecodeAnalysis.Signature.ToString">
             <summary>
-            Represents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent concrete language constructs derive from this class. 
-            </summary>
-            <remarks>
-            <para>
-            The <c>SyntaxNode</c> class instance contains all information required to produce the source code of the corresponding language construct, including whitespaces. 
-            The <see cref="M:CilTools.Syntax.SyntaxNode.EnumerateChildNodes"/> method returns all child nodes of this node, or an empty collection if it is a leaf (terminal node). 
-            Some child nodes may be exposed via specific properties as well. 
-            The text representation for non-terminal node is a string concetanation of all its child nodes' text representations. 
-            </para>
-            <para>Use <see cref="M:CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree"/> method to get the syntax tree for the specified method.</para>
-            </remarks>
-        </member>
-        <member name="M:CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)">
-            <summary>
-            Writes text representation of this node into the specified TextWriter
-            </summary>
-        </member>
-        <member name="M:CilTools.Syntax.SyntaxNode.EnumerateChildNodes">
-            <summary>
-            Enumerates child nodes of this node. For the leaf node, returns an empty collection.
-            </summary>
-            <returns>The collection of child syntax nodes</returns>
-        </member>
-        <member name="M:CilTools.Syntax.SyntaxNode.ToString">
-            <summary>
-            Gets the text representation of this node, including whitespace content
-            </summary>
-            <returns>The string containing CIL code of this syntax node</returns>
-        </member>
-        <member name="M:CilTools.Syntax.SyntaxNode.GetChildNodes">
-            <summary>
-            Gets the array of this node's child nodes. For the leaf node, returns an empty array.
-            </summary>
-            <returns>The array of child syntax nodes</returns>
-        </member>
-        <member name="P:CilTools.Syntax.SyntaxNode.LeadingWhitespace">
-            <summary>
-            Gets whitespace content at the beginning of this node's code
-            </summary>
-            <remarks>
-            Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
-            content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
-            </remarks>
-        </member>
-        <member name="P:CilTools.Syntax.SyntaxNode.TrailingWhitespace">
-            <summary>
-            Gets whitespace content at the end of this node's code
-            </summary>
-            <remarks>
-            Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
-            content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
-            </remarks>
-        </member>
-        <member name="P:CilTools.Syntax.SyntaxNode.Parent">
-            <summary>
-            Gets the parent node of this syntax node, or null if this node is root or not included in syntax tree.
-            </summary>
-        </member>
-        <member name="M:CilTools.Syntax.BlockSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.BlockSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="P:CilTools.Syntax.BlockSyntax.HeaderSyntax">
-            <summary>
-            Gets the header syntax of this, or an empty collection if this block has no header
-            </summary>
-            <remarks>
-            For the exception handler blocks, the header represents the exception clause. Other types of blocks does not have headers.
-            </remarks>
-        </member>
-        <member name="P:CilTools.Syntax.BlockSyntax.Content">
-            <summary>
-            Returns the collection of the syntax nodes contained within this block (content nodes)
-            </summary>
-            <remarks>
-            The content nodes are located between opening and closing curly braces. They include instructions and directives.
-            </remarks>
-        </member>
-        <member name="T:CilTools.Syntax.CommentSyntax">
-            <summary>
-            Represents the comment in the CIL assembler code. The comment does not impact code semantics in any way, but may provide extra information.
-            </summary>
-        </member>
-        <member name="M:CilTools.Syntax.CommentSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.CommentSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="T:CilTools.Syntax.DirectiveSyntax">
-            <summary>
-            Represents the directive in CIL assembler. The directive declaration starts from the dotted name.
-            </summary>
-            <remarks>
-            The directive provides meta-information, such as the method's signature or the declarations of local variables.
-            </remarks>
-        </member>
-        <member name="M:CilTools.Syntax.DirectiveSyntax.WriteContent(System.IO.TextWriter)">
-            <summary>
-            Writes text representation of this directive's content into the specified TextWriter
-            </summary>
-        </member>
-        <member name="M:CilTools.Syntax.DirectiveSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.DirectiveSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="P:CilTools.Syntax.DirectiveSyntax.Name">
-            <summary>
-            Gets the name of this directive
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.DirectiveSyntax.ContentString">
-            <summary>
-            Gets the text representation of this directive's content
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.DirectiveSyntax.ContentSyntax">
-            <summary>
-            Gets the collection of nodes that represent this directive's content
-            </summary>
-        </member>
-        <member name="T:CilTools.Syntax.IdentifierSyntax">
-            <summary>
-            Represents identifier in CIL assembler. Identifier is a name of the member or variable.
-            </summary>
-        </member>
-        <member name="M:CilTools.Syntax.IdentifierSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.IdentifierSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="P:CilTools.Syntax.IdentifierSyntax.Content">
-            <summary>
-            Gets the content of this identifier as string
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.IdentifierSyntax.IsMemberName">
-            <summary>
-            Gets the value indicating whether this identifier represents assembly member name
-            </summary>
-        </member>
-        <member name="T:CilTools.Syntax.InstructionSyntax">
-            <summary>
-            Represents instruction syntax in CIL assembler
-            </summary>
-            <remarks>The instruction syntax consists of the optional label, operation name, and the optional operand</remarks>
-        </member>
-        <member name="M:CilTools.Syntax.InstructionSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.InstructionSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.InstructionSyntax.WriteLabel(System.IO.TextWriter)">
-            <summary>
-            Writes the label name of this instruction into the specified TextWriter
-            </summary>
-        </member>
-        <member name="M:CilTools.Syntax.InstructionSyntax.WriteOperation(System.IO.TextWriter)">
-            <summary>
-            Writes the operation name of this instruction into the specified TextWriter
-            </summary>
-        </member>
-        <member name="M:CilTools.Syntax.InstructionSyntax.WriteOperand(System.IO.TextWriter)">
-            <summary>
-            Writes the operand of this instruction into the specified TextWriter
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.InstructionSyntax.Label">
-            <summary>
-            Gets the label name of this instruction
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.InstructionSyntax.Operation">
-            <summary>
-            Gets the operation name of this instruction
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.InstructionSyntax.Instruction">
-            <summary>
-            Returns the instruction instance corresponding to this node
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.InstructionSyntax.OperandString">
-            <summary>
-            Gets the text representation of this instruction's operand 
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.InstructionSyntax.OperandSyntax">
-            <summary>
-            Gets the collection of nodes representing this instruction operand's syntax
-            </summary>
-        </member>
-        <member name="T:CilTools.Syntax.KeywordKind">
-            <summary>
-            Represents the kind of keyword in the <see cref="T:CilTools.Syntax.KeywordSyntax"/> node
-            </summary>
-        </member>
-        <member name="F:CilTools.Syntax.KeywordKind.Other">
-            <summary>
-            Unclassifed
-            </summary>
-        </member>
-        <member name="F:CilTools.Syntax.KeywordKind.DirectiveName">
-            <summary>
-            The name of directive
-            </summary>
-        </member>
-        <member name="F:CilTools.Syntax.KeywordKind.InstructionName">
-            <summary>
-            The name of instruction
-            </summary>
-        </member>
-        <member name="T:CilTools.Syntax.KeywordSyntax">
-            <summary>
-            Represents the keyword token in CIL assembler. 
-            </summary>
-            <remarks> 
-            The keyword is a special sequence of characters that can't be used as identifier. 
-            The list of keywords is predefined by specification. 
-            The keyword could represent the directive name, access modifier, instruction name 
-            or other special syntactic element.
-            </remarks>
-        </member>
-        <member name="M:CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.KeywordSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="P:CilTools.Syntax.KeywordSyntax.Content">
-            <summary>
-            Gets the value of this keyword as string
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.KeywordSyntax.Kind">
-            <summary>
-            Gets the keyword kind
-            </summary>
-        </member>
-        <member name="T:CilTools.Syntax.LiteralSyntax">
-            <summary>
-            Represents the syntax of literal constant (such as numeric or string) in CIL assembler
-            </summary>
-            <remarks>
-            Literal constant value is inlined directly in the source code. Typically literal syntax is used to 
-            represent the operand of the instruction.
-            </remarks>
-        </member>
-        <member name="M:CilTools.Syntax.LiteralSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.LiteralSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="P:CilTools.Syntax.LiteralSyntax.Value">
-            <summary>
-            Gets the value represented by this literal
-            </summary>
-        </member>
-        <member name="T:CilTools.Syntax.MemberRefSyntax">
-            <summary>
-            Represents the reference to the assembly member (such as type, method or field) in CIL assembler
-            </summary>
-            <remarks>
-            The member reference syntax is used as instruction operand or in variable declarations. 
-            </remarks>
-        </member>
-        <member name="M:CilTools.Syntax.MemberRefSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.MemberRefSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="P:CilTools.Syntax.MemberRefSyntax.Member">
-            <summary>
-            Gets the reflection construct representing the referenced member
-            </summary>
-        </member>
-        <member name="T:CilTools.Syntax.MethodDefSyntax">
-            <summary>
-            Represents the syntax of the method definition in CIL assembler
-            </summary>
-            <remarks>
-            Method definition consists of the signature ("header") and the body. The body can contain directives 
-            (such as custom attributes or local variable declarations) and instructions.
-            </remarks>
-        </member>
-        <member name="M:CilTools.Syntax.MethodDefSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.MethodDefSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="P:CilTools.Syntax.MethodDefSyntax.Signature">
-            <summary>
-            Gets the directive representing the signature of the defined method
-            </summary>
-        </member>
-        <member name="P:CilTools.Syntax.MethodDefSyntax.Body">
-            <summary>
-            Gets the block the forms the body of the defined method
-            </summary>
-        </member>
-        <member name="T:CilTools.Syntax.PunctuationSyntax">
-            <summary>
-            Represents the punctuation sign token in CIL assembler
-            </summary>
-            <remarks>
-            Punctuation signs divide other tokens in syntax constructs. Punctuation signs used in CIL are colons, 
-            braces, angle braces and others. 
-            </remarks>
-        </member>
-        <member name="M:CilTools.Syntax.PunctuationSyntax.ToText(System.IO.TextWriter)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes">
-            <inheritdoc/>
-        </member>
-        <member name="P:CilTools.Syntax.PunctuationSyntax.Content">
-            <summary>
-            Gets the value of this punctuation sign as string
-            </summary>
+            Gets the textual representation of this signature as CIL code
+            </summary>        
         </member>
         <member name="T:CilTools.BytecodeAnalysis.ElementType">
             <summary>
@@ -1898,25 +1297,6 @@
             Represents type specification, the set of type information stored in the signature, as defined by ECMA-335
             </summary>
         </member>
-        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)">
-            <summary>
-            Gets the custom modifier with the specified index
-            </summary>
-            <param name="index">Index of the requested modifier</param>
-            <returns>The requested custom modifier</returns>
-            <exception cref="T:System.ArgumentOutOfRangeException">Index is negative or outside the bounds of the collection</exception>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetModifiers">
-            <summary>
-            Gets the array of custom modifiers associated with this type specification
-            </summary>
-            <returns>The array of custom modifiers</returns>
-        </member>
-        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.ToString">
-            <summary>
-            Returns textual representation of this type specification as CIL code
-            </summary>        
-        </member>
         <member name="P:CilTools.BytecodeAnalysis.TypeSpec.ElementType">
             <summary>
             Gets the element type of this type specification 
@@ -1927,10 +1307,24 @@
             Gets the amount of custom modifiers associated with this type specification 
             </summary>
         </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)">
+            <summary>
+            Gets the custom modifier with the specified index
+            </summary>
+            <param name="index">Index of the requested modifier</param>
+            <returns>The requested custom modifier</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Index is negative or outside the bounds of the collection</exception>
+        </member>
         <member name="P:CilTools.BytecodeAnalysis.TypeSpec.Modifiers">
             <summary>
             Enumerates custom modifiers associated with this type specification
             </summary>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetModifiers">
+            <summary>
+            Gets the array of custom modifiers associated with this type specification
+            </summary>
+            <returns>The array of custom modifiers</returns>
         </member>
         <member name="P:CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec">
             <summary>
@@ -1946,6 +1340,612 @@
             <summary>
             Gets the value indicating whether this TypeSpec represents pinned local variable
             </summary>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.ToString">
+            <summary>
+            Returns textual representation of this type specification as CIL code
+            </summary>        
+        </member>
+        <member name="T:CilTools.Reflection.CustomMethod">
+            <summary>
+            A base class for MethodBase implementations providing custom mechanisms for extracting bytecode data. 
+            Inherit from this class when you want CilBytecodeparser to process bytecode from your custom data source, instead of 
+            reflection.
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.CustomMethod.ReturnType">
+            <summary>
+            When overridden in the derived class, returns the type of this method's return value
+            </summary>
+            <remarks>Return null if the return type is not applicable (such as for constructors).</remarks>
+        </member>
+        <member name="P:CilTools.Reflection.CustomMethod.TokenResolver">
+            <summary>
+            When overridden in the derived class, returns an object that can be used to convert metadata tokens 
+            into corresponding reflection objects
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.CustomMethod.GetBytecode">
+            <summary>
+            When overridden in the derived class, returns the CIL bytecode of the method body
+            </summary>
+            <returns>CIL bytecode as byte array</returns>
+        </member>
+        <member name="P:CilTools.Reflection.CustomMethod.MaxStackSize">
+            <summary>
+            When overridden in the derived class, returns the maximum size of operand stack during method execution
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.CustomMethod.MaxStackSizeSpecified">
+            <summary>
+            When overridden in the derived class, specifies whether the MaxStackSize property value is defined
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.CustomMethod.InitLocals">
+            <summary>
+            When overridden in the derived class, specifies whether the local variables are initialized
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.CustomMethod.InitLocalsSpecified">
+            <summary>
+            When overridden in the derived class, specifies whether the <c>InitLocals</c> property value is defined
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.CustomMethod.GetLocalVarSignature">
+            <summary>
+            When overridden in the derived class, returns the local variable signature as an array of bytes
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:CilTools.Reflection.CustomMethod.GetExceptionBlocks">
+            <summary>
+            When overridden in the derived class, returns the list of exception handling blocks in the method's body
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.CustomMethod.GetLocalVariables">
+            <summary>
+            Returns the array of local variable declarations of this method
+            </summary>
+            <remarks>
+            The default implementation reads local varaibles from the signature returned by GetLocalVarSignature method
+            </remarks>
+        </member>
+        <member name="M:CilTools.Reflection.CustomMethod.PrepareMethod(System.Reflection.MethodBase)">
+            <summary>
+            Converts MethodBase into the form suitable for processing by CilBytecodeParser
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.CustomMethod.CreateResolver(System.Reflection.MethodBase)">
+            <summary>
+            Creates an object that can be used to resolve tokens in the context of specified method
+            </summary>        
+        </member>
+        <member name="T:CilTools.Reflection.ExceptionBlock">
+            <summary>
+            Represents an exception handling block
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.ExceptionBlock.#ctor(System.Reflection.ExceptionHandlingClauseOptions,System.Int32,System.Int32,System.Type,System.Int32,System.Int32,System.Int32)">
+            <summary>
+            Initializes a new ExceptionBlock instance using provided property values
+            </summary>        
+        </member>
+        <member name="P:CilTools.Reflection.ExceptionBlock.CatchType">
+            <summary>
+            Gets the type of exception handled by the catch block
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.ExceptionBlock.FilterOffset">
+            <summary>
+            Gets the offset of this block's exception filter within the method body, in bytes
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.ExceptionBlock.Flags">
+            <summary>
+            Gets the value specifying the type of exception block
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.ExceptionBlock.HandlerLength">
+            <summary>
+            Gets the length of this block's handler, in bytes
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.ExceptionBlock.HandlerOffset">
+            <summary>
+            Gets the offset of this block's handler within the method body, in bytes
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.ExceptionBlock.TryLength">
+            <summary>
+            Gets the length of this block's try clause, in bytes
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.ExceptionBlock.TryOffset">
+            <summary>
+            Gets the offset of this block's try clause within the method body, in bytes
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.ExceptionBlock.FromReflection(System.Reflection.ExceptionHandlingClause)">
+            <summary>
+            Creates new ExceptionBlock instance based on the specified reflection ExceptionHandlingClause object
+            </summary>        
+        </member>
+        <member name="T:CilTools.Reflection.ITokenResolver">
+            <summary>
+            Represents an object that can be used to convert metadata tokens into corresponding high-level reflection objects
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveType(System.Int32,System.Type[],System.Type[])">
+            <summary>
+            Returns the type identified by the specified metadata token, in the context defined by the specified generic type parameters.
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveType(System.Int32)">
+            <summary>
+            Returns the type identified by the specified metadata token.
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32,System.Type[],System.Type[])">
+            <summary>
+            Returns the method or constructor identified by the specified metadata token, in the context defined by the 
+            specified generic type parameters.
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveMethod(System.Int32)">
+            <summary>
+            Returns the method or constructor identified by the specified metadata token.
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveField(System.Int32,System.Type[],System.Type[])">
+            <summary>
+            Returns the field identified by the specified metadata token, in the context defined by the specified generic type parameters.
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveField(System.Int32)">
+            <summary>
+            Returns the field identified by the specified metadata token.
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32,System.Type[],System.Type[])">
+            <summary>
+            Returns the type or member identified by the specified metadata token, in the context defined by the specified 
+            generic type parameters.
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveMember(System.Int32)">
+            <summary>
+            Returns the type or member identified by the specified metadata token.
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveSignature(System.Int32)">
+            <summary>
+            Returns the signature blob identified by a metadata token.
+            </summary>        
+            <returns>An array of bytes representing the signature blob.</returns>
+        </member>
+        <member name="M:CilTools.Reflection.ITokenResolver.ResolveString(System.Int32)">
+            <summary>
+            Returns the string identified by the specified metadata token.
+            </summary>        
+        </member>
+        <member name="T:CilTools.Reflection.LocalVariable">
+            <summary>
+            Represents local variable declaration in the method body
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.LocalVariable.#ctor(CilTools.BytecodeAnalysis.TypeSpec,System.Int32)">
+            <summary>
+            Initializes a new LocalVariable instance with the specified TypeSpec and index
+            </summary>
+            <param name="ptype">TypeSpec object representing the variable type</param>
+            <param name="pindex">Index of local variable within method body</param>
+        </member>
+        <member name="P:CilTools.Reflection.LocalVariable.LocalTypeSpec">
+            <summary>
+            Gets the TypeSpec object representing the variable type
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.LocalVariable.LocalType">
+            <summary>
+            Gets the variable type
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.LocalVariable.LocalIndex">
+            <summary>
+            Gets the index of local variable within the containing method body
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.LocalVariable.IsPinned">
+            <summary>
+            Gets the value indicating whether the object pointed by local variable is pinned in memory
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver)">
+            <summary>
+            Reads local variables from the specified signature, resolving tokens using the specified ITokenResolver
+            </summary>
+            <param name="data">Local variable signature as byte array</param>
+            <param name="resolver">The object used to resolve metadata tokens</param>
+            <returns>An array of local variables read from the signature</returns>
+            <exception cref="T:System.ArgumentNullException">Input array is null</exception>
+            <exception cref="T:System.NotSupportedException">Signature contains unsupported types</exception>
+        </member>
+        <member name="M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)">
+            <summary>
+            Reads local variables from the specified signature, resolving tokens within the scope of the specified module
+            </summary>
+            <param name="data">Local variable signature as byte array</param>
+            <param name="module">Module in which to resolve metadata tokens</param>
+            <returns>An array of local variables read from the signature</returns>
+            <exception cref="T:System.ArgumentNullException">Input array is null</exception>
+            <exception cref="T:System.NotSupportedException">Signature contains unsupported types</exception>
+        </member>
+        <member name="M:CilTools.Reflection.LocalVariable.FromReflection(System.Reflection.MethodBase)">
+            <summary>
+            Reads local variables from the specified method's body
+            </summary>
+            <param name="mb">Source method</param>
+            <returns>An array of local variables read from the method body</returns>
+        </member>
+        <member name="T:CilTools.Reflection.ModuleWrapper">
+            <summary>
+            Resolves metadata tokens in the context of the specified module
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.ModuleWrapper.#ctor(System.Reflection.MethodBase)">
+            <summary>
+            Creates ModuleWrapper object using the module containing the specified method
+            </summary>        
+        </member>
+        <member name="M:CilTools.Reflection.ModuleWrapper.#ctor(System.Reflection.Module)">
+            <summary>
+            Creates ModuleWrapper object using the explicitly specified module
+            </summary>        
+        </member>
+        <member name="T:CilTools.Reflection.ModuleWrapperDynamic">
+            <summary>
+            Resolves metadata tokens in the context of specified dynamic method
+            </summary>
+        </member>
+        <member name="T:CilTools.Syntax.BlockSyntax">
+            <summary>
+            Represents the block syntax in the CIL assembler. The block contains child directive and instruction nodes.
+            </summary>
+            <remarks>
+            The examples of block syntax are method body or exception handler blocks. The block consists of the optional header, opening curly brace, content nodes 
+            (directives and statements) and closing curly brace.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.BlockSyntax.HeaderSyntax">
+            <summary>
+            Gets the header syntax of this, or an empty collection if this block has no header
+            </summary>
+            <remarks>
+            For the exception handler blocks, the header represents the exception clause. Other types of blocks does not have headers.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.BlockSyntax.Content">
+            <summary>
+            Returns the collection of the syntax nodes contained within this block (content nodes)
+            </summary>
+            <remarks>
+            The content nodes are located between opening and closing curly braces. They include instructions and directives.
+            </remarks>
+        </member>
+        <member name="M:CilTools.Syntax.BlockSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.BlockSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Syntax.CommentSyntax">
+            <summary>
+            Represents the comment in the CIL assembler code. The comment does not impact code semantics in any way, but may provide extra information.
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.CommentSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.CommentSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Syntax.DirectiveSyntax">
+            <summary>
+            Represents the directive in CIL assembler. The directive declaration starts from the dotted name.
+            </summary>
+            <remarks>
+            The directive provides meta-information, such as the method's signature or the declarations of local variables.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.DirectiveSyntax.Name">
+            <summary>
+            Gets the name of this directive
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.DirectiveSyntax.WriteContent(System.IO.TextWriter)">
+            <summary>
+            Writes text representation of this directive's content into the specified TextWriter
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.DirectiveSyntax.ContentString">
+            <summary>
+            Gets the text representation of this directive's content
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.DirectiveSyntax.ContentSyntax">
+            <summary>
+            Gets the collection of nodes that represent this directive's content
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.DirectiveSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.DirectiveSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Syntax.IdentifierSyntax">
+            <summary>
+            Represents identifier in CIL assembler. Identifier is a name of the member or variable.
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.IdentifierSyntax.Content">
+            <summary>
+            Gets the content of this identifier as string
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.IdentifierSyntax.IsMemberName">
+            <summary>
+            Gets the value indicating whether this identifier represents assembly member name
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.IdentifierSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.IdentifierSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Syntax.InstructionSyntax">
+            <summary>
+            Represents instruction syntax in CIL assembler
+            </summary>
+            <remarks>The instruction syntax consists of the optional label, operation name, and the optional operand</remarks>
+        </member>
+        <member name="M:CilTools.Syntax.InstructionSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.InstructionSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Syntax.InstructionSyntax.Label">
+            <summary>
+            Gets the label name of this instruction
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.InstructionSyntax.WriteLabel(System.IO.TextWriter)">
+            <summary>
+            Writes the label name of this instruction into the specified TextWriter
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.InstructionSyntax.Operation">
+            <summary>
+            Gets the operation name of this instruction
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.InstructionSyntax.WriteOperation(System.IO.TextWriter)">
+            <summary>
+            Writes the operation name of this instruction into the specified TextWriter
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.InstructionSyntax.Instruction">
+            <summary>
+            Returns the instruction instance corresponding to this node
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.InstructionSyntax.WriteOperand(System.IO.TextWriter)">
+            <summary>
+            Writes the operand of this instruction into the specified TextWriter
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.InstructionSyntax.OperandString">
+            <summary>
+            Gets the text representation of this instruction's operand 
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.InstructionSyntax.OperandSyntax">
+            <summary>
+            Gets the collection of nodes representing this instruction operand's syntax
+            </summary>
+        </member>
+        <member name="T:CilTools.Syntax.KeywordKind">
+            <summary>
+            Represents the kind of keyword in the <see cref="T:CilTools.Syntax.KeywordSyntax"/> node
+            </summary>
+        </member>
+        <member name="F:CilTools.Syntax.KeywordKind.Other">
+            <summary>
+            Unclassifed
+            </summary>
+        </member>
+        <member name="F:CilTools.Syntax.KeywordKind.DirectiveName">
+            <summary>
+            The name of directive
+            </summary>
+        </member>
+        <member name="F:CilTools.Syntax.KeywordKind.InstructionName">
+            <summary>
+            The name of instruction
+            </summary>
+        </member>
+        <member name="T:CilTools.Syntax.KeywordSyntax">
+            <summary>
+            Represents the keyword token in CIL assembler. 
+            </summary>
+            <remarks> 
+            The keyword is a special sequence of characters that can't be used as identifier. 
+            The list of keywords is predefined by specification. 
+            The keyword could represent the directive name, access modifier, instruction name 
+            or other special syntactic element.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.KeywordSyntax.Content">
+            <summary>
+            Gets the value of this keyword as string
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.KeywordSyntax.Kind">
+            <summary>
+            Gets the keyword kind
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.KeywordSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Syntax.LiteralSyntax">
+            <summary>
+            Represents the syntax of literal constant (such as numeric or string) in CIL assembler
+            </summary>
+            <remarks>
+            Literal constant value is inlined directly in the source code. Typically literal syntax is used to 
+            represent the operand of the instruction.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.LiteralSyntax.Value">
+            <summary>
+            Gets the value represented by this literal
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.LiteralSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.LiteralSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Syntax.MemberRefSyntax">
+            <summary>
+            Represents the reference to the assembly member (such as type, method or field) in CIL assembler
+            </summary>
+            <remarks>
+            The member reference syntax is used as instruction operand or in variable declarations. 
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.MemberRefSyntax.Member">
+            <summary>
+            Gets the reflection construct representing the referenced member
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.MemberRefSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.MemberRefSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Syntax.MethodDefSyntax">
+            <summary>
+            Represents the syntax of the method definition in CIL assembler
+            </summary>
+            <remarks>
+            Method definition consists of the signature ("header") and the body. The body can contain directives 
+            (such as custom attributes or local variable declarations) and instructions.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.MethodDefSyntax.Signature">
+            <summary>
+            Gets the directive representing the signature of the defined method
+            </summary>
+        </member>
+        <member name="P:CilTools.Syntax.MethodDefSyntax.Body">
+            <summary>
+            Gets the block the forms the body of the defined method
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.MethodDefSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.MethodDefSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Syntax.PunctuationSyntax">
+            <summary>
+            Represents the punctuation sign token in CIL assembler
+            </summary>
+            <remarks>
+            Punctuation signs divide other tokens in syntax constructs. Punctuation signs used in CIL are colons, 
+            braces, angle braces and others. 
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.PunctuationSyntax.Content">
+            <summary>
+            Gets the value of this punctuation sign as string
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.PunctuationSyntax.ToText(System.IO.TextWriter)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Syntax.SyntaxNode">
+            <summary>
+            Represents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent concrete language constructs derive from this class. 
+            </summary>
+            <remarks>
+            <para>
+            The <c>SyntaxNode</c> class instance contains all information required to produce the source code of the corresponding language construct, including whitespaces. 
+            The <see cref="M:CilTools.Syntax.SyntaxNode.EnumerateChildNodes"/> method returns all child nodes of this node, or an empty collection if it is a leaf (terminal node). 
+            Some child nodes may be exposed via specific properties as well. 
+            The text representation for non-terminal node is a string concetanation of all its child nodes' text representations. 
+            </para>
+            <para>Use <see cref="M:CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree"/> method to get the syntax tree for the specified method.</para>
+            </remarks>
+        </member>
+        <member name="M:CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)">
+            <summary>
+            Writes text representation of this node into the specified TextWriter
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.SyntaxNode.EnumerateChildNodes">
+            <summary>
+            Enumerates child nodes of this node. For the leaf node, returns an empty collection.
+            </summary>
+            <returns>The collection of child syntax nodes</returns>
+        </member>
+        <member name="P:CilTools.Syntax.SyntaxNode.LeadingWhitespace">
+            <summary>
+            Gets whitespace content at the beginning of this node's code
+            </summary>
+            <remarks>
+            Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
+            content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.SyntaxNode.TrailingWhitespace">
+            <summary>
+            Gets whitespace content at the end of this node's code
+            </summary>
+            <remarks>
+            Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
+            content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Syntax.SyntaxNode.Parent">
+            <summary>
+            Gets the parent node of this syntax node, or null if this node is root or not included in syntax tree.
+            </summary>
+        </member>
+        <member name="M:CilTools.Syntax.SyntaxNode.ToString">
+            <summary>
+            Gets the text representation of this node, including whitespace content
+            </summary>
+            <returns>The string containing CIL code of this syntax node</returns>
+        </member>
+        <member name="M:CilTools.Syntax.SyntaxNode.GetChildNodes">
+            <summary>
+            Gets the array of this node's child nodes. For the leaf node, returns an empty array.
+            </summary>
+            <returns>The array of child syntax nodes</returns>
         </member>
     </members>
 </doc>

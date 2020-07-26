@@ -9,11 +9,36 @@
             Represents an assembly in the external CLR instance
             </summary>
         </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.InnerModule">
+            <summary>
+            Gets the underlying ClrMD module object
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.AssemblyReader">
+            <summary>
+            Gets the assembly reader that was used to read this instance
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.FullName">
+            <summary>
+            Gets the display name of the assembly
+            </summary>
+        </member>
         <member name="M:CilTools.Runtime.ClrAssemblyInfo.GetName">
             <summary>
             Gets an AssemblyName for this assembly
             </summary>
             <returns>An object that contains the fully parsed display name for this assembly</returns>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.Location">
+            <summary>
+            Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.CodeBase">
+            <summary>
+            Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
+            </summary>
         </member>
         <member name="M:CilTools.Runtime.ClrAssemblyInfo.ResolveType(System.Int32,System.Type[],System.Type[])">
             <summary>
@@ -114,41 +139,16 @@
             <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
             <returns>An object that represents the specified type.</returns>
         </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyInfo.ExportedTypes">
+            <summary>
+            Gets a collection of the public types defined in this assembly that are visible outside the assembly.
+            </summary>
+        </member>
         <member name="M:CilTools.Runtime.ClrAssemblyInfo.GetExportedTypes">
             <summary>
             Gets the public types defined in this assembly that are visible outside the assembly.
             </summary>
             <returns>An array that represents the types defined in this assembly that are visible outside the assembly.</returns>
-        </member>
-        <member name="P:CilTools.Runtime.ClrAssemblyInfo.InnerModule">
-            <summary>
-            Gets the underlying ClrMD module object
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.ClrAssemblyInfo.AssemblyReader">
-            <summary>
-            Gets the assembly reader that was used to read this instance
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.ClrAssemblyInfo.FullName">
-            <summary>
-            Gets the display name of the assembly
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.ClrAssemblyInfo.Location">
-            <summary>
-            Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.ClrAssemblyInfo.CodeBase">
-            <summary>
-            Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.ClrAssemblyInfo.ExportedTypes">
-            <summary>
-            Gets a collection of the public types defined in this assembly that are visible outside the assembly.
-            </summary>
         </member>
         <member name="P:CilTools.Runtime.ClrAssemblyInfo.IsDynamic">
             <summary>
@@ -191,6 +191,11 @@
             </summary>
             <param name="r">Source CLR instance</param>
         </member>
+        <member name="P:CilTools.Runtime.ClrAssemblyReader.SourceRuntime">
+            <summary>
+            Gets the CLR instance associated with this <c>ClrAssemblyReader</c>
+            </summary>
+        </member>
         <member name="M:CilTools.Runtime.ClrAssemblyReader.Read(System.String)">
             <summary>
             Gets the assembly information object for the specified module name
@@ -208,11 +213,6 @@
             Gets the pseudo-assembly that represents the collection of dynamic methods in the process containing CLR instance
             </summary>
         </member>
-        <member name="P:CilTools.Runtime.ClrAssemblyReader.SourceRuntime">
-            <summary>
-            Gets the CLR instance associated with this <c>ClrAssemblyReader</c>
-            </summary>
-        </member>
         <member name="T:CilTools.Runtime.ClrDynamicMethod">
             <summary>
             Represents information about a dynamic method in the external CLR instance
@@ -222,33 +222,6 @@
             <summary>
             Represents information about the method in an external CLR instance
             </summary>
-        </member>
-        <member name="M:CilTools.Runtime.ClrMethodInfo.GetBytecode">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Runtime.ClrMethodInfo.GetParameters">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Runtime.ClrMethodInfo.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Type,System.Boolean)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Boolean)">
-            <inheritdoc/>
-        </member>
-        <member name="M:CilTools.Runtime.ClrMethodInfo.IsDefined(System.Type,System.Boolean)">
-            <inheritdoc/>
         </member>
         <member name="P:CilTools.Runtime.ClrMethodInfo.InnerMethod">
             <summary>
@@ -263,19 +236,46 @@
         <member name="P:CilTools.Runtime.ClrMethodInfo.TokenResolver">
             <inheritdoc/>
         </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetBytecode">
+            <inheritdoc/>
+        </member>
         <member name="P:CilTools.Runtime.ClrMethodInfo.MaxStackSize">
             <inheritdoc/>
         </member>
         <member name="P:CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified">
             <inheritdoc/>
         </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks">
+            <inheritdoc/>
+        </member>
         <member name="P:CilTools.Runtime.ClrMethodInfo.Attributes">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetParameters">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)">
             <inheritdoc/>
         </member>
         <member name="P:CilTools.Runtime.ClrMethodInfo.MethodHandle">
             <inheritdoc/>
         </member>
         <member name="P:CilTools.Runtime.ClrMethodInfo.DeclaringType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetCustomAttributes(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.IsDefined(System.Type,System.Boolean)">
             <inheritdoc/>
         </member>
         <member name="P:CilTools.Runtime.ClrMethodInfo.MemberType">
@@ -302,26 +302,6 @@
             and the location of the IL code executed within that method
             </summary>
         </member>
-        <member name="M:CilTools.Runtime.ClrStackFrameInfo.ToString">
-            <summary>
-            Gets the full text representation of this stack frame 
-            </summary>
-            <remarks>
-            The full text representation contains full signature of the called method, including argument types. 
-            If this frame is not a call to a managed method, returns the name of the special frame from debugger API.
-            </remarks>
-        </member>
-        <member name="M:CilTools.Runtime.ClrStackFrameInfo.ToString(System.Boolean)">
-            <summary>
-            Gets the text representation of this stack frame 
-            </summary>
-            <param name="full">Indicates whether the method should return full text representation</param>
-            <remarks>
-            The full text representation contains full signature of the called method, including argument types. 
-            The short text representation only contains the method's name. 
-            If this frame is not a call to a managed method, returns the name of the special frame from debugger API.
-            </remarks>
-        </member>
         <member name="P:CilTools.Runtime.ClrStackFrameInfo.Method">
             <summary>
             Gets the method corresponding to this stack frame. The value could be null if this frame is a special frame not 
@@ -344,6 +324,26 @@
             <remarks>
             The library cannot accurately determine the currently executed instruction in every case, because the resulting native code 
             could be optimized by JIT. As a result, the currently executed code is presented as the starting and ending offsets.
+            </remarks>
+        </member>
+        <member name="M:CilTools.Runtime.ClrStackFrameInfo.ToString">
+            <summary>
+            Gets the full text representation of this stack frame 
+            </summary>
+            <remarks>
+            The full text representation contains full signature of the called method, including argument types. 
+            If this frame is not a call to a managed method, returns the name of the special frame from debugger API.
+            </remarks>
+        </member>
+        <member name="M:CilTools.Runtime.ClrStackFrameInfo.ToString(System.Boolean)">
+            <summary>
+            Gets the text representation of this stack frame 
+            </summary>
+            <param name="full">Indicates whether the method should return full text representation</param>
+            <remarks>
+            The full text representation contains full signature of the called method, including argument types. 
+            The short text representation only contains the method's name. 
+            If this frame is not a call to a managed method, returns the name of the special frame from debugger API.
             </remarks>
         </member>
         <member name="T:CilTools.Runtime.ClrThreadInfo">
@@ -370,19 +370,6 @@
             The value of <paramref name="runtime"/> parameter is null 
             </exception>
         </member>
-        <member name="M:CilTools.Runtime.ClrThreadInfo.Print(System.IO.TextWriter)">
-            <summary>
-            Prints the information about the current thread to the specified TextWriter
-            </summary>
-            <exception cref="T:System.ArgumentNullException">
-            The value of <paramref name="output"/> parameter is null 
-            </exception>
-        </member>
-        <member name="M:CilTools.Runtime.ClrThreadInfo.ToString">
-            <summary>
-            Gets the information about the current thread
-            </summary>
-        </member>
         <member name="P:CilTools.Runtime.ClrThreadInfo.StackTrace">
             <summary>
             Gets the stack trace of the current thread
@@ -393,6 +380,19 @@
             </remarks>
         </member>
         <member name="P:CilTools.Runtime.ClrThreadInfo.DisplayString">
+            <summary>
+            Gets the information about the current thread
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrThreadInfo.Print(System.IO.TextWriter)">
+            <summary>
+            Prints the information about the current thread to the specified TextWriter
+            </summary>
+            <exception cref="T:System.ArgumentNullException">
+            The value of <paramref name="output"/> parameter is null 
+            </exception>
+        </member>
+        <member name="M:CilTools.Runtime.ClrThreadInfo.ToString">
             <summary>
             Gets the information about the current thread
             </summary>
@@ -413,11 +413,48 @@
             </param>
             <exception cref="T:System.ArgumentNullException">Supplied data target is null</exception>
         </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ChildType">
+            <summary>
+            Gets pseudo-type that contains the collection of dynamic methods
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.Target">
+            <summary>
+            ClrMD data target associated with this instance
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.FullName">
+            <summary>
+            Gets the display name of the assembly
+            </summary>
+        </member>
         <member name="M:CilTools.Runtime.DynamicMethodsAssembly.GetName">
             <summary>
             Gets an AssemblyName for this assembly
             </summary>
             <returns>An object that contains the fully parsed display name for this assembly</returns>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.Location">
+            <summary>
+            Gets the full path to the assembly. This implementation always returns an empty string.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.CodeBase">
+            <summary>
+            Gets the full path to the assembly. This implementation always returns an empty string.
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.IsDynamic">
+            <summary>
+            Gets a value that indicates whether the current assembly was generated dynamically at runtime.
+            </summary>
+            <remarks>This implementation always returns <c>true</c></remarks>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ReflectionOnly">
+            <summary>
+            Gets a boolean value indicating whether this assembly was loaded into the reflection-only context.
+            </summary>
+            <value>This implementation always returns <c>true</c></value>
         </member>
         <member name="M:CilTools.Runtime.DynamicMethodsAssembly.EnumerateMethods">
             <summary>
@@ -455,6 +492,12 @@
             <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
             <returns>An object that represents the specified type.</returns>
         </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ExportedTypes">
+            <summary>
+            Gets a collection of the public types defined in this assembly that are visible outside the assembly.
+            </summary>
+            <remarks>This implementation returns an empty collection</remarks>
+        </member>
         <member name="M:CilTools.Runtime.DynamicMethodsAssembly.GetExportedTypes">
             <summary>
             Gets the public types defined in this assembly that are visible outside the assembly.
@@ -468,49 +511,6 @@
             </summary>
             <remarks>This method only disposes the underlying data target if this instance was constructed with the <c>autoDispose</c> 
             parameter set to true. </remarks>
-        </member>
-        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ChildType">
-            <summary>
-            Gets pseudo-type that contains the collection of dynamic methods
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.Target">
-            <summary>
-            ClrMD data target associated with this instance
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.FullName">
-            <summary>
-            Gets the display name of the assembly
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.Location">
-            <summary>
-            Gets the full path to the assembly. This implementation always returns an empty string.
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.CodeBase">
-            <summary>
-            Gets the full path to the assembly. This implementation always returns an empty string.
-            </summary>
-        </member>
-        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.IsDynamic">
-            <summary>
-            Gets a value that indicates whether the current assembly was generated dynamically at runtime.
-            </summary>
-            <remarks>This implementation always returns <c>true</c></remarks>
-        </member>
-        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ReflectionOnly">
-            <summary>
-            Gets a boolean value indicating whether this assembly was loaded into the reflection-only context.
-            </summary>
-            <value>This implementation always returns <c>true</c></value>
-        </member>
-        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ExportedTypes">
-            <summary>
-            Gets a collection of the public types defined in this assembly that are visible outside the assembly.
-            </summary>
-            <remarks>This implementation returns an empty collection</remarks>
         </member>
     </members>
 </doc>

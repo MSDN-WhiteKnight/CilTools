@@ -15,7 +15,7 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
+    public sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
     {
         static MetadataAssembly unknown = new MetadataAssembly(null);
 
@@ -121,7 +121,21 @@ namespace CilTools.Metadata
         /// <remarks>Generic parameters are ignored in this implementation.</remarks>
         public Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
-            return null;
+            if (this.reader == null) return null;
+
+            EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
+
+            if (eh.Kind == HandleKind.TypeDefinition)
+            {
+                TypeDefinition tdef = reader.GetTypeDefinition((TypeDefinitionHandle)eh);
+                return new MetadataType(tdef, (TypeDefinitionHandle)eh, this);
+            }
+            else if (eh.Kind == HandleKind.TypeReference)
+            {
+                TypeReference tref = reader.GetTypeReference((TypeReferenceHandle)eh);
+                return new ExternalType(tref, (TypeReferenceHandle)eh, this);
+            }
+            else return null;
         }
 
         /// <summary>
@@ -142,8 +156,22 @@ namespace CilTools.Metadata
             if (this.reader == null) return null;
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
-            MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-            return new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this);
+
+            if (eh.Kind == HandleKind.MethodDefinition)
+            {
+                MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
+                return new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this);
+            }
+            else if (eh.Kind == HandleKind.MemberReference)
+            {
+                MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
+
+                if (mref.GetKind() == MemberReferenceKind.Method)
+                    return new ExternalMethod(mref, (MemberReferenceHandle)eh, this);
+                else
+                    return null;
+            }
+            else return null;
         }
 
         /// <summary>
@@ -181,10 +209,30 @@ namespace CilTools.Metadata
             if (this.reader == null) return null;
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
+
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
                 return new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this);
+            }
+            else if (eh.Kind == HandleKind.MemberReference)
+            {
+                MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
+
+                if (mref.GetKind() == MemberReferenceKind.Method)
+                    return new ExternalMethod(mref, (MemberReferenceHandle)eh, this);
+                else
+                    return null;
+            }
+            else if (eh.Kind == HandleKind.TypeDefinition)
+            {
+                TypeDefinition tdef = reader.GetTypeDefinition((TypeDefinitionHandle)eh);
+                return new MetadataType(tdef, (TypeDefinitionHandle)eh, this);
+            }
+            else if (eh.Kind == HandleKind.TypeReference)
+            {
+                TypeReference tref = reader.GetTypeReference((TypeReferenceHandle)eh);
+                return new ExternalType(tref, (TypeReferenceHandle)eh, this);
             }
             else return null;
         }
@@ -208,12 +256,23 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Returns the string identified by the specified metadata token (not implemented).
-        /// </summary>
-        /// <returns>This implementation always returns <c>null</c></returns>
+        /// Returns the string identified by the specified metadata token.
+        /// </summary> 
         public string ResolveString(int metadataToken)
         {
-            return null; //not implemented
+            if (this.reader == null) return null;
+
+            Handle h = MetadataTokens.Handle(metadataToken);
+
+            if (h.Kind == HandleKind.String)
+            {
+                return reader.GetString((StringHandle)h);
+            }
+            else if (h.Kind == HandleKind.UserString)
+            {
+                return reader.GetUserString((UserStringHandle)h);
+            }
+            else return null;
         }
 
         /// <summary>
@@ -221,7 +280,13 @@ namespace CilTools.Metadata
         /// </summary>
         public IEnumerable<MemberInfo> EnumerateMembers()
         {
-            yield break;
+            if (this.reader == null) yield break;
+
+            foreach (MethodDefinitionHandle mdefh in reader.MethodDefinitions)
+            {
+                MethodDefinition mdef = reader.GetMethodDefinition(mdefh);
+                yield return new MetadataMethod(mdef, mdefh, this);
+            }
         }
 
         /// <summary>
@@ -244,7 +309,16 @@ namespace CilTools.Metadata
         /// <returns>An array that contains all the types that are defined in this assembly.</returns>
         public override Type[] GetTypes()
         {
-            return new Type[0];
+            if (this.reader == null) return new Type[0];
+
+            List<Type> ret = new List<Type>();
+
+            foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
+            {
+                ret.Add(new MetadataType(reader.GetTypeDefinition(ht), ht, this));
+            }
+
+            return ret.ToArray();
         }
 
         /// <summary>
@@ -277,7 +351,23 @@ namespace CilTools.Metadata
         /// <returns>An object that represents the specified type.</returns>
         public override Type GetType(string name, bool throwOnError, bool ignoreCase)
         {
-            return null;
+            if (this.reader == null) return null;
+
+            StringComparison cmp;
+
+            if (ignoreCase) cmp = StringComparison.InvariantCultureIgnoreCase;
+            else cmp = StringComparison.InvariantCulture;
+
+            foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
+            {
+                TypeDefinition tdef = reader.GetTypeDefinition(ht);
+                string typename = reader.GetString(tdef.Namespace) + "." + reader.GetString(tdef.Name);
+
+                if (String.Equals(name, typename, cmp)) return new MetadataType(tdef, ht, this);
+            }
+
+            if (throwOnError) throw new TypeLoadException("Type " + name + " not found");
+            else return null;
         }
 
         /// <summary>
@@ -287,7 +377,15 @@ namespace CilTools.Metadata
         {
             get
             {
-                yield break;
+                if (this.reader == null) yield break;
+
+                foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
+                {
+                    TypeDefinition tdef = reader.GetTypeDefinition(ht);
+
+                    if (tdef.Attributes.HasFlag(TypeAttributes.Public))
+                        yield return new MetadataType(tdef, ht, this);
+                }
             }
         }
 

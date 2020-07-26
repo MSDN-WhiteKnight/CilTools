@@ -10,6 +10,7 @@ using System.Linq;
 using CilTools.BytecodeAnalysis;
 using CilTools.BytecodeAnalysis.Extensions;
 using CilTools.Runtime;
+using CilTools.Metadata;
 
 namespace CilToolsDemo
 {
@@ -79,6 +80,19 @@ namespace CilToolsDemo
             }
         }
 
+        public static void DumpMetadataMethods(string path)
+        {
+            foreach (MethodBase m in MetadataLoader.EnumerateMethods(path))
+            {
+                Console.WriteLine(m.Name);
+                CilGraph graph = CilGraph.Create(m);
+                graph.Print(null, true, true, true, true);
+                Console.WriteLine("-------------------------------------------");
+            }
+
+            Console.ReadKey();
+        }
+
         static void Main(string[] args)
         {
             Console.WriteLine("*** CIL Tools demo ***");
@@ -105,6 +119,13 @@ namespace CilToolsDemo
 
                     Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);
                     ass = Assembly.GetExecutingAssembly();
+
+                    /*asspath = Assembly.GetExecutingAssembly().Location;
+                    type = "CilToolsDemo.Program";
+                    method = "Main";
+
+                    Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);
+                    ass = MetadataLoader.Load(asspath);*/
                 }
                 else
                 {
@@ -120,11 +141,11 @@ namespace CilToolsDemo
 
                 Type t = ass.GetType(type);
 
-                MethodInfo[] methods = t.GetMethods(
+                MemberInfo[] methods = t.GetMembers(
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
                     );
 
-                MethodInfo mi = methods.Where((x) => { return x.Name == method; }).First();
+                MethodBase mi = methods.OfType<MethodBase>().Where((x) => { return x.Name == method; }).First();
                 CilGraph graph = CilGraph.Create(mi);
                 
                 graph.Print(null, true, true, true, true);

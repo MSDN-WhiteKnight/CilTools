@@ -46,8 +46,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="MetadataAssembly.cs" />
+    <Compile Include="ExternalMethod.cs" />
+    <Compile Include="ExternalType.cs" />
     <Compile Include="MetadataLoader.cs" />
     <Compile Include="MetadataMethod.cs" />
+    <Compile Include="MetadataType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

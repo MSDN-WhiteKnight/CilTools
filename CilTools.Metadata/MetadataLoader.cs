@@ -16,5 +16,10 @@ namespace CilTools.Metadata
 
             return ass.EnumerateMethods();
         }
+
+        public static MetadataAssembly Load(string path)
+        {
+            return new MetadataAssembly(path);
+        }
     }
 }

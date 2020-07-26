@@ -3,38 +3,29 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Reflection.Metadata;
+using System.Reflection.PortableExecutable;
 using System.Reflection.Metadata.Ecma335;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class MetadataMethod : CustomMethod
-    {        
+    class ExternalMethod : CustomMethod
+    {
         MetadataAssembly assembly;
-        MethodDefinitionHandle mdefh;
-        MethodDefinition mdef;
-        MethodBodyBlock mb;
+        MemberReferenceHandle mrefh;
+        MemberReference mref;
 
-        internal MetadataMethod(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
-        {           
+        internal ExternalMethod(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
+        {
             this.assembly = owner;
-            this.mdef = m;
-            this.mdefh = mh;
-
-            int rva = mdef.RelativeVirtualAddress;
-
-            if (rva == 0)
-            {
-                this.mb = null;
-            }
-            else
-            {
-                this.mb = assembly.PEReader.GetMethodBody(rva);
-            }
+            this.mref = m;
+            this.mrefh = mh;
         }
 
         /// <summary>
@@ -57,7 +48,7 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override byte[] GetBytecode()
         {
-            return mb.GetILBytes(); //load CIL as byte array
+            return new byte[0];
         }
 
         /// <inheritdoc/>
@@ -65,8 +56,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                if (mb != null) return mb.MaxStack;
-                else return -1;
+                return 0;
             }
         }
 
@@ -75,7 +65,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                return mb != null;
+                return false;
             }
         }
 
@@ -96,7 +86,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                MethodAttributes ret = mdef.Attributes;
+                MethodAttributes ret = (MethodAttributes)0;
                 return ret;
             }
         }
@@ -131,10 +121,13 @@ namespace CilTools.Metadata
         {
             get 
             {
-                TypeDefinitionHandle ht = mdef.GetDeclaringType();
+                EntityHandle eh = mref.Parent;
 
-                if (!ht.IsNil) return new MetadataType(assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
-                else return null;
+                if (!eh.IsNil && eh.Kind == HandleKind.TypeReference)
+                {
+                    return new ExternalType(assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh), (TypeReferenceHandle)eh, this.assembly);
+                }
+                else return null; 
             }
         }
 
@@ -165,9 +158,9 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override string Name
         {
-            get 
+            get
             {
-                return assembly.MetadataReader.GetString(mdef.Name);                
+                return assembly.MetadataReader.GetString(mref.Name);
             }
         }
 
@@ -182,24 +175,23 @@ namespace CilTools.Metadata
         {
             get
             {
-                return assembly.MetadataReader.GetToken(this.mdefh);
+                return assembly.MetadataReader.GetToken(this.mrefh);
             }
         }
 
         /// <inheritdoc/>
         public override bool InitLocals
         {
-            get 
+            get
             {
-                if (mb != null) return mb.LocalVariablesInitialized;
-                else return false;
+                return false;
             }
         }
 
         /// <inheritdoc/>
         public override bool InitLocalsSpecified
         {
-            get { return mb != null; }
+            get { return false; }
         }
     }
 }
