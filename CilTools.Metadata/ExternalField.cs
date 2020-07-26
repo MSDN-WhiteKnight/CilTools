@@ -45,7 +45,11 @@ namespace CilTools.Metadata
         {
             get
             {
-                return null;
+                byte[] sig = owner.MetadataReader.GetBlobBytes(field.Signature);
+                TypeSpec ts = Signature.ReadFieldSignature(sig, owner);
+
+                if (ts != null) return ts.Type;
+                else return UnknownType.Value;
             }
         }
 
