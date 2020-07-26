@@ -18,6 +18,7 @@ namespace CilTools.Metadata
         MethodDefinitionHandle mdefh;
         MethodDefinition mdef;
         MethodBodyBlock mb;
+        Signature sig;
 
         internal MetadataMethod(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
         {           
@@ -35,6 +36,9 @@ namespace CilTools.Metadata
             {
                 this.mb = assembly.PEReader.GetMethodBody(rva);
             }
+
+            byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
+            this.sig = new Signature(sigbytes, this.assembly);
         }
 
         /// <summary>
@@ -44,7 +48,10 @@ namespace CilTools.Metadata
         {
             get
             {
-                return null;
+                if (String.Equals(this.Name, ".ctor", StringComparison.InvariantCulture)) return null;
+
+                if (this.sig == null) return UnknownType.Value;
+                else return this.sig.ReturnType.Type;
             }
         }
 
@@ -110,7 +117,16 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override ParameterInfo[] GetParameters()
         {
-            return new ParameterInfo[] { };
+            if (this.sig == null) return new ParameterInfo[0];
+
+            ParameterInfo[] pars = new ParameterInfo[this.sig.ParamsCount];
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                pars[i] = new Parameter(this.sig.GetParamType(i), i, this);
+            }
+
+            return pars;
         }
 
         /// <inheritdoc/>

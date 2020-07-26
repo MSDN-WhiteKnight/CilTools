@@ -55,10 +55,12 @@ namespace CilTools.BytecodeAnalysis
         const int CALLCONV_MASK = 0x0F; //bitmask to extract calling convention from first byte of signature
         const int MFLAG_HASTHIS = 0x20; //instance
         const int MFLAG_EXPLICITTHIS = 0x40; //explicit
+        const int MFLAG_GENERIC = 0x10; //method has generic parameters
 
         CallingConvention _conv;
         bool _HasThis;
         bool _ExplicitThis;
+        int _GenParamCount;
         TypeSpec _ReturnType;
         TypeSpec[] _ParamTypes;
 
@@ -81,11 +83,11 @@ namespace CilTools.BytecodeAnalysis
             Initialize(data, mwr);
         }
 
-        internal Signature(byte[] data, ITokenResolver resolver)
+        public Signature(byte[] data, ITokenResolver resolver)
         {
-            Debug.Assert(data != null, "Source array cannot be null");
-            Debug.Assert(data.Length > 0, "Source array cannot be empty");            
-            
+            if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
+            if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
+
             Initialize(data, resolver);
         }
 
@@ -103,6 +105,11 @@ namespace CilTools.BytecodeAnalysis
 
                 if ((b & MFLAG_EXPLICITTHIS) == MFLAG_EXPLICITTHIS) this._ExplicitThis = true;
 
+                if ((b & MFLAG_GENERIC) == MFLAG_GENERIC)
+                {
+                    this._GenParamCount = (int)MetadataReader.ReadCompressed(ms);
+                }
+
                 uint paramcount = MetadataReader.ReadCompressed(ms);
                 this._ParamTypes = new TypeSpec[paramcount];
                 this._ReturnType = TypeSpec.ReadFromStream(ms, resolver);
@@ -111,6 +118,22 @@ namespace CilTools.BytecodeAnalysis
                 {
                     this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver);
                 }
+            }
+        }
+
+        public static TypeSpec ReadFieldSignature(byte[] data, ITokenResolver resolver)
+        {
+            if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
+            if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
+            MemoryStream ms = new MemoryStream(data);
+
+            using (ms)
+            {
+                byte b = MetadataReader.ReadByte(ms); //signature kind
+
+                if (b != 0x6) throw new InvalidDataException("Invalid field signature");
+
+                return TypeSpec.ReadFromStream(ms, resolver);
             }
         }
 
