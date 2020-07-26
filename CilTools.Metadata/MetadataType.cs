@@ -325,6 +325,11 @@ namespace CilTools.Metadata
             return 0;
         }
 
+        public override Type MakeArrayType()
+        {
+            return new ComplexType(this, ComplexTypeKind.SzArray);
+        }
+
         public override int GetHashCode()
         {
             return this.FullName.GetHashCode();

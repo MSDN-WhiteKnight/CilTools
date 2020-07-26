@@ -89,13 +89,58 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override byte[] GetLocalVarSignature()
         {
-            return new byte[] { }; //not implemented
+            if (this.mb == null) return null;
+            
+            StandaloneSignature sig = assembly.MetadataReader.GetStandaloneSignature(mb.LocalSignature);
+            return assembly.MetadataReader.GetBlobBytes(sig.Signature);            
         }
 
         /// <inheritdoc/>
         public override ExceptionBlock[] GetExceptionBlocks()
         {
-            return new ExceptionBlock[] { }; //not implemented
+            if (this.mb == null) return null;
+
+            ExceptionBlock[] ret = new ExceptionBlock[mb.ExceptionRegions.Length];
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ExceptionHandlingClauseOptions opt=(ExceptionHandlingClauseOptions)0;
+                Type t=null;
+
+                switch (mb.ExceptionRegions[i].Kind)
+                {
+                    case ExceptionRegionKind.Catch: 
+                        opt = ExceptionHandlingClauseOptions.Clause;
+                        EntityHandle eh = mb.ExceptionRegions[i].CatchType;
+                        
+                        if (eh.Kind == HandleKind.TypeDefinition)
+                        {
+                            t = new MetadataType(
+                                assembly.MetadataReader.GetTypeDefinition((TypeDefinitionHandle)eh),
+                                (TypeDefinitionHandle)eh,
+                                this.assembly);
+                        }
+                        else if (eh.Kind == HandleKind.TypeReference)
+                        {
+                            t = new ExternalType(
+                                assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh),
+                                (TypeReferenceHandle)eh,
+                                this.assembly);
+                        }
+
+                        break;
+                    case ExceptionRegionKind.Finally: opt = ExceptionHandlingClauseOptions.Finally; break;
+                    case ExceptionRegionKind.Filter: opt = ExceptionHandlingClauseOptions.Filter; break;
+                    case ExceptionRegionKind.Fault: opt = ExceptionHandlingClauseOptions.Fault; break;
+                }
+
+                ret[i] = new ExceptionBlock(
+                    opt, mb.ExceptionRegions[i].TryOffset, mb.ExceptionRegions[i].TryLength,t,
+                    mb.ExceptionRegions[i].HandlerOffset, mb.ExceptionRegions[i].HandlerLength,
+                    mb.ExceptionRegions[i].FilterOffset);
+            }
+
+            return ret;
         }
 
         /// <inheritdoc/>

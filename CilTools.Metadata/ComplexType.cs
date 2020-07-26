@@ -12,32 +12,31 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Metadata
 {
-    class ExternalType : Type
+    enum ComplexTypeKind 
     {
-        TypeReference tref;
-        TypeReferenceHandle htref;
-        MetadataAssembly assembly;
-        public ExternalType(TypeReference t, TypeReferenceHandle ht, MetadataAssembly ass)
-        {
-            Debug.Assert(ass != null, "ass in MetadataExternalType() should not be null");
+        SzArray = 1, //single-dimensional zero-based array
+        ByRef = 2, //reference
+        Pointer = 3 //unmanaged pointer
+    }
+    class ComplexType : Type
+    {
+        //complex type is a type constructed on demand based on another type defined in some assembly ("element type")
+        //for example, int[] is an array type constructed from element type [mscorlib]System.Int32
 
-            this.tref = t;
-            this.htref = ht;
-            this.assembly = ass;
+        Type inner;
+        ComplexTypeKind kind;
+
+        public ComplexType(Type t, ComplexTypeKind k)
+        {
+            this.inner = t;
+            this.kind = k;
         }
 
         public override Assembly Assembly
         {
-            get 
+            get
             {
-                EntityHandle eh = this.tref.ResolutionScope;
-
-                if (!eh.IsNil && eh.Kind == HandleKind.AssemblyReference)
-                {
-                    AssemblyReference ar = assembly.MetadataReader.GetAssemblyReference((AssemblyReferenceHandle)eh);
-                    return new ExternalAssembly(ar, (AssemblyReferenceHandle)eh, this.assembly);
-                }
-                else return MetadataAssembly.UnknownAssembly;
+                return this.inner.Assembly;
             }
         }
 
@@ -50,7 +49,8 @@ namespace CilTools.Metadata
         {
             get
             {
-                return null;
+                if (this.kind == ComplexTypeKind.SzArray) return typeof(Array);
+                else return null;
             }
         }
 
@@ -66,7 +66,7 @@ namespace CilTools.Metadata
 
         protected override TypeAttributes GetAttributeFlagsImpl()
         {
-            TypeAttributes ret = (TypeAttributes)0;
+            TypeAttributes ret = inner.Attributes;
             return ret;
         }
 
@@ -83,7 +83,7 @@ namespace CilTools.Metadata
 
         public override Type GetElementType()
         {
-            return null;
+            return this.inner;
         }
 
         public override EventInfo GetEvent(string name, BindingFlags bindingAttr)
@@ -114,16 +114,16 @@ namespace CilTools.Metadata
         public override Type[] GetInterfaces()
         {
             throw new NotImplementedException();
-        }               
+        }
 
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
         {
-            return new MemberInfo[0];
+            throw new NotImplementedException();
         }
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
-            return new MemberInfo[0];
+            throw new NotImplementedException();
         }
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,
@@ -160,7 +160,7 @@ namespace CilTools.Metadata
 
         protected override bool HasElementTypeImpl()
         {
-            return false;
+            return true;
         }
 
         public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args,
@@ -171,12 +171,12 @@ namespace CilTools.Metadata
 
         protected override bool IsArrayImpl()
         {
-            return false;
+            return this.kind == ComplexTypeKind.SzArray;
         }
 
         protected override bool IsByRefImpl()
         {
-            return false;
+            return this.kind == ComplexTypeKind.ByRef;
         }
 
         protected override bool IsCOMObjectImpl()
@@ -186,7 +186,7 @@ namespace CilTools.Metadata
 
         protected override bool IsPointerImpl()
         {
-            return false;
+            return this.kind == ComplexTypeKind.Pointer;
         }
 
         protected override bool IsPrimitiveImpl()
@@ -203,7 +203,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                string tn = assembly.MetadataReader.GetString(tref.Namespace);
+                string tn = inner.Namespace;
                 return tn;
             }
         }
@@ -232,7 +232,15 @@ namespace CilTools.Metadata
         {
             get
             {
-                string tn = assembly.MetadataReader.GetString(tref.Name);
+                string tn = inner.Name;
+
+                switch (this.kind)
+                {
+                    case ComplexTypeKind.SzArray:tn += "[]";break;
+                    case ComplexTypeKind.ByRef: tn += "&"; break;
+                    case ComplexTypeKind.Pointer: tn += "*"; break;
+                }
+
                 return tn;
             }
         }
@@ -241,18 +249,14 @@ namespace CilTools.Metadata
         {
             get
             {
-                return assembly.MetadataReader.GetToken(this.htref);
+                throw new NotImplementedException();
             }
         }
 
         public override int GetArrayRank()
         {
-            return 0;
-        }
-
-        public override Type MakeArrayType()
-        {
-            return new ComplexType(this, ComplexTypeKind.SzArray);
+            if (this.kind == ComplexTypeKind.SzArray) return 1;
+            else throw new NotSupportedException("Arrays with more then one dimension are not supported");
         }
 
         public override int GetHashCode()
@@ -266,4 +270,3 @@ namespace CilTools.Metadata
         }
     }
 }
-
