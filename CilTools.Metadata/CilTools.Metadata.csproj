@@ -46,13 +46,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ExternalAssembly.cs" />
+    <Compile Include="ExternalField.cs" />
     <Compile Include="MetadataAssembly.cs" />
     <Compile Include="ExternalMethod.cs" />
     <Compile Include="ExternalType.cs" />
+    <Compile Include="MetadataField.cs" />
     <Compile Include="MetadataLoader.cs" />
     <Compile Include="MetadataMethod.cs" />
     <Compile Include="MetadataType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnknownType.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj">

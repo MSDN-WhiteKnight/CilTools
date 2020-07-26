@@ -10,8 +10,10 @@ using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Reflection.Metadata.Ecma335;
+using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+
 
 namespace CilTools.Metadata
 {
@@ -23,6 +25,8 @@ namespace CilTools.Metadata
 
         internal ExternalMethod(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
         {
+            Debug.Assert(m.GetKind() == MemberReferenceKind.Method, "MemberReference passed to ExternalMethod ctor should be a method");
+
             this.assembly = owner;
             this.mref = m;
             this.mrefh = mh;

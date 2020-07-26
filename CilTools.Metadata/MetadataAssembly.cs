@@ -188,7 +188,25 @@ namespace CilTools.Metadata
         /// <remarks>Generic parameters are ignored in this implementation.</remarks>
         public FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
-            return null;
+            if (this.reader == null) return null;
+
+            EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
+
+            if (eh.Kind == HandleKind.FieldDefinition)
+            {
+                FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
+                return new MetadataField(field, (FieldDefinitionHandle)eh, this);
+            }
+            else if (eh.Kind == HandleKind.MemberReference)
+            {
+                MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
+
+                if (mref.GetKind() == MemberReferenceKind.Field)
+                    return new ExternalField(mref, (MemberReferenceHandle)eh, this);
+                else
+                    return null;
+            }
+            else return null;
         }
 
         /// <summary>
@@ -215,12 +233,19 @@ namespace CilTools.Metadata
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
                 return new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this);
             }
+            else if (eh.Kind == HandleKind.FieldDefinition)
+            {
+                FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
+                return new MetadataField(field, (FieldDefinitionHandle)eh, this);
+            }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Method)
                     return new ExternalMethod(mref, (MemberReferenceHandle)eh, this);
+                else if (mref.GetKind() == MemberReferenceKind.Field)
+                    return new ExternalField(mref, (MemberReferenceHandle)eh, this);
                 else
                     return null;
             }
@@ -286,6 +311,18 @@ namespace CilTools.Metadata
             {
                 MethodDefinition mdef = reader.GetMethodDefinition(mdefh);
                 yield return new MetadataMethod(mdef, mdefh, this);
+            }
+
+            foreach (FieldDefinitionHandle hfield in reader.FieldDefinitions)
+            {
+                FieldDefinition field = reader.GetFieldDefinition(hfield);
+                yield return new MetadataField(field, hfield, this);
+            }
+
+            foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
+            {
+                TypeDefinition t = reader.GetTypeDefinition(ht);
+                yield return new MetadataType(t, ht, this);
             }
         }
 
