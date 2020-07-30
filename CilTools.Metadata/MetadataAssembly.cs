@@ -171,6 +171,11 @@ namespace CilTools.Metadata
                 else
                     return null;
             }
+            else if (eh.Kind == HandleKind.MethodSpecification)
+            {
+                MethodSpecification mspec = reader.GetMethodSpecification((MethodSpecificationHandle)eh);
+                return new MethodInstance(mspec, (MethodSpecificationHandle)eh, this);
+            }
             else return null;
         }
 
@@ -258,6 +263,11 @@ namespace CilTools.Metadata
             {
                 TypeReference tref = reader.GetTypeReference((TypeReferenceHandle)eh);
                 return new ExternalType(tref, (TypeReferenceHandle)eh, this);
+            }
+            else if (eh.Kind == HandleKind.MethodSpecification)
+            {
+                MethodSpecification mspec = reader.GetMethodSpecification((MethodSpecificationHandle)eh);
+                return new MethodInstance(mspec, (MethodSpecificationHandle)eh, this);
             }
             else return null;
         }

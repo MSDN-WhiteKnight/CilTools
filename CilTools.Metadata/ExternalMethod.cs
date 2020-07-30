@@ -33,7 +33,12 @@ namespace CilTools.Metadata
             this.mrefh = mh;
 
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mref.Signature);
-            this.sig = new Signature(sigbytes, this.assembly);
+
+            try
+            {
+                this.sig = new Signature(sigbytes, this.assembly);
+            }
+            catch (NotSupportedException) { }
         }
 
         /// <summary>

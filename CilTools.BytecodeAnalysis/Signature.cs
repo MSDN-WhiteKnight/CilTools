@@ -56,11 +56,13 @@ namespace CilTools.BytecodeAnalysis
         const int MFLAG_HASTHIS = 0x20; //instance
         const int MFLAG_EXPLICITTHIS = 0x40; //explicit
         const int MFLAG_GENERIC = 0x10; //method has generic parameters
+        const int MFLAG_GENERICINST = 0x0A; //generic method instantiation
 
         CallingConvention _conv;
         bool _HasThis;
         bool _ExplicitThis;
         int _GenParamCount;
+        bool _GenInst;
         TypeSpec _ReturnType;
         TypeSpec[] _ParamTypes;
 
@@ -105,18 +107,35 @@ namespace CilTools.BytecodeAnalysis
 
                 if ((b & MFLAG_EXPLICITTHIS) == MFLAG_EXPLICITTHIS) this._ExplicitThis = true;
 
-                if ((b & MFLAG_GENERIC) == MFLAG_GENERIC)
+                if ((b & MFLAG_GENERICINST) == MFLAG_GENERICINST)
                 {
-                    this._GenParamCount = (int)MetadataReader.ReadCompressed(ms);
+                    //generic method instantiation
+                    this._GenInst = true;
+                    int genparams = (int)MetadataReader.ReadCompressed(ms);
+                    this._ParamTypes = new TypeSpec[genparams];
+                    this._GenParamCount = genparams;
+
+                    for (int i = 0; i < genparams; i++)
+                    {
+                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver);
+                    }
                 }
-
-                uint paramcount = MetadataReader.ReadCompressed(ms);
-                this._ParamTypes = new TypeSpec[paramcount];
-                this._ReturnType = TypeSpec.ReadFromStream(ms, resolver);
-
-                for (int i = 0; i < paramcount; i++)
+                else                
                 {
-                    this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver);
+                    if ((b & MFLAG_GENERIC) == MFLAG_GENERIC)
+                    {
+                        //generic method definition
+                        this._GenParamCount = (int)MetadataReader.ReadCompressed(ms);
+                    }
+
+                    uint paramcount = MetadataReader.ReadCompressed(ms);
+                    this._ParamTypes = new TypeSpec[paramcount];
+                    this._ReturnType = TypeSpec.ReadFromStream(ms, resolver);
+
+                    for (int i = 0; i < paramcount; i++)
+                    {
+                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver);
+                    }
                 }
             }
         }
@@ -152,6 +171,8 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         public bool ExplicitThis { get { return this._ExplicitThis; } }
 
+        public bool GenericInst { get { return this._GenInst; } }
+
         /// <summary>
         /// Gets the return type of the function described by this signature
         /// </summary>
@@ -161,6 +182,8 @@ namespace CilTools.BytecodeAnalysis
         /// Gets the amount of fixed parameters that the function described by this signature takes
         /// </summary>
         public int ParamsCount { get { return this._ParamTypes.Length; } }
+
+        public int GenericArgsCount { get { return this._GenParamCount; } }
 
         /// <summary>
         /// Gets the type of parameter with the specified index
