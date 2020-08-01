@@ -82,7 +82,7 @@ namespace CilTools.BytecodeAnalysis
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
                         
             ModuleWrapper mwr = new ModuleWrapper(module);
-            Initialize(data, mwr);
+            Initialize(data, mwr, null);
         }
 
         public Signature(byte[] data, ITokenResolver resolver)
@@ -90,10 +90,18 @@ namespace CilTools.BytecodeAnalysis
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
 
-            Initialize(data, resolver);
+            Initialize(data, resolver,null);
         }
 
-        void Initialize(byte[] data, ITokenResolver resolver)
+        public Signature(byte[] data, ITokenResolver resolver, MethodBase method)
+        {
+            if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
+            if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
+
+            Initialize(data, resolver, method);
+        }
+
+        void Initialize(byte[] data, ITokenResolver resolver, MethodBase method)
         {
             MemoryStream ms = new MemoryStream(data);
 
@@ -117,7 +125,7 @@ namespace CilTools.BytecodeAnalysis
 
                     for (int i = 0; i < genparams; i++)
                     {
-                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver);
+                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver,method);
                     }
                 }
                 else                
@@ -130,11 +138,11 @@ namespace CilTools.BytecodeAnalysis
 
                     uint paramcount = MetadataReader.ReadCompressed(ms);
                     this._ParamTypes = new TypeSpec[paramcount];
-                    this._ReturnType = TypeSpec.ReadFromStream(ms, resolver);
+                    this._ReturnType = TypeSpec.ReadFromStream(ms, resolver,method);
 
                     for (int i = 0; i < paramcount; i++)
                     {
-                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver);
+                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver, method);
                     }
                 }
             }

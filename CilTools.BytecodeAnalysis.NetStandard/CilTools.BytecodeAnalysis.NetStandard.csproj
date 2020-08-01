@@ -42,6 +42,7 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\CustomMethod.cs"  Link="CustomMethod.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ITokenResolver.cs" Link="ITokenResolver.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\LocalVariable.cs" Link="LocalVariable.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\GenericParamType.cs" Link="GenericParamType.cs" />
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ExceptionBlock.cs" Link="ExceptionBlock.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockSyntax.cs" Link="BlockSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\CommentSyntax.cs"  Link="CommentSyntax.cs"/>

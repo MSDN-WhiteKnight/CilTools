@@ -1,49 +1,32 @@
-﻿/* CIL Tools 
+﻿/* CilTools.BytecodeAnalysis library 
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Metadata;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
-using System.Diagnostics;
-using CilTools.BytecodeAnalysis;
 
-namespace CilTools.Metadata
+namespace CilTools.Reflection
 {
-    class ExternalType : Type
+    class GenericParamType : Type
     {
-        TypeReference tref;
-        TypeReferenceHandle htref;
-        MetadataAssembly assembly;
-        public ExternalType(TypeReference t, TypeReferenceHandle ht, MetadataAssembly ass)
-        {
-            Debug.Assert(ass != null, "ass in MetadataExternalType() should not be null");
+        MethodBase _m;
+        int _index;
 
-            this.tref = t;
-            this.htref = ht;
-            this.assembly = ass;
+        public GenericParamType(MethodBase m, int index)
+        {
+            this._m = m;
+            this._index = index;
         }
 
         public override Assembly Assembly
         {
-            get 
-            {
-                EntityHandle eh = this.tref.ResolutionScope;
-
-                if (!eh.IsNil && eh.Kind == HandleKind.AssemblyReference)
-                {
-                    AssemblyReference ar = assembly.MetadataReader.GetAssemblyReference((AssemblyReferenceHandle)eh);
-                    return new ExternalAssembly(ar, (AssemblyReferenceHandle)eh, this.assembly);
-                }
-                else return MetadataAssembly.UnknownAssembly;
-            }
+            get { return null; }
         }
 
         public override string AssemblyQualifiedName
         {
-            get { return this.FullName + ", " + this.Assembly.FullName; }
+            get { return ""; }
         }
 
         public override Type BaseType
@@ -56,7 +39,7 @@ namespace CilTools.Metadata
 
         public override string FullName
         {
-            get { return this.Namespace + "." + this.Name; }
+            get { return this.Name; }
         }
 
         public override Guid GUID
@@ -98,12 +81,12 @@ namespace CilTools.Metadata
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
         {
-            return null;
+            throw new NotImplementedException();
         }
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
-            return new FieldInfo[0];
+            throw new NotImplementedException();
         }
 
         public override Type GetInterface(string name, bool ignoreCase)
@@ -114,16 +97,16 @@ namespace CilTools.Metadata
         public override Type[] GetInterfaces()
         {
             throw new NotImplementedException();
-        }               
+        }
 
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
         {
-            return new MemberInfo[0];
+            throw new NotImplementedException();
         }
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
-            return new MemberInfo[0];
+            throw new NotImplementedException();
         }
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,
@@ -203,8 +186,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                string tn = assembly.MetadataReader.GetString(tref.Namespace);
-                return tn;
+                return "";
             }
         }
 
@@ -232,8 +214,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                string tn = assembly.MetadataReader.GetString(tref.Name);
-                return tn;
+                return "";
             }
         }
 
@@ -241,7 +222,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                return assembly.MetadataReader.GetToken(this.htref);
+                throw new NotImplementedException();
             }
         }
 
@@ -250,25 +231,28 @@ namespace CilTools.Metadata
             return 0;
         }
 
-        public override Type MakeArrayType()
+        public override bool IsGenericParameter
         {
-            return new ComplexType(this, ComplexTypeKind.SzArray,null);
+            get
+            {
+                return true;
+            }
         }
 
-        public override Type MakeGenericType(params Type[] typeArguments)
+        public override int GenericParameterPosition
         {
-            return new ComplexType(this, ComplexTypeKind.GenInst, typeArguments);
+            get
+            {
+                return this._index;
+            }
         }
 
-        public override int GetHashCode()
+        public override MethodBase DeclaringMethod
         {
-            return this.FullName.GetHashCode();
-        }
-
-        public override string ToString()
-        {
-            return this.FullName;
+            get
+            {
+                return this._m;
+            }
         }
     }
 }
-

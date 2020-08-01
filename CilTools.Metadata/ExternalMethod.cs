@@ -36,7 +36,7 @@ namespace CilTools.Metadata
 
             try
             {
-                this.sig = new Signature(sigbytes, this.assembly);
+                this.sig = new Signature(sigbytes, this.assembly,this);
             }
             catch (NotSupportedException) { }
         }
@@ -103,6 +103,12 @@ namespace CilTools.Metadata
             get
             {
                 MethodAttributes ret = (MethodAttributes)0;
+
+                if (this.sig != null)
+                {
+                    if (!this.sig.HasThis) ret |= MethodAttributes.Static;
+                }
+
                 return ret;
             }
         }
