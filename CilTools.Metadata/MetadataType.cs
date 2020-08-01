@@ -327,7 +327,12 @@ namespace CilTools.Metadata
 
         public override Type MakeArrayType()
         {
-            return new ComplexType(this, ComplexTypeKind.SzArray);
+            return new ComplexType(this, ComplexTypeKind.SzArray,null);
+        }
+
+        public override Type MakeGenericType(params Type[] typeArguments)
+        {
+            return new ComplexType(this, ComplexTypeKind.GenInst, typeArguments);
         }
 
         public override int GetHashCode()

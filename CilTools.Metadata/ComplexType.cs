@@ -16,20 +16,23 @@ namespace CilTools.Metadata
     {
         SzArray = 1, //single-dimensional zero-based array
         ByRef = 2, //reference
-        Pointer = 3 //unmanaged pointer
+        Pointer = 3, //unmanaged pointer
+        GenInst = 4, //generic type instantiation
     }
     class ComplexType : Type
     {
-        //complex type is a type constructed on demand based on another type defined in some assembly ("element type")
+        //complex type is a type constructed on demand based on another type defined in some assembly
         //for example, int[] is an array type constructed from element type [mscorlib]System.Int32
 
         Type inner;
         ComplexTypeKind kind;
+        Type[] genargs;
 
-        public ComplexType(Type t, ComplexTypeKind k)
+        public ComplexType(Type t, ComplexTypeKind k, Type[] ga)
         {
             this.inner = t;
             this.kind = k;
+            this.genargs = ga;
         }
 
         public override Assembly Assembly
@@ -73,17 +76,26 @@ namespace CilTools.Metadata
         protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder, CallingConventions callConvention,
             Type[] types, ParameterModifier[] modifiers)
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetConstructor(bindingAttr, binder, callConvention, types, modifiers);
+            }
+            else return null;
         }
 
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetConstructors(bindingAttr);
+            }
+            else return new ConstructorInfo[0];
         }
 
         public override Type GetElementType()
         {
-            return this.inner;
+            if (this.kind != ComplexTypeKind.GenInst) return this.inner;
+            else return null;
         }
 
         public override EventInfo GetEvent(string name, BindingFlags bindingAttr)
@@ -98,53 +110,93 @@ namespace CilTools.Metadata
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
         {
-            return null;
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetField(name, bindingAttr);
+            }
+            else return null;
         }
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
-            return new FieldInfo[0];
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetFields(bindingAttr);
+            }
+            else return new FieldInfo[0];
         }
 
         public override Type GetInterface(string name, bool ignoreCase)
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetInterface(name,ignoreCase);
+            }
+            else return null;
         }
 
         public override Type[] GetInterfaces()
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetInterfaces();
+            }
+            else return new Type[0];
         }
 
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetMember(name,bindingAttr);
+            }
+            else return new MemberInfo[0];
         }
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetMembers(bindingAttr);
+            }
+            else return new MemberInfo[0];
         }
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,
             CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetMethod(name, bindingAttr, binder, callConvention, types, modifiers);
+            }
+            else return null;
         }
 
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetMethods(bindingAttr);
+            }
+            else return new MethodInfo[0];
         }
 
         public override Type GetNestedType(string name, BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetNestedType(name, bindingAttr);
+            }
+            else return null;
         }
 
         public override Type[] GetNestedTypes(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetNestedTypes(bindingAttr);
+            }
+            else return new Type[0];
         }
 
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
@@ -160,7 +212,8 @@ namespace CilTools.Metadata
 
         protected override bool HasElementTypeImpl()
         {
-            return true;
+            if (this.kind != ComplexTypeKind.GenInst) return true;
+            else return false;
         }
 
         public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args,
@@ -215,17 +268,29 @@ namespace CilTools.Metadata
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
-            return new object[] { };
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetCustomAttributes(attributeType,inherit);
+            }
+            else return new object[0];
         }
 
         public override object[] GetCustomAttributes(bool inherit)
         {
-            return new object[] { };
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.GetCustomAttributes(inherit);
+            }
+            else return new object[0];
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
         {
-            return false;
+            if (this.kind == ComplexTypeKind.GenInst)
+            {
+                return this.inner.IsDefined(attributeType, inherit);
+            }
+            else return false;
         }
 
         public override string Name
@@ -256,7 +321,7 @@ namespace CilTools.Metadata
         public override int GetArrayRank()
         {
             if (this.kind == ComplexTypeKind.SzArray) return 1;
-            else throw new NotSupportedException("Arrays with more then one dimension are not supported");
+            else throw new NotSupportedException("Arrays with more then one dimension are not supported.");
         }
 
         public override int GetHashCode()
@@ -264,9 +329,32 @@ namespace CilTools.Metadata
             return this.FullName.GetHashCode();
         }
 
-        public override string ToString()
+        public override bool IsGenericType
         {
-            return this.FullName;
+            get
+            {
+                if (this.kind == ComplexTypeKind.GenInst) return true;
+                else return false;
+            }
+        }
+
+        public override bool IsGenericTypeDefinition
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        public override Type GetGenericTypeDefinition()
+        {
+            if (this.kind == ComplexTypeKind.GenInst) return this.inner;
+            else return null;
+        }
+
+        public override Type[] GetGenericArguments()
+        {
+            return this.genargs;
         }
     }
 }

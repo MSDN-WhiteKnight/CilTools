@@ -38,7 +38,7 @@ namespace CilTools.Metadata
             }
 
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
-            this.sig = new Signature(sigbytes, this.assembly);
+            this.sig = new Signature(sigbytes, this.assembly,this);
         }
 
         /// <summary>

@@ -226,7 +226,14 @@ namespace CilTools.BytecodeAnalysis
             return BitConverter.ToInt32(res_bytes, 0);
         }
 
-        internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver) //ECMA-335 II.23.2.12 Type
+        internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver)
+        {
+            return TypeSpec.ReadFromStream(source, resolver, null);
+        }
+
+        internal static TypeSpec ReadFromStream(
+            Stream source, ITokenResolver resolver, MethodBase method
+            ) //ECMA-335 II.23.2.12 Type
         {
             Debug.Assert(source != null, "Source stream is null");
 
@@ -353,7 +360,7 @@ namespace CilTools.BytecodeAnalysis
                                                 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Array:
-                        ts = TypeSpec.ReadFromStream(source, resolver);
+                        ts = TypeSpec.ReadFromStream(source, resolver,method);
 
                         //II.23.2.13 ArrayShape
                         uint rank = MetadataReader.ReadCompressed(source);
@@ -375,22 +382,24 @@ namespace CilTools.BytecodeAnalysis
                         
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.SzArray:
-                        ts = TypeSpec.ReadFromStream(source, resolver);
+                        ts = TypeSpec.ReadFromStream(source, resolver, method);
 
                         if(ts.Type!=null) restype = ts.Type.MakeArrayType();
 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Ptr:
-                        ts = TypeSpec.ReadFromStream(source, resolver);
+                        ts = TypeSpec.ReadFromStream(source, resolver, method);
 
                         if (ts.Type != null) restype = ts.Type.MakePointerType();
 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Var: //generic type arg
-                        paramnum = MetadataReader.ReadCompressed(source);                        
+                        paramnum = MetadataReader.ReadCompressed(source);
+                        restype = new GenericParamType(null, (int)paramnum);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.MVar: //generic method arg
-                        paramnum = MetadataReader.ReadCompressed(source);                        
+                        paramnum = MetadataReader.ReadCompressed(source);
+                        restype = new GenericParamType(method, (int)paramnum);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Internal:
                         //skip sizeof(IntPtr) bytes
@@ -399,8 +408,37 @@ namespace CilTools.BytecodeAnalysis
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.FnPtr: 
                         throw new NotSupportedException("Parsing signatures with function pointers is not supported");
-                    case (byte)CilTools.BytecodeAnalysis.ElementType.GenericInst: 
-                        throw new NotSupportedException("Parsing signatures with generic types is not supported");
+                    case (byte)CilTools.BytecodeAnalysis.ElementType.GenericInst:
+                        byte tdef = MetadataReader.ReadByte(source);
+                        typetok = DecodeToken(MetadataReader.ReadCompressed(source));
+                        Type tdef_t=null;
+
+                        try
+                        {
+                            tdef_t = resolver.ResolveType(typetok);
+                        }
+                        catch (Exception ex)
+                        {
+                            Diagnostics.OnError(null, new CilErrorEventArgs(ex, 
+                                "Failed to resolve generic type definition token: 0x" + typetok.ToString("X")
+                                ));
+
+                            throw new NotSupportedException("The signature contains TypeSpec that cannot be parsed");
+                        }
+
+                        uint genargs_count = MetadataReader.ReadCompressed(source);
+                        TypeSpec[] genargs = new TypeSpec[genargs_count];
+                        Type[] arg_types = new Type[genargs_count];
+
+                        for (uint i = 0; i < genargs_count; i++)
+                        {
+                            genargs[i] = TypeSpec.ReadFromStream(source, resolver, method);
+                            arg_types[i] = genargs[i].Type;
+                        }
+
+                        restype = tdef_t.MakeGenericType(arg_types);
+
+                        break;
                 }//end switch
             }
 
