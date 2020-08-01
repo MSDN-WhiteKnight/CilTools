@@ -73,6 +73,21 @@ namespace CilTools.Metadata
                 {
                     return new ExternalType(owner.MetadataReader.GetTypeReference((TypeReferenceHandle)eh), (TypeReferenceHandle)eh, this.owner);
                 }
+                else if (!eh.IsNil && eh.Kind == HandleKind.TypeSpecification)
+                {
+                    //TypeSpec is either complex type (array etc.) or generic instantiation
+
+                    TypeSpecification ts = this.owner.MetadataReader.GetTypeSpecification(
+                        (TypeSpecificationHandle)eh
+                        );
+
+                    TypeSpec encoded = TypeSpec.ReadFromArray(owner.MetadataReader.GetBlobBytes(ts.Signature),
+                        this.owner,
+                        null);
+
+                    if (encoded != null) return encoded.Type;
+                    else return UnknownType.Value;
+                }
                 else return null;
             }
         }

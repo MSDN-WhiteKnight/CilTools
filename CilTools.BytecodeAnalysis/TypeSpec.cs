@@ -226,6 +226,19 @@ namespace CilTools.BytecodeAnalysis
             return BitConverter.ToInt32(res_bytes, 0);
         }
 
+        public static TypeSpec ReadFromArray(byte[] data, ITokenResolver resolver,MethodBase method)
+        {
+            //ECMA-335 II.23.2.14 TypeSpec
+            if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
+            if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
+            MemoryStream ms = new MemoryStream(data);
+
+            using (ms)
+            {
+                return TypeSpec.ReadFromStream(ms, resolver,method);
+            }
+        }
+
         internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver)
         {
             return TypeSpec.ReadFromStream(source, resolver, null);
