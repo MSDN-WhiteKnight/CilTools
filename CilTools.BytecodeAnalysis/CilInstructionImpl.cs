@@ -219,14 +219,14 @@ namespace CilTools.BytecodeAnalysis
         {
             get
             {
-                if (typeof(T) != typeof(int)) return null;
+                if (typeof(T) != typeof(int) && typeof(T) != typeof(sbyte)) return null;
                 if (this._Method == null) return null;
 
                 if (ReferencesLocal(this._OpCode))
                 {
                     try
                     {
-                        int local_index = (int)this.Operand;
+                        int local_index = Convert.ToInt32(this.Operand);
                         MethodBody mb = this._Method.GetMethodBody();
 
                         if (mb == null) return null;
@@ -292,6 +292,11 @@ namespace CilTools.BytecodeAnalysis
 
                 target.Write(')');
             }
+            else if (typeof(T) == typeof(sbyte) && ReferencesLocal(this.OpCode))
+            {
+                //local variable
+                target.Write("V_" + this.Operand.ToString());
+            }
             else
             {
                 target.Write(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
@@ -322,7 +327,7 @@ namespace CilTools.BytecodeAnalysis
                         {
                             yield return new IdentifierSyntax("", par.Name, "", false);
                         }
-                        
+
                     }
                     else
                     {
@@ -348,6 +353,11 @@ namespace CilTools.BytecodeAnalysis
                 }
 
                 yield return new PunctuationSyntax("", ")", "");
+            }
+            else if (typeof(T) == typeof(sbyte) && ReferencesLocal(this.OpCode))
+            {
+                //local variable
+                yield return new IdentifierSyntax("", "V_" + this.Operand.ToString(), "", false);
             }
             else
             {
