@@ -84,6 +84,8 @@ namespace CilTools.BytecodeAnalysis
 
         internal static IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t)
         {
+            if(t==null) yield break;
+
             if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
             {
                 string prefix;
@@ -425,8 +427,25 @@ namespace CilTools.BytecodeAnalysis
             MethodInfo mi = m as MethodInfo;
             string rt;
 
-            if (mi != null) rt = CilAnalysis.GetTypeName(mi.ReturnType);
-            else rt = "void";
+            //append return type
+            if (mi != null)
+            {
+                //standard reflection implementation: return type exposed via MethodInfo
+                rt = CilAnalysis.GetTypeName(mi.ReturnType);
+            }
+            else if (m is CustomMethod)
+            {
+                //CilTools reflection implementation: return type exposed via CustomMethod
+                Type tReturn = ((CustomMethod)m).ReturnType;
+
+                if(tReturn!=null) rt = CilAnalysis.GetTypeName(tReturn);
+                else rt = "void";
+            }
+            else
+            {
+                //we append return type here even for constructors
+                rt = "void";
+            }
 
             if (!m.IsStatic) sb.Append("instance ");
 
@@ -476,8 +495,25 @@ namespace CilTools.BytecodeAnalysis
             MethodInfo mi = m as MethodInfo;
             IEnumerable<SyntaxNode> rt;
 
-            if (mi != null) rt = CilAnalysis.GetTypeNameSyntax(mi.ReturnType);
-            else rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
+            //append return type
+            if (mi != null)
+            {
+                //standard reflection implementation: return type exposed via MethodInfo
+                rt = CilAnalysis.GetTypeNameSyntax(mi.ReturnType);
+            }
+            else if (m is CustomMethod)
+            {
+                //CilTools reflection implementation: return type exposed via CustomMethod
+                Type tReturn = ((CustomMethod)m).ReturnType;
+
+                if (tReturn != null) rt = CilAnalysis.GetTypeNameSyntax(tReturn);
+                else rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
+            }
+            else
+            {
+                //we append return type here even for constructors
+                rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
+            }
 
             if (!m.IsStatic) children.Add(new KeywordSyntax("", "instance", " ", KeywordKind.Other));
 
