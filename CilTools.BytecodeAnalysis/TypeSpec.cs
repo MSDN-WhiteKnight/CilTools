@@ -226,7 +226,7 @@ namespace CilTools.BytecodeAnalysis
             return BitConverter.ToInt32(res_bytes, 0);
         }
 
-        public static TypeSpec ReadFromArray(byte[] data, ITokenResolver resolver,MethodBase method)
+        public static TypeSpec ReadFromArray(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             //ECMA-335 II.23.2.14 TypeSpec
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
@@ -235,7 +235,7 @@ namespace CilTools.BytecodeAnalysis
 
             using (ms)
             {
-                return TypeSpec.ReadFromStream(ms, resolver,method);
+                return TypeSpec.ReadFromStream(ms, resolver,member);
             }
         }
 
@@ -245,7 +245,7 @@ namespace CilTools.BytecodeAnalysis
         }
 
         internal static TypeSpec ReadFromStream(
-            Stream source, ITokenResolver resolver, MethodBase method
+            Stream source, ITokenResolver resolver, MemberInfo member
             ) //ECMA-335 II.23.2.12 Type
         {
             Debug.Assert(source != null, "Source stream is null");
@@ -373,7 +373,7 @@ namespace CilTools.BytecodeAnalysis
                                                 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Array:
-                        ts = TypeSpec.ReadFromStream(source, resolver,method);
+                        ts = TypeSpec.ReadFromStream(source, resolver,member);
 
                         //II.23.2.13 ArrayShape
                         uint rank = MetadataReader.ReadCompressed(source);
@@ -395,13 +395,13 @@ namespace CilTools.BytecodeAnalysis
                         
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.SzArray:
-                        ts = TypeSpec.ReadFromStream(source, resolver, method);
+                        ts = TypeSpec.ReadFromStream(source, resolver, member);
 
                         if(ts.Type!=null) restype = ts.Type.MakeArrayType();
 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Ptr:
-                        ts = TypeSpec.ReadFromStream(source, resolver, method);
+                        ts = TypeSpec.ReadFromStream(source, resolver, member);
 
                         if (ts.Type != null) restype = ts.Type.MakePointerType();
 
@@ -412,7 +412,7 @@ namespace CilTools.BytecodeAnalysis
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.MVar: //generic method arg
                         paramnum = MetadataReader.ReadCompressed(source);
-                        restype = new GenericParamType(method, (int)paramnum);
+                        restype = new GenericParamType(member as MethodBase, (int)paramnum);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Internal:
                         //skip sizeof(IntPtr) bytes
@@ -445,7 +445,7 @@ namespace CilTools.BytecodeAnalysis
 
                         for (uint i = 0; i < genargs_count; i++)
                         {
-                            genargs[i] = TypeSpec.ReadFromStream(source, resolver, method);
+                            genargs[i] = TypeSpec.ReadFromStream(source, resolver, member);
                             arg_types[i] = genargs[i].Type;
                         }
 

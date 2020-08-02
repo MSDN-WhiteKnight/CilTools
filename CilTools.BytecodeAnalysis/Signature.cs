@@ -93,15 +93,15 @@ namespace CilTools.BytecodeAnalysis
             Initialize(data, resolver,null);
         }
 
-        public Signature(byte[] data, ITokenResolver resolver, MethodBase method)
+        public Signature(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
 
-            Initialize(data, resolver, method);
+            Initialize(data, resolver, member);
         }
 
-        void Initialize(byte[] data, ITokenResolver resolver, MethodBase method)
+        void Initialize(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             MemoryStream ms = new MemoryStream(data);
 
@@ -125,7 +125,7 @@ namespace CilTools.BytecodeAnalysis
 
                     for (int i = 0; i < genparams; i++)
                     {
-                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver,method);
+                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver,member);
                     }
                 }
                 else                
@@ -138,11 +138,11 @@ namespace CilTools.BytecodeAnalysis
 
                     uint paramcount = MetadataReader.ReadCompressed(ms);
                     this._ParamTypes = new TypeSpec[paramcount];
-                    this._ReturnType = TypeSpec.ReadFromStream(ms, resolver,method);
+                    this._ReturnType = TypeSpec.ReadFromStream(ms, resolver, member);
 
                     for (int i = 0; i < paramcount; i++)
                     {
-                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver, method);
+                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver, member);
                     }
                 }
             }

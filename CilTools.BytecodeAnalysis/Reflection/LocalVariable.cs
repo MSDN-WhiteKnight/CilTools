@@ -50,7 +50,7 @@ namespace CilTools.Reflection
         /// </summary>
         public bool IsPinned { get { return this.type.IsPinned; } }
 
-        static LocalVariable[] ReadSignatureImpl(byte[] data, ITokenResolver resolver)
+        static LocalVariable[] ReadSignatureImpl(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             MemoryStream ms = new MemoryStream(data);
             LocalVariable[] ret;
@@ -66,7 +66,7 @@ namespace CilTools.Reflection
 
                 for (int i = 0; i < paramcount; i++)
                 {
-                    TypeSpec t = TypeSpec.ReadFromStream(ms, resolver);
+                    TypeSpec t = TypeSpec.ReadFromStream(ms, resolver,member);
                     ret[i] = new LocalVariable(t, i);
                 }
 
@@ -87,7 +87,15 @@ namespace CilTools.Reflection
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) return new LocalVariable[0];
 
-            return ReadSignatureImpl(data, resolver);
+            return ReadSignatureImpl(data, resolver,null);
+        }
+
+        public static LocalVariable[] ReadSignature(byte[] data, ITokenResolver resolver, MemberInfo member)
+        {
+            if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
+            if (data.Length == 0) return new LocalVariable[0];
+
+            return ReadSignatureImpl(data, resolver, member);
         }
 
         /// <summary>
@@ -104,7 +112,7 @@ namespace CilTools.Reflection
             if (data.Length == 0) return new LocalVariable[0];
 
             ModuleWrapper mwr = new ModuleWrapper(module);
-            return ReadSignatureImpl(data, mwr);
+            return ReadSignatureImpl(data, mwr,null);
         }
 
         /// <summary>

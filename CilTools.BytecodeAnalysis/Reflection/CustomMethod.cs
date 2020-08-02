@@ -75,11 +75,11 @@ namespace CilTools.Reflection
         {
             byte[] sig = this.GetLocalVarSignature();
 
-            return CilTools.Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver);
+            return CilTools.Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver,this);
         }
 
         /// <summary>
-        /// Converts MethodBase into the form suitable for processing by CilBytecodeParser
+        /// Converts MethodBase into the form suitable for processing by CilTools.BytecodeAnalysis
         /// </summary>        
         internal static CustomMethod PrepareMethod(MethodBase src)
         {

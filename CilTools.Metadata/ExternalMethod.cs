@@ -128,7 +128,7 @@ namespace CilTools.Metadata
 
             for (int i = 0; i < pars.Length; i++)
             {
-                pars[i] = new Parameter(this.sig.GetParamType(i), i, this);
+                pars[i] = new ParameterSpec(this.sig.GetParamType(i), i, this);
             }
 
             return pars;

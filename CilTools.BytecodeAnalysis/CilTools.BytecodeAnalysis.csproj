@@ -56,6 +56,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="MetadataReader.cs" />
+    <Compile Include="Reflection\ComplexType.cs" />
     <Compile Include="Reflection\CustomMethod.cs" />
     <Compile Include="Reflection\ExceptionBlock.cs" />
     <Compile Include="Reflection\GenericParamType.cs" />

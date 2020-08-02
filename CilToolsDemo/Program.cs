@@ -103,7 +103,7 @@ namespace CilToolsDemo
             string method;
             Assembly ass;
 
-            try
+            //try
             {
                 if (args.Length < 3)
                 {
@@ -114,14 +114,19 @@ namespace CilToolsDemo
                     Console.WriteLine();
                     Console.WriteLine(Assembly.GetExecutingAssembly().ManifestModule.FullyQualifiedName);
 
-                    asspath = "";
+                    /*asspath = "";
                     type = "CilToolsDemo.Program";
                     method = "Main";                    
-                    ass = Assembly.GetExecutingAssembly();
+                    ass = Assembly.GetExecutingAssembly();*/
 
-                    /*asspath = Assembly.GetExecutingAssembly().Location;
+                    asspath = Assembly.GetExecutingAssembly().Location;
                     type = "CilToolsDemo.Program";
                     method = "Main";                                        
+                    ass = MetadataLoader.Load(asspath);
+
+                    /*asspath = @"D:\VADIM\repos\CilTools\tests\CilTools.BytecodeAnalysis.Tests\bin\Debug\CilTools.BytecodeAnalysis.Tests.dll";
+                    type = "CilTools.BytecodeAnalysis.Tests.SampleMethods";
+                    method = "TestOptionalParams";
                     ass = MetadataLoader.Load(asspath);*/
                 }
                 else
@@ -147,12 +152,12 @@ namespace CilToolsDemo
                 
                 graph.Print(null, true, true, true, true);
             }
-            catch (Exception ex)
+            /*catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 if (!Console.IsInputRedirected) Console.ReadKey();
                 throw;
-            }
+            }*/
 
             if (!Console.IsInputRedirected) Console.ReadKey();
         }
