@@ -56,9 +56,61 @@ namespace CilTools.Metadata
             MemoryStream ms = new MemoryStream(rawval);
             BinaryReader rd = new BinaryReader(ms);
 
-            if (ts.Type == typeof(int))
+            if (c.TypeCode == ConstantTypeCode.NullReference)
+            {
+                this.defval = null;
+            }
+            else if (ts.Type == typeof(int))
             {
                 this.defval = rd.ReadInt32();
+            }
+            else if (ts.Type == typeof(uint))
+            {
+                this.defval = rd.ReadUInt32();
+            }
+            else if (ts.Type == typeof(string))
+            {
+                this.defval = Encoding.Unicode.GetString(rawval);
+            }
+            else if (ts.Type == typeof(char))
+            {
+                this.defval = rd.ReadChar();
+            }
+            else if (ts.Type == typeof(bool))
+            {
+                this.defval = rd.ReadBoolean();
+            }
+            else if (ts.Type == typeof(byte))
+            {
+                this.defval = rd.ReadByte();
+            }
+            else if (ts.Type == typeof(sbyte))
+            {
+                this.defval = rd.ReadSByte();
+            }
+            else if (ts.Type == typeof(short))
+            {
+                this.defval = rd.ReadInt16();
+            }
+            else if (ts.Type == typeof(ushort))
+            {
+                this.defval = rd.ReadUInt16();
+            }
+            else if (ts.Type == typeof(long))
+            {
+                this.defval = rd.ReadInt64();
+            }
+            else if (ts.Type == typeof(ulong))
+            {
+                this.defval = rd.ReadUInt64();
+            }
+            else if (ts.Type == typeof(float))
+            {
+                this.defval = rd.ReadSingle();
+            }
+            else if (ts.Type == typeof(double))
+            {
+                this.defval = rd.ReadDouble();
             }
             else this.defval = DBNull.Value;
         }
