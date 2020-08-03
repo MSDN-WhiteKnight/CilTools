@@ -165,10 +165,18 @@ namespace CilTools.Metadata
             if (this.sig == null) return new ParameterInfo[0];
 
             ParameterInfo[] pars = new ParameterInfo[this.sig.ParamsCount];
+            ParameterHandleCollection hcoll = this.mdef.GetParameters();
 
-            for (int i = 0; i < pars.Length; i++)
+            foreach (ParameterHandle h in hcoll)
             {
-                pars[i] = new Parameter(this.sig.GetParamType(i), i, this);
+                Parameter par = this.assembly.MetadataReader.GetParameter(h);
+                int index = par.SequenceNumber-1;
+                if (index >= pars.Length) continue;
+                if (index < 0) continue;
+
+                pars[index] = new ParameterSpec(
+                    this.sig.GetParamType(index), par, this,this.assembly.MetadataReader
+                    );
             }
 
             return pars;
@@ -261,6 +269,45 @@ namespace CilTools.Metadata
         public override bool InitLocalsSpecified
         {
             get { return mb != null; }
+        }
+
+        public override bool IsGenericMethod
+        {
+            get
+            {
+                if (this.sig == null) return false;
+
+                return this.sig.GenericArgsCount > 0;
+            }
+        }
+
+        public override bool IsGenericMethodDefinition
+        {
+            get
+            {
+                if (this.sig == null) return false;
+
+                return this.sig.GenericArgsCount > 0;
+            }
+        }
+
+        public override Type[] GetGenericArguments()
+        {
+            GenericParameterHandleCollection hcoll = mdef.GetGenericParameters();            
+            Type[] ret = new Type[hcoll.Count];
+            
+            for(int i = 0; i < ret.Length; i++)
+            {
+                GenericParameter gp = this.assembly.MetadataReader.GetGenericParameter(hcoll[i]);
+                StringHandle sh = gp.Name;
+
+                if(!sh.IsNil) 
+                    ret[i] = new GenericParamType(this, gp.Index, assembly.MetadataReader.GetString(sh));
+                else
+                    ret[i] = new GenericParamType(this, gp.Index);
+            }
+
+            return ret;
         }
     }
 }

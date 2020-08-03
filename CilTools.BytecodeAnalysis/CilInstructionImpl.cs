@@ -184,14 +184,14 @@ namespace CilTools.BytecodeAnalysis
         {
             get
             {
-                if (typeof(T)!=typeof(int)) return null;
+                if (typeof(T) != typeof(int) && typeof(T) != typeof(sbyte)) return null;
                 if (this._Method == null) return null;
 
                 if (ReferencesParam(this._OpCode))
                 {
                     try
                     {
-                        int param_index = (int)this.Operand;
+                        int param_index = Convert.ToInt32(this.Operand);
                         ParameterInfo[] pars = this._Method.GetParameters();
 
                         if (this._Method.IsStatic == false) param_index--;
@@ -297,6 +297,21 @@ namespace CilTools.BytecodeAnalysis
                 //local variable
                 target.Write("V_" + this.Operand.ToString());
             }
+            else if (typeof(T) == typeof(sbyte) && ReferencesParam(this.OpCode) && this.Method != null)
+            {
+                //parameter
+                ParameterInfo par = this.ReferencedParameter;
+
+                if (par != null)
+                {
+                    if (String.IsNullOrEmpty(par.Name)) target.Write("par" + (par.Position + 1).ToString());
+                    else target.Write(par.Name);
+                }
+                else
+                {
+                    target.Write("par" + this.Operand.ToString());
+                }
+            }
             else
             {
                 target.Write(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
@@ -358,6 +373,28 @@ namespace CilTools.BytecodeAnalysis
             {
                 //local variable
                 yield return new IdentifierSyntax("", "V_" + this.Operand.ToString(), "", false);
+            }
+            else if (typeof(T) == typeof(sbyte) && ReferencesParam(this.OpCode) && this.Method != null)
+            {
+                //parameter
+                ParameterInfo par = this.ReferencedParameter;
+
+                if (par != null)
+                {
+                    if (String.IsNullOrEmpty(par.Name))
+                    {
+                        yield return new IdentifierSyntax("", "par" + (par.Position + 1).ToString(), "", false);
+                    }
+                    else
+                    {
+                        yield return new IdentifierSyntax("", par.Name, "", false);
+                    }
+
+                }
+                else
+                {
+                    yield return new IdentifierSyntax("", "par" + this.Operand.ToString(), "", false);
+                }
             }
             else
             {

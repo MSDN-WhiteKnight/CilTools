@@ -8,15 +8,24 @@ using System.Text;
 
 namespace CilTools.Reflection
 {
-    class GenericParamType : Type
+    public class GenericParamType : Type
     {
         MethodBase _m;
         int _index;
+        string _name;
 
         public GenericParamType(MethodBase m, int index)
         {
             this._m = m;
             this._index = index;
+            this._name = "";
+        }
+
+        public GenericParamType(MethodBase m, int index,string name)
+        {
+            this._m = m;
+            this._index = index;
+            this._name = name;
         }
 
         public override Assembly Assembly
@@ -214,7 +223,7 @@ namespace CilTools.Reflection
         {
             get
             {
-                return "";
+                return this._name;
             }
         }
 
@@ -253,6 +262,11 @@ namespace CilTools.Reflection
             {
                 return this._m;
             }
+        }
+
+        public override Type MakeArrayType()
+        {
+            return new ComplexType(this, ComplexTypeKind.SzArray, null);
         }
     }
 }

@@ -4,22 +4,19 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Metadata;
-using System.Reflection.Metadata.Ecma335;
 using System.Text;
-using System.Diagnostics;
-using CilTools.BytecodeAnalysis;
 
-namespace CilTools.Metadata
+namespace CilTools.Reflection
 {
-    enum ComplexTypeKind 
+    public enum ComplexTypeKind
     {
         SzArray = 1, //single-dimensional zero-based array
         ByRef = 2, //reference
         Pointer = 3, //unmanaged pointer
         GenInst = 4, //generic type instantiation
     }
-    class ComplexType : Type
+
+    public class ComplexType : Type
     {
         //complex type is a type constructed on demand based on another type defined in some assembly
         //for example, int[] is an array type constructed from element type [mscorlib]System.Int32
@@ -130,7 +127,7 @@ namespace CilTools.Metadata
         {
             if (this.kind == ComplexTypeKind.GenInst)
             {
-                return this.inner.GetInterface(name,ignoreCase);
+                return this.inner.GetInterface(name, ignoreCase);
             }
             else return null;
         }
@@ -148,7 +145,7 @@ namespace CilTools.Metadata
         {
             if (this.kind == ComplexTypeKind.GenInst)
             {
-                return this.inner.GetMember(name,bindingAttr);
+                return this.inner.GetMember(name, bindingAttr);
             }
             else return new MemberInfo[0];
         }
@@ -270,7 +267,7 @@ namespace CilTools.Metadata
         {
             if (this.kind == ComplexTypeKind.GenInst)
             {
-                return this.inner.GetCustomAttributes(attributeType,inherit);
+                return this.inner.GetCustomAttributes(attributeType, inherit);
             }
             else return new object[0];
         }
@@ -301,7 +298,7 @@ namespace CilTools.Metadata
 
                 switch (this.kind)
                 {
-                    case ComplexTypeKind.SzArray:tn += "[]";break;
+                    case ComplexTypeKind.SzArray: tn += "[]"; break;
                     case ComplexTypeKind.ByRef: tn += "&"; break;
                     case ComplexTypeKind.Pointer: tn += "*"; break;
                 }

@@ -45,7 +45,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ComplexType.cs" />
     <Compile Include="ExternalAssembly.cs" />
     <Compile Include="ExternalField.cs" />
     <Compile Include="MetadataAssembly.cs" />
@@ -56,7 +55,7 @@
     <Compile Include="MetadataMethod.cs" />
     <Compile Include="MetadataType.cs" />
     <Compile Include="MethodInstance.cs" />
-    <Compile Include="Parameter.cs" />
+    <Compile Include="ParameterSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnknownType.cs" />
   </ItemGroup>

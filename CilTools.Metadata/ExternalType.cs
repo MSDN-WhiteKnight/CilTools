@@ -9,6 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {

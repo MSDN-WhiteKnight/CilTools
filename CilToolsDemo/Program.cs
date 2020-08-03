@@ -123,6 +123,11 @@ namespace CilToolsDemo
                     type = "CilToolsDemo.Program";
                     method = "Main";                                        
                     ass = MetadataLoader.Load(asspath);*/
+
+                    /*asspath = @"...\repos\CilTools\tests\CilTools.BytecodeAnalysis.Tests\bin\Debug\CilTools.BytecodeAnalysis.Tests.dll";
+                    type = "CilTools.BytecodeAnalysis.Tests.SampleMethods";
+                    method = "PointerTest";
+                    ass = MetadataLoader.Load(asspath);*/
                 }
                 else
                 {
