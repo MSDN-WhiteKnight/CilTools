@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Globalization;
 using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
@@ -181,6 +182,15 @@ namespace CilTools.Syntax
                             output.Write('"');
                             output.Write(CilAnalysis.EscapeString(pars[i].RawDefaultValue.ToString()));
                             output.Write('"');
+                        }
+                        else if (pars[i].RawDefaultValue.GetType() == typeof(char))
+                        {
+                            output.Write("char");
+                            output.Write('(');
+                            ushort val = Convert.ToUInt16(pars[i].RawDefaultValue);
+                            output.Write("0x");
+                            output.Write(val.ToString("X4",CultureInfo.InvariantCulture));
+                            output.Write(')');
                         }
                         else //most of the types...
                         {
