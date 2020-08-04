@@ -340,6 +340,30 @@ namespace CilTools.Metadata
 
             return ret;
         }
+
+        public override CallingConventions CallingConvention
+        {
+            get
+            {
+                if (this.sig == null) return base.CallingConvention;
+
+                CallingConventions ret = (CallingConventions)0;
+
+                if (this.sig.CallingConvention == BytecodeAnalysis.CallingConvention.Vararg)
+                {
+                    ret = CallingConventions.VarArgs;
+                }
+                else if(this.sig.CallingConvention == BytecodeAnalysis.CallingConvention.Default)
+                {
+                    ret = CallingConventions.Standard;
+                }
+
+                if (this.sig.HasThis) ret |= CallingConventions.HasThis;
+                if (this.sig.ExplicitThis) ret |= CallingConventions.ExplicitThis;
+
+                return ret;
+            }
+        }
     }
 }
 

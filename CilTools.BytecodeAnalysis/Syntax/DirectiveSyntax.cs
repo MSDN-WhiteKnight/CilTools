@@ -131,7 +131,14 @@ namespace CilTools.Syntax
 
             if (m.IsAbstract) inner.Add(new KeywordSyntax(" ", "abstract", String.Empty, KeywordKind.Other));
 
+            if ((m.Attributes & MethodAttributes.NewSlot) == MethodAttributes.NewSlot)
+            {
+                inner.Add(new KeywordSyntax(" ", "newslot", String.Empty, KeywordKind.Other));
+            }
+
             if (m.IsVirtual) inner.Add(new KeywordSyntax(" ", "virtual", String.Empty, KeywordKind.Other));
+
+            if(m.IsFinal) inner.Add(new KeywordSyntax(" ", "final", String.Empty, KeywordKind.Other));
 
             if (m.IsStatic) inner.Add(new KeywordSyntax(" ", "static", " ", KeywordKind.Other));
             else inner.Add(new KeywordSyntax(" ", "instance", " ", KeywordKind.Other));
