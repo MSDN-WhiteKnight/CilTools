@@ -60,6 +60,7 @@
     <Compile Include="Reflection\CustomMethod.cs" />
     <Compile Include="Reflection\ExceptionBlock.cs" />
     <Compile Include="Reflection\GenericParamType.cs" />
+    <Compile Include="Reflection\ICustomAttribute.cs" />
     <Compile Include="Reflection\ITokenResolver.cs" />
     <Compile Include="Reflection\LocalVariable.cs" />
     <Compile Include="Reflection\MethodBaseWrapper.cs" />
