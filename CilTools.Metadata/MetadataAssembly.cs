@@ -17,7 +17,7 @@ namespace CilTools.Metadata
 {
     public sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
     {
-        static MetadataAssembly unknown = new MetadataAssembly(null);
+        static MetadataAssembly unknown = new MetadataAssembly(null,null);
 
         internal static MetadataAssembly UnknownAssembly
         {
@@ -27,9 +27,11 @@ namespace CilTools.Metadata
         MetadataReader reader;
         PEReader peReader;
         AssemblyName asn;
+        AssemblyReader assreader;
 
-        internal MetadataAssembly(string path)
+        internal MetadataAssembly(string path, AssemblyReader ar)
         {
+            this.assreader = ar;
             AssemblyName n = new AssemblyName();
 
             if (path == null) //unknown assembly
@@ -72,6 +74,8 @@ namespace CilTools.Metadata
         public MetadataReader MetadataReader { get { return this.reader; } }
 
         public PEReader PEReader { get { return this.peReader; } }
+
+        public AssemblyReader AssemblyReader { get { return this.assreader; } }
 
         /// <summary>
         /// Gets the display name of the assembly

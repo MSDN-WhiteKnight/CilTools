@@ -23,6 +23,7 @@ namespace CilTools.Metadata
         MemberReferenceHandle mrefh;
         MemberReference mref;
         Signature sig;
+        CustomMethod impl;
 
         internal ExternalMethod(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
         {
@@ -39,6 +40,19 @@ namespace CilTools.Metadata
                 this.sig = new Signature(sigbytes, this.assembly,this);
             }
             catch (NotSupportedException) { }
+        }
+
+        void LoadImpl()
+        {
+            if(this.assembly.AssemblyReader == null) return;
+
+            ExternalType et = this.DeclaringType as ExternalType;
+
+            if (et == null) return;
+
+            Type t = this.assembly.AssemblyReader.LoadType(et);
+
+            //...
         }
 
         /// <summary>

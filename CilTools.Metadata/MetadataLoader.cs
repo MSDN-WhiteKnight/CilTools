@@ -12,14 +12,14 @@ namespace CilTools.Metadata
     {
         public static IEnumerable<MethodBase> EnumerateMethods(string path)
         {
-            MetadataAssembly ass = new MetadataAssembly(path);
+            MetadataAssembly ass = new MetadataAssembly(path,null);
 
             return ass.EnumerateMethods();
         }
 
         public static MetadataAssembly Load(string path)
         {
-            return new MetadataAssembly(path);
+            return new MetadataAssembly(path, null);
         }
     }
 }
