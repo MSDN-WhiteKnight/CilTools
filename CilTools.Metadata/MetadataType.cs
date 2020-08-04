@@ -86,7 +86,11 @@ namespace CilTools.Metadata
 
         public override string FullName
         {
-            get { return this.Namespace + "." + this.Name; }
+            get 
+            {
+                if (!String.IsNullOrEmpty(this.Namespace)) return this.Namespace + "." + this.Name;
+                else return this.Name;
+            }
         }
 
         public override Guid GUID
@@ -128,15 +132,13 @@ namespace CilTools.Metadata
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
         {
-            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            FieldInfo[] fields = this.GetFields(bindingAttr);
+
+            for (int i = 0; i < fields.Length; i++)
             {
-                if (m.DeclaringType == null) continue;
+                FieldInfo m = fields[i];
 
-                if (!String.Equals(m.DeclaringType.FullName, this.FullName, StringComparison.InvariantCulture)) continue;
-
-                if (!String.Equals(m.Name, name, StringComparison.InvariantCulture)) continue;
-
-                if (IsMemberMatching(m, bindingAttr) && m is FieldInfo) return (FieldInfo)m;
+                if (String.Equals(m.Name, name, StringComparison.InvariantCulture)) return (FieldInfo)m;
             }
 
             return null;
@@ -145,14 +147,13 @@ namespace CilTools.Metadata
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
             List<FieldInfo> members = new List<FieldInfo>();
+            MemberInfo m;
 
-            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            foreach (FieldDefinitionHandle hfield in this.type.GetFields())
             {
-                if (m.DeclaringType == null) continue;
-
-                if (!String.Equals(m.DeclaringType.FullName, this.FullName, StringComparison.InvariantCulture)) continue;
-
-                if (IsMemberMatching(m, bindingAttr) && m is FieldInfo) members.Add((FieldInfo)m);
+                FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
+                m = new MetadataField(field, hfield, this.assembly);
+                if (IsMemberMatching(m, bindingAttr)) members.Add((FieldInfo)m);
             }
 
             return members.ToArray();
@@ -170,32 +171,42 @@ namespace CilTools.Metadata
 
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
         {
-            List<MemberInfo> members = new List<MemberInfo>();
+            MemberInfo[] members = this.GetMembers(bindingAttr);
+            List<MemberInfo> ret = new List<MemberInfo>();
 
-            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            for(int i=0;i<members.Length;i++)
             {
-                if (m.DeclaringType == null) continue;
+                MemberInfo m = members[i];
 
-                if (!String.Equals(m.DeclaringType.FullName, this.FullName, StringComparison.InvariantCulture)) continue;
-
-                if (!String.Equals(m.Name, name, StringComparison.InvariantCulture)) continue;
-
-                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+                if (String.Equals(m.Name, name, StringComparison.InvariantCulture)) ret.Add(m);
             }
 
-            return members.ToArray();
+            return ret.ToArray();
         }
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
             List<MemberInfo> members = new List<MemberInfo>();
+            MemberInfo m;
 
-            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
             {
-                if (m.DeclaringType == null) continue;
+                MethodDefinition mdef = this.assembly.MetadataReader.GetMethodDefinition(mdefh);
+                m= new MetadataMethod(mdef, mdefh, this.assembly);
+                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+            }
 
-                if (!String.Equals(m.DeclaringType.FullName, this.FullName, StringComparison.InvariantCulture)) continue;
+            foreach (FieldDefinitionHandle hfield in this.type.GetFields())
+            {
+                FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
+                m = new MetadataField(field, hfield, this.assembly);
+                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+            }
 
+            foreach (TypeDefinitionHandle ht in this.type.GetNestedTypes())
+            {
+                TypeDefinition t = this.assembly.MetadataReader.GetTypeDefinition(ht);
+                m = new MetadataType(t, ht, this.assembly);
                 if (IsMemberMatching(m, bindingAttr)) members.Add(m);
             }
 
@@ -220,7 +231,17 @@ namespace CilTools.Metadata
 
         public override Type[] GetNestedTypes(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            List<Type> members = new List<Type>();
+            MemberInfo m;
+
+            foreach (TypeDefinitionHandle ht in this.type.GetNestedTypes())
+            {
+                TypeDefinition t = this.assembly.MetadataReader.GetTypeDefinition(ht);
+                m = new MetadataType(t, ht, this.assembly);
+                if (IsMemberMatching(m, bindingAttr)) members.Add((Type)m);
+            }
+
+            return members.ToArray();
         }
 
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
@@ -280,6 +301,13 @@ namespace CilTools.Metadata
             get
             {
                 string tn = assembly.MetadataReader.GetString(type.Namespace);
+
+                if (String.IsNullOrEmpty(tn) && this.IsNested)
+                {
+                    Type dt = this.DeclaringType;
+                    if(dt!=null)tn = this.DeclaringType.Namespace;
+                }
+
                 return tn;
             }
         }
@@ -351,9 +379,15 @@ namespace CilTools.Metadata
             return this.FullName.GetHashCode();
         }
 
-        public override string ToString()
+        public override Type DeclaringType
         {
-            return this.FullName;
+            get
+            {
+                TypeDefinitionHandle ht = this.type.GetDeclaringType();
+
+                if (ht.IsNil) return null;
+                else return new MetadataType(this.assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
+            }
         }
     }
 }

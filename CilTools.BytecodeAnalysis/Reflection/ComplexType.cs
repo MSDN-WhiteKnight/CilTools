@@ -56,7 +56,11 @@ namespace CilTools.Reflection
 
         public override string FullName
         {
-            get { return this.Namespace + "." + this.Name; }
+            get
+            {
+                if (!String.IsNullOrEmpty(this.Namespace)) return this.Namespace + "." + this.Name;
+                else return this.Name;
+            }
         }
 
         public override Guid GUID
@@ -367,6 +371,14 @@ namespace CilTools.Reflection
         public override Type MakePointerType()
         {
             return new ComplexType(this, ComplexTypeKind.Pointer, null);
+        }
+
+        public override Type DeclaringType
+        {
+            get
+            {
+                return this.inner.DeclaringType;
+            }
         }
     }
 }
