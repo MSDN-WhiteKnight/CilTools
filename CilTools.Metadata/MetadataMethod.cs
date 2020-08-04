@@ -210,19 +210,50 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
-            return new object[] { };
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
-            return new object[] { };
+            //we can't instantiate actual attribute objects here
+            //so we will create special ICustomAttribute objects that CilTools.BytecodeAnalysis recognizes
+            //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
+
+            CustomAttributeHandleCollection coll = this.mdef.GetCustomAttributes();
+            object[] ret = new object[coll.Count];
+            int i = 0;
+
+            foreach (CustomAttributeHandle h in coll)
+            {
+                CustomAttribute ca = this.assembly.MetadataReader.GetCustomAttribute(h);
+                EntityHandle eh = ca.Constructor;
+                MethodBase constr=null;
+
+                if (eh.Kind == HandleKind.MethodDefinition)
+                {
+                    MethodDefinition mdef = assembly.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
+                    constr = new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this.assembly);
+                }
+                else if (eh.Kind == HandleKind.MemberReference)
+                {
+                    MemberReference mref = assembly.MetadataReader.GetMemberReference((MemberReferenceHandle)eh);
+
+                    if (mref.GetKind() == MemberReferenceKind.Method)
+                        constr = new ExternalMethod(mref, (MemberReferenceHandle)eh, this.assembly);
+                }
+
+                ret[i] = new MetadataCustomAttribute(this, constr, assembly.MetadataReader.GetBlobBytes(ca.Value));
+                i++;
+            }
+
+            return ret;
         }
 
         /// <inheritdoc/>
         public override bool IsDefined(Type attributeType, bool inherit)
         {
-            return false;
+            throw new NotImplementedException();
         }
 
         /// <inheritdoc/>

@@ -45,6 +45,7 @@
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\GenericParamType.cs" Link="GenericParamType.cs" />
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ComplexType.cs" Link="ComplexType.cs" />
     <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ExceptionBlock.cs" Link="ExceptionBlock.cs"/>
+    <Compile Include="..\CilTools.BytecodeAnalysis\Reflection\ICustomAttribute.cs" Link="ICustomAttribute.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\BlockSyntax.cs" Link="BlockSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\CommentSyntax.cs"  Link="CommentSyntax.cs"/>
     <Compile Include="..\CilTools.BytecodeAnalysis\Syntax\DirectiveSyntax.cs"  Link="DirectiveSyntax.cs"/>

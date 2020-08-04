@@ -9,6 +9,7 @@ using System.Text;
 using System.Reflection;
 using System.Globalization;
 using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
 
 namespace CilTools.Syntax
 {
@@ -103,13 +104,41 @@ namespace CilTools.Syntax
             object[] attrs = m.GetCustomAttributes(false);
             List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
             string content;
+            StringBuilder sb;
 
             for (int i = 0; i < attrs.Length; i++)
             {
+                //from metadata
+                if (attrs[i] is ICustomAttribute)
+                {
+                    ICustomAttribute ca = (ICustomAttribute)attrs[i];
+
+                    List<SyntaxNode> children = new List<SyntaxNode>();
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor);
+                    children.Add(mref);
+                    children.Add(new PunctuationSyntax(" ", "=", " "));
+                    children.Add(new PunctuationSyntax("", "(", " "));
+                    sb = new StringBuilder(ca.Data.Length*3);
+
+                    for (int j = 0; j < ca.Data.Length; j++)
+                    {
+                        sb.Append(ca.Data[j].ToString("X2", CultureInfo.InvariantCulture));
+                        sb.Append(' ');
+                    }
+
+                    children.Add(new GenericSyntax(sb.ToString()));
+                    children.Add(new PunctuationSyntax("", ")", Environment.NewLine));
+
+                    DirectiveSyntax dir = new DirectiveSyntax(" ", "custom", children.ToArray());
+                    ret.Add(dir);
+                    continue;
+                }
+
+                //from reflection
                 Type t = attrs[i].GetType();
                 ConstructorInfo[] constr = t.GetConstructors();
                 string s_attr;
-                StringBuilder sb = new StringBuilder(100);
+                sb = new StringBuilder(100);
                 StringWriter output = new StringWriter(sb);
 
                 if (constr.Length == 1)

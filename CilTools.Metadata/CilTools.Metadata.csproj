@@ -50,6 +50,7 @@
     <Compile Include="MetadataAssembly.cs" />
     <Compile Include="ExternalMethod.cs" />
     <Compile Include="ExternalType.cs" />
+    <Compile Include="MetadataCustomAttribute.cs" />
     <Compile Include="MetadataField.cs" />
     <Compile Include="MetadataLoader.cs" />
     <Compile Include="MetadataMethod.cs" />
