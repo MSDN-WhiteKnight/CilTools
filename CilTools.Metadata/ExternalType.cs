@@ -256,6 +256,16 @@ namespace CilTools.Metadata
             return new ComplexType(this, ComplexTypeKind.SzArray,null);
         }
 
+        public override Type MakeByRefType()
+        {
+            return new ComplexType(this, ComplexTypeKind.ByRef, null);
+        }
+
+        public override Type MakePointerType()
+        {
+            return new ComplexType(this, ComplexTypeKind.Pointer, null);
+        }
+
         public override Type MakeGenericType(params Type[] typeArguments)
         {
             return new ComplexType(this, ComplexTypeKind.GenInst, typeArguments);

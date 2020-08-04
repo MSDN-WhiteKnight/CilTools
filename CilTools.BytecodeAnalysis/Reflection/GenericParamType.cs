@@ -268,5 +268,15 @@ namespace CilTools.Reflection
         {
             return new ComplexType(this, ComplexTypeKind.SzArray, null);
         }
+
+        public override Type MakeByRefType()
+        {
+            return new ComplexType(this, ComplexTypeKind.ByRef, null);
+        }
+
+        public override Type MakePointerType()
+        {
+            return new ComplexType(this, ComplexTypeKind.Pointer, null);
+        }
     }
 }
