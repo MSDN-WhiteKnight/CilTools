@@ -275,6 +275,11 @@ namespace CilTools.Metadata
         {
             return this.FullName.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return this.FullName;
+        }
     }
 }
 

@@ -129,6 +129,8 @@ namespace CilTools.Metadata
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
 
+            if (eh.IsNil) return null;
+
             if (eh.Kind == HandleKind.TypeDefinition)
             {
                 TypeDefinition tdef = reader.GetTypeDefinition((TypeDefinitionHandle)eh);
@@ -177,6 +179,8 @@ namespace CilTools.Metadata
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
 
+            if (eh.IsNil) return null;
+
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
@@ -217,6 +221,8 @@ namespace CilTools.Metadata
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
 
+            if (eh.IsNil) return null;
+
             if (eh.Kind == HandleKind.FieldDefinition)
             {
                 FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
@@ -252,6 +258,8 @@ namespace CilTools.Metadata
             if (this.reader == null) return null;
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
+
+            if (eh.IsNil) return null;
 
             if (eh.Kind == HandleKind.MethodDefinition)
             {
@@ -334,6 +342,8 @@ namespace CilTools.Metadata
             if (this.reader == null) return null;
 
             Handle h = MetadataTokens.Handle(metadataToken);
+
+            if (h.IsNil) return null;
 
             if (h.Kind == HandleKind.String)
             {

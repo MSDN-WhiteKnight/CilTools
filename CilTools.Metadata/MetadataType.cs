@@ -389,5 +389,10 @@ namespace CilTools.Metadata
                 else return new MetadataType(this.assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
             }
         }
+
+        public override string ToString()
+        {
+            return this.FullName;
+        }
     }
 }
