@@ -42,12 +42,11 @@ namespace CilView
 
             try
             {
-                if (File.Exists(path)) ret = (sender as AssemblyReader).LoadFrom(path);
+                if (File.Exists(path)) ret = this.rd.LoadFrom(path);
             }
-            catch (FileNotFoundException) { }
-            catch (FileLoadException) { }
+            catch (FileNotFoundException) { }            
             catch (BadImageFormatException) { }
-            catch (NotSupportedException) { }                        
+            catch (InvalidOperationException) { }
 
             return ret;
         }

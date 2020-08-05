@@ -178,8 +178,7 @@ namespace CilView
                 {
                     if (File.Exists(path)) ret = this.rd.LoadFrom(path);
                 }
-                catch (FileNotFoundException) { }
-                catch (FileLoadException) { }
+                catch (FileNotFoundException) { }                
                 catch (BadImageFormatException) { }
                 catch (InvalidOperationException) { }
 
