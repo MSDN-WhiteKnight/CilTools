@@ -64,6 +64,8 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override byte[] GetBytecode()
         {
+            if (this.mb == null) return null;
+
             return mb.GetILBytes(); //load CIL as byte array
         }
 
