@@ -17,7 +17,7 @@ namespace CilTools.Metadata
 {
     public sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
     {
-        static MetadataAssembly unknown = new MetadataAssembly(null);
+        static MetadataAssembly unknown = new MetadataAssembly(null,null);
 
         internal static MetadataAssembly UnknownAssembly
         {
@@ -27,9 +27,11 @@ namespace CilTools.Metadata
         MetadataReader reader;
         PEReader peReader;
         AssemblyName asn;
+        AssemblyReader assreader;
 
-        internal MetadataAssembly(string path)
+        internal MetadataAssembly(string path, AssemblyReader ar)
         {
+            this.assreader = ar;
             AssemblyName n = new AssemblyName();
 
             if (path == null) //unknown assembly
@@ -72,6 +74,8 @@ namespace CilTools.Metadata
         public MetadataReader MetadataReader { get { return this.reader; } }
 
         public PEReader PEReader { get { return this.peReader; } }
+
+        public AssemblyReader AssemblyReader { get { return this.assreader; } }
 
         /// <summary>
         /// Gets the display name of the assembly
@@ -125,6 +129,8 @@ namespace CilTools.Metadata
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
 
+            if (eh.IsNil) return null;
+
             if (eh.Kind == HandleKind.TypeDefinition)
             {
                 TypeDefinition tdef = reader.GetTypeDefinition((TypeDefinitionHandle)eh);
@@ -173,6 +179,8 @@ namespace CilTools.Metadata
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
 
+            if (eh.IsNil) return null;
+
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
@@ -213,6 +221,8 @@ namespace CilTools.Metadata
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
 
+            if (eh.IsNil) return null;
+
             if (eh.Kind == HandleKind.FieldDefinition)
             {
                 FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
@@ -248,6 +258,8 @@ namespace CilTools.Metadata
             if (this.reader == null) return null;
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
+
+            if (eh.IsNil) return null;
 
             if (eh.Kind == HandleKind.MethodDefinition)
             {
@@ -330,6 +342,8 @@ namespace CilTools.Metadata
             if (this.reader == null) return null;
 
             Handle h = MetadataTokens.Handle(metadataToken);
+
+            if (h.IsNil) return null;
 
             if (h.Kind == HandleKind.String)
             {

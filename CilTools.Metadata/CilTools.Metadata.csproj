@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AssemblyReader.cs" />
     <Compile Include="ExternalAssembly.cs" />
     <Compile Include="ExternalField.cs" />
     <Compile Include="MetadataAssembly.cs" />

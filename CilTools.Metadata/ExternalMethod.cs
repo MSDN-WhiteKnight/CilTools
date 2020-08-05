@@ -23,6 +23,7 @@ namespace CilTools.Metadata
         MemberReferenceHandle mrefh;
         MemberReference mref;
         Signature sig;
+        CustomMethod impl;
 
         internal ExternalMethod(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
         {
@@ -39,6 +40,75 @@ namespace CilTools.Metadata
                 this.sig = new Signature(sigbytes, this.assembly,this);
             }
             catch (NotSupportedException) { }
+        }
+
+        void LoadImpl()
+        {
+            //loads actual implementation method referenced by this instance
+
+            if (this.impl != null) return;//already loaded
+            if(this.assembly.AssemblyReader == null) return;
+
+            ExternalType et = this.DeclaringType as ExternalType;
+
+            if (et == null) return;
+
+            Type t = this.assembly.AssemblyReader.LoadType(et);
+
+            if (t == null) return;
+
+            MemberInfo[] members = t.GetMember(this.Name);
+
+            //if there's only one method, pick it
+            if(members.Length == 1 && members[0] is CustomMethod) 
+            {
+                this.impl = (CustomMethod)members[0];
+                return; 
+            }
+
+            //if there are multiple methods with the same name, match by signature
+            ParameterInfo[] pars_match = this.GetParameters_Sig();
+            bool isstatic_match = false;
+
+            if (this.sig != null) isstatic_match = !this.sig.HasThis;
+
+            bool match;
+
+            for (int i = 0; i < members.Length; i++)
+            {
+                if (!(members[i] is CustomMethod)) continue;
+
+                CustomMethod m = (CustomMethod)members[i];
+                ParameterInfo[] pars_i = m.GetParameters();
+
+                if (m.IsStatic != isstatic_match) continue;
+
+                if (pars_i.Length != pars_match.Length) continue;
+
+                match = true;
+
+                for (int j = 0; j < pars_i.Length; j++)
+                {
+                    string s1 = "";
+                    string s2 = "";
+                    Type pt = pars_i[j].ParameterType;
+                    if (pt!=null) s1 = pt.Name;
+                    pt = pars_match[j].ParameterType;
+                    if (pt!=null) s2 = pt.Name;
+
+                    if (!String.Equals(s1, s2, StringComparison.InvariantCulture))
+                    {
+                        match = false; 
+                        break;
+                    }
+                }
+
+                if (match)
+                {
+                    this.impl = m;
+                    return;
+                }
+            }//end for
         }
 
         /// <summary>
@@ -58,13 +128,20 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override ITokenResolver TokenResolver
         {
-            get { return this.assembly; }
+            get 
+            {
+                if (this.impl != null) return this.impl.TokenResolver;
+                else return this.assembly; 
+            }
         }
 
         /// <inheritdoc/>
         public override byte[] GetBytecode()
         {
-            return new byte[0];
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetBytecode();
+            else return new byte[0];
         }
 
         /// <inheritdoc/>
@@ -72,7 +149,10 @@ namespace CilTools.Metadata
         {
             get
             {
-                return 0;
+                this.LoadImpl();
+
+                if (this.impl != null) return this.impl.MaxStackSize;
+                else return 0;
             }
         }
 
@@ -81,20 +161,29 @@ namespace CilTools.Metadata
         {
             get
             {
-                return false;
+                this.LoadImpl();
+
+                if (this.impl != null) return this.impl.MaxStackSizeSpecified;
+                else return false;
             }
         }
 
         /// <inheritdoc/>
         public override byte[] GetLocalVarSignature()
         {
-            return new byte[] { }; //not implemented
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetLocalVarSignature();
+            else return new byte[] { };
         }
 
         /// <inheritdoc/>
         public override ExceptionBlock[] GetExceptionBlocks()
         {
-            return new ExceptionBlock[] { }; //not implemented
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetExceptionBlocks();
+            else return new ExceptionBlock[] { };
         }
 
         /// <inheritdoc/>
@@ -102,10 +191,17 @@ namespace CilTools.Metadata
         {
             get
             {
+                this.LoadImpl();
+
                 MethodAttributes ret = (MethodAttributes)0;
 
-                if (this.sig != null)
+                if (this.impl != null)
                 {
+                    ret = this.impl.Attributes;
+                }
+                else if (this.sig != null)
+                {
+                    //if failed to load impl, we can at least get static/instance attribute from signature
                     if (!this.sig.HasThis) ret |= MethodAttributes.Static;
                 }
 
@@ -119,8 +215,7 @@ namespace CilTools.Metadata
             throw new NotImplementedException();
         }
 
-        /// <inheritdoc/>
-        public override ParameterInfo[] GetParameters()
+        ParameterInfo[] GetParameters_Sig()
         {
             if (this.sig == null) return new ParameterInfo[0];
 
@@ -132,6 +227,23 @@ namespace CilTools.Metadata
             }
 
             return pars;
+        }
+
+        /// <inheritdoc/>
+        public override ParameterInfo[] GetParameters()
+        {
+            this.LoadImpl();
+
+            if (this.impl != null)
+            {
+                //reading parameters from impl gives more data (names, default values)
+                return this.impl.GetParameters();
+            }
+            else
+            {
+                //even if failed to load impl, we can read parameters from signature
+                return this.GetParameters_Sig();
+            }
         }
 
         /// <inheritdoc/>
@@ -180,19 +292,26 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
-            return new object[] { };
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetCustomAttributes(attributeType,inherit);
+            else return new object[] { };
         }
 
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
-            return new object[] { };
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetCustomAttributes(inherit);
+            else return new object[] { };
         }
 
         /// <inheritdoc/>
         public override bool IsDefined(Type attributeType, bool inherit)
         {
-            return false;
+            if (this.impl != null) return this.impl.IsDefined(attributeType, inherit);
+            else return false;
         }
 
         /// <inheritdoc/>
@@ -230,14 +349,23 @@ namespace CilTools.Metadata
         {
             get
             {
-                return false;
+                this.LoadImpl();
+
+                if (this.impl != null) return this.impl.InitLocals;
+                else return false;
             }
         }
 
         /// <inheritdoc/>
         public override bool InitLocalsSpecified
         {
-            get { return false; }
+            get
+            {
+                this.LoadImpl();
+
+                if (this.impl != null) return this.impl.InitLocalsSpecified;
+                return false;
+            }
         }
     }
 }

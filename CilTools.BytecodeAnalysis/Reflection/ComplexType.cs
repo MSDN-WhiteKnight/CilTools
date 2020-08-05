@@ -380,5 +380,10 @@ namespace CilTools.Reflection
                 return this.inner.DeclaringType;
             }
         }
+
+        public override string ToString()
+        {
+            return this.FullName;
+        }
     }
 }

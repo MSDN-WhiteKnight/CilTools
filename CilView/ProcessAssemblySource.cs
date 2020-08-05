@@ -3,7 +3,6 @@
  * License: BSD 2.0 */
 using System;
 using System.IO;
-using System.Linq;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -13,6 +12,7 @@ using System.Diagnostics;
 using System.Windows;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
+using CilTools.Metadata;
 using Microsoft.Diagnostics.Runtime;
 
 namespace CilView
@@ -24,6 +24,7 @@ namespace CilView
         OperationBase op;
         HashSet<string> paths=new HashSet<string>();
         ClrAssemblyReader reader;
+        AssemblyReader rd;
 
         public ProcessAssemblySource(Process pr, bool active, OperationBase op = null)
         {
@@ -46,29 +47,6 @@ namespace CilView
             return LoadAssemblies(runtime,op);
         }
 
-        Assembly CurrentDomain_ReflectionOnlyAssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            AssemblyName an = new AssemblyName(args.Name);
-            Assembly ret = null;
-            
-            foreach (string dir in this.paths)
-            {
-                string path = Path.Combine(dir, an.Name + ".dll");
-
-                try
-                {
-                    if (File.Exists(path)) ret = Assembly.ReflectionOnlyLoadFrom(path);
-                }
-                catch (FileNotFoundException) { }
-                catch (FileLoadException) { }
-                catch (BadImageFormatException) { }
-
-                if (ret != null) return ret;
-            }
-
-            return null;
-        }
-
         static bool IsCoreLib(string name)
         {
             return String.Equals(name, "mscorlib", StringComparison.InvariantCultureIgnoreCase) ||
@@ -77,8 +55,6 @@ namespace CilView
 
         public ObservableCollection<Assembly> LoadAssemblies(ClrRuntime runtime, OperationBase op = null)
         {
-            AppDomain.CurrentDomain.ReflectionOnlyAssemblyResolve += CurrentDomain_ReflectionOnlyAssemblyResolve;
-
             List<Assembly> ret = new List<Assembly>();
 
             if (op != null)
@@ -113,37 +89,20 @@ namespace CilView
                 }
 
                 Assembly ass=null;
-                Type[] preloaded = null;
                 string name = Path.GetFileNameWithoutExtension(path.Trim());
 
-                //try reflection-only load first
-
-                if (path != "" && !IsCoreLib(name))
+                //try CilTools.Metadata first
+                if (path != "")
                 {
                     try
                     {
-                        ass = Assembly.ReflectionOnlyLoadFrom(path);
-
-                        if (ass != null)
-                        {
-                            //try to preload types from assembly
-                            try { preloaded = ass.GetTypes(); }
-                            catch (ReflectionTypeLoadException){ass = null;}
-                        }
-
-                        if (ass != null && preloaded != null)
-                        {
-                            AssemblySource.TypeCacheSetValue(ass, preloaded); //cache preloaded type array
-                        }
+                        ass = rd.LoadFrom(path);
                     }
                     catch (FileNotFoundException) { }
-                    catch (FileLoadException) { }
-                    catch (BadImageFormatException) { }
-                    catch (NotSupportedException) { }
-                    
+                    catch (InvalidOperationException) { }
                 }
 
-                //if failed, try AssemblyReader
+                //if failed, try ClrAssemblyReader
 
                 if (ass == null)
                 {
@@ -185,6 +144,8 @@ namespace CilView
             this.Types = new ObservableCollection<Type>();
             this.Methods = new ObservableCollection<MethodBase>();
             this.process = pr;
+            this.rd = new AssemblyReader();
+            this.rd.AssemblyResolve += Rd_AssemblyResolve;
 
             try
             {
@@ -202,6 +163,29 @@ namespace CilView
             
             DataTarget dt = DataTarget.AttachToProcess(pr.Id, 5000, at);
             this.Init(dt);
+        }
+
+        private Assembly Rd_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            AssemblyName an = new AssemblyName(args.Name);
+            Assembly ret = null;
+
+            foreach (string dir in this.paths)
+            {
+                string path = Path.Combine(dir, an.Name + ".dll");
+
+                try
+                {
+                    if (File.Exists(path)) ret = this.rd.LoadFrom(path);
+                }
+                catch (FileNotFoundException) { }                
+                catch (BadImageFormatException) { }
+                catch (InvalidOperationException) { }
+
+                if (ret != null) return ret;
+            }
+
+            return null;
         }
 
         public override bool HasProcessInfo
@@ -297,6 +281,7 @@ namespace CilView
                 this.Assemblies.Clear();
                 this.Types.Clear();
                 this.Methods.Clear();
+                this.rd.Dispose();
                 this.dt = null;
             }
         }

@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
 using Microsoft.Diagnostics.Runtime;
+using CilTools.Reflection;
 
 namespace CilTools.Runtime
 {
@@ -84,10 +85,10 @@ namespace CilTools.Runtime
                 MemberInfo mi = null;
                 string tn = m.Type.Name;
 
-                if (ass != null && ass is ClrAssemblyInfo)
+                if (ass != null && ass is ITokenResolver)
                 {
                     //find method by token
-                    mi = ((ClrAssemblyInfo)ass).ResolveMember((int)m.MetadataToken);
+                    mi = ((ITokenResolver)ass).ResolveMember((int)m.MetadataToken);
                 }
                 else
                 {
