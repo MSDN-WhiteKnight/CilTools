@@ -355,7 +355,27 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (mi is Type)
                     {
-                        yield return new MemberRefSyntax(CilAnalysis.GetTypeNameSyntaxInternal((Type)mi).ToArray(),mi);
+                        yield return new MemberRefSyntax(CilAnalysis.GetTypeNameSyntaxInternal((Type)mi).ToArray(), mi);
+                    }
+                    else if (mi is FieldInfo)
+                    {
+                        FieldInfo fi = (FieldInfo)mi;
+                        Type t = fi.DeclaringType;
+                        List<SyntaxNode> children = new List<SyntaxNode>();
+                        children.Add(new KeywordSyntax("", "field", " ", KeywordKind.Other));
+
+                        IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(fi.FieldType);
+                        foreach (SyntaxNode node in nodes) children.Add(node);
+
+                        children.Add(new GenericSyntax(" "));
+
+                        nodes = CilAnalysis.GetTypeNameSyntaxInternal(t);
+                        foreach (SyntaxNode node in nodes) children.Add(node);
+
+                        children.Add(new PunctuationSyntax("", "::", ""));
+                        children.Add(new IdentifierSyntax("", fi.Name, "", true));
+
+                        yield return new MemberRefSyntax(children.ToArray(), fi);
                     }
                     else
                     {
