@@ -98,10 +98,11 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override byte[] GetLocalVarSignature()
         {
-            if (this.mb == null) return null;
+            if (this.mb == null) return new byte[0];
+            if (mb.LocalSignature.IsNil) return new byte[0];
             
             StandaloneSignature sig = assembly.MetadataReader.GetStandaloneSignature(mb.LocalSignature);
-            return assembly.MetadataReader.GetBlobBytes(sig.Signature);            
+            return assembly.MetadataReader.GetBlobBytes(sig.Signature);
         }
 
         /// <inheritdoc/>
