@@ -454,12 +454,6 @@ namespace CilTools.BytecodeAnalysis
                 output.WriteLine('{');
             }
 
-            if (IncludeDefaults)
-            {
-                //optional parameters
-                PrintDefaults(output);
-            }
-
             if (IncludeAttributes)
             {
                 //attributes
@@ -471,11 +465,17 @@ namespace CilTools.BytecodeAnalysis
                 catch (TypeLoadException ex)
                 {
                     Diagnostics.OnError(
-                        this, 
+                        this,
                         new CilErrorEventArgs(ex, "Failed to load attributes for " + this._Method.ToString())
                         );
                 }
             }
+
+            if (IncludeDefaults)
+            {
+                //optional parameters
+                PrintDefaults(output);
+            }            
 
             //method header           
             if (IncludeHeader)
@@ -724,13 +724,7 @@ namespace CilTools.BytecodeAnalysis
             DirectiveSyntax sig = DirectiveSyntax.FromMethodSignature(this._Method);
 
             List<SyntaxNode> nodes = new List<SyntaxNode>(100);
-
-            SyntaxNode[] arr = SyntaxNode.GetDefaultsSyntax(this._Method);
-
-            for (int i = 0; i < arr.Length; i++)
-            {
-                nodes.Add( arr[i]);
-            }
+            SyntaxNode[] arr;
 
             try
             {
@@ -743,7 +737,14 @@ namespace CilTools.BytecodeAnalysis
             }
             catch (InvalidOperationException)
             {
-                nodes.Add(new CommentSyntax(" ","NOTE: Custom attributes are not shown.")); 
+                nodes.Add(new CommentSyntax(" ", "NOTE: Custom attributes are not shown."));
+            }
+
+            arr = SyntaxNode.GetDefaultsSyntax(this._Method);
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                nodes.Add( arr[i]);
             }
 
             arr = this.HeaderAsSyntax();
