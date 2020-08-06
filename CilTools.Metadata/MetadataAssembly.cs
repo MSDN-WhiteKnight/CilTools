@@ -28,6 +28,7 @@ namespace CilTools.Metadata
         PEReader peReader;
         AssemblyName asn;
         AssemblyReader assreader;
+        Dictionary<int, MemberInfo> cache = new Dictionary<int, MemberInfo>();
 
         internal MetadataAssembly(string path, AssemblyReader ar)
         {
@@ -69,6 +70,12 @@ namespace CilTools.Metadata
 
             n.CodeBase = path;
             this.asn = n;
+        }
+
+        MemberInfo CacheGetValue(int token)
+        {
+            if (!this.cache.ContainsKey(token)) return null;
+            else return this.cache[token];
         }
 
         public MetadataReader MetadataReader { get { return this.reader; } }
@@ -165,7 +172,12 @@ namespace CilTools.Metadata
         /// </summary>
         public Type ResolveType(int metadataToken)
         {
-            return this.ResolveType(metadataToken, null, null);
+            Type t = this.CacheGetValue(metadataToken) as Type;
+            if (t != null) return t;
+
+            t = this.ResolveType(metadataToken, null, null);
+            if (t != null) this.cache[metadataToken] = t;
+            return t;
         }
 
         /// <summary>
@@ -207,8 +219,13 @@ namespace CilTools.Metadata
         /// Returns the method or constructor identified by the specified metadata token.
         /// </summary>
         public MethodBase ResolveMethod(int metadataToken)
-        {            
-            return this.ResolveMethod(metadataToken, null, null);
+        {
+            MethodBase m = this.CacheGetValue(metadataToken) as MethodBase;
+            if (m != null) return m;
+
+            m = this.ResolveMethod(metadataToken, null, null);
+            if (m != null) this.cache[metadataToken] = m;
+            return m;
         }
 
         /// <summary>
@@ -256,6 +273,14 @@ namespace CilTools.Metadata
         public MemberInfo ResolveMember(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
             if (this.reader == null) return null;
+            MemberInfo m;
+
+            if (genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, we can read value from cache
+                m = this.CacheGetValue(metadataToken);
+                if (m != null) return m;
+            }
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
 
@@ -264,38 +289,38 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                return new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this);
+                m = new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.FieldDefinition)
             {
                 FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
-                return new MetadataField(field, (FieldDefinitionHandle)eh, this);
+                m = new MetadataField(field, (FieldDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Method)
-                    return new ExternalMethod(mref, (MemberReferenceHandle)eh, this);
+                    m = new ExternalMethod(mref, (MemberReferenceHandle)eh, this);
                 else if (mref.GetKind() == MemberReferenceKind.Field)
-                    return new ExternalField(mref, (MemberReferenceHandle)eh, this);
+                    m = new ExternalField(mref, (MemberReferenceHandle)eh, this);
                 else
-                    return null;
+                    m = null;
             }
             else if (eh.Kind == HandleKind.TypeDefinition)
             {
                 TypeDefinition tdef = reader.GetTypeDefinition((TypeDefinitionHandle)eh);
-                return new MetadataType(tdef, (TypeDefinitionHandle)eh, this);
+                m = new MetadataType(tdef, (TypeDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.TypeReference)
             {
                 TypeReference tref = reader.GetTypeReference((TypeReferenceHandle)eh);
-                return new ExternalType(tref, (TypeReferenceHandle)eh, this);
+                m = new ExternalType(tref, (TypeReferenceHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.MethodSpecification)
             {
                 MethodSpecification mspec = reader.GetMethodSpecification((MethodSpecificationHandle)eh);
-                return new MethodInstance(mspec, (MethodSpecificationHandle)eh, this);
+                m = new MethodInstance(mspec, (MethodSpecificationHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.TypeSpecification)
             {
@@ -310,10 +335,18 @@ namespace CilTools.Metadata
 
                 TypeSpec decoded = TypeSpec.ReadFromArray(bytes, this, declaringMethod);
 
-                if (decoded != null) return decoded.Type;
-                else return null;
+                if (decoded != null) m = decoded.Type;
+                else m = null;
             }
-            else return null;
+            else m = null;
+
+            if (m!=null && genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, store value in cache
+                this.cache[metadataToken] = m;
+            }
+
+            return m;
         }
 
         /// <summary>
@@ -321,7 +354,10 @@ namespace CilTools.Metadata
         /// </summary>
         public MemberInfo ResolveMember(int metadataToken)
         {
-            return this.ResolveMember(metadataToken, null, null);
+            MemberInfo m = this.CacheGetValue(metadataToken);
+
+            if (m != null) return m;
+            else return this.ResolveMember(metadataToken, null, null);
         }
 
         /// <summary>
@@ -365,20 +401,18 @@ namespace CilTools.Metadata
 
             foreach (MethodDefinitionHandle mdefh in reader.MethodDefinitions)
             {
-                MethodDefinition mdef = reader.GetMethodDefinition(mdefh);
-                yield return new MetadataMethod(mdef, mdefh, this);
+                yield return this.GetMethodDefinition(mdefh);
+            }
+
+            foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
+            {
+                yield return this.GetTypeDefinition(ht);
             }
 
             foreach (FieldDefinitionHandle hfield in reader.FieldDefinitions)
             {
                 FieldDefinition field = reader.GetFieldDefinition(hfield);
                 yield return new MetadataField(field, hfield, this);
-            }
-
-            foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
-            {
-                TypeDefinition t = reader.GetTypeDefinition(ht);
-                yield return new MetadataType(t, ht, this);
             }
         }
 
@@ -391,9 +425,22 @@ namespace CilTools.Metadata
 
             foreach (MethodDefinitionHandle mdefh in reader.MethodDefinitions)
             {
-                MethodDefinition mdef = reader.GetMethodDefinition(mdefh);
-                yield return new MetadataMethod(mdef, mdefh, this);
+                yield return this.GetMethodDefinition(mdefh);
             }
+        }
+
+        internal Type GetTypeDefinition(TypeDefinitionHandle ht)
+        {
+            int token = this.MetadataReader.GetToken(ht);
+
+            return this.ResolveType(token);
+        }
+
+        internal MethodBase GetMethodDefinition(MethodDefinitionHandle hm)
+        {
+            int token = this.MetadataReader.GetToken(hm);
+
+            return this.ResolveMethod(token);
         }
 
         /// <summary>
@@ -408,7 +455,7 @@ namespace CilTools.Metadata
 
             foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
             {
-                ret.Add(new MetadataType(reader.GetTypeDefinition(ht), ht, this));
+                ret.Add(this.GetTypeDefinition(ht));
             }
 
             return ret.ToArray();
@@ -456,7 +503,7 @@ namespace CilTools.Metadata
                 TypeDefinition tdef = reader.GetTypeDefinition(ht);
                 string typename = reader.GetString(tdef.Namespace) + "." + reader.GetString(tdef.Name);
 
-                if (String.Equals(name, typename, cmp)) return new MetadataType(tdef, ht, this);
+                if (String.Equals(name, typename, cmp)) return this.GetTypeDefinition(ht);
             }
 
             if (throwOnError) throw new TypeLoadException("Type " + name + " not found");
@@ -477,7 +524,7 @@ namespace CilTools.Metadata
                     TypeDefinition tdef = reader.GetTypeDefinition(ht);
 
                     if (tdef.Attributes.HasFlag(TypeAttributes.Public))
-                        yield return new MetadataType(tdef, ht, this);
+                        yield return this.GetTypeDefinition(ht);
                 }
             }
         }

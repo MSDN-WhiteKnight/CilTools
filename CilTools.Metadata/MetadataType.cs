@@ -191,8 +191,13 @@ namespace CilTools.Metadata
 
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
             {
-                MethodDefinition mdef = this.assembly.MetadataReader.GetMethodDefinition(mdefh);
-                m= new MetadataMethod(mdef, mdefh, this.assembly);
+                m = this.assembly.GetMethodDefinition(mdefh);
+                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+            }
+
+            foreach (TypeDefinitionHandle ht in this.type.GetNestedTypes())
+            {
+                m = this.assembly.GetTypeDefinition(ht);
                 if (IsMemberMatching(m, bindingAttr)) members.Add(m);
             }
 
@@ -200,13 +205,6 @@ namespace CilTools.Metadata
             {
                 FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
                 m = new MetadataField(field, hfield, this.assembly);
-                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
-            }
-
-            foreach (TypeDefinitionHandle ht in this.type.GetNestedTypes())
-            {
-                TypeDefinition t = this.assembly.MetadataReader.GetTypeDefinition(ht);
-                m = new MetadataType(t, ht, this.assembly);
                 if (IsMemberMatching(m, bindingAttr)) members.Add(m);
             }
 
@@ -236,8 +234,7 @@ namespace CilTools.Metadata
 
             foreach (TypeDefinitionHandle ht in this.type.GetNestedTypes())
             {
-                TypeDefinition t = this.assembly.MetadataReader.GetTypeDefinition(ht);
-                m = new MetadataType(t, ht, this.assembly);
+                m = this.assembly.GetTypeDefinition(ht);
                 if (IsMemberMatching(m, bindingAttr)) members.Add((Type)m);
             }
 

@@ -19,6 +19,7 @@ namespace CilTools.Metadata
         MethodDefinition mdef;
         MethodBodyBlock mb;
         Signature sig;
+        Type decltype;
 
         internal MetadataMethod(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
         {           
@@ -39,6 +40,12 @@ namespace CilTools.Metadata
 
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
             this.sig = new Signature(sigbytes, this.assembly,this);
+
+            //init declaring type
+            TypeDefinitionHandle ht = mdef.GetDeclaringType();
+
+            if (!ht.IsNil) this.decltype=new MetadataType(assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
+            else this.decltype = null;
         }
 
         /// <summary>
@@ -181,6 +188,11 @@ namespace CilTools.Metadata
                     );
             }
 
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (pars[i] == null) pars[i] = new ParameterSpec(this.sig.GetParamType(i), i, this);
+            }
+
             return pars;
         }
 
@@ -202,10 +214,7 @@ namespace CilTools.Metadata
         {
             get 
             {
-                TypeDefinitionHandle ht = mdef.GetDeclaringType();
-
-                if (!ht.IsNil) return new MetadataType(assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
-                else return null;
+                return this.decltype;
             }
         }
 
