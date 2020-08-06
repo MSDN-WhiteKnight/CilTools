@@ -98,9 +98,13 @@ namespace CilTools.Metadata
 
             Assembly ass = this.Load(ea.GetName());
 
-            if (ass == null) return null;
+            if (ass == null) throw new TypeLoadException("Failed to resolve external assembly " + ea.ToString());
 
-            return ass.GetType(et.FullName);
+            Type ret = ass.GetType(et.FullName);
+
+            if (ret == null) throw new TypeLoadException("Failed to resolve type " + et.AssemblyQualifiedName);
+
+            return ret;
         }
 
         public void Dispose()

@@ -506,6 +506,28 @@ namespace CilTools.Metadata
                 if (String.Equals(name, typename, cmp)) return this.GetTypeDefinition(ht);
             }
 
+            //if not found definition, search for type forwarders...
+            foreach (ExportedTypeHandle eth in reader.ExportedTypes)
+            {
+                ExportedType et = reader.GetExportedType(eth);
+                if (!et.IsForwarder) continue;
+
+                string typename = reader.GetString(et.Namespace) + "." + reader.GetString(et.Name);
+                if (!String.Equals(name, typename, cmp)) continue;
+                
+                EntityHandle h = et.Implementation;
+                if (h.IsNil) continue;
+                if (h.Kind != HandleKind.AssemblyReference) continue;
+
+                ExternalAssembly ea = new ExternalAssembly(
+                    reader.GetAssemblyReference((AssemblyReferenceHandle)h), (AssemblyReferenceHandle)h, this
+                    );
+
+                Assembly ass = assreader.Load(ea.GetName());
+                Type ret = ass.GetType(name, throwOnError, ignoreCase);
+                if (ret != null) return ret;
+            }
+
             if (throwOnError) throw new TypeLoadException("Type " + name + " not found");
             else return null;
         }

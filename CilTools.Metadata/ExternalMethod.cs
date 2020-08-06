@@ -218,7 +218,11 @@ namespace CilTools.Metadata
         {
             get
             {
-                this.LoadImpl();
+                try
+                {
+                    this.LoadImpl();
+                }
+                catch (TypeLoadException) { }
 
                 MethodAttributes ret = (MethodAttributes)0;
 
@@ -259,7 +263,11 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override ParameterInfo[] GetParameters()
         {
-            this.LoadImpl();
+            try
+            {
+                this.LoadImpl();
+            }
+            catch (TypeLoadException) { }
 
             if (this.impl != null)
             {
