@@ -126,17 +126,14 @@ namespace CilTools.BytecodeAnalysis
             List<int> labels = new List<int>();
             m = CustomMethod.PrepareMethod(m);
 
-            try
+            if (m.IsAbstract || (m.Attributes & MethodAttributes.PinvokeImpl) == MethodAttributes.PinvokeImpl)
             {
-                instructions = CilReader.GetInstructions(m).ToList();
-            }
-            catch (Exception ex)
-            {
-                string error = "Exception occured when trying to read method's instructions.";
-                Diagnostics.OnError(m, new CilErrorEventArgs(ex, error));
+                //if method is abstract or PInvoke, simply return empty CilGraph
                 return new CilGraph(null, m);
             }
 
+            instructions = CilReader.GetInstructions(m).ToList();
+            
             List<CilGraphNodeMutable> nodes = new List<CilGraphNodeMutable>(instructions.Count);
             CilGraphNode[] targets;
 

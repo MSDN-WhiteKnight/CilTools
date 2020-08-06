@@ -94,7 +94,7 @@ namespace CilTools.Metadata
         {
             ExternalAssembly ea = et.Assembly as ExternalAssembly;
 
-            if (ea == null) return null;
+            if (ea == null) throw new TypeLoadException("Failed to resolve type "+et.ToString());
 
             Assembly ass = this.Load(ea.GetName());
 
