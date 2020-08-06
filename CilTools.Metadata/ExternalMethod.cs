@@ -168,7 +168,7 @@ namespace CilTools.Metadata
             this.LoadImpl();
 
             if (this.impl != null) return this.impl.GetBytecode();
-            else return new byte[0];
+            else throw new CilParserException("Failed to load method implementation");
         }
 
         /// <inheritdoc/>

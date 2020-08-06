@@ -482,6 +482,36 @@ namespace CilTools.Metadata
             return GetType(name, throwOnError, false);
         }
 
+        string GetTypeFullName(TypeDefinition tdef)
+        {
+            StringBuilder sb = new StringBuilder(500);
+            string ns = this.reader.GetString(tdef.Namespace);
+            if (String.IsNullOrEmpty(ns))
+            {
+                TypeDefinitionHandle declh = tdef.GetDeclaringType();
+                if (!declh.IsNil)
+                {
+                    //nested type
+                    TypeDefinition decl = this.reader.GetTypeDefinition(declh);
+                    ns = this.reader.GetString(decl.Namespace);
+                    sb.Append(ns);
+                    sb.Append('.');
+                    sb.Append(this.reader.GetString(decl.Name));
+                    sb.Append('+');
+                }
+            }
+            else
+            {
+                sb.Append(ns);
+                sb.Append('.');
+            }
+
+            string typename = reader.GetString(tdef.Name);
+            sb.Append(typename);
+
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Gets the <c>Type</c> object with the specified name in the assembly instance, with the options of ignoring the case, and of throwing an exception if the type is not found.
         /// </summary>
@@ -501,7 +531,7 @@ namespace CilTools.Metadata
             foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
             {
                 TypeDefinition tdef = reader.GetTypeDefinition(ht);
-                string typename = reader.GetString(tdef.Namespace) + "." + reader.GetString(tdef.Name);
+                string typename = GetTypeFullName(tdef);
 
                 if (String.Equals(name, typename, cmp)) return this.GetTypeDefinition(ht);
             }

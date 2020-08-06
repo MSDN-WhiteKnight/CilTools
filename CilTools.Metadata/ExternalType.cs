@@ -32,11 +32,21 @@ namespace CilTools.Metadata
             get 
             {
                 EntityHandle eh = this.tref.ResolutionScope;
+                if (eh.IsNil) return MetadataAssembly.UnknownAssembly;
 
-                if (!eh.IsNil && eh.Kind == HandleKind.AssemblyReference)
+                if (eh.Kind == HandleKind.AssemblyReference)
                 {
                     AssemblyReference ar = assembly.MetadataReader.GetAssemblyReference((AssemblyReferenceHandle)eh);
                     return new ExternalAssembly(ar, (AssemblyReferenceHandle)eh, this.assembly);
+                }
+                else if (eh.Kind == HandleKind.TypeReference)
+                {
+                    TypeReference parent = assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh);
+                    if (parent.ResolutionScope.IsNil) return MetadataAssembly.UnknownAssembly;
+                    if (parent.ResolutionScope.Kind!=HandleKind.AssemblyReference) return MetadataAssembly.UnknownAssembly;
+
+                    AssemblyReference ar = assembly.MetadataReader.GetAssemblyReference((AssemblyReferenceHandle)parent.ResolutionScope);
+                    return new ExternalAssembly(ar, (AssemblyReferenceHandle)parent.ResolutionScope, this.assembly);
                 }
                 else return MetadataAssembly.UnknownAssembly;
             }
@@ -57,7 +67,25 @@ namespace CilTools.Metadata
 
         public override string FullName
         {
-            get { return this.Namespace + "." + this.Name; }
+            get
+            {
+                StringBuilder sb = new StringBuilder(500);
+
+                if (!String.IsNullOrEmpty(this.Namespace))
+                {
+                    sb.Append(this.Namespace);
+                    sb.Append('.');
+                }
+
+                if (this.DeclaringType!=null)
+                {
+                    sb.Append(this.DeclaringType.Name);
+                    sb.Append('+');
+                }
+
+                sb.Append(this.Name);
+                return sb.ToString();
+            }
         }
 
         public override Guid GUID
@@ -205,6 +233,13 @@ namespace CilTools.Metadata
             get
             {
                 string tn = assembly.MetadataReader.GetString(tref.Namespace);
+
+                if (String.IsNullOrEmpty(tn))
+                {
+                    Type dt = this.DeclaringType;
+                    if(dt!=null)tn = this.DeclaringType.Namespace;
+                }
+
                 return tn;
             }
         }
@@ -269,6 +304,22 @@ namespace CilTools.Metadata
         public override Type MakeGenericType(params Type[] typeArguments)
         {
             return new ComplexType(this, ComplexTypeKind.GenInst, typeArguments);
+        }
+
+        public override Type DeclaringType
+        {
+            get
+            {
+                EntityHandle eh = this.tref.ResolutionScope;
+                if (eh.IsNil) return null;
+
+                if (eh.Kind == HandleKind.TypeReference)
+                {
+                    TypeReference parent = assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh);
+                    return new ExternalType(parent, (TypeReferenceHandle)eh, this.assembly);
+                }
+                else return null;
+            }
         }
 
         public override int GetHashCode()

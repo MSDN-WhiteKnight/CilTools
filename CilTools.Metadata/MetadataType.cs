@@ -88,8 +88,22 @@ namespace CilTools.Metadata
         {
             get 
             {
-                if (!String.IsNullOrEmpty(this.Namespace)) return this.Namespace + "." + this.Name;
-                else return this.Name;
+                StringBuilder sb = new StringBuilder(500);
+
+                if (!String.IsNullOrEmpty(this.Namespace))
+                {
+                    sb.Append(this.Namespace);
+                    sb.Append('.');
+                }
+
+                if (this.IsNested)
+                {
+                    sb.Append(this.DeclaringType.Name);
+                    sb.Append('+');
+                }
+
+                sb.Append(this.Name);
+                return sb.ToString();
             }
         }
 
