@@ -126,9 +126,20 @@ namespace CilTools.BytecodeAnalysis
             List<int> labels = new List<int>();
             m = CustomMethod.PrepareMethod(m);
 
-            if (m.IsAbstract || (m.Attributes & MethodAttributes.PinvokeImpl) == MethodAttributes.PinvokeImpl)
+            MethodImplAttributes implattr = (MethodImplAttributes)0;
+
+            try { implattr = m.GetMethodImplementationFlags(); }
+            catch (NotImplementedException) { }
+
+            if (m.IsAbstract || 
+                (m.Attributes & MethodAttributes.PinvokeImpl) == MethodAttributes.PinvokeImpl ||
+                (implattr & MethodImplAttributes.InternalCall)==MethodImplAttributes.InternalCall ||
+                (implattr & MethodImplAttributes.Runtime) == MethodImplAttributes.Runtime
+                )
             {
-                //if method is abstract or PInvoke, simply return empty CilGraph
+                //If method is abstract, PInvoke or provided by runtime,
+                //it does not have CIL method body by design,
+                //so we simply return empty CilGraph
                 return new CilGraph(null, m);
             }
 

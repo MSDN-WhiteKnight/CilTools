@@ -243,7 +243,20 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override MethodImplAttributes GetMethodImplementationFlags()
         {
-            throw new NotImplementedException();
+            try
+            {
+                this.LoadImpl();
+            }
+            catch (TypeLoadException) { }
+
+            MethodImplAttributes ret = (MethodImplAttributes)0;
+
+            if (this.impl != null)
+            {
+                ret = this.impl.GetMethodImplementationFlags();
+            }
+
+            return ret;
         }
 
         ParameterInfo[] GetParameters_Sig()

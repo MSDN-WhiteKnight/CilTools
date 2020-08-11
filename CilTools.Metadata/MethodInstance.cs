@@ -168,7 +168,7 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override MethodImplAttributes GetMethodImplementationFlags()
         {
-            throw new NotImplementedException();
+            return this.definition.GetMethodImplementationFlags();
         }
 
         /// <inheritdoc/>
