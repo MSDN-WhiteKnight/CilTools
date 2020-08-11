@@ -90,19 +90,19 @@ namespace CilTools.Metadata
             return this.Load(name.ToString());
         }
 
-        internal Type LoadType(ExternalType et)
+        internal Type LoadType(Type t)
         {
-            ExternalAssembly ea = et.Assembly as ExternalAssembly;
+            ExternalAssembly ea = t.Assembly as ExternalAssembly;
 
-            if (ea == null) throw new TypeLoadException("Failed to resolve type "+et.ToString());
+            if (ea == null) throw new TypeLoadException("Failed to resolve type "+t.ToString());
 
             Assembly ass = this.Load(ea.GetName());
 
             if (ass == null) throw new TypeLoadException("Failed to resolve external assembly " + ea.ToString());
 
-            Type ret = ass.GetType(et.FullName);
+            Type ret = ass.GetType(t.FullName);
 
-            if (ret == null) throw new TypeLoadException("Failed to resolve type " + et.AssemblyQualifiedName);
+            if (ret == null) throw new TypeLoadException("Failed to resolve type " + t.AssemblyQualifiedName);
 
             return ret;
         }

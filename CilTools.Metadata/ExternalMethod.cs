@@ -76,7 +76,7 @@ namespace CilTools.Metadata
             if (this.impl != null) return;//already loaded
             if(this.assembly.AssemblyReader == null) return;
 
-            ExternalType et = this.DeclaringType as ExternalType;
+            Type et = this.DeclaringType;
 
             if (et == null) return;
 
