@@ -176,7 +176,7 @@ namespace CilTools.Syntax
                 else
                 {
                     output.Write(".custom ");
-                    s_attr = CilAnalysis.GetTypeNameInternal(t);
+                    s_attr = CilAnalysis.GetTypeSpecString(t);
                     output.Write(s_attr);
                     output.Flush();
                     content = sb.ToString();

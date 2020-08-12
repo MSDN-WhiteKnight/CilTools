@@ -52,7 +52,7 @@ namespace CilTools.BytecodeAnalysis
             if (this._IsRequired) mod = "modreq(";
             else mod = "modopt(";
 
-            if (this._Type != null) type = CilAnalysis.GetTypeNameInternal(this._Type);
+            if (this._Type != null) type = CilAnalysis.GetTypeSpecString(this._Type);
             else type = "Type" + _token.ToString("X");
 
             return mod + type + ")";

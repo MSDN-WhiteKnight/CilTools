@@ -10,6 +10,7 @@ using System.Reflection.Emit;
 using System.Diagnostics;
 using CilTools.Reflection;
 using CilTools.Syntax;
+using System.IO;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -29,57 +30,13 @@ namespace CilTools.BytecodeAnalysis
         {            
             if (t == null) throw new ArgumentNullException("t","Source type cannot be null");
 
-            if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
-            {                
-                string prefix;
+            StringBuilder sb = new StringBuilder();
+            StringWriter wr = new StringWriter(sb);
 
-                if (t.DeclaringMethod == null) prefix = "!";
-                else prefix = "!!";
+            foreach (SyntaxNode node in CilAnalysis.GetTypeNameSyntax(t)) node.ToText(wr);
 
-                if(String.IsNullOrEmpty(t.Name)) return prefix+t.GenericParameterPosition.ToString();
-                else return prefix + t.Name;
-            }
-
-            if (t.IsByRef)
-            {
-                Type et = t.GetElementType();
-                if(et!=null) return GetTypeName(et) + "&";
-            }
-
-            if (t.IsArray && t.GetArrayRank()==1)
-            {
-                Type et = t.GetElementType();
-                if (et != null) return GetTypeName(et) + "[]";
-            }                       
-
-            if (t.IsPointer)
-            {
-                Type et = t.GetElementType();
-                if (et != null) return GetTypeName(et) + "*";
-            }
-
-            if (t.Equals(typeof(void)))         return "void";
-            else if (t.Equals(typeof(bool)))    return "bool";            
-            else if (t.Equals(typeof(int)))     return "int32";
-            else if (t.Equals(typeof(uint)))    return "uint32";
-            else if (t.Equals(typeof(long)))    return "int64";
-            else if (t.Equals(typeof(ulong)))   return "uint64";
-            else if (t.Equals(typeof(short)))   return "int16";
-            else if (t.Equals(typeof(ushort)))  return "uint16";
-            else if (t.Equals(typeof(byte)))    return "uint8";
-            else if (t.Equals(typeof(sbyte)))   return "int8";            
-            else if (t.Equals(typeof(float)))   return "float32";
-            else if (t.Equals(typeof(double)))  return "float64";
-            else if (t.Equals(typeof(string)))  return "string";
-            else if (t.Equals(typeof(char)))    return "char";           
-            else if (t.Equals(typeof(object)))  return "object";
-            else if (t.Equals(typeof(IntPtr)))  return "native int";
-            else if (t.Equals(typeof(UIntPtr))) return "native uint";
-            else if (t.Equals(typeof(System.TypedReference))) return "typedref";
-            else
-            {                
-                return GetTypeFullName(t);
-            }
+            wr.Flush();
+            return sb.ToString();
         }
 
         internal static IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t)
@@ -93,8 +50,14 @@ namespace CilTools.BytecodeAnalysis
                 if (t.DeclaringMethod == null) prefix = "!";
                 else prefix = "!!";
 
-                if (String.IsNullOrEmpty(t.Name)) yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
-                else yield return new GenericSyntax(prefix + t.Name);
+                if (String.IsNullOrEmpty(t.Name))
+                {
+                    yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
+                }
+                else 
+                { 
+                    yield return new GenericSyntax(prefix + t.Name); 
+                }
 
                 yield break;
             }
@@ -195,54 +158,101 @@ namespace CilTools.BytecodeAnalysis
         public static string GetTypeFullName(Type t) 
         {
             if (t == null) throw new ArgumentNullException("t", "Source type cannot be null");
-            
+
             StringBuilder sb = new StringBuilder();
+            StringWriter wr = new StringWriter(sb);
 
-            if (t.IsValueType) sb.Append("valuetype ");
-            else if (t.IsClass) sb.Append("class ");
+            foreach (SyntaxNode node in CilAnalysis.GetTypeSyntax(t,false)) node.ToText(wr);
 
-            Assembly ass = t.Assembly;
-            sb.Append('[');
-            sb.Append(ass.GetName().Name);
-            sb.Append(']');
-
-            if (!String.IsNullOrEmpty(t.Namespace))
-            {
-                sb.Append(t.Namespace);
-                sb.Append('.');
-            }
-
-            if (t.IsNested && t.DeclaringType != null) sb.Append(t.DeclaringType.Name + "/");            
-            sb.Append(t.Name);
-
-            if (t.IsGenericType)
-            {
-                sb.Append('<');
-
-                Type[] args=t.GetGenericArguments();
-                for(int i=0;i<args.Length;i++)
-                {
-                    if (i >= 1) sb.Append(", ");
-
-                    sb.Append(GetTypeName(args[i]));
-                }
-
-                sb.Append('>');
-            }
-
+            wr.Flush();
             return sb.ToString();
         }
 
         internal static IEnumerable<SyntaxNode> GetTypeFullNameSyntax(Type t)
         {
-            if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);
-            else if (t.IsClass) yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
+            return CilAnalysis.GetTypeSyntax(t, false);
+        }
+
+        internal static IEnumerable<SyntaxNode> GetTypeSyntax(Type t,bool isspec)
+        {
+            //converts reflection Type object to Type or TypeSpec CIL assembler syntax
+            //(ECMA-335 II.7.1 Types)
+            
+            if (t.IsGenericParameter)
+            {
+                string prefix;
+
+                if (t.DeclaringMethod == null) prefix = "!";
+                else prefix = "!!";
+
+                if (String.IsNullOrEmpty(t.Name))
+                {
+                    yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
+                }
+                else
+                {
+                    yield return new GenericSyntax(prefix + t.Name);
+                }
+
+                yield break;
+            }
+
+            if (t.IsByRef)
+            {
+                Type et = t.GetElementType();
+                if (et != null)
+                {
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et,false);
+
+                    foreach (SyntaxNode x in nodes) yield return x;
+
+                    yield return new PunctuationSyntax(String.Empty, "&", String.Empty);
+                    yield break;
+                }
+            }
+
+            if (t.IsArray && t.GetArrayRank() == 1)
+            {
+                Type et = t.GetElementType();
+                if (et != null)
+                {
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, false);
+
+                    foreach (SyntaxNode x in nodes) yield return x;
+
+                    yield return new PunctuationSyntax(String.Empty, "[]", String.Empty);
+                    yield break;
+                }
+            }
+
+            if (t.IsPointer)
+            {
+                Type et = t.GetElementType();
+                if (et != null)
+                {
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, false);
+
+                    foreach (SyntaxNode x in nodes) yield return x;
+
+                    yield return new PunctuationSyntax(String.Empty, "*", String.Empty);
+                    yield break;
+                }
+            }
+
+            if (!isspec) //for TypeSpec, we omit class/valuetype keyword
+            {
+                if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);
+                else if (t.IsClass) yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
+            }
 
             Assembly ass = t.Assembly;
-            
-            yield return new PunctuationSyntax(String.Empty, "[", String.Empty);
-            yield return new IdentifierSyntax(String.Empty, ass.GetName().Name, String.Empty,false);
-            yield return new PunctuationSyntax(String.Empty, "]", String.Empty);
+
+            if (ass != null)
+            {
+                yield return new PunctuationSyntax(String.Empty, "[", String.Empty);
+                yield return new IdentifierSyntax(String.Empty, ass.GetName().Name, String.Empty, false);
+                yield return new PunctuationSyntax(String.Empty, "]", String.Empty);
+            }
 
             StringBuilder sb=new StringBuilder();
 
@@ -313,109 +323,28 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
-        internal static string GetTypeNameInternal(Type t)
+        internal static string GetTypeSpecString(Type t)
         {
-            //this is used when we don't need class/valuetype prefix, such as for method calls
-            Debug.Assert(t != null, "GetTypeNameInternal: Source type cannot be null");
+            //this is used when we can omit class/valuetype prefix, such as for method calls
+            Debug.Assert(t != null, "GetTypeSpecString: Source type cannot be null");
 
-            if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
-            {
-                string prefix;
+            StringBuilder sb = new StringBuilder();
+            StringWriter wr = new StringWriter(sb);
 
-                if (t.DeclaringMethod == null) prefix = "!";
-                else prefix = "!!";
+            foreach (SyntaxNode node in CilAnalysis.GetTypeSpecSyntax(t)) node.ToText(wr);
 
-                if (String.IsNullOrEmpty(t.Name)) return prefix + t.GenericParameterPosition.ToString();
-                else return prefix + t.Name;
-            }
-
-            StringBuilder sb = new StringBuilder();            
-
-            Assembly ass = t.Assembly;
-            sb.Append('[');
-            sb.Append(ass.GetName().Name);
-            sb.Append(']');
-
-            if (!String.IsNullOrEmpty(t.Namespace))
-            {
-                sb.Append(t.Namespace);
-                sb.Append('.');
-            }
-
-            if (t.IsNested && t.DeclaringType!=null) sb.Append(t.DeclaringType.Name + "/");
-            sb.Append(t.Name);
-
-            if (t.IsGenericType)
-            {
-                sb.Append('<');
-
-                Type[] args = t.GetGenericArguments();
-                for (int i = 0; i < args.Length; i++)
-                {
-                    if (i >= 1) sb.Append(", ");
-                    sb.Append(GetTypeName(args[i]));
-                }
-
-                sb.Append('>');
-            }
-
+            wr.Flush();
             return sb.ToString();
-
         }
 
-        internal static IEnumerable<SyntaxNode> GetTypeNameSyntaxInternal(Type t)
+        internal static IEnumerable<SyntaxNode> GetTypeSpecSyntax(Type t)
         {
-            //this is used when we don't need class/valuetype prefix, such as for method calls
-            Debug.Assert(t != null, "GetTypeNameSyntaxInternal: Source type cannot be null");
+            //this is used when we can omit class/valuetype prefix, such as for method calls
+            Debug.Assert(t != null, "GetTypeSpecSyntax: Source type cannot be null");
 
-            if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
-            {
-                string prefix;
-
-                if (t.DeclaringMethod == null) prefix = "!";
-                else prefix = "!!";
-
-                if (String.IsNullOrEmpty(t.Name)) yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
-                else yield return new GenericSyntax( prefix + t.Name );
-
-                yield break;
-            }
-            
-            Assembly ass = t.Assembly;
-            yield return new PunctuationSyntax("", "[", "");
-            yield return new IdentifierSyntax("", ass.GetName().Name, "",false);
-            yield return new PunctuationSyntax("", "]", "");
-
-            if (!String.IsNullOrEmpty(t.Namespace))
-            {
-                yield return new IdentifierSyntax("", t.Namespace, "", true);
-                yield return new PunctuationSyntax("", ".", "");
-            }
-
-            if (t.IsNested && t.DeclaringType != null)
-            {
-                yield return new IdentifierSyntax("", t.DeclaringType.Name, "", true);
-                yield return new PunctuationSyntax("", "/", "");
-            }
-
-            yield return new IdentifierSyntax("", t.Name, "", true);
-
-            if (t.IsGenericType)
-            {
-                yield return new PunctuationSyntax("", "<", "");
-
-                Type[] args = t.GetGenericArguments();
-                for (int i = 0; i < args.Length; i++)
-                {
-                    if (i >= 1) yield return new PunctuationSyntax("", ",", " ");
-
-                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(args[i]);
-
-                    foreach (SyntaxNode node in nodes) yield return node;
-                }
-
-                yield return new PunctuationSyntax("", ">", "");
-            }
+            //for generic types, the TypeSpec syntax is the same as Type
+            if(t.IsGenericType) return CilAnalysis.GetTypeSyntax(t, false);
+            else return CilAnalysis.GetTypeSyntax(t, true);
         }
 
         internal static string MethodToString(MethodBase m)
@@ -454,7 +383,7 @@ namespace CilTools.BytecodeAnalysis
 
             if (t != null)
             {
-                sb.Append(CilAnalysis.GetTypeNameInternal(t));
+                sb.Append(CilAnalysis.GetTypeSpecString(t));
                 sb.Append("::");
             }
             sb.Append(m.Name);
@@ -523,7 +452,7 @@ namespace CilTools.BytecodeAnalysis
             {
                 children.Add(new GenericSyntax(" "));
 
-                IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntaxInternal(t);
+                IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeSpecSyntax(t);
 
                 foreach (SyntaxNode node in syntax) children.Add(node);
                 

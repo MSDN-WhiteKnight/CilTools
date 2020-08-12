@@ -130,7 +130,7 @@ namespace CilTools.BytecodeAnalysis
 
                     target.Write(CilAnalysis.GetTypeName(fi.FieldType));
                     target.Write(' ');
-                    target.Write(CilAnalysis.GetTypeNameInternal(t));
+                    target.Write(CilAnalysis.GetTypeSpecString(t));
                     target.Write("::");
                     target.Write(fi.Name);
                 }
@@ -147,7 +147,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (t != null)
                 {
-                    target.Write(CilAnalysis.GetTypeNameInternal(t));
+                    target.Write(CilAnalysis.GetTypeSpecString(t));
                 }
                 else
                 {
@@ -181,7 +181,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (mi != null)
                 {
-                    if (mi is Type) target.Write(CilAnalysis.GetTypeNameInternal((Type)mi));
+                    if (mi is Type) target.Write(CilAnalysis.GetTypeSpecString((Type)mi));
                     else target.Write(mi.Name);
                 }
                 else
@@ -297,7 +297,7 @@ namespace CilTools.BytecodeAnalysis
 
                     children.Add(new GenericSyntax(" "));
 
-                    nodes = CilAnalysis.GetTypeNameSyntaxInternal(t);
+                    nodes = CilAnalysis.GetTypeSpecSyntax(t);
                     foreach (SyntaxNode node in nodes) children.Add(node);
 
                     children.Add(new PunctuationSyntax("", "::", ""));
@@ -319,7 +319,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (t != null)
                 {
-                    yield return new MemberRefSyntax(CilAnalysis.GetTypeNameSyntaxInternal(t).ToArray(),t);
+                    yield return new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax(t).ToArray(),t);
                 }
                 else
                 {
@@ -355,7 +355,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (mi is Type)
                     {
-                        yield return new MemberRefSyntax(CilAnalysis.GetTypeNameSyntaxInternal((Type)mi).ToArray(), mi);
+                        yield return new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax((Type)mi).ToArray(), mi);
                     }
                     else if (mi is FieldInfo)
                     {
@@ -369,7 +369,7 @@ namespace CilTools.BytecodeAnalysis
 
                         children.Add(new GenericSyntax(" "));
 
-                        nodes = CilAnalysis.GetTypeNameSyntaxInternal(t);
+                        nodes = CilAnalysis.GetTypeSpecSyntax(t);
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
                         children.Add(new PunctuationSyntax("", "::", ""));

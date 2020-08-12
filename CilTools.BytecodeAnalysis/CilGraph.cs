@@ -643,7 +643,7 @@ namespace CilTools.BytecodeAnalysis
 
                         if (t != null)
                         {
-                            IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntaxInternal(t);
+                            IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntax(t);
                             foreach (SyntaxNode x in nodes) header_nodes.Add(x);
                         }
 
