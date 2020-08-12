@@ -394,6 +394,33 @@ namespace CilTools.Metadata
                 return false;
             }
         }
+
+        public override bool IsGenericMethod
+        {
+            get
+            {
+                try
+                {
+                    this.LoadImpl();
+                }
+                catch (TypeLoadException) { }
+
+                if (this.impl != null) return this.impl.IsGenericMethod;
+                else return false;
+            }
+        }
+
+        public override Type[] GetGenericArguments()
+        {
+            try
+            {
+                this.LoadImpl();
+            }
+            catch (TypeLoadException) { }
+
+            if (this.impl != null) return this.impl.GetGenericArguments();
+            else return new Type[0];
+        }
     }
 }
 

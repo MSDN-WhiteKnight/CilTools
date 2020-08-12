@@ -92,16 +92,18 @@ namespace CilTools.Metadata
 
         internal Type LoadType(Type t)
         {
-            ExternalAssembly ea = t.Assembly as ExternalAssembly;
-
+            Assembly ea = t.Assembly;
             if (ea == null) throw new TypeLoadException("Failed to resolve type "+t.ToString());
 
-            Assembly ass = this.Load(ea.GetName());
+            Assembly ass;
+
+            //if assembly is a reference to external assembly, resolve it
+            if (ea is MetadataAssembly) ass = ea;
+            else ass = this.Load(ea.GetName());
 
             if (ass == null) throw new TypeLoadException("Failed to resolve external assembly " + ea.ToString());
 
             Type ret = ass.GetType(t.FullName);
-
             if (ret == null) throw new TypeLoadException("Failed to resolve type " + t.AssemblyQualifiedName);
 
             return ret;

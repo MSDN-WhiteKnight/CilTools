@@ -69,15 +69,18 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override ITokenResolver TokenResolver
         {
-            get { return this.assembly; }
+            get
+            {
+                if (this.definition != null) return this.definition.TokenResolver;
+                else return this.assembly;
+            }
         }
 
         /// <inheritdoc/>
         public override byte[] GetBytecode()
         {
-            if (this.mb == null) return new byte[0];
-
-            return mb.GetILBytes(); //load CIL as byte array
+            if (this.mb != null) return mb.GetILBytes(); //load CIL as byte array
+            else return this.definition.GetBytecode();
         }
 
         /// <inheritdoc/>
@@ -86,7 +89,7 @@ namespace CilTools.Metadata
             get
             {
                 if (mb != null) return mb.MaxStack;
-                else return -1;
+                else return this.definition.MaxStackSize;
             }
         }
 
@@ -95,23 +98,29 @@ namespace CilTools.Metadata
         {
             get
             {
-                return mb != null;
+                if (mb != null) return true;
+                else return this.definition.MaxStackSizeSpecified;
             }
         }
 
         /// <inheritdoc/>
         public override byte[] GetLocalVarSignature()
         {
-            if (this.mb == null) return null;
-
-            StandaloneSignature sig = assembly.MetadataReader.GetStandaloneSignature(mb.LocalSignature);
-            return assembly.MetadataReader.GetBlobBytes(sig.Signature);
+            if (this.mb != null)
+            {
+                StandaloneSignature sig = assembly.MetadataReader.GetStandaloneSignature(mb.LocalSignature);
+                return assembly.MetadataReader.GetBlobBytes(sig.Signature);
+            }
+            else return this.definition.GetLocalVarSignature();
         }
 
         /// <inheritdoc/>
         public override ExceptionBlock[] GetExceptionBlocks()
         {
-            if (this.mb == null) return null;
+            if (this.mb == null)
+            {
+                return this.definition.GetExceptionBlocks();
+            }
 
             ExceptionBlock[] ret = new ExceptionBlock[mb.ExceptionRegions.Length];
 
@@ -179,13 +188,24 @@ namespace CilTools.Metadata
 
         public override Type[] GetGenericArguments()
         {
-            if (this.sig == null) return new Type[0];
-
+            if (this.sig == null) return this.definition.GetGenericArguments();
+            
             Type[] args = new Type[this.sig.ParamsCount];
+            Type[] dargs = this.definition.GetGenericArguments();
+            if (dargs == null) dargs = args;
 
             for (int i = 0; i < args.Length; i++)
             {
-                args[i] = this.sig.GetParamType(0).Type;
+                args[i] = this.sig.GetParamType(i).Type;
+
+                if(args[i].IsGenericParameter && args[i].DeclaringMethod != null)
+                {
+                    if (i >= dargs.Length) continue;
+
+                    //if type is generic method argument, substitute with type from definition
+                    //so we will have argument name
+                    args[i] = dargs[i];
+                }
             }
 
             return args;
@@ -216,19 +236,19 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
-            return new object[] { };
+            return this.definition.GetCustomAttributes(attributeType, inherit);
         }
 
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
-            return new object[] { };
+            return this.definition.GetCustomAttributes(inherit);
         }
 
         /// <inheritdoc/>
         public override bool IsDefined(Type attributeType, bool inherit)
         {
-            return false;
+            return this.definition.IsDefined(attributeType, inherit);
         }
 
         /// <inheritdoc/>
@@ -267,14 +287,18 @@ namespace CilTools.Metadata
             get
             {
                 if (mb != null) return mb.LocalVariablesInitialized;
-                else return false;
+                else return this.definition.InitLocals;
             }
         }
 
         /// <inheritdoc/>
         public override bool InitLocalsSpecified
         {
-            get { return mb != null; }
+            get
+            {
+                if (mb != null) return true;
+                else return this.definition.InitLocalsSpecified;
+            }
         }
 
         public override bool IsGenericMethod { get { return true; } }
@@ -288,5 +312,3 @@ namespace CilTools.Metadata
         }
     }
 }
-
-
