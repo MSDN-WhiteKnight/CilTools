@@ -159,7 +159,9 @@ namespace CilTools.Syntax
             {
                 inner.Add(new PunctuationSyntax(String.Empty,"<",String.Empty));
 
-                Type[] args = m.GetGenericArguments();
+                Type[] args;
+                args = m.GetGenericArguments();
+
                 for (int i = 0; i < args.Length; i++)
                 {
                     if (i >= 1) inner.Add(new PunctuationSyntax(String.Empty, ","," "));

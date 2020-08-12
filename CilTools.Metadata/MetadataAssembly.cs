@@ -157,6 +157,9 @@ namespace CilTools.Metadata
                 if (genericMethodArguments != null && genericMethodArguments.Length > 0)
                 {
                     declaringMethod = genericMethodArguments[0].DeclaringMethod;
+
+                    //we need non-null value here to indicate that this type is a generic method argument
+                    if (declaringMethod == null) declaringMethod = UnknownMethod.Value;
                 }
 
                 TypeSpec decoded = TypeSpec.ReadFromArray(bytes, this, declaringMethod);
@@ -331,6 +334,9 @@ namespace CilTools.Metadata
                 if (genericMethodArguments != null && genericMethodArguments.Length > 0)
                 {
                     declaringMethod = genericMethodArguments[0].DeclaringMethod;
+
+                    //we need non-null value here to indicate that this type is a generic method argument
+                    if (declaringMethod == null) declaringMethod = UnknownMethod.Value;
                 }
 
                 TypeSpec decoded = TypeSpec.ReadFromArray(bytes, this, declaringMethod);

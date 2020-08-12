@@ -59,6 +59,7 @@
     <Compile Include="MethodInstance.cs" />
     <Compile Include="ParameterSpec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnknownMethod.cs" />
     <Compile Include="UnknownType.cs" />
   </ItemGroup>
   <ItemGroup>
