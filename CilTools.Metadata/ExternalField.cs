@@ -17,14 +17,16 @@ namespace CilTools.Metadata
         MemberReference field;
         MemberReferenceHandle hfield;
         MetadataAssembly owner;
+        MethodBase generic_context;
 
-        public ExternalField(MemberReference f, MemberReferenceHandle fh, MetadataAssembly o)
+        public ExternalField(MemberReference f, MemberReferenceHandle fh, MetadataAssembly o, MethodBase gctx)
         {
             Debug.Assert(f.GetKind() == MemberReferenceKind.Field, "MemberReference passed to ExternalField ctor should be a field");
 
             this.field = f;
             this.hfield = fh;
             this.owner = o;
+            this.generic_context = gctx;
         }
 
         public override FieldAttributes Attributes
@@ -46,7 +48,7 @@ namespace CilTools.Metadata
             get
             {
                 byte[] sig = owner.MetadataReader.GetBlobBytes(field.Signature);
-                TypeSpec ts = Signature.ReadFieldSignature(sig, owner);
+                TypeSpec ts = Signature.ReadFieldSignature(sig, owner,this.generic_context);
 
                 if (ts != null) return ts.Type;
                 else return UnknownType.Value;
@@ -83,7 +85,7 @@ namespace CilTools.Metadata
 
                     TypeSpec encoded = TypeSpec.ReadFromArray(owner.MetadataReader.GetBlobBytes(ts.Signature),
                         this.owner,
-                        null);
+                        this.generic_context);
 
                     if (encoded != null) return encoded.Type;
                     else return UnknownType.Value;

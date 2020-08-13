@@ -240,20 +240,29 @@ namespace CilTools.Metadata
             if (this.reader == null) return null;
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
-
             if (eh.IsNil) return null;
+
+            MethodBase declaringMethod = null;
+
+            if (genericMethodArguments != null && genericMethodArguments.Length > 0)
+            {
+                declaringMethod = genericMethodArguments[0].DeclaringMethod;
+
+                //we need non-null value here to provide generic context
+                if (declaringMethod == null) declaringMethod = UnknownMethod.Value;
+            }
 
             if (eh.Kind == HandleKind.FieldDefinition)
             {
                 FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
-                return new MetadataField(field, (FieldDefinitionHandle)eh, this);
+                return new MetadataField(field, (FieldDefinitionHandle)eh, this, declaringMethod);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Field)
-                    return new ExternalField(mref, (MemberReferenceHandle)eh, this);
+                    return new ExternalField(mref, (MemberReferenceHandle)eh, this, declaringMethod);
                 else
                     return null;
             }
@@ -277,12 +286,21 @@ namespace CilTools.Metadata
         {
             if (this.reader == null) return null;
             MemberInfo m;
+            MethodBase declaringMethod = null;
 
             if (genericTypeArguments == null && genericMethodArguments == null)
             {
                 //if there's no generic context, we can read value from cache
                 m = this.CacheGetValue(metadataToken);
                 if (m != null) return m;
+            }
+
+            if (genericMethodArguments != null && genericMethodArguments.Length > 0)
+            {
+                declaringMethod = genericMethodArguments[0].DeclaringMethod;
+
+                //we need non-null value here to provide generic context
+                if (declaringMethod == null) declaringMethod = UnknownMethod.Value;
             }
 
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
@@ -297,7 +315,7 @@ namespace CilTools.Metadata
             else if (eh.Kind == HandleKind.FieldDefinition)
             {
                 FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
-                m = new MetadataField(field, (FieldDefinitionHandle)eh, this);
+                m = new MetadataField(field, (FieldDefinitionHandle)eh, this, declaringMethod);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
@@ -306,7 +324,7 @@ namespace CilTools.Metadata
                 if (mref.GetKind() == MemberReferenceKind.Method)
                     m = new ExternalMethod(mref, (MemberReferenceHandle)eh, this);
                 else if (mref.GetKind() == MemberReferenceKind.Field)
-                    m = new ExternalField(mref, (MemberReferenceHandle)eh, this);
+                    m = new ExternalField(mref, (MemberReferenceHandle)eh, this, declaringMethod);
                 else
                     m = null;
             }
@@ -329,16 +347,7 @@ namespace CilTools.Metadata
             {
                 TypeSpecification tspec = reader.GetTypeSpecification((TypeSpecificationHandle)eh);
                 byte[] bytes = this.reader.GetBlobBytes(tspec.Signature);
-                MethodBase declaringMethod = null;
-
-                if (genericMethodArguments != null && genericMethodArguments.Length > 0)
-                {
-                    declaringMethod = genericMethodArguments[0].DeclaringMethod;
-
-                    //we need non-null value here to indicate that this type is a generic method argument
-                    if (declaringMethod == null) declaringMethod = UnknownMethod.Value;
-                }
-
+                
                 TypeSpec decoded = TypeSpec.ReadFromArray(bytes, this, declaringMethod);
 
                 if (decoded != null) m = decoded.Type;
@@ -418,7 +427,7 @@ namespace CilTools.Metadata
             foreach (FieldDefinitionHandle hfield in reader.FieldDefinitions)
             {
                 FieldDefinition field = reader.GetFieldDefinition(hfield);
-                yield return new MetadataField(field, hfield, this);
+                yield return new MetadataField(field, hfield, this, null);
             }
         }
 

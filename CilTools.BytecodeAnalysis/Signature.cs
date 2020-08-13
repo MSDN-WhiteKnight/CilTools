@@ -148,7 +148,7 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
-        public static TypeSpec ReadFieldSignature(byte[] data, ITokenResolver resolver)
+        public static TypeSpec ReadFieldSignature(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
@@ -160,7 +160,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (b != 0x6) throw new InvalidDataException("Invalid field signature");
 
-                return TypeSpec.ReadFromStream(ms, resolver);
+                return TypeSpec.ReadFromStream(ms, resolver,member);
             }
         }
 

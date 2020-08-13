@@ -166,7 +166,7 @@ namespace CilTools.Metadata
             foreach (FieldDefinitionHandle hfield in this.type.GetFields())
             {
                 FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
-                m = new MetadataField(field, hfield, this.assembly);
+                m = new MetadataField(field, hfield, this.assembly,null);
                 if (IsMemberMatching(m, bindingAttr)) members.Add((FieldInfo)m);
             }
 
@@ -218,7 +218,7 @@ namespace CilTools.Metadata
             foreach (FieldDefinitionHandle hfield in this.type.GetFields())
             {
                 FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
-                m = new MetadataField(field, hfield, this.assembly);
+                m = new MetadataField(field, hfield, this.assembly, null);
                 if (IsMemberMatching(m, bindingAttr)) members.Add(m);
             }
 

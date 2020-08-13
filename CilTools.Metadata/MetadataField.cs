@@ -16,12 +16,14 @@ namespace CilTools.Metadata
         FieldDefinition field;
         FieldDefinitionHandle hfield;
         MetadataAssembly owner;
+        MethodBase generic_context;
 
-        public MetadataField(FieldDefinition f, FieldDefinitionHandle fh, MetadataAssembly o)
+        public MetadataField(FieldDefinition f, FieldDefinitionHandle fh, MetadataAssembly o,MethodBase gctx)
         {
             this.field = f;
             this.hfield = fh;
             this.owner = o;
+            this.generic_context = gctx;
         }
 
         public override FieldAttributes Attributes
@@ -43,7 +45,7 @@ namespace CilTools.Metadata
             get
             {
                 byte[] sig = owner.MetadataReader.GetBlobBytes(field.Signature);
-                TypeSpec ts = Signature.ReadFieldSignature(sig, owner);
+                TypeSpec ts = Signature.ReadFieldSignature(sig, owner,this.generic_context);
 
                 if (ts != null) return ts.Type;
                 else return UnknownType.Value;
