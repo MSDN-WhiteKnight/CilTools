@@ -16,9 +16,38 @@ namespace CilTools.Reflection
 
         public GenericParamType(MethodBase m, int index)
         {
+            if (index < 0) throw new ArgumentOutOfRangeException("index", "generic parameter index should be non-negative");
+
             this._m = m;
             this._index = index;
-            this._name = "";
+
+            Type[] args = null;
+            Type t = null;
+
+            //try load parameter name from declaring method
+            if (m != null && m.IsGenericMethod)
+            {
+                try
+                {
+                    args = m.GetGenericArguments();
+                }
+                catch (NotImplementedException) { }
+                catch (NotSupportedException) { }
+            }
+
+            if (args != null && index<args.Length)
+            {
+                t = args[index];
+            }
+
+            if (t != null && t.IsGenericParameter)
+            {
+                this._name = t.Name;
+            }
+            else
+            {
+                this._name = "";
+            }
         }
 
         public GenericParamType(MethodBase m, int index,string name)
