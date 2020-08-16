@@ -96,8 +96,13 @@ namespace CilTools.Metadata
             //if there are multiple methods with the same name, match by signature
             ParameterInfo[] pars_match = this.GetParameters_Sig();
             bool isstatic_match = false;
+            int genargs_match = 0;
 
-            if (this.sig != null) isstatic_match = !this.sig.HasThis;
+            if (this.sig != null)
+            {
+                isstatic_match = !this.sig.HasThis;
+                genargs_match = this.sig.GenericArgsCount;
+            }
 
             bool match;
 
@@ -112,6 +117,16 @@ namespace CilTools.Metadata
 
                 if (pars_i.Length != pars_match.Length) continue;
 
+                //compare generic args count
+                Type[] ga = m.GetGenericArguments();
+                int genargs = 0;
+
+                if (ga != null) genargs = ga.Length;
+                else genargs = 0;
+
+                if (genargs != genargs_match) continue;
+
+                //compare parameter types
                 match = true;
 
                 for (int j = 0; j < pars_i.Length; j++)
