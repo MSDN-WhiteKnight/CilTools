@@ -78,6 +78,11 @@ namespace CilTools.Reflection
             return CilTools.Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver,this);
         }
 
+        public virtual MethodBase GetDefinition()
+        {
+            return null;
+        }
+
         /// <summary>
         /// Converts MethodBase into the form suitable for processing by CilTools.BytecodeAnalysis
         /// </summary>        

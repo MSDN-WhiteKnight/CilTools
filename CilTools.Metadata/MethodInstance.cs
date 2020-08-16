@@ -52,7 +52,7 @@ namespace CilTools.Metadata
             }
 
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mspec.Signature);
-            this.sig = new Signature(sigbytes, this.assembly,this.definition);
+            this.sig = new Signature(sigbytes, this.assembly,UnknownMethod.Value);
         }
 
         /// <summary>
@@ -197,15 +197,6 @@ namespace CilTools.Metadata
             for (int i = 0; i < args.Length; i++)
             {
                 args[i] = this.sig.GetParamType(i).Type;
-
-                if(args[i].IsGenericParameter && args[i].DeclaringMethod != null)
-                {
-                    if (i >= dargs.Length) continue;
-
-                    //if type is generic method argument, substitute with type from definition
-                    //so we will have argument name
-                    args[i] = dargs[i];
-                }
             }
 
             return args;
@@ -309,6 +300,11 @@ namespace CilTools.Metadata
             {
                 return false;
             }
+        }
+
+        public override MethodBase GetDefinition()
+        {
+            return this.definition;
         }
     }
 }

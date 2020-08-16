@@ -160,7 +160,18 @@ namespace CilTools.Syntax
                 inner.Add(new PunctuationSyntax(String.Empty,"<",String.Empty));
 
                 Type[] args;
-                args = m.GetGenericArguments();
+
+                if (!m.IsGenericMethodDefinition)
+                {
+                    MethodBase mdef = cm.GetDefinition();
+
+                    if (mdef != null) args = mdef.GetGenericArguments();
+                    else args = m.GetGenericArguments();
+                }
+                else
+                {
+                    args = m.GetGenericArguments();
+                }
 
                 for (int i = 0; i < args.Length; i++)
                 {
