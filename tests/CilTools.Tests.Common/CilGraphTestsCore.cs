@@ -13,7 +13,7 @@ namespace CilTools.Tests.Common
 {
     public class CilGraphTestsCore
     {
-        public static void Test_CilGraph_HelloWorld(MethodInfo mi)
+        public static void Test_CilGraph_HelloWorld(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
@@ -63,8 +63,8 @@ namespace CilTools.Tests.Common
                 new Literal("}") 
             });            
         }
-     
-        public static void Test_CilGraph_Loop(MethodInfo mi)
+
+        public static void Test_CilGraph_Loop(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
@@ -101,10 +101,9 @@ namespace CilTools.Tests.Common
             });
 
             AssertThat.IsMatch(str, new MatchElement[] { new Literal("IL_"), MatchElement.Any, new Literal(":") });
-            
         }
 
-        public static void Test_CilGraph_Exceptions(MethodInfo mi)
+        public static void Test_CilGraph_Exceptions(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
@@ -133,7 +132,7 @@ namespace CilTools.Tests.Common
             });
         }
 
-        public static void Test_CilGraph_Tokens(MethodInfo mi)
+        public static void Test_CilGraph_Tokens(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
@@ -156,8 +155,7 @@ namespace CilTools.Tests.Common
             AssertThat.IsMatch(str, new MatchElement[] { new Literal("ldtoken"), MatchElement.Any, new Literal("System.Int32") });
         }
 
-        
-        public static void Test_CilGraph_Pointer(MethodInfo mi)
+        public static void Test_CilGraph_Pointer(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);

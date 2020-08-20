@@ -8,7 +8,6 @@ using System.Reflection.Emit;
 using CilTools.BytecodeAnalysis;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
@@ -60,8 +59,8 @@ namespace CilTools.BytecodeAnalysis.Tests
             //Test EmitTo: only NetFX
 #if !NETSTANDARD
             CilGraph graph = CilGraph.Create(mi);
-            DynamicMethod dm = new DynamicMethod("CilGraphTests_DivideNumbersDynamic", typeof(bool), 
-                new Type[] { typeof(int),typeof(int),typeof(int).MakeByRefType() }, typeof(SampleMethods).Module);
+            DynamicMethod dm = new DynamicMethod("CilGraphTests_DivideNumbersDynamic", typeof(bool),
+                new Type[] { typeof(int), typeof(int), typeof(int).MakeByRefType() }, typeof(SampleMethods).Module);
             ILGenerator ilg = dm.GetILGenerator(512);
             graph.EmitTo(ilg);
             SampleMethods.DivideNumbersDelegate deleg = (SampleMethods.DivideNumbersDelegate)dm.CreateDelegate(
@@ -76,7 +75,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             Assert.AreEqual(2, res, "The result of 4/2 should be 2");
 
             success = deleg(1, 0, out res);
-            Assert.IsFalse(success, "The calculation of 1/0 should fail");                        
+            Assert.IsFalse(success, "The calculation of 1/0 should fail");
 #endif
         }
 

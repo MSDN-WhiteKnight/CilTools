@@ -13,7 +13,7 @@ namespace CilTools.Tests.Common
 {
     public class CilReaderTestsCore
     {
-        public static void Test_CilReader_HelloWorld(MethodInfo mi)
+        public static void Test_CilReader_HelloWorld(MethodBase mi)
         {
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
@@ -38,10 +38,10 @@ namespace CilTools.Tests.Common
                 "The result of PrintHelloWorld method parsing should contain a single call to Console.WriteLine"
                 );
 
-            Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of PrintHelloWorld method should be 'ret'");            
+            Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of PrintHelloWorld method should be 'ret'");                        
         }
 
-        public static void Test_CilReader_CalcSum(MethodInfo mi)
+        public static void Test_CilReader_CalcSum(MethodBase mi)
         {
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
             
@@ -67,9 +67,25 @@ namespace CilTools.Tests.Common
                 instructions[instructions.Length - 1].OpCode == OpCodes.Ret, 
                 "The last instruction of CalcSum method should be 'ret'"
                 );
+
+            //Test EmitTo: only NetFX
+            //Dont' run in debug, because compiler generates branching here for some reason
+#if !NETSTANDARD && !DEBUG
+            DynamicMethod dm = new DynamicMethod(
+                "CalcSumDynamic", typeof(double), new Type[] { typeof(double), typeof(double) }, typeof(SampleMethods).Module
+            );
+            ILGenerator ilg = dm.GetILGenerator(512);
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            var deleg = (Func<double, double, double>)dm.CreateDelegate(typeof(Func<double, double, double>));
+            double result = deleg(1.1,2.4);
+            Assert.AreEqual(1.1 + 2.4, result, 0.01, "The result of CalcSumDynamic is wrong");
+#endif
         }
-      
-        public static void Test_CilReader_StaticFieldAccess(MethodInfo mi)
+
+        public static void Test_CilReader_StaticFieldAccess(MethodBase mi)
         {
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
@@ -96,7 +112,7 @@ namespace CilTools.Tests.Common
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of SquareFoo method should be 'ret'");
         }
 
-        public static void Test_CilReader_VirtualCall(MethodInfo mi)
+        public static void Test_CilReader_VirtualCall(MethodBase mi)
         {
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
@@ -111,7 +127,7 @@ namespace CilTools.Tests.Common
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of GetInterfaceCount method should be 'ret'");
         }
 
-        public static void Test_CilReader_GenericType(MethodInfo mi)
+        public static void Test_CilReader_GenericType(MethodBase mi)
         {
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
@@ -138,7 +154,7 @@ namespace CilTools.Tests.Common
                 (x) => {
                     if (x.OpCode == OpCodes.Call || x.OpCode == OpCodes.Callvirt)
                     {
-                        MethodInfo m = (MethodInfo)x.ReferencedMember;
+                        MethodBase m = (MethodBase)x.ReferencedMember;
                         if (m.Name != "Add") return false;
 
                         Type t = m.DeclaringType;
@@ -153,9 +169,9 @@ namespace CilTools.Tests.Common
                 );
 
             Assert.IsTrue(instructions[instructions.Length - 1].OpCode == OpCodes.Ret, "The last instruction of PrintList method should be 'ret'");
-        }        
+        }
 
-        public static void Test_CilReader_GenericParameter(MethodInfo mi)
+        public static void Test_CilReader_GenericParameter(MethodBase mi)
         {
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
@@ -174,7 +190,7 @@ namespace CilTools.Tests.Common
                 );
         }
 
-        public static void Test_CilReader_ExternalAssemblyAccess(MethodInfo mi)
+        public static void Test_CilReader_ExternalAssemblyAccess(MethodBase mi)
         {
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 

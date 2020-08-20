@@ -35,7 +35,6 @@ namespace CilTools.BytecodeAnalysis.Tests
             Action deleg = (Action)dm.CreateDelegate(typeof(Action));
             deleg();
 #endif
-            
         }
 
         [TestMethod]
@@ -43,23 +42,6 @@ namespace CilTools.BytecodeAnalysis.Tests
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("CalcSum");
             CilReaderTestsCore.Test_CilReader_CalcSum(mi);
-
-            //Test EmitTo: only NetFX
-            //Dont' run in debug, because compiler generates branching here for some reason
-#if !NETSTANDARD && !DEBUG
-            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
-            DynamicMethod dm = new DynamicMethod(
-                "CalcSumDynamic", typeof(double), new Type[] { typeof(double), typeof(double) }, typeof(SampleMethods).Module
-            );
-            ILGenerator ilg = dm.GetILGenerator(512);
-            for (int i = 0; i < instructions.Length; i++)
-            {
-                instructions[i].EmitTo(ilg);
-            }
-            var deleg = (Func<double, double, double>)dm.CreateDelegate(typeof(Func<double, double, double>));
-            double result = deleg(1.1,2.4);
-            Assert.AreEqual(1.1 + 2.4, result, 0.01, "The result of CalcSumDynamic is wrong");
-#endif
         }
 
         [TestMethod]
@@ -81,6 +63,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             deleg();
             Assert.AreEqual(4, SampleMethods.Foo, "The value of SampleMethods.Foo is wrong");
 #endif
+
         }
 
         [TestMethod]
@@ -119,19 +102,21 @@ namespace CilTools.BytecodeAnalysis.Tests
             //Test EmitTo: only NetFX            
 #if !NETSTANDARD
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
-            DynamicMethod dm = new DynamicMethod("PrintListDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
+            DynamicMethod dm = new DynamicMethod(
+                "PrintListDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module
+                );
             ILGenerator ilg = dm.GetILGenerator(512);
 
             ilg.DeclareLocal(typeof(List<string>));
-            
+
             for (int i = 0; i < instructions.Length; i++)
             {
                 instructions[i].EmitTo(ilg);
             }
             Action deleg = (Action)dm.CreateDelegate(typeof(Action));
-            deleg();            
+            deleg();
 #endif
-        }        
+        }
 
         [TestMethod]
         public void Test_CilReader_GenericParameter()

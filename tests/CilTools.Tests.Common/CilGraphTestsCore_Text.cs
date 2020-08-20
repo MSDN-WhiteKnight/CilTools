@@ -14,7 +14,7 @@ namespace CilTools.Tests.Common
 {
     public class CilGraphTestsCore_Text
     {
-        public static void Test_CilGraph_ToString(MethodInfo mi)
+        public static void Test_CilGraph_ToString(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
 
@@ -32,7 +32,7 @@ namespace CilTools.Tests.Common
             Assert.IsFalse(str.Contains("call"), "The result of CilGraph.ToString should not contain instructions");
         }
     
-        public static void Test_CilGraph_EmptyString(MethodInfo mi)
+        public static void Test_CilGraph_EmptyString(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
 
@@ -44,7 +44,7 @@ namespace CilTools.Tests.Common
             });
         }
         
-        public static void Test_CilGraph_OptionalParams(MethodInfo mi)
+        public static void Test_CilGraph_OptionalParams(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
 
@@ -63,7 +63,7 @@ namespace CilTools.Tests.Common
             });
         }
 
-        public static void Test_CilGraph_Locals(MethodInfo mi)
+        public static void Test_CilGraph_Locals(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
 
