@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Express 2012 for Windows Desktop
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilToolsDemo", "CilToolsDemo\CilToolsDemo.csproj", "{BB8F6999-8B4C-4339-BA84-6964E5E5EC5A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.BytecodeAnalysis", "CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj", "{38496D54-0BC8-479B-A57E-F0EC83E78AD3}"
@@ -14,6 +16,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilView", "CilView\CilView.csproj", "{6B539538-E819-4F47-AB9B-6768F5FF6E0F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Metadata", "CilTools.Metadata\CilTools.Metadata.csproj", "{7EC7D947-C802-4384-A438-25DB46539A88}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4A7BB35F-E42B-4A4E-8833-6B048065F45A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Tests.Common", "tests\CilTools.Tests.Common\CilTools.Tests.Common.csproj", "{0220F688-84CF-4F97-9439-8A7A8F58230B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Metadata.Tests", "tests\CilTools.Metadata.Tests\CilTools.Metadata.Tests.csproj", "{AC5F228E-77EA-4F45-A659-9D6DC5531328}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -95,8 +103,41 @@ Global
 		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Win32.ActiveCfg = Release|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Debug|Win32.Build.0 = Debug|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Release|Win32.ActiveCfg = Release|Any CPU
+		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Release|Win32.Build.0 = Release|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Debug|Win32.Build.0 = Debug|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Release|Win32.ActiveCfg = Release|Any CPU
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{3B6EA845-B9F5-4041-BC32-F043B3D4B01C} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
+		{EF03841A-E922-43D7-8447-DD6F16299A5A} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
+		{0220F688-84CF-4F97-9439-8A7A8F58230B} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
+		{AC5F228E-77EA-4F45-A659-9D6DC5531328} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E67EF443-831E-47A3-A9FD-F4EAD03CEEED}
 	EndGlobalSection
 EndGlobal

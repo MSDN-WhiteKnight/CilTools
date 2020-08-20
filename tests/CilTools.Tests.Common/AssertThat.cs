@@ -1,4 +1,4 @@
-﻿/* CilTools.BytecodeAnalysis library tests
+﻿/* CIL Tools
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
@@ -9,7 +9,7 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CilTools.BytecodeAnalysis.Tests
+namespace CilTools.Tests.Common
 {
     public static class AssertThat
     {

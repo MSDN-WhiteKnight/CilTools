@@ -1412,7 +1412,7 @@
         </member>
         <member name="M:CilTools.Reflection.CustomMethod.PrepareMethod(System.Reflection.MethodBase)">
             <summary>
-            Converts MethodBase into the form suitable for processing by CilBytecodeParser
+            Converts MethodBase into the form suitable for processing by CilTools.BytecodeAnalysis
             </summary>        
         </member>
         <member name="M:CilTools.Reflection.CustomMethod.CreateResolver(System.Reflection.MethodBase)">

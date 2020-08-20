@@ -56,8 +56,6 @@
     <Compile Include="CilInstructionTests.cs" />
     <Compile Include="CilReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="AssertThat.cs" />
-    <Compile Include="SampleMethods.cs" />
     <Compile Include="CilAnalysisTests.cs" />
     <Compile Include="CilGraphTests_Text.cs" />
   </ItemGroup>
@@ -65,6 +63,10 @@
     <ProjectReference Include="..\..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj">
       <Project>{38496d54-0bc8-479b-a57e-f0ec83e78ad3}</Project>
       <Name>CilTools.BytecodeAnalysis</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CilTools.Tests.Common\CilTools.Tests.Common.csproj">
+      <Project>{0220F688-84CF-4F97-9439-8A7A8F58230B}</Project>
+      <Name>CilTools.Tests.Common</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>
