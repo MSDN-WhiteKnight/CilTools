@@ -144,6 +144,10 @@ namespace CilTools.Tests.Common
                 return *q;
             }
         }
+
+        [STAThread]
+        [My(1)]
+        public static void AttributeTest() { }
     }
 
     public class MyPoint

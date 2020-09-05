@@ -55,6 +55,7 @@
     <Compile Include="CilGraphTestsCore.cs" />
     <Compile Include="CilGraphTestsCore_Text.cs" />
     <Compile Include="CilReaderTestsCore.cs" />
+    <Compile Include="MyAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SampleMethods.cs" />
   </ItemGroup>
