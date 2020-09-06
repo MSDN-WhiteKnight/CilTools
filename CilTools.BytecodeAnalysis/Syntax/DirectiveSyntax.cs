@@ -207,9 +207,65 @@ namespace CilTools.Syntax
 
             if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine));
             inner.Add(new PunctuationSyntax(String.Empty, ")", String.Empty));
-            inner.Add(new KeywordSyntax(" ", "cil", String.Empty, KeywordKind.Other));
-            inner.Add(new KeywordSyntax(" ", "managed", Environment.NewLine, KeywordKind.Other));
-            
+
+            //ECMA-335 II.15.4.3 - Implementation attributes of methods
+            MethodImplAttributes mia = (MethodImplAttributes)0;
+
+            try { mia = m.GetMethodImplementationFlags(); }
+            catch (NotImplementedException) { }
+
+            //Code implementation attributes
+            if ((mia & MethodImplAttributes.Runtime) == MethodImplAttributes.Runtime)
+            {
+                inner.Add(new KeywordSyntax(" ", "runtime", String.Empty, KeywordKind.Other));
+            }
+            else if ((mia & MethodImplAttributes.Native) == MethodImplAttributes.Native)
+            {
+                inner.Add(new KeywordSyntax(" ", "native", String.Empty, KeywordKind.Other));
+            }
+            else
+            {
+                inner.Add(new KeywordSyntax(" ", "cil", String.Empty, KeywordKind.Other));
+            }
+
+            //managed or unmanaged
+            if ((mia & MethodImplAttributes.Unmanaged) == MethodImplAttributes.Unmanaged)
+            {
+                inner.Add(new KeywordSyntax(" ", "unmanaged", String.Empty, KeywordKind.Other));
+            }
+            else
+            {
+                inner.Add(new KeywordSyntax(" ", "managed", String.Empty, KeywordKind.Other));
+            }
+
+            //implementation flags
+            if ((mia & MethodImplAttributes.ForwardRef) == MethodImplAttributes.ForwardRef)
+            {
+                inner.Add(new KeywordSyntax(" ", "forwardref", String.Empty, KeywordKind.Other));
+            }
+
+            if ((mia & MethodImplAttributes.InternalCall) == MethodImplAttributes.InternalCall)
+            {
+                inner.Add(new KeywordSyntax(" ", "internalcall", String.Empty, KeywordKind.Other));
+            }
+
+            if ((mia & MethodImplAttributes.NoInlining) == MethodImplAttributes.NoInlining)
+            {
+                inner.Add(new KeywordSyntax(" ", "noinlining", String.Empty, KeywordKind.Other));
+            }
+
+            if ((mia & MethodImplAttributes.NoOptimization) == MethodImplAttributes.NoOptimization)
+            {
+                inner.Add(new KeywordSyntax(" ", "nooptimization", String.Empty, KeywordKind.Other));
+            }
+
+            if ((mia & MethodImplAttributes.Synchronized) == MethodImplAttributes.Synchronized)
+            {
+                inner.Add(new KeywordSyntax(" ", "synchronized", String.Empty, KeywordKind.Other));
+            }
+
+            inner.Add(new GenericSyntax(Environment.NewLine));
+
             return new DirectiveSyntax("", "method", inner.ToArray());
         }
     }
