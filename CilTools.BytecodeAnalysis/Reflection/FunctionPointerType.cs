@@ -32,7 +32,7 @@ namespace CilTools.Reflection
         {
             get
             {
-                return null;
+                return typeof(ValueType);
             }
         }
 
@@ -171,7 +171,7 @@ namespace CilTools.Reflection
 
         protected override bool IsPointerImpl()
         {
-            return true;
+            return false;
         }
 
         protected override bool IsPrimitiveImpl()
@@ -216,7 +216,7 @@ namespace CilTools.Reflection
         {
             get
             {
-                return "method " + this._sig.ToString();
+                return "method " + this._sig.ToString(true);
             }
         }
 

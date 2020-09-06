@@ -251,6 +251,11 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>        
         public override string ToString()
         {
+            return this.ToString(false);
+        }
+
+        internal string ToString(bool pointer)
+        {
             StringBuilder sb_sig = new StringBuilder(100);
 
             switch (this._conv)
@@ -267,7 +272,9 @@ namespace CilTools.BytecodeAnalysis
             if (this._ExplicitThis) sb_sig.Append("explicit ");
 
             sb_sig.Append(this._ReturnType.ToString());
-            sb_sig.Append(" (");
+            sb_sig.Append(' ');
+            if(pointer) sb_sig.Append('*');
+            sb_sig.Append('(');
 
             for (int i = 0; i < this._ParamTypes.Length; i++)
             {
@@ -277,6 +284,6 @@ namespace CilTools.BytecodeAnalysis
 
             sb_sig.Append(')');
             return sb_sig.ToString();
-        }        
+        }
     }
 }

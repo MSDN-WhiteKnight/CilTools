@@ -239,6 +239,12 @@ namespace CilTools.BytecodeAnalysis
                 }
             }
 
+            if (t is FunctionPointerType)
+            {
+                yield return new GenericSyntax(t.FullName);
+                yield break;
+            }
+
             if (!isspec) //for TypeSpec, we omit class/valuetype keyword
             {
                 if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);
