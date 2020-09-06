@@ -101,50 +101,62 @@ namespace CilTools.BytecodeAnalysis
             Initialize(data, resolver, member);
         }
 
+        public Signature(Stream src, ITokenResolver resolver, MemberInfo member)
+        {
+            if (src == null) throw new ArgumentNullException("src", "Source stream cannot be null");            
+
+            this.Initialize(src, resolver, member);
+        }
+
+        void Initialize(Stream src, ITokenResolver resolver, MemberInfo member)
+        {
+            byte b = MetadataReader.ReadByte(src); //calling convention & method flags
+            int conv = b & CALLCONV_MASK;
+            this._conv = (CallingConvention)conv;
+
+            if ((b & MFLAG_HASTHIS) == MFLAG_HASTHIS) this._HasThis = true;
+
+            if ((b & MFLAG_EXPLICITTHIS) == MFLAG_EXPLICITTHIS) this._ExplicitThis = true;
+
+            if ((b & MFLAG_GENERICINST) == MFLAG_GENERICINST)
+            {
+                //generic method instantiation
+                this._GenInst = true;
+                int genparams = (int)MetadataReader.ReadCompressed(src);
+                this._ParamTypes = new TypeSpec[genparams];
+                this._GenParamCount = genparams;
+
+                for (int i = 0; i < genparams; i++)
+                {
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, resolver, member);
+                }
+            }
+            else
+            {
+                if ((b & MFLAG_GENERIC) == MFLAG_GENERIC)
+                {
+                    //generic method definition
+                    this._GenParamCount = (int)MetadataReader.ReadCompressed(src);
+                }
+
+                uint paramcount = MetadataReader.ReadCompressed(src);
+                this._ParamTypes = new TypeSpec[paramcount];
+                this._ReturnType = TypeSpec.ReadFromStream(src, resolver, member);
+
+                for (int i = 0; i < paramcount; i++)
+                {
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, resolver, member);
+                }
+            }
+        }
+
         void Initialize(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             MemoryStream ms = new MemoryStream(data);
 
             using (ms)
             {
-                byte b = MetadataReader.ReadByte(ms); //calling convention & method flags
-                int conv = b & CALLCONV_MASK;
-                this._conv = (CallingConvention)conv;
-
-                if ((b & MFLAG_HASTHIS) == MFLAG_HASTHIS) this._HasThis = true;
-
-                if ((b & MFLAG_EXPLICITTHIS) == MFLAG_EXPLICITTHIS) this._ExplicitThis = true;
-
-                if ((b & MFLAG_GENERICINST) == MFLAG_GENERICINST)
-                {
-                    //generic method instantiation
-                    this._GenInst = true;
-                    int genparams = (int)MetadataReader.ReadCompressed(ms);
-                    this._ParamTypes = new TypeSpec[genparams];
-                    this._GenParamCount = genparams;
-
-                    for (int i = 0; i < genparams; i++)
-                    {
-                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver,member);
-                    }
-                }
-                else                
-                {
-                    if ((b & MFLAG_GENERIC) == MFLAG_GENERIC)
-                    {
-                        //generic method definition
-                        this._GenParamCount = (int)MetadataReader.ReadCompressed(ms);
-                    }
-
-                    uint paramcount = MetadataReader.ReadCompressed(ms);
-                    this._ParamTypes = new TypeSpec[paramcount];
-                    this._ReturnType = TypeSpec.ReadFromStream(ms, resolver, member);
-
-                    for (int i = 0; i < paramcount; i++)
-                    {
-                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver, member);
-                    }
-                }
+                this.Initialize(ms, resolver, member);
             }
         }
 
