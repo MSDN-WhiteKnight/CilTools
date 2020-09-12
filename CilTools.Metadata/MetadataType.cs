@@ -17,7 +17,7 @@ namespace CilTools.Metadata
     {
         TypeDefinition type;
         TypeDefinitionHandle htype;
-        MetadataAssembly assembly;                
+        MetadataAssembly assembly;
 
         public MetadataType(TypeDefinition t, TypeDefinitionHandle ht,MetadataAssembly ass)
         {

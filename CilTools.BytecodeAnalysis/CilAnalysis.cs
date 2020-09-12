@@ -423,6 +423,14 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
+        internal static bool IsModuleType(int token)
+        {
+            //First row in TypeDef table represents dummy type for module-level decls
+            //(ECMA-335 II.22.37  TypeDef : 0x02 )
+            byte[] bytes = BitConverter.GetBytes(token);
+            return bytes[0] == 0x01 && bytes[3] == 0x02;
+        }
+
         internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m)
         {
             List<SyntaxNode> children = new List<SyntaxNode>(50);
@@ -456,10 +464,11 @@ namespace CilTools.BytecodeAnalysis
 
             foreach (SyntaxNode node in rt) children.Add(node);
 
-            if (t != null)
-            {
-                children.Add(new GenericSyntax(" "));
+            children.Add(new GenericSyntax(" "));
 
+            //append declaring type
+            if (t != null && !IsModuleType(t.MetadataToken))
+            {
                 IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeSpecSyntax(t);
 
                 foreach (SyntaxNode node in syntax) children.Add(node);
@@ -467,6 +476,7 @@ namespace CilTools.BytecodeAnalysis
                 children.Add(new PunctuationSyntax("","::",""));
             }
 
+            //append name
             children.Add(new IdentifierSyntax("",m.Name,"",true));
 
             if (m.IsGenericMethod)

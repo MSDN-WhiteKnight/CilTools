@@ -297,10 +297,16 @@ namespace CilTools.BytecodeAnalysis
 
                     children.Add(new GenericSyntax(" "));
 
-                    nodes = CilAnalysis.GetTypeSpecSyntax(t);
-                    foreach (SyntaxNode node in nodes) children.Add(node);
+                    //append declaring type
+                    if (t != null && !CilAnalysis.IsModuleType(t.MetadataToken))
+                    {
+                        nodes = CilAnalysis.GetTypeSpecSyntax(t);
+                        foreach (SyntaxNode node in nodes) children.Add(node);
 
-                    children.Add(new PunctuationSyntax("", "::", ""));
+                        children.Add(new PunctuationSyntax("", "::", ""));
+                    }
+
+                    //append field name
                     children.Add(new IdentifierSyntax("", fi.Name, "",true));
 
                     yield return new MemberRefSyntax(children.ToArray(), fi);
