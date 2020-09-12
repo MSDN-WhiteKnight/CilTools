@@ -239,6 +239,14 @@ namespace CilTools.BytecodeAnalysis
                 }
             }
 
+            if (t is FunctionPointerType)
+            {
+                yield return new KeywordSyntax(String.Empty, "method", " ", KeywordKind.Other);
+                IEnumerable<SyntaxNode> nodes = ((FunctionPointerType)t).TargetSignature.ToSyntax(true);
+                foreach (SyntaxNode x in nodes) yield return x;
+                yield break;
+            }
+
             if (!isspec) //for TypeSpec, we omit class/valuetype keyword
             {
                 if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);

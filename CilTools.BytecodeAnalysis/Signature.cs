@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using CilTools.Reflection;
+using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -101,50 +102,62 @@ namespace CilTools.BytecodeAnalysis
             Initialize(data, resolver, member);
         }
 
+        public Signature(Stream src, ITokenResolver resolver, MemberInfo member)
+        {
+            if (src == null) throw new ArgumentNullException("src", "Source stream cannot be null");
+
+            this.Initialize(src, resolver, member);
+        }
+
+        void Initialize(Stream src, ITokenResolver resolver, MemberInfo member)
+        {
+            byte b = MetadataReader.ReadByte(src); //calling convention & method flags
+            int conv = b & CALLCONV_MASK;
+            this._conv = (CallingConvention)conv;
+
+            if ((b & MFLAG_HASTHIS) == MFLAG_HASTHIS) this._HasThis = true;
+
+            if ((b & MFLAG_EXPLICITTHIS) == MFLAG_EXPLICITTHIS) this._ExplicitThis = true;
+
+            if ((b & MFLAG_GENERICINST) == MFLAG_GENERICINST)
+            {
+                //generic method instantiation
+                this._GenInst = true;
+                int genparams = (int)MetadataReader.ReadCompressed(src);
+                this._ParamTypes = new TypeSpec[genparams];
+                this._GenParamCount = genparams;
+
+                for (int i = 0; i < genparams; i++)
+                {
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, resolver, member);
+                }
+            }
+            else
+            {
+                if ((b & MFLAG_GENERIC) == MFLAG_GENERIC)
+                {
+                    //generic method definition
+                    this._GenParamCount = (int)MetadataReader.ReadCompressed(src);
+                }
+
+                uint paramcount = MetadataReader.ReadCompressed(src);
+                this._ParamTypes = new TypeSpec[paramcount];
+                this._ReturnType = TypeSpec.ReadFromStream(src, resolver, member);
+
+                for (int i = 0; i < paramcount; i++)
+                {
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, resolver, member);
+                }
+            }
+        }
+
         void Initialize(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             MemoryStream ms = new MemoryStream(data);
 
             using (ms)
             {
-                byte b = MetadataReader.ReadByte(ms); //calling convention & method flags
-                int conv = b & CALLCONV_MASK;
-                this._conv = (CallingConvention)conv;
-
-                if ((b & MFLAG_HASTHIS) == MFLAG_HASTHIS) this._HasThis = true;
-
-                if ((b & MFLAG_EXPLICITTHIS) == MFLAG_EXPLICITTHIS) this._ExplicitThis = true;
-
-                if ((b & MFLAG_GENERICINST) == MFLAG_GENERICINST)
-                {
-                    //generic method instantiation
-                    this._GenInst = true;
-                    int genparams = (int)MetadataReader.ReadCompressed(ms);
-                    this._ParamTypes = new TypeSpec[genparams];
-                    this._GenParamCount = genparams;
-
-                    for (int i = 0; i < genparams; i++)
-                    {
-                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver,member);
-                    }
-                }
-                else                
-                {
-                    if ((b & MFLAG_GENERIC) == MFLAG_GENERIC)
-                    {
-                        //generic method definition
-                        this._GenParamCount = (int)MetadataReader.ReadCompressed(ms);
-                    }
-
-                    uint paramcount = MetadataReader.ReadCompressed(ms);
-                    this._ParamTypes = new TypeSpec[paramcount];
-                    this._ReturnType = TypeSpec.ReadFromStream(ms, resolver, member);
-
-                    for (int i = 0; i < paramcount; i++)
-                    {
-                        this._ParamTypes[i] = TypeSpec.ReadFromStream(ms, resolver, member);
-                    }
-                }
+                this.Initialize(ms, resolver, member);
             }
         }
 
@@ -239,6 +252,11 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>        
         public override string ToString()
         {
+            return this.ToString(false);
+        }
+
+        internal string ToString(bool pointer)
+        {
             StringBuilder sb_sig = new StringBuilder(100);
 
             switch (this._conv)
@@ -255,7 +273,9 @@ namespace CilTools.BytecodeAnalysis
             if (this._ExplicitThis) sb_sig.Append("explicit ");
 
             sb_sig.Append(this._ReturnType.ToString());
-            sb_sig.Append(" (");
+            sb_sig.Append(' ');
+            if(pointer) sb_sig.Append('*');
+            sb_sig.Append('(');
 
             for (int i = 0; i < this._ParamTypes.Length; i++)
             {
@@ -265,6 +285,54 @@ namespace CilTools.BytecodeAnalysis
 
             sb_sig.Append(')');
             return sb_sig.ToString();
-        }        
+        }
+
+        internal IEnumerable<SyntaxNode> ToSyntax(bool pointer)
+        {
+            switch (this._conv)
+            {
+                case CallingConvention.CDecl:
+                    yield return new KeywordSyntax(String.Empty, "unmanaged"," ", KeywordKind.Other);
+                    yield return new KeywordSyntax(String.Empty, "cdecl", " ", KeywordKind.Other);
+                    break;
+                case CallingConvention.StdCall:
+                    yield return new KeywordSyntax(String.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(String.Empty, "stdcall", " ", KeywordKind.Other);
+                    break;
+                case CallingConvention.ThisCall:
+                    yield return new KeywordSyntax(String.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(String.Empty, "thiscall", " ", KeywordKind.Other);
+                    break;
+                case CallingConvention.FastCall:
+                    yield return new KeywordSyntax(String.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(String.Empty, "fastcall", " ", KeywordKind.Other);
+                    break;
+                case CallingConvention.Vararg:
+                    yield return new KeywordSyntax(String.Empty, "vararg", " ", KeywordKind.Other);
+                    break;
+            }
+
+            if (this._HasThis) yield return new KeywordSyntax(String.Empty, "instance", " ", KeywordKind.Other);
+
+            if (this._ExplicitThis) yield return new KeywordSyntax(String.Empty, "explicit", " ", KeywordKind.Other);
+
+            yield return this._ReturnType.ToSyntax();
+
+            if (pointer)
+            {
+                yield return new PunctuationSyntax(" ", "*", String.Empty);
+                yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
+            }
+            else yield return new PunctuationSyntax(" ", "(", String.Empty);
+            
+            for (int i = 0; i < this._ParamTypes.Length; i++)
+            {
+                if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
+
+                yield return this._ParamTypes[i].ToSyntax();
+            }
+
+            yield return new PunctuationSyntax(String.Empty, ")", String.Empty);
+        }
     }
 }

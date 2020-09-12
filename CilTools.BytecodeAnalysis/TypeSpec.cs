@@ -419,8 +419,10 @@ namespace CilTools.BytecodeAnalysis
                         byte[] buf = new byte[System.Runtime.InteropServices.Marshal.SizeOf(typeof(IntPtr))];
                         source.Read(buf, 0, buf.Length);
                         break;
-                    case (byte)CilTools.BytecodeAnalysis.ElementType.FnPtr: 
-                        throw new NotSupportedException("Parsing signatures with function pointers is not supported");
+                    case (byte)CilTools.BytecodeAnalysis.ElementType.FnPtr:
+                        Signature psig = new Signature(source, resolver, member);
+                        restype = new FunctionPointerType(psig);
+                        break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.GenericInst:
                         byte tdef = MetadataReader.ReadByte(source);
                         typetok = DecodeToken(MetadataReader.ReadCompressed(source));

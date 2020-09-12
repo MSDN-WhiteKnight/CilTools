@@ -59,6 +59,7 @@
     <Compile Include="Reflection\ComplexType.cs" />
     <Compile Include="Reflection\CustomMethod.cs" />
     <Compile Include="Reflection\ExceptionBlock.cs" />
+    <Compile Include="Reflection\FunctionPointerType.cs" />
     <Compile Include="Reflection\GenericParamType.cs" />
     <Compile Include="Reflection\ICustomAttribute.cs" />
     <Compile Include="Reflection\ITokenResolver.cs" />
