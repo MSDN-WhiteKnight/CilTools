@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using CilTools.Reflection;
+using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -284,6 +285,54 @@ namespace CilTools.BytecodeAnalysis
 
             sb_sig.Append(')');
             return sb_sig.ToString();
+        }
+
+        internal IEnumerable<SyntaxNode> ToSyntax(bool pointer)
+        {
+            switch (this._conv)
+            {
+                case CallingConvention.CDecl:
+                    yield return new KeywordSyntax(String.Empty, "unmanaged"," ", KeywordKind.Other);
+                    yield return new KeywordSyntax(String.Empty, "cdecl", " ", KeywordKind.Other);
+                    break;
+                case CallingConvention.StdCall:
+                    yield return new KeywordSyntax(String.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(String.Empty, "stdcall", " ", KeywordKind.Other);
+                    break;
+                case CallingConvention.ThisCall:
+                    yield return new KeywordSyntax(String.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(String.Empty, "thiscall", " ", KeywordKind.Other);
+                    break;
+                case CallingConvention.FastCall:
+                    yield return new KeywordSyntax(String.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(String.Empty, "fastcall", " ", KeywordKind.Other);
+                    break;
+                case CallingConvention.Vararg:
+                    yield return new KeywordSyntax(String.Empty, "vararg", " ", KeywordKind.Other);
+                    break;
+            }
+
+            if (this._HasThis) yield return new KeywordSyntax(String.Empty, "instance", " ", KeywordKind.Other);
+
+            if (this._ExplicitThis) yield return new KeywordSyntax(String.Empty, "explicit", " ", KeywordKind.Other);
+
+            yield return this._ReturnType.ToSyntax();
+
+            if (pointer)
+            {
+                yield return new PunctuationSyntax(" ", "*", String.Empty);
+                yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
+            }
+            else yield return new PunctuationSyntax(" ", "(", String.Empty);
+            
+            for (int i = 0; i < this._ParamTypes.Length; i++)
+            {
+                if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
+
+                yield return this._ParamTypes[i].ToSyntax();
+            }
+
+            yield return new PunctuationSyntax(String.Empty, ")", String.Empty);
         }
     }
 }

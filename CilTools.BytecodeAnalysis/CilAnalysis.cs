@@ -241,7 +241,9 @@ namespace CilTools.BytecodeAnalysis
 
             if (t is FunctionPointerType)
             {
-                yield return new GenericSyntax(t.FullName);
+                yield return new KeywordSyntax(String.Empty, "method", " ", KeywordKind.Other);
+                IEnumerable<SyntaxNode> nodes = ((FunctionPointerType)t).TargetSignature.ToSyntax(true);
+                foreach (SyntaxNode x in nodes) yield return x;
                 yield break;
             }
 

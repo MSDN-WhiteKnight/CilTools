@@ -18,6 +18,8 @@ namespace CilTools.Reflection
             this._sig = sig;
         }
 
+        public Signature TargetSignature { get { return this._sig; } }
+
         public override Assembly Assembly
         {
             get { return null; }
