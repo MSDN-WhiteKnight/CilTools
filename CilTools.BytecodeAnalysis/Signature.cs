@@ -104,7 +104,7 @@ namespace CilTools.BytecodeAnalysis
 
         public Signature(Stream src, ITokenResolver resolver, MemberInfo member)
         {
-            if (src == null) throw new ArgumentNullException("src", "Source stream cannot be null");            
+            if (src == null) throw new ArgumentNullException("src", "Source stream cannot be null");
 
             this.Initialize(src, resolver, member);
         }
