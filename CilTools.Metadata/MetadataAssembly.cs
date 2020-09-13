@@ -376,13 +376,18 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Returns the signature blob identified by a metadata token (not implemented).
+        /// Returns the signature blob identified by a metadata token.
         /// </summary>
-        /// <exception cref="System.NotImplementedException">This implementation always throws</exception>
         /// <returns>An array of bytes representing the signature blob.</returns>
         public byte[] ResolveSignature(int metadataToken)
         {
-            throw new NotImplementedException();
+            EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
+
+            if (eh.IsNil) return null;
+            if (eh.Kind != HandleKind.StandaloneSignature) return null;
+
+            StandaloneSignature ss = this.reader.GetStandaloneSignature((StandaloneSignatureHandle)eh);
+            return reader.GetBlobBytes(ss.Signature);
         }
 
         /// <summary>
