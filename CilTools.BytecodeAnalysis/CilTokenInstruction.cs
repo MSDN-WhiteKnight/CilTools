@@ -298,7 +298,7 @@ namespace CilTools.BytecodeAnalysis
                     children.Add(new GenericSyntax(" "));
 
                     //append declaring type
-                    if (t != null && !CilAnalysis.IsModuleType(t.MetadataToken))
+                    if (t != null && !CilAnalysis.IsModuleType(t))
                     {
                         nodes = CilAnalysis.GetTypeSpecSyntax(t);
                         foreach (SyntaxNode node in nodes) children.Add(node);
@@ -440,7 +440,8 @@ namespace CilTools.BytecodeAnalysis
 
                     if (sg != null)
                     {
-                        yield return new GenericSyntax(sg.ToString());
+                        IEnumerable<SyntaxNode> nodes = sg.ToSyntax(false);
+                        foreach (SyntaxNode node in nodes) yield return node;
                     }
                     else
                     {

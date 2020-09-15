@@ -204,6 +204,8 @@ namespace CilTools.Metadata
         {
             get { return "???"; }
         }
+
+        public override int MetadataToken => 0;
     }
 }
 

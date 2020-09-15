@@ -423,8 +423,13 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
-        internal static bool IsModuleType(int token)
+        internal static bool IsModuleType(Type t)
         {
+            int token = 0;
+
+            try { token = t.MetadataToken; }
+            catch (InvalidOperationException) { return false; }
+
             //First row in TypeDef table represents dummy type for module-level decls
             //(ECMA-335 II.22.37  TypeDef : 0x02 )
             byte[] bytes = BitConverter.GetBytes(token);
@@ -467,7 +472,7 @@ namespace CilTools.BytecodeAnalysis
             children.Add(new GenericSyntax(" "));
 
             //append declaring type
-            if (t != null && !IsModuleType(t.MetadataToken))
+            if (t != null && !IsModuleType(t))
             {
                 IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeSpecSyntax(t);
 
