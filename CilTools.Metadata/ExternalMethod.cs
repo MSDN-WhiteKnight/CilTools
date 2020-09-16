@@ -66,6 +66,19 @@ namespace CilTools.Metadata
                 if (encoded != null) this.decltype = encoded.Type;
                 else this.decltype = UnknownType.Value;
             }
+            else if (!eh.IsNil && eh.Kind == HandleKind.MethodDefinition)
+            {
+                MethodDefinition mdef = assembly.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
+                TypeDefinitionHandle tdefh = mdef.GetDeclaringType();
+
+                if (!tdefh.IsNil)
+                {
+                    this.decltype = new MetadataType(
+                        assembly.MetadataReader.GetTypeDefinition(tdefh), tdefh, this.assembly
+                        );
+                }
+                else this.decltype = UnknownType.Value;
+            }
             else this.decltype = UnknownType.Value;
         }
 
