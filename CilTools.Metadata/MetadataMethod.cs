@@ -35,7 +35,21 @@ namespace CilTools.Metadata
             }
             else
             {
-                this.mb = assembly.PEReader.GetMethodBody(rva);
+                try
+                {
+                    this.mb = assembly.PEReader.GetMethodBody(rva);
+                }
+                catch (BadImageFormatException)
+                {
+                    //Prevent BadImageFormatException (Invalid method header) 
+                    //when accessing native methods in C++/CLI aasemblies
+
+                    bool isNative = mdef.Attributes.HasFlag(MethodAttributes.PinvokeImpl) ||
+                        mdef.ImplAttributes.HasFlag(MethodImplAttributes.Native);
+
+                    if (isNative) this.mb = null;
+                    else throw;
+                }
             }
 
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
