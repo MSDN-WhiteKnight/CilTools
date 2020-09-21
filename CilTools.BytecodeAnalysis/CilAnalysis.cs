@@ -239,10 +239,10 @@ namespace CilTools.BytecodeAnalysis
                 }
             }
 
-            if (t is FunctionPointerType)
+            if (t is ITypeInfo && ((ITypeInfo)t).IsFunctionPointer())
             {
                 yield return new KeywordSyntax(String.Empty, "method", " ", KeywordKind.Other);
-                IEnumerable<SyntaxNode> nodes = ((FunctionPointerType)t).TargetSignature.ToSyntax(true);
+                IEnumerable<SyntaxNode> nodes = ((ITypeInfo)t).TargetSignature.ToSyntax(true);
                 foreach (SyntaxNode x in nodes) yield return x;
                 yield break;
             }

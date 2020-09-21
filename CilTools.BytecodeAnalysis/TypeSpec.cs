@@ -178,7 +178,7 @@ namespace CilTools.BytecodeAnalysis
     /// <summary>
     /// Represents type specification, the set of type information stored in the signature, as defined by ECMA-335
     /// </summary>
-    public class TypeSpec:Type //ECMA-335 II.23.2.12 Type
+    public class TypeSpec:Type,ITypeInfo //ECMA-335 II.23.2.12 Type
     {
         //ECMA-335 II.23.1.16 Element types used in signatures
         internal const byte ELEMENT_TYPE_CMOD_REQD = 0x1f;
@@ -791,9 +791,23 @@ namespace CilTools.BytecodeAnalysis
 
         public override bool IsGenericParameter => this._Type.IsGenericParameter;
 
+        public override int GenericParameterPosition => this._Type.GenericParameterPosition;
+
         public override bool IsGenericType => this._Type.IsGenericType;
 
         public override bool IsGenericTypeDefinition => this._Type.IsGenericTypeDefinition;
+        
+        public Signature TargetSignature
+        {
+            get 
+            {
+                if (this._Type is FunctionPointerType)
+                {
+                    return ((FunctionPointerType)this._Type).TargetSignature;
+                }
+                else return null;
+            }
+        }
 
         public override Type[] GetGenericArguments()
         {
@@ -913,6 +927,16 @@ namespace CilTools.BytecodeAnalysis
             }
 
             return new MemberRefSyntax(ret.ToArray(), this._Type);
+        }
+
+        public bool IsFunctionPointer()
+        {
+            return this._ElementType == (byte)ElementType.FnPtr;
+        }
+
+        public Type GetRuntimeType()
+        {
+            return this._Type;
         }
     }
 }

@@ -875,7 +875,15 @@ namespace CilTools.BytecodeAnalysis
                 for (int i = 0; i < locals.Length; i++)
                 {
                     LocalVariable local = locals[i];
-                    gen.DeclareLocal(local.LocalType);                    
+
+                    Type localType = local.LocalType;
+
+                    if (localType is ITypeInfo)
+                    {
+                        localType = ((ITypeInfo)localType).GetRuntimeType();
+                    }
+
+                    gen.DeclareLocal(localType);                    
                 }
             }
 
