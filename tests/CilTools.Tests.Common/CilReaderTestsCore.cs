@@ -142,7 +142,7 @@ namespace CilTools.Tests.Common
                         if (!t.IsGenericType) return false;
                         if (t.Name != "List`1") return false;
                         if (t.GenericTypeArguments.Length == 0) return false;
-                        return t.GenericTypeArguments[0] == typeof(string);
+                        return t.GenericTypeArguments[0].Name == "String";
                     }
                     else return false;
                 },
@@ -161,7 +161,7 @@ namespace CilTools.Tests.Common
                         if (!t.IsGenericType) return false;
                         if (t.Name != "List`1") return false;
                         if (t.GenericTypeArguments.Length == 0) return false;
-                        return t.GenericTypeArguments[0] == typeof(string);
+                        return t.GenericTypeArguments[0].Name == "String";
                     }
                     else return false;
                 },
