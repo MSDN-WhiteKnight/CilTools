@@ -272,10 +272,5 @@ namespace CilTools.Reflection
         {
             return true;
         }
-
-        public Type GetRuntimeType()
-        {
-            return this;
-        }
     }
 }

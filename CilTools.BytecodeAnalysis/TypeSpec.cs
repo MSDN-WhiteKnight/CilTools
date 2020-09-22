@@ -933,10 +933,5 @@ namespace CilTools.BytecodeAnalysis
         {
             return this._ElementType == (byte)ElementType.FnPtr;
         }
-
-        public Type GetRuntimeType()
-        {
-            return this._Type;
-        }
     }
 }

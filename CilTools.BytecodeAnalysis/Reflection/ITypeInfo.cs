@@ -13,6 +13,5 @@ namespace CilTools.Reflection
         IEnumerable<CustomModifier> Modifiers { get; }
         bool IsFunctionPointer();
         Signature TargetSignature { get; }
-        Type GetRuntimeType();
     }
 }

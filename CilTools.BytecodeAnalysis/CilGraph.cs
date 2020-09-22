@@ -878,10 +878,8 @@ namespace CilTools.BytecodeAnalysis
 
                     Type localType = local.LocalType;
 
-                    if (localType is ITypeInfo)
-                    {
-                        localType = ((ITypeInfo)localType).GetRuntimeType();
-                    }
+                    //DeclareLocal requires runtime type
+                    if (localType.UnderlyingSystemType != null) localType = localType.UnderlyingSystemType;
 
                     gen.DeclareLocal(localType);                    
                 }

@@ -414,11 +414,8 @@ namespace CilTools.BytecodeAnalysis
                 {
                     Type t = (Type)this.ReferencedMember;
 
-                    if (t is ITypeInfo)
-                    {
-                        //emit requires runtime type
-                        t = ((ITypeInfo)t).GetRuntimeType();
-                    }
+                    //Emit requires runtime type
+                    if (t.UnderlyingSystemType != null) t = t.UnderlyingSystemType;
 
                     ilg.Emit(this.OpCode, t);
                 }
@@ -440,11 +437,8 @@ namespace CilTools.BytecodeAnalysis
                     {
                         Type t = (Type)this.ReferencedMember;
 
-                        if (t is ITypeInfo)
-                        {
-                            //emit requires runtime type
-                            t = ((ITypeInfo)t).GetRuntimeType();
-                        }
+                        //Emit requires runtime type
+                        if (t.UnderlyingSystemType != null) t = t.UnderlyingSystemType;
 
                         ilg.Emit(this.OpCode, t);
                     }
