@@ -54,97 +54,104 @@ namespace CilTools.BytecodeAnalysis
                 {
                     yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
                 }
-                else 
-                { 
-                    yield return new GenericSyntax(prefix + t.Name); 
+                else
+                {
+                    yield return new GenericSyntax(prefix + t.Name);
                 }
-
-                yield break;
             }
-
-            if (t.IsByRef)
+            else if (t.IsByRef)
             {
                 Type et = t.GetElementType();
+
                 if (et != null)
                 {
                     IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
-
-                    foreach(SyntaxNode x in nodes) yield return x;
-
-                    yield return new PunctuationSyntax(String.Empty, "&", String.Empty);
-                    yield break;
+                    foreach (SyntaxNode x in nodes) yield return x;
                 }
-            }
 
-            if (t.IsArray && t.GetArrayRank() == 1)
+                yield return new PunctuationSyntax(String.Empty, "&", String.Empty);
+            }
+            else if (t.IsArray && t.GetArrayRank() == 1)
             {
                 Type et = t.GetElementType();
+
+                if (et != null)
+                {
+                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
+                    foreach (SyntaxNode x in nodes) yield return x;
+                }
+
+                yield return new PunctuationSyntax(String.Empty, "[]", String.Empty);
+            }
+            else if (t.IsPointer)
+            {
+                Type et = t.GetElementType();
+
                 if (et != null)
                 {
                     IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
 
                     foreach (SyntaxNode x in nodes) yield return x;
-
-                    yield return new PunctuationSyntax(String.Empty, "[]", String.Empty);
-                    yield break;
                 }
+
+                yield return new PunctuationSyntax(String.Empty, "*", String.Empty);
             }
-
-            if (t.IsPointer)
-            {
-                Type et = t.GetElementType();
-                if (et != null)
-                {
-                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
-
-                    foreach (SyntaxNode x in nodes) yield return x;
-
-                    yield return new PunctuationSyntax(String.Empty, "*", String.Empty);
-                    yield break;
-                }
-            }
-
-            if (t.Equals(typeof(void))) 
-                yield return new KeywordSyntax(String.Empty, "void", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(bool))) 
-                yield return new KeywordSyntax(String.Empty, "bool", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(int)))
-                yield return new KeywordSyntax(String.Empty, "int32", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(uint)))
-                yield return new KeywordSyntax(String.Empty, "uint32", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(long)))
-                yield return new KeywordSyntax(String.Empty, "int64", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(ulong)))
-                yield return new KeywordSyntax(String.Empty, "uint64", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(short)))
-                yield return new KeywordSyntax(String.Empty, "int16", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(ushort)))
-                yield return new KeywordSyntax(String.Empty, "uint16", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(byte)))
-                yield return new KeywordSyntax(String.Empty, "uint8", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(sbyte)))
-                yield return new KeywordSyntax(String.Empty, "int8", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(float)))
-                yield return new KeywordSyntax(String.Empty, "float32", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(double)))
-                yield return new KeywordSyntax(String.Empty, "float64", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(string)))
-                yield return new KeywordSyntax(String.Empty, "string", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(char)))
-                yield return new KeywordSyntax(String.Empty, "char", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(object)))
-                yield return new KeywordSyntax(String.Empty, "object", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(IntPtr)))
-                yield return new KeywordSyntax(String.Empty, "native int", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(UIntPtr)))
-                yield return new KeywordSyntax(String.Empty, "native uint", String.Empty, KeywordKind.Other);
-            else if (t.Equals(typeof(System.TypedReference)))
-                yield return new KeywordSyntax(String.Empty, "typedref", String.Empty, KeywordKind.Other);
             else
             {
-                IEnumerable<SyntaxNode> nodes = GetTypeFullNameSyntax(t);
+                if (t.Equals(typeof(void)))
+                    yield return new KeywordSyntax(String.Empty, "void", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(bool)))
+                    yield return new KeywordSyntax(String.Empty, "bool", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(int)))
+                    yield return new KeywordSyntax(String.Empty, "int32", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(uint)))
+                    yield return new KeywordSyntax(String.Empty, "uint32", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(long)))
+                    yield return new KeywordSyntax(String.Empty, "int64", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(ulong)))
+                    yield return new KeywordSyntax(String.Empty, "uint64", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(short)))
+                    yield return new KeywordSyntax(String.Empty, "int16", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(ushort)))
+                    yield return new KeywordSyntax(String.Empty, "uint16", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(byte)))
+                    yield return new KeywordSyntax(String.Empty, "uint8", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(sbyte)))
+                    yield return new KeywordSyntax(String.Empty, "int8", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(float)))
+                    yield return new KeywordSyntax(String.Empty, "float32", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(double)))
+                    yield return new KeywordSyntax(String.Empty, "float64", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(string)))
+                    yield return new KeywordSyntax(String.Empty, "string", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(char)))
+                    yield return new KeywordSyntax(String.Empty, "char", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(object)))
+                    yield return new KeywordSyntax(String.Empty, "object", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(IntPtr)))
+                    yield return new KeywordSyntax(String.Empty, "native int", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(UIntPtr)))
+                    yield return new KeywordSyntax(String.Empty, "native uint", String.Empty, KeywordKind.Other);
+                else if (t.Equals(typeof(System.TypedReference)))
+                    yield return new KeywordSyntax(String.Empty, "typedref", String.Empty, KeywordKind.Other);
+                else
+                {
+                    IEnumerable<SyntaxNode> nodes = GetTypeFullNameSyntax(t);
 
-                foreach (SyntaxNode x in nodes) yield return x;
+                    foreach (SyntaxNode x in nodes) yield return x;
+
+                    yield break; //GetTypeFullNameSyntax will yield modifiers
+                }
+            }
+
+            //custom modifiers
+
+            if (t is ITypeInfo)
+            {
+                foreach (CustomModifier m in ((ITypeInfo)t).Modifiers)
+                {
+                    yield return new GenericSyntax(" "+m.ToString());
+                }
             }
         }
 
@@ -177,7 +184,7 @@ namespace CilTools.BytecodeAnalysis
         {
             //converts reflection Type object to Type or TypeSpec CIL assembler syntax
             //(ECMA-335 II.7.1 Types)
-            
+
             if (t.IsGenericParameter)
             {
                 string prefix;
@@ -193,107 +200,109 @@ namespace CilTools.BytecodeAnalysis
                 {
                     yield return new GenericSyntax(prefix + t.Name);
                 }
-
-                yield break;
             }
-
-            if (t.IsByRef)
+            else if (t.IsByRef)
             {
                 Type et = t.GetElementType();
-                if (et != null)
-                {
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et,false);
 
-                    foreach (SyntaxNode x in nodes) yield return x;
-
-                    yield return new PunctuationSyntax(String.Empty, "&", String.Empty);
-                    yield break;
-                }
-            }
-
-            if (t.IsArray && t.GetArrayRank() == 1)
-            {
-                Type et = t.GetElementType();
                 if (et != null)
                 {
                     IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, false);
-
                     foreach (SyntaxNode x in nodes) yield return x;
-
-                    yield return new PunctuationSyntax(String.Empty, "[]", String.Empty);
-                    yield break;
                 }
-            }
 
-            if (t.IsPointer)
+                yield return new PunctuationSyntax(String.Empty, "&", String.Empty);
+            }
+            else if (t.IsArray && t.GetArrayRank() == 1)
             {
                 Type et = t.GetElementType();
+
                 if (et != null)
                 {
                     IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, false);
-
                     foreach (SyntaxNode x in nodes) yield return x;
-
-                    yield return new PunctuationSyntax(String.Empty, "*", String.Empty);
-                    yield break;
                 }
-            }
 
-            if (t is ITypeInfo && ((ITypeInfo)t).IsFunctionPointer())
+                yield return new PunctuationSyntax(String.Empty, "[]", String.Empty);
+            }
+            else if (t.IsPointer)
+            {
+                Type et = t.GetElementType();
+
+                if (et != null)
+                {
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, false);
+                    foreach (SyntaxNode x in nodes) yield return x;
+                }
+
+                yield return new PunctuationSyntax(String.Empty, "*", String.Empty);
+            }
+            else if (t is ITypeInfo && ((ITypeInfo)t).IsFunctionPointer())
             {
                 yield return new KeywordSyntax(String.Empty, "method", " ", KeywordKind.Other);
                 IEnumerable<SyntaxNode> nodes = ((ITypeInfo)t).TargetSignature.ToSyntax(true);
                 foreach (SyntaxNode x in nodes) yield return x;
-                yield break;
             }
-
-            if (!isspec) //for TypeSpec, we omit class/valuetype keyword
+            else
             {
-                if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);
-                else if (t.IsClass) yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
-            }
-
-            Assembly ass = t.Assembly;
-
-            if (ass != null)
-            {
-                yield return new PunctuationSyntax(String.Empty, "[", String.Empty);
-                yield return new IdentifierSyntax(String.Empty, ass.GetName().Name, String.Empty, false);
-                yield return new PunctuationSyntax(String.Empty, "]", String.Empty);
-            }
-
-            StringBuilder sb=new StringBuilder();
-
-            if (!String.IsNullOrEmpty(t.Namespace))
-            {
-                sb.Append(t.Namespace);
-                sb.Append('.');
-            }
-
-            if (t.IsNested && t.DeclaringType != null)
-            {
-                sb.Append(t.DeclaringType.Name);
-                sb.Append('/');                
-            }
-
-            sb.Append(t.Name);
-            yield return new IdentifierSyntax(String.Empty, sb.ToString(), String.Empty,true);
-
-            if (t.IsGenericType)
-            {
-                yield return new PunctuationSyntax(String.Empty, "<", String.Empty);
-
-                Type[] args = t.GetGenericArguments();
-                for (int i = 0; i < args.Length; i++)
+                if (!isspec) //for TypeSpec, we omit class/valuetype keyword
                 {
-                    if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
-
-                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(args[i]);
-
-                    foreach (SyntaxNode node in nodes) yield return node;
+                    if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);
+                    else if (t.IsClass) yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
                 }
 
-                yield return new PunctuationSyntax(String.Empty, ">", String.Empty);
+                Assembly ass = t.Assembly;
+
+                if (ass != null)
+                {
+                    yield return new PunctuationSyntax(String.Empty, "[", String.Empty);
+                    yield return new IdentifierSyntax(String.Empty, ass.GetName().Name, String.Empty, false);
+                    yield return new PunctuationSyntax(String.Empty, "]", String.Empty);
+                }
+
+                StringBuilder sb = new StringBuilder();
+
+                if (!String.IsNullOrEmpty(t.Namespace))
+                {
+                    sb.Append(t.Namespace);
+                    sb.Append('.');
+                }
+
+                if (t.IsNested && t.DeclaringType != null)
+                {
+                    sb.Append(t.DeclaringType.Name);
+                    sb.Append('/');
+                }
+
+                sb.Append(t.Name);
+                yield return new IdentifierSyntax(String.Empty, sb.ToString(), String.Empty, true);
+
+                if (t.IsGenericType)
+                {
+                    yield return new PunctuationSyntax(String.Empty, "<", String.Empty);
+
+                    Type[] args = t.GetGenericArguments();
+                    for (int i = 0; i < args.Length; i++)
+                    {
+                        if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
+
+                        IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(args[i]);
+
+                        foreach (SyntaxNode node in nodes) yield return node;
+                    }
+
+                    yield return new PunctuationSyntax(String.Empty, ">", String.Empty);
+                }
+            }
+
+            //custom modifiers
+
+            if (t is ITypeInfo)
+            {
+                foreach (CustomModifier m in ((ITypeInfo)t).Modifiers)
+                {
+                    yield return new GenericSyntax(" "+m.ToString());
+                }
             }
         }
 
