@@ -412,7 +412,12 @@ namespace CilTools.BytecodeAnalysis
                 }
                 else if (ReferencesTypeToken(this.OpCode))
                 {
-                    ilg.Emit(this.OpCode, (Type)this.ReferencedMember);
+                    Type t = (Type)this.ReferencedMember;
+
+                    //Emit requires runtime type
+                    if (t.UnderlyingSystemType != null) t = t.UnderlyingSystemType;
+
+                    ilg.Emit(this.OpCode, t);
                 }
                 else if (ReferencesMethodToken(this.OpCode) && (this.ReferencedMember as ConstructorInfo) != null)
                 {
@@ -430,7 +435,12 @@ namespace CilTools.BytecodeAnalysis
                     }
                     else if (this.ReferencedMember is Type)
                     {
-                        ilg.Emit(this.OpCode, (Type)this.ReferencedMember);
+                        Type t = (Type)this.ReferencedMember;
+
+                        //Emit requires runtime type
+                        if (t.UnderlyingSystemType != null) t = t.UnderlyingSystemType;
+
+                        ilg.Emit(this.OpCode, t);
                     }
                     else if (this.ReferencedMember is FieldInfo)
                     {

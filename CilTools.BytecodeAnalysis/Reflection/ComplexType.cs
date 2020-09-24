@@ -329,7 +329,7 @@ namespace CilTools.Reflection
         {
             get
             {
-                throw new NotImplementedException();
+                return this.inner.MetadataToken;
             }
         }
 

@@ -9,7 +9,7 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Reflection
 {
-    class FunctionPointerType : Type
+    class FunctionPointerType : Type,ITypeInfo
     {
         Signature _sig;        
 
@@ -258,9 +258,19 @@ namespace CilTools.Reflection
             }
         }
 
+        public IEnumerable<CustomModifier> Modifiers
+        {
+            get { return new CustomModifier[0]; }
+        }
+
         public override string ToString()
         {
             return this.FullName;
+        }
+
+        public bool IsFunctionPointer()
+        {
+            return true;
         }
     }
 }

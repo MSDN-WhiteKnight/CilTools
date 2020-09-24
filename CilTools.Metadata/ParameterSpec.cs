@@ -60,55 +60,55 @@ namespace CilTools.Metadata
             {
                 this.defval = null;
             }
-            else if (ts.Type == typeof(int))
+            else if (c.TypeCode == ConstantTypeCode.Int32)
             {
                 this.defval = rd.ReadInt32();
             }
-            else if (ts.Type == typeof(uint))
+            else if (c.TypeCode == ConstantTypeCode.UInt32)
             {
                 this.defval = rd.ReadUInt32();
             }
-            else if (ts.Type == typeof(string))
+            else if (c.TypeCode == ConstantTypeCode.String)
             {
                 this.defval = Encoding.Unicode.GetString(rawval);
             }
-            else if (ts.Type == typeof(char))
+            else if (c.TypeCode == ConstantTypeCode.Char)
             {
                 this.defval = rd.ReadChar();
             }
-            else if (ts.Type == typeof(bool))
+            else if (c.TypeCode == ConstantTypeCode.Boolean)
             {
                 this.defval = rd.ReadBoolean();
             }
-            else if (ts.Type == typeof(byte))
+            else if (c.TypeCode == ConstantTypeCode.Byte)
             {
                 this.defval = rd.ReadByte();
             }
-            else if (ts.Type == typeof(sbyte))
+            else if (c.TypeCode == ConstantTypeCode.SByte)
             {
                 this.defval = rd.ReadSByte();
             }
-            else if (ts.Type == typeof(short))
+            else if (c.TypeCode == ConstantTypeCode.Int16)
             {
                 this.defval = rd.ReadInt16();
             }
-            else if (ts.Type == typeof(ushort))
+            else if (c.TypeCode == ConstantTypeCode.UInt16)
             {
                 this.defval = rd.ReadUInt16();
             }
-            else if (ts.Type == typeof(long))
+            else if (c.TypeCode == ConstantTypeCode.Int64)
             {
                 this.defval = rd.ReadInt64();
             }
-            else if (ts.Type == typeof(ulong))
+            else if (c.TypeCode == ConstantTypeCode.UInt64)
             {
                 this.defval = rd.ReadUInt64();
             }
-            else if (ts.Type == typeof(float))
+            else if (c.TypeCode == ConstantTypeCode.Single)
             {
                 this.defval = rd.ReadSingle();
             }
-            else if (ts.Type == typeof(double))
+            else if (c.TypeCode == ConstantTypeCode.Double)
             {
                 this.defval = rd.ReadDouble();
             }
