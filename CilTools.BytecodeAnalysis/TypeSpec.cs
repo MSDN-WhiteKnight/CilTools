@@ -790,7 +790,14 @@ namespace CilTools.BytecodeAnalysis
 
         public override MethodBase DeclaringMethod => this._Type.DeclaringMethod;
 
-        public override bool IsGenericParameter => this._Type.IsGenericParameter;
+        public override bool IsGenericParameter
+        {
+            get
+            {
+                return this._ElementType == (byte)ElementType.Var ||
+                    this._ElementType == (byte)ElementType.MVar;
+            }
+        }
 
         public override int GenericParameterPosition => this._Type.GenericParameterPosition;
 
