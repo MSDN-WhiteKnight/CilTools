@@ -735,7 +735,8 @@ namespace CilTools.BytecodeAnalysis
 
         public override Type GetElementType()
         {
-            return this._Type.GetElementType();
+            if (this._InnerSpec != null) return this._InnerSpec;
+            else return this._Type.GetElementType();
         }
 
         protected override bool HasElementTypeImpl()
