@@ -932,7 +932,7 @@ namespace CilTools.BytecodeAnalysis
 
             foreach (CustomModifier mod in this._Modifiers)
             {
-                ret.Add(new GenericSyntax(" "+mod.ToString()));
+                foreach(SyntaxNode node in mod.ToSyntax()) ret.Add(node);
             }
 
             return new MemberRefSyntax(ret.ToArray(), this._Type);

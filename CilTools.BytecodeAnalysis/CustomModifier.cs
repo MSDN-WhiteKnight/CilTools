@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -56,6 +57,32 @@ namespace CilTools.BytecodeAnalysis
             else type = "Type" + _token.ToString("X");
 
             return mod + type + ")";
+        }
+
+        internal IEnumerable<SyntaxNode> ToSyntax()
+        {
+            if (this._IsRequired) 
+                yield return new KeywordSyntax(" ", "modreq", String.Empty, KeywordKind.Other);
+            else
+                yield return new KeywordSyntax(" ", "modopt", String.Empty, KeywordKind.Other);
+
+            yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
+
+            IEnumerable<SyntaxNode> ts;
+
+            if (this._Type != null)
+            {
+                ts = CilAnalysis.GetTypeSpecSyntax(this._Type);
+                foreach (SyntaxNode node in ts) yield return node;
+            }
+            else
+            {
+                yield return new IdentifierSyntax(
+                    String.Empty, "Type" + _token.ToString("X"), String.Empty, true
+                    );
+            }
+
+            yield return new PunctuationSyntax(String.Empty, ")", String.Empty);
         }
     }
 }

@@ -150,7 +150,7 @@ namespace CilTools.BytecodeAnalysis
             {
                 foreach (CustomModifier m in ((ITypeInfo)t).Modifiers)
                 {
-                    yield return new GenericSyntax(" "+m.ToString());
+                    foreach (SyntaxNode node in m.ToSyntax()) yield return node;
                 }
             }
         }
@@ -301,7 +301,7 @@ namespace CilTools.BytecodeAnalysis
             {
                 foreach (CustomModifier m in ((ITypeInfo)t).Modifiers)
                 {
-                    yield return new GenericSyntax(" "+m.ToString());
+                    foreach (SyntaxNode node in m.ToSyntax()) yield return node;
                 }
             }
         }
