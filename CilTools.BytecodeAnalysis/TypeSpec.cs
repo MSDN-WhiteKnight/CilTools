@@ -710,7 +710,8 @@ namespace CilTools.BytecodeAnalysis
 
         protected override bool IsArrayImpl()
         {
-            return this._Type.IsArray;
+            return this._ElementType == (byte)ElementType.SzArray ||
+                this._ElementType == (byte)ElementType.Array;
         }
 
         protected override bool IsByRefImpl()
@@ -720,7 +721,7 @@ namespace CilTools.BytecodeAnalysis
 
         protected override bool IsPointerImpl()
         {
-            return this._Type.IsPointer;
+            return this._ElementType == (byte)ElementType.Ptr;
         }
 
         protected override bool IsPrimitiveImpl()
@@ -799,11 +800,11 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
-        public override int GenericParameterPosition => this._Type.GenericParameterPosition;
+        public override int GenericParameterPosition => (int)this._paramnum;
 
-        public override bool IsGenericType => this._Type.IsGenericType;
+        public override bool IsGenericType => this._ElementType == (byte)ElementType.GenericInst;
 
-        public override bool IsGenericTypeDefinition => this._Type.IsGenericTypeDefinition;
+        public override bool IsGenericTypeDefinition => false;
         
         public Signature TargetSignature
         {
