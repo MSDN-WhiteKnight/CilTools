@@ -80,7 +80,31 @@ namespace CilTools.Metadata
         {
             get
             {
-                return null;
+                EntityHandle eh = type.BaseType;
+                if (eh.IsNil) return null;
+                Type ret = null;
+
+                if (eh.Kind == HandleKind.TypeDefinition)
+                {
+                    TypeDefinitionHandle tdh = (TypeDefinitionHandle)eh;
+                    TypeDefinition btype = this.assembly.MetadataReader.GetTypeDefinition(tdh);
+                    ret= new MetadataType(btype, tdh, this.assembly);
+                }
+                else if (eh.Kind == HandleKind.TypeReference)
+                {
+                    TypeReferenceHandle trh = (TypeReferenceHandle)eh;
+                    TypeReference btype = this.assembly.MetadataReader.GetTypeReference(trh);
+                    ret = new ExternalType(btype, trh, this.assembly);
+                }
+
+                //prefer returning runtime type, when it's available for proper 
+                //IsValueType functioning, because it compares with System.ValueType
+                if (ret != null)
+                {
+                    if (ret.UnderlyingSystemType != null) ret = ret.UnderlyingSystemType;
+                }
+
+                return ret;
             }
         }
 

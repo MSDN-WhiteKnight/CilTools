@@ -246,7 +246,23 @@ namespace CilTools.Metadata
 
         public override Type UnderlyingSystemType
         {
-            get { return null; }
+            get 
+            {
+                if (this.Assembly == null) return null;
+
+                //for corlib types try to fetch runtime type
+
+                AssemblyName an = this.Assembly.GetName();
+                Assembly corlib = typeof(object).Assembly;
+                Type ret = null;
+
+                if (String.Equals(an.Name, corlib.GetName().Name, StringComparison.InvariantCulture))
+                {
+                    ret = corlib.GetType(this.FullName);
+                }
+
+                return ret; 
+            }
         }
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
