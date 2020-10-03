@@ -26,10 +26,11 @@ namespace CilView
             {
                 string sig = ((CilTools.Runtime.ClrMethodInfo)m).InnerMethod.GetFullSignature();
                 string name = m.Name;
-                int param_start = sig.IndexOf('(');
-                int param_end = sig.IndexOf(')')+1;
-                string parstr = sig.Substring(param_start, param_end - param_start);
-                return name + parstr;
+
+                int index = sig.IndexOf(name);
+                if (index < 0) index = 0;
+
+                return sig.Substring(index);
             }
 
             StringBuilder sb = new StringBuilder();
