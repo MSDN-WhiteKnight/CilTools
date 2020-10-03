@@ -8,7 +8,7 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
-using CilTools.Runtime;
+using CilTools.Runtime
 
 namespace CilView
 {
