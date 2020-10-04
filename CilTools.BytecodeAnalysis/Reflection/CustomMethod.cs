@@ -83,6 +83,11 @@ namespace CilTools.Reflection
             return null;
         }
 
+        public virtual PInvokeParams GetPInvokeParams()
+        {
+            return null;
+        }
+
         /// <summary>
         /// Converts MethodBase into the form suitable for processing by CilTools.BytecodeAnalysis
         /// </summary>        

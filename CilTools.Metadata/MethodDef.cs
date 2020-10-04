@@ -7,6 +7,7 @@ using System.Text;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 
@@ -389,6 +390,55 @@ namespace CilTools.Metadata
 
                 return ret;
             }
+        }
+
+        public override PInvokeParams GetPInvokeParams()
+        {
+            if (!this.mdef.Attributes.HasFlag(MethodAttributes.PinvokeImpl)) return null;
+
+            MethodImport imp = this.mdef.GetImport();
+
+            if (imp.Module.IsNil) return null;
+            if (imp.Name.IsNil) return null;
+
+            ModuleReference mrf = this.assembly.MetadataReader.GetModuleReference(imp.Module);
+            string modulename = this.assembly.MetadataReader.GetString(mrf.Name);
+            string funcname = this.assembly.MetadataReader.GetString(imp.Name);
+            CharSet cs = (CharSet)0;
+
+            switch (imp.Attributes & MethodImportAttributes.CharSetMask)
+            {
+                case MethodImportAttributes.CharSetAnsi:cs = CharSet.Ansi;break;
+                case MethodImportAttributes.CharSetAuto: cs = CharSet.Auto; break;
+                case MethodImportAttributes.CharSetUnicode: cs = CharSet.Unicode; break;                
+            }
+
+            System.Runtime.InteropServices.CallingConvention conv=
+                (System.Runtime.InteropServices.CallingConvention)0;
+            
+            switch (imp.Attributes & MethodImportAttributes.CallingConventionMask)
+            {
+                case MethodImportAttributes.CallingConventionStdCall: 
+                    conv = System.Runtime.InteropServices.CallingConvention.StdCall; 
+                    break;
+                case MethodImportAttributes.CallingConventionWinApi:
+                    conv = System.Runtime.InteropServices.CallingConvention.Winapi;
+                    break;
+                case MethodImportAttributes.CallingConventionCDecl:
+                    conv = System.Runtime.InteropServices.CallingConvention.Cdecl;
+                    break;
+                case MethodImportAttributes.CallingConventionFastCall:
+                    conv = System.Runtime.InteropServices.CallingConvention.FastCall;
+                    break;
+                case MethodImportAttributes.CallingConventionThisCall:
+                    conv = System.Runtime.InteropServices.CallingConvention.ThisCall;
+                    break;
+            }
+
+            PInvokeParams ret = new PInvokeParams(
+                modulename,funcname,cs,imp.Attributes.HasFlag(MethodImportAttributes.ExactSpelling),
+                imp.Attributes.HasFlag(MethodImportAttributes.SetLastError),conv);
+            return ret;
         }
     }
 }

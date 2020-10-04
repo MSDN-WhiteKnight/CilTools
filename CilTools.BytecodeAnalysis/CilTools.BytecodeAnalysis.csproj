@@ -68,6 +68,7 @@
     <Compile Include="Reflection\MethodBaseWrapper.cs" />
     <Compile Include="Reflection\ModuleWrapper.cs" />
     <Compile Include="Reflection\ModuleWrapperDynamic.cs" />
+    <Compile Include="Reflection\PInvokeParams.cs" />
     <Compile Include="Reflection\Types.cs" />
     <Compile Include="Signature.cs" />
     <Compile Include="Syntax\BlockSyntax.cs" />
