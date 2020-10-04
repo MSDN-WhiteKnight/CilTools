@@ -141,12 +141,12 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.TypeDefinition)
             {
                 TypeDefinition tdef = reader.GetTypeDefinition((TypeDefinitionHandle)eh);
-                return new MetadataType(tdef, (TypeDefinitionHandle)eh, this);
+                return new TypeDef(tdef, (TypeDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.TypeReference)
             {
                 TypeReference tref = reader.GetTypeReference((TypeReferenceHandle)eh);
-                return new ExternalType(tref, (TypeReferenceHandle)eh, this);
+                return new TypeRef(tref, (TypeReferenceHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.TypeSpecification)
             {
@@ -199,21 +199,21 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                return new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this);
+                return new MethodDef(mdef, (MethodDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Method)
-                    return new ExternalMethod(mref, (MemberReferenceHandle)eh, this);
+                    return new MethodRef(mref, (MemberReferenceHandle)eh, this);
                 else
                     return null;
             }
             else if (eh.Kind == HandleKind.MethodSpecification)
             {
                 MethodSpecification mspec = reader.GetMethodSpecification((MethodSpecificationHandle)eh);
-                return new MethodInstance(mspec, (MethodSpecificationHandle)eh, this);
+                return new MethodSpec(mspec, (MethodSpecificationHandle)eh, this);
             }
             else return null;
         }
@@ -255,14 +255,14 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.FieldDefinition)
             {
                 FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
-                return new MetadataField(field, (FieldDefinitionHandle)eh, this, declaringMethod);
+                return new FieldDef(field, (FieldDefinitionHandle)eh, this, declaringMethod);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Field)
-                    return new ExternalField(mref, (MemberReferenceHandle)eh, this, declaringMethod);
+                    return new FieldRef(mref, (MemberReferenceHandle)eh, this, declaringMethod);
                 else
                     return null;
             }
@@ -310,38 +310,38 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                m = new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this);
+                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.FieldDefinition)
             {
                 FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
-                m = new MetadataField(field, (FieldDefinitionHandle)eh, this, declaringMethod);
+                m = new FieldDef(field, (FieldDefinitionHandle)eh, this, declaringMethod);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Method)
-                    m = new ExternalMethod(mref, (MemberReferenceHandle)eh, this);
+                    m = new MethodRef(mref, (MemberReferenceHandle)eh, this);
                 else if (mref.GetKind() == MemberReferenceKind.Field)
-                    m = new ExternalField(mref, (MemberReferenceHandle)eh, this, declaringMethod);
+                    m = new FieldRef(mref, (MemberReferenceHandle)eh, this, declaringMethod);
                 else
                     m = null;
             }
             else if (eh.Kind == HandleKind.TypeDefinition)
             {
                 TypeDefinition tdef = reader.GetTypeDefinition((TypeDefinitionHandle)eh);
-                m = new MetadataType(tdef, (TypeDefinitionHandle)eh, this);
+                m = new TypeDef(tdef, (TypeDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.TypeReference)
             {
                 TypeReference tref = reader.GetTypeReference((TypeReferenceHandle)eh);
-                m = new ExternalType(tref, (TypeReferenceHandle)eh, this);
+                m = new TypeRef(tref, (TypeReferenceHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.MethodSpecification)
             {
                 MethodSpecification mspec = reader.GetMethodSpecification((MethodSpecificationHandle)eh);
-                m = new MethodInstance(mspec, (MethodSpecificationHandle)eh, this);
+                m = new MethodSpec(mspec, (MethodSpecificationHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.TypeSpecification)
             {
@@ -432,7 +432,7 @@ namespace CilTools.Metadata
             foreach (FieldDefinitionHandle hfield in reader.FieldDefinitions)
             {
                 FieldDefinition field = reader.GetFieldDefinition(hfield);
-                yield return new MetadataField(field, hfield, this, null);
+                yield return new FieldDef(field, hfield, this, null);
             }
         }
 
@@ -569,7 +569,7 @@ namespace CilTools.Metadata
                 if (h.IsNil) continue;
                 if (h.Kind != HandleKind.AssemblyReference) continue;
 
-                ExternalAssembly ea = new ExternalAssembly(
+                AssemblyRef ea = new AssemblyRef(
                     reader.GetAssemblyReference((AssemblyReferenceHandle)h), (AssemblyReferenceHandle)h, this
                     );
 

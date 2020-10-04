@@ -12,7 +12,7 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class MethodInstance : CustomMethod
+    class MethodSpec : CustomMethod
     {
         MetadataAssembly assembly;
         MethodSpecificationHandle mspech;
@@ -21,7 +21,7 @@ namespace CilTools.Metadata
         MethodBodyBlock mb;
         Signature sig; //signature of this instantiation (contains generic args, not regular params) 
 
-        internal MethodInstance(MethodSpecification m, MethodSpecificationHandle mh, MetadataAssembly owner)
+        internal MethodSpec(MethodSpecification m, MethodSpecificationHandle mh, MetadataAssembly owner)
         {
             this.assembly = owner;
             this.mspec = m;
@@ -32,7 +32,7 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = owner.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                this.definition = new MetadataMethod(mdef, (MethodDefinitionHandle)eh, owner);
+                this.definition = new MethodDef(mdef, (MethodDefinitionHandle)eh, owner);
 
                 int rva = mdef.RelativeVirtualAddress;
 
@@ -48,7 +48,7 @@ namespace CilTools.Metadata
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = owner.MetadataReader.GetMemberReference((MemberReferenceHandle)eh);
-                this.definition = new ExternalMethod(mref, (MemberReferenceHandle)eh, owner);
+                this.definition = new MethodRef(mref, (MemberReferenceHandle)eh, owner);
             }
 
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mspec.Signature);
@@ -137,14 +137,14 @@ namespace CilTools.Metadata
 
                         if (eh.Kind == HandleKind.TypeDefinition)
                         {
-                            t = new MetadataType(
+                            t = new TypeDef(
                                 assembly.MetadataReader.GetTypeDefinition((TypeDefinitionHandle)eh),
                                 (TypeDefinitionHandle)eh,
                                 this.assembly);
                         }
                         else if (eh.Kind == HandleKind.TypeReference)
                         {
-                            t = new ExternalType(
+                            t = new TypeRef(
                                 assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh),
                                 (TypeReferenceHandle)eh,
                                 this.assembly);

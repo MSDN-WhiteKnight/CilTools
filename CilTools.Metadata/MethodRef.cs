@@ -17,7 +17,7 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class ExternalMethod : CustomMethod
+    class MethodRef : CustomMethod
     {
         MetadataAssembly assembly;
         MemberReferenceHandle mrefh;
@@ -26,7 +26,7 @@ namespace CilTools.Metadata
         CustomMethod impl;
         Type decltype;
 
-        internal ExternalMethod(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
+        internal MethodRef(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
         {
             Debug.Assert(m.GetKind() == MemberReferenceKind.Method, "MemberReference passed to ExternalMethod ctor should be a method");
 
@@ -47,7 +47,7 @@ namespace CilTools.Metadata
 
             if (!eh.IsNil && eh.Kind == HandleKind.TypeReference)
             {
-                this.decltype = new ExternalType(
+                this.decltype = new TypeRef(
                     assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh), (TypeReferenceHandle)eh, this.assembly
                     );
             }
@@ -73,7 +73,7 @@ namespace CilTools.Metadata
 
                 if (!tdefh.IsNil)
                 {
-                    this.decltype = new MetadataType(
+                    this.decltype = new TypeDef(
                         assembly.MetadataReader.GetTypeDefinition(tdefh), tdefh, this.assembly
                         );
                 }

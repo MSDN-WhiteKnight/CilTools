@@ -13,14 +13,14 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class ExternalType : Type
+    class TypeRef : Type
     {
         TypeReference tref;
         TypeReferenceHandle htref;
         MetadataAssembly assembly;
-        public ExternalType(TypeReference t, TypeReferenceHandle ht, MetadataAssembly ass)
+        public TypeRef(TypeReference t, TypeReferenceHandle ht, MetadataAssembly ass)
         {
-            Debug.Assert(ass != null, "ass in MetadataExternalType() should not be null");
+            Debug.Assert(ass != null, "ass in TypeRef() should not be null");
 
             this.tref = t;
             this.htref = ht;
@@ -37,7 +37,7 @@ namespace CilTools.Metadata
                 if (eh.Kind == HandleKind.AssemblyReference)
                 {
                     AssemblyReference ar = assembly.MetadataReader.GetAssemblyReference((AssemblyReferenceHandle)eh);
-                    return new ExternalAssembly(ar, (AssemblyReferenceHandle)eh, this.assembly);
+                    return new AssemblyRef(ar, (AssemblyReferenceHandle)eh, this.assembly);
                 }
                 else if (eh.Kind == HandleKind.TypeReference)
                 {
@@ -45,8 +45,11 @@ namespace CilTools.Metadata
                     if (parent.ResolutionScope.IsNil) return MetadataAssembly.UnknownAssembly;
                     if (parent.ResolutionScope.Kind!=HandleKind.AssemblyReference) return MetadataAssembly.UnknownAssembly;
 
-                    AssemblyReference ar = assembly.MetadataReader.GetAssemblyReference((AssemblyReferenceHandle)parent.ResolutionScope);
-                    return new ExternalAssembly(ar, (AssemblyReferenceHandle)parent.ResolutionScope, this.assembly);
+                    AssemblyReference ar = assembly.MetadataReader.GetAssemblyReference(
+                        (AssemblyReferenceHandle)parent.ResolutionScope
+                        );
+
+                    return new AssemblyRef(ar, (AssemblyReferenceHandle)parent.ResolutionScope, this.assembly);
                 }
                 else return MetadataAssembly.UnknownAssembly;
             }
@@ -332,7 +335,7 @@ namespace CilTools.Metadata
                 if (eh.Kind == HandleKind.TypeReference)
                 {
                     TypeReference parent = assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh);
-                    return new ExternalType(parent, (TypeReferenceHandle)eh, this.assembly);
+                    return new TypeRef(parent, (TypeReferenceHandle)eh, this.assembly);
                 }
                 else return null;
             }

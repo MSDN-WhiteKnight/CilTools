@@ -12,7 +12,7 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class MetadataMethod : CustomMethod
+    class MethodDef : CustomMethod
     {        
         MetadataAssembly assembly;
         MethodDefinitionHandle mdefh;
@@ -21,7 +21,7 @@ namespace CilTools.Metadata
         Signature sig;
         Type decltype;
 
-        internal MetadataMethod(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
+        internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
         {           
             this.assembly = owner;
             this.mdef = m;
@@ -58,7 +58,7 @@ namespace CilTools.Metadata
             //init declaring type
             TypeDefinitionHandle ht = mdef.GetDeclaringType();
 
-            if (!ht.IsNil) this.decltype=new MetadataType(assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
+            if (!ht.IsNil) this.decltype=new TypeDef(assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
             else this.decltype = null;
         }
 
@@ -139,14 +139,14 @@ namespace CilTools.Metadata
                         
                         if (eh.Kind == HandleKind.TypeDefinition)
                         {
-                            t = new MetadataType(
+                            t = new TypeDef(
                                 assembly.MetadataReader.GetTypeDefinition((TypeDefinitionHandle)eh),
                                 (TypeDefinitionHandle)eh,
                                 this.assembly);
                         }
                         else if (eh.Kind == HandleKind.TypeReference)
                         {
-                            t = new ExternalType(
+                            t = new TypeRef(
                                 assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh),
                                 (TypeReferenceHandle)eh,
                                 this.assembly);
@@ -259,14 +259,14 @@ namespace CilTools.Metadata
                 if (eh.Kind == HandleKind.MethodDefinition)
                 {
                     MethodDefinition mdef = assembly.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                    constr = new MetadataMethod(mdef, (MethodDefinitionHandle)eh, this.assembly);
+                    constr = new MethodDef(mdef, (MethodDefinitionHandle)eh, this.assembly);
                 }
                 else if (eh.Kind == HandleKind.MemberReference)
                 {
                     MemberReference mref = assembly.MetadataReader.GetMemberReference((MemberReferenceHandle)eh);
 
                     if (mref.GetKind() == MemberReferenceKind.Method)
-                        constr = new ExternalMethod(mref, (MemberReferenceHandle)eh, this.assembly);
+                        constr = new MethodRef(mref, (MemberReferenceHandle)eh, this.assembly);
                 }
 
                 ret[i] = new MetadataCustomAttribute(this, constr, assembly.MetadataReader.GetBlobBytes(ca.Value));

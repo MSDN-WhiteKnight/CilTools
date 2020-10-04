@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
@@ -11,15 +12,19 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Metadata
 {
-    class MetadataField : FieldInfo
+    class FieldRef : FieldInfo
     {
-        FieldDefinition field;
-        FieldDefinitionHandle hfield;
+        MemberReference field;
+        MemberReferenceHandle hfield;
         MetadataAssembly owner;
         MethodBase generic_context;
 
-        public MetadataField(FieldDefinition f, FieldDefinitionHandle fh, MetadataAssembly o,MethodBase gctx)
+        public FieldRef(MemberReference f, MemberReferenceHandle fh, MetadataAssembly o, MethodBase gctx)
         {
+            Debug.Assert(f.GetKind() == MemberReferenceKind.Field, 
+                "MemberReference passed to FieldRef ctor should be a field"
+                );
+
             this.field = f;
             this.hfield = fh;
             this.owner = o;
@@ -30,7 +35,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                FieldAttributes ret = field.Attributes;
+                FieldAttributes ret = (FieldAttributes)0;
                 return ret;
             }
         }
@@ -66,11 +71,26 @@ namespace CilTools.Metadata
         {
             get
             {
-                TypeDefinitionHandle htdef = field.GetDeclaringType();
+                EntityHandle eh = field.Parent;
 
-                if (!htdef.IsNil)
+                if (!eh.IsNil && eh.Kind == HandleKind.TypeReference)
                 {
-                    return new MetadataType(owner.MetadataReader.GetTypeDefinition(htdef), htdef, this.owner);
+                    return new TypeRef(owner.MetadataReader.GetTypeReference((TypeReferenceHandle)eh), (TypeReferenceHandle)eh, this.owner);
+                }
+                else if (!eh.IsNil && eh.Kind == HandleKind.TypeSpecification)
+                {
+                    //TypeSpec is either complex type (array etc.) or generic instantiation
+
+                    TypeSpecification ts = this.owner.MetadataReader.GetTypeSpecification(
+                        (TypeSpecificationHandle)eh
+                        );
+
+                    TypeSpec encoded = TypeSpec.ReadFromArray(owner.MetadataReader.GetBlobBytes(ts.Signature),
+                        this.owner,
+                        this.generic_context);
+
+                    if (encoded != null) return encoded.Type;
+                    else return UnknownType.Value;
                 }
                 else return null;
             }
@@ -110,4 +130,5 @@ namespace CilTools.Metadata
         }
     }
 }
+
 

@@ -13,15 +13,15 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class MetadataType : Type
+    class TypeDef : Type
     {
         TypeDefinition type;
         TypeDefinitionHandle htype;
         MetadataAssembly assembly;
 
-        public MetadataType(TypeDefinition t, TypeDefinitionHandle ht,MetadataAssembly ass)
+        public TypeDef(TypeDefinition t, TypeDefinitionHandle ht,MetadataAssembly ass)
         {
-            Debug.Assert(ass != null, "ass in MetadataType() should not be null");
+            Debug.Assert(ass != null, "ass in TypeDef() should not be null");
 
             this.type = t;
             this.htype = ht;
@@ -88,13 +88,13 @@ namespace CilTools.Metadata
                 {
                     TypeDefinitionHandle tdh = (TypeDefinitionHandle)eh;
                     TypeDefinition btype = this.assembly.MetadataReader.GetTypeDefinition(tdh);
-                    ret= new MetadataType(btype, tdh, this.assembly);
+                    ret= new TypeDef(btype, tdh, this.assembly);
                 }
                 else if (eh.Kind == HandleKind.TypeReference)
                 {
                     TypeReferenceHandle trh = (TypeReferenceHandle)eh;
                     TypeReference btype = this.assembly.MetadataReader.GetTypeReference(trh);
-                    ret = new ExternalType(btype, trh, this.assembly);
+                    ret = new TypeRef(btype, trh, this.assembly);
                 }
 
                 //prefer returning runtime type, when it's available for proper 
@@ -190,7 +190,7 @@ namespace CilTools.Metadata
             foreach (FieldDefinitionHandle hfield in this.type.GetFields())
             {
                 FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
-                m = new MetadataField(field, hfield, this.assembly,null);
+                m = new FieldDef(field, hfield, this.assembly,null);
                 if (IsMemberMatching(m, bindingAttr)) members.Add((FieldInfo)m);
             }
 
@@ -242,7 +242,7 @@ namespace CilTools.Metadata
             foreach (FieldDefinitionHandle hfield in this.type.GetFields())
             {
                 FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
-                m = new MetadataField(field, hfield, this.assembly, null);
+                m = new FieldDef(field, hfield, this.assembly, null);
                 if (IsMemberMatching(m, bindingAttr)) members.Add(m);
             }
 
@@ -421,7 +421,7 @@ namespace CilTools.Metadata
                 TypeDefinitionHandle ht = this.type.GetDeclaringType();
 
                 if (ht.IsNil) return null;
-                else return new MetadataType(this.assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
+                else return new TypeDef(this.assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
             }
         }
 

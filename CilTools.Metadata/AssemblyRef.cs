@@ -2,27 +2,23 @@
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
-using System.Reflection.Metadata.Ecma335;
 using System.Globalization;
 using System.Text;
 using CilTools.BytecodeAnalysis;
-using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    public sealed class ExternalAssembly : Assembly
+    public sealed class AssemblyRef : Assembly
     {
         AssemblyReference assref;
         AssemblyReferenceHandle hAssRef;
         MetadataAssembly owner;
         AssemblyName asn;
 
-        internal ExternalAssembly(AssemblyReference ar, AssemblyReferenceHandle arh, MetadataAssembly owner)
+        internal AssemblyRef(AssemblyReference ar, AssemblyReferenceHandle arh, MetadataAssembly owner)
         {
             this.owner = owner;
             this.assref = ar;
