@@ -435,9 +435,19 @@ namespace CilTools.Metadata
                     break;
             }
 
+            bool? bestfit = null;
+
+            if (imp.Attributes.HasFlag(MethodImportAttributes.BestFitMappingEnable))
+                bestfit = true;
+            else if(imp.Attributes.HasFlag(MethodImportAttributes.BestFitMappingDisable))
+                bestfit = false;
+
             PInvokeParams ret = new PInvokeParams(
-                modulename,funcname,cs,imp.Attributes.HasFlag(MethodImportAttributes.ExactSpelling),
-                imp.Attributes.HasFlag(MethodImportAttributes.SetLastError),conv);
+                modulename,funcname,cs,
+                imp.Attributes.HasFlag(MethodImportAttributes.ExactSpelling),
+                imp.Attributes.HasFlag(MethodImportAttributes.SetLastError),
+                bestfit,conv);
+
             return ret;
         }
     }

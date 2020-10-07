@@ -15,6 +15,7 @@ namespace CilTools.Reflection
         CharSet _charset;
         bool _exactspell;
         bool _setlasterr;
+        bool? _bestfit;
         System.Runtime.InteropServices.CallingConvention _callconv;
 
         public PInvokeParams(
@@ -23,6 +24,7 @@ namespace CilTools.Reflection
             CharSet charSet, 
             bool exactSpelling, 
             bool setLastError,
+            bool? bestFitMapping,
             System.Runtime.InteropServices.CallingConvention callConv
             )
         {
@@ -32,6 +34,7 @@ namespace CilTools.Reflection
             this._exactspell = exactSpelling;
             this._setlasterr = setLastError;
             this._callconv = callConv;
+            this._bestfit = bestFitMapping;
         }
 
         public string ModuleName { get { return this._module; } }
@@ -43,6 +46,8 @@ namespace CilTools.Reflection
         public bool ExactSpelling { get { return this._exactspell; } }
 
         public bool SetLastError { get { return this._setlasterr; } }
+
+        public bool? BestFitMapping { get { return this._bestfit; } }
 
         public System.Runtime.InteropServices.CallingConvention CallingConvention 
         { 

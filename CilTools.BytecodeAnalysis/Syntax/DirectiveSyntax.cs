@@ -143,6 +143,76 @@ namespace CilTools.Syntax
             if (m.IsStatic) inner.Add(new KeywordSyntax(" ", "static", " ", KeywordKind.Other));
             else inner.Add(new KeywordSyntax(" ", "instance", " ", KeywordKind.Other));
 
+            if ((m.Attributes & MethodAttributes.PinvokeImpl) != 0)
+            {
+                inner.Add(new KeywordSyntax(String.Empty, "pinvokeimpl", String.Empty, KeywordKind.Other));
+                inner.Add(new PunctuationSyntax(String.Empty, "(", String.Empty));
+
+                PInvokeParams ppars = cm.GetPInvokeParams();
+
+                if (ppars != null)
+                {
+                    inner.Add(new LiteralSyntax(String.Empty, ppars.ModuleName, " "));
+
+                    if (!String.IsNullOrEmpty(ppars.FunctionName) &&
+                        !String.Equals(ppars.FunctionName, m.Name, StringComparison.InvariantCulture))
+                    {
+                        inner.Add(new KeywordSyntax(String.Empty, "as", " ", KeywordKind.Other));
+                        inner.Add(new LiteralSyntax(String.Empty, ppars.FunctionName, " "));
+                    }
+
+                    if (ppars.SetLastError)
+                    {
+                        inner.Add(new KeywordSyntax(String.Empty, "lasterr", " ", KeywordKind.Other));
+                    }
+
+                    if (ppars.ExactSpelling)
+                    {
+                        inner.Add(new KeywordSyntax(String.Empty, "nomangle", " ", KeywordKind.Other));
+                    }
+
+                    switch (ppars.CallingConvention)
+                    {
+                        case System.Runtime.InteropServices.CallingConvention.Cdecl:
+                            inner.Add(new KeywordSyntax(String.Empty, "cdecl", " ", KeywordKind.Other));
+                            break;
+                        case System.Runtime.InteropServices.CallingConvention.Winapi:
+                            inner.Add(new KeywordSyntax(String.Empty, "platformapi", " ", KeywordKind.Other));
+                            break;
+                        case System.Runtime.InteropServices.CallingConvention.StdCall:
+                            inner.Add(new KeywordSyntax(String.Empty, "stdcall", " ", KeywordKind.Other));
+                            break;
+                        case System.Runtime.InteropServices.CallingConvention.FastCall:
+                            inner.Add(new KeywordSyntax(String.Empty, "fastcall", " ", KeywordKind.Other));
+                            break;
+                        case System.Runtime.InteropServices.CallingConvention.ThisCall:
+                            inner.Add(new KeywordSyntax(String.Empty, "thiscall", " ", KeywordKind.Other));
+                            break;
+                    }
+
+                    switch (ppars.CharSet)
+                    {
+                        case System.Runtime.InteropServices.CharSet.Ansi:
+                            inner.Add(new KeywordSyntax(String.Empty, "ansi", " ", KeywordKind.Other));
+                            break;
+                        case System.Runtime.InteropServices.CharSet.Unicode:
+                            inner.Add(new KeywordSyntax(String.Empty, "unicode", " ", KeywordKind.Other));
+                            break;
+                    }
+
+                    if (ppars.BestFitMapping.HasValue)
+                    {
+                        inner.Add(new KeywordSyntax(String.Empty, "bestfit", String.Empty, KeywordKind.Other));
+                        inner.Add(new PunctuationSyntax(String.Empty, ":", String.Empty));
+
+                        if(ppars.BestFitMapping.Value) inner.Add(new GenericSyntax("on"));
+                        else inner.Add(new GenericSyntax("off"));
+                    }
+                }
+
+                inner.Add(new PunctuationSyntax(String.Empty, ")", " "));
+            }
+
             if (m.CallingConvention == CallingConventions.VarArgs)
             {
                 inner.Add(new KeywordSyntax(String.Empty, "vararg", " ", KeywordKind.Other));
