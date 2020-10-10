@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 
 namespace CilTools.Tests.Common
 {
@@ -148,6 +149,9 @@ namespace CilTools.Tests.Common
         [STAThread]
         [My(1)]
         public static void AttributeTest() { }
+
+        [DllImport("user32.dll",SetLastError = true)]
+        public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
     }
 
     public class MyPoint

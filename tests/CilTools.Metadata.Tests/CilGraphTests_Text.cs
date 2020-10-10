@@ -79,6 +79,36 @@ namespace CilTools.Metadata.Tests
             });
         }
 
+        [TestMethod]
+        public void Test_CilGraph_PInvoke()
+        {
+            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
+            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+            MethodBase mi = t.GetMember("ShowWindow")[0] as MethodBase;
+            CilGraph graph = CilGraph.Create(mi);
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new MatchElement[] {
+                new Literal(".method"), MatchElement.Any,
+                new Literal("static"), MatchElement.Any,
+                new Literal("pinvokeimpl"), MatchElement.Any,
+                new Literal("("), MatchElement.Any,
+                new Literal("\"user32.dll\""), MatchElement.Any,
+                new Literal("lasterr"), MatchElement.Any,
+                new Literal(")"), MatchElement.Any,
+                new Literal("bool"), MatchElement.Any,
+                new Literal("ShowWindow"), MatchElement.Any,
+                new Literal("native int"), MatchElement.Any,
+                new Literal("int32"), MatchElement.Any,
+                new Literal("cil"), MatchElement.Any,
+                new Literal("managed"), MatchElement.Any
+            });
+
+            /*.method public hidebysig static pinvokeimpl("user32.dll" lasterr winapi) 
+            bool ShowWindow(native int hWnd,
+                             int32 nCmdShow) cil managed preservesig*/
+        }
+
 #if DEBUG
         [TestMethod]
         public void Test_CilGraph_Locals()
