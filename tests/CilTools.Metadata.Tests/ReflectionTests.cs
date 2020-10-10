@@ -10,7 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CilTools.Metadata.Tests
 {
     [TestClass]
-    public class RelectionTests
+    public class ReflectionTests
     {
         [TestMethod]
         public void Test_PInvoke()
