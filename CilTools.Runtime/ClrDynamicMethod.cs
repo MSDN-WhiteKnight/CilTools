@@ -61,10 +61,19 @@ namespace CilTools.Runtime
 
             for (int i = 0; i < len; i++)
             {
+                //get array element (object reference) address
                 ulong addr = exceptions.Type.GetArrayElementAddress(exceptions, i);
-                ClrObject o = new ClrObject(addr, exceptions.Type.ComponentType);
+                ClrRuntime r = exceptions.Type.Module.Runtime;
+
+                //get object address from reference
+                ulong obj_addr;
+                bool res = r.ReadPointer(addr, out obj_addr);
+                if (res == false) throw new ApplicationException("Failed to read memory");
+
+                ClrObject o = new ClrObject(obj_addr, exceptions.Type.ComponentType);
                 int startAddr = o.GetField<int>("m_startAddr");
                 int m_endAddr = o.GetField<int>("m_endAddr");
+                ;
             }
 
         }
@@ -75,6 +84,7 @@ namespace CilTools.Runtime
             ClrObject ilg = m.GetObjectField("m_ilGenerator");
             this.ilgen = ilg;
             this.owner = ass;
+            ReadExceptionBlocks();
         }
 
         public override Type ReturnType
