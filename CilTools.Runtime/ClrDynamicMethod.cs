@@ -106,21 +106,49 @@ namespace CilTools.Runtime
                 ClrObject obj_type = o.GetObjectField("m_type");
                 int[] type = ReadIntArray(obj_type);
 
-                /*ClrObject catchClass = o.GetObjectField("m_catchClass");
+                //get array of catch types
+                ClrObject catchClass = o.GetObjectField("m_catchClass");
                 int catchClass_len = catchClass.Type.GetArrayLength(catchClass);
+                Type[] catchTypes = new Type[catchClass_len];
 
                 for (int j = 0; j < len; j++)
                 {
+                    //get array element (object reference) address
                     addr = catchClass.Type.GetArrayElementAddress(catchClass, j);
+
+                    //get object address from reference
                     res = r.ReadPointer(addr, out obj_addr);
                     if (res == false) throw new ApplicationException("Failed to read memory");
 
-                    ClrObject catchClass_o = new ClrObject(obj_addr, catchClass.Type.ComponentType);
-                    
-                    ClrType rt = catchClass_o.Type.GetRuntimeType(obj_addr);
-                    string tname = rt.Name;
-                    ;
-                }*/
+                    //get underlying type (subclass of System.Type) from object address
+                    ClrType real_type = catchClass.Type.Heap.GetObjectType(obj_addr);
+
+                    if (real_type==null || !real_type.IsRuntimeType)
+                    {
+                        catchTypes[j] = UnknownType.Value;
+                        continue;
+                    }
+
+                    //get ClrType for runtime type
+                    ClrType rt=real_type.GetRuntimeType(obj_addr);
+
+                    if (rt == null)
+                    {
+                        catchTypes[j] = UnknownType.Value;
+                        continue;
+                    }
+
+                    //get Type object for the given catch type
+                    ClrAssemblyInfo ass = owner.AssemblyReader.Read(rt.Module);
+                    Type t=null;
+
+                    //try to resolve existing type by token
+                    t = ass.ResolveType((int)rt.MetadataToken);
+
+                    //if failed, construct new ClrTypeInfo
+                    if (t==null) t = new ClrTypeInfo(rt, ass);
+                    catchTypes[j] = t;
+                }
 
                 for (int j = 0; j < type.Length; j++)
                 {
@@ -134,7 +162,7 @@ namespace CilTools.Runtime
 
                     blocks.Add(new ExceptionBlock(
                                 (ExceptionHandlingClauseOptions)type[j], startaddr, length,
-                                UnknownType.Value, catchAddr[j],
+                                catchTypes[j], catchAddr[j],
                                 handler_length, filter_offset
                                 ));
                 }
