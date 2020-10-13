@@ -223,7 +223,7 @@ namespace CilTools.Runtime
         /// </summary>
         public DynamicMethodsAssembly GetDynamicMethods()
         {
-            return new DynamicMethodsAssembly(this.runtime.DataTarget, false);
+            return new DynamicMethodsAssembly(this.runtime.DataTarget,this, false);
         }
     }
 }

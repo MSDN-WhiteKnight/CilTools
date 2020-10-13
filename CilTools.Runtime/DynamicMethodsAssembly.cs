@@ -19,6 +19,7 @@ namespace CilTools.Runtime
         AssemblyName asn;
         DynamicMethodsType type;
         bool ownsTarget; //if true, automatically dispose DataTarget on Dispose()
+        ClrAssemblyReader reader;
 
         /// <summary>
         /// Creates new <c>DynamicMethodsAssembly</c> object for the specified data target, optionally indicating whether the created object 
@@ -29,17 +30,28 @@ namespace CilTools.Runtime
         /// <c>true</c> if this instance owns tha data target and should dispose it automatically when it is no longer needed
         /// </param>
         /// <exception cref="System.ArgumentNullException">Supplied data target is null</exception>
-        public DynamicMethodsAssembly(DataTarget dt, bool autoDispose)
+        public DynamicMethodsAssembly(DataTarget dt, bool autoDispose):this(dt,null,autoDispose)
+        {
+            
+        }
+
+        public DynamicMethodsAssembly(DataTarget dt, ClrAssemblyReader r, bool autoDispose)
         {
             if (dt == null) throw new ArgumentNullException("dt");
+
+            if (r == null)
+            {
+                r = new ClrAssemblyReader(dt.ClrVersions[0].CreateRuntime());
+            }
 
             this.target = dt;
             this.ownsTarget = autoDispose;
             this.type = new DynamicMethodsType(this);
-            AssemblyName n = new AssemblyName();            
-            n.Name = "<Process"+dt.ProcessId.ToString()+".DynamicMethods>";
+            AssemblyName n = new AssemblyName();
+            n.Name = "<Process" + dt.ProcessId.ToString() + ".DynamicMethods>";
             n.CodeBase = "";
             this.asn = n;
+            this.reader = r;
         }
 
         /// <summary>
@@ -53,6 +65,11 @@ namespace CilTools.Runtime
         public DataTarget Target
         {
             get { return this.target; }
+        }
+
+        public ClrAssemblyReader AssemblyReader
+        {
+            get { return this.reader; }
         }
 
         /// <summary>

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using Microsoft.Diagnostics.Runtime;
@@ -20,6 +19,8 @@ namespace CilTools.Runtime
         ClrObject method;
         ClrObject ilgen;
         DynamicMethodsAssembly owner;
+        byte[] _code;
+        ExceptionBlock[] _blocks;
 
         ulong[] GetDynamicTokenTable()
         {
@@ -41,7 +42,20 @@ namespace CilTools.Runtime
             return ret;
         }
 
-        void ReadExceptionBlocks()
+        static int[] ReadIntArray(ClrObject obj)
+        {
+            int len = obj.Type.GetArrayLength(obj);
+            int[] arr = new int[len];
+
+            for (int j = 0; j < len; j++)
+            {
+                arr[j] = (int)obj.Type.GetArrayElementValue(obj.Address, j);
+            }
+
+            return arr;
+        }
+
+        ExceptionBlock[] ReadExceptionBlocks()
         {
             ClrObject exceptions;
             if (method.Type.Name.EndsWith("DynamicMethod"))
@@ -55,18 +69,106 @@ namespace CilTools.Runtime
                 exceptions = method.GetObjectField("m_exceptions");
             }
 
-            if (exceptions.IsNull) return;
+            if (exceptions.IsNull) return new ExceptionBlock[0];
 
             int len = exceptions.Type.GetArrayLength(exceptions);
+            ClrRuntime r = exceptions.Type.Module.Runtime;
+            List<ExceptionBlock> blocks = new List<ExceptionBlock>(len * 2);
+            byte[] code = this.GetBytecode();
 
             for (int i = 0; i < len; i++)
             {
+                //get array element (object reference) address
                 ulong addr = exceptions.Type.GetArrayElementAddress(exceptions, i);
-                ClrObject o = new ClrObject(addr, exceptions.Type.ComponentType);
-                int startAddr = o.GetField<int>("m_startAddr");
-                int m_endAddr = o.GetField<int>("m_endAddr");
+                
+                //get object address from reference
+                ulong obj_addr;
+                bool res = r.ReadPointer(addr, out obj_addr);
+                if (res == false) throw new ApplicationException("Failed to read memory");
+
+                ClrObject o = new ClrObject(obj_addr, exceptions.Type.ComponentType);
+
+                if (o.Type.GetFieldByName("m_startAddr") == null) continue;
+                if (o.Type.GetFieldByName("m_endAddr") == null) continue;
+
+                int startaddr = o.GetField<int>("m_startAddr");
+                int endAddr = o.GetField<int>("m_endAddr");
+
+                ClrObject obj_catchAddr = o.GetObjectField("m_catchAddr");
+                int[] catchAddr = ReadIntArray(obj_catchAddr);
+
+                ClrObject obj_catchEndAddr = o.GetObjectField("m_catchEndAddr");
+                int[] catchEndAddr = ReadIntArray(obj_catchEndAddr);
+
+                ClrObject obj_filterAddr = o.GetObjectField("m_filterAddr");
+                int[] filterAddr = ReadIntArray(obj_filterAddr);
+
+                ClrObject obj_type = o.GetObjectField("m_type");
+                int[] type = ReadIntArray(obj_type);
+
+                //get array of catch types
+                ClrObject catchClass = o.GetObjectField("m_catchClass");
+                int catchClass_len = catchClass.Type.GetArrayLength(catchClass);
+                Type[] catchTypes = new Type[catchClass_len];
+
+                for (int j = 0; j < len; j++)
+                {
+                    //get array element (object reference) address
+                    addr = catchClass.Type.GetArrayElementAddress(catchClass, j);
+
+                    //get object address from reference
+                    res = r.ReadPointer(addr, out obj_addr);
+                    if (res == false) throw new ApplicationException("Failed to read memory");
+
+                    //get underlying type (subclass of System.Type) from object address
+                    ClrType real_type = catchClass.Type.Heap.GetObjectType(obj_addr);
+
+                    if (real_type==null || !real_type.IsRuntimeType)
+                    {
+                        catchTypes[j] = UnknownType.Value;
+                        continue;
+                    }
+
+                    //get ClrType for runtime type
+                    ClrType rt=real_type.GetRuntimeType(obj_addr);
+
+                    if (rt == null)
+                    {
+                        catchTypes[j] = UnknownType.Value;
+                        continue;
+                    }
+
+                    //get Type object for the given catch type
+                    ClrAssemblyInfo ass = owner.AssemblyReader.Read(rt.Module);
+                    Type t=null;
+
+                    //try to resolve existing type by token
+                    t = ass.ResolveType((int)rt.MetadataToken);
+
+                    //if failed, construct new ClrTypeInfo
+                    if (t==null) t = new ClrTypeInfo(rt, ass);
+                    catchTypes[j] = t;
+                }
+
+                for (int j = 0; j < type.Length; j++)
+                {
+                    int length = endAddr - startaddr;
+                    int handler_length = catchEndAddr[j] - catchAddr[j];
+                    int filter_offset = filterAddr[j];
+
+                    if (handler_length <= 0) continue;
+
+                    if (filter_offset < 0 || filter_offset > code.Length) filter_offset = 0;
+
+                    blocks.Add(new ExceptionBlock(
+                                (ExceptionHandlingClauseOptions)type[j], startaddr, length,
+                                catchTypes[j], catchAddr[j],
+                                handler_length, filter_offset
+                                ));
+                }
             }
 
+            return blocks.ToArray();
         }
 
         public ClrDynamicMethod(ClrObject m, DynamicMethodsAssembly ass)
@@ -89,14 +191,19 @@ namespace CilTools.Runtime
 
         public override byte[] GetBytecode()
         {
-            int size = ilgen.GetField<int>("m_length");
-            ClrObject stream = ilgen.GetObjectField("m_ILStream");
-            ClrType type = stream.Type;
-            ulong obj = stream.Address;
-            int len = type.GetArrayLength(obj);
-            byte[] il = new byte[size];
-            for (int i = 0; i < size; i++) il[i] = (byte)type.GetArrayElementValue(obj, i);
-            return il;
+            if (this._code == null)
+            {
+                int size = ilgen.GetField<int>("m_length");
+                ClrObject stream = ilgen.GetObjectField("m_ILStream");
+                ClrType type = stream.Type;
+                ulong obj = stream.Address;
+                int len = type.GetArrayLength(obj);
+                byte[] il = new byte[size];
+                for (int i = 0; i < size; i++) il[i] = (byte)type.GetArrayElementValue(obj, i);
+                this._code = il;
+            }
+
+            return this._code;
         }
 
         public override int MaxStackSize
@@ -116,7 +223,12 @@ namespace CilTools.Runtime
 
         public override ExceptionBlock[] GetExceptionBlocks()
         {
-            throw new NotImplementedException();
+            if (this._blocks == null)
+            {
+                this._blocks = ReadExceptionBlocks();
+            }
+
+            return this._blocks;
         }
 
         public override MethodAttributes Attributes
