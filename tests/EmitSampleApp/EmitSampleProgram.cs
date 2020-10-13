@@ -26,6 +26,8 @@ namespace SampleApp
             ilg.Emit(OpCodes.Stsfld, typeof(EmitSampleProgram).GetField("x"));
             ilg.BeginCatchBlock(typeof(Exception));
             ilg.EndExceptionBlock();
+            ilg.Emit(OpCodes.Ldstr, "");
+            ilg.Emit(OpCodes.Call, typeof(Console).GetMethod("WriteLine", new Type[] { typeof(string) }));
             ilg.Emit(OpCodes.Ldsfld, typeof(EmitSampleProgram).GetField("x"));
             ilg.Emit(OpCodes.Ret);
 
