@@ -21,7 +21,7 @@ namespace CilTools.Runtime
         DynamicMethodsAssembly owner;
         byte[] _code;
         ExceptionBlock[] _blocks;
-        Dictionary<int, MemberInfo> _table;
+        DynamicResolver _resolver;
 
         Dictionary<int,MemberInfo> GetDynamicTokenTable()
         {
@@ -30,6 +30,9 @@ namespace CilTools.Runtime
             if (method.Type.GetFieldByName("m_resolver") == null) return table;
 
             ClrObject resolver = method.GetObjectField("m_resolver");
+
+            if(resolver.IsNull) return table;
+
             ClrObject scope = resolver.GetObjectField("m_scope");
             ClrObject dtokens = scope.GetObjectField("m_tokens");
             ClrObject items = dtokens.GetObjectField("_items");
@@ -218,7 +221,6 @@ namespace CilTools.Runtime
             ClrObject ilg = m.GetObjectField("m_ilGenerator");
             this.ilgen = ilg;
             this.owner = ass;
-            this._table=GetDynamicTokenTable();            
         }
 
         public override Type ReturnType
@@ -228,7 +230,16 @@ namespace CilTools.Runtime
 
         public override ITokenResolver TokenResolver
         {
-            get { throw new NotImplementedException(); }
+            get 
+            {
+                if (this._resolver == null)
+                {
+                    Dictionary<int, MemberInfo> table = GetDynamicTokenTable();
+                    this._resolver = new DynamicResolver(table);
+                }
+
+                return this._resolver; 
+            }
         }
 
         public override byte[] GetBytecode()
