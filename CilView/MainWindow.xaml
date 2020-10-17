@@ -42,12 +42,19 @@
         
         <Label Content="Assembly" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="65"/>
         <ComboBox x:Name="cbAssembly" HorizontalAlignment="Left" Height="21" Margin="80,60,0,0" ItemsSource="{Binding Assemblies}"
-                  VerticalAlignment="Top" Width="160"
-                  DisplayMemberPath="FullName" SelectionChanged="cbAssembly_SelectionChanged"/>
+                  VerticalAlignment="Top" Width="160" 
+                  DisplayMemberPath="FullName" SelectionChanged="cbAssembly_SelectionChanged" IsEditable="True" 
+                  KeyDown="cb_KeyDown" KeyUp="cb_KeyUp" LostFocus="cb_LostFocus"/>
         <Label Content="Type" HorizontalAlignment="Left"  Margin="255,57,0,0" VerticalAlignment="Top" Width="40"/>
         <ComboBox x:Name="cbType" HorizontalAlignment="Left" Height="21" Margin="303,60,0,0" ItemsSource="{Binding Types}"
-                  VerticalAlignment="Top" Width="160"
-                   SelectionChanged="cbType_SelectionChanged"/>
+                  VerticalAlignment="Top" Width="160" SelectionChanged="cbType_SelectionChanged"
+                   IsEditable="True" KeyDown="cb_KeyDown" KeyUp="cb_KeyUp" LostFocus="cb_LostFocus" >
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Width="360"/>
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
+        </ComboBox>
 
         <Label Content="Find" HorizontalAlignment="Left" Margin="500,57,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox x:Name="tbFind" HorizontalAlignment="Left" Height="22" Margin="545,60,0,0" TextWrapping="Wrap" Text="" 

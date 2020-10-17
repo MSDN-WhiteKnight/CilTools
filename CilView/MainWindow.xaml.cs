@@ -126,6 +126,36 @@ namespace CilView
              }
         }
 
+        private void cb_KeyDown(object sender, KeyEventArgs e)
+        {
+            //entering text into combo box field opens drop-down box
+            if (e.Key != Key.Enter && e.Key != Key.Escape)
+            {
+                ComboBox cb = (ComboBox)sender;
+                if (!cb.IsDropDownOpen) cb.IsDropDownOpen = true;
+            }
+        }
+
+        private void cb_KeyUp(object sender, KeyEventArgs e)
+        {
+            //scroll combobox field into left on input
+            ComboBox cb = (ComboBox)sender;
+            TextBox tb = cb.Template.FindName("PART_EditableTextBox", cb) as TextBox;
+            if (tb == null) return;
+
+            tb.ScrollToHome();
+        }
+
+        private void cb_LostFocus(object sender, RoutedEventArgs e)
+        {
+            //scroll combobox field into left on leave
+            ComboBox cb = (ComboBox)sender;
+            TextBox tb = cb.Template.FindName("PART_EditableTextBox", cb) as TextBox;
+            if (tb == null) return;
+
+            tb.ScrollToHome();
+        }
+
         private void cbAssembly_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             try
@@ -135,6 +165,7 @@ namespace CilView
                 if (ass == null) return;
                 if (source == null) return;
 
+                this.Cursor = Cursors.Wait;
                 source.Types.Clear();
                 source.Methods.Clear();
                 source.Types = AssemblySource.LoadTypes(ass);
@@ -142,6 +173,10 @@ namespace CilView
             catch (Exception ex)
             {
                 ErrorHandler.Current.Error(ex);
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
             }
         }
 
