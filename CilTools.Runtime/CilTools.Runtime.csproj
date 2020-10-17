@@ -54,6 +54,7 @@
     <Compile Include="ClrTypeInfo.cs" />
     <Compile Include="DynamicMethodsAssembly.cs" />
     <Compile Include="DynamicMethodsType.cs" />
+    <Compile Include="DynamicResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnknownType.cs" />
   </ItemGroup>

@@ -21,25 +21,69 @@ namespace CilTools.Runtime
         DynamicMethodsAssembly owner;
         byte[] _code;
         ExceptionBlock[] _blocks;
+        DynamicResolver _resolver;
 
-        ulong[] GetDynamicTokenTable()
+        Dictionary<int,MemberInfo> GetDynamicTokenTable()
         {
+            Dictionary<int, MemberInfo> table = new Dictionary<int, MemberInfo>();
+
+            if (method.Type.GetFieldByName("m_resolver") == null) return table;
+
             ClrObject resolver = method.GetObjectField("m_resolver");
+
+            if(resolver.IsNull) return table;
+
             ClrObject scope = resolver.GetObjectField("m_scope");
             ClrObject dtokens = scope.GetObjectField("m_tokens");
             ClrObject items = dtokens.GetObjectField("_items");
             ClrType arrtype = items.Type;
-            ulong addr = items.Address;
-            int len = arrtype.GetArrayLength(addr);
-            ulong[] ret = new ulong[len];
+            
+            int len = arrtype.GetArrayLength(items.Address);            
 
+            ClrRuntime r = items.Type.Module.Runtime;
             for (int i = 0; i < len; i++)
             {
-                object val = arrtype.GetArrayElementValue(addr, i);
-                ret[i] = (ulong)val;                
+                //get array element (object reference) address
+                ulong addr = items.Type.GetArrayElementAddress(items, i);
+
+                //get object address from reference
+                ulong obj_addr;
+                bool res = r.ReadPointer(addr, out obj_addr);
+                if (res == false) throw new ApplicationException("Failed to read memory");
+
+                if (obj_addr == 0) continue;
+
+                ClrType t = arrtype.Heap.GetObjectType(obj_addr);
+                string tn = t.Name;
+                ClrObject o = new ClrObject(obj_addr, t);
+
+                if (String.Equals(tn, "System.RuntimeMethodHandle", StringComparison.InvariantCulture))
+                {
+                    ClrObject val = o.GetObjectField("m_value");
+                    //System.Reflection.RuntimeMethodInfo                    
+                    
+                    //get runtime method handle
+                    long handle = val.GetField<long>("m_handle");
+                    ClrMethod m = r.GetMethodByHandle((ulong)handle);
+                    MethodBase mb = null;
+                    ClrAssemblyInfo ass = owner.AssemblyReader.Read(m.Type.Module);
+
+                    //try to resolve existing MethodBase by (static) token
+                    mb = ass.ResolveMethod((int)m.MetadataToken);
+
+                    //if failed, construct new ClrMethodInfo
+                    if (mb == null) mb = new ClrMethodInfo(m, new ClrTypeInfo(m.Type, ass));
+
+                    //construct dynamic token
+                    int dtoken = 0x06000000 | i;
+
+                    table[dtoken] = mb;
+                }
+
+                //System.Reflection.Emit.GenericFieldInfo
             }
 
-            return ret;
+            return table;
         }
 
         static int[] ReadIntArray(ClrObject obj)
@@ -186,7 +230,16 @@ namespace CilTools.Runtime
 
         public override ITokenResolver TokenResolver
         {
-            get { throw new NotImplementedException(); }
+            get 
+            {
+                if (this._resolver == null)
+                {
+                    Dictionary<int, MemberInfo> table = GetDynamicTokenTable();
+                    this._resolver = new DynamicResolver(table);
+                }
+
+                return this._resolver; 
+            }
         }
 
         public override byte[] GetBytecode()
