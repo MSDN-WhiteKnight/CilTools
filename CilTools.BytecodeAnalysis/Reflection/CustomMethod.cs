@@ -11,7 +11,7 @@ namespace CilTools.Reflection
 {
     /// <summary>
     /// A base class for MethodBase implementations providing custom mechanisms for extracting bytecode data. 
-    /// Inherit from this class when you want CilBytecodeparser to process bytecode from your custom data source, instead of 
+    /// Inherit from this class when you want CilTools.BytecodeAnalysis to process bytecode from your custom data source, instead of 
     /// reflection.
     /// </summary>
     public abstract class CustomMethod : MethodBase
