@@ -35,7 +35,7 @@ namespace CilTools.Syntax
         }
 
         /// <summary>
-        /// Gets the header syntax of this, or an empty collection if this block has no header
+        /// Gets the header syntax of this block, or an empty collection if this block has no header
         /// </summary>
         /// <remarks>
         /// For the exception handler blocks, the header represents the exception clause. Other types of blocks does not have headers.
