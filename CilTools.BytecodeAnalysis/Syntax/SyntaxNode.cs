@@ -51,7 +51,7 @@ namespace CilTools.Syntax
         /// </summary>
         /// <remarks>
         /// Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
-        /// content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
+        /// content, both syntactically meaningful and indentation-only, is stored within one of the adjacent nodes, not in the separate node.
         /// </remarks>
         public string LeadingWhitespace { get { return this._lead; } }
 
@@ -60,7 +60,7 @@ namespace CilTools.Syntax
         /// </summary>
         /// <remarks>
         /// Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
-        /// content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
+        /// content, both syntactically meaningful and indentation-only, is stored within one of the adjacent nodes, not in the separate node.
         /// </remarks>
         public string TrailingWhitespace { get { return this._trail; } }
 
