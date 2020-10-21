@@ -32,7 +32,7 @@ namespace CilTools.Syntax
         }
 
         /// <summary>
-        /// Gets the block the forms the body of the defined method
+        /// Gets the block that forms the body of the defined method
         /// </summary>
         public BlockSyntax Body
         {
