@@ -481,12 +481,38 @@ to provide feedback" +
             int start_index;
             string text = tbFind.Text.Trim();
 
-            ObservableCollection<Type> types = this.source.Types;
-
             try
             {
+                IEnumerable<SearchResult> searcher = this.source.Search(text);
+                System.Windows.Controls.ContextMenu cm = new ContextMenu();
 
-                if (types != null && types.Count > 0)
+                int i = 0;
+
+                foreach (SearchResult item in searcher)
+                {
+                    MenuItem mi = new MenuItem();
+                    mi.Header = item.Name;
+                    mi.Tag = item;
+                    mi.Click += Mi_Click;
+                    cm.Items.Add(mi);
+                    i++;
+
+                    if (i >= 20) break;
+                }
+
+                if (i == 0)
+                {
+                    MenuItem mi = new MenuItem();
+                    mi.Header = "[No matching items found]";                    
+                    cm.Items.Add(mi);
+                }
+
+                cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+                cm.PlacementTarget = tbFind;
+                cm.IsOpen = true;
+                
+
+                /*if (types != null && types.Count > 0)
                 {
                     //if assembly is selected, search for type within that assembly
 
@@ -577,11 +603,26 @@ to provide feedback" +
                 "No assemblies matching the query \"" + text + "\" were found",
                 "Information");
                 
-                cbAssembly.SelectedItem = null;
+                cbAssembly.SelectedItem = null;*/
             }
             catch (Exception ex)
             {
                 ErrorHandler.Current.Error(ex);
+            }
+        }
+
+        private void Mi_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = (MenuItem)sender;
+            SearchResult val = (SearchResult)mi.Tag;
+
+            if (val.Kind == SearchResultKind.Type)
+            {
+                cbType.SelectedIndex = val.Index;
+            }
+            else if (val.Kind == SearchResultKind.Assembly)
+            {
+                cbAssembly.SelectedIndex = val.Index;
             }
         }
 

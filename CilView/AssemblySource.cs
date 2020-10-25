@@ -170,5 +170,43 @@ namespace CilView
 
             if(handler!=null) handler(this,new PropertyChangedEventArgs(name));
         }
+
+        public IEnumerable<SearchResult> Search(string text)
+        {
+            SearchResult res;
+
+            if (types != null && types.Count > 0)
+            {
+                //if assembly is selected, search in types within that assembly                                
+                
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (types[i].FullName.Contains(text))
+                    {
+                        res = new SearchResult();
+                        res.Kind = SearchResultKind.Type;
+                        res.Index = i;
+                        res.Name = types[i].FullName;
+                        yield return res;
+                    }
+                }                
+            }
+
+            //search in assemblies
+            if (this.assemblies == null) yield break;
+            if (this.assemblies.Count <= 1) yield break;
+
+            for (int i = 0; i < assemblies.Count; i++)
+            {
+                if (assemblies[i].FullName.Contains(text))
+                {
+                    res = new SearchResult();
+                    res.Kind = SearchResultKind.Assembly;
+                    res.Index = i;
+                    res.Name = "Assembly: "+assemblies[i].FullName;
+                    yield return res;
+                }
+            }
+        }
     }
 }
