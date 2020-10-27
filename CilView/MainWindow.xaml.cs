@@ -472,15 +472,31 @@ to provide feedback" +
 
         void OnSearchClick()
         {
+            //validation
             if (this.source == null)
             {
                 MessageBox.Show(this, "Open file or process first to use search", "Information");
                 return;
-            }
+            }                        
 
-            int start_index;
             string text = tbFind.Text.Trim();
 
+            if (text == String.Empty)
+            {
+                if (this.source.Types != null && this.source.Types.Count > 0)
+                {
+                    MessageBox.Show(this,"Enter the type or assembly name to search", 
+                        "Information");
+                }
+                else
+                {
+                    MessageBox.Show(this, "Enter the assembly name to search",
+                        "Information");
+                }
+                return;
+            }
+
+            //actual search
             try
             {
                 IEnumerable<SearchResult> searcher = this.source.Search(text);
@@ -497,113 +513,20 @@ to provide feedback" +
                     cm.Items.Add(mi);
                     i++;
 
-                    if (i >= 20) break;
+                    if (i >= 20) break; //limit context menu items count
                 }
 
                 if (i == 0)
                 {
-                    MenuItem mi = new MenuItem();
-                    mi.Header = "[No matching items found]";                    
-                    cm.Items.Add(mi);
+                    MessageBox.Show(this, "No items matching the query \""+text+ "\" were found",
+                        "Information");
+                    return;
                 }
 
+                //show context menu with search results
                 cm.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
                 cm.PlacementTarget = tbFind;
                 cm.IsOpen = true;
-                
-
-                /*if (types != null && types.Count > 0)
-                {
-                    //if assembly is selected, search for type within that assembly
-
-                    if (text == String.Empty)
-                    {
-                        MessageBox.Show(this,
-                            "Enter the type name fragment into the text field to search within the selected assembly", "Information"
-                            );
-                        return;
-                    }
-
-                    start_index = cbType.SelectedIndex + 1;
-
-                    if (start_index < 0) start_index = 0;
-                    if (start_index >= cbType.Items.Count) start_index = 0;
-
-                    for (int i = start_index; i < types.Count; i++)
-                    {
-                        if (types[i].Name.StartsWith(text))
-                        {
-                            cbType.SelectedIndex = i;
-                            return;
-                        }
-                    }
-
-                    for (int i = start_index; i < types.Count; i++)
-                    {
-                        if (types[i].Name.Contains(text))
-                        {
-                            cbType.SelectedIndex = i;
-                            return;
-                        }
-                    }
-
-                    for (int i = start_index; i < types.Count; i++)
-                    {
-                        if (types[i].FullName.Contains(text))
-                        {
-                            cbType.SelectedIndex = i;
-                            return;
-                        }
-                    }
-
-                    if (start_index == 0)
-                    {
-                        MessageBox.Show(this,
-                        "No types matching the query \"" + text + "\" were found in the selected assembly",
-                        "Information");
-                    }
-                    else
-                    {
-                        MessageBox.Show(this,
-                        "The search reached the end of the list when trying to find type \"" + text + "\" in the selected assembly",
-                        "Information");
-                    }
-
-                    cbType.SelectedItem = null;
-                    return;
-                }
-
-                //if no assembly selected, search for assembly
-                if (this.source.Assemblies == null) return;
-                if (this.source.Assemblies.Count <= 1) return;
-
-                if (text == String.Empty)
-                {
-                    MessageBox.Show(this, "Enter the assembly name fragment into the text field to search for assemblies", 
-                        "Information");
-                    return;
-                }
-
-                ObservableCollection<Assembly> assemblies = this.source.Assemblies;
-                start_index = cbAssembly.SelectedIndex + 1;
-
-                if (start_index < 0) start_index = 0;
-                if (start_index >= cbAssembly.Items.Count) start_index = 0;
-
-                for (int i = start_index; i < assemblies.Count; i++)
-                {
-                    if (assemblies[i].FullName.Contains(text))
-                    {
-                        cbAssembly.SelectedIndex = i;
-                        return;
-                    }
-                }
-                
-                MessageBox.Show(this,
-                "No assemblies matching the query \"" + text + "\" were found",
-                "Information");
-                
-                cbAssembly.SelectedItem = null;*/
             }
             catch (Exception ex)
             {

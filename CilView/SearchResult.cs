@@ -16,6 +16,15 @@ namespace CilView
 
     class SearchResult
     {
+        public SearchResult() { }
+
+        public SearchResult(Type t, int i)
+        {
+            this.Kind = SearchResultKind.Type;
+            this.Index = i;
+            this.Name = t.FullName;
+        }
+
         public SearchResultKind Kind {get;set;}
         public int Index { get; set; }
         public string Name { get; set; }

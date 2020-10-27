@@ -178,18 +178,81 @@ namespace CilView
             if (types != null && types.Count > 0)
             {
                 //if assembly is selected, search in types within that assembly                                
-                
+
+                HashSet<int> returned = new HashSet<int>();
+                //store already returned indices to prevent duplication
+
+                //match short name first
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (String.Equals(types[i].Name,text,StringComparison.InvariantCulture))
+                    {
+                        res = new SearchResult(types[i],i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (types[i].Name.StartsWith(text))
+                    {
+                        res = new SearchResult(types[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+                                
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (types[i].Name.Contains(text))
+                    {
+                        res = new SearchResult(types[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+
+                //then match full name
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (String.Equals(types[i].FullName,text,StringComparison.InvariantCulture))
+                    {
+                        res = new SearchResult(types[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+
                 for (int i = 0; i < types.Count; i++)
                 {
                     if (types[i].FullName.Contains(text))
                     {
-                        res = new SearchResult();
-                        res.Kind = SearchResultKind.Type;
-                        res.Index = i;
-                        res.Name = types[i].FullName;
-                        yield return res;
+                        res = new SearchResult(types[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
                     }
-                }                
+                }
             }
 
             //search in assemblies
