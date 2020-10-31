@@ -477,20 +477,25 @@ to provide feedback" +
             {
                 MessageBox.Show(this, "Open file or process first to use search", "Information");
                 return;
-            }                        
+            }
 
             string text = tbFind.Text.Trim();
 
             if (text == String.Empty)
             {
-                if (this.source.Types != null && this.source.Types.Count > 0)
+                if (this.source.Methods != null && this.source.Methods.Count > 0)
                 {
-                    MessageBox.Show(this,"Enter the type or assembly name to search", 
+                    MessageBox.Show(this, "Enter the method, type or assembly name fragment to search",
+                        "Information");
+                }
+                else if (this.source.Types != null && this.source.Types.Count > 0)
+                {
+                    MessageBox.Show(this, "Enter the type or assembly name fragment to search", 
                         "Information");
                 }
                 else
                 {
-                    MessageBox.Show(this, "Enter the assembly name to search",
+                    MessageBox.Show(this, "Enter the assembly name fragment to search",
                         "Information");
                 }
                 return;
