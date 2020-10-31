@@ -43,10 +43,10 @@ NOTE: When attaching in active mode, the target process is suspended. Do not use
 4. Press "OK". The CIL View will scan the target process for loaded assemblies and open them.
 5. Select assembly from the "Assembly" drop-down list in the main window 
 6. Select type from the "Type" drop-down list in the main window
-
-You can also search assemblies and types by entering the fragment of the name into the "Find" text field and pressing the ">" button. 
-
 7. Select method in the left panel.
+
+You can also search assemblies,types and methods by entering the fragment of their names into the "Find" text field and pressing the ">" button. CIL View searches methods in the currently selected type, if the type is selected. In a similar way, types are searched in the currently selected assembly, if one is selected. The search results are shown in the context menu. Clicking on the menu item navigates to the corresponding object.
+
 8. The right panel will display the CIL disassembly of the selected method.
 
 You can also view the code of dynamic methods generated at runtime in the target process by selecting the <...DynamicMethods> entry in the assembly drop-down list (it is displayed at the end of the list).
