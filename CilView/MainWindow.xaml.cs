@@ -507,7 +507,7 @@ to provide feedback" +
                 foreach (SearchResult item in searcher)
                 {
                     MenuItem mi = new MenuItem();
-                    mi.Header = item.Name;
+                    mi.Header = item.Name.Replace("_","__");
                     mi.Tag = item;
                     mi.Click += Mi_Click;
                     cm.Items.Add(mi);
@@ -546,6 +546,10 @@ to provide feedback" +
             else if (val.Kind == SearchResultKind.Assembly)
             {
                 cbAssembly.SelectedIndex = val.Index;
+            }
+            else if (val.Kind == SearchResultKind.Method)
+            {
+                NavigateToMethod((MethodBase)val.Value);
             }
         }
 
