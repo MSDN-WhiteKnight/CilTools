@@ -170,5 +170,160 @@ namespace CilView
 
             if(handler!=null) handler(this,new PropertyChangedEventArgs(name));
         }
+
+        public IEnumerable<SearchResult> Search(string text)
+        {
+            SearchResult res;
+            HashSet<int> returned;
+
+            //if type is selected, search methods within that type
+
+            if (methods != null && methods.Count > 0)
+            {
+                //store already returned indices to prevent duplication
+                returned = new HashSet<int>();
+                
+                //exact name match
+                for (int i = 0; i < methods.Count; i++)
+                {
+                    if (String.Equals(methods[i].Name, text, StringComparison.InvariantCulture))
+                    {
+                        res = new SearchResult(methods[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+
+                //match from beginning
+                for (int i = 0; i < methods.Count; i++)
+                {
+                    if (methods[i].Name.StartsWith(text))
+                    {
+                        res = new SearchResult(methods[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+
+                //match substrings
+                for (int i = 0; i < methods.Count; i++)
+                {
+                    if (methods[i].Name.Contains(text))
+                    {
+                        res = new SearchResult(methods[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+            }
+
+            //if assembly is selected, search in types within that assembly
+
+            if (types != null && types.Count > 0)
+            {
+                //store already returned indices to prevent duplication
+                returned = new HashSet<int>();
+                
+                //match short name first
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (String.Equals(types[i].Name,text,StringComparison.InvariantCulture))
+                    {
+                        res = new SearchResult(types[i],i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (types[i].Name.StartsWith(text))
+                    {
+                        res = new SearchResult(types[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+                                
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (types[i].Name.Contains(text))
+                    {
+                        res = new SearchResult(types[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+
+                //then match full name
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (String.Equals(types[i].FullName,text,StringComparison.InvariantCulture))
+                    {
+                        res = new SearchResult(types[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+
+                for (int i = 0; i < types.Count; i++)
+                {
+                    if (types[i].FullName.Contains(text))
+                    {
+                        res = new SearchResult(types[i], i);
+
+                        if (!returned.Contains(i))
+                        {
+                            returned.Add(i);
+                            yield return res;
+                        }
+                    }
+                }
+            }
+
+            //search in assemblies
+            if (this.assemblies == null) yield break;
+            if (this.assemblies.Count <= 1) yield break;
+
+            for (int i = 0; i < assemblies.Count; i++)
+            {
+                if (assemblies[i].FullName.Contains(text))
+                {
+                    res = new SearchResult();
+                    res.Kind = SearchResultKind.Assembly;
+                    res.Index = i;
+                    res.Name = "Assembly: "+assemblies[i].FullName;
+                    yield return res;
+                }
+            }
+        }
     }
 }
