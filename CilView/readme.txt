@@ -53,16 +53,17 @@ You can also view the code of dynamic methods generated at runtime in the target
 
 * Limitations when displaying code from the process *
 
-If the assembly could not be loaded into the CilView process (for example, some dependencies couldn't be resolved), the following limitations apply:
+If the assembly could not be loaded by the CIL View application (this is usually happens with some mixed-mode assemblies which have some PE structures stripped off, so they could be loaded by CLR, but not by System.Reflection.Metadata), the following limitations apply:
 - Method return value or parameter types are not shown 
 - String literal tokens are not resolved
+- Standalone signature tokens are not resolved
 - Tokens of external assembly members are not resolved
 - Local variables and exception handling blocks are not shown
 
 For dynamic methods, the following limitations apply:
-- Method sinatures are not shown 
-- All tokens are not resolved
-- Local variables and exception handling blocks are not shown
+- Method signatures are not shown 
+- All tokens, except for method tokens, are not resolved
+- Local variables are not shown
 
 * Examining managed threads *
 
