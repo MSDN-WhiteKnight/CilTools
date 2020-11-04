@@ -8,12 +8,20 @@ using System.Text;
 
 namespace CilTools.Reflection
 {
+    /// <summary>
+    /// Represents the generic parameter
+    /// </summary>
     public class GenericParamType : Type
     {
         MethodBase _m;
         int _index;
         string _name;
 
+        /// <summary>
+        /// Creates a new instance of the generic parameter
+        /// </summary>
+        /// <param name="m">Declaring method, if this is a generic method parameter</param>
+        /// <param name="index">Generic parameter index</param>
         public GenericParamType(MethodBase m, int index)
         {
             if (index < 0) throw new ArgumentOutOfRangeException("index", "generic parameter index should be non-negative");
@@ -50,6 +58,12 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <summary>
+        /// Creates a new instance of the generic parameter with the specified name
+        /// </summary>
+        /// <param name="m">Declaring method, if this is a generic method parameter</param>
+        /// <param name="index">Generic parameter index</param>
+        /// <param name="name">Generic parameter name</param>
         public GenericParamType(MethodBase m, int index,string name)
         {
             this._m = m;
@@ -57,16 +71,19 @@ namespace CilTools.Reflection
             this._name = name;
         }
 
+        /// <inheritdoc/>
         public override Assembly Assembly
         {
             get { return null; }
         }
 
+        /// <inheritdoc/>
         public override string AssemblyQualifiedName
         {
             get { return ""; }
         }
 
+        /// <inheritdoc/>
         public override Type BaseType
         {
             get
@@ -75,151 +92,180 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override string FullName
         {
             get { return this.Name; }
         }
 
+        /// <inheritdoc/>
         public override Guid GUID
         {
             get { return new Guid(); }
         }
 
+        /// <inheritdoc/>
         protected override TypeAttributes GetAttributeFlagsImpl()
         {
             TypeAttributes ret = (TypeAttributes)0;
             return ret;
         }
 
+        /// <inheritdoc/>
         protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder, CallingConventions callConvention,
             Type[] types, ParameterModifier[] modifiers)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override Type GetElementType()
         {
             return null;
         }
 
+        /// <inheritdoc/>
         public override EventInfo GetEvent(string name, BindingFlags bindingAttr)
         {
             throw new NotSupportedException("This type implementation does not support events");
         }
 
+        /// <inheritdoc/>
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
             throw new NotSupportedException("This type implementation does not support events");
         }
 
+        /// <inheritdoc/>
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override Type GetInterface(string name, bool ignoreCase)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override Type[] GetInterfaces()
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,
             CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override Type GetNestedType(string name, BindingFlags bindingAttr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override Type[] GetNestedTypes(BindingFlags bindingAttr)
         {
             throw new NotImplementedException();
         }
 
+        /// <inheritdoc/>
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
         {
             throw new NotSupportedException("This type implementation does not support properties");
         }
 
+        /// <inheritdoc/>
         protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType,
             Type[] types, ParameterModifier[] modifiers)
         {
             throw new NotSupportedException("This type implementation does not support properties");
         }
 
+        /// <inheritdoc/>
         protected override bool HasElementTypeImpl()
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args,
             ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] namedParameters)
         {
             throw new InvalidOperationException("Cannot invoke members on type loaded into reflection-only context");
         }
 
+        /// <inheritdoc/>
         protected override bool IsArrayImpl()
         {
             return false;
         }
 
+        /// <inheritdoc/>
         protected override bool IsByRefImpl()
         {
             return false;
         }
 
+        /// <inheritdoc/>
         protected override bool IsCOMObjectImpl()
         {
             return false;
         }
 
+        /// <inheritdoc/>
         protected override bool IsPointerImpl()
         {
             return false;
         }
 
+        /// <inheritdoc/>
         protected override bool IsPrimitiveImpl()
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public override Module Module
         {
             get { return null; }
         }
 
+        /// <inheritdoc/>
         public override string Namespace
         {
             get
@@ -228,26 +274,31 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override Type UnderlyingSystemType
         {
             get { return null; }
         }
 
+        /// <inheritdoc/>
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
             return new object[] { };
         }
 
+        /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
             return new object[] { };
         }
 
+        /// <inheritdoc/>
         public override bool IsDefined(Type attributeType, bool inherit)
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public override string Name
         {
             get
@@ -256,6 +307,7 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override int MetadataToken
         {
             get
@@ -264,11 +316,13 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override int GetArrayRank()
         {
             return 0;
         }
 
+        /// <inheritdoc/>
         public override bool IsGenericParameter
         {
             get
@@ -277,6 +331,7 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override int GenericParameterPosition
         {
             get
@@ -285,6 +340,7 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override MethodBase DeclaringMethod
         {
             get
@@ -293,16 +349,19 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override Type MakeArrayType()
         {
             return new ComplexType(this, ComplexTypeKind.SzArray, null);
         }
 
+        /// <inheritdoc/>
         public override Type MakeByRefType()
         {
             return new ComplexType(this, ComplexTypeKind.ByRef, null);
         }
 
+        /// <inheritdoc/>
         public override Type MakePointerType()
         {
             return new ComplexType(this, ComplexTypeKind.Pointer, null);

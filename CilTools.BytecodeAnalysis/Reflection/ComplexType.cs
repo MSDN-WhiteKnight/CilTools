@@ -8,23 +8,48 @@ using System.Text;
 
 namespace CilTools.Reflection
 {
+    /// <summary>
+    /// Specifies the kind of the complex type
+    /// </summary>
     public enum ComplexTypeKind
     {
-        SzArray = 1, //single-dimensional zero-based array
-        ByRef = 2, //reference
-        Pointer = 3, //unmanaged pointer
-        GenInst = 4, //generic type instantiation
+        /// <summary>
+        /// Single-dimensional zero-based array
+        /// </summary>
+        SzArray = 1, 
+
+        /// <summary>
+        /// Managed reference
+        /// </summary>
+        ByRef = 2, 
+
+        /// <summary>
+        /// Unmanaged pointer
+        /// </summary>
+        Pointer = 3,
+
+        /// <summary>
+        /// Generic type instantiation
+        /// </summary>
+        GenInst = 4, 
     }
 
+    /// <summary>
+    /// Represents a complex type. Complex type is a type contructed on demand based on another type defined in some assembly, 
+    /// for example, an array or pointer type.
+    /// </summary>
     public class ComplexType : Type
     {
-        //complex type is a type constructed on demand based on another type defined in some assembly
-        //for example, int[] is an array type constructed from element type [mscorlib]System.Int32
-
         Type inner;
         ComplexTypeKind kind;
         Type[] genargs;
 
+        /// <summary>
+        /// Creates new instance of the complex type
+        /// </summary>
+        /// <param name="t">Element type</param>
+        /// <param name="k">Kind of the complex type</param>
+        /// <param name="ga">An array of generic type arguments, or null if this is not a generic type instantiation</param>
         public ComplexType(Type t, ComplexTypeKind k, Type[] ga)
         {
             this.inner = t;
@@ -32,6 +57,7 @@ namespace CilTools.Reflection
             this.genargs = ga;
         }
 
+        /// <inheritdoc/>        
         public override Assembly Assembly
         {
             get
@@ -40,11 +66,13 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override string AssemblyQualifiedName
         {
             get { return this.FullName + ", " + this.Assembly.FullName; }
         }
 
+        /// <inheritdoc/>
         public override Type BaseType
         {
             get
@@ -54,6 +82,7 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override string FullName
         {
             get
@@ -77,17 +106,20 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override Guid GUID
         {
             get { return new Guid(); }
         }
 
+        /// <inheritdoc/>
         protected override TypeAttributes GetAttributeFlagsImpl()
         {
             TypeAttributes ret = inner.Attributes;
             return ret;
         }
 
+        /// <inheritdoc/>
         protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder, CallingConventions callConvention,
             Type[] types, ParameterModifier[] modifiers)
         {
@@ -98,6 +130,7 @@ namespace CilTools.Reflection
             else return null;
         }
 
+        /// <inheritdoc/>
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -107,22 +140,26 @@ namespace CilTools.Reflection
             else return new ConstructorInfo[0];
         }
 
+        /// <inheritdoc/>
         public override Type GetElementType()
         {
             if (this.kind != ComplexTypeKind.GenInst) return this.inner;
             else return null;
         }
 
+        /// <inheritdoc/>
         public override EventInfo GetEvent(string name, BindingFlags bindingAttr)
         {
             throw new NotSupportedException("This type implementation does not support events");
         }
 
+        /// <inheritdoc/>
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
             throw new NotSupportedException("This type implementation does not support events");
         }
 
+        /// <inheritdoc/>
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -132,6 +169,7 @@ namespace CilTools.Reflection
             else return null;
         }
 
+        /// <inheritdoc/>
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -141,6 +179,7 @@ namespace CilTools.Reflection
             else return new FieldInfo[0];
         }
 
+        /// <inheritdoc/>
         public override Type GetInterface(string name, bool ignoreCase)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -150,6 +189,7 @@ namespace CilTools.Reflection
             else return null;
         }
 
+        /// <inheritdoc/>
         public override Type[] GetInterfaces()
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -159,6 +199,7 @@ namespace CilTools.Reflection
             else return new Type[0];
         }
 
+        /// <inheritdoc/>
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -168,6 +209,7 @@ namespace CilTools.Reflection
             else return new MemberInfo[0];
         }
 
+        /// <inheritdoc/>
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -177,6 +219,7 @@ namespace CilTools.Reflection
             else return new MemberInfo[0];
         }
 
+        /// <inheritdoc/>
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,
             CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
@@ -187,6 +230,7 @@ namespace CilTools.Reflection
             else return null;
         }
 
+        /// <inheritdoc/>
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -196,6 +240,7 @@ namespace CilTools.Reflection
             else return new MethodInfo[0];
         }
 
+        /// <inheritdoc/>
         public override Type GetNestedType(string name, BindingFlags bindingAttr)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -205,6 +250,7 @@ namespace CilTools.Reflection
             else return null;
         }
 
+        /// <inheritdoc/>
         public override Type[] GetNestedTypes(BindingFlags bindingAttr)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -214,59 +260,70 @@ namespace CilTools.Reflection
             else return new Type[0];
         }
 
+        /// <inheritdoc/>
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
         {
             throw new NotSupportedException("This type implementation does not support properties");
         }
 
+        /// <inheritdoc/>
         protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType,
             Type[] types, ParameterModifier[] modifiers)
         {
             throw new NotSupportedException("This type implementation does not support properties");
         }
 
+        /// <inheritdoc/>
         protected override bool HasElementTypeImpl()
         {
             if (this.kind != ComplexTypeKind.GenInst) return true;
             else return false;
         }
 
+        /// <inheritdoc/>
         public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target, object[] args,
             ParameterModifier[] modifiers, System.Globalization.CultureInfo culture, string[] namedParameters)
         {
             throw new InvalidOperationException("Cannot invoke members on type loaded into reflection-only context");
         }
 
+        /// <inheritdoc/>
         protected override bool IsArrayImpl()
         {
             return this.kind == ComplexTypeKind.SzArray;
         }
 
+        /// <inheritdoc/>
         protected override bool IsByRefImpl()
         {
             return this.kind == ComplexTypeKind.ByRef;
         }
 
+        /// <inheritdoc/>
         protected override bool IsCOMObjectImpl()
         {
             return false;
         }
 
+        /// <inheritdoc/>
         protected override bool IsPointerImpl()
         {
             return this.kind == ComplexTypeKind.Pointer;
         }
 
+        /// <inheritdoc/>
         protected override bool IsPrimitiveImpl()
         {
             return false;
         }
 
+        /// <inheritdoc/>
         public override Module Module
         {
             get { return null; }
         }
 
+        /// <inheritdoc/>
         public override string Namespace
         {
             get
@@ -276,11 +333,13 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override Type UnderlyingSystemType
         {
             get { return null; }
         }
 
+        /// <inheritdoc/>
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -290,6 +349,7 @@ namespace CilTools.Reflection
             else return new object[0];
         }
 
+        /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -299,6 +359,7 @@ namespace CilTools.Reflection
             else return new object[0];
         }
 
+        /// <inheritdoc/>
         public override bool IsDefined(Type attributeType, bool inherit)
         {
             if (this.kind == ComplexTypeKind.GenInst)
@@ -308,6 +369,7 @@ namespace CilTools.Reflection
             else return false;
         }
 
+        /// <inheritdoc/>
         public override string Name
         {
             get
@@ -325,6 +387,7 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override int MetadataToken
         {
             get
@@ -333,17 +396,20 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override int GetArrayRank()
         {
             if (this.kind == ComplexTypeKind.SzArray) return 1;
             else throw new NotSupportedException("Arrays with more then one dimension are not supported.");
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             return this.FullName.GetHashCode();
         }
 
+        /// <inheritdoc/>
         public override bool IsGenericType
         {
             get
@@ -353,6 +419,7 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override bool IsGenericTypeDefinition
         {
             get
@@ -361,32 +428,38 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override Type GetGenericTypeDefinition()
         {
             if (this.kind == ComplexTypeKind.GenInst) return this.inner;
             else return null;
         }
 
+        /// <inheritdoc/>
         public override Type[] GetGenericArguments()
         {
             return this.genargs;
         }
 
+        /// <inheritdoc/>
         public override Type MakeArrayType()
         {
             return new ComplexType(this, ComplexTypeKind.SzArray, null);
         }
 
+        /// <inheritdoc/>
         public override Type MakeByRefType()
         {
             return new ComplexType(this, ComplexTypeKind.ByRef, null);
         }
 
+        /// <inheritdoc/>
         public override Type MakePointerType()
         {
             return new ComplexType(this, ComplexTypeKind.Pointer, null);
         }
 
+        /// <inheritdoc/>
         public override Type DeclaringType
         {
             get
@@ -395,6 +468,7 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             return this.FullName;

@@ -227,6 +227,16 @@ namespace CilTools.BytecodeAnalysis
             return BitConverter.ToInt32(res_bytes, 0);
         }
 
+        /// <summary>
+        /// Reads <c>TypeSpec</c> object from the specified byte array
+        /// </summary>
+        /// <param name="data">Byte array to read data from</param>
+        /// <param name="resolver">Object used to resolve metadata tokens</param>
+        /// <param name="member">
+        /// Method that identifies generic context for generic method params, or null if this <c>TypeSpec</c> 
+        /// does not belong to a generic method
+        /// </param>
+        /// <returns></returns>
         public static TypeSpec ReadFromArray(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             //ECMA-335 II.23.2.14 TypeSpec
@@ -594,6 +604,11 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets the type which this type specification represents (deprecated)
         /// </summary>
+        /// <remarks>
+        /// Starting from the version 2.1, the <c>TypeSpec</c> itself extends <c>System.Type</c>, so this property is not needed. 
+        /// Use this object directly when you need an instance of <c>System.Type</c>, or the <see cref="UnderlyingSystemType"/> property 
+        /// if you need the runtime type. This property will be removed in future releases.
+        /// </remarks>
         public Type Type { get { return this; } }
 
         /// <summary>
@@ -601,196 +616,241 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         public bool IsPinned { get { return this._pinned; } }
 
+        /// <inheritdoc/>
         public override Guid GUID => this._Type.GUID;
 
+        /// <inheritdoc/>
         public override Module Module => this._Type.Module;
 
+        /// <inheritdoc/>
         public override Assembly Assembly => this._Type.Assembly;
 
+        /// <inheritdoc/>
         public override string FullName => this._Type.FullName;
 
+        /// <inheritdoc/>
         public override string Namespace => this._Type.Namespace;
 
+        /// <inheritdoc/>
         public override string AssemblyQualifiedName => this._Type.AssemblyQualifiedName;
 
+        /// <inheritdoc/>
         public override Type BaseType => this._Type.BaseType;
 
+        /// <inheritdoc/>
         public override Type UnderlyingSystemType => this._Type.UnderlyingSystemType;
 
+        /// <inheritdoc/>
         public override string Name => this._Type.Name;
 
+        /// <inheritdoc/>
         public override object InvokeMember(string name, BindingFlags invokeAttr, Binder binder, object target,
             object[] args, ParameterModifier[] modifiers, CultureInfo culture, string[] namedParameters)
         {
             return this._Type.InvokeMember(name, invokeAttr, binder, target, args, modifiers, culture, namedParameters);
         }
 
+        /// <inheritdoc/>
         protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder,
             CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
             return this._Type.GetConstructor(bindingAttr, binder, callConvention, types, modifiers);
         }
 
+        /// <inheritdoc/>
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
             return this._Type.GetConstructors(bindingAttr);
         }
 
+        /// <inheritdoc/>
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,
             CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
             return this._Type.GetMethod(name, bindingAttr, binder, callConvention, types, modifiers);
         }
 
+        /// <inheritdoc/>
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
             return this._Type.GetMethods(bindingAttr);
         }
 
+        /// <inheritdoc/>
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
         {
             return this._Type.GetField(name, bindingAttr);
         }
 
+        /// <inheritdoc/>
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
             return this._Type.GetFields(bindingAttr);
         }
 
+        /// <inheritdoc/>
         public override Type GetInterface(string name, bool ignoreCase)
         {
             return this._Type.GetInterface(name, ignoreCase);
         }
 
+        /// <inheritdoc/>
         public override Type[] GetInterfaces()
         {
             return this._Type.GetInterfaces();
         }
 
+        /// <inheritdoc/>
         public override EventInfo GetEvent(string name, BindingFlags bindingAttr)
         {
             return this._Type.GetEvent(name, bindingAttr);
         }
 
+        /// <inheritdoc/>
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
             return this._Type.GetEvents();
         }
 
+        /// <inheritdoc/>
         protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder,
             Type returnType, Type[] types, ParameterModifier[] modifiers)
         {
             return this._Type.GetProperty(name, bindingAttr, binder, returnType, types, modifiers);
         }
 
+        /// <inheritdoc/>
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
         {
             return this._Type.GetProperties();
         }
 
+        /// <inheritdoc/>
         public override Type[] GetNestedTypes(BindingFlags bindingAttr)
         {
             return this._Type.GetNestedTypes();
         }
 
+        /// <inheritdoc/>
         public override Type GetNestedType(string name, BindingFlags bindingAttr)
         {
             return this._Type.GetNestedType(name, bindingAttr);
         }
 
+        /// <inheritdoc/>
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
             return this._Type.GetMembers(bindingAttr);
         }
 
+        /// <inheritdoc/>
         protected override TypeAttributes GetAttributeFlagsImpl()
         {
             return this._Type.Attributes;
         }
 
+        /// <inheritdoc/>
         protected override bool IsArrayImpl()
         {
             return this._ElementType == (byte)ElementType.SzArray ||
                 this._ElementType == (byte)ElementType.Array;
         }
 
+        /// <inheritdoc/>
         protected override bool IsByRefImpl()
         {
             return this._Type.IsByRef;
         }
 
+        /// <inheritdoc/>
         protected override bool IsPointerImpl()
         {
             return this._ElementType == (byte)ElementType.Ptr;
         }
 
+        /// <inheritdoc/>
         protected override bool IsPrimitiveImpl()
         {
             return this._Type.IsPrimitive;
         }
 
+        /// <inheritdoc/>
         protected override bool IsCOMObjectImpl()
         {
             return this._Type.IsCOMObject;
         }
 
+        /// <inheritdoc/>
         public override Type GetElementType()
         {
             if (this._InnerSpec != null) return this._InnerSpec;
             else return this._Type.GetElementType();
         }
 
+        /// <inheritdoc/>
         protected override bool HasElementTypeImpl()
         {
             return this._Type.HasElementType;
         }
 
+        /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
             return this._Type.GetCustomAttributes(inherit);
         }
 
+        /// <inheritdoc/>
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
             return this._Type.GetCustomAttributes(attributeType, inherit);
         }
 
+        /// <inheritdoc/>
         public override bool IsDefined(Type attributeType, bool inherit)
         {
             return this._Type.IsDefined(attributeType, inherit);
         }
 
+        /// <inheritdoc/>
         public override int MetadataToken => this._Type.MetadataToken;
 
+        /// <inheritdoc/>
         public override int GetArrayRank()
         {
             return this._Type.GetArrayRank();
         }
 
+        /// <inheritdoc/>
         public override Type MakeArrayType()
         {
             return this._Type.MakeArrayType();
         }
 
+        /// <inheritdoc/>
         public override Type MakeByRefType()
         {
             return this._Type.MakeByRefType();
         }
 
+        /// <inheritdoc/>
         public override Type MakePointerType()
         {
             return this._Type.MakePointerType();
         }
 
+        /// <inheritdoc/>
         public override Type MakeGenericType(params Type[] typeArguments)
         {
             return this._Type.MakeGenericType(typeArguments);
         }
 
+        /// <inheritdoc/>
         public override Type DeclaringType => this._Type.DeclaringType;
 
+        /// <inheritdoc/>
         public override MethodBase DeclaringMethod => this._Type.DeclaringMethod;
 
+        /// <inheritdoc/>
         public override bool IsGenericParameter
         {
             get
@@ -800,12 +860,18 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        /// <inheritdoc/>
         public override int GenericParameterPosition => (int)this._paramnum;
 
+        /// <inheritdoc/>
         public override bool IsGenericType => this._ElementType == (byte)ElementType.GenericInst;
 
+        /// <inheritdoc/>
         public override bool IsGenericTypeDefinition => false;
         
+        /// <summary>
+        /// Gets the target function signature, if this <c>TypeSpec</c> represents a function pointer. Otherwise, returns null.
+        /// </summary>
         public Signature TargetSignature
         {
             get 
@@ -818,11 +884,13 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        /// <inheritdoc/>
         public override Type[] GetGenericArguments()
         {
             return this._Type.GetGenericArguments();
         }
 
+        /// <inheritdoc/>
         public override Type GetGenericTypeDefinition()
         {
             return this._Type.GetGenericTypeDefinition();
@@ -938,6 +1006,10 @@ namespace CilTools.BytecodeAnalysis
             return new MemberRefSyntax(ret.ToArray(), this._Type);
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this <c>TypeSpec</c> represents a function pointer
+        /// </summary>
+        /// <returns></returns>
         public bool IsFunctionPointer()
         {
             return this._ElementType == (byte)ElementType.FnPtr;
