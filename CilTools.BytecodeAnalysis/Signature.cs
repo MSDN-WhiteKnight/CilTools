@@ -76,7 +76,7 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.ArgumentException">Source array is empty</exception>
         /// <exception cref="System.IO.EndOfStreamException">Unexpected end of input data</exception>
         /// <exception cref="CilParserException">Input data is invalid</exception>
-        /// <exception cref="System.NotSupportedException">Signature contains generic types, function pointers or variable-bound arrays</exception>
+        /// <exception cref="System.NotSupportedException">Signature contains unsupported elements</exception>
         public Signature(byte[] data, Module module) //ECMA-335 II.23.2.3: StandAloneMethodSig
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
@@ -86,6 +86,18 @@ namespace CilTools.BytecodeAnalysis
             Initialize(data, mwr, null);
         }
 
+        /// <summary>
+        /// Initializes a new signature object, respoving metadata tokens using the specified resolver
+        /// </summary>
+        /// <param name="data">The byte array containing the signature data</param>
+        /// <param name="resolver">The object used to resolve metadata tokens</param>
+        /// <exception cref="System.ArgumentNullException">Source array is null</exception>
+        /// <exception cref="System.ArgumentException">Source array is empty</exception>
+        /// <exception cref="System.IO.EndOfStreamException">Unexpected end of input data</exception>
+        /// <exception cref="CilParserException">Input data is invalid</exception>
+        /// <exception cref="System.NotSupportedException">Signature contains unsupported elements</exception>
+        /// <remarks>The signature could be the method signature or the standalone signature 
+        /// (ECMA-335 II.23.2.3: StandAloneMethodSig)</remarks>
         public Signature(byte[] data, ITokenResolver resolver)
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
@@ -94,6 +106,21 @@ namespace CilTools.BytecodeAnalysis
             Initialize(data, resolver,null);
         }
 
+        /// <summary>
+        /// Initializes a new signature object, respoving metadata tokens using the specified resolver in 
+        /// the specified generic context
+        /// </summary>
+        /// <param name="data">The byte array containing the signature data</param>
+        /// <param name="resolver">The object used to resolve metadata tokens</param>
+        /// <param name="member">Method that identifies generic context for generic method params, or null 
+        /// if this signature does not belong to a generic method</param>
+        /// <exception cref="System.ArgumentNullException">Source array is null</exception>
+        /// <exception cref="System.ArgumentException">Source array is empty</exception>
+        /// <exception cref="System.IO.EndOfStreamException">Unexpected end of input data</exception>
+        /// <exception cref="CilParserException">Input data is invalid</exception>
+        /// <exception cref="System.NotSupportedException">Signature contains unsupported elements</exception>
+        /// <remarks>The signature could be the method signature or the standalone signature 
+        /// (ECMA-335 II.23.2.3: StandAloneMethodSig)</remarks>
         public Signature(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
@@ -102,6 +129,20 @@ namespace CilTools.BytecodeAnalysis
             Initialize(data, resolver, member);
         }
 
+        /// <summary>
+        /// Initializes a new signature object from the stream, respoving metadata tokens using the specified 
+        /// resolver in the specified generic context
+        /// </summary>
+        /// <param name="src">The stream to read signature data from</param>
+        /// <param name="resolver">The object used to resolve metadata tokens</param>
+        /// <param name="member">Method that identifies generic context for generic method params, or null 
+        /// if this signature does not belong to a generic method</param>
+        /// <exception cref="System.ArgumentNullException">Source stream is null</exception>
+        /// <exception cref="System.IO.EndOfStreamException">Unexpected end of input data</exception>
+        /// <exception cref="CilParserException">Input data is invalid</exception>
+        /// <exception cref="System.NotSupportedException">Signature contains unsupported elements</exception>
+        /// <remarks>The signature could be the method signature or the standalone signature 
+        /// (ECMA-335 II.23.2.3: StandAloneMethodSig)</remarks>
         public Signature(Stream src, ITokenResolver resolver, MemberInfo member)
         {
             if (src == null) throw new ArgumentNullException("src", "Source stream cannot be null");
@@ -161,6 +202,25 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        /// <summary>
+        /// Reads the field signature from the specified byte array
+        /// </summary>
+        /// <param name="data">The byte array containing the field signature data</param>
+        /// <param name="resolver">The object used to resolve metadata tokens</param>
+        /// <param name="member">Method that identifies generic context for generic method params, or null 
+        /// if this signature does not belong to a generic method</param>
+        /// <returns>The <c>TypeSpec</c> representing the field type</returns>
+        /// <exception cref="System.ArgumentNullException">Source array is null</exception>
+        /// <exception cref="System.ArgumentException">Source array is empty</exception>
+        /// <exception cref="InvalidDataException">
+        /// The signature data does not represent the field signature
+        /// </exception>
+        /// <remarks>
+        /// The field signature in .NET assembly consists of only the single <see cref="TypeSpec"/> that 
+        /// represents the field type. The signature data passed to this method should not contain 
+        /// data for signature types other then the field signature (such as the method signature), or 
+        /// an exception will be thrown.
+        /// </remarks>
         public static TypeSpec ReadFieldSignature(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
@@ -192,6 +252,9 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         public bool ExplicitThis { get { return this._ExplicitThis; } }
 
+        /// <summary>
+        /// Gets the value indicating whether this signature represents the generic method instantiation
+        /// </summary>
         public bool GenericInst { get { return this._GenInst; } }
 
         /// <summary>
@@ -204,6 +267,10 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         public int ParamsCount { get { return this._ParamTypes.Length; } }
 
+        /// <summary>
+        /// Gets the generic arguments or parameters count for the generic method, or zero if this 
+        /// signature does not represent the generic method.
+        /// </summary>
         public int GenericArgsCount { get { return this._GenParamCount; } }
 
         /// <summary>

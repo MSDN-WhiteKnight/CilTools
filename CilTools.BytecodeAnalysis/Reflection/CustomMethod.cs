@@ -78,11 +78,25 @@ namespace CilTools.Reflection
             return CilTools.Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver,this);
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets the method definition for the generic method. 
+        /// Returns null if this instance does not represent the generic method.
+        /// </summary>
+        /// <remarks>
+        /// The default implementation always returns null
+        /// </remarks>
         public virtual MethodBase GetDefinition()
         {
             return null;
         }
 
+        /// <summary>
+        /// When overridden in the derived class, gets P/Invoke parameters for the imported unmanaged 
+        /// method. Returns null if this instance does not represent an imported unmanaged method.
+        /// </summary>
+        /// <remarks>
+        /// The default implementation always returns null
+        /// </remarks>
         public virtual PInvokeParams GetPInvokeParams()
         {
             return null;
@@ -90,7 +104,7 @@ namespace CilTools.Reflection
 
         /// <summary>
         /// Converts MethodBase into the form suitable for processing by CilTools.BytecodeAnalysis
-        /// </summary>        
+        /// </summary>
         internal static CustomMethod PrepareMethod(MethodBase src)
         {
             if (src == null) return null;
@@ -101,7 +115,7 @@ namespace CilTools.Reflection
 
         /// <summary>
         /// Creates an object that can be used to resolve tokens in the context of specified method
-        /// </summary>        
+        /// </summary>
         internal static ITokenResolver CreateResolver(MethodBase mb)
         {
             if (Types.IsDynamicMethod(mb)) return new ModuleWrapperDynamic(mb);

@@ -90,6 +90,17 @@ namespace CilTools.Reflection
             return ReadSignatureImpl(data, resolver,null);
         }
 
+        /// <summary>
+        /// Reads local variables from the specified signature, resolving tokens using the specified 
+        /// <see cref="ITokenResolver"/> in a generic context identified by the specified member reference.
+        /// </summary>
+        /// <param name="data">Local variable signature as byte array</param>
+        /// <param name="resolver">The object used to resolve metadata tokens</param>
+        /// <param name="member">Method that identifies generic context for generic method params, or null if 
+        /// this signature does not belong to a generic method</param>
+        /// <returns>An array of local variables read from the signature</returns>
+        /// <exception cref="System.ArgumentNullException">Input array is null</exception>
+        /// <exception cref="NotSupportedException">Signature contains unsupported types</exception>
         public static LocalVariable[] ReadSignature(byte[] data, ITokenResolver resolver, MemberInfo member)
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
