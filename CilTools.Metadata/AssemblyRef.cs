@@ -53,7 +53,7 @@ namespace CilTools.Metadata
         /// <summary>
         /// Gets the assembly that contains this assembly reference.
         /// </summary>
-        public MetadataAssembly Owner { get { return this.owner; } }
+        public Assembly Owner { get { return this.owner; } }
         
         /// <summary>
         /// Gets the display name of the assembly
@@ -97,16 +97,6 @@ namespace CilTools.Metadata
             {
                 return this.asn.CodeBase;
             }
-        }
-
-        public IEnumerable<MemberInfo> EnumerateMembers()
-        {
-            yield break;
-        }
-
-        public IEnumerable<MethodBase> EnumerateMethods()
-        {
-            yield break;
         }
 
         /// <summary>

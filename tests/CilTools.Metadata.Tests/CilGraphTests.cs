@@ -14,47 +14,72 @@ namespace CilTools.Metadata.Tests
         [TestMethod]
         public void Test_CilGraph_HelloWorld()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("PrintHelloWorld")[0] as MethodBase;
-            CilGraphTestsCore.Test_CilGraph_HelloWorld(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("PrintHelloWorld")[0] as MethodBase;
+                CilGraphTestsCore.Test_CilGraph_HelloWorld(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilGraph_Loop()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("PrintTenNumbers")[0] as MethodBase;
-            CilGraphTestsCore.Test_CilGraph_Loop(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("PrintTenNumbers")[0] as MethodBase;
+                CilGraphTestsCore.Test_CilGraph_Loop(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilGraph_Exceptions()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("DivideNumbers")[0] as MethodBase;
-            CilGraphTestsCore.Test_CilGraph_Exceptions(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("DivideNumbers")[0] as MethodBase;
+                CilGraphTestsCore.Test_CilGraph_Exceptions(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilGraph_Tokens()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("TestTokens")[0] as MethodBase;
-            CilGraphTestsCore.Test_CilGraph_Tokens(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("TestTokens")[0] as MethodBase;
+                CilGraphTestsCore.Test_CilGraph_Tokens(mi);
+            }
         }
 
 #if DEBUG
         [TestMethod]
         public void Test_CilGraph_Pointer()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("PointerTest")[0] as MethodBase;
-            CilGraphTestsCore.Test_CilGraph_Pointer(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("PointerTest")[0] as MethodBase;
+                CilGraphTestsCore.Test_CilGraph_Pointer(mi);
+            }
         }
 #endif
     }

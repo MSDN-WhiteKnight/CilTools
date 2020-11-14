@@ -15,64 +15,99 @@ namespace CilTools.Metadata.Tests
         [TestMethod]
         public void Test_CilReader_HelloWorld()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("PrintHelloWorld")[0] as MethodBase;
-            CilReaderTestsCore.Test_CilReader_HelloWorld(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("PrintHelloWorld")[0] as MethodBase;
+                CilReaderTestsCore.Test_CilReader_HelloWorld(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilReader_CalcSum()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("CalcSum")[0] as MethodBase;
-            CilReaderTestsCore.Test_CilReader_CalcSum(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("CalcSum")[0] as MethodBase;
+                CilReaderTestsCore.Test_CilReader_CalcSum(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilReader_StaticFieldAccess()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("SquareFoo")[0] as MethodBase;
-            CilReaderTestsCore.Test_CilReader_StaticFieldAccess(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("SquareFoo")[0] as MethodBase;
+                CilReaderTestsCore.Test_CilReader_StaticFieldAccess(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilReader_VirtualCall()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("GetInterfaceCount")[0] as MethodBase;
-            CilReaderTestsCore.Test_CilReader_VirtualCall(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("GetInterfaceCount")[0] as MethodBase;
+                CilReaderTestsCore.Test_CilReader_VirtualCall(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilReader_GenericType()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("PrintList")[0] as MethodBase;
-            CilReaderTestsCore.Test_CilReader_GenericType(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("PrintList")[0] as MethodBase;
+                CilReaderTestsCore.Test_CilReader_GenericType(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilReader_GenericParameter()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("GenerateArray")[0] as MethodBase;
-            CilReaderTestsCore.Test_CilReader_GenericParameter(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("GenerateArray")[0] as MethodBase;
+                CilReaderTestsCore.Test_CilReader_GenericParameter(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilReader_ExternalAssemblyAccess()
         {
-            Assembly ass = MetadataLoader.Load(typeof(System.IO.Path).Assembly.Location);
-            Type t = ass.GetType("System.IO.Path");
-            MethodBase mi = t.GetMember("GetExtension")[0] as MethodBase;
-            CilReaderTestsCore.Test_CilReader_ExternalAssemblyAccess(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(System.IO.Path).Assembly.Location);
+                Type t = ass.GetType("System.IO.Path");
+                MethodBase mi = t.GetMember("GetExtension")[0] as MethodBase;
+                CilReaderTestsCore.Test_CilReader_ExternalAssemblyAccess(mi);
+            }
         }
     }
 }

@@ -24,7 +24,7 @@ namespace CilTools.Metadata
     /// when the instance is owned by the <see cref="CilTools.Metadata.AssemblyReader"/> and the owning 
     /// reader was disposed.
     /// </remarks>
-    public sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
+    internal sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
     {
         static MetadataAssembly unknown = new MetadataAssembly(null,null);
 

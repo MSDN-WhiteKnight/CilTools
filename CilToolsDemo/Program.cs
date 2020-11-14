@@ -80,19 +80,6 @@ namespace CilToolsDemo
             }
         }
 
-        public static void DumpMetadataMethods(string path)
-        {
-            foreach (MethodBase m in MetadataLoader.EnumerateMethods(path))
-            {
-                Console.WriteLine(m.Name);
-                CilGraph graph = CilGraph.Create(m);
-                graph.Print(null, true, true, true, true);
-                Console.WriteLine("-------------------------------------------");
-            }
-
-            Console.ReadKey();
-        }
-
         static void Main(string[] args)
         {
             Console.WriteLine("*** CIL Tools demo ***");

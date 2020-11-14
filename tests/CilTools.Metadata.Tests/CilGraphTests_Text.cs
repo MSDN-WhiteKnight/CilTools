@@ -16,42 +16,61 @@ namespace CilTools.Metadata.Tests
         [TestMethod]
         public void Test_CilGraph_ToString()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("PrintHelloWorld")[0] as MethodBase;
-            CilGraphTestsCore_Text.Test_CilGraph_ToString(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("PrintHelloWorld")[0] as MethodBase;
+                CilGraphTestsCore_Text.Test_CilGraph_ToString(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilGraph_EmptyString()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("TestEmptyString")[0] as MethodBase;
-            CilGraphTestsCore_Text.Test_CilGraph_EmptyString(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("TestEmptyString")[0] as MethodBase;
+                CilGraphTestsCore_Text.Test_CilGraph_EmptyString(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilGraph_OptionalParams()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("TestOptionalParams")[0] as MethodBase;
-            CilGraphTestsCore_Text.Test_CilGraph_OptionalParams(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("TestOptionalParams")[0] as MethodBase;
+                CilGraphTestsCore_Text.Test_CilGraph_OptionalParams(mi);
+            }
         }
 
         [TestMethod]
         public void Test_CilGraph_Attributes()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("AttributeTest")[0] as MethodBase;
-            CilGraph graph = CilGraph.Create(mi);
+            AssemblyReader reader = new AssemblyReader();
 
-            string str = graph.ToText();
-            
-            AssertThat.IsMatch(str, new MatchElement[] { 
-                new Literal(".method"), MatchElement.Any, 
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("AttributeTest")[0] as MethodBase;
+                CilGraph graph = CilGraph.Create(mi);
+
+                string str = graph.ToText();
+
+                AssertThat.IsMatch(str, new MatchElement[] {
+                new Literal(".method"), MatchElement.Any,
                 new Literal(".custom"), MatchElement.Any,
                 new Literal("instance"), MatchElement.Any,
                 new Literal("void"), MatchElement.Any,
@@ -60,9 +79,9 @@ namespace CilTools.Metadata.Tests
                 new Literal("("), MatchElement.Any,
                 new Literal("01 00 00 00"), MatchElement.Any,
                 new Literal(")"), MatchElement.Any
-            });
+                });
 
-            AssertThat.IsMatch(str, new MatchElement[] {
+                AssertThat.IsMatch(str, new MatchElement[] {
                 new Literal(".method"), MatchElement.Any,
                 new Literal(".custom"), MatchElement.Any,
                 new Literal("instance"), MatchElement.Any,
@@ -76,19 +95,24 @@ namespace CilTools.Metadata.Tests
                 new Literal("("), MatchElement.Any,
                 new Literal("01 00 01 00 00 00 00 00"), MatchElement.Any,
                 new Literal(")"), MatchElement.Any,
-            });
+                });
+            }
         }
 
         [TestMethod]
         public void Test_CilGraph_PInvoke()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("ShowWindow")[0] as MethodBase;
-            CilGraph graph = CilGraph.Create(mi);
-            string str = graph.ToText();
+            AssemblyReader reader = new AssemblyReader();
 
-            AssertThat.IsMatch(str, new MatchElement[] {
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("ShowWindow")[0] as MethodBase;
+                CilGraph graph = CilGraph.Create(mi);
+                string str = graph.ToText();
+
+                AssertThat.IsMatch(str, new MatchElement[] {
                 new Literal(".method"), MatchElement.Any,
                 new Literal("static"), MatchElement.Any,
                 new Literal("pinvokeimpl"), MatchElement.Any,
@@ -102,7 +126,8 @@ namespace CilTools.Metadata.Tests
                 new Literal("int32"), MatchElement.Any,
                 new Literal("cil"), MatchElement.Any,
                 new Literal("managed"), MatchElement.Any
-            });
+                });
+            }
 
             /*.method public hidebysig static pinvokeimpl("user32.dll" lasterr winapi) 
             bool ShowWindow(native int hWnd,
@@ -113,10 +138,15 @@ namespace CilTools.Metadata.Tests
         [TestMethod]
         public void Test_CilGraph_Locals()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            MethodBase mi = t.GetMember("CreatePoint")[0] as MethodBase;
-            CilGraphTestsCore_Text.Test_CilGraph_Locals(mi);
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("CreatePoint")[0] as MethodBase;
+                CilGraphTestsCore_Text.Test_CilGraph_Locals(mi);
+            }
         }
 #endif
     }

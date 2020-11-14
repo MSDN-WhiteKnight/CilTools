@@ -15,19 +15,24 @@ namespace CilTools.Metadata.Tests
         [TestMethod]
         public void Test_PInvoke()
         {
-            Assembly ass = MetadataLoader.Load(typeof(SampleMethods).Assembly.Location);
-            Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-            CustomMethod mi = t.GetMember("ShowWindow")[0] as CustomMethod;
+            AssemblyReader reader = new AssemblyReader();
 
-            Assert.IsTrue(
-                mi.Attributes.HasFlag(MethodAttributes.PinvokeImpl),
-                "ShowWindow should have PinvokeImpl attribute"
-                );
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                CustomMethod mi = t.GetMember("ShowWindow")[0] as CustomMethod;
 
-            PInvokeParams pars = mi.GetPInvokeParams();
+                Assert.IsTrue(
+                    mi.Attributes.HasFlag(MethodAttributes.PinvokeImpl),
+                    "ShowWindow should have PinvokeImpl attribute"
+                    );
 
-            Assert.AreEqual("user32.dll", pars.ModuleName);
-            Assert.IsTrue(pars.SetLastError, "SetLastError should be true for ShowWindow");
+                PInvokeParams pars = mi.GetPInvokeParams();
+
+                Assert.AreEqual("user32.dll", pars.ModuleName);
+                Assert.IsTrue(pars.SetLastError, "SetLastError should be true for ShowWindow");
+            }
         }
     }
 }

@@ -54,7 +54,6 @@
     <Compile Include="TypeRef.cs" />
     <Compile Include="MetadataCustomAttribute.cs" />
     <Compile Include="FieldDef.cs" />
-    <Compile Include="MetadataLoader.cs" />
     <Compile Include="MethodDef.cs" />
     <Compile Include="TypeDef.cs" />
     <Compile Include="MethodSpec.cs" />

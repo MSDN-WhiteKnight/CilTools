@@ -20,9 +20,7 @@ namespace CilTools.Metadata
     /// <para>
     /// This type implements the <see cref="IDisposable"/> interface. Calling <see cref="Dispose"/> 
     /// releases all loaded assemblies. It is required to call <see cref="Dispose"/> when you no 
-    /// longer need the instance of the <c>AssemblyReader</c>; there's no finalizer. Explicitly 
-    /// disposing individual <see cref="MetadataAssembly"/> instances is not required if the owning 
-    /// reader is disposed.
+    /// longer need the instance of the <c>AssemblyReader</c>; there's no finalizer. 
     /// </para>
     /// </remarks>
     public sealed class AssemblyReader : IDisposable
@@ -171,9 +169,7 @@ namespace CilTools.Metadata
         /// </summary>
         /// <remarks>
         /// Calling <c>Dispose</c> releases all loaded assemblies. It is required to call <c>Dispose</c> 
-        /// when you no longer need the instance of the <c>AssemblyReader</c>; there's no finalizer. 
-        /// Explicitly disposing individual <see cref="MetadataAssembly"/> instances is not required 
-        /// if the owning reader is disposed.
+        /// when you no longer need the instance of the <c>AssemblyReader</c>; there's no finalizer.
         /// </remarks>
         public void Dispose()
         {
