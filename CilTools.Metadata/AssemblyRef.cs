@@ -11,6 +11,9 @@ using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Metadata
 {
+    /// <summary>
+    /// Represents the reference to an external .NET assembly in Common Language Infrastructure metadata.
+    /// </summary>
     public sealed class AssemblyRef : Assembly
     {
         AssemblyReference assref;
@@ -47,6 +50,9 @@ namespace CilTools.Metadata
             this.asn = n;
         }
 
+        /// <summary>
+        /// Gets the assembly that contains this assembly reference.
+        /// </summary>
         public MetadataAssembly Owner { get { return this.owner; } }
         
         /// <summary>
@@ -70,7 +76,8 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
+        /// Gets the full path to the PE file containing this assembly, or an empty string if the assembly 
+        /// wasn't loaded from file.
         /// </summary>
         public override string Location
         {
@@ -81,7 +88,8 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
+        /// Gets the full path to the PE file containing this assembly, or an empty string if the assembly 
+        /// wasn't loaded from file.
         /// </summary>
         public override string CodeBase
         {
@@ -91,17 +99,11 @@ namespace CilTools.Metadata
             }
         }
 
-        /// <summary>
-        /// Gets the collection of all members defined in this assembly
-        /// </summary>
         public IEnumerable<MemberInfo> EnumerateMembers()
         {
             yield break;
         }
 
-        /// <summary>
-        /// Gets the collection of all methods defined in this assembly
-        /// </summary>
         public IEnumerable<MethodBase> EnumerateMethods()
         {
             yield break;
@@ -111,6 +113,10 @@ namespace CilTools.Metadata
         /// Gets the types defined in this assembly.
         /// </summary>
         /// <returns>An array that contains all the types that are defined in this assembly.</returns>
+        /// <remarks>
+        /// This implementation always returns an empty array. Load assembly explicitly via 
+        /// <see cref="AssemblyReader"/> to get its types.
+        /// </remarks>
         public override Type[] GetTypes()
         {
             return new Type[0];
@@ -144,6 +150,10 @@ namespace CilTools.Metadata
         /// <param name="throwOnError">true to throw an exception if the type is not found; false to return null.</param>
         /// <param name="ignoreCase">true to ignore the case of the type name; otherwise, false.</param>
         /// <returns>An object that represents the specified type.</returns>
+        /// <remarks>
+        /// This implementation always returns null. Load assembly explicitly via 
+        /// <see cref="AssemblyReader"/> to get its types.
+        /// </remarks>
         public override Type GetType(string name, bool throwOnError, bool ignoreCase)
         {
             return null;
@@ -152,6 +162,10 @@ namespace CilTools.Metadata
         /// <summary>
         /// Gets a collection of the public types defined in this assembly that are visible outside the assembly.
         /// </summary>
+        /// <remarks>
+        /// This implementation always returns an empty collection. Load assembly explicitly via 
+        /// <see cref="AssemblyReader"/> to get its types.
+        /// </remarks>
         public override IEnumerable<Type> ExportedTypes
         {
             get
@@ -163,7 +177,9 @@ namespace CilTools.Metadata
         /// <summary>
         /// Gets the public types defined in this assembly that are visible outside the assembly.
         /// </summary>
-        /// <returns>An array that represents the types defined in this assembly that are visible outside the assembly.</returns>
+        /// <returns>
+        /// An array that represents the types defined in this assembly that are visible outside the assembly.
+        /// </returns>
         public override Type[] GetExportedTypes()
         {
             List<Type> ret = new List<Type>();
@@ -177,8 +193,13 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the current assembly was generated dynamically at runtime by using reflection emit.
+        /// Gets a value that indicates whether the current assembly was generated dynamically 
+        /// at runtime by using reflection emit.
         /// </summary>
+        /// <remarks>
+        /// This implementation always returns <c>false</c>. No dynamic assembly could be referenced 
+        /// by a metadata of a static assembly.
+        /// </remarks>
         public override bool IsDynamic
         {
             get

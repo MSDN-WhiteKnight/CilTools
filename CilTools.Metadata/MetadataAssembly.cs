@@ -15,6 +15,15 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
+    /// <summary>
+    /// Represents the metadata of the .NET assembly. Using this class enables you to inspect assembly 
+    /// metadata witout loading into any context of the current process.
+    /// </summary>
+    /// <remarks>
+    /// This type implements <see cref="IDisposable"/>. However, calling <see cref="Dispose"/> is not required 
+    /// when the instance is owned by the <see cref="CilTools.Metadata.AssemblyReader"/> and the owning 
+    /// reader was disposed.
+    /// </remarks>
     public sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
     {
         static MetadataAssembly unknown = new MetadataAssembly(null,null);
@@ -78,10 +87,19 @@ namespace CilTools.Metadata
             else return this.cache[token];
         }
 
+        /// <summary>
+        /// Gets the assembly reader that owns this instance
+        /// </summary>
         public MetadataReader MetadataReader { get { return this.reader; } }
 
+        /// <summary>
+        /// Gets an object used to read metadata from PE file
+        /// </summary>
         public PEReader PEReader { get { return this.peReader; } }
 
+        /// <summary>
+        /// Gets an object used to read .NET metadata of this assembly
+        /// </summary>
         public AssemblyReader AssemblyReader { get { return this.assreader; } }
 
         /// <summary>
@@ -105,7 +123,8 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
+        /// Gets the full path to the PE file containing this assembly, or an empty string if the 
+        /// assembly wasn't loaded from file.
         /// </summary>
         public override string Location
         {
@@ -116,7 +135,8 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets the full path to the PE file containing this assembly, or an empty string if the assembly wasn't loaded from file.
+        /// Gets the full path to the PE file containing this assembly, or an empty string if the assembly 
+        /// wasn't loaded from file.
         /// </summary>
         public override string CodeBase
         {
@@ -127,9 +147,10 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Returns the type identified by the specified metadata token, in the context defined by the specified generic parameters.
+        /// Returns the type identified by the specified metadata token, in the context defined by 
+        /// the specified generic parameters.
         /// </summary>
-        /// <remarks>Generic parameters are ignored in this implementation.</remarks>
+        /// <remarks>Generic  type parameters are ignored in this implementation.</remarks>
         public Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
             if (this.reader == null) return null;
@@ -232,9 +253,10 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Returns the field identified by the specified metadata token, in the context defined by the specified generic parameters.
+        /// Returns the field identified by the specified metadata token, in the context defined by 
+        /// the specified generic parameters.
         /// </summary>
-        /// <remarks>Generic parameters are ignored in this implementation.</remarks>
+        /// <remarks>Generic type parameters are ignored in this implementation.</remarks>
         public FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
             if (this.reader == null) return null;
@@ -281,7 +303,6 @@ namespace CilTools.Metadata
         /// Returns the type or member identified by the specified metadata token, in the context defined by the specified 
         /// generic parameters.
         /// </summary>
-        /// <remarks>Generic parameters are ignored in this implementation.</remarks>
         public MemberInfo ResolveMember(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
             if (this.reader == null) return null;
@@ -533,7 +554,8 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets the <c>Type</c> object with the specified name in the assembly instance, with the options of ignoring the case, and of throwing an exception if the type is not found.
+        /// Gets the <c>Type</c> object with the specified name in the assembly instance, with the options of 
+        /// ignoring the case, and of throwing an exception if the type is not found.
         /// </summary>
         /// <param name="name">The full name of the type.</param>
         /// <param name="throwOnError">true to throw an exception if the type is not found; false to return null.</param>
@@ -604,7 +626,9 @@ namespace CilTools.Metadata
         /// <summary>
         /// Gets the public types defined in this assembly that are visible outside the assembly.
         /// </summary>
-        /// <returns>An array that represents the types defined in this assembly that are visible outside the assembly.</returns>
+        /// <returns>
+        /// An array that represents the types defined in this assembly that are visible outside the assembly.
+        /// </returns>
         public override Type[] GetExportedTypes()
         {
             List<Type> ret = new List<Type>();
@@ -618,8 +642,13 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets a value that indicates whether the current assembly was generated dynamically at runtime by using reflection emit.
+        /// Gets a value that indicates whether the current assembly was generated dynamically at runtime 
+        /// by using reflection emit.
         /// </summary>
+        /// <remarks>
+        /// This implementation always returns <c>false</c>. Dynamic assemblies are not supported by 
+        /// this API.
+        /// </remarks>
         public override bool IsDynamic
         {
             get
@@ -634,6 +663,13 @@ namespace CilTools.Metadata
         /// <value>This implementation always returns <c>true</c></value>
         public override bool ReflectionOnly { get { return true; } }
 
+        /// <summary>
+        /// Releases resources associated with this instance
+        /// </summary>
+        /// <remarks>
+        /// Calling <c>Dispose</c> is not required when the instance is owned by the 
+        /// <see cref="CilTools.Metadata.AssemblyReader"/> and the owning reader was disposed.
+        /// </remarks>
         public void Dispose()
         {
             if (this.peReader != null)

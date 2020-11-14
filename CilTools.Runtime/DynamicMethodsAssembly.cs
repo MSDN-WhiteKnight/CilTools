@@ -35,6 +35,23 @@ namespace CilTools.Runtime
             
         }
 
+        /// <summary>
+        /// Creates new <c>DynamicMethodsAssembly</c> object for the specified data target, optionally 
+        /// providing the <see cref="ClrAssemblyReader"/> instance and indicating whether the created object 
+        /// owns the data target.
+        /// </summary>
+        /// <param name="dt">ClrMD data target to read information from</param>
+        /// <param name="r">
+        /// Assembly reader object to read dependent assemblies.
+        /// </param>
+        /// <param name="autoDispose">
+        /// <c>true</c> if this instance owns tha data target and should dispose it automatically when it is no longer needed
+        /// </param>
+        /// <remarks>
+        /// If the supplied <see cref="ClrAssemblyReader"/> is null, the constructor will create new 
+        /// assembly reader instance using the supplied data target. 
+        /// </remarks>
+        /// <exception cref="System.ArgumentNullException">Supplied data target is null</exception>
         public DynamicMethodsAssembly(DataTarget dt, ClrAssemblyReader r, bool autoDispose)
         {
             if (dt == null) throw new ArgumentNullException("dt");
@@ -67,6 +84,15 @@ namespace CilTools.Runtime
             get { return this.target; }
         }
 
+        /// <summary>
+        /// Gets the assembly reader object used to read dependent assemblies
+        /// </summary>
+        /// <remarks>
+        /// When dynamic method references a member from the external assembly, the library will 
+        /// use this assembly reader object when resolving metadata tokens from the external assembly. 
+        /// The assembly reader acts as cache that stores assembly instance so we don't need to load 
+        /// them multiple times.
+        /// </remarks>
         public ClrAssemblyReader AssemblyReader
         {
             get { return this.reader; }
