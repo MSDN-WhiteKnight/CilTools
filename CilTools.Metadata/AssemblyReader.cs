@@ -25,16 +25,47 @@ namespace CilTools.Metadata
     /// </remarks>
     public sealed class AssemblyReader : IDisposable
     {
-        Dictionary<string, MetadataAssembly> _assemblies = new Dictionary<string, MetadataAssembly>();
+        enum AssemblyIdKind
+        {
+            Name=1, //assembly identified by name
+            Path=2  //assembly identified by full file path
+        }
 
-        void SetAssembly(string key, MetadataAssembly val)
+        struct AssemblyId
+        {
+            AssemblyIdKind kind;
+            string val;
+
+            public AssemblyId(AssemblyIdKind k, string v)
+            {
+                this.kind = k;this.val = v;
+            }
+
+            public override int GetHashCode()
+            {
+                int res = 0;
+
+                if (val != null) res = val.GetHashCode();
+
+                unchecked
+                {
+                    res = res * 11 + (int)kind * 34;
+                }
+
+                return res;
+            }
+        }
+
+        Dictionary<AssemblyId, MetadataAssembly> _assemblies = new Dictionary<AssemblyId, MetadataAssembly>();
+
+        void SetAssembly(ref AssemblyId key, MetadataAssembly val)
         {
             if (this._assemblies.ContainsKey(key)) return;
 
             this._assemblies[key] = val;
         }
 
-        MetadataAssembly GetAssembly(string key)
+        MetadataAssembly GetAssembly(ref AssemblyId key)
         {
             if (!this._assemblies.ContainsKey(key)) return null;
 
@@ -47,13 +78,27 @@ namespace CilTools.Metadata
         /// <param name="path">The path to assembly PE file to load</param>
         /// <returns>The assembly object or null if the assembly reader failed to read 
         /// the requested assembly.</returns>
+        /// <remarks>
+        /// <para>If the assembly is read successfully, it is saved to cache. Eventual attempts to read assembly 
+        /// with the same path will fetch it from the cache instead of loading from file again.</para>
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">Path is null</exception>
+        /// <exception cref="ArgumentException">Path is empty string</exception>
         public Assembly LoadFrom(string path)
         {
             if (_assemblies == null) throw new ObjectDisposedException("AssemblyReader");
+            if (path == null) throw new ArgumentNullException(path);
+            if (path == String.Empty) throw new ArgumentException("Assembly path should not be empty string", path);
 
-            MetadataAssembly ret = new MetadataAssembly(path,this);
+            MetadataAssembly ret = null;
+            AssemblyId assid = new AssemblyId(AssemblyIdKind.Path, path);
+            ret = this.GetAssembly(ref assid); //try cache first
 
-            if (ret != null) this.SetAssembly(ret.GetName().ToString(), ret); //save to cache
+            if (ret != null) return ret;
+
+            ret = new MetadataAssembly(path,this);
+
+            if (ret != null) this.SetAssembly(ref assid, ret); //save to cache
 
             return ret;
         }
@@ -113,19 +158,24 @@ namespace CilTools.Metadata
         /// <see href="https://docs.microsoft.com/dotnet/api/system.reflection.assemblyname"/>  
         /// for more information about full assembly names.</para>
         /// </remarks>
+        /// <exception cref="ArgumentNullException">Name is null</exception>
+        /// <exception cref="ArgumentException">Name is empty string</exception>
         public Assembly Load(string name)
         {
             if (_assemblies == null) throw new ObjectDisposedException("AssemblyReader");
+            if (name == null) throw new ArgumentNullException(name);
+            if (name == String.Empty) throw new ArgumentException("Assembly name should not be empty string",name);
 
             Assembly ret=null;
-            ret = this.GetAssembly(name); //try cache first
+            AssemblyId assid = new AssemblyId(AssemblyIdKind.Name, name);
+            ret = this.GetAssembly(ref assid); //try cache first
 
             if (ret != null) return ret;
 
             ret = OnResolve(this, new ResolveEventArgs(name));
             MetadataAssembly mAss = ret as MetadataAssembly;
 
-            if (mAss!=null) this.SetAssembly(name, mAss); //save to cache
+            if (mAss!=null) this.SetAssembly(ref assid, mAss); //save to cache
 
             return ret;
         }
@@ -175,7 +225,7 @@ namespace CilTools.Metadata
         {
             if (_assemblies == null) return;
 
-            foreach (string key in _assemblies.Keys) _assemblies[key].Dispose();
+            foreach (AssemblyId key in _assemblies.Keys) _assemblies[key].Dispose();
 
             _assemblies = null;
         }
