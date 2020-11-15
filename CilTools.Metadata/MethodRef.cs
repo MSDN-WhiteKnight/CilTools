@@ -97,7 +97,9 @@ namespace CilTools.Metadata
 
             if (t == null) return;
 
-            MemberInfo[] members = t.GetMember(this.Name);
+            MemberInfo[] members = t.GetMember(this.Name,
+                BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static|BindingFlags.Instance
+                );
 
             //if there's only one method, pick it
             if(members.Length == 1 && members[0] is CustomMethod) 
