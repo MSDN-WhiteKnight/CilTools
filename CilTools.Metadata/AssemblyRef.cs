@@ -14,7 +14,7 @@ namespace CilTools.Metadata
     /// <summary>
     /// Represents the reference to an external .NET assembly in Common Language Infrastructure metadata.
     /// </summary>
-    public sealed class AssemblyRef : Assembly
+    internal sealed class AssemblyRef : Assembly
     {
         AssemblyReference assref;
         AssemblyReferenceHandle hAssRef;
