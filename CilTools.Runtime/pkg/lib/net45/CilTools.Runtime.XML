@@ -413,6 +413,25 @@
             </param>
             <exception cref="T:System.ArgumentNullException">Supplied data target is null</exception>
         </member>
+        <member name="M:CilTools.Runtime.DynamicMethodsAssembly.#ctor(Microsoft.Diagnostics.Runtime.DataTarget,CilTools.Runtime.ClrAssemblyReader,System.Boolean)">
+            <summary>
+            Creates new <c>DynamicMethodsAssembly</c> object for the specified data target, optionally 
+            providing the <see cref="T:CilTools.Runtime.ClrAssemblyReader"/> instance and indicating whether the created object 
+            owns the data target.
+            </summary>
+            <param name="dt">ClrMD data target to read information from</param>
+            <param name="r">
+            Assembly reader object to read dependent assemblies.
+            </param>
+            <param name="autoDispose">
+            <c>true</c> if this instance owns tha data target and should dispose it automatically when it is no longer needed
+            </param>
+            <remarks>
+            If the supplied <see cref="T:CilTools.Runtime.ClrAssemblyReader"/> is null, the constructor will create new 
+            assembly reader instance using the supplied data target. 
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">Supplied data target is null</exception>
+        </member>
         <member name="P:CilTools.Runtime.DynamicMethodsAssembly.ChildType">
             <summary>
             Gets pseudo-type that contains the collection of dynamic methods
@@ -422,6 +441,17 @@
             <summary>
             ClrMD data target associated with this instance
             </summary>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader">
+            <summary>
+            Gets the assembly reader object used to read dependent assemblies
+            </summary>
+            <remarks>
+            When dynamic method references a member from the external assembly, the library will 
+            use this assembly reader object when resolving metadata tokens from the external assembly. 
+            The assembly reader acts as cache that stores assembly instance so we don't need to load 
+            them multiple times.
+            </remarks>
         </member>
         <member name="P:CilTools.Runtime.DynamicMethodsAssembly.FullName">
             <summary>

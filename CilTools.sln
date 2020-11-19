@@ -15,13 +15,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmitSampleApp", "tests\Emit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilView", "CilView\CilView.csproj", "{6B539538-E819-4F47-AB9B-6768F5FF6E0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Metadata", "CilTools.Metadata\CilTools.Metadata.csproj", "{7EC7D947-C802-4384-A438-25DB46539A88}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4A7BB35F-E42B-4A4E-8833-6B048065F45A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Tests.Common", "tests\CilTools.Tests.Common\CilTools.Tests.Common.csproj", "{0220F688-84CF-4F97-9439-8A7A8F58230B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Metadata.Tests", "tests\CilTools.Metadata.Tests\CilTools.Metadata.Tests.csproj", "{AC5F228E-77EA-4F45-A659-9D6DC5531328}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.Metadata", "CilTools.Metadata\CilTools.Metadata.csproj", "{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,16 +93,6 @@ Global
 		{6B539538-E819-4F47-AB9B-6768F5FF6E0F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6B539538-E819-4F47-AB9B-6768F5FF6E0F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6B539538-E819-4F47-AB9B-6768F5FF6E0F}.Release|Win32.ActiveCfg = Release|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Debug|Win32.ActiveCfg = Debug|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{7EC7D947-C802-4384-A438-25DB46539A88}.Release|Win32.ActiveCfg = Release|Any CPU
 		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0220F688-84CF-4F97-9439-8A7A8F58230B}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -127,6 +117,18 @@ Global
 		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Release|Win32.ActiveCfg = Release|Any CPU
 		{AC5F228E-77EA-4F45-A659-9D6DC5531328}.Release|Win32.Build.0 = Release|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Debug|Win32.Build.0 = Debug|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Release|Win32.ActiveCfg = Release|Any CPU
+		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
