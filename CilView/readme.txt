@@ -77,6 +77,33 @@ You can install CIL View via ClickOnce if you want to download updates automatic
 
 Using auto-update requires stable internet connection and access to the https://msdn-whiteknight.github.io/ website. If you are using old Windows or .NET Framework versions, you might be unable to connect due to TLS protocol version or chiphersuite mismatch.
 
+* Changelog *
+
+2.1
+- Update assembly reading mechanism to use CilTools.Metadata instead of loading assemblies directly into the current process. This enables inspecting assemblies for another target framework (such as .NET Standard) or when some dependencies could not be resolved. This also means assemblies can be unloaded from memory when they are no longer needed.
+- Add support for method implementation flags when outputting method signatures
+- Add support for function pointer types
+- Add support for module-level ("global") functions and fields
+- Add syntax highlighting for calli instruction's operand
+- Add full custom modifiers support (they were previously only supported in standalone signatures)
+- Add custom modifier syntax highlighting
+- Add pinvokeimpl support
+- Add exception block support for dynamic methods
+- Add method token resolution for dynamic methods
+- Support auto-completion in assembly and type combo boxes
+- Improve performance for type combo box when assembly has a lot of types
+- Rework search. Search results are now displayed in context menu. Method seacrh is added.
+- Format char default values as hex
+- Improve custom attribute support (now custom attribute data is properly shown for any attribute)
+- Improve empty method body handling. Now empty body is ignored only when method is is abstract, P/Invoke or implemented by runtime. In other cases the error message is displayed.
+- Place custom attributes before default parameter values in disassembled method code
+- Fix ldloc.s/stloc.s instruction handling
+- Fix ldtoken instruction handling with field operand
+- Fix exception when method implementation is provided by runtime
+- Fix possible null reference exception when reading array/pointer of generic args
+- Fix BadImageFormatException on C++/CLI assemblies
+- Fix signatures with function pointers being incorrectly displayed in left panel
+
 ---------------------------------------------
 
 Copyright (c) 2020,  MSDN.WhiteKnight
