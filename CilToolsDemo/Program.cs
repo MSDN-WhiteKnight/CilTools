@@ -10,7 +10,6 @@ using System.Linq;
 using CilTools.BytecodeAnalysis;
 using CilTools.BytecodeAnalysis.Extensions;
 using CilTools.Runtime;
-using CilTools.Metadata;
 
 namespace CilToolsDemo
 {

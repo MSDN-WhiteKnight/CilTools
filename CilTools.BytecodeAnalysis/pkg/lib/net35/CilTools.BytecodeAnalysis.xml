@@ -1081,7 +1081,75 @@
             <exception cref="T:System.ArgumentException">Source array is empty</exception>
             <exception cref="T:System.IO.EndOfStreamException">Unexpected end of input data</exception>
             <exception cref="T:CilTools.BytecodeAnalysis.CilParserException">Input data is invalid</exception>
-            <exception cref="T:System.NotSupportedException">Signature contains generic types, function pointers or variable-bound arrays</exception>
+            <exception cref="T:System.NotSupportedException">Signature contains unsupported elements</exception>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver)">
+            <summary>
+            Initializes a new signature object, respoving metadata tokens using the specified resolver
+            </summary>
+            <param name="data">The byte array containing the signature data</param>
+            <param name="resolver">The object used to resolve metadata tokens</param>
+            <exception cref="T:System.ArgumentNullException">Source array is null</exception>
+            <exception cref="T:System.ArgumentException">Source array is empty</exception>
+            <exception cref="T:System.IO.EndOfStreamException">Unexpected end of input data</exception>
+            <exception cref="T:CilTools.BytecodeAnalysis.CilParserException">Input data is invalid</exception>
+            <exception cref="T:System.NotSupportedException">Signature contains unsupported elements</exception>
+            <remarks>The signature could be the method signature or the standalone signature 
+            (ECMA-335 II.23.2.3: StandAloneMethodSig)</remarks>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)">
+            <summary>
+            Initializes a new signature object, respoving metadata tokens using the specified resolver in 
+            the specified generic context
+            </summary>
+            <param name="data">The byte array containing the signature data</param>
+            <param name="resolver">The object used to resolve metadata tokens</param>
+            <param name="member">Method that identifies generic context for generic method params, or null 
+            if this signature does not belong to a generic method</param>
+            <exception cref="T:System.ArgumentNullException">Source array is null</exception>
+            <exception cref="T:System.ArgumentException">Source array is empty</exception>
+            <exception cref="T:System.IO.EndOfStreamException">Unexpected end of input data</exception>
+            <exception cref="T:CilTools.BytecodeAnalysis.CilParserException">Input data is invalid</exception>
+            <exception cref="T:System.NotSupportedException">Signature contains unsupported elements</exception>
+            <remarks>The signature could be the method signature or the standalone signature 
+            (ECMA-335 II.23.2.3: StandAloneMethodSig)</remarks>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.Signature.#ctor(System.IO.Stream,CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)">
+            <summary>
+            Initializes a new signature object from the stream, respoving metadata tokens using the specified 
+            resolver in the specified generic context
+            </summary>
+            <param name="src">The stream to read signature data from</param>
+            <param name="resolver">The object used to resolve metadata tokens</param>
+            <param name="member">Method that identifies generic context for generic method params, or null 
+            if this signature does not belong to a generic method</param>
+            <exception cref="T:System.ArgumentNullException">Source stream is null</exception>
+            <exception cref="T:System.IO.EndOfStreamException">Unexpected end of input data</exception>
+            <exception cref="T:CilTools.BytecodeAnalysis.CilParserException">Input data is invalid</exception>
+            <exception cref="T:System.NotSupportedException">Signature contains unsupported elements</exception>
+            <remarks>The signature could be the method signature or the standalone signature 
+            (ECMA-335 II.23.2.3: StandAloneMethodSig)</remarks>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)">
+            <summary>
+            Reads the field signature from the specified byte array
+            </summary>
+            <param name="data">The byte array containing the field signature data</param>
+            <param name="resolver">The object used to resolve metadata tokens</param>
+            <param name="member">Method that identifies generic context for generic method params, or null 
+            if this signature does not belong to a generic method</param>
+            <returns>The <c>TypeSpec</c> representing the field type</returns>
+            <exception cref="T:System.ArgumentNullException">Source array is null</exception>
+            <exception cref="T:System.ArgumentException">Source array is empty</exception>
+            <exception cref="T:System.IO.InvalidDataException">
+            The signature data does not represent the field signature
+            </exception>
+            <remarks>
+            The field signature in .NET assembly consists of only the single <see cref="T:CilTools.BytecodeAnalysis.TypeSpec"/> that 
+            represents the field type. The signature data passed to this method should not contain 
+            data for signature types other then the field signature (such as the method signature), or 
+            an exception will be thrown.
+            </remarks>
         </member>
         <member name="P:CilTools.BytecodeAnalysis.Signature.CallingConvention">
             <summary>
@@ -1098,6 +1166,11 @@
             Gets the value indicating whether the instance pointer is included explicitly in this signature
             </summary>
         </member>
+        <member name="P:CilTools.BytecodeAnalysis.Signature.GenericInst">
+            <summary>
+            Gets the value indicating whether this signature represents the generic method instantiation
+            </summary>
+        </member>
         <member name="P:CilTools.BytecodeAnalysis.Signature.ReturnType">
             <summary>
             Gets the return type of the function described by this signature
@@ -1106,6 +1179,12 @@
         <member name="P:CilTools.BytecodeAnalysis.Signature.ParamsCount">
             <summary>
             Gets the amount of fixed parameters that the function described by this signature takes
+            </summary>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.Signature.GenericArgsCount">
+            <summary>
+            Gets the generic arguments or parameters count for the generic method, or zero if this 
+            signature does not represent the generic method.
             </summary>
         </member>
         <member name="M:CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)">
@@ -1297,6 +1376,18 @@
             Represents type specification, the set of type information stored in the signature, as defined by ECMA-335
             </summary>
         </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)">
+            <summary>
+            Reads <c>TypeSpec</c> object from the specified byte array
+            </summary>
+            <param name="data">Byte array to read data from</param>
+            <param name="resolver">Object used to resolve metadata tokens</param>
+            <param name="member">
+            Method that identifies generic context for generic method params, or null if this <c>TypeSpec</c> 
+            does not belong to a generic method
+            </param>
+            <returns></returns>
+        </member>
         <member name="P:CilTools.BytecodeAnalysis.TypeSpec.ElementType">
             <summary>
             Gets the element type of this type specification 
@@ -1333,23 +1424,375 @@
         </member>
         <member name="P:CilTools.BytecodeAnalysis.TypeSpec.Type">
             <summary>
-            Gets the type which this type specification represents
+            Gets the type which this type specification represents (deprecated)
             </summary>
+            <remarks>
+            Starting from the version 2.1, the <c>TypeSpec</c> itself extends <c>System.Type</c>, so this property is not needed. 
+            Use this object directly when you need an instance of <c>System.Type</c>, or the <see cref="P:CilTools.BytecodeAnalysis.TypeSpec.UnderlyingSystemType"/> property 
+            if you need the runtime type. This property will be removed in future releases.
+            </remarks>
         </member>
         <member name="P:CilTools.BytecodeAnalysis.TypeSpec.IsPinned">
             <summary>
             Gets the value indicating whether this TypeSpec represents pinned local variable
             </summary>
         </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.GUID">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.Module">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.Assembly">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.FullName">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.Namespace">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.AssemblyQualifiedName">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.BaseType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.UnderlyingSystemType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.Name">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetConstructorImpl(System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetConstructors(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetMethodImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetMethods(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetField(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetFields(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetInterface(System.String,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetInterfaces">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetEvent(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetEvents(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetPropertyImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Type,System.Type[],System.Reflection.ParameterModifier[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetProperties(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetNestedTypes(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetNestedType(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetMembers(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetAttributeFlagsImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.IsArrayImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.IsByRefImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.IsPointerImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.IsPrimitiveImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.IsCOMObjectImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetElementType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.HasElementTypeImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetCustomAttributes(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetCustomAttributes(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.IsDefined(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.MetadataToken">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetArrayRank">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.MakeArrayType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.MakeByRefType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.MakePointerType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.MakeGenericType(System.Type[])">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.DeclaringType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.DeclaringMethod">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.IsGenericParameter">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.GenericParameterPosition">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.IsGenericType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.IsGenericTypeDefinition">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.BytecodeAnalysis.TypeSpec.TargetSignature">
+            <summary>
+            Gets the target function signature, if this <c>TypeSpec</c> represents a function pointer. Otherwise, returns null.
+            </summary>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetGenericArguments">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.GetGenericTypeDefinition">
+            <inheritdoc/>
+        </member>
         <member name="M:CilTools.BytecodeAnalysis.TypeSpec.ToString">
             <summary>
             Returns textual representation of this type specification as CIL code
             </summary>        
         </member>
+        <member name="M:CilTools.BytecodeAnalysis.TypeSpec.IsFunctionPointer">
+            <summary>
+            Gets a value indicating whether this <c>TypeSpec</c> represents a function pointer
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:CilTools.Reflection.ComplexTypeKind">
+            <summary>
+            Specifies the kind of the complex type
+            </summary>
+        </member>
+        <member name="F:CilTools.Reflection.ComplexTypeKind.SzArray">
+            <summary>
+            Single-dimensional zero-based array
+            </summary>
+        </member>
+        <member name="F:CilTools.Reflection.ComplexTypeKind.ByRef">
+            <summary>
+            Managed reference
+            </summary>
+        </member>
+        <member name="F:CilTools.Reflection.ComplexTypeKind.Pointer">
+            <summary>
+            Unmanaged pointer
+            </summary>
+        </member>
+        <member name="F:CilTools.Reflection.ComplexTypeKind.GenInst">
+            <summary>
+            Generic type instantiation
+            </summary>
+        </member>
+        <member name="T:CilTools.Reflection.ComplexType">
+            <summary>
+            Represents a complex type. Complex type is a type contructed on demand based on another type defined in some assembly, 
+            for example, an array or pointer type.
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.#ctor(System.Type,CilTools.Reflection.ComplexTypeKind,System.Type[])">
+            <summary>
+            Creates new instance of the complex type
+            </summary>
+            <param name="t">Element type</param>
+            <param name="k">Kind of the complex type</param>
+            <param name="ga">An array of generic type arguments, or null if this is not a generic type instantiation</param>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.Assembly">
+            <inheritdoc/>        
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.AssemblyQualifiedName">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.BaseType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.FullName">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.GUID">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetAttributeFlagsImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetConstructorImpl(System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetConstructors(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetElementType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetEvent(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetEvents(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetField(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetFields(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetInterface(System.String,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetInterfaces">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetMember(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetMembers(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetMethodImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetMethods(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetNestedType(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetNestedTypes(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetProperties(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetPropertyImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Type,System.Type[],System.Reflection.ParameterModifier[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.HasElementTypeImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.IsArrayImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.IsByRefImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.IsCOMObjectImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.IsPointerImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.IsPrimitiveImpl">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.Module">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.Namespace">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.UnderlyingSystemType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetCustomAttributes(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetCustomAttributes(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.IsDefined(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.MetadataToken">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetArrayRank">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetHashCode">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.IsGenericType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.IsGenericTypeDefinition">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetGenericTypeDefinition">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.GetGenericArguments">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.MakeArrayType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.MakeByRefType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.MakePointerType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.ComplexType.DeclaringType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.ComplexType.ToString">
+            <inheritdoc/>
+        </member>
         <member name="T:CilTools.Reflection.CustomMethod">
             <summary>
             A base class for MethodBase implementations providing custom mechanisms for extracting bytecode data. 
-            Inherit from this class when you want CilBytecodeparser to process bytecode from your custom data source, instead of 
+            Inherit from this class when you want CilTools.BytecodeAnalysis to process bytecode from your custom data source, instead of 
             reflection.
             </summary>
         </member>
@@ -1410,15 +1853,33 @@
             The default implementation reads local varaibles from the signature returned by GetLocalVarSignature method
             </remarks>
         </member>
+        <member name="M:CilTools.Reflection.CustomMethod.GetDefinition">
+            <summary>
+            When overridden in the derived class, gets the method definition for the generic method. 
+            Returns null if this instance does not represent the generic method.
+            </summary>
+            <remarks>
+            The default implementation always returns null
+            </remarks>
+        </member>
+        <member name="M:CilTools.Reflection.CustomMethod.GetPInvokeParams">
+            <summary>
+            When overridden in the derived class, gets P/Invoke parameters for the imported unmanaged 
+            method. Returns null if this instance does not represent an imported unmanaged method.
+            </summary>
+            <remarks>
+            The default implementation always returns null
+            </remarks>
+        </member>
         <member name="M:CilTools.Reflection.CustomMethod.PrepareMethod(System.Reflection.MethodBase)">
             <summary>
             Converts MethodBase into the form suitable for processing by CilTools.BytecodeAnalysis
-            </summary>        
+            </summary>
         </member>
         <member name="M:CilTools.Reflection.CustomMethod.CreateResolver(System.Reflection.MethodBase)">
             <summary>
             Creates an object that can be used to resolve tokens in the context of specified method
-            </summary>        
+            </summary>
         </member>
         <member name="T:CilTools.Reflection.ExceptionBlock">
             <summary>
@@ -1469,6 +1930,195 @@
             <summary>
             Creates new ExceptionBlock instance based on the specified reflection ExceptionHandlingClause object
             </summary>        
+        </member>
+        <member name="T:CilTools.Reflection.GenericParamType">
+            <summary>
+            Represents the generic parameter
+            </summary>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.#ctor(System.Reflection.MethodBase,System.Int32)">
+            <summary>
+            Creates a new instance of the generic parameter
+            </summary>
+            <param name="m">Declaring method, if this is a generic method parameter</param>
+            <param name="index">Generic parameter index</param>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.#ctor(System.Reflection.MethodBase,System.Int32,System.String)">
+            <summary>
+            Creates a new instance of the generic parameter with the specified name
+            </summary>
+            <param name="m">Declaring method, if this is a generic method parameter</param>
+            <param name="index">Generic parameter index</param>
+            <param name="name">Generic parameter name</param>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.Assembly">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.AssemblyQualifiedName">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.BaseType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.FullName">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.GUID">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetAttributeFlagsImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetConstructorImpl(System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetConstructors(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetElementType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetEvent(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetEvents(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetField(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetFields(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetInterface(System.String,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetInterfaces">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetMember(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetMembers(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetMethodImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Reflection.CallingConventions,System.Type[],System.Reflection.ParameterModifier[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetMethods(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetNestedType(System.String,System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetNestedTypes(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetProperties(System.Reflection.BindingFlags)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetPropertyImpl(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Type,System.Type[],System.Reflection.ParameterModifier[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.HasElementTypeImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.IsArrayImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.IsByRefImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.IsCOMObjectImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.IsPointerImpl">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.IsPrimitiveImpl">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.Module">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.Namespace">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.UnderlyingSystemType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetCustomAttributes(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetCustomAttributes(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.IsDefined(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.MetadataToken">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.GetArrayRank">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.IsGenericParameter">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.GenericParameterPosition">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Reflection.GenericParamType.DeclaringMethod">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.MakeArrayType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.MakeByRefType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Reflection.GenericParamType.MakePointerType">
+            <inheritdoc/>
+        </member>
+        <member name="T:CilTools.Reflection.ICustomAttribute">
+            <summary>
+            Represents the custom attribute data
+            </summary>
+            <remarks>
+            This interface is needed to support fetching custom attribute data in reflection-only mode 
+            in .NET Framework 3.5. The library treats objects that implement <c>ICustomAttribute</c> in a 
+            special way when processing an array returned by <c>MethodBase.GetCustomAttributes</c>, 
+            fetching raw attribute data instead of attempting to emulate that data based on what reflection 
+            returns for an attribute type. Implement this interface when you need to pass your custom method 
+            object to APIs like <see cref="T:CilTools.BytecodeAnalysis.CilGraph"/> and make it possible to 
+            read raw data of method's custom attributes.
+            </remarks>
+        </member>
+        <member name="P:CilTools.Reflection.ICustomAttribute.Owner">
+            <summary>
+            Gets the method this attribute is attached to
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.ICustomAttribute.Constructor">
+            <summary>
+            Gets the constructor used to instantiate object of this attribute
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.ICustomAttribute.Data">
+            <summary>
+            Gets the raw attribute data as the byte array
+            </summary>
+            <remarks>
+            The format of the byte array is defined by ECMA-335 specification, paragraph II.23.3 - 
+            Custom attributes. The data in the byte array specifies constructor's arguments and 
+            property values used to create an object for this attribute.
+            </remarks>
         </member>
         <member name="T:CilTools.Reflection.ITokenResolver">
             <summary>
@@ -1570,6 +2220,19 @@
             <exception cref="T:System.ArgumentNullException">Input array is null</exception>
             <exception cref="T:System.NotSupportedException">Signature contains unsupported types</exception>
         </member>
+        <member name="M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)">
+            <summary>
+            Reads local variables from the specified signature, resolving tokens using the specified 
+            <see cref="T:CilTools.Reflection.ITokenResolver"/> in a generic context identified by the specified member reference.
+            </summary>
+            <param name="data">Local variable signature as byte array</param>
+            <param name="resolver">The object used to resolve metadata tokens</param>
+            <param name="member">Method that identifies generic context for generic method params, or null if 
+            this signature does not belong to a generic method</param>
+            <returns>An array of local variables read from the signature</returns>
+            <exception cref="T:System.ArgumentNullException">Input array is null</exception>
+            <exception cref="T:System.NotSupportedException">Signature contains unsupported types</exception>
+        </member>
         <member name="M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)">
             <summary>
             Reads local variables from the specified signature, resolving tokens within the scope of the specified module
@@ -1607,6 +2270,82 @@
             Resolves metadata tokens in the context of specified dynamic method
             </summary>
         </member>
+        <member name="T:CilTools.Reflection.PInvokeParams">
+            <summary>
+            Represents the parameters of the imported unmanaged method 
+            </summary>
+            <remarks>
+            <para>This type is used with the <see cref="M:CilTools.Reflection.CustomMethod.GetPInvokeParams"/> method.</para>
+            <para>Imported unmanaged method is a method implemented as a Platform Invoke (P/Invoke) call. 
+            The call to such method is marshalled into the call to corresponding native function by 
+            Common Language Runtime. P/Invoke method is defined in .NET using <see cref="T:System.Runtime.InteropServices.DllImportAttribute"/>. 
+            See the .NET documentation for more information about P/Invoke: 
+            <see href="https://docs.microsoft.com/dotnet/standard/native-interop/pinvoke"/>.
+            </para>
+            </remarks>
+        </member>
+        <member name="M:CilTools.Reflection.PInvokeParams.#ctor(System.String,System.String,System.Runtime.InteropServices.CharSet,System.Boolean,System.Boolean,System.Nullable{System.Boolean},System.Runtime.InteropServices.CallingConvention)">
+            <summary>
+            Creates the new instance of <c>PInvokeParams</c> object.
+            </summary>
+            <param name="module">Unmanaged module from which the method is imported</param>
+            <param name="func">The name of the imported native function</param>
+            <param name="charSet">The character set used by this method</param>
+            <param name="exactSpelling">
+            The value indicating that the marshaller should not probe for charset-specific names 
+            when searching for an entry point. 
+            </param>
+            <param name="setLastError">
+            The value indicating that the imported function sets the last WinAPI error.
+            </param>
+            <param name="bestFitMapping">
+            The value indicating whether the marshaller should use the best fit mapping behaviour when 
+            converting characters between character sets.
+            </param>
+            <param name="callConv">The clling convention of the imported function.</param>
+        </member>
+        <member name="P:CilTools.Reflection.PInvokeParams.ModuleName">
+            <summary>
+            Gets the name of the unmanaged module from which the method is imported
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.PInvokeParams.FunctionName">
+            <summary>
+            Gets the name of the imported native function
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.PInvokeParams.CharSet">
+            <summary>
+            Gets the character set used by this method
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.PInvokeParams.ExactSpelling">
+            <summary>
+            Gets the value indicating that the marshaller should not probe for charset-specific names 
+            when searching for an entry point.
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.PInvokeParams.SetLastError">
+            <summary>
+            Gets the value indicating that the imported function sets the last WinAPI error.
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.PInvokeParams.BestFitMapping">
+            <summary>
+            Gets the value indicating whether the marshaller should use the best fit mapping behaviour when 
+            converting characters between character sets.
+            </summary>
+        </member>
+        <member name="P:CilTools.Reflection.PInvokeParams.CallingConvention">
+            <summary>
+            Gets the calling convention for the imported function.
+            </summary>
+            <remarks>
+            Calling convention is a set of rules defining how the function interacts with its caller. See 
+            <see href="https://docs.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions"/> 
+            for more information about native calling conventions.
+            </remarks>
+        </member>
         <member name="T:CilTools.Syntax.BlockSyntax">
             <summary>
             Represents the block syntax in the CIL assembler. The block contains child directive and instruction nodes.
@@ -1618,7 +2357,7 @@
         </member>
         <member name="P:CilTools.Syntax.BlockSyntax.HeaderSyntax">
             <summary>
-            Gets the header syntax of this, or an empty collection if this block has no header
+            Gets the header syntax of this block, or an empty collection if this block has no header
             </summary>
             <remarks>
             For the exception handler blocks, the header represents the exception clause. Other types of blocks does not have headers.
@@ -1858,7 +2597,7 @@
         </member>
         <member name="P:CilTools.Syntax.MethodDefSyntax.Body">
             <summary>
-            Gets the block the forms the body of the defined method
+            Gets the block that forms the body of the defined method
             </summary>
         </member>
         <member name="M:CilTools.Syntax.MethodDefSyntax.ToText(System.IO.TextWriter)">
@@ -1918,7 +2657,7 @@
             </summary>
             <remarks>
             Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
-            content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
+            content, both syntactically meaningful and indentation-only, is stored within one of the adjacent nodes, not in the separate node.
             </remarks>
         </member>
         <member name="P:CilTools.Syntax.SyntaxNode.TrailingWhitespace">
@@ -1927,7 +2666,7 @@
             </summary>
             <remarks>
             Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace 
-            content, both syntactically meaningful and indentation-only, is stored withing one of the adjasent nodes, not in the separate node.
+            content, both syntactically meaningful and indentation-only, is stored within one of the adjacent nodes, not in the separate node.
             </remarks>
         </member>
         <member name="P:CilTools.Syntax.SyntaxNode.Parent">

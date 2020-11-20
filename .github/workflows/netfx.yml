@@ -12,6 +12,9 @@ jobs:
     - uses: nuget/setup-nuget@v1
     - name: Restore NuGet packages
       run: nuget restore CilTools.sln -PackagesDirectory packages
+    - name: Restore package references
+      run: |
+        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe" -t:restore
     - name: Build with MSBuild
       run: |
         & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe"

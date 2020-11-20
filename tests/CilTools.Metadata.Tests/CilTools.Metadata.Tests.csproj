@@ -54,7 +54,7 @@
       <Name>CilTools.BytecodeAnalysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\CilTools.Metadata\CilTools.Metadata.csproj">
-      <Project>{7ec7d947-c802-4384-a438-25db46539a88}</Project>
+      <Project>{af94acbd-2263-4cb9-bc15-abfd484cf2cf}</Project>
       <Name>CilTools.Metadata</Name>
     </ProjectReference>
     <ProjectReference Include="..\CilTools.Tests.Common\CilTools.Tests.Common.csproj">
