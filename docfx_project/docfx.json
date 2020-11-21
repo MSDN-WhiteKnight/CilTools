@@ -4,7 +4,7 @@
 	  "src": [
         {
           "files": ["*.dll"],          
-          "src": "../CilTools.BytecodeAnalysis/bin/Debug"
+          "src": "../CilTools.BytecodeAnalysis/bin/Debug/net35"
         },
 		{
           "files": ["CilTools.Runtime.dll"],          

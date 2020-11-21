@@ -1,108 +1,51 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{38496D54-0BC8-479B-A57E-F0EC83E78AD3}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CilTools.BytecodeAnalysis</RootNamespace>
-    <AssemblyName>CilTools.BytecodeAnalysis</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <TargetFrameworks>netstandard2.0;net35</TargetFrameworks>
+    <Version>2.1.0</Version>
+    <Authors>MSDN-WhiteKnight</Authors>
+    <Company>CIL Tools</Company>
+    <Product>CIL Tools</Product>
+    <Copyright>Copyright (c) 2020, MSDN.WhiteKnight</Copyright>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageProjectUrl>https://github.com/MSDN-WhiteKnight/CilTools</PackageProjectUrl>
+    <PackageIcon>IL.png</PackageIcon>
+    <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
+    <PackageTags>dotnet cil msil bytecode</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <FileVersion>2.1.0.0</FileVersion>
+    <Description>CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.</Description>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Debug\CilTools.BytecodeAnalysis.xml</DocumentationFile>
-    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
+    <DocumentationFile>bin\Debug\netstandard2.0\CilTools.BytecodeAnalysis.xml</DocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>1</WarningLevel>
-    <DocumentationFile>bin\Release\CilTools.BytecodeAnalysis.xml</DocumentationFile>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard2.0\CilTools.BytecodeAnalysis.xml</DocumentationFile>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Diagnostics.cs" />
-    <Compile Include="CilAnalysis.cs" />
-    <Compile Include="CilErrorEventArgs.cs" />
-    <Compile Include="CilInstruction.cs" />
-    <Compile Include="CilTokenInstruction.cs" />
-    <Compile Include="CustomModifier.cs" />
-    <Compile Include="DebugUtils.cs" />
-    <Compile Include="CilGraph.cs" />
-    <Compile Include="CilGraphNode.cs" />
-    <Compile Include="CilInstructionImpl.cs" />
-    <Compile Include="CilReader.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="AssemblyInfo.cs" />
-    <Compile Include="MetadataReader.cs" />
-    <Compile Include="Reflection\ComplexType.cs" />
-    <Compile Include="Reflection\CustomMethod.cs" />
-    <Compile Include="Reflection\ExceptionBlock.cs" />
-    <Compile Include="Reflection\FunctionPointerType.cs" />
-    <Compile Include="Reflection\GenericParamType.cs" />
-    <Compile Include="Reflection\ICustomAttribute.cs" />
-    <Compile Include="Reflection\ITokenResolver.cs" />
-    <Compile Include="Reflection\ITypeInfo.cs" />
-    <Compile Include="Reflection\LocalVariable.cs" />
-    <Compile Include="Reflection\MethodBaseWrapper.cs" />
-    <Compile Include="Reflection\ModuleWrapper.cs" />
-    <Compile Include="Reflection\ModuleWrapperDynamic.cs" />
-    <Compile Include="Reflection\PInvokeParams.cs" />
-    <Compile Include="Reflection\Types.cs" />
-    <Compile Include="Signature.cs" />
-    <Compile Include="Syntax\BlockSyntax.cs" />
-    <Compile Include="Syntax\CommentSyntax.cs" />
-    <Compile Include="Syntax\DirectiveSyntax.cs" />
-    <Compile Include="Syntax\GenericSyntax.cs" />
-    <Compile Include="Syntax\IdentifierSyntax.cs" />
-    <Compile Include="Syntax\InstructionSyntax.cs" />
-    <Compile Include="Syntax\KeywordKind.cs" />
-    <Compile Include="Syntax\KeywordSyntax.cs" />
-    <Compile Include="Syntax\LiteralSyntax.cs" />
-    <Compile Include="Syntax\MemberRefSyntax.cs" />
-    <Compile Include="Syntax\MethodDefSyntax.cs" />
-    <Compile Include="Syntax\PunctuationSyntax.cs" />
-    <Compile Include="Syntax\SyntaxNode.cs" />
-    <Compile Include="TypeSpec.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="pkg\CilTools.BytecodeAnalysis.dll.nuspec" />
-    <None Include="pkg\package.cmd" />
-    <None Include="ReadMe.txt" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent Condition=" '$(Configuration)' == 'Release' ">$(ProjectDir)\pkg\package.cmd</PostBuildEvent>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net35|AnyCPU'">
+    <DocumentationFile>bin\Debug\net35\CilTools.BytecodeAnalysis.xml</DocumentationFile>
   </PropertyGroup>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net35|AnyCPU'">
+    <DocumentationFile>bin\Release\net35\CilTools.BytecodeAnalysis.xml</DocumentationFile>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <None Include="..\docs\images\IL.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="license.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="ReadMe.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
 </Project>
