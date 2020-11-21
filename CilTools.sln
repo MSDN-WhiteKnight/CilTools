@@ -5,8 +5,6 @@ VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilToolsDemo", "CilToolsDemo\CilToolsDemo.csproj", "{BB8F6999-8B4C-4339-BA84-6964E5E5EC5A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.BytecodeAnalysis", "CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj", "{38496D54-0BC8-479B-A57E-F0EC83E78AD3}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.BytecodeAnalysis.Tests", "tests\CilTools.BytecodeAnalysis.Tests\CilTools.BytecodeAnalysis.Tests.csproj", "{3B6EA845-B9F5-4041-BC32-F043B3D4B01C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Runtime", "CilTools.Runtime\CilTools.Runtime.csproj", "{97D23C38-120E-47EA-BBCE-4FAE3C750BEE}"
@@ -22,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Metadata.Tests", "tests\CilTools.Metadata.Tests\CilTools.Metadata.Tests.csproj", "{AC5F228E-77EA-4F45-A659-9D6DC5531328}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.Metadata", "CilTools.Metadata\CilTools.Metadata.csproj", "{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.BytecodeAnalysis", "CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj", "{9A397C75-1438-43FD-ABFC-B19A918B4435}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -129,6 +129,18 @@ Global
 		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Release|Win32.ActiveCfg = Release|Any CPU
 		{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}.Release|Win32.Build.0 = Release|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Debug|Win32.Build.0 = Debug|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Release|Win32.ActiveCfg = Release|Any CPU
+		{9A397C75-1438-43FD-ABFC-B19A918B4435}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
