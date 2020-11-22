@@ -4,7 +4,7 @@ License: BSD 2.0
 
 CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
-Requirements: .NET Framework 3.5+
+Requirements: .NET Framework 3.5+ or .NET Standard 2.0+
 
 Usage: Add reference to CilTools.BytecodeAnalysis.dll, import CilTools.BytecodeAnalysis namespace. Use CilReader.GetInstructions to get the collection of instructions from method, CilAnalysis.GetGraph to get a a graph that represents a flow of control between method's instructions, or CilAnalysis.MethodToText when you need to output method's CIL code as text. CilTools.BytecodeAnalysis.Extensions namespace provides an alternative syntax via extenstion methods.
 
@@ -137,3 +137,25 @@ v2.0
 - Avoid first-chance ArgumentException when resolving tokens
 - Fix bug in MetadataReader.ReadCompressed
 - Fix ldflda/ldsflda instructions handling
+
+2.1
+- Add .NET Standard 2.0+ support
+- Add support for method implementation flags when outputting method signatures
+- Add support for function pointer types. The standard reflection APIs don't support function pointers, so this only works with custom implementations; but CilTools.Metadata does implement this functionality.
+- Add support for module-level ("global") functions and fields
+- Add syntax API support for calli instruction's operand
+- Add full custom modifiers support (they were previously only supported in standalone signatures). Only works with CilTools.Metadata or custom implementations.
+- Add syntax API support for custom modifiers 
+- Add pinvokeimpl support (only CilTools.Metadata or custom implementations)
+- Add support for newslot and final keywords
+- Add support for generic types in signature parser
+- The TypeSpec class now inherits from System.Type, so it can be used in many contexts where reflection type construct is needed. The "Type" property of TypeSpec is now deprecated.
+- Format char default values as hex
+- Improve custom attribute support (raw attribute data now can be fetched - only CilTools.Metadata or custom implementations)
+- Improve empty method body handling. Now empty body is ignored only when method is is abstract, P/Invoke or implemented by runtime. In other cases the exception is generated.
+- Improve generic methods support. The CustomMethod class now has the GetDefinition method that inheritors can implement to enable fetching of method definition (and therefore parameter names)
+- Place custom attributes before default parameter values in disassembled method code
+- Fix ldloc.s/stloc.s instruction handling
+- Fix ldtoken instruction handling with field operand
+- Fix possible null reference when converting array/pointer of generic args to syntax
+- Fix return type output for CustomMethod implementations
