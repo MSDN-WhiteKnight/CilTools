@@ -1,0 +1,652 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Metadata.AssemblyReader
+  commentId: T:CilTools.Metadata.AssemblyReader
+  id: AssemblyReader
+  parent: CilTools.Metadata
+  children:
+  - CilTools.Metadata.AssemblyReader.#ctor
+  - CilTools.Metadata.AssemblyReader.AssemblyResolve
+  - CilTools.Metadata.AssemblyReader.Dispose
+  - CilTools.Metadata.AssemblyReader.Load(System.Reflection.AssemblyName)
+  - CilTools.Metadata.AssemblyReader.Load(System.String)
+  - CilTools.Metadata.AssemblyReader.LoadFrom(System.String)
+  langs:
+  - csharp
+  - vb
+  name: AssemblyReader
+  nameWithType: AssemblyReader
+  fullName: CilTools.Metadata.AssemblyReader
+  type: Class
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nReads information about .NET assemblies without loading them into the current process\n"
+  remarks: "\n<p>When the library needs to resolve metadata tokens from the external assembly, it will attempt to \nread it using <code>AssemblyReader</code>. The <code>AssemblyReader</code> acts as a cache that stores \nassembly instances so we don&apos;t need to load them multiple times.</p>\n<p>\nThis type implements the <xref href=\"System.IDisposable\" data-throw-if-not-resolved=\"false\"></xref> interface. Calling <xref href=\"CilTools.Metadata.AssemblyReader.Dispose\" data-throw-if-not-resolved=\"false\"></xref> \nreleases all loaded assemblies. It is required to call <xref href=\"CilTools.Metadata.AssemblyReader.Dispose\" data-throw-if-not-resolved=\"false\"></xref> when you no \nlonger need the instance of the <code>AssemblyReader</code>; there&apos;s no finalizer. \n</p>\n"
+  syntax:
+    content: 'public sealed class AssemblyReader : IDisposable'
+    content.vb: >-
+      Public NotInheritable Class AssemblyReader
+          Implements IDisposable
+  inheritance:
+  - System.Object
+  implements:
+  - System.IDisposable
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - sealed
+  - class
+  modifiers.vb:
+  - Public
+  - NotInheritable
+  - Class
+- uid: CilTools.Metadata.AssemblyReader.LoadFrom(System.String)
+  commentId: M:CilTools.Metadata.AssemblyReader.LoadFrom(System.String)
+  id: LoadFrom(System.String)
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: LoadFrom(String)
+  nameWithType: AssemblyReader.LoadFrom(String)
+  fullName: CilTools.Metadata.AssemblyReader.LoadFrom(System.String)
+  type: Method
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nLoads the assembly identified by assembly file path\n"
+  remarks: "\n<p>If the assembly is read successfully, it is saved to cache. Eventual attempts to read assembly \nwith the same path will fetch it from the cache instead of loading from file again.</p>\n"
+  syntax:
+    content: public Assembly LoadFrom(string path)
+    parameters:
+    - id: path
+      type: System.String
+      description: The path to assembly PE file to load
+    return:
+      type: System.Reflection.Assembly
+      description: "The assembly object or null if the assembly reader failed to read \nthe requested assembly."
+    content.vb: Public Function LoadFrom(path As String) As Assembly
+  overload: CilTools.Metadata.AssemblyReader.LoadFrom*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Path is null
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Path is empty string
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.Load(System.String)
+  commentId: M:CilTools.Metadata.AssemblyReader.Load(System.String)
+  id: Load(System.String)
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: Load(String)
+  nameWithType: AssemblyReader.Load(String)
+  fullName: CilTools.Metadata.AssemblyReader.Load(System.String)
+  type: Method
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nLoads the assembly identified by assembly name string.\n"
+  remarks: "\n<p>If the assembly is read successfully, it is saved to cache. Eventual attempts to read assembly \nwith the same name will fetch it from the cache instead of loading from file again.</p>\n<p>The full assembly name, besides the simple name, can contain the assembly version, \npublic key token and culture. See \n<a href=\"https://docs.microsoft.com/dotnet/api/system.reflection.assemblyname\">https://docs.microsoft.com/dotnet/api/system.reflection.assemblyname</a>  \nfor more information about full assembly names.</p>\n"
+  syntax:
+    content: public Assembly Load(string name)
+    parameters:
+    - id: name
+      type: System.String
+      description: The full name of the assembly to read
+    return:
+      type: System.Reflection.Assembly
+      description: "The assembly object or null if the assembly reader failed to read \nthe requested assembly."
+    content.vb: Public Function Load(name As String) As Assembly
+  overload: CilTools.Metadata.AssemblyReader.Load*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Name is null
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Name is empty string
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.Load(System.Reflection.AssemblyName)
+  commentId: M:CilTools.Metadata.AssemblyReader.Load(System.Reflection.AssemblyName)
+  id: Load(System.Reflection.AssemblyName)
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: Load(AssemblyName)
+  nameWithType: AssemblyReader.Load(AssemblyName)
+  fullName: CilTools.Metadata.AssemblyReader.Load(System.Reflection.AssemblyName)
+  type: Method
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nLoads the assembly identified by the <xref href=\"System.Reflection.AssemblyName\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  remarks: "\nIf the assembly is read successfully, it is saved to cache. Eventual attempts to read assembly \nwith the same name will fetch it from the cache instead of loading from file again.\n"
+  syntax:
+    content: public Assembly Load(AssemblyName name)
+    parameters:
+    - id: name
+      type: System.Reflection.AssemblyName
+      description: The name of assembly to load
+    return:
+      type: System.Reflection.Assembly
+      description: "The assembly object or null if the assembly reader failed to read \nthe requested assembly."
+    content.vb: Public Function Load(name As AssemblyName) As Assembly
+  overload: CilTools.Metadata.AssemblyReader.Load*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.Dispose
+  commentId: M:CilTools.Metadata.AssemblyReader.Dispose
+  id: Dispose
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: Dispose()
+  nameWithType: AssemblyReader.Dispose()
+  fullName: CilTools.Metadata.AssemblyReader.Dispose()
+  type: Method
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nReleases resources associated with the assembly reader instance\n"
+  remarks: "\nCalling <code>Dispose</code> releases all loaded assemblies. It is required to call <code>Dispose</code> \nwhen you no longer need the instance of the <code>AssemblyReader</code>; there&apos;s no finalizer.\n"
+  syntax:
+    content: public void Dispose()
+    content.vb: Public Sub Dispose
+  overload: CilTools.Metadata.AssemblyReader.Dispose*
+  implements:
+  - System.IDisposable.Dispose
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.#ctor
+  commentId: M:CilTools.Metadata.AssemblyReader.#ctor
+  id: '#ctor'
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: AssemblyReader()
+  nameWithType: AssemblyReader.AssemblyReader()
+  fullName: CilTools.Metadata.AssemblyReader.AssemblyReader()
+  type: Constructor
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  syntax:
+    content: public AssemblyReader()
+    content.vb: Public Sub New
+  overload: CilTools.Metadata.AssemblyReader.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.AssemblyResolve
+  commentId: E:CilTools.Metadata.AssemblyReader.AssemblyResolve
+  id: AssemblyResolve
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: AssemblyResolve
+  nameWithType: AssemblyReader.AssemblyResolve
+  fullName: CilTools.Metadata.AssemblyReader.AssemblyResolve
+  type: Event
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nRaised when the assembly reader needs to resolve an external assembly\n"
+  remarks: "\nWhen the assembly reader needs to resolve an external assembly, it first looks for it in the \ncurrent runtime directory (where the system assemblies are located). If the assembly is not \nfound there, the reader calls the <code>AssemblyResolve</code> event handle so you can customize \nhow assemlies are resolved. The rules for handling this event are similar with the \n<xref href=\"System.AppDomain.AssemblyResolve\" data-throw-if-not-resolved=\"false\"></xref> event in .NET Framework. See \n<a href=\"https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads\">https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads</a> for more \ninformation.\n"
+  syntax:
+    content: public event ResolveEventHandler AssemblyResolve
+    return:
+      type: System.ResolveEventHandler
+    content.vb: Public Event AssemblyResolve As ResolveEventHandler
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: CilTools.Metadata
+  commentId: N:CilTools.Metadata
+  isExternal: true
+  name: CilTools.Metadata
+  nameWithType: CilTools.Metadata
+  fullName: CilTools.Metadata
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.IDisposable
+  commentId: T:System.IDisposable
+  parent: System
+  isExternal: true
+  name: IDisposable
+  nameWithType: IDisposable
+  fullName: System.IDisposable
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Metadata.AssemblyReader.LoadFrom*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.LoadFrom
+  isExternal: true
+  name: LoadFrom
+  nameWithType: AssemblyReader.LoadFrom
+  fullName: CilTools.Metadata.AssemblyReader.LoadFrom
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Reflection.Assembly
+  commentId: T:System.Reflection.Assembly
+  parent: System.Reflection
+  isExternal: true
+  name: Assembly
+  nameWithType: Assembly
+  fullName: System.Reflection.Assembly
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Metadata.AssemblyReader.Load*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.Load
+  isExternal: true
+  name: Load
+  nameWithType: AssemblyReader.Load
+  fullName: CilTools.Metadata.AssemblyReader.Load
+- uid: System.Reflection.AssemblyName
+  commentId: T:System.Reflection.AssemblyName
+  parent: System.Reflection
+  isExternal: true
+  name: AssemblyName
+  nameWithType: AssemblyName
+  fullName: System.Reflection.AssemblyName
+- uid: CilTools.Metadata.AssemblyReader.Dispose*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.Dispose
+  isExternal: true
+  name: Dispose
+  nameWithType: AssemblyReader.Dispose
+  fullName: CilTools.Metadata.AssemblyReader.Dispose
+- uid: System.IDisposable.Dispose
+  commentId: M:System.IDisposable.Dispose
+  parent: System.IDisposable
+  isExternal: true
+  name: Dispose()
+  nameWithType: IDisposable.Dispose()
+  fullName: System.IDisposable.Dispose()
+  spec.csharp:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.IDisposable.Dispose
+    name: Dispose
+    nameWithType: IDisposable.Dispose
+    fullName: System.IDisposable.Dispose
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Metadata.AssemblyReader.#ctor*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.#ctor
+  isExternal: true
+  name: AssemblyReader
+  nameWithType: AssemblyReader.AssemblyReader
+  fullName: CilTools.Metadata.AssemblyReader.AssemblyReader
+- uid: System.ResolveEventHandler
+  commentId: T:System.ResolveEventHandler
+  parent: System
+  isExternal: true
+  name: ResolveEventHandler
+  nameWithType: ResolveEventHandler
+  fullName: System.ResolveEventHandler

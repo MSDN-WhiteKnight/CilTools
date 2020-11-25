@@ -7,9 +7,11 @@ items:
   children:
   - CilTools.Reflection.CustomMethod.#ctor
   - CilTools.Reflection.CustomMethod.GetBytecode
+  - CilTools.Reflection.CustomMethod.GetDefinition
   - CilTools.Reflection.CustomMethod.GetExceptionBlocks
   - CilTools.Reflection.CustomMethod.GetLocalVariables
   - CilTools.Reflection.CustomMethod.GetLocalVarSignature
+  - CilTools.Reflection.CustomMethod.GetPInvokeParams
   - CilTools.Reflection.CustomMethod.InitLocals
   - CilTools.Reflection.CustomMethod.InitLocalsSpecified
   - CilTools.Reflection.CustomMethod.MaxStackSize
@@ -29,7 +31,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Reflection
-  summary: "\nA base class for MethodBase implementations providing custom mechanisms for extracting bytecode data. \nInherit from this class when you want CilBytecodeparser to process bytecode from your custom data source, instead of \nreflection.\n"
+  summary: "\nA base class for MethodBase implementations providing custom mechanisms for extracting bytecode data. \nInherit from this class when you want CilTools.BytecodeAnalysis to process bytecode from your custom data source, instead of \nreflection.\n"
   syntax:
     content: 'public abstract class CustomMethod : MethodBase, ICustomAttributeProvider, _MemberInfo, _MethodBase'
     content.vb: >-
@@ -251,6 +253,68 @@ items:
       type: CilTools.Reflection.LocalVariable[]
     content.vb: Public Overridable Function GetLocalVariables As LocalVariable()
   overload: CilTools.Reflection.CustomMethod.GetLocalVariables*
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+- uid: CilTools.Reflection.CustomMethod.GetDefinition
+  commentId: M:CilTools.Reflection.CustomMethod.GetDefinition
+  id: GetDefinition
+  parent: CilTools.Reflection.CustomMethod
+  langs:
+  - csharp
+  - vb
+  name: GetDefinition()
+  nameWithType: CustomMethod.GetDefinition()
+  fullName: CilTools.Reflection.CustomMethod.GetDefinition()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nWhen overridden in the derived class, gets the method definition for the generic method. \nReturns null if this instance does not represent the generic method.\n"
+  remarks: "\nThe default implementation always returns null\n"
+  syntax:
+    content: public virtual MethodBase GetDefinition()
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Public Overridable Function GetDefinition As MethodBase
+  overload: CilTools.Reflection.CustomMethod.GetDefinition*
+  modifiers.csharp:
+  - public
+  - virtual
+  modifiers.vb:
+  - Public
+  - Overridable
+- uid: CilTools.Reflection.CustomMethod.GetPInvokeParams
+  commentId: M:CilTools.Reflection.CustomMethod.GetPInvokeParams
+  id: GetPInvokeParams
+  parent: CilTools.Reflection.CustomMethod
+  langs:
+  - csharp
+  - vb
+  name: GetPInvokeParams()
+  nameWithType: CustomMethod.GetPInvokeParams()
+  fullName: CilTools.Reflection.CustomMethod.GetPInvokeParams()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nWhen overridden in the derived class, gets P/Invoke parameters for the imported unmanaged \nmethod. Returns null if this instance does not represent an imported unmanaged method.\n"
+  remarks: "\nThe default implementation always returns null\n"
+  syntax:
+    content: public virtual PInvokeParams GetPInvokeParams()
+    return:
+      type: CilTools.Reflection.PInvokeParams
+    content.vb: Public Overridable Function GetPInvokeParams As PInvokeParams
+  overload: CilTools.Reflection.CustomMethod.GetPInvokeParams*
   modifiers.csharp:
   - public
   - virtual
@@ -3166,6 +3230,25 @@ references:
   - name: ()
     nameWithType: ()
     fullName: ()
+- uid: CilTools.Reflection.CustomMethod.GetDefinition*
+  commentId: Overload:CilTools.Reflection.CustomMethod.GetDefinition
+  isExternal: true
+  name: GetDefinition
+  nameWithType: CustomMethod.GetDefinition
+  fullName: CilTools.Reflection.CustomMethod.GetDefinition
+- uid: CilTools.Reflection.CustomMethod.GetPInvokeParams*
+  commentId: Overload:CilTools.Reflection.CustomMethod.GetPInvokeParams
+  isExternal: true
+  name: GetPInvokeParams
+  nameWithType: CustomMethod.GetPInvokeParams
+  fullName: CilTools.Reflection.CustomMethod.GetPInvokeParams
+- uid: CilTools.Reflection.PInvokeParams
+  commentId: T:CilTools.Reflection.PInvokeParams
+  parent: CilTools.Reflection
+  isExternal: true
+  name: PInvokeParams
+  nameWithType: PInvokeParams
+  fullName: CilTools.Reflection.PInvokeParams
 - uid: CilTools.Reflection.CustomMethod.#ctor*
   commentId: Overload:CilTools.Reflection.CustomMethod.#ctor
   isExternal: true

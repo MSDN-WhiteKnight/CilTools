@@ -113,6 +113,164 @@
   
   
   <a id="CilTools_BytecodeAnalysis_Signature__ctor_" data-uid="CilTools.BytecodeAnalysis.Signature.#ctor*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_Signature__ctor_System_Byte___CilTools_Reflection_ITokenResolver_" data-uid="CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver)">Signature(Byte[], ITokenResolver)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new signature object, respoving metadata tokens using the specified resolver</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Signature(byte[] data, ITokenResolver resolver)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The byte array containing the signature data</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a></td>
+        <td><span class="parametername">resolver</span></td>
+        <td><p>The object used to resolve metadata tokens</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_BytecodeAnalysis_Signature__ctor_System_Byte___CilTools_Reflection_ITokenResolver__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The signature could be the method signature or the standalone signature
+(ECMA-335 II.23.2.3: StandAloneMethodSig)</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Source array is null</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Source array is empty</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.EndOfStreamException</span></td>
+        <td><p>Unexpected end of input data</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.BytecodeAnalysis.CilParserException.html">CilParserException</a></td>
+        <td><p>Input data is invalid</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>Signature contains unsupported elements</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_Signature__ctor_" data-uid="CilTools.BytecodeAnalysis.Signature.#ctor*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_Signature__ctor_System_Byte___CilTools_Reflection_ITokenResolver_System_Reflection_MemberInfo_" data-uid="CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)">Signature(Byte[], ITokenResolver, MemberInfo)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new signature object, respoving metadata tokens using the specified resolver in
+the specified generic context</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Signature(byte[] data, ITokenResolver resolver, MemberInfo member)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The byte array containing the signature data</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a></td>
+        <td><span class="parametername">resolver</span></td>
+        <td><p>The object used to resolve metadata tokens</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td><span class="parametername">member</span></td>
+        <td><p>Method that identifies generic context for generic method params, or null
+if this signature does not belong to a generic method</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_BytecodeAnalysis_Signature__ctor_System_Byte___CilTools_Reflection_ITokenResolver_System_Reflection_MemberInfo__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The signature could be the method signature or the standalone signature
+(ECMA-335 II.23.2.3: StandAloneMethodSig)</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Source array is null</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Source array is empty</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.EndOfStreamException</span></td>
+        <td><p>Unexpected end of input data</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.BytecodeAnalysis.CilParserException.html">CilParserException</a></td>
+        <td><p>Input data is invalid</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>Signature contains unsupported elements</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_Signature__ctor_" data-uid="CilTools.BytecodeAnalysis.Signature.#ctor*"></a>
   <h4 id="CilTools_BytecodeAnalysis_Signature__ctor_System_Byte___System_Reflection_Module_" data-uid="CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],System.Reflection.Module)">Signature(Byte[], Module)</h4>
   <div class="markdown level1 summary"><p>Initializes a new Signature object representing a stand-alone method signature</p>
 </div>
@@ -176,7 +334,85 @@
       </tr>
       <tr>
         <td><span class="xref">System.NotSupportedException</span></td>
-        <td><p>Signature contains generic types, function pointers or variable-bound arrays</p>
+        <td><p>Signature contains unsupported elements</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_Signature__ctor_" data-uid="CilTools.BytecodeAnalysis.Signature.#ctor*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_Signature__ctor_System_IO_Stream_CilTools_Reflection_ITokenResolver_System_Reflection_MemberInfo_" data-uid="CilTools.BytecodeAnalysis.Signature.#ctor(System.IO.Stream,CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)">Signature(Stream, ITokenResolver, MemberInfo)</h4>
+  <div class="markdown level1 summary"><p>Initializes a new signature object from the stream, respoving metadata tokens using the specified
+resolver in the specified generic context</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Signature(Stream src, ITokenResolver resolver, MemberInfo member)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.Stream</span></td>
+        <td><span class="parametername">src</span></td>
+        <td><p>The stream to read signature data from</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a></td>
+        <td><span class="parametername">resolver</span></td>
+        <td><p>The object used to resolve metadata tokens</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td><span class="parametername">member</span></td>
+        <td><p>Method that identifies generic context for generic method params, or null
+if this signature does not belong to a generic method</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_BytecodeAnalysis_Signature__ctor_System_IO_Stream_CilTools_Reflection_ITokenResolver_System_Reflection_MemberInfo__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The signature could be the method signature or the standalone signature
+(ECMA-335 II.23.2.3: StandAloneMethodSig)</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Source stream is null</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.EndOfStreamException</span></td>
+        <td><p>Unexpected end of input data</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.BytecodeAnalysis.CilParserException.html">CilParserException</a></td>
+        <td><p>Input data is invalid</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>Signature contains unsupported elements</p>
 </td>
       </tr>
     </tbody>
@@ -219,6 +455,59 @@
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public bool ExplicitThis { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_Signature_GenericArgsCount_" data-uid="CilTools.BytecodeAnalysis.Signature.GenericArgsCount*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_Signature_GenericArgsCount" data-uid="CilTools.BytecodeAnalysis.Signature.GenericArgsCount">GenericArgsCount</h4>
+  <div class="markdown level1 summary"><p>Gets the generic arguments or parameters count for the generic method, or zero if this
+signature does not represent the generic method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int GenericArgsCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_Signature_GenericInst_" data-uid="CilTools.BytecodeAnalysis.Signature.GenericInst*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_Signature_GenericInst" data-uid="CilTools.BytecodeAnalysis.Signature.GenericInst">GenericInst</h4>
+  <div class="markdown level1 summary"><p>Gets the value indicating whether this signature represents the generic method instantiation</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool GenericInst { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -425,6 +714,96 @@
       <tr>
         <td><a class="xref" href="CilTools.BytecodeAnalysis.TypeSpec.html">TypeSpec</a>[]</td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_Signature_ReadFieldSignature_" data-uid="CilTools.BytecodeAnalysis.Signature.ReadFieldSignature*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_Signature_ReadFieldSignature_System_Byte___CilTools_Reflection_ITokenResolver_System_Reflection_MemberInfo_" data-uid="CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)">ReadFieldSignature(Byte[], ITokenResolver, MemberInfo)</h4>
+  <div class="markdown level1 summary"><p>Reads the field signature from the specified byte array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TypeSpec ReadFieldSignature(byte[] data, ITokenResolver resolver, MemberInfo member)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">data</span></td>
+        <td><p>The byte array containing the field signature data</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a></td>
+        <td><span class="parametername">resolver</span></td>
+        <td><p>The object used to resolve metadata tokens</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td><span class="parametername">member</span></td>
+        <td><p>Method that identifies generic context for generic method params, or null
+if this signature does not belong to a generic method</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.BytecodeAnalysis.TypeSpec.html">TypeSpec</a></td>
+        <td><p>The <code>TypeSpec</code> representing the field type</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_BytecodeAnalysis_Signature_ReadFieldSignature_System_Byte___CilTools_Reflection_ITokenResolver_System_Reflection_MemberInfo__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The field signature in .NET assembly consists of only the single <a class="xref" href="CilTools.BytecodeAnalysis.TypeSpec.html">TypeSpec</a> that
+represents the field type. The signature data passed to this method should not contain
+data for signature types other then the field signature (such as the method signature), or
+an exception will be thrown.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Source array is null</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Source array is empty</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.InvalidDataException</span></td>
+        <td><p>The signature data does not represent the field signature</p>
+</td>
       </tr>
     </tbody>
   </table>

@@ -5,14 +5,20 @@ items:
   id: Signature
   parent: CilTools.BytecodeAnalysis
   children:
+  - CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver)
+  - CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   - CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],System.Reflection.Module)
+  - CilTools.BytecodeAnalysis.Signature.#ctor(System.IO.Stream,CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   - CilTools.BytecodeAnalysis.Signature.CallingConvention
   - CilTools.BytecodeAnalysis.Signature.ExplicitThis
+  - CilTools.BytecodeAnalysis.Signature.GenericArgsCount
+  - CilTools.BytecodeAnalysis.Signature.GenericInst
   - CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)
   - CilTools.BytecodeAnalysis.Signature.GetParamTypes
   - CilTools.BytecodeAnalysis.Signature.HasThis
   - CilTools.BytecodeAnalysis.Signature.ParamsCount
   - CilTools.BytecodeAnalysis.Signature.ParamTypes
+  - CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   - CilTools.BytecodeAnalysis.Signature.ReturnType
   - CilTools.BytecodeAnalysis.Signature.ToString
   langs:
@@ -91,7 +97,7 @@ items:
     description: Input data is invalid
   - type: System.NotSupportedException
     commentId: T:System.NotSupportedException
-    description: Signature contains generic types, function pointers or variable-bound arrays
+    description: Signature contains unsupported elements
   nameWithType.vb: Signature.Signature(Byte(), Module)
   modifiers.csharp:
   - public
@@ -99,6 +105,220 @@ items:
   - Public
   fullName.vb: CilTools.BytecodeAnalysis.Signature.Signature(System.Byte(), System.Reflection.Module)
   name.vb: Signature(Byte(), Module)
+- uid: CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver)
+  commentId: M:CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver)
+  id: '#ctor(System.Byte[],CilTools.Reflection.ITokenResolver)'
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: Signature(Byte[], ITokenResolver)
+  nameWithType: Signature.Signature(Byte[], ITokenResolver)
+  fullName: CilTools.BytecodeAnalysis.Signature.Signature(System.Byte[], CilTools.Reflection.ITokenResolver)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nInitializes a new signature object, respoving metadata tokens using the specified resolver\n"
+  remarks: "The signature could be the method signature or the standalone signature \n(ECMA-335 II.23.2.3: StandAloneMethodSig)"
+  syntax:
+    content: public Signature(byte[] data, ITokenResolver resolver)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: The byte array containing the signature data
+    - id: resolver
+      type: CilTools.Reflection.ITokenResolver
+      description: The object used to resolve metadata tokens
+    content.vb: Public Sub New(data As Byte(), resolver As ITokenResolver)
+  overload: CilTools.BytecodeAnalysis.Signature.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source array is null
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Source array is empty
+  - type: System.IO.EndOfStreamException
+    commentId: T:System.IO.EndOfStreamException
+    description: Unexpected end of input data
+  - type: CilTools.BytecodeAnalysis.CilParserException
+    commentId: T:CilTools.BytecodeAnalysis.CilParserException
+    description: Input data is invalid
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: Signature contains unsupported elements
+  nameWithType.vb: Signature.Signature(Byte(), ITokenResolver)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CilTools.BytecodeAnalysis.Signature.Signature(System.Byte(), CilTools.Reflection.ITokenResolver)
+  name.vb: Signature(Byte(), ITokenResolver)
+- uid: CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  commentId: M:CilTools.BytecodeAnalysis.Signature.#ctor(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  id: '#ctor(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)'
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: Signature(Byte[], ITokenResolver, MemberInfo)
+  nameWithType: Signature.Signature(Byte[], ITokenResolver, MemberInfo)
+  fullName: CilTools.BytecodeAnalysis.Signature.Signature(System.Byte[], CilTools.Reflection.ITokenResolver, System.Reflection.MemberInfo)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nInitializes a new signature object, respoving metadata tokens using the specified resolver in \nthe specified generic context\n"
+  remarks: "The signature could be the method signature or the standalone signature \n(ECMA-335 II.23.2.3: StandAloneMethodSig)"
+  syntax:
+    content: public Signature(byte[] data, ITokenResolver resolver, MemberInfo member)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: The byte array containing the signature data
+    - id: resolver
+      type: CilTools.Reflection.ITokenResolver
+      description: The object used to resolve metadata tokens
+    - id: member
+      type: System.Reflection.MemberInfo
+      description: "Method that identifies generic context for generic method params, or null \nif this signature does not belong to a generic method"
+    content.vb: Public Sub New(data As Byte(), resolver As ITokenResolver, member As MemberInfo)
+  overload: CilTools.BytecodeAnalysis.Signature.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source array is null
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Source array is empty
+  - type: System.IO.EndOfStreamException
+    commentId: T:System.IO.EndOfStreamException
+    description: Unexpected end of input data
+  - type: CilTools.BytecodeAnalysis.CilParserException
+    commentId: T:CilTools.BytecodeAnalysis.CilParserException
+    description: Input data is invalid
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: Signature contains unsupported elements
+  nameWithType.vb: Signature.Signature(Byte(), ITokenResolver, MemberInfo)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CilTools.BytecodeAnalysis.Signature.Signature(System.Byte(), CilTools.Reflection.ITokenResolver, System.Reflection.MemberInfo)
+  name.vb: Signature(Byte(), ITokenResolver, MemberInfo)
+- uid: CilTools.BytecodeAnalysis.Signature.#ctor(System.IO.Stream,CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  commentId: M:CilTools.BytecodeAnalysis.Signature.#ctor(System.IO.Stream,CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  id: '#ctor(System.IO.Stream,CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)'
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: Signature(Stream, ITokenResolver, MemberInfo)
+  nameWithType: Signature.Signature(Stream, ITokenResolver, MemberInfo)
+  fullName: CilTools.BytecodeAnalysis.Signature.Signature(System.IO.Stream, CilTools.Reflection.ITokenResolver, System.Reflection.MemberInfo)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nInitializes a new signature object from the stream, respoving metadata tokens using the specified \nresolver in the specified generic context\n"
+  remarks: "The signature could be the method signature or the standalone signature \n(ECMA-335 II.23.2.3: StandAloneMethodSig)"
+  syntax:
+    content: public Signature(Stream src, ITokenResolver resolver, MemberInfo member)
+    parameters:
+    - id: src
+      type: System.IO.Stream
+      description: The stream to read signature data from
+    - id: resolver
+      type: CilTools.Reflection.ITokenResolver
+      description: The object used to resolve metadata tokens
+    - id: member
+      type: System.Reflection.MemberInfo
+      description: "Method that identifies generic context for generic method params, or null \nif this signature does not belong to a generic method"
+    content.vb: Public Sub New(src As Stream, resolver As ITokenResolver, member As MemberInfo)
+  overload: CilTools.BytecodeAnalysis.Signature.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source stream is null
+  - type: System.IO.EndOfStreamException
+    commentId: T:System.IO.EndOfStreamException
+    description: Unexpected end of input data
+  - type: CilTools.BytecodeAnalysis.CilParserException
+    commentId: T:CilTools.BytecodeAnalysis.CilParserException
+    description: Input data is invalid
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: Signature contains unsupported elements
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  commentId: M:CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  id: ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: ReadFieldSignature(Byte[], ITokenResolver, MemberInfo)
+  nameWithType: Signature.ReadFieldSignature(Byte[], ITokenResolver, MemberInfo)
+  fullName: CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte[], CilTools.Reflection.ITokenResolver, System.Reflection.MemberInfo)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReads the field signature from the specified byte array\n"
+  remarks: "\nThe field signature in .NET assembly consists of only the single <xref href=\"CilTools.BytecodeAnalysis.TypeSpec\" data-throw-if-not-resolved=\"false\"></xref> that \nrepresents the field type. The signature data passed to this method should not contain \ndata for signature types other then the field signature (such as the method signature), or \nan exception will be thrown.\n"
+  syntax:
+    content: public static TypeSpec ReadFieldSignature(byte[] data, ITokenResolver resolver, MemberInfo member)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: The byte array containing the field signature data
+    - id: resolver
+      type: CilTools.Reflection.ITokenResolver
+      description: The object used to resolve metadata tokens
+    - id: member
+      type: System.Reflection.MemberInfo
+      description: "Method that identifies generic context for generic method params, or null \nif this signature does not belong to a generic method"
+    return:
+      type: CilTools.BytecodeAnalysis.TypeSpec
+      description: The <code>TypeSpec</code> representing the field type
+    content.vb: Public Shared Function ReadFieldSignature(data As Byte(), resolver As ITokenResolver, member As MemberInfo) As TypeSpec
+  overload: CilTools.BytecodeAnalysis.Signature.ReadFieldSignature*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source array is null
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Source array is empty
+  - type: System.IO.InvalidDataException
+    commentId: T:System.IO.InvalidDataException
+    description: "\nThe signature data does not represent the field signature\n"
+  nameWithType.vb: Signature.ReadFieldSignature(Byte(), ITokenResolver, MemberInfo)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte(), CilTools.Reflection.ITokenResolver, System.Reflection.MemberInfo)
+  name.vb: ReadFieldSignature(Byte(), ITokenResolver, MemberInfo)
 - uid: CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)
   commentId: M:CilTools.BytecodeAnalysis.Signature.GetParamType(System.Int32)
   id: GetParamType(System.Int32)
@@ -288,6 +508,37 @@ items:
   modifiers.vb:
   - Public
   - ReadOnly
+- uid: CilTools.BytecodeAnalysis.Signature.GenericInst
+  commentId: P:CilTools.BytecodeAnalysis.Signature.GenericInst
+  id: GenericInst
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: GenericInst
+  nameWithType: Signature.GenericInst
+  fullName: CilTools.BytecodeAnalysis.Signature.GenericInst
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the value indicating whether this signature represents the generic method instantiation\n"
+  syntax:
+    content: public bool GenericInst { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property GenericInst As Boolean
+  overload: CilTools.BytecodeAnalysis.Signature.GenericInst*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
 - uid: CilTools.BytecodeAnalysis.Signature.ReturnType
   commentId: P:CilTools.BytecodeAnalysis.Signature.ReturnType
   id: ReturnType
@@ -344,6 +595,37 @@ items:
       type: System.Int32
     content.vb: Public ReadOnly Property ParamsCount As Integer
   overload: CilTools.BytecodeAnalysis.Signature.ParamsCount*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.Signature.GenericArgsCount
+  commentId: P:CilTools.BytecodeAnalysis.Signature.GenericArgsCount
+  id: GenericArgsCount
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: GenericArgsCount
+  nameWithType: Signature.GenericArgsCount
+  fullName: CilTools.BytecodeAnalysis.Signature.GenericArgsCount
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the generic arguments or parameters count for the generic method, or zero if this \nsignature does not represent the generic method.\n"
+  syntax:
+    content: public int GenericArgsCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property GenericArgsCount As Integer
+  overload: CilTools.BytecodeAnalysis.Signature.GenericArgsCount*
   modifiers.csharp:
   - public
   - get
@@ -712,6 +994,55 @@ references:
   name: System.Reflection
   nameWithType: System.Reflection
   fullName: System.Reflection
+- uid: CilTools.Reflection.ITokenResolver
+  commentId: T:CilTools.Reflection.ITokenResolver
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ITokenResolver
+  nameWithType: ITokenResolver
+  fullName: CilTools.Reflection.ITokenResolver
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: System.Reflection.MemberInfo
+  commentId: T:System.Reflection.MemberInfo
+  parent: System.Reflection
+  isExternal: true
+  name: MemberInfo
+  nameWithType: MemberInfo
+  fullName: System.Reflection.MemberInfo
+- uid: System.IO.Stream
+  commentId: T:System.IO.Stream
+  parent: System.IO
+  isExternal: true
+  name: Stream
+  nameWithType: Stream
+  fullName: System.IO.Stream
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+- uid: CilTools.BytecodeAnalysis.Signature.ReadFieldSignature*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.ReadFieldSignature
+  isExternal: true
+  name: ReadFieldSignature
+  nameWithType: Signature.ReadFieldSignature
+  fullName: CilTools.BytecodeAnalysis.Signature.ReadFieldSignature
+- uid: System.IO.InvalidDataException
+  commentId: T:System.IO.InvalidDataException
+  isExternal: true
+- uid: CilTools.BytecodeAnalysis.TypeSpec
+  commentId: T:CilTools.BytecodeAnalysis.TypeSpec
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: TypeSpec
+  nameWithType: TypeSpec
+  fullName: CilTools.BytecodeAnalysis.TypeSpec
 - uid: CilTools.BytecodeAnalysis.Signature.GetParamType*
   commentId: Overload:CilTools.BytecodeAnalysis.Signature.GetParamType
   isExternal: true
@@ -728,13 +1059,6 @@ references:
   name: Int32
   nameWithType: Int32
   fullName: System.Int32
-- uid: CilTools.BytecodeAnalysis.TypeSpec
-  commentId: T:CilTools.BytecodeAnalysis.TypeSpec
-  parent: CilTools.BytecodeAnalysis
-  isExternal: true
-  name: TypeSpec
-  nameWithType: TypeSpec
-  fullName: CilTools.BytecodeAnalysis.TypeSpec
 - uid: CilTools.BytecodeAnalysis.Signature.GetParamTypes*
   commentId: Overload:CilTools.BytecodeAnalysis.Signature.GetParamTypes
   isExternal: true
@@ -843,6 +1167,12 @@ references:
   name: ExplicitThis
   nameWithType: Signature.ExplicitThis
   fullName: CilTools.BytecodeAnalysis.Signature.ExplicitThis
+- uid: CilTools.BytecodeAnalysis.Signature.GenericInst*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.GenericInst
+  isExternal: true
+  name: GenericInst
+  nameWithType: Signature.GenericInst
+  fullName: CilTools.BytecodeAnalysis.Signature.GenericInst
 - uid: CilTools.BytecodeAnalysis.Signature.ReturnType*
   commentId: Overload:CilTools.BytecodeAnalysis.Signature.ReturnType
   isExternal: true
@@ -855,6 +1185,12 @@ references:
   name: ParamsCount
   nameWithType: Signature.ParamsCount
   fullName: CilTools.BytecodeAnalysis.Signature.ParamsCount
+- uid: CilTools.BytecodeAnalysis.Signature.GenericArgsCount*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.GenericArgsCount
+  isExternal: true
+  name: GenericArgsCount
+  nameWithType: Signature.GenericArgsCount
+  fullName: CilTools.BytecodeAnalysis.Signature.GenericArgsCount
 - uid: CilTools.BytecodeAnalysis.Signature.ParamTypes*
   commentId: Overload:CilTools.BytecodeAnalysis.Signature.ParamTypes
   isExternal: true

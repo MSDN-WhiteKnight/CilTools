@@ -10,6 +10,7 @@ items:
   - CilTools.Reflection.LocalVariable.LocalType
   - CilTools.Reflection.LocalVariable.LocalTypeSpec
   - CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver)
+  - CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   - CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)
   langs:
   - csharp
@@ -89,6 +90,57 @@ items:
   - Shared
   fullName.vb: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte(), CilTools.Reflection.ITokenResolver)
   name.vb: ReadSignature(Byte(), ITokenResolver)
+- uid: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  commentId: M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  id: ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  parent: CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: ReadSignature(Byte[], ITokenResolver, MemberInfo)
+  nameWithType: LocalVariable.ReadSignature(Byte[], ITokenResolver, MemberInfo)
+  fullName: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[], CilTools.Reflection.ITokenResolver, System.Reflection.MemberInfo)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReads local variables from the specified signature, resolving tokens using the specified \n<xref href=\"CilTools.Reflection.ITokenResolver\" data-throw-if-not-resolved=\"false\"></xref> in a generic context identified by the specified member reference.\n"
+  syntax:
+    content: public static LocalVariable[] ReadSignature(byte[] data, ITokenResolver resolver, MemberInfo member)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: Local variable signature as byte array
+    - id: resolver
+      type: CilTools.Reflection.ITokenResolver
+      description: The object used to resolve metadata tokens
+    - id: member
+      type: System.Reflection.MemberInfo
+      description: "Method that identifies generic context for generic method params, or null if \nthis signature does not belong to a generic method"
+    return:
+      type: CilTools.Reflection.LocalVariable[]
+      description: An array of local variables read from the signature
+    content.vb: Public Shared Function ReadSignature(data As Byte(), resolver As ITokenResolver, member As MemberInfo) As LocalVariable()
+  overload: CilTools.Reflection.LocalVariable.ReadSignature*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Input array is null
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: Signature contains unsupported types
+  nameWithType.vb: LocalVariable.ReadSignature(Byte(), ITokenResolver, MemberInfo)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte(), CilTools.Reflection.ITokenResolver, System.Reflection.MemberInfo)
+  name.vb: ReadSignature(Byte(), ITokenResolver, MemberInfo)
 - uid: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)
   commentId: M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)
   id: ReadSignature(System.Byte[],System.Reflection.Module)
@@ -607,6 +659,19 @@ references:
   - name: ()
     nameWithType: ()
     fullName: ()
+- uid: System.Reflection.MemberInfo
+  commentId: T:System.Reflection.MemberInfo
+  parent: System.Reflection
+  isExternal: true
+  name: MemberInfo
+  nameWithType: MemberInfo
+  fullName: System.Reflection.MemberInfo
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
 - uid: System.Reflection.Module
   commentId: T:System.Reflection.Module
   parent: System.Reflection
@@ -614,12 +679,6 @@ references:
   name: Module
   nameWithType: Module
   fullName: System.Reflection.Module
-- uid: System.Reflection
-  commentId: N:System.Reflection
-  isExternal: true
-  name: System.Reflection
-  nameWithType: System.Reflection
-  fullName: System.Reflection
 - uid: CilTools.Reflection.LocalVariable.LocalTypeSpec*
   commentId: Overload:CilTools.Reflection.LocalVariable.LocalTypeSpec
   isExternal: true

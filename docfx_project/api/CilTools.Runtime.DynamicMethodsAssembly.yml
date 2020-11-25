@@ -5,7 +5,9 @@ items:
   id: DynamicMethodsAssembly
   parent: CilTools.Runtime
   children:
+  - CilTools.Runtime.DynamicMethodsAssembly.#ctor(Microsoft.Diagnostics.Runtime.DataTarget,CilTools.Runtime.ClrAssemblyReader,System.Boolean)
   - CilTools.Runtime.DynamicMethodsAssembly.#ctor(Microsoft.Diagnostics.Runtime.DataTarget,System.Boolean)
+  - CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader
   - CilTools.Runtime.DynamicMethodsAssembly.ChildType
   - CilTools.Runtime.DynamicMethodsAssembly.CodeBase
   - CilTools.Runtime.DynamicMethodsAssembly.Dispose
@@ -165,6 +167,47 @@ items:
       type: System.Boolean
       description: "\n<code>true</code> if this instance owns tha data target and should dispose it automatically when it is no longer needed\n"
     content.vb: Public Sub New(dt As DataTarget, autoDispose As Boolean)
+  overload: CilTools.Runtime.DynamicMethodsAssembly.#ctor*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Supplied data target is null
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Runtime.DynamicMethodsAssembly.#ctor(Microsoft.Diagnostics.Runtime.DataTarget,CilTools.Runtime.ClrAssemblyReader,System.Boolean)
+  commentId: M:CilTools.Runtime.DynamicMethodsAssembly.#ctor(Microsoft.Diagnostics.Runtime.DataTarget,CilTools.Runtime.ClrAssemblyReader,System.Boolean)
+  id: '#ctor(Microsoft.Diagnostics.Runtime.DataTarget,CilTools.Runtime.ClrAssemblyReader,System.Boolean)'
+  parent: CilTools.Runtime.DynamicMethodsAssembly
+  langs:
+  - csharp
+  - vb
+  name: DynamicMethodsAssembly(DataTarget, ClrAssemblyReader, Boolean)
+  nameWithType: DynamicMethodsAssembly.DynamicMethodsAssembly(DataTarget, ClrAssemblyReader, Boolean)
+  fullName: CilTools.Runtime.DynamicMethodsAssembly.DynamicMethodsAssembly(Microsoft.Diagnostics.Runtime.DataTarget, CilTools.Runtime.ClrAssemblyReader, System.Boolean)
+  type: Constructor
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nCreates new <code>DynamicMethodsAssembly</code> object for the specified data target, optionally \nproviding the <xref href=\"CilTools.Runtime.ClrAssemblyReader\" data-throw-if-not-resolved=\"false\"></xref> instance and indicating whether the created object \nowns the data target.\n"
+  remarks: "\nIf the supplied <xref href=\"CilTools.Runtime.ClrAssemblyReader\" data-throw-if-not-resolved=\"false\"></xref> is null, the constructor will create new \nassembly reader instance using the supplied data target. \n"
+  syntax:
+    content: public DynamicMethodsAssembly(DataTarget dt, ClrAssemblyReader r, bool autoDispose)
+    parameters:
+    - id: dt
+      type: Microsoft.Diagnostics.Runtime.DataTarget
+      description: ClrMD data target to read information from
+    - id: r
+      type: CilTools.Runtime.ClrAssemblyReader
+      description: "\nAssembly reader object to read dependent assemblies.\n"
+    - id: autoDispose
+      type: System.Boolean
+      description: "\n<code>true</code> if this instance owns tha data target and should dispose it automatically when it is no longer needed\n"
+    content.vb: Public Sub New(dt As DataTarget, r As ClrAssemblyReader, autoDispose As Boolean)
   overload: CilTools.Runtime.DynamicMethodsAssembly.#ctor*
   exceptions:
   - type: System.ArgumentNullException
@@ -502,6 +545,38 @@ items:
       type: Microsoft.Diagnostics.Runtime.DataTarget
     content.vb: Public ReadOnly Property Target As DataTarget
   overload: CilTools.Runtime.DynamicMethodsAssembly.Target*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader
+  commentId: P:CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader
+  id: AssemblyReader
+  parent: CilTools.Runtime.DynamicMethodsAssembly
+  langs:
+  - csharp
+  - vb
+  name: AssemblyReader
+  nameWithType: DynamicMethodsAssembly.AssemblyReader
+  fullName: CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the assembly reader object used to read dependent assemblies\n"
+  remarks: "\nWhen dynamic method references a member from the external assembly, the library will \nuse this assembly reader object when resolving metadata tokens from the external assembly. \nThe assembly reader acts as cache that stores assembly instance so we don&apos;t need to load \nthem multiple times.\n"
+  syntax:
+    content: public ClrAssemblyReader AssemblyReader { get; }
+    parameters: []
+    return:
+      type: CilTools.Runtime.ClrAssemblyReader
+    content.vb: Public ReadOnly Property AssemblyReader As ClrAssemblyReader
+  overload: CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader*
   modifiers.csharp:
   - public
   - get
@@ -4101,6 +4176,13 @@ references:
   name: Boolean
   nameWithType: Boolean
   fullName: System.Boolean
+- uid: CilTools.Runtime.ClrAssemblyReader
+  commentId: T:CilTools.Runtime.ClrAssemblyReader
+  parent: CilTools.Runtime
+  isExternal: true
+  name: ClrAssemblyReader
+  nameWithType: ClrAssemblyReader
+  fullName: CilTools.Runtime.ClrAssemblyReader
 - uid: System.Reflection.Assembly.GetName
   commentId: M:System.Reflection.Assembly.GetName
   parent: System.Reflection.Assembly
@@ -4580,6 +4662,12 @@ references:
   name: Target
   nameWithType: DynamicMethodsAssembly.Target
   fullName: CilTools.Runtime.DynamicMethodsAssembly.Target
+- uid: CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader*
+  commentId: Overload:CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader
+  isExternal: true
+  name: AssemblyReader
+  nameWithType: DynamicMethodsAssembly.AssemblyReader
+  fullName: CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader
 - uid: System.Reflection.Assembly.FullName
   commentId: P:System.Reflection.Assembly.FullName
   parent: System.Reflection.Assembly

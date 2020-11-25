@@ -162,7 +162,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
-  summary: "\nGets the block the forms the body of the defined method\n"
+  summary: "\nGets the block that forms the body of the defined method\n"
   syntax:
     content: public BlockSyntax Body { get; }
     parameters: []

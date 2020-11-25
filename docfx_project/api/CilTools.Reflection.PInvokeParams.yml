@@ -1,0 +1,782 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.PInvokeParams
+  commentId: T:CilTools.Reflection.PInvokeParams
+  id: PInvokeParams
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.PInvokeParams.#ctor(System.String,System.String,System.Runtime.InteropServices.CharSet,System.Boolean,System.Boolean,System.Nullable{System.Boolean},System.Runtime.InteropServices.CallingConvention)
+  - CilTools.Reflection.PInvokeParams.BestFitMapping
+  - CilTools.Reflection.PInvokeParams.CallingConvention
+  - CilTools.Reflection.PInvokeParams.CharSet
+  - CilTools.Reflection.PInvokeParams.ExactSpelling
+  - CilTools.Reflection.PInvokeParams.FunctionName
+  - CilTools.Reflection.PInvokeParams.ModuleName
+  - CilTools.Reflection.PInvokeParams.SetLastError
+  langs:
+  - csharp
+  - vb
+  name: PInvokeParams
+  nameWithType: PInvokeParams
+  fullName: CilTools.Reflection.PInvokeParams
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the parameters of the imported unmanaged method \n"
+  remarks: "\n<p>This type is used with the <xref href=\"CilTools.Reflection.CustomMethod.GetPInvokeParams\" data-throw-if-not-resolved=\"false\"></xref> method.</p>\n<p>Imported unmanaged method is a method implemented as a Platform Invoke (P/Invoke) call. \nThe call to such method is marshalled into the call to corresponding native function by \nCommon Language Runtime. P/Invoke method is defined in .NET using <xref href=\"System.Runtime.InteropServices.DllImportAttribute\" data-throw-if-not-resolved=\"false\"></xref>. \nSee the .NET documentation for more information about P/Invoke: \n<a href=\"https://docs.microsoft.com/dotnet/standard/native-interop/pinvoke\">https://docs.microsoft.com/dotnet/standard/native-interop/pinvoke</a>.\n</p>\n"
+  syntax:
+    content: public class PInvokeParams
+    content.vb: Public Class PInvokeParams
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Reflection.PInvokeParams.#ctor(System.String,System.String,System.Runtime.InteropServices.CharSet,System.Boolean,System.Boolean,System.Nullable{System.Boolean},System.Runtime.InteropServices.CallingConvention)
+  commentId: M:CilTools.Reflection.PInvokeParams.#ctor(System.String,System.String,System.Runtime.InteropServices.CharSet,System.Boolean,System.Boolean,System.Nullable{System.Boolean},System.Runtime.InteropServices.CallingConvention)
+  id: '#ctor(System.String,System.String,System.Runtime.InteropServices.CharSet,System.Boolean,System.Boolean,System.Nullable{System.Boolean},System.Runtime.InteropServices.CallingConvention)'
+  parent: CilTools.Reflection.PInvokeParams
+  langs:
+  - csharp
+  - vb
+  name: PInvokeParams(String, String, CharSet, Boolean, Boolean, Nullable<Boolean>, CallingConvention)
+  nameWithType: PInvokeParams.PInvokeParams(String, String, CharSet, Boolean, Boolean, Nullable<Boolean>, CallingConvention)
+  fullName: CilTools.Reflection.PInvokeParams.PInvokeParams(System.String, System.String, System.Runtime.InteropServices.CharSet, System.Boolean, System.Boolean, System.Nullable<System.Boolean>, System.Runtime.InteropServices.CallingConvention)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nCreates the new instance of <code>PInvokeParams</code> object.\n"
+  syntax:
+    content: public PInvokeParams(string module, string func, CharSet charSet, bool exactSpelling, bool setLastError, bool? bestFitMapping, CallingConvention callConv)
+    parameters:
+    - id: module
+      type: System.String
+      description: Unmanaged module from which the method is imported
+    - id: func
+      type: System.String
+      description: The name of the imported native function
+    - id: charSet
+      type: System.Runtime.InteropServices.CharSet
+      description: The character set used by this method
+    - id: exactSpelling
+      type: System.Boolean
+      description: "\nThe value indicating that the marshaller should not probe for charset-specific names \nwhen searching for an entry point. \n"
+    - id: setLastError
+      type: System.Boolean
+      description: "\nThe value indicating that the imported function sets the last WinAPI error.\n"
+    - id: bestFitMapping
+      type: System.Nullable{System.Boolean}
+      description: "\nThe value indicating whether the marshaller should use the best fit mapping behaviour when \nconverting characters between character sets.\n"
+    - id: callConv
+      type: System.Runtime.InteropServices.CallingConvention
+      description: The clling convention of the imported function.
+    content.vb: Public Sub New(module As String, func As String, charSet As CharSet, exactSpelling As Boolean, setLastError As Boolean, bestFitMapping As Boolean?, callConv As CallingConvention)
+  overload: CilTools.Reflection.PInvokeParams.#ctor*
+  nameWithType.vb: PInvokeParams.PInvokeParams(String, String, CharSet, Boolean, Boolean, Nullable(Of Boolean), CallingConvention)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CilTools.Reflection.PInvokeParams.PInvokeParams(System.String, System.String, System.Runtime.InteropServices.CharSet, System.Boolean, System.Boolean, System.Nullable(Of System.Boolean), System.Runtime.InteropServices.CallingConvention)
+  name.vb: PInvokeParams(String, String, CharSet, Boolean, Boolean, Nullable(Of Boolean), CallingConvention)
+- uid: CilTools.Reflection.PInvokeParams.ModuleName
+  commentId: P:CilTools.Reflection.PInvokeParams.ModuleName
+  id: ModuleName
+  parent: CilTools.Reflection.PInvokeParams
+  langs:
+  - csharp
+  - vb
+  name: ModuleName
+  nameWithType: PInvokeParams.ModuleName
+  fullName: CilTools.Reflection.PInvokeParams.ModuleName
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the name of the unmanaged module from which the method is imported\n"
+  syntax:
+    content: public string ModuleName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property ModuleName As String
+  overload: CilTools.Reflection.PInvokeParams.ModuleName*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.PInvokeParams.FunctionName
+  commentId: P:CilTools.Reflection.PInvokeParams.FunctionName
+  id: FunctionName
+  parent: CilTools.Reflection.PInvokeParams
+  langs:
+  - csharp
+  - vb
+  name: FunctionName
+  nameWithType: PInvokeParams.FunctionName
+  fullName: CilTools.Reflection.PInvokeParams.FunctionName
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the name of the imported native function\n"
+  syntax:
+    content: public string FunctionName { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property FunctionName As String
+  overload: CilTools.Reflection.PInvokeParams.FunctionName*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.PInvokeParams.CharSet
+  commentId: P:CilTools.Reflection.PInvokeParams.CharSet
+  id: CharSet
+  parent: CilTools.Reflection.PInvokeParams
+  langs:
+  - csharp
+  - vb
+  name: CharSet
+  nameWithType: PInvokeParams.CharSet
+  fullName: CilTools.Reflection.PInvokeParams.CharSet
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the character set used by this method\n"
+  syntax:
+    content: public CharSet CharSet { get; }
+    parameters: []
+    return:
+      type: System.Runtime.InteropServices.CharSet
+    content.vb: Public ReadOnly Property CharSet As CharSet
+  overload: CilTools.Reflection.PInvokeParams.CharSet*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.PInvokeParams.ExactSpelling
+  commentId: P:CilTools.Reflection.PInvokeParams.ExactSpelling
+  id: ExactSpelling
+  parent: CilTools.Reflection.PInvokeParams
+  langs:
+  - csharp
+  - vb
+  name: ExactSpelling
+  nameWithType: PInvokeParams.ExactSpelling
+  fullName: CilTools.Reflection.PInvokeParams.ExactSpelling
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value indicating that the marshaller should not probe for charset-specific names \nwhen searching for an entry point.\n"
+  syntax:
+    content: public bool ExactSpelling { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property ExactSpelling As Boolean
+  overload: CilTools.Reflection.PInvokeParams.ExactSpelling*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.PInvokeParams.SetLastError
+  commentId: P:CilTools.Reflection.PInvokeParams.SetLastError
+  id: SetLastError
+  parent: CilTools.Reflection.PInvokeParams
+  langs:
+  - csharp
+  - vb
+  name: SetLastError
+  nameWithType: PInvokeParams.SetLastError
+  fullName: CilTools.Reflection.PInvokeParams.SetLastError
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value indicating that the imported function sets the last WinAPI error.\n"
+  syntax:
+    content: public bool SetLastError { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property SetLastError As Boolean
+  overload: CilTools.Reflection.PInvokeParams.SetLastError*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.PInvokeParams.BestFitMapping
+  commentId: P:CilTools.Reflection.PInvokeParams.BestFitMapping
+  id: BestFitMapping
+  parent: CilTools.Reflection.PInvokeParams
+  langs:
+  - csharp
+  - vb
+  name: BestFitMapping
+  nameWithType: PInvokeParams.BestFitMapping
+  fullName: CilTools.Reflection.PInvokeParams.BestFitMapping
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value indicating whether the marshaller should use the best fit mapping behaviour when \nconverting characters between character sets.\n"
+  syntax:
+    content: public bool? BestFitMapping { get; }
+    parameters: []
+    return:
+      type: System.Nullable{System.Boolean}
+    content.vb: Public ReadOnly Property BestFitMapping As Boolean?
+  overload: CilTools.Reflection.PInvokeParams.BestFitMapping*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.PInvokeParams.CallingConvention
+  commentId: P:CilTools.Reflection.PInvokeParams.CallingConvention
+  id: CallingConvention
+  parent: CilTools.Reflection.PInvokeParams
+  langs:
+  - csharp
+  - vb
+  name: CallingConvention
+  nameWithType: PInvokeParams.CallingConvention
+  fullName: CilTools.Reflection.PInvokeParams.CallingConvention
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the calling convention for the imported function.\n"
+  remarks: "\nCalling convention is a set of rules defining how the function interacts with its caller. See \n<a href=\"https://docs.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions\">https://docs.microsoft.com/en-us/cpp/cpp/argument-passing-and-naming-conventions</a> \nfor more information about native calling conventions.\n"
+  syntax:
+    content: public CallingConvention CallingConvention { get; }
+    parameters: []
+    return:
+      type: System.Runtime.InteropServices.CallingConvention
+    content.vb: Public ReadOnly Property CallingConvention As CallingConvention
+  overload: CilTools.Reflection.PInvokeParams.CallingConvention*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.PInvokeParams.#ctor*
+  commentId: Overload:CilTools.Reflection.PInvokeParams.#ctor
+  isExternal: true
+  name: PInvokeParams
+  nameWithType: PInvokeParams.PInvokeParams
+  fullName: CilTools.Reflection.PInvokeParams.PInvokeParams
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Runtime.InteropServices.CharSet
+  commentId: T:System.Runtime.InteropServices.CharSet
+  parent: System.Runtime.InteropServices
+  isExternal: true
+  name: CharSet
+  nameWithType: CharSet
+  fullName: System.Runtime.InteropServices.CharSet
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System.Nullable{System.Boolean}
+  commentId: T:System.Nullable{System.Boolean}
+  parent: System
+  definition: System.Nullable`1
+  name: Nullable<Boolean>
+  nameWithType: Nullable<Boolean>
+  fullName: System.Nullable<System.Boolean>
+  nameWithType.vb: Nullable(Of Boolean)
+  fullName.vb: System.Nullable(Of System.Boolean)
+  name.vb: Nullable(Of Boolean)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Runtime.InteropServices.CallingConvention
+  commentId: T:System.Runtime.InteropServices.CallingConvention
+  parent: System.Runtime.InteropServices
+  isExternal: true
+  name: CallingConvention
+  nameWithType: CallingConvention
+  fullName: System.Runtime.InteropServices.CallingConvention
+- uid: System.Runtime.InteropServices
+  commentId: N:System.Runtime.InteropServices
+  isExternal: true
+  name: System.Runtime.InteropServices
+  nameWithType: System.Runtime.InteropServices
+  fullName: System.Runtime.InteropServices
+- uid: System.Nullable`1
+  commentId: T:System.Nullable`1
+  isExternal: true
+  name: Nullable<T>
+  nameWithType: Nullable<T>
+  fullName: System.Nullable<T>
+  nameWithType.vb: Nullable(Of T)
+  fullName.vb: System.Nullable(Of T)
+  name.vb: Nullable(Of T)
+  spec.csharp:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Nullable`1
+    name: Nullable
+    nameWithType: Nullable
+    fullName: System.Nullable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Reflection.PInvokeParams.ModuleName*
+  commentId: Overload:CilTools.Reflection.PInvokeParams.ModuleName
+  isExternal: true
+  name: ModuleName
+  nameWithType: PInvokeParams.ModuleName
+  fullName: CilTools.Reflection.PInvokeParams.ModuleName
+- uid: CilTools.Reflection.PInvokeParams.FunctionName*
+  commentId: Overload:CilTools.Reflection.PInvokeParams.FunctionName
+  isExternal: true
+  name: FunctionName
+  nameWithType: PInvokeParams.FunctionName
+  fullName: CilTools.Reflection.PInvokeParams.FunctionName
+- uid: CilTools.Reflection.PInvokeParams.CharSet*
+  commentId: Overload:CilTools.Reflection.PInvokeParams.CharSet
+  isExternal: true
+  name: CharSet
+  nameWithType: PInvokeParams.CharSet
+  fullName: CilTools.Reflection.PInvokeParams.CharSet
+- uid: CilTools.Reflection.PInvokeParams.ExactSpelling*
+  commentId: Overload:CilTools.Reflection.PInvokeParams.ExactSpelling
+  isExternal: true
+  name: ExactSpelling
+  nameWithType: PInvokeParams.ExactSpelling
+  fullName: CilTools.Reflection.PInvokeParams.ExactSpelling
+- uid: CilTools.Reflection.PInvokeParams.SetLastError*
+  commentId: Overload:CilTools.Reflection.PInvokeParams.SetLastError
+  isExternal: true
+  name: SetLastError
+  nameWithType: PInvokeParams.SetLastError
+  fullName: CilTools.Reflection.PInvokeParams.SetLastError
+- uid: CilTools.Reflection.PInvokeParams.BestFitMapping*
+  commentId: Overload:CilTools.Reflection.PInvokeParams.BestFitMapping
+  isExternal: true
+  name: BestFitMapping
+  nameWithType: PInvokeParams.BestFitMapping
+  fullName: CilTools.Reflection.PInvokeParams.BestFitMapping
+- uid: CilTools.Reflection.PInvokeParams.CallingConvention*
+  commentId: Overload:CilTools.Reflection.PInvokeParams.CallingConvention
+  isExternal: true
+  name: CallingConvention
+  nameWithType: PInvokeParams.CallingConvention
+  fullName: CilTools.Reflection.PInvokeParams.CallingConvention

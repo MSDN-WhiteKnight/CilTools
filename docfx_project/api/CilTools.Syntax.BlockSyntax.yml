@@ -131,7 +131,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
-  summary: "\nGets the header syntax of this, or an empty collection if this block has no header\n"
+  summary: "\nGets the header syntax of this block, or an empty collection if this block has no header\n"
   remarks: "\nFor the exception handler blocks, the header represents the exception clause. Other types of blocks does not have headers.\n"
   syntax:
     content: public IEnumerable<SyntaxNode> HeaderSyntax { get; }

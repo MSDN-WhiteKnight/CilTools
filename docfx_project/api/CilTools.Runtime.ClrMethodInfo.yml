@@ -59,6 +59,8 @@ items:
   - System.Runtime.InteropServices._MethodBase
   inheritedMembers:
   - CilTools.Reflection.CustomMethod.GetLocalVariables
+  - CilTools.Reflection.CustomMethod.GetDefinition
+  - CilTools.Reflection.CustomMethod.GetPInvokeParams
   - System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)
   - System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle,System.RuntimeTypeHandle)
   - System.Reflection.MethodBase.GetCurrentMethod
@@ -979,6 +981,68 @@ references:
     name: GetLocalVariables
     nameWithType: CustomMethod.GetLocalVariables
     fullName: CilTools.Reflection.CustomMethod.GetLocalVariables
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Reflection.CustomMethod.GetDefinition
+  commentId: M:CilTools.Reflection.CustomMethod.GetDefinition
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: GetDefinition()
+  nameWithType: CustomMethod.GetDefinition()
+  fullName: CilTools.Reflection.CustomMethod.GetDefinition()
+  spec.csharp:
+  - uid: CilTools.Reflection.CustomMethod.GetDefinition
+    name: GetDefinition
+    nameWithType: CustomMethod.GetDefinition
+    fullName: CilTools.Reflection.CustomMethod.GetDefinition
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Reflection.CustomMethod.GetDefinition
+    name: GetDefinition
+    nameWithType: CustomMethod.GetDefinition
+    fullName: CilTools.Reflection.CustomMethod.GetDefinition
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Reflection.CustomMethod.GetPInvokeParams
+  commentId: M:CilTools.Reflection.CustomMethod.GetPInvokeParams
+  parent: CilTools.Reflection.CustomMethod
+  isExternal: true
+  name: GetPInvokeParams()
+  nameWithType: CustomMethod.GetPInvokeParams()
+  fullName: CilTools.Reflection.CustomMethod.GetPInvokeParams()
+  spec.csharp:
+  - uid: CilTools.Reflection.CustomMethod.GetPInvokeParams
+    name: GetPInvokeParams
+    nameWithType: CustomMethod.GetPInvokeParams
+    fullName: CilTools.Reflection.CustomMethod.GetPInvokeParams
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Reflection.CustomMethod.GetPInvokeParams
+    name: GetPInvokeParams
+    nameWithType: CustomMethod.GetPInvokeParams
+    fullName: CilTools.Reflection.CustomMethod.GetPInvokeParams
     isExternal: true
   - name: (
     nameWithType: (

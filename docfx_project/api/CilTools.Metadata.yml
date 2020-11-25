@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Metadata
+  commentId: N:CilTools.Metadata
+  id: CilTools.Metadata
+  children:
+  - CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: CilTools.Metadata
+  nameWithType: CilTools.Metadata
+  fullName: CilTools.Metadata
+  type: Namespace
+  assemblies:
+  - CilTools.Metadata
+references:
+- uid: CilTools.Metadata.AssemblyReader
+  commentId: T:CilTools.Metadata.AssemblyReader
+  isExternal: true
+  name: AssemblyReader
+  nameWithType: AssemblyReader
+  fullName: CilTools.Metadata.AssemblyReader

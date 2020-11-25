@@ -4,10 +4,15 @@ items:
   commentId: N:CilTools.Reflection
   id: CilTools.Reflection
   children:
+  - CilTools.Reflection.ComplexType
+  - CilTools.Reflection.ComplexTypeKind
   - CilTools.Reflection.CustomMethod
   - CilTools.Reflection.ExceptionBlock
+  - CilTools.Reflection.GenericParamType
+  - CilTools.Reflection.ICustomAttribute
   - CilTools.Reflection.ITokenResolver
   - CilTools.Reflection.LocalVariable
+  - CilTools.Reflection.PInvokeParams
   langs:
   - csharp
   - vb
@@ -18,6 +23,19 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
 references:
+- uid: CilTools.Reflection.ComplexTypeKind
+  commentId: T:CilTools.Reflection.ComplexTypeKind
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ComplexTypeKind
+  nameWithType: ComplexTypeKind
+  fullName: CilTools.Reflection.ComplexTypeKind
+- uid: CilTools.Reflection.ComplexType
+  commentId: T:CilTools.Reflection.ComplexType
+  isExternal: true
+  name: ComplexType
+  nameWithType: ComplexType
+  fullName: CilTools.Reflection.ComplexType
 - uid: CilTools.Reflection.CustomMethod
   commentId: T:CilTools.Reflection.CustomMethod
   parent: CilTools.Reflection
@@ -32,6 +50,18 @@ references:
   name: ExceptionBlock
   nameWithType: ExceptionBlock
   fullName: CilTools.Reflection.ExceptionBlock
+- uid: CilTools.Reflection.GenericParamType
+  commentId: T:CilTools.Reflection.GenericParamType
+  isExternal: true
+  name: GenericParamType
+  nameWithType: GenericParamType
+  fullName: CilTools.Reflection.GenericParamType
+- uid: CilTools.Reflection.ICustomAttribute
+  commentId: T:CilTools.Reflection.ICustomAttribute
+  isExternal: true
+  name: ICustomAttribute
+  nameWithType: ICustomAttribute
+  fullName: CilTools.Reflection.ICustomAttribute
 - uid: CilTools.Reflection.ITokenResolver
   commentId: T:CilTools.Reflection.ITokenResolver
   parent: CilTools.Reflection
@@ -45,6 +75,13 @@ references:
   name: LocalVariable
   nameWithType: LocalVariable
   fullName: CilTools.Reflection.LocalVariable
+- uid: CilTools.Reflection.PInvokeParams
+  commentId: T:CilTools.Reflection.PInvokeParams
+  parent: CilTools.Reflection
+  isExternal: true
+  name: PInvokeParams
+  nameWithType: PInvokeParams
+  fullName: CilTools.Reflection.PInvokeParams
 - uid: CilTools.Reflection
   commentId: N:CilTools.Reflection
   isExternal: true

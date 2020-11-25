@@ -6,7 +6,11 @@
           "files": ["*.dll"],          
           "src": "../CilTools.BytecodeAnalysis/bin/Debug/net35"
         },
-		{
+        {
+          "files": ["CilTools.Metadata.dll"],          
+          "src": "../CilTools.Metadata/bin/Debug/net45"
+        },
+		    {
           "files": ["CilTools.Runtime.dll"],          
           "src": "../CilTools.Runtime/bin/Debug"
         }

@@ -1,0 +1,214 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface ICustomAttribute
+   | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface ICustomAttribute
+   | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.Reflection.ICustomAttribute">
+  
+  
+  <h1 id="CilTools_Reflection_ICustomAttribute" data-uid="CilTools.Reflection.ICustomAttribute" class="text-break">Interface ICustomAttribute
+  </h1>
+  <div class="markdown level0 summary"><p>Represents the custom attribute data</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Reflection.html">CilTools.Reflection</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
+  <h5 id="CilTools_Reflection_ICustomAttribute_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface ICustomAttribute</code></pre>
+  </div>
+  <h5 id="CilTools_Reflection_ICustomAttribute_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>This interface is needed to support fetching custom attribute data in reflection-only mode
+in .NET Framework 3.5. The library treats objects that implement <code>ICustomAttribute</code> in a
+special way when processing an array returned by <code>MethodBase.GetCustomAttributes</code>,
+fetching raw attribute data instead of attempting to emulate that data based on what reflection
+returns for an attribute type. Implement this interface when you need to pass your custom method
+object to APIs like <a class="xref" href="CilTools.BytecodeAnalysis.CilGraph.html">CilGraph</a> and make it possible to
+read raw data of method's custom attributes.</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_Reflection_ICustomAttribute_Constructor_" data-uid="CilTools.Reflection.ICustomAttribute.Constructor*"></a>
+  <h4 id="CilTools_Reflection_ICustomAttribute_Constructor" data-uid="CilTools.Reflection.ICustomAttribute.Constructor">Constructor</h4>
+  <div class="markdown level1 summary"><p>Gets the constructor used to instantiate object of this attribute</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">MethodBase Constructor { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomAttribute_Data_" data-uid="CilTools.Reflection.ICustomAttribute.Data*"></a>
+  <h4 id="CilTools_Reflection_ICustomAttribute_Data" data-uid="CilTools.Reflection.ICustomAttribute.Data">Data</h4>
+  <div class="markdown level1 summary"><p>Gets the raw attribute data as the byte array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">byte[] Data { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Reflection_ICustomAttribute_Data_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The format of the byte array is defined by ECMA-335 specification, paragraph II.23.3 -
+Custom attributes. The data in the byte array specifies constructor's arguments and
+property values used to create an object for this attribute.</p>
+</div>
+  
+  
+  <a id="CilTools_Reflection_ICustomAttribute_Owner_" data-uid="CilTools.Reflection.ICustomAttribute.Owner*"></a>
+  <h4 id="CilTools_Reflection_ICustomAttribute_Owner" data-uid="CilTools.Reflection.ICustomAttribute.Owner">Owner</h4>
+  <div class="markdown level1 summary"><p>Gets the method this attribute is attached to</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">MethodBase Owner { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

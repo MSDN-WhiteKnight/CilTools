@@ -1,0 +1,186 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.ICustomAttribute
+  commentId: T:CilTools.Reflection.ICustomAttribute
+  id: ICustomAttribute
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.ICustomAttribute.Constructor
+  - CilTools.Reflection.ICustomAttribute.Data
+  - CilTools.Reflection.ICustomAttribute.Owner
+  langs:
+  - csharp
+  - vb
+  name: ICustomAttribute
+  nameWithType: ICustomAttribute
+  fullName: CilTools.Reflection.ICustomAttribute
+  type: Interface
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the custom attribute data\n"
+  remarks: "\nThis interface is needed to support fetching custom attribute data in reflection-only mode \nin .NET Framework 3.5. The library treats objects that implement <code>ICustomAttribute</code> in a \nspecial way when processing an array returned by <code>MethodBase.GetCustomAttributes</code>, \nfetching raw attribute data instead of attempting to emulate that data based on what reflection \nreturns for an attribute type. Implement this interface when you need to pass your custom method \nobject to APIs like <xref href=\"CilTools.BytecodeAnalysis.CilGraph\" data-throw-if-not-resolved=\"false\"></xref> and make it possible to \nread raw data of method&apos;s custom attributes.\n"
+  syntax:
+    content: public interface ICustomAttribute
+    content.vb: Public Interface ICustomAttribute
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: CilTools.Reflection.ICustomAttribute.Owner
+  commentId: P:CilTools.Reflection.ICustomAttribute.Owner
+  id: Owner
+  parent: CilTools.Reflection.ICustomAttribute
+  langs:
+  - csharp
+  - vb
+  name: Owner
+  nameWithType: ICustomAttribute.Owner
+  fullName: CilTools.Reflection.ICustomAttribute.Owner
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the method this attribute is attached to\n"
+  syntax:
+    content: MethodBase Owner { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: ReadOnly Property Owner As MethodBase
+  overload: CilTools.Reflection.ICustomAttribute.Owner*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: CilTools.Reflection.ICustomAttribute.Constructor
+  commentId: P:CilTools.Reflection.ICustomAttribute.Constructor
+  id: Constructor
+  parent: CilTools.Reflection.ICustomAttribute
+  langs:
+  - csharp
+  - vb
+  name: Constructor
+  nameWithType: ICustomAttribute.Constructor
+  fullName: CilTools.Reflection.ICustomAttribute.Constructor
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the constructor used to instantiate object of this attribute\n"
+  syntax:
+    content: MethodBase Constructor { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: ReadOnly Property Constructor As MethodBase
+  overload: CilTools.Reflection.ICustomAttribute.Constructor*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: CilTools.Reflection.ICustomAttribute.Data
+  commentId: P:CilTools.Reflection.ICustomAttribute.Data
+  id: Data
+  parent: CilTools.Reflection.ICustomAttribute
+  langs:
+  - csharp
+  - vb
+  name: Data
+  nameWithType: ICustomAttribute.Data
+  fullName: CilTools.Reflection.ICustomAttribute.Data
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the raw attribute data as the byte array\n"
+  remarks: "\nThe format of the byte array is defined by ECMA-335 specification, paragraph II.23.3 - \nCustom attributes. The data in the byte array specifies constructor&apos;s arguments and \nproperty values used to create an object for this attribute.\n"
+  syntax:
+    content: byte[] Data { get; }
+    parameters: []
+    return:
+      type: System.Byte[]
+    content.vb: ReadOnly Property Data As Byte()
+  overload: CilTools.Reflection.ICustomAttribute.Data*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: CilTools.Reflection.ICustomAttribute.Owner*
+  commentId: Overload:CilTools.Reflection.ICustomAttribute.Owner
+  isExternal: true
+  name: Owner
+  nameWithType: ICustomAttribute.Owner
+  fullName: CilTools.Reflection.ICustomAttribute.Owner
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Reflection.ICustomAttribute.Constructor*
+  commentId: Overload:CilTools.Reflection.ICustomAttribute.Constructor
+  isExternal: true
+  name: Constructor
+  nameWithType: ICustomAttribute.Constructor
+  fullName: CilTools.Reflection.ICustomAttribute.Constructor
+- uid: CilTools.Reflection.ICustomAttribute.Data*
+  commentId: Overload:CilTools.Reflection.ICustomAttribute.Data
+  isExternal: true
+  name: Data
+  nameWithType: ICustomAttribute.Data
+  fullName: CilTools.Reflection.ICustomAttribute.Data
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()

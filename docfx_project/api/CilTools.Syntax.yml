@@ -25,13 +25,6 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
 references:
-- uid: CilTools.Syntax.SyntaxNode
-  commentId: T:CilTools.Syntax.SyntaxNode
-  parent: CilTools.Syntax
-  isExternal: true
-  name: SyntaxNode
-  nameWithType: SyntaxNode
-  fullName: CilTools.Syntax.SyntaxNode
 - uid: CilTools.Syntax.BlockSyntax
   commentId: T:CilTools.Syntax.BlockSyntax
   parent: CilTools.Syntax
@@ -96,6 +89,13 @@ references:
   name: MethodDefSyntax
   nameWithType: MethodDefSyntax
   fullName: CilTools.Syntax.MethodDefSyntax
+- uid: CilTools.Syntax.SyntaxNode
+  commentId: T:CilTools.Syntax.SyntaxNode
+  parent: CilTools.Syntax
+  isExternal: true
+  name: SyntaxNode
+  nameWithType: SyntaxNode
+  fullName: CilTools.Syntax.SyntaxNode
 - uid: CilTools.Syntax
   commentId: N:CilTools.Syntax
   isExternal: true

@@ -323,6 +323,69 @@
   
   
   <a id="CilTools_Runtime_DynamicMethodsAssembly__ctor_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.#ctor*"></a>
+  <h4 id="CilTools_Runtime_DynamicMethodsAssembly__ctor_Microsoft_Diagnostics_Runtime_DataTarget_CilTools_Runtime_ClrAssemblyReader_System_Boolean_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.#ctor(Microsoft.Diagnostics.Runtime.DataTarget,CilTools.Runtime.ClrAssemblyReader,System.Boolean)">DynamicMethodsAssembly(DataTarget, ClrAssemblyReader, Boolean)</h4>
+  <div class="markdown level1 summary"><p>Creates new <code>DynamicMethodsAssembly</code> object for the specified data target, optionally
+providing the <a class="xref" href="CilTools.Runtime.ClrAssemblyReader.html">ClrAssemblyReader</a> instance and indicating whether the created object
+owns the data target.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public DynamicMethodsAssembly(DataTarget dt, ClrAssemblyReader r, bool autoDispose)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Microsoft.Diagnostics.Runtime.DataTarget</span></td>
+        <td><span class="parametername">dt</span></td>
+        <td><p>ClrMD data target to read information from</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.Runtime.ClrAssemblyReader.html">ClrAssemblyReader</a></td>
+        <td><span class="parametername">r</span></td>
+        <td><p>Assembly reader object to read dependent assemblies.</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">autoDispose</span></td>
+        <td><p><code>true</code> if this instance owns tha data target and should dispose it automatically when it is no longer needed</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Runtime_DynamicMethodsAssembly__ctor_Microsoft_Diagnostics_Runtime_DataTarget_CilTools_Runtime_ClrAssemblyReader_System_Boolean__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>If the supplied <a class="xref" href="CilTools.Runtime.ClrAssemblyReader.html">ClrAssemblyReader</a> is null, the constructor will create new
+assembly reader instance using the supplied data target.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Supplied data target is null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_DynamicMethodsAssembly__ctor_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.#ctor*"></a>
   <h4 id="CilTools_Runtime_DynamicMethodsAssembly__ctor_Microsoft_Diagnostics_Runtime_DataTarget_System_Boolean_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.#ctor(Microsoft.Diagnostics.Runtime.DataTarget,System.Boolean)">DynamicMethodsAssembly(DataTarget, Boolean)</h4>
   <div class="markdown level1 summary"><p>Creates new <code>DynamicMethodsAssembly</code> object for the specified data target, optionally indicating whether the created object
 owns the data target.</p>
@@ -374,6 +437,38 @@ owns the data target.</p>
   </table>
   <h3 id="properties">Properties
   </h3>
+  
+  
+  <a id="CilTools_Runtime_DynamicMethodsAssembly_AssemblyReader_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader*"></a>
+  <h4 id="CilTools_Runtime_DynamicMethodsAssembly_AssemblyReader" data-uid="CilTools.Runtime.DynamicMethodsAssembly.AssemblyReader">AssemblyReader</h4>
+  <div class="markdown level1 summary"><p>Gets the assembly reader object used to read dependent assemblies</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ClrAssemblyReader AssemblyReader { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Runtime.ClrAssemblyReader.html">ClrAssemblyReader</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Runtime_DynamicMethodsAssembly_AssemblyReader_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>When dynamic method references a member from the external assembly, the library will
+use this assembly reader object when resolving metadata tokens from the external assembly.
+The assembly reader acts as cache that stores assembly instance so we don't need to load
+them multiple times.</p>
+</div>
   
   
   <a id="CilTools_Runtime_DynamicMethodsAssembly_ChildType_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.ChildType*"></a>

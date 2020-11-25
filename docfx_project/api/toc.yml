@@ -41,17 +41,32 @@
   items:
   - uid: CilTools.BytecodeAnalysis.Extensions.CilExtensions
     name: CilExtensions
+- uid: CilTools.Metadata
+  name: CilTools.Metadata
+  items:
+  - uid: CilTools.Metadata.AssemblyReader
+    name: AssemblyReader
 - uid: CilTools.Reflection
   name: CilTools.Reflection
   items:
+  - uid: CilTools.Reflection.ComplexType
+    name: ComplexType
+  - uid: CilTools.Reflection.ComplexTypeKind
+    name: ComplexTypeKind
   - uid: CilTools.Reflection.CustomMethod
     name: CustomMethod
   - uid: CilTools.Reflection.ExceptionBlock
     name: ExceptionBlock
+  - uid: CilTools.Reflection.GenericParamType
+    name: GenericParamType
+  - uid: CilTools.Reflection.ICustomAttribute
+    name: ICustomAttribute
   - uid: CilTools.Reflection.ITokenResolver
     name: ITokenResolver
   - uid: CilTools.Reflection.LocalVariable
     name: LocalVariable
+  - uid: CilTools.Reflection.PInvokeParams
+    name: PInvokeParams
 - uid: CilTools.Runtime
   name: CilTools.Runtime
   items:

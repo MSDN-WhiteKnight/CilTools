@@ -31,12 +31,6 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
 references:
-- uid: CilTools.BytecodeAnalysis.Diagnostics
-  commentId: T:CilTools.BytecodeAnalysis.Diagnostics
-  isExternal: true
-  name: Diagnostics
-  nameWithType: Diagnostics
-  fullName: CilTools.BytecodeAnalysis.Diagnostics
 - uid: CilTools.BytecodeAnalysis.CilAnalysis
   commentId: T:CilTools.BytecodeAnalysis.CilAnalysis
   isExternal: true
@@ -56,26 +50,6 @@ references:
   name: CilErrorEventArgs
   nameWithType: CilErrorEventArgs
   fullName: CilTools.BytecodeAnalysis.CilErrorEventArgs
-- uid: CilTools.BytecodeAnalysis.CilInstruction
-  commentId: T:CilTools.BytecodeAnalysis.CilInstruction
-  parent: CilTools.BytecodeAnalysis
-  isExternal: true
-  name: CilInstruction
-  nameWithType: CilInstruction
-  fullName: CilTools.BytecodeAnalysis.CilInstruction
-- uid: CilTools.BytecodeAnalysis.CustomModifier
-  commentId: T:CilTools.BytecodeAnalysis.CustomModifier
-  parent: CilTools.BytecodeAnalysis
-  isExternal: true
-  name: CustomModifier
-  nameWithType: CustomModifier
-  fullName: CilTools.BytecodeAnalysis.CustomModifier
-- uid: CilTools.BytecodeAnalysis.DebugUtils
-  commentId: T:CilTools.BytecodeAnalysis.DebugUtils
-  isExternal: true
-  name: DebugUtils
-  nameWithType: DebugUtils
-  fullName: CilTools.BytecodeAnalysis.DebugUtils
 - uid: CilTools.BytecodeAnalysis.CilGraph
   commentId: T:CilTools.BytecodeAnalysis.CilGraph
   parent: CilTools.BytecodeAnalysis
@@ -96,6 +70,13 @@ references:
   name: CilGraphNodeMutable
   nameWithType: CilGraphNodeMutable
   fullName: CilTools.BytecodeAnalysis.CilGraphNodeMutable
+- uid: CilTools.BytecodeAnalysis.CilInstruction
+  commentId: T:CilTools.BytecodeAnalysis.CilInstruction
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilInstruction
+  nameWithType: CilInstruction
+  fullName: CilTools.BytecodeAnalysis.CilInstruction
 - uid: CilTools.BytecodeAnalysis.CilReaderState
   commentId: T:CilTools.BytecodeAnalysis.CilReaderState
   parent: CilTools.BytecodeAnalysis
@@ -115,6 +96,25 @@ references:
   name: CilReader
   nameWithType: CilReader
   fullName: CilTools.BytecodeAnalysis.CilReader
+- uid: CilTools.BytecodeAnalysis.CustomModifier
+  commentId: T:CilTools.BytecodeAnalysis.CustomModifier
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CustomModifier
+  nameWithType: CustomModifier
+  fullName: CilTools.BytecodeAnalysis.CustomModifier
+- uid: CilTools.BytecodeAnalysis.DebugUtils
+  commentId: T:CilTools.BytecodeAnalysis.DebugUtils
+  isExternal: true
+  name: DebugUtils
+  nameWithType: DebugUtils
+  fullName: CilTools.BytecodeAnalysis.DebugUtils
+- uid: CilTools.BytecodeAnalysis.Diagnostics
+  commentId: T:CilTools.BytecodeAnalysis.Diagnostics
+  isExternal: true
+  name: Diagnostics
+  nameWithType: Diagnostics
+  fullName: CilTools.BytecodeAnalysis.Diagnostics
 - uid: CilTools.BytecodeAnalysis.CallingConvention
   commentId: T:CilTools.BytecodeAnalysis.CallingConvention
   parent: CilTools.BytecodeAnalysis

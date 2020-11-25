@@ -1,0 +1,160 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.ComplexTypeKind
+  commentId: T:CilTools.Reflection.ComplexTypeKind
+  id: ComplexTypeKind
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.ComplexTypeKind.ByRef
+  - CilTools.Reflection.ComplexTypeKind.GenInst
+  - CilTools.Reflection.ComplexTypeKind.Pointer
+  - CilTools.Reflection.ComplexTypeKind.SzArray
+  langs:
+  - csharp
+  - vb
+  name: ComplexTypeKind
+  nameWithType: ComplexTypeKind
+  fullName: CilTools.Reflection.ComplexTypeKind
+  type: Enum
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nSpecifies the kind of the complex type\n"
+  syntax:
+    content: public enum ComplexTypeKind
+    content.vb: Public Enum ComplexTypeKind
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilTools.Reflection.ComplexTypeKind.SzArray
+  commentId: F:CilTools.Reflection.ComplexTypeKind.SzArray
+  id: SzArray
+  parent: CilTools.Reflection.ComplexTypeKind
+  langs:
+  - csharp
+  - vb
+  name: SzArray
+  nameWithType: ComplexTypeKind.SzArray
+  fullName: CilTools.Reflection.ComplexTypeKind.SzArray
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nSingle-dimensional zero-based array\n"
+  syntax:
+    content: SzArray = 1
+    return:
+      type: CilTools.Reflection.ComplexTypeKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ComplexTypeKind.ByRef
+  commentId: F:CilTools.Reflection.ComplexTypeKind.ByRef
+  id: ByRef
+  parent: CilTools.Reflection.ComplexTypeKind
+  langs:
+  - csharp
+  - vb
+  name: ByRef
+  nameWithType: ComplexTypeKind.ByRef
+  fullName: CilTools.Reflection.ComplexTypeKind.ByRef
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nManaged reference\n"
+  syntax:
+    content: ByRef = 2
+    return:
+      type: CilTools.Reflection.ComplexTypeKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ComplexTypeKind.Pointer
+  commentId: F:CilTools.Reflection.ComplexTypeKind.Pointer
+  id: Pointer
+  parent: CilTools.Reflection.ComplexTypeKind
+  langs:
+  - csharp
+  - vb
+  name: Pointer
+  nameWithType: ComplexTypeKind.Pointer
+  fullName: CilTools.Reflection.ComplexTypeKind.Pointer
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nUnmanaged pointer\n"
+  syntax:
+    content: Pointer = 3
+    return:
+      type: CilTools.Reflection.ComplexTypeKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ComplexTypeKind.GenInst
+  commentId: F:CilTools.Reflection.ComplexTypeKind.GenInst
+  id: GenInst
+  parent: CilTools.Reflection.ComplexTypeKind
+  langs:
+  - csharp
+  - vb
+  name: GenInst
+  nameWithType: ComplexTypeKind.GenInst
+  fullName: CilTools.Reflection.ComplexTypeKind.GenInst
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGeneric type instantiation\n"
+  syntax:
+    content: GenInst = 4
+    return:
+      type: CilTools.Reflection.ComplexTypeKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: CilTools.Reflection.ComplexTypeKind
+  commentId: T:CilTools.Reflection.ComplexTypeKind
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ComplexTypeKind
+  nameWithType: ComplexTypeKind
+  fullName: CilTools.Reflection.ComplexTypeKind
