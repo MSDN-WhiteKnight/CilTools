@@ -10,11 +10,12 @@ CIL tools is a set of software to work with Common Intermediate Language in .NET
 
 - *CilTools.BytecodeAnalysis* - programmatically inspect bytecode of methods
 - *CilTools.Runtime* - load bytecode of methods in another process
+- *CilTools.Metadata* - inspect assembly via reflection without loading it into the current process
 - *CilView* - windows application to display CIL code of methods in the given assembly file or process
 
 ## CilTools.BytecodeAnalysis (previously CilBytecodeParser)
 
-**Requirements:** .NET Framework 3.5+  
+**Requirements:** .NET Framework 3.5+ or .NET Standard 2.0+ 
 
 [![Nuget](https://img.shields.io/nuget/v/CilTools.BytecodeAnalysis)](https://www.nuget.org/packages/CilTools.BytecodeAnalysis/) &nbsp; [![GitHub release (latest by date)](https://img.shields.io/github/v/release/MSDN-WhiteKnight/CilTools)](https://github.com/MSDN-WhiteKnight/CilTools/releases)
 
@@ -90,6 +91,14 @@ ret
 [![Nuget](https://img.shields.io/nuget/v/CilTools.Runtime)](https://www.nuget.org/packages/CilTools.Runtime/)
 
 CilTools.Runtime loads CIL bytecode of methods in external process's CLR instance using ClrMD. This enables processing bytecode from external process with CilTools.BytecodeAnalysis library.
+
+## CilTools.Metadata
+
+**Requirements:** .NET Framework 4.5+ or .NET Standard 2.0+
+
+[![Nuget](https://img.shields.io/nuget/v/CilTools.Metadata)](https://www.nuget.org/packages/CilTools.Metadata/)
+
+The library that supports inspecting the contents of .NET assembly via reflection without loading it into the current process. This enables inspecting assemblies for another target framework (such as .NET Standard assemblies when your application is on .NET Framework) or when some dependencies could not be resolved. This also means assemblies can be unloaded from memory when they are no longer needed.
 
 ## CilView
 
