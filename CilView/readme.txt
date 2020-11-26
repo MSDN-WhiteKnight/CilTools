@@ -1,4 +1,4 @@
-﻿== CilView ==
+== CilView ==
 
 Requirements: .NET Framework 4.5+
 License: BSD 3-Clause
@@ -34,7 +34,7 @@ All method references on the "Formatted" tab are hyperlinks to the referenced me
 
 You can search process by entering the process name starting fragment or ID into the text field and pressing "Search".
 
-NOTE: Only 32-bit processes are supported. .NET Core shared host is 64-bit on 64-bit Windows, but you can attach to .NET Core application if it was build targeting the win-x86 runtime ID and started from the resulting EXE file rather then using shared host.
+NOTE: Only 32-bit processes are supported. .NET Core shared host is 64-bit on 64-bit Windows, but you can attach to .NET Core application if it was build targeting the win-x86 runtime ID and started from the resulting EXE file rather than using shared host.
 
 3. Check the "active mode" checkbox if you want to get more accurate info.
 
@@ -45,7 +45,7 @@ NOTE: When attaching in active mode, the target process is suspended. Do not use
 6. Select type from the "Type" drop-down list in the main window
 7. Select method in the left panel.
 
-You can also search assemblies,types and methods by entering the fragment of their names into the "Find" text field and pressing the ">" button. CIL View searches methods in the currently selected type, if the type is selected. In a similar way, types are searched in the currently selected assembly, if one is selected. The search results are shown in the context menu. Clicking on the menu item navigates to the corresponding object.
+You can also search assemblies, types and methods by entering the fragment of their names into the "Find" text field and pressing the ">" button. CIL View searches methods in the currently selected type, if the type is selected. In a similar way, types are searched in the currently selected assembly, if one is selected. The search results are shown in the context menu. Clicking on the menu item navigates to the corresponding object.
 
 8. The right panel will display the CIL disassembly of the selected method.
 
@@ -75,7 +75,7 @@ The stack trace will be displayed in the left panel. Some stack frames are hyper
 
 You can install CIL View via ClickOnce if you want to download updates automatically. The ClickOnce download URL: https://msdn-whiteknight.github.io/CilTools/update/
 
-Using auto-update requires stable internet connection and access to the https://msdn-whiteknight.github.io/ website. If you are using old Windows or .NET Framework versions, you might be unable to connect due to TLS protocol version or chiphersuite mismatch.
+Using auto-update requires stable internet connection and access to the https://msdn-whiteknight.github.io/ website. If you are using old Windows or .NET Framework versions, you might be unable to connect due to TLS protocol version or ciphersuite mismatch.
 
 * Changelog *
 
@@ -92,7 +92,7 @@ Using auto-update requires stable internet connection and access to the https://
 - Add method token resolution for dynamic methods
 - Support auto-completion in assembly and type combo boxes
 - Improve performance for type combo box when assembly has a lot of types
-- Rework search. Search results are now displayed in context menu. Method seacrh is added.
+- Rework search. Search results are now displayed in context menu. Method search is added.
 - Format char default values as hex
 - Improve custom attribute support (now custom attribute data is properly shown for any attribute)
 - Improve empty method body handling. Now empty body is ignored only when method is is abstract, P/Invoke or implemented by runtime. In other cases the error message is displayed.
