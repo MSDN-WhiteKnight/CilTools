@@ -33,6 +33,13 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilGraphTestsCore_Text.Test_CilGraph_OptionalParams(mi);
         }
 
+        [TestMethod]
+        public void Test_CilGraph_ImplRuntime()
+        {
+            MethodInfo mi = typeof(System.Func<>).GetMethod("Invoke");
+            CilGraphTestsCore_Text.Test_CilGraph_ImplRuntime(mi);
+        }
+
 #if DEBUG
         [TestMethod]
         public void Test_CilGraph_Locals()

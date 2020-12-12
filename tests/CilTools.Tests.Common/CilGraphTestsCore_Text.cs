@@ -79,5 +79,22 @@ namespace CilTools.Tests.Common
                 MatchElement.Any 
             });
         }
+
+        public static void Test_CilGraph_ImplRuntime(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            string str = graph.ToString();
+
+            //.method   public hidebysig newslot virtual instance !0 Invoke() runtime managed
+
+            AssertThat.IsMatch(str, new MatchElement[] {
+                MatchElement.Any, new Literal(".method"),MatchElement.Any,
+                new Literal("!"),MatchElement.Any,
+                new Literal("Invoke"),MatchElement.Any,
+                new Literal("("), MatchElement.Any,new Literal(")"),MatchElement.Any
+                ,new Literal("runtime"),MatchElement.Any
+                ,new Literal("managed"),MatchElement.Any
+            });
+        }
     }
 }

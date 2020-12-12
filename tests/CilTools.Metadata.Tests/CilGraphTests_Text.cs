@@ -134,6 +134,20 @@ namespace CilTools.Metadata.Tests
                              int32 nCmdShow) cil managed preservesig*/
         }
 
+        [TestMethod]
+        public void Test_CilGraph_ImplRuntime()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(System.Func<>).Assembly.Location);
+                Type t = ass.GetType("System.Func`1");
+                MethodBase mi = t.GetMember("Invoke")[0] as MethodBase;
+                CilGraphTestsCore_Text.Test_CilGraph_ImplRuntime(mi);
+            }
+        }
+
 #if DEBUG
         [TestMethod]
         public void Test_CilGraph_Locals()
