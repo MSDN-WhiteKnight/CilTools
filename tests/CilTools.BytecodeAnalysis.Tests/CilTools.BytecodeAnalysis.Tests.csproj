@@ -65,7 +65,7 @@
       <Name>CilTools.BytecodeAnalysis</Name>
     </ProjectReference>
     <ProjectReference Include="..\CilTools.Tests.Common\CilTools.Tests.Common.csproj">
-      <Project>{0220F688-84CF-4F97-9439-8A7A8F58230B}</Project>
+      <Project>{cc09c7fc-6b32-43bd-b4da-e3c8caf8ea91}</Project>
       <Name>CilTools.Tests.Common</Name>
     </ProjectReference>
   </ItemGroup>
