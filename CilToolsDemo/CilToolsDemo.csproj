@@ -51,6 +51,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CilTools.Metadata\CilTools.Metadata.csproj">
+      <Project>{af94acbd-2263-4cb9-bc15-abfd484cf2cf}</Project>
+      <Name>CilTools.Metadata</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CilTools.Runtime\CilTools.Runtime.csproj">
       <Project>{97d23c38-120e-47ea-bbce-4fae3c750bee}</Project>
       <Name>CilTools.Runtime</Name>

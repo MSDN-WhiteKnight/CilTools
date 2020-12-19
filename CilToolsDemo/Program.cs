@@ -10,6 +10,7 @@ using System.Linq;
 using CilTools.BytecodeAnalysis;
 using CilTools.BytecodeAnalysis.Extensions;
 using CilTools.Runtime;
+using CilTools.Metadata;
 
 namespace CilToolsDemo
 {
@@ -107,13 +108,8 @@ namespace CilToolsDemo
 
                     /*asspath = Assembly.GetExecutingAssembly().Location;
                     type = "CilToolsDemo.Program";
-                    method = "Main";                                        
-                    ass = MetadataLoader.Load(asspath);*/
-
-                    /*asspath = @"...\repos\CilTools\tests\CilTools.BytecodeAnalysis.Tests\bin\Debug\CilTools.BytecodeAnalysis.Tests.dll";
-                    type = "CilTools.BytecodeAnalysis.Tests.SampleMethods";
-                    method = "PointerTest";
-                    ass = MetadataLoader.Load(asspath);*/
+                    method = "Main";
+                    ass = new AssemblyReader().LoadFrom(asspath);*/
                 }
                 else
                 {
