@@ -15,7 +15,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="2.1.0" />
   </ItemGroup>
   
   
