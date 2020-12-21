@@ -21,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.Metadata", "CilToo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.BytecodeAnalysis", "CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj", "{9A397C75-1438-43FD-ABFC-B19A918B4435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Tests.Common", "tests\CilTools.Tests.Common\CilTools.Tests.Common.csproj", "{CC09C7FC-6B32-43BD-B4DA-E3C8CAF8EA91}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.Tests.Common", "tests\CilTools.Tests.Common\CilTools.Tests.Common.csproj", "{CC09C7FC-6B32-43BD-B4DA-E3C8CAF8EA91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.BytecodeAnalysis.Tests.NetCore", "tests\CilTools.BytecodeAnalysis.Tests.NetCore\CilTools.BytecodeAnalysis.Tests.NetCore.csproj", "{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -131,6 +133,18 @@ Global
 		{CC09C7FC-6B32-43BD-B4DA-E3C8CAF8EA91}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{CC09C7FC-6B32-43BD-B4DA-E3C8CAF8EA91}.Release|Win32.ActiveCfg = Release|Any CPU
 		{CC09C7FC-6B32-43BD-B4DA-E3C8CAF8EA91}.Release|Win32.Build.0 = Release|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Debug|Win32.Build.0 = Debug|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Release|Win32.ActiveCfg = Release|Any CPU
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -140,6 +154,7 @@ Global
 		{EF03841A-E922-43D7-8447-DD6F16299A5A} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
 		{AC5F228E-77EA-4F45-A659-9D6DC5531328} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
 		{CC09C7FC-6B32-43BD-B4DA-E3C8CAF8EA91} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
+		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E67EF443-831E-47A3-A9FD-F4EAD03CEEED}
