@@ -25,6 +25,27 @@ namespace CilTools.Reflection
         ConstructorInfo ciRuntimeMethodHandle;
         ConstructorInfo ciRuntimeFieldInfo;
 
+        static bool s_newruntime; //indicates that current runtime is .NET Framework 4.x, .NET Core or .NET 5
+
+        static bool IsOnNetFramework()
+        {
+            string corelib = typeof(object).Assembly.GetName().Name;
+            return String.Equals(corelib, "mscorlib",StringComparison.InvariantCulture);
+        }
+
+        static bool IsOnNetCore()
+        {
+            string corelib = typeof(object).Assembly.GetName().Name;
+            return String.Equals(corelib, "System.Private.CoreLib", StringComparison.InvariantCulture);
+        }
+
+        static ModuleWrapperDynamic()
+        {
+            if (IsOnNetFramework() && Environment.Version.Major >= 4) s_newruntime = true;
+            else if(IsOnNetCore()) s_newruntime = true;
+            else s_newruntime = false;
+        }
+
         public ModuleWrapperDynamic(MethodBase mb):base(mb)
         {
             this.srcmethod = mb;
@@ -50,7 +71,7 @@ namespace CilTools.Reflection
                 "ResolveSignature", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
                 );
 
-            if (Environment.Version.Major >= 4)
+            if (s_newruntime)
             {
                 Type tRMHI = typeof(RuntimeTypeHandle).Assembly.GetType("System.RuntimeMethodHandleInternal");
                 Type tRFIS = typeof(RuntimeTypeHandle).Assembly.GetType("System.RuntimeFieldInfoStub");
@@ -120,7 +141,7 @@ namespace CilTools.Reflection
         {
             if (this.resolver == null) return base.ResolveType(metadataToken, genericTypeArguments, genericMethodArguments);
 
-            if (Environment.Version.Major >= 4)
+            if (s_newruntime)
             {
                 IntPtr typeHandle, methodHandle, fieldHandle;
                 object[] args = new object[] { metadataToken, new IntPtr(), new IntPtr(), new IntPtr() };
@@ -145,7 +166,7 @@ namespace CilTools.Reflection
         {
             if (this.resolver == null) return base.ResolveMethod(metadataToken, genericTypeArguments, genericMethodArguments);
 
-            if (Environment.Version.Major >= 4)
+            if (s_newruntime)
             {
                 IntPtr typeHandle, methodHandle, fieldHandle;
                 object[] args = new object[] { metadataToken, new IntPtr(), new IntPtr(), new IntPtr() };
@@ -171,11 +192,42 @@ namespace CilTools.Reflection
             }
         }
 
+        object GetRFIS(IntPtr fieldHandle)
+        {
+            //Create instance of System.FuntimeFieldInfoStub
+
+            object stub;
+            if (this.ciRuntimeFieldInfo == null) //.NET Core or .NET 5
+            {
+                Type tRFIS = typeof(RuntimeTypeHandle).Assembly.GetType("System.RuntimeFieldInfoStub");
+                stub = System.Runtime.Serialization.FormatterServices.GetUninitializedObject(tRFIS);
+                FieldInfo fi_m_fieldHandle;
+                fi_m_fieldHandle = tRFIS.GetField(
+                    "m_fieldHandle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+                    );
+
+                Type tRFHI = typeof(RuntimeTypeHandle).Assembly.GetType("System.RuntimeFieldHandleInternal");
+                object oRFHI = System.Runtime.Serialization.FormatterServices.GetUninitializedObject(tRFHI);
+                FieldInfo fi_m_handle = tRFHI.GetField(
+                    "m_handle", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance
+                    );
+                fi_m_handle.SetValue(oRFHI, fieldHandle);
+                fi_m_fieldHandle.SetValue(stub, oRFHI);
+            }
+            else
+            {
+                //.NET Framework 4.x
+                stub = ciRuntimeFieldInfo.Invoke(new object[] { fieldHandle, null });
+            }
+
+            return stub;
+        }
+
         public override FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
             if (this.resolver == null) return base.ResolveField(metadataToken, genericTypeArguments, genericMethodArguments);
 
-            if (Environment.Version.Major >= 4)
+            if (s_newruntime)
             {
                 IntPtr typeHandle, methodHandle, fieldHandle;
                 object[] args = new object[] { metadataToken, new IntPtr(), new IntPtr(), new IntPtr() };
@@ -188,9 +240,9 @@ namespace CilTools.Reflection
                 if (typeHandle == IntPtr.Zero) t = null;
                 else t = (Type)mbGetTypeFromHandle.Invoke(null, new object[] { typeHandle });
 
-                return (FieldInfo)mbGetFieldInfo.Invoke(
-                    null, new object[] { t, ciRuntimeFieldInfo.Invoke(new object[] { fieldHandle, null }) }
-                    );
+                object stub = this.GetRFIS(fieldHandle);
+
+                return (FieldInfo)mbGetFieldInfo.Invoke(null, new[] { t, stub });
             }
             else
             {
@@ -205,7 +257,7 @@ namespace CilTools.Reflection
         {
             if (this.resolver == null) return base.ResolveMember(metadataToken, genericTypeArguments, genericMethodArguments);
 
-            if (Environment.Version.Major >= 4)
+            if (s_newruntime)
             {
                 IntPtr typeHandle, methodHandle, fieldHandle;
                 object[] args = new object[] { metadataToken, new IntPtr(), new IntPtr(), new IntPtr() };
@@ -224,11 +276,13 @@ namespace CilTools.Reflection
                         null, new[] { t, ciRuntimeMethodHandle.Invoke(new object[] { methodHandle }) }
                         );
                 }
-
+                
                 if (fieldHandle != IntPtr.Zero)
                 {
+                    object stub = this.GetRFIS(fieldHandle);
+
                     return (FieldInfo)mbGetFieldInfo.Invoke(
-                        null, new[] { t, ciRuntimeFieldInfo.Invoke(new object[] { fieldHandle, null }) }
+                        null, new[] { t,  stub}
                         );
                 }
 
