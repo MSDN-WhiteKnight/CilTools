@@ -149,7 +149,7 @@ namespace CilTools.BytecodeAnalysis.Tests.NetCore
 
             //Verify CilGraph.ToString() output
     
-            Diagnostics.OnError += (x,y)=>{Console.WriteLine(y.Exception.ToString());};
+            Diagnostics.Error += (x,y)=>{Console.WriteLine(y.Exception.ToString());};
     
             string str = graph.ToText();
     
