@@ -82,9 +82,6 @@ namespace CilTools.Reflection
                 new[] { typeof(IntPtr) }, null
                 );
 
-                var methods = typeof(Type).GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
-                for (int i = 0; i < methods.Length; i++) Console.WriteLine(methods[i].Name);
-
                 if (tIRuntimeFieldInfo != null)
                 {
                     this.mbGetFieldInfo = tRuntimeType.GetMethod(

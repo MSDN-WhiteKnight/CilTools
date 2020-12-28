@@ -98,6 +98,9 @@ namespace CilTools.BytecodeAnalysis.Tests.NetCore
             var deleg = (Func<string, int>)dm.CreateDelegate(typeof(Func<string, int>));
             int res = deleg("Hello, world!");
 
+            Console.WriteLine(Environment.Version.ToString());
+            Diagnostics.Error += (x, y) => { Console.WriteLine(y.Exception.ToString()); };
+
             //create CilGraph from DynamicMethod
             CilGraph graph = CilGraph.Create(dm);
 
@@ -108,7 +111,7 @@ namespace CilTools.BytecodeAnalysis.Tests.NetCore
 
             AssertThat.NotEmpty(nodes, "The result of DynamicMethodTest method parsing should not be empty collection");
 
-            /*AssertThat.HasOnlyOneMatch(
+            AssertThat.HasOnlyOneMatch(
                 nodes,
                 (x) => x.Instruction.OpCode == OpCodes.Ldstr && x.Instruction.ReferencedString == "Hello, world.",
                 "The result of DynamicMethodTest method parsing should contain a single 'ldstr' instruction referencing \"Hello, world.\" literal"
@@ -145,17 +148,12 @@ namespace CilTools.BytecodeAnalysis.Tests.NetCore
                 nodes,
                 (x) => x.Instruction.OpCode == OpCodes.Newarr && x.Instruction.ReferencedType.Name == "Guid",
                 "The result of DynamicMethodTest method parsing should contain a single 'newarr' instruction referencing Guid type"
-                );*/
+                );
 
             //Verify CilGraph.ToString() output
-    
-            Diagnostics.Error += (x,y)=>{Console.WriteLine(y.Exception.ToString());};
-    
             string str = graph.ToText();
-    
             Console.WriteLine(str);
-            Console.WriteLine(Environment.Version.ToString());
-
+            
             AssertThat.IsMatch(str, new MatchElement[] {
                 new Literal(".method"), MatchElement.Any, new Literal("int32"), MatchElement.Any,
                 new Literal("DynamicMethodTest"), MatchElement.Any,
