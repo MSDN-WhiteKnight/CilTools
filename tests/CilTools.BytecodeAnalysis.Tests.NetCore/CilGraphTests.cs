@@ -148,8 +148,13 @@ namespace CilTools.BytecodeAnalysis.Tests.NetCore
                 );*/
 
             //Verify CilGraph.ToString() output
+    
+            Diagnostics.OnError += (x,y)=>{Console.WriteLine(y.Exception.ToString());}
+    
             string str = graph.ToText();
+    
             Console.WriteLine(str);
+            Console.WriteLine(Environment.Version.ToString());
 
             AssertThat.IsMatch(str, new MatchElement[] {
                 new Literal(".method"), MatchElement.Any, new Literal("int32"), MatchElement.Any,
