@@ -268,7 +268,15 @@ namespace CilTools.Reflection
                 Type t;
 
                 if (typeHandle == IntPtr.Zero) t = null;
-                else t = (Type)mbGetTypeFromHandle.Invoke(null, new object[] { typeHandle });
+                else
+                {
+                    if (mbGetTypeFromHandle == null)
+                    {
+                        throw new CilParserException("mbGetTypeFromHandle is null");
+                    }
+
+                    t = (Type)mbGetTypeFromHandle.Invoke(null, new object[] { typeHandle });
+                }
 
                 if (methodHandle != IntPtr.Zero)
                 {
