@@ -82,6 +82,9 @@ namespace CilTools.Reflection
                 new[] { typeof(IntPtr) }, null
                 );
 
+                var methods = typeof(Type).GetMethods(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic);
+                for (int i = 0; i < methods.Length; i++) Console.WriteLine(methods[i].Name);
+
                 if (tIRuntimeFieldInfo != null)
                 {
                     this.mbGetFieldInfo = tRuntimeType.GetMethod(
@@ -272,7 +275,7 @@ namespace CilTools.Reflection
                 {
                     if (mbGetTypeFromHandle == null)
                     {
-                        throw new CilParserException("mbGetTypeFromHandle is null");
+                        throw new MissingMethodException("GetTypeFromHandleUnsafe is not found");
                     }
 
                     t = (Type)mbGetTypeFromHandle.Invoke(null, new object[] { typeHandle });
