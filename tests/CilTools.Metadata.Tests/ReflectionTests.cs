@@ -34,5 +34,33 @@ namespace CilTools.Metadata.Tests
                 Assert.IsTrue(pars.SetLastError, "SetLastError should be true for ShowWindow");
             }
         }
+
+        [TestMethod]
+        public void Test_NavigationExternal()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("PrintHelloWorld")[0] as MethodBase;
+                ReflectionTestsCore.Test_NavigationExternal(mi);
+            }
+        }
+
+        [TestMethod]
+        public void Test_NavigationInternal()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("CreatePoint")[0] as MethodBase;
+                ReflectionTestsCore.Test_NavigationInternal(mi);
+            }
+        }
     }
 }
