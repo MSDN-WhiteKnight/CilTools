@@ -347,6 +347,39 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             }
         }
 
+        private void miShowExceptions_Click(object sender, RoutedEventArgs e)
+        {
+            if (current_method == null)
+            {
+                MessageBox.Show(this, "No method selected. Select method first to show exceptions.", "Error");
+                return;
+            }
+
+            StringBuilder sb = new StringBuilder();
+
+            try
+            {
+                this.Cursor = Cursors.Wait;
+                IEnumerable<Type> exceptions = Analysis.GetExceptions(current_method);
+                foreach (Type t in exceptions) sb.AppendLine(t.ToString());
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+                return;
+            }
+            finally
+            {
+                this.Cursor = Cursors.Arrow;
+            }
+
+            TextViewWindow wnd = new TextViewWindow();
+            wnd.Owner = this;
+            wnd.Title = "Exceptions";
+            wnd.Text = sb.ToString();
+            wnd.Show();
+        }
+
         private void bProcessInfo_Click(object sender, RoutedEventArgs e)
         {
             string s="";

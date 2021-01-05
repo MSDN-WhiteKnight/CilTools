@@ -98,6 +98,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Analysis.cs" />
     <Compile Include="CilVisualization.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="SearchResult.cs" />
