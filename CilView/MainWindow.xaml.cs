@@ -360,8 +360,8 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             try
             {
                 this.Cursor = Cursors.Wait;
-                IEnumerable<Type> exceptions = Analysis.GetExceptions(current_method);
-                foreach (Type t in exceptions) sb.AppendLine(t.ToString());
+                IEnumerable<ExceptionInfo> exceptions = ExceptionInfo.GetExceptions(current_method);
+                foreach (ExceptionInfo ex in exceptions) sb.AppendLine(ex.ToString());
             }
             catch (Exception ex)
             {
