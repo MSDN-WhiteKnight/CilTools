@@ -58,7 +58,7 @@
         </ComboBox>
 
         <Label Content="Find" HorizontalAlignment="Left" Margin="500,57,0,0" VerticalAlignment="Top" Width="40"/>
-        <TextBox x:Name="tbFind" HorizontalAlignment="Left" Height="22" Margin="545,60,0,0" TextWrapping="Wrap" Text="" 
+        <TextBox x:Name="tbFind" HorizontalAlignment="Left" Height="22" Margin="545,60,0,0" TextWrapping="NoWrap" Text="" 
                  VerticalAlignment="Top" Width="100" AcceptsReturn="False" KeyDown="tbFind_KeyDown"/>
         <Button x:Name="bFind" Content=">" HorizontalAlignment="Left" Height="24" Margin="650,58,0,0" VerticalAlignment="Top" 
                 Width="24" Click="bFind_Click"/>
