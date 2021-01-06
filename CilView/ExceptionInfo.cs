@@ -33,13 +33,15 @@ namespace CilView
             public Stack<string> callstack=new Stack<string>();
         }
 
-        static void GetExceptionsRecursive(MethodBase m,GetExceptionsRecursive_Context ctx,int c)
+        static void GetExceptionsRecursive(
+            MethodBase m,GetExceptionsRecursive_Context ctx,int c,bool returned
+            )
         {
 //common false positives:
 
 //ObjectDisposedException
 
-            if (ctx.visited.Contains(m)) return;
+            if (!returned && ctx.visited.Contains(m)) return;
             ctx.visited.Add(m);
 
             //exclude some common false positives
@@ -97,16 +99,8 @@ namespace CilView
             }
 
             string mstr = "";
-
-            try
-            {
-                mstr = m.DeclaringType.FullName + "." + CilVisualization.MethodToString(m);
-            }
-            catch (Exception)
-            {
-                mstr = m.DeclaringType.FullName+"."+m.Name;
-            }
-
+            mstr = m.DeclaringType.FullName + "." + CilVisualization.MethodToString(m);
+            
             ctx.callstack.Push(mstr);
             string stackstr = String.Join(Environment.NewLine, ctx.callstack);
 
@@ -137,6 +131,7 @@ namespace CilView
 
                         if (prev.Instruction.OpCode == OpCodes.Newobj)
                         {
+                            //the exception instance was constructed directly on the stack
                             MethodBase constr = prev.Instruction.ReferencedMember as MethodBase;
                             if (constr != null)
                             {
@@ -149,6 +144,7 @@ namespace CilView
                         }
                         else if (prev.Instruction.OpCode == OpCodes.Ldloc)
                         {
+                            //the exception instance was stored in local
                             int index = Convert.ToInt32(prev.Instruction.Operand);
                             Type lt = null;
 
@@ -174,16 +170,30 @@ namespace CilView
                         }
                         else if (prev.Instruction.OpCode.FlowControl == FlowControl.Call)
                         {
-                            /*MethodBase target = prev.Instruction.ReferencedMember as MethodBase;
-                            Type rt = null;
+                            //the exception instance is a return value of the method
+                            MethodBase target = prev.Instruction.ReferencedMember as MethodBase;
 
-                            if (target != null)
+                            if (target != null) GetExceptionsRecursive(target, ctx, c + 1, true);
+                        }
+                    }
+                    else if (returned && node.Instruction.OpCode == OpCodes.Ret)
+                    {
+                        //the method's return value is an exception that will be thrown
+
+                        CilGraphNode prev = node.Previous;
+                        if (prev == null) continue;
+
+                        if (prev.Instruction.OpCode == OpCodes.Newobj)
+                        {
+                            MethodBase constr = prev.Instruction.ReferencedMember as MethodBase;
+                            if (constr != null)
                             {
-                                if (target is MethodInfo) rt = ((MethodInfo)target).ReturnType;
-                                else if(target is CustomMethod) rt = ((CustomMethod)target).ReturnType;
+                                if (!ctx.results.ContainsKey(constr.DeclaringType))
+                                {
+                                    ctx.results[constr.DeclaringType] = new ExceptionInfo(constr.DeclaringType, stackstr);
+                                    System.Diagnostics.Debug.WriteLine("Method: " + constr.DeclaringType.ToString());
+                                }
                             }
-
-                            if (rt != null) results.Add(rt);*/
                         }
                     }
                     else if (node.Instruction.OpCode.FlowControl == FlowControl.Call)
@@ -197,7 +207,8 @@ namespace CilView
                             !(node.Instruction.OpCode==OpCodes.Callvirt && target.IsVirtual)
                             )
                         {
-                            GetExceptionsRecursive(target, ctx, c + 1);
+                            //recursively check exceptions of the called method
+                            GetExceptionsRecursive(target, ctx, c + 1,false);
                         }
                     }//endif
                 }//end foreach
@@ -215,7 +226,7 @@ namespace CilView
             GetExceptionsRecursive_Context ctx = new GetExceptionsRecursive_Context();
             ctx.results = results;
             ctx.visited = visited;
-            GetExceptionsRecursive(m, ctx,0);
+            GetExceptionsRecursive(m, ctx,0,false);
 
             foreach (ExceptionInfo ex in results.Values) yield return ex;
         }
