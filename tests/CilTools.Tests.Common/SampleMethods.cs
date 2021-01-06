@@ -146,6 +146,11 @@ namespace CilTools.Tests.Common
             }
         }
 
+        public static void TypedRefTest(TypedReference tr)
+        {
+
+        }
+
         [STAThread]
         [My(1)]
         public static void AttributeTest() { }

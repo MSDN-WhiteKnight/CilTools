@@ -24,5 +24,12 @@ namespace CilTools.BytecodeAnalysis.Tests
             MethodInfo mi = typeof(SampleMethods).GetMethod("CreatePoint");
             ReflectionTestsCore.Test_NavigationInternal(mi);
         }
+
+        [TestMethod]
+        public void Test_TypedReferenceParam()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("TypedRefTest");
+            ReflectionTestsCore.Test_TypedReferenceParam(mi);
+        }
     }
 }

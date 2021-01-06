@@ -152,5 +152,30 @@ namespace CilTools.Tests.Common
           ret         
 }*/
         }//end Test
+
+        public static void Test_TypedReferenceParam(MethodBase m)
+        {
+            //verify that handling of TypedReference in params is correct
+
+            ParameterInfo[] pars = m.GetParameters();
+
+            Assert.IsTrue(
+                String.Equals(pars[0].ParameterType.Name,"TypedReference",StringComparison.InvariantCulture)
+                );
+
+            CilGraph graph = CilGraph.Create(m);
+            string str = graph.ToString();
+
+            AssertThat.IsMatch(str, new MatchElement[] {
+                new Literal(".method"), MatchElement.Any, 
+                new Literal("TypedRefTest"), MatchElement.Any,
+                new Literal("("), MatchElement.Any,
+                new Literal("typedref"), MatchElement.Any,
+                new Literal(")"), MatchElement.Any,
+                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any 
+            });
+
+            //.method public hidebysig static void TypedRefTest(typedref tr) cil managed
+        }
     }
 }

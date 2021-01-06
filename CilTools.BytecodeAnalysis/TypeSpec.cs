@@ -204,6 +204,7 @@ namespace CilTools.BytecodeAnalysis
             {(byte)CilTools.BytecodeAnalysis.ElementType.I,typeof(IntPtr)},
             {(byte)CilTools.BytecodeAnalysis.ElementType.U,typeof(UIntPtr)},
             {(byte)CilTools.BytecodeAnalysis.ElementType.Object,typeof(object)},
+            {(byte)CilTools.BytecodeAnalysis.ElementType.TypedByRef,typeof(TypedReference)}
         };    
 
         static int DecodeToken(uint decompressed) //ECMA-335 II.23.2.8 TypeDefOrRefOrSpecEncoded

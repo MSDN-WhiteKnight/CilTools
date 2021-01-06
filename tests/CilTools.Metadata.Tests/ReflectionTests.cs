@@ -62,5 +62,19 @@ namespace CilTools.Metadata.Tests
                 ReflectionTestsCore.Test_NavigationInternal(mi);
             }
         }
+
+        [TestMethod]
+        public void Test_TypedReferenceParam()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("TypedRefTest")[0] as MethodBase;
+                ReflectionTestsCore.Test_TypedReferenceParam(mi);
+            }
+        }
     }
 }
