@@ -33,6 +33,55 @@ namespace CilView
             public Stack<string> callstack=new Stack<string>();
         }
 
+        class MethodComparer : IEqualityComparer<MethodBase>
+        {
+            public bool Equals(MethodBase x, MethodBase y)
+            {
+                if (x == null)
+                {
+                    if (y == null) return true;
+                    else return false;
+                }
+                else if (y == null)
+                {
+                    return false;
+                }
+
+                Assembly ass_x = null;
+                Assembly ass_y = null;
+                int token_x=x.MetadataToken;
+                int token_y=y.MetadataToken;
+
+                Type t = x.DeclaringType;
+
+                if (t != null)
+                {
+                    ass_x = t.Assembly;
+                }
+
+                t = y.DeclaringType;
+
+                if (t != null)
+                {
+                    ass_y = t.Assembly;
+                }
+
+                return ass_x == ass_y && token_x == token_y;
+            }
+
+            public int GetHashCode(MethodBase obj)
+            {
+                int res = 0;
+
+                if (obj != null)
+                {
+                    res = obj.MetadataToken;
+                }
+
+                return res;
+            }
+        }
+
         static bool AddTypeToResults(
             Type t,string stackstr,MethodBase m, GetExceptionsRecursive_Context ctx, int c
             )
@@ -326,7 +375,7 @@ namespace CilView
         public static IEnumerable<ExceptionInfo> GetExceptions(MethodBase m)
         {
             Dictionary<Type,ExceptionInfo> results = new Dictionary<Type, ExceptionInfo>();
-            HashSet<MethodBase> visited = new HashSet<MethodBase>();
+            HashSet<MethodBase> visited = new HashSet<MethodBase>(new MethodComparer());
             GetExceptionsRecursive_Context ctx = new GetExceptionsRecursive_Context();
             ctx.results = results;
             ctx.visited = visited;
