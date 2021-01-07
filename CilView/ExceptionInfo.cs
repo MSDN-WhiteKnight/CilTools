@@ -33,27 +33,52 @@ namespace CilView
             public Stack<string> callstack=new Stack<string>();
         }
 
-        static void GetExceptionsRecursive(
-            MethodBase m,GetExceptionsRecursive_Context ctx,int c,bool returned
+        static bool AddTypeToResults(
+            Type t,string stackstr,MethodBase m, GetExceptionsRecursive_Context ctx, int c
             )
         {
-//common false positives:
+            //exclude some common false positives
+            
+            if (String.Equals(m.Name, ".ctor", StringComparison.InvariantCulture) &&
+                String.Equals(m.DeclaringType.FullName, "System.IO.StreamWriter", StringComparison.InvariantCulture)
+                && String.Equals(t.Name, "ArgumentOutOfRangeException", StringComparison.InvariantCulture)
+                && c > 0)
+            {
+                //StreamWriter ctor brings up ArgumentOutOfRangeException on buffer size, but in practice 
+                //the buffer size is usually passed by other constructor and rarely negative
+                return false;
+            }
 
-//ObjectDisposedException
+            if (String.Equals(t.Name, "ObjectDisposedException", StringComparison.InvariantCulture)
+                && c > 0)
+            {
+                //ObjectDisposedException pops up every time unmanaged resources are involved,  
+                //but in practice it rarely happens
+                return false;
+            }
 
-            if (!returned && ctx.visited.Contains(m)) return;
-            ctx.visited.Add(m);
+            //-----------------------------------
 
+            if (!ctx.results.ContainsKey(t))
+            {
+                ctx.results[t] = new ExceptionInfo(t, stackstr);
+                return true;
+            }
+            else return false;
+        }
+
+        static bool IsExcluded(MethodBase m, int c)
+        {
             //exclude some common false positives
 
-            if (String.Equals(m.Name,"Sleep",StringComparison.InvariantCulture) &&
-                String.Equals(m.DeclaringType.FullName,"System.Threading.Thread", StringComparison.InvariantCulture) 
-                && c>0)
+            if (String.Equals(m.Name, "Sleep", StringComparison.InvariantCulture) &&
+                String.Equals(m.DeclaringType.FullName, "System.Threading.Thread", StringComparison.InvariantCulture)
+                && c > 0)
             {
                 //Thread.Sleep initiates wait and thus brings up some exceptions it 
                 //could not realistically throw, 
                 //such as AbandonedMutexException or ObjectDisposedException
-                return;
+                return true;
             }
 
             if (String.Equals(m.Name, ".ctor", StringComparison.InvariantCulture) &&
@@ -63,7 +88,7 @@ namespace CilView
                 //UTF8Encoding ctor brings up ArgumentOutOfRangeException that does not 
                 //actually happen, because the value passed to Encoding ctor is a  
                 //constant which is always valid
-                return;
+                return true;
             }
 
             if (String.Equals(m.Name, "Concat", StringComparison.InvariantCulture) &&
@@ -72,7 +97,18 @@ namespace CilView
             {
                 //String.Concat calls FillStringChecked that brings up IndexOutOfRangeException, 
                 //but in practice it is not thrown 
-                return;
+                return true;
+            }
+
+            if (String.Equals(m.Name, "Substring", StringComparison.InvariantCulture) &&
+                String.Equals(
+                    m.DeclaringType.FullName, "System.String", StringComparison.InvariantCulture
+                    )
+                && c > 0)
+            {
+                //brings up ArgumentOutOfRangeException, but usually called with  
+                //correct arguments
+                return true;
             }
 
             if (String.Equals(m.Name, "get_CurrentCulture", StringComparison.InvariantCulture) &&
@@ -85,7 +121,7 @@ namespace CilView
                 //(System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089), 
                 //which brings up TypeLoadException. But it could only really happen when a bug 
                 //in runtime packages causes WinRT-related code to be executed on wrong OS
-                return;
+                return true;
             }
 
             if (String.Equals(m.Name, "get_CurrentUICulture", StringComparison.InvariantCulture) &&
@@ -95,8 +131,73 @@ namespace CilView
                 && c > 0)
             {
                 //Thread.CurrentUICulture - same issue as Thread.CurrentCulture above 
-                return;
+                return true;
             }
+
+            if (String.Equals(m.Name, "ParseTargetFrameworkName", StringComparison.InvariantCulture) &&
+                String.Equals(
+                    m.DeclaringType.FullName, "System.AppContextDefaultValues", StringComparison.InvariantCulture
+                    )
+                && c > 0)
+            {
+                //ParseTargetFrameworkName brings up some exceptions, such as OutOfMemoryException, 
+                //but they could only happen in practice when AppDomainSetup provides bad value for 
+                //target framework. As we rarely work with custom AppDomainSetup's, this is excluded
+                return true;
+            }
+
+            if (String.Equals(m.Name, "InitializeSourceInfo", StringComparison.InvariantCulture) &&
+                String.Equals(
+                    m.DeclaringType.FullName, "System.Diagnostics.StackFrameHelper", StringComparison.InvariantCulture
+                    )
+                && c > 0)
+            {
+                //StackFrameHelper.InitializeSourceInfo calls Type.GetType and brings up TypeLoadException 
+                //but it is not thrown, because the exception block swallows all exceptions 
+                return true;
+            }
+
+            if (String.Equals(m.Name, "GetResourceString", StringComparison.InvariantCulture) &&
+                String.Equals(
+                    m.DeclaringType.FullName, "System.Environment", StringComparison.InvariantCulture
+                    )
+                && c > 0)
+            {
+                //GetResourceString brings up exceptions like System.FormatException, but they 
+                //actually don't happen, because passed string is from corelib's resources 
+                return true;
+            }
+
+            if (String.Equals(m.Name, "ToString", StringComparison.InvariantCulture) &&
+                String.Equals(
+                    m.DeclaringType.FullName, "System.Diagnostics.StackTrace", StringComparison.InvariantCulture
+                    )
+                && c > 0)
+            {
+                //brings up System.FormatException, but  
+                //the actual argument is hardcoded correct format string
+                return true;
+            }
+
+            if (String.Equals(m.DeclaringType.FullName, "System.Runtime.InteropServices.NativeBuffer",
+                 StringComparison.InvariantCulture) && c > 0)
+            {
+                //InvalidOperationException is thrown on non-initilized buffer, but in practice does not happen
+                return true;
+            }
+
+            return false;
+        }
+
+        static void GetExceptionsRecursive(
+            MethodBase m,GetExceptionsRecursive_Context ctx,int c,bool returned
+            )
+        {
+            if (!returned && ctx.visited.Contains(m)) return;
+            ctx.visited.Add(m);
+
+            //exclude some common false positives
+            if (IsExcluded(m, c)) return;
 
             string mstr = "";
             mstr = m.DeclaringType.FullName + "." + CilVisualization.MethodToString(m);
@@ -135,9 +236,10 @@ namespace CilView
                             MethodBase constr = prev.Instruction.ReferencedMember as MethodBase;
                             if (constr != null)
                             {
-                                if (!ctx.results.ContainsKey(constr.DeclaringType))
+                                bool added = AddTypeToResults(constr.DeclaringType, stackstr, m, ctx, c);
+
+                                if (added)
                                 {
-                                    ctx.results[constr.DeclaringType] = new ExceptionInfo(constr.DeclaringType, stackstr);
                                     System.Diagnostics.Debug.WriteLine("Newobj: " + constr.DeclaringType.ToString());
                                 }
                             }
@@ -161,9 +263,10 @@ namespace CilView
 
                             if (lt != null)
                             {
-                                if (!ctx.results.ContainsKey(lt))
+                                bool added = AddTypeToResults(lt, stackstr, m, ctx, c);
+
+                                if (added)
                                 {
-                                    ctx.results[lt] = new ExceptionInfo(lt, stackstr);
                                     System.Diagnostics.Debug.WriteLine("Local: " + lt.ToString());
                                 }
                             }
@@ -188,9 +291,10 @@ namespace CilView
                             MethodBase constr = prev.Instruction.ReferencedMember as MethodBase;
                             if (constr != null)
                             {
-                                if (!ctx.results.ContainsKey(constr.DeclaringType))
+                                bool added = AddTypeToResults(constr.DeclaringType, stackstr, m, ctx, c);
+
+                                if (added)
                                 {
-                                    ctx.results[constr.DeclaringType] = new ExceptionInfo(constr.DeclaringType, stackstr);
                                     System.Diagnostics.Debug.WriteLine("Method: " + constr.DeclaringType.ToString());
                                 }
                             }
