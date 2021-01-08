@@ -316,5 +316,35 @@ namespace CilView
             scroll.Document = fd;
             return scroll;
         }
+
+        public static UIElement VisualizeType(Type t,out string plaintext)
+        {
+            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
+            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
+            scroll.VerticalAlignment = VerticalAlignment.Stretch;
+            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+
+            FlowDocument fd = new FlowDocument();
+            fd.TextAlignment = TextAlignment.Left;
+            fd.FontFamily = new FontFamily("Courier New");
+
+            IEnumerable<SyntaxNode> tree = SyntaxNode.GetTypeDefSyntax(t);
+            StringBuilder sb = new StringBuilder(500);
+            StringWriter wr = new StringWriter(sb);
+            Paragraph par = new Paragraph();
+
+            VisualizeGraphContext ctx = new VisualizeGraphContext();
+
+            foreach (SyntaxNode node in tree) 
+            {
+                VisualizeNode(node, par, ctx);
+                node.ToText(wr);
+            }
+
+            fd.Blocks.Add(par);
+            scroll.Document = fd;
+            plaintext = sb.ToString();
+            return scroll;
+        }
     }
 }

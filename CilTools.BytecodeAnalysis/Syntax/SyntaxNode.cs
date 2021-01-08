@@ -241,5 +241,175 @@ namespace CilTools.Syntax
 
             return ret.ToArray();
         }
+
+        public static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t)
+        {
+            List<SyntaxNode> content = new List<SyntaxNode>(10);
+
+            if (t.IsInterface)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "interface", " ", KeywordKind.Other));
+            }
+
+            if (t.IsNested)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "nested", " ", KeywordKind.Other));
+
+                if (t.IsNestedPublic)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
+                }
+                else if (t.IsNestedAssembly)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "assembly", " ", KeywordKind.Other));
+                }
+                else if (t.IsNestedFamily)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "family", " ", KeywordKind.Other));
+                }
+                else if (t.IsNestedFamORAssem)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "famorassem", " ", KeywordKind.Other));
+                }
+                else if (t.IsNestedPrivate)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                }
+            }
+            else
+            {
+                if (t.IsPublic)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
+                }
+                else
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                }
+            }
+
+            if (t.IsAutoLayout)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "auto", " ", KeywordKind.Other));
+            }
+            else if (t.IsLayoutSequential)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "sequential", " ", KeywordKind.Other));
+            }
+            else if (t.IsExplicitLayout)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "explicit", " ", KeywordKind.Other));
+            }
+
+            if (t.IsAnsiClass)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "ansi", " ", KeywordKind.Other));
+            }
+            else if (t.IsUnicodeClass)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "unicode", " ", KeywordKind.Other));
+            }
+
+            if (t.IsSerializable)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "serializable", " ", KeywordKind.Other));
+            }
+
+            if ((t.Attributes & TypeAttributes.BeforeFieldInit) != 0)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "beforefieldinit", " ", KeywordKind.Other));
+            }
+
+            content.Add(new IdentifierSyntax(String.Empty, t.FullName, " ", true));
+            content.Add(new GenericSyntax(Environment.NewLine));
+
+            if (t.IsClass || t.IsValueType)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "extends", " ", KeywordKind.Other));
+                content.Add(new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(t.BaseType).ToArray(), t.BaseType));
+                content.Add(new GenericSyntax(Environment.NewLine));
+            }
+
+            Type[] interfaces = null;
+
+            try
+            {
+                interfaces = t.GetInterfaces();
+            }
+            catch (NotImplementedException ex) 
+            {
+                Diagnostics.OnError(t, new CilErrorEventArgs(ex, ""));
+            }
+
+            if (interfaces != null && interfaces.Length > 0)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "implements", " ", KeywordKind.Other));
+
+                for (int i = 0; i < interfaces.Length; i++)
+                {
+                    if (i >= 1)
+                    {
+                        content.Add(new PunctuationSyntax(String.Empty, ",", Environment.NewLine));
+                    }
+
+                    content.Add(
+                        new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(interfaces[i]).ToArray(), interfaces[i])
+                        );
+                }
+
+                content.Add(new GenericSyntax(Environment.NewLine));
+            }
+
+            DirectiveSyntax header = new DirectiveSyntax( String.Empty, "class",content.ToArray());
+            yield return header;
+            
+            content.Clear();
+
+            FieldInfo[] fields = t.GetFields(
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
+                );
+
+            for (int i = 0; i < fields.Length; i++)
+            {
+                List<SyntaxNode> inner = new List<SyntaxNode>(10);
+
+                if (fields[i].IsPublic)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
+                }
+                else if (fields[i].IsPrivate)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                }
+                else if (fields[i].IsAssembly)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "assembly", " ", KeywordKind.Other)); //internal
+                }
+                else if (fields[i].IsFamily)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "family", " ", KeywordKind.Other)); //protected
+                }
+                else if(fields[i].IsFamilyOrAssembly)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "famorassem", " ", KeywordKind.Other)); //protected internal
+                }
+
+                if (fields[i].IsStatic)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "static", " ", KeywordKind.Other));
+                }
+
+                inner.Add(
+                    new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(fields[i].FieldType).ToArray(), fields[i])
+                    );
+
+                inner.Add(new IdentifierSyntax(" ", fields[i].Name, Environment.NewLine, true));
+                DirectiveSyntax field = new DirectiveSyntax("  ", "field", inner.ToArray());
+                content.Add(field);
+            }
+
+            BlockSyntax body = new BlockSyntax(String.Empty, SyntaxNode.EmptyArray, content.ToArray());
+            yield return body;
+        }
     }
 }

@@ -194,6 +194,12 @@ namespace CilView
 
                 this.tlv = CilVisualization.VisualizeMethodList(source.Methods, Navigated);
                 cMethodsList.Child = this.tlv;
+
+                string plaintext;
+                UIElement elem = CilVisualization.VisualizeType(t,out plaintext);
+                gridStructure.Children.Clear();
+                gridStructure.Children.Add(elem);
+                tbMainContent.Text = plaintext;
             }
             catch (Exception ex)
             {
@@ -318,7 +324,7 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
         {
             if (tbMainContent.Text == String.Empty)
             {
-                MessageBox.Show(this, "No content to export. Open method first to export its code", "Error");
+                MessageBox.Show(this, "No content to export. Open type or method first to export its code", "Error");
                 return;
             }
 

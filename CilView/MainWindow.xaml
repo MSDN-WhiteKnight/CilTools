@@ -8,7 +8,7 @@
                 <MenuItem Header="Open" Click="bOpenFile_Click"/>
                 <MenuItem Header="Open process" Click="bOpenProcess_Click"/>
                 <Separator/>
-                <MenuItem x:Name="miExportMethod" Header="Export method code" Click="miExportMethod_Click"/>
+                <MenuItem x:Name="miExportMethod" Header="Export code" Click="miExportMethod_Click"/>
                 <MenuItem x:Name="miShowExceptions" Header="Show exceptions" Click="miShowExceptions_Click"/>
                 <Separator/>
                 <MenuItem x:Name="miExit" Header="Exit" Click="miExit_Click"/>
