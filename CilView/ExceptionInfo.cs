@@ -31,6 +31,7 @@ namespace CilView
             public Dictionary<Type, ExceptionInfo> results;
             public HashSet<MethodBase> visited;
             public Stack<string> callstack=new Stack<string>();
+            public MethodBase first;
         }
 
         class MethodComparer : IEqualityComparer<MethodBase>
@@ -82,27 +83,64 @@ namespace CilView
             }
         }
 
+        static bool EqualsInvariant(string left, string right)
+        {
+            return String.Equals(left, right, StringComparison.InvariantCulture);
+        }
+
+        static bool SameType(MethodBase left, MethodBase right)
+        {
+            Type t1 = left.DeclaringType;
+            Type t2 = right.DeclaringType;
+
+            if (t1 == null || t2==null)
+            {
+                return false;
+            }
+
+            return EqualsInvariant(t1.FullName, t2.FullName);
+        }
+
         static bool AddTypeToResults(
             Type t,string stackstr,MethodBase m, GetExceptionsRecursive_Context ctx, int c
             )
         {
             //exclude some common false positives
             
-            if (String.Equals(m.Name, ".ctor", StringComparison.InvariantCulture) &&
-                String.Equals(m.DeclaringType.FullName, "System.IO.StreamWriter", StringComparison.InvariantCulture)
-                && String.Equals(t.Name, "ArgumentOutOfRangeException", StringComparison.InvariantCulture)
-                && c > 0)
+            if ((EqualsInvariant(t.FullName, "System.ArgumentOutOfRangeException") ||
+                EqualsInvariant(t.FullName, "System.ArgumentNullException") ||
+                EqualsInvariant(t.FullName, "System.ArgumentException") ||
+                EqualsInvariant(t.FullName, "System.IndexOutOfRangeException") ||
+                EqualsInvariant(t.FullName, "System.FormatException")
+                ) && c>0 && !SameType(m,ctx.first))
             {
-                //StreamWriter ctor brings up ArgumentOutOfRangeException on buffer size, but in practice 
-                //the buffer size is usually passed by other constructor and rarely negative
+                //Exceptions that indicate incorrect arguments are excluded when they are thrown not
+                //directly in the examined method or other method of the same class.
+                //They give a lot of false positives when 
+                //library function is invoked with hardcoded correct arguments.
                 return false;
             }
 
-            if (String.Equals(t.Name, "ObjectDisposedException", StringComparison.InvariantCulture)
-                && c > 0)
+            if (EqualsInvariant(t.FullName, "System.InvalidOperationException") && 
+                c > 0 && !SameType(m, ctx.first))
+            {
+                //InvalidOperationException indicate that method was called in the wrong 
+                //state of object. When method calls external API, it typically
+                //ensured that object's state is correct.
+                return false;
+            }
+
+            if (EqualsInvariant(t.FullName, "System.ObjectDisposedException") && c > 0)
             {
                 //ObjectDisposedException pops up every time unmanaged resources are involved,  
                 //but in practice it rarely happens
+                return false;
+            }
+
+            if (EqualsInvariant(t.FullName, "System.OutOfMemoryException") && c > 0)
+            {
+                //OutOfMemoryException can happen any time we allocate memory.  
+                //Excluded, unless directly thrown by this method.
                 return false;
             }
 
@@ -120,8 +158,8 @@ namespace CilView
         {
             //exclude some common false positives
 
-            if (String.Equals(m.Name, "Sleep", StringComparison.InvariantCulture) &&
-                String.Equals(m.DeclaringType.FullName, "System.Threading.Thread", StringComparison.InvariantCulture)
+            if (EqualsInvariant(m.Name, "Sleep") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Threading.Thread")
                 && c > 0)
             {
                 //Thread.Sleep initiates wait and thus brings up some exceptions it 
@@ -130,108 +168,58 @@ namespace CilView
                 return true;
             }
 
-            if (String.Equals(m.Name, ".ctor", StringComparison.InvariantCulture) &&
-                String.Equals(m.DeclaringType.FullName, "System.Text.UTF8Encoding", StringComparison.InvariantCulture)
+            if (EqualsInvariant(m.Name, "GetWinRTResourceManager") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Resources.ResourceManager")
                 && c > 0)
             {
-                //UTF8Encoding ctor brings up ArgumentOutOfRangeException that does not 
-                //actually happen, because the value passed to Encoding ctor is a  
-                //constant which is always valid
-                return true;
-            }
-
-            if (String.Equals(m.Name, "Concat", StringComparison.InvariantCulture) &&
-                String.Equals(m.DeclaringType.FullName, "System.String", StringComparison.InvariantCulture)
-                && c > 0)
-            {
-                //String.Concat calls FillStringChecked that brings up IndexOutOfRangeException, 
-                //but in practice it is not thrown 
-                return true;
-            }
-
-            if (String.Equals(m.Name, "Substring", StringComparison.InvariantCulture) &&
-                String.Equals(
-                    m.DeclaringType.FullName, "System.String", StringComparison.InvariantCulture
-                    )
-                && c > 0)
-            {
-                //brings up ArgumentOutOfRangeException, but usually called with  
-                //correct arguments
-                return true;
-            }
-
-            if (String.Equals(m.Name, "get_CurrentCulture", StringComparison.InvariantCulture) &&
-                String.Equals(
-                    m.DeclaringType.FullName, "System.Threading.Thread", StringComparison.InvariantCulture
-                    )
-                && c > 0)
-            {
-                //Thread.CurrentCulture tries to load System.Resources.WindowsRuntimeResourceManager type  
+                //Tries to load System.Resources.WindowsRuntimeResourceManager type  
                 //(System.Runtime.WindowsRuntime, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089), 
                 //which brings up TypeLoadException. But it could only really happen when a bug 
                 //in runtime packages causes WinRT-related code to be executed on wrong OS
                 return true;
             }
 
-            if (String.Equals(m.Name, "get_CurrentUICulture", StringComparison.InvariantCulture) &&
-                String.Equals(
-                    m.DeclaringType.FullName, "System.Threading.Thread", StringComparison.InvariantCulture
-                    )
+            if (EqualsInvariant(m.Name, "get_CurrentCulture") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Threading.Thread")
+                && c > 0)
+            {
+                //Thread.CurrentCulture brings up System.Globalization.CultureNotFoundException
+                //which does not happen, because current culture surely exists
+                return true;
+            }
+
+            if (EqualsInvariant(m.Name, "get_CurrentUICulture") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Threading.Thread")
                 && c > 0)
             {
                 //Thread.CurrentUICulture - same issue as Thread.CurrentCulture above 
                 return true;
             }
 
-            if (String.Equals(m.Name, "ParseTargetFrameworkName", StringComparison.InvariantCulture) &&
-                String.Equals(
-                    m.DeclaringType.FullName, "System.AppContextDefaultValues", StringComparison.InvariantCulture
-                    )
+            if (EqualsInvariant(m.Name, "get_UserDefaultUICulture") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Globalization.CultureInfo")
                 && c > 0)
             {
-                //ParseTargetFrameworkName brings up some exceptions, such as OutOfMemoryException, 
+                //CultureInfo.get_UserDefaultUICulture - same issue as Thread.CurrentCulture above 
+                return true;
+            }
+
+            if (EqualsInvariant(m.Name, "ParseTargetFrameworkName") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.AppContextDefaultValues")
+                && c > 0)
+            {
+                //ParseTargetFrameworkName brings up some exceptions, such as OverflowException, 
                 //but they could only happen in practice when AppDomainSetup provides bad value for 
                 //target framework. As we rarely work with custom AppDomainSetup's, this is excluded
                 return true;
             }
 
-            if (String.Equals(m.Name, "InitializeSourceInfo", StringComparison.InvariantCulture) &&
-                String.Equals(
-                    m.DeclaringType.FullName, "System.Diagnostics.StackFrameHelper", StringComparison.InvariantCulture
-                    )
+            if (EqualsInvariant(m.Name, "InitializeSourceInfo") &&
+                EqualsInvariant( m.DeclaringType.FullName, "System.Diagnostics.StackFrameHelper")
                 && c > 0)
             {
                 //StackFrameHelper.InitializeSourceInfo calls Type.GetType and brings up TypeLoadException 
                 //but it is not thrown, because the exception block swallows all exceptions 
-                return true;
-            }
-
-            if (String.Equals(m.Name, "GetResourceString", StringComparison.InvariantCulture) &&
-                String.Equals(
-                    m.DeclaringType.FullName, "System.Environment", StringComparison.InvariantCulture
-                    )
-                && c > 0)
-            {
-                //GetResourceString brings up exceptions like System.FormatException, but they 
-                //actually don't happen, because passed string is from corelib's resources 
-                return true;
-            }
-
-            if (String.Equals(m.Name, "ToString", StringComparison.InvariantCulture) &&
-                String.Equals(
-                    m.DeclaringType.FullName, "System.Diagnostics.StackTrace", StringComparison.InvariantCulture
-                    )
-                && c > 0)
-            {
-                //brings up System.FormatException, but  
-                //the actual argument is hardcoded correct format string
-                return true;
-            }
-
-            if (String.Equals(m.DeclaringType.FullName, "System.Runtime.InteropServices.NativeBuffer",
-                 StringComparison.InvariantCulture) && c > 0)
-            {
-                //InvalidOperationException is thrown on non-initilized buffer, but in practice does not happen
                 return true;
             }
 
@@ -379,6 +367,7 @@ namespace CilView
             GetExceptionsRecursive_Context ctx = new GetExceptionsRecursive_Context();
             ctx.results = results;
             ctx.visited = visited;
+            ctx.first = m;
             GetExceptionsRecursive(m, ctx,0,false);
 
             foreach (ExceptionInfo ex in results.Values) yield return ex;
