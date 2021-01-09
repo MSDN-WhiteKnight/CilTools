@@ -409,6 +409,36 @@ namespace CilTools.Metadata
             return new ComplexType(this, ComplexTypeKind.GenInst, typeArguments);
         }
 
+        public override bool IsGenericType
+        {
+            get
+            {
+                GenericParameterHandleCollection hcoll = type.GetGenericParameters();
+                return hcoll.Count > 0;
+            }
+        }
+
+        public override bool IsGenericTypeDefinition => this.IsGenericType;
+
+        public override Type[] GetGenericArguments()
+        {
+            GenericParameterHandleCollection hcoll = type.GetGenericParameters();
+            Type[] ret = new Type[hcoll.Count];
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                GenericParameter gp = this.assembly.MetadataReader.GetGenericParameter(hcoll[i]);
+                StringHandle sh = gp.Name;
+
+                if (!sh.IsNil)
+                    ret[i] = new GenericParamType(null, gp.Index, assembly.MetadataReader.GetString(sh));
+                else
+                    ret[i] = new GenericParamType(null, gp.Index);
+            }
+
+            return ret;
+        }
+
         public override int GetHashCode()
         {
             return this.FullName.GetHashCode();

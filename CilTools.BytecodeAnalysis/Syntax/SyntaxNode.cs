@@ -246,6 +246,7 @@ namespace CilTools.Syntax
         {
             List<SyntaxNode> content = new List<SyntaxNode>(10);
 
+            //type standard attributes
             if (t.IsInterface)
             {
                 content.Add(new KeywordSyntax(String.Empty, "interface", " ", KeywordKind.Other));
@@ -271,7 +272,11 @@ namespace CilTools.Syntax
                 {
                     content.Add(new KeywordSyntax(String.Empty, "famorassem", " ", KeywordKind.Other));
                 }
-                else if (t.IsNestedPrivate)
+                else if (t.IsNestedFamANDAssem)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "famandassem", " ", KeywordKind.Other));
+                }
+                else
                 {
                     content.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
                 }
@@ -286,6 +291,11 @@ namespace CilTools.Syntax
                 {
                     content.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
                 }
+            }
+
+            if (t.IsAbstract)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "abstract", " ", KeywordKind.Other));
             }
 
             if (t.IsAutoLayout)
@@ -309,10 +319,29 @@ namespace CilTools.Syntax
             {
                 content.Add(new KeywordSyntax(String.Empty, "unicode", " ", KeywordKind.Other));
             }
+            else if (t.IsAutoClass)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "autochar", " ", KeywordKind.Other));
+            }
+
+            if (t.IsSealed)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "sealed", " ", KeywordKind.Other));
+            }
 
             if (t.IsSerializable)
             {
                 content.Add(new KeywordSyntax(String.Empty, "serializable", " ", KeywordKind.Other));
+            }
+
+            if (t.IsSpecialName)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "specialname", " ", KeywordKind.Other));
+            }
+
+            if ((t.Attributes & TypeAttributes.RTSpecialName) != 0)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "rtspecialname", " ", KeywordKind.Other));
             }
 
             if ((t.Attributes & TypeAttributes.BeforeFieldInit) != 0)
@@ -320,16 +349,43 @@ namespace CilTools.Syntax
                 content.Add(new KeywordSyntax(String.Empty, "beforefieldinit", " ", KeywordKind.Other));
             }
 
-            content.Add(new IdentifierSyntax(String.Empty, t.FullName, " ", true));
+            //type name
+            string tname = "";
+            if (!t.IsNested && !String.IsNullOrEmpty(t.Namespace)) tname += t.Namespace + ".";
+            tname += t.Name;
+            content.Add(new IdentifierSyntax(String.Empty, tname, String.Empty, true));
+
+            //generic parameters
+            if (t.IsGenericType)
+            {
+                content.Add(new PunctuationSyntax(String.Empty, "<", String.Empty));
+                Type[] targs = t.GetGenericArguments();
+
+                for (int i = 0; i < targs.Length; i++)
+                {
+                    if (i >= 1) content.Add(new PunctuationSyntax(String.Empty, ",", " "));
+
+                    if (targs[i].IsGenericParameter)
+                    {
+                        content.Add(new IdentifierSyntax(String.Empty, targs[i].Name, String.Empty, false));
+                    }
+                    else content.Add(new GenericSyntax(CilAnalysis.GetTypeName(targs[i])));
+                }
+
+                content.Add(new PunctuationSyntax(String.Empty, ">", String.Empty));
+            }
+
             content.Add(new GenericSyntax(Environment.NewLine));
 
-            if (t.IsClass || t.IsValueType)
+            //base type
+            if ((t.IsClass || t.IsValueType) && t.BaseType!=null)
             {
                 content.Add(new KeywordSyntax(String.Empty, "extends", " ", KeywordKind.Other));
                 content.Add(new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(t.BaseType).ToArray(), t.BaseType));
                 content.Add(new GenericSyntax(Environment.NewLine));
             }
 
+            //interfaces
             Type[] interfaces = null;
 
             try
@@ -363,6 +419,7 @@ namespace CilTools.Syntax
             DirectiveSyntax header = new DirectiveSyntax( String.Empty, "class",content.ToArray());
             yield return header;
             
+            //members
             content.Clear();
 
             FieldInfo[] fields = t.GetFields(
@@ -377,10 +434,6 @@ namespace CilTools.Syntax
                 {
                     inner.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
                 }
-                else if (fields[i].IsPrivate)
-                {
-                    inner.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
-                }
                 else if (fields[i].IsAssembly)
                 {
                     inner.Add(new KeywordSyntax(String.Empty, "assembly", " ", KeywordKind.Other)); //internal
@@ -393,15 +446,48 @@ namespace CilTools.Syntax
                 {
                     inner.Add(new KeywordSyntax(String.Empty, "famorassem", " ", KeywordKind.Other)); //protected internal
                 }
+                else if (fields[i].IsFamilyAndAssembly)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "famandassem", " ", KeywordKind.Other));
+                }
+                else 
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                }
 
                 if (fields[i].IsStatic)
                 {
                     inner.Add(new KeywordSyntax(String.Empty, "static", " ", KeywordKind.Other));
                 }
 
-                inner.Add(
-                    new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(fields[i].FieldType).ToArray(), fields[i])
-                    );
+                if (fields[i].IsInitOnly)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "initonly", " ", KeywordKind.Other));
+                }
+
+                if (fields[i].IsLiteral)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "literal", " ", KeywordKind.Other));
+                }
+
+                if (fields[i].IsNotSerialized)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "notserialized", " ", KeywordKind.Other));
+                }
+
+                if (fields[i].IsSpecialName)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "specialname", " ", KeywordKind.Other));
+                }
+
+                if ((fields[i].Attributes & FieldAttributes.RTSpecialName)!=0)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "rtspecialname", " ", KeywordKind.Other));
+                }
+
+                inner.Add( new MemberRefSyntax(
+                    CilAnalysis.GetTypeNameSyntax(fields[i].FieldType).ToArray(), fields[i].FieldType
+                    ));
 
                 inner.Add(new IdentifierSyntax(" ", fields[i].Name, Environment.NewLine, true));
                 DirectiveSyntax field = new DirectiveSyntax("  ", "field", inner.ToArray());
