@@ -2,6 +2,7 @@
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Metadata;
@@ -107,6 +108,80 @@ namespace CilTools.Metadata
             {
                 return owner.MetadataReader.GetToken(this.hfield);
             }
+        }
+
+        internal static object GetConstantValue(MetadataReader reader, ConstantHandle hc)
+        {
+            Constant c = reader.GetConstant(hc);
+            byte[] rawval = reader.GetBlobBytes(c.Value);
+            MemoryStream ms = new MemoryStream(rawval);
+            BinaryReader rd = new BinaryReader(ms);
+
+            if (c.TypeCode == ConstantTypeCode.NullReference)
+            {
+                return null;
+            }
+            else if (c.TypeCode == ConstantTypeCode.Int32)
+            {
+                return rd.ReadInt32();
+            }
+            else if (c.TypeCode == ConstantTypeCode.UInt32)
+            {
+                return rd.ReadUInt32();
+            }
+            else if (c.TypeCode == ConstantTypeCode.String)
+            {
+                return Encoding.Unicode.GetString(rawval);
+            }
+            else if (c.TypeCode == ConstantTypeCode.Char)
+            {
+                return rd.ReadChar();
+            }
+            else if (c.TypeCode == ConstantTypeCode.Boolean)
+            {
+                return rd.ReadBoolean();
+            }
+            else if (c.TypeCode == ConstantTypeCode.Byte)
+            {
+                return rd.ReadByte();
+            }
+            else if (c.TypeCode == ConstantTypeCode.SByte)
+            {
+                return rd.ReadSByte();
+            }
+            else if (c.TypeCode == ConstantTypeCode.Int16)
+            {
+                return rd.ReadInt16();
+            }
+            else if (c.TypeCode == ConstantTypeCode.UInt16)
+            {
+                return rd.ReadUInt16();
+            }
+            else if (c.TypeCode == ConstantTypeCode.Int64)
+            {
+                return rd.ReadInt64();
+            }
+            else if (c.TypeCode == ConstantTypeCode.UInt64)
+            {
+                return rd.ReadUInt64();
+            }
+            else if (c.TypeCode == ConstantTypeCode.Single)
+            {
+                return rd.ReadSingle();
+            }
+            else if (c.TypeCode == ConstantTypeCode.Double)
+            {
+                return rd.ReadDouble();
+            }
+            else return DBNull.Value;
+        }
+
+        public override object GetRawConstantValue()
+        {
+            ConstantHandle ch = field.GetDefaultValue();
+            if (ch.IsNil) return DBNull.Value;
+
+            return GetConstantValue(owner.MetadataReader, ch);
         }
     }
 }

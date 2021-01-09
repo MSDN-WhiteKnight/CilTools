@@ -188,6 +188,42 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
+        internal static string GetConstantValueString(Type t,object constant)
+        {
+            StringBuilder sb = new StringBuilder(100);
+            StringWriter output = new StringWriter(sb);
+
+            if (constant != null)
+            {
+                if (constant.GetType() == typeof(string))
+                {
+                    output.Write('"');
+                    output.Write(CilAnalysis.EscapeString(constant.ToString()));
+                    output.Write('"');
+                }
+                else if (constant.GetType() == typeof(char))
+                {
+                    output.Write("char");
+                    output.Write('(');
+                    ushort val = Convert.ToUInt16(constant);
+                    output.Write("0x");
+                    output.Write(val.ToString("X4", CultureInfo.InvariantCulture));
+                    output.Write(')');
+                }
+                else //most of the types...
+                {
+                    output.Write(CilAnalysis.GetTypeName(t));
+                    output.Write('(');
+                    output.Write(Convert.ToString(constant, System.Globalization.CultureInfo.InvariantCulture));
+                    output.Write(')');
+                }
+            }
+            else output.Write("nullref");
+            output.Flush();
+            string content = sb.ToString();
+            return content;
+        }
+
         internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m)
         {
             ParameterInfo[] pars = m.GetParameters();
@@ -204,37 +240,14 @@ namespace CilTools.Syntax
                     output.Write((i + 1).ToString());
                     output.Write("] = ");
 
-                    if (pars[i].RawDefaultValue != null)
-                    {
-                        if (pars[i].RawDefaultValue.GetType() == typeof(string))
-                        {
-                            output.Write('"');
-                            output.Write(CilAnalysis.EscapeString(pars[i].RawDefaultValue.ToString()));
-                            output.Write('"');
-                        }
-                        else if (pars[i].RawDefaultValue.GetType() == typeof(char))
-                        {
-                            output.Write("char");
-                            output.Write('(');
-                            ushort val = Convert.ToUInt16(pars[i].RawDefaultValue);
-                            output.Write("0x");
-                            output.Write(val.ToString("X4",CultureInfo.InvariantCulture));
-                            output.Write(')');
-                        }
-                        else //most of the types...
-                        {
-                            output.Write(CilAnalysis.GetTypeName(pars[i].ParameterType));
-                            output.Write('(');
-                            output.Write(Convert.ToString(pars[i].RawDefaultValue, System.Globalization.CultureInfo.InvariantCulture));
-                            output.Write(')');
-                        }
-                    }
-                    else output.Write("nullref");
-                    output.WriteLine();
+                    string valstr = GetConstantValueString(pars[i].ParameterType, pars[i].RawDefaultValue);
+                    output.WriteLine(valstr);
                     output.Flush();
 
                     string content = sb.ToString();
-                    DirectiveSyntax dir = new DirectiveSyntax(" ", "param", new SyntaxNode[] { new GenericSyntax(content) });
+                    DirectiveSyntax dir = new DirectiveSyntax(
+                        " ", "param", new SyntaxNode[] { new GenericSyntax(content) }
+                        );
                     ret.Add(dir);
                 }
             }//end for
@@ -381,7 +394,7 @@ namespace CilTools.Syntax
             if ((t.IsClass || t.IsValueType) && t.BaseType!=null)
             {
                 content.Add(new KeywordSyntax(String.Empty, "extends", " ", KeywordKind.Other));
-                content.Add(new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(t.BaseType).ToArray(), t.BaseType));
+                content.Add(new MemberRefSyntax(CilAnalysis.GetTypeFullNameSyntax(t.BaseType).ToArray(), t.BaseType));
                 content.Add(new GenericSyntax(Environment.NewLine));
             }
 
@@ -489,7 +502,23 @@ namespace CilTools.Syntax
                     CilAnalysis.GetTypeNameSyntax(fields[i].FieldType).ToArray(), fields[i].FieldType
                     ));
 
-                inner.Add(new IdentifierSyntax(" ", fields[i].Name, Environment.NewLine, true));
+                inner.Add(new IdentifierSyntax(" ", fields[i].Name, String.Empty, true));
+
+                object constval = DBNull.Value;
+
+                try { constval = fields[i].GetRawConstantValue(); }
+                catch (NotImplementedException) { }
+                catch (InvalidOperationException) { }
+
+                if (constval != DBNull.Value)
+                {
+                    string valstr = GetConstantValueString(fields[i].FieldType, constval);
+                    inner.Add(new PunctuationSyntax(" ", "=", " "));
+                    inner.Add(new GenericSyntax(valstr));
+                }
+
+                inner.Add(new GenericSyntax(Environment.NewLine));
+
                 DirectiveSyntax field = new DirectiveSyntax("  ", "field", inner.ToArray());
                 content.Add(field);
             }

@@ -200,6 +200,8 @@ namespace CilView
                 gridStructure.Children.Clear();
                 gridStructure.Children.Add(elem);
                 tbMainContent.Text = plaintext;
+                this.current_method = null;
+                tbCurrLocation.Text = String.Empty;
             }
             catch (Exception ex)
             {

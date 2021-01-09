@@ -51,68 +51,7 @@ namespace CilTools.Metadata
                 return;
             }
 
-            Constant c = reader.GetConstant(hc);
-            byte[] rawval = reader.GetBlobBytes(c.Value);
-            MemoryStream ms = new MemoryStream(rawval);
-            BinaryReader rd = new BinaryReader(ms);
-
-            if (c.TypeCode == ConstantTypeCode.NullReference)
-            {
-                this.defval = null;
-            }
-            else if (c.TypeCode == ConstantTypeCode.Int32)
-            {
-                this.defval = rd.ReadInt32();
-            }
-            else if (c.TypeCode == ConstantTypeCode.UInt32)
-            {
-                this.defval = rd.ReadUInt32();
-            }
-            else if (c.TypeCode == ConstantTypeCode.String)
-            {
-                this.defval = Encoding.Unicode.GetString(rawval);
-            }
-            else if (c.TypeCode == ConstantTypeCode.Char)
-            {
-                this.defval = rd.ReadChar();
-            }
-            else if (c.TypeCode == ConstantTypeCode.Boolean)
-            {
-                this.defval = rd.ReadBoolean();
-            }
-            else if (c.TypeCode == ConstantTypeCode.Byte)
-            {
-                this.defval = rd.ReadByte();
-            }
-            else if (c.TypeCode == ConstantTypeCode.SByte)
-            {
-                this.defval = rd.ReadSByte();
-            }
-            else if (c.TypeCode == ConstantTypeCode.Int16)
-            {
-                this.defval = rd.ReadInt16();
-            }
-            else if (c.TypeCode == ConstantTypeCode.UInt16)
-            {
-                this.defval = rd.ReadUInt16();
-            }
-            else if (c.TypeCode == ConstantTypeCode.Int64)
-            {
-                this.defval = rd.ReadInt64();
-            }
-            else if (c.TypeCode == ConstantTypeCode.UInt64)
-            {
-                this.defval = rd.ReadUInt64();
-            }
-            else if (c.TypeCode == ConstantTypeCode.Single)
-            {
-                this.defval = rd.ReadSingle();
-            }
-            else if (c.TypeCode == ConstantTypeCode.Double)
-            {
-                this.defval = rd.ReadDouble();
-            }
-            else this.defval = DBNull.Value;
+            this.defval = FieldDef.GetConstantValue(reader, hc);
         }
 
         public override Type ParameterType
