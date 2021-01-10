@@ -380,5 +380,14 @@ namespace CilTools.Runtime
         {
             get { return false; }
         }
+
+        /// <inheritdoc/>
+        public override int MetadataToken
+        {
+            get
+            {
+                return 0;
+            }
+        }
     }
 }

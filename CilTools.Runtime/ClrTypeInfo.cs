@@ -176,6 +176,7 @@ namespace CilTools.Runtime
 
             foreach (MemberInfo m in this.assembly.EnumerateMembers())
             {
+                if (m.DeclaringType == null) continue;
                 if (!String.Equals(m.DeclaringType.FullName, this.type.Name, StringComparison.InvariantCulture)) continue;
 
                 access_match = false;

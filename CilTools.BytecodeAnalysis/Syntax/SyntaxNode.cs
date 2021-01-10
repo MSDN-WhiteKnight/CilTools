@@ -508,6 +508,7 @@ namespace CilTools.Syntax
 
                 try { constval = fields[i].GetRawConstantValue(); }
                 catch (NotImplementedException) { }
+                catch (NotSupportedException) { }
                 catch (InvalidOperationException) { }
 
                 if (constval != DBNull.Value)
