@@ -179,6 +179,15 @@ namespace CilView
                 return true;
             }
 
+            if (EqualsInvariant(m.Name, ".ctor") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Resources.ResourceManager")
+                && c > 0)
+            {
+                //Uses reflection to check attributes, and brings up exceptions like 
+                //System.MissingMethodException, which in practice don't happen
+                return true;
+            }
+
             if (EqualsInvariant(m.Name, "get_CurrentCulture") &&
                 EqualsInvariant(m.DeclaringType.FullName, "System.Threading.Thread")
                 && c > 0)
@@ -193,6 +202,14 @@ namespace CilView
                 && c > 0)
             {
                 //Thread.CurrentUICulture - same issue as Thread.CurrentCulture above 
+                return true;
+            }
+
+            if (EqualsInvariant(m.Name, "get_CurrentCulture") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Globalization.CultureInfo")
+                && c > 0)
+            {
+                //CultureInfo.CurrentCulture - same issue as Thread.CurrentCulture above 
                 return true;
             }
 
