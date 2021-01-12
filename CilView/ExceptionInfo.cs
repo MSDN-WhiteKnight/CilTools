@@ -272,7 +272,7 @@ namespace CilView
                 {
                     graph = CilGraph.Create(m);
                 }
-                catch (TypeLoadException)
+                catch (Exception ex) when ((ex is TypeLoadException || ex is CilParserException)&&c>0)
                 {
                     return;
                 }
