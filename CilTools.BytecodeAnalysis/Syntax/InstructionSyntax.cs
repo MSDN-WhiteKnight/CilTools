@@ -36,7 +36,7 @@ namespace CilTools.Syntax
             else pad = lead+"".PadLeft(10, ' ');
 
             string name = graphnode.Instruction.OpCode.Name;
-            int len = 12 - name.Length;
+            int len = 13 - name.Length;
 
             if (len < 1) len = 1;
 

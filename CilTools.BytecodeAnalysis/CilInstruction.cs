@@ -33,9 +33,7 @@ namespace CilTools.BytecodeAnalysis
 
         internal static bool ReferencesTypeToken(OpCode op)
         {
-            return (op.Equals(OpCodes.Newarr) || op.Equals(OpCodes.Box) || op.Equals(OpCodes.Isinst)
-                || op.Equals(OpCodes.Castclass) || op.Equals(OpCodes.Initobj)
-                || op.Equals(OpCodes.Unbox) || op.Equals(OpCodes.Unbox_Any));
+            return op.OperandType == System.Reflection.Emit.OperandType.InlineType;
         }
 
         internal static bool ReferencesLocal(OpCode op)

@@ -98,6 +98,13 @@ namespace CilTools.BytecodeAnalysis.Tests
 #endif
         }
 
+        [TestMethod]
+        public void Test_CilGraph_Constrained()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("ConstrainedTest");
+            CilGraphTestsCore.Test_CilGraph_Constrained(mi);
+        }
+
 #if DEBUG
         [TestMethod]
         public void Test_CilGraph_Pointer()

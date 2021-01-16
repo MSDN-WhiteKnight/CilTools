@@ -151,6 +151,11 @@ namespace CilTools.Tests.Common
 
         }
 
+        public static void ConstrainedTest<T>(T x)
+        {
+            Console.WriteLine(x.ToString());
+        }
+
         [STAThread]
         [My(1)]
         public static void AttributeTest() { }

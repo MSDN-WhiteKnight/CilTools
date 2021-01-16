@@ -283,5 +283,63 @@ namespace CilTools.Tests.Common
                 new Literal("}")
             });
         }
+
+        public static void Test_CilGraph_Constrained(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            AssertThat.IsCorrect(graph);
+
+            CilGraphNode[] nodes = graph.GetNodes().ToArray();
+
+            AssertThat.NotEmpty(nodes, "The result of ConstrainedTest method parsing should not be empty collection");
+
+            AssertThat.HasOnlyOneMatch(
+                nodes,
+                (x) => 
+                {
+                    return x.Instruction.OpCode == OpCodes.Constrained &&
+                           (x.Instruction.ReferencedMember as Type).IsGenericParameter; 
+                });
+
+            //text
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new MatchElement[] {
+                MatchElement.Any, new Literal("ConstrainedTest"),
+                MatchElement.Any, new Literal("constrained."), MatchElement.Any,
+                new Literal("!!"), MatchElement.Any,
+                new Literal("callvirt"), MatchElement.Any,
+                new Literal("ToString"), MatchElement.Any,
+            });
+
+            /*
+            .method  public hidebysig static void ConstrainedTest<T>(
+                !!0 x
+            ) cil managed
+            {
+             .maxstack  8
+
+                      nop          
+                      ldarga.s     x
+                      constrained. !!T
+                      callvirt     instance string [mscorlib]System.Object::ToString()
+                      call         void [mscorlib]System.Console::WriteLine(string)
+                      nop          
+                      ret          
+            } 
+            */
+
+            //syntax
+            MethodDefSyntax mds = graph.ToSyntaxTree();
+            SyntaxNode[] chilren = mds.Body.GetChildNodes();
+
+            AssertThat.HasOnlyOneMatch(
+                chilren,
+                (x) =>
+                {
+                    return x is InstructionSyntax && ((InstructionSyntax)x).Operation == "constrained." &&
+                    ((InstructionSyntax)x).OperandString.Contains("!!");
+                });
+        }
     }
 }

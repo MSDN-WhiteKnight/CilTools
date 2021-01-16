@@ -67,6 +67,20 @@ namespace CilTools.Metadata.Tests
             }
         }
 
+        [TestMethod]
+        public void Test_CilGraph_Constrained()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("ConstrainedTest")[0] as MethodBase;
+                CilGraphTestsCore.Test_CilGraph_Constrained(mi);
+            }
+        }
+
 #if DEBUG
         [TestMethod]
         public void Test_CilGraph_Pointer()

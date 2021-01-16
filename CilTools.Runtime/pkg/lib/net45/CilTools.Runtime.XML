@@ -218,6 +218,9 @@
             Represents information about a dynamic method in the external CLR instance
             </summary>
         </member>
+        <member name="P:CilTools.Runtime.ClrDynamicMethod.MetadataToken">
+            <inheritdoc/>
+        </member>
         <member name="T:CilTools.Runtime.ClrMethodInfo">
             <summary>
             Represents information about the method in an external CLR instance
