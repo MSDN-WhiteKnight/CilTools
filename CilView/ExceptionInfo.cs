@@ -240,6 +240,34 @@ namespace CilView
                 return true;
             }
 
+            if (EqualsInvariant(m.Name, "GetWinRTContext") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Threading.SynchronizationContext")
+                && c > 0)
+            {
+                //Tries to load System.Threading.WinRTSynchronizationContextFactory via GetType, 
+                //and brings up TypeLoadException that usually does no happen
+                return true;
+            }
+
+            if (EqualsInvariant(m.Name, "CreatePermission") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Security.Util.XMLUtil")
+                && c > 0)
+            {
+                //Tries to load security permission type using GetType, and brings up TypeLoadException. 
+                //But the exception can only happen when we have corrupted permission set. Since it 
+                //is rare, this method is excluded
+                return true;
+            }
+
+            if (EqualsInvariant(m.Name, "get_Now") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.DateTime")
+                && c > 0)
+            {
+                //Can throw InvalidTimeZoneException, but usually args passed to  
+                //CreateCustomTimeZone are correct and exception does not happen 
+                return true;
+            }
+
             return false;
         }
 
