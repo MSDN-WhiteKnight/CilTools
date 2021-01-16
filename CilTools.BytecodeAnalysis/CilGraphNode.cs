@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using CilTools.Reflection;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -85,6 +86,26 @@ namespace CilTools.BytecodeAnalysis
             CilGraphNode[] res = new CilGraphNode[this._SwitchTargets.Length];
             Array.Copy(this._SwitchTargets, res, this._SwitchTargets.Length);
             return res;            
+        }
+
+        public ExceptionBlock[] GetExceptionBlocks()
+        {
+            List<ExceptionBlock> ret = new List<ExceptionBlock>(20);
+            CustomMethod m = (CustomMethod)this._Instruction.Method;
+            ExceptionBlock[] blocks = m.GetExceptionBlocks();
+            int start = (int)this._Instruction.ByteOffset;
+            int end = (int)(this._Instruction.ByteOffset + this.Instruction.TotalSize);
+
+            for (int i=0;i<blocks.Length;i++)
+            {
+                ExceptionBlock block=blocks[i];
+                if (block.TryOffset <= start && block.TryOffset + block.TryLength > end)
+                {
+                    ret.Add(block);
+                }
+            }
+
+            return ret.ToArray();
         }
 
         /// <summary>
