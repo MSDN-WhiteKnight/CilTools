@@ -1,7 +1,7 @@
 using System;
-using CilBytecodeParser.Extensions;
+using CilTools.BytecodeAnalysis.Extensions;
 
-namespace CilBytecodeParserTest
+namespace CilToolsTest
 {    
     class Program    
     {
