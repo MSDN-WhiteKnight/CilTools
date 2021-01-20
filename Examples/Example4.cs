@@ -1,15 +1,15 @@
-/* CilBytecodeParser library example: generating dynamic methods using existing method as template
- * Copyright (c) 2019,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+/* CilTools.BytecodeAnalysis library example: generating dynamic methods using existing method as template
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using System.Linq;
-using CilBytecodeParser;
-using CilBytecodeParser.Extensions;
+using CilTools.BytecodeAnalysis;
+using CilTools.BytecodeAnalysis.Extensions;
 
-namespace CilBytecodeParserTest
+namespace CilToolsTest
 {
     class Program
     {
