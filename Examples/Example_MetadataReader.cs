@@ -1,4 +1,4 @@
-// CilBytecodeParser example: Reading methods' bytecode from PE file loaded via System.Reflection.Metadata.MetadataReader 
+// CilTools.BytecodeAnalysis example: Reading methods' bytecode from PE file loaded via System.Reflection.Metadata.MetadataReader 
 
 using System;
 using System.IO;
@@ -9,7 +9,7 @@ using System.Reflection.Emit;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using System.Reflection.PortableExecutable;
-using CilBytecodeParser;
+using CilTools.BytecodeAnalysis;
 
 //Required NuGet package: System.Reflection.Metadata
 
