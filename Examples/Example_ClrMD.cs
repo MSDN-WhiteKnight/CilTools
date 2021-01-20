@@ -1,4 +1,4 @@
-// CilBytecodeParser example: Reading methods' bytecode from managed process using ClrMD
+// CilTools.BytecodeAnalysis example: Reading methods' bytecode from managed process using ClrMD
 
 using System;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using Microsoft.Diagnostics.Runtime;
-using CilBytecodeParser;
+using CilTools.BytecodeAnalysis;
 
 // Required NuGet package: Microsoft.Diagnostics.Runtime
 

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using CilBytecodeParser;
-using CilBytecodeParser.Extensions;
+using CilTools.BytecodeAnalysis;
+using CilTools.BytecodeAnalysis.Extensions;
 
-namespace CilBytecodeParserTest
+namespace CilToolsTest
 {    
     class Program
     {
