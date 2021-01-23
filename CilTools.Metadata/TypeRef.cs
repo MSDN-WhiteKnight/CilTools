@@ -18,6 +18,8 @@ namespace CilTools.Metadata
         TypeReference tref;
         TypeReferenceHandle htref;
         MetadataAssembly assembly;
+        Type impl = null;
+
         public TypeRef(TypeReference t, TypeReferenceHandle ht, MetadataAssembly ass)
         {
             Debug.Assert(ass != null, "ass in TypeRef() should not be null");
@@ -25,6 +27,18 @@ namespace CilTools.Metadata
             this.tref = t;
             this.htref = ht;
             this.assembly = ass;
+        }
+
+        void LoadImpl()
+        {
+            //loads actual implementation type referenced by this instance
+
+            if (this.impl != null) return;//already loaded
+            if (this.assembly.AssemblyReader == null) return;
+
+            Type et = this;
+            Type t = this.assembly.AssemblyReader.LoadType(et);
+            this.impl = t;
         }
 
         public override Assembly Assembly
@@ -64,7 +78,14 @@ namespace CilTools.Metadata
         {
             get
             {
-                return null;
+                this.LoadImpl();
+
+                if (this.impl == null)
+                {
+                    throw new TypeLoadException("Failed to load base type");
+                }
+
+                return this.impl.BaseType;
             }
         }
 
@@ -99,6 +120,8 @@ namespace CilTools.Metadata
         protected override TypeAttributes GetAttributeFlagsImpl()
         {
             TypeAttributes ret = (TypeAttributes)0;
+            this.LoadImpl();
+            if (this.impl != null) ret = this.impl.Attributes;
             return ret;
         }
 
@@ -339,6 +362,29 @@ namespace CilTools.Metadata
                 }
                 else return null;
             }
+        }
+
+        public override bool IsAssignableFrom(Type c)
+        {
+            if (c.IsInterface || this.IsInterface)
+            {
+                throw new NotImplementedException("Interface checks are not implemented");
+            }
+
+            //check that c is derived directly or indirectly from current instance
+
+            Type basetype = c;
+
+            while (true)
+            {
+                if (TypeDef.TypeEquals(this, basetype)) return true;
+
+                if (basetype == null) break;
+
+                basetype = basetype.BaseType;
+            }
+
+            return false;
         }
 
         public override int GetHashCode()

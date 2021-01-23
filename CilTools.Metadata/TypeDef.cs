@@ -455,6 +455,55 @@ namespace CilTools.Metadata
             }
         }
 
+        static bool StrEquals(string left, string right)
+        {
+            return String.Equals(left, right, StringComparison.InvariantCulture);
+        }
+
+        internal static bool TypeEquals(Type left, Type right)
+        {
+            if (Type.ReferenceEquals(left,right)) return true;
+
+            if (left == null)
+            {
+                if (right == null) return true;
+                else return false;
+            }
+
+            if(right==null) return false;
+
+            string left_assname = String.Empty;
+            string right_assname = String.Empty;
+
+            if (left.Assembly != null) left_assname = left.Assembly.GetName().Name;
+            if (right.Assembly != null) right_assname = right.Assembly.GetName().Name;
+
+            return StrEquals(left_assname,right_assname) && StrEquals(left.FullName,right.FullName);
+        }
+
+        public override bool IsAssignableFrom(Type c)
+        {
+            if (c.IsInterface || this.IsInterface)
+            {
+                throw new NotImplementedException("Interface checks are not implemented");
+            }
+
+            //check that c is derived directly or indirectly from current instance
+
+            Type basetype = c;
+
+            while (true)
+            {
+                if (TypeEquals(this, basetype)) return true;
+
+                if (basetype == null) break;
+
+                basetype = basetype.BaseType;
+            }
+
+            return false;
+        }
+
         public override string ToString()
         {
             return this.FullName;
