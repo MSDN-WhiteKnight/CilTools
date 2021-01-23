@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
 using CilTools.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -130,6 +131,36 @@ namespace CilTools.Tests.Common
                 new Literal("ret"), MatchElement.Any, 
                 new Literal("}") 
             });
+        }
+
+        public static void Test_CilGraph_GetHandlerNodes(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            AssertThat.IsCorrect(graph);
+            CilGraphNode[] nodes = graph.GetNodes().ToArray();
+
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                if (nodes[i].Instruction.OpCode == OpCodes.Div)
+                {
+                    ExceptionBlock[] blocks = nodes[i].GetExceptionBlocks();
+
+                    ExceptionBlock block = blocks.
+                        Where((x) => x.Flags.HasFlag(ExceptionHandlingClauseOptions.Finally)).
+                        First();
+                    
+                    CilGraphNode[] handler=graph.GetHandlerNodes(block).ToArray();
+                    int last = handler.Length-1;
+
+                    Assert.IsTrue(String.Equals(
+                        "endfinally", handler[last].Instruction.Name,StringComparison.InvariantCulture
+                        ));
+
+                    return;
+                }
+            }
+
+            Assert.Fail("div instruction not found");
         }
 
         public static void Test_CilGraph_Tokens(MethodBase mi)

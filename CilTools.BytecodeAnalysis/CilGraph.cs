@@ -851,6 +851,18 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        public IEnumerable<CilGraphNode> GetHandlerNodes(ExceptionBlock block)
+        {
+            int start = block.HandlerOffset;
+            int end = start + block.HandlerLength;
+
+            foreach (CilGraphNode node in this.GetNodes())
+            {
+                if ((int)node.Instruction.ByteOffset >= start &&
+                    (int)node.Instruction.ByteOffset < end) yield return node;
+            }
+        }
+
 #if !NETSTANDARD
         /// <summary>
         /// Emits the entire content of this CIL graph into the specified IL generator, 

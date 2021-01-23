@@ -80,6 +80,13 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
+        public void Test_CilGraph_GetHandlerNodes()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("DivideNumbers");
+            CilGraphTestsCore.Test_CilGraph_GetHandlerNodes(mi);
+        }
+
+        [TestMethod]
         public void Test_CilGraph_Tokens()
         {
             MethodInfo mi = typeof(SampleMethods).GetMethod("TestTokens");

@@ -54,6 +54,20 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        public void Test_CilGraph_GetHandlerNodes()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("DivideNumbers")[0] as MethodBase;
+                CilGraphTestsCore.Test_CilGraph_GetHandlerNodes(mi);
+            }
+        }
+
+        [TestMethod]
         public void Test_CilGraph_Tokens()
         {
             AssemblyReader reader = new AssemblyReader();
