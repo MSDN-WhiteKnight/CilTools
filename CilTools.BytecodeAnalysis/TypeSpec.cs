@@ -897,6 +897,13 @@ namespace CilTools.BytecodeAnalysis
             return this._Type.GetGenericTypeDefinition();
         }
 
+        /// <inheritdoc/>
+        public override bool IsAssignableFrom(Type c)
+        {
+            if (this._Type != null) return base.IsAssignableFrom(c);
+            else return this._Type.IsAssignableFrom(c);
+        }
+
         /// <summary>
         /// Returns textual representation of this type specification as CIL code
         /// </summary>        
