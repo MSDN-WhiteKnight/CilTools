@@ -32,6 +32,7 @@ namespace CilView
             public HashSet<MethodBase> visited;
             public Stack<string> callstack=new Stack<string>();
             public MethodBase first;
+            public Stack<Type> caught_exceptions = new Stack<Type>();
         }
 
         class MethodComparer : IEqualityComparer<MethodBase>
@@ -105,6 +106,13 @@ namespace CilView
             Type t,string stackstr,MethodBase m, GetExceptionsRecursive_Context ctx, int c
             )
         {
+            //check if we are currently in try block that handles this exception
+            foreach (Type et in ctx.caught_exceptions)
+            {
+                //if handled type is superclass for this type, exception is handled 
+                if (et.IsAssignableFrom(t)) return false;
+            }
+
             //exclude some common false positives
             
             if ((EqualsInvariant(t.FullName, "System.ArgumentOutOfRangeException") ||
@@ -271,6 +279,50 @@ namespace CilView
             return false;
         }
 
+        static bool MethodHasThrow(MethodBase m)
+        {
+            //checks that method has throw instructions
+            CilGraph gr = CilGraph.Create(m);
+
+            foreach (CilGraphNode node in gr.GetNodes())
+            {
+                if (node.Instruction.OpCode == OpCodes.Throw) return true;
+            }
+
+            return false;
+        }
+
+        static bool IsExceptionCaught(CilGraph gr, ExceptionBlock block)
+        {
+            //checks that exception blocks catches exception, so it does not propagate 
+            //further and could be ignored by analysis
+            if (block.Flags != ExceptionHandlingClauseOptions.Clause) return false;
+
+            IEnumerable<CilGraphNode> handler = gr.GetHandlerNodes(block);
+            
+            foreach (CilGraphNode node in handler)
+            {
+                //check if handler has throw instruction
+                if (node.Instruction.OpCode == OpCodes.Throw) return false;
+                if (node.Instruction.OpCode == OpCodes.Rethrow) return false;
+
+                if (node.Instruction.OpCode == OpCodes.Call ||
+                    node.Instruction.OpCode == OpCodes.Callvirt)
+                {
+                    MethodBase target = node.Instruction.ReferencedMember as MethodBase;
+
+                    if (target == null) continue;
+                    if (node.Instruction.OpCode == OpCodes.Callvirt && target.IsVirtual) continue;
+
+                    //check if it calls method that throws
+                    if (MethodHasThrow(target)) return false;
+                }
+            }
+
+            //if handler does not throw, the exception is caught
+            return true;
+        }
+
         static void GetExceptionsRecursive(
             MethodBase m,GetExceptionsRecursive_Context ctx,int c,bool returned
             )
@@ -295,6 +347,7 @@ namespace CilView
             try
             {
                 CilGraph graph;
+                List<Type> caught_types = new List<Type>();
 
                 try
                 {
@@ -307,6 +360,22 @@ namespace CilView
 
                 foreach (CilGraphNode node in graph.GetNodes())
                 {
+                    //get exception blocks that handle exceptions on this node
+                    ExceptionBlock[] blocks = node.GetExceptionBlocks();
+                    caught_types.Clear();
+
+                    for (int i = 0; i < blocks.Length; i++)
+                    {
+                        if (IsExceptionCaught(graph, blocks[i]))
+                        {
+                            caught_types.Add(blocks[i].CatchType);
+                        }
+                    }
+
+                    //save caught exception on the stack
+                    for (int i = 0; i < caught_types.Count; i++) ctx.caught_exceptions.Push(caught_types[i]);
+
+                    //check exceptions possibly thrown by this node
                     if (node.Instruction.OpCode == OpCodes.Throw)
                     {
                         CilGraphNode prev = node.Previous;
@@ -397,6 +466,10 @@ namespace CilView
                             GetExceptionsRecursive(target, ctx, c + 1,false);
                         }
                     }//endif
+
+                    //remove caught exceptions from stack
+                    for (int i = 0; i < caught_types.Count; i++) ctx.caught_exceptions.Pop();
+
                 }//end foreach
             }//end try
             finally
