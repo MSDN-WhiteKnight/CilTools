@@ -119,7 +119,8 @@ namespace CilView
                 EqualsInvariant(t.FullName, "System.ArgumentNullException") ||
                 EqualsInvariant(t.FullName, "System.ArgumentException") ||
                 EqualsInvariant(t.FullName, "System.IndexOutOfRangeException") ||
-                EqualsInvariant(t.FullName, "System.FormatException")
+                EqualsInvariant(t.FullName, "System.FormatException")||
+                EqualsInvariant(t.FullName, "System.RankException")
                 ) && c>0 && !SameType(m,ctx.first))
             {
                 //Exceptions that indicate incorrect arguments are excluded when they are thrown not
@@ -239,15 +240,6 @@ namespace CilView
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "InitializeSourceInfo") &&
-                EqualsInvariant( m.DeclaringType.FullName, "System.Diagnostics.StackFrameHelper")
-                && c > 0)
-            {
-                //StackFrameHelper.InitializeSourceInfo calls Type.GetType and brings up TypeLoadException 
-                //but it is not thrown, because the exception block swallows all exceptions 
-                return true;
-            }
-
             if (EqualsInvariant(m.Name, "GetWinRTContext") &&
                 EqualsInvariant(m.DeclaringType.FullName, "System.Threading.SynchronizationContext")
                 && c > 0)
@@ -276,13 +268,37 @@ namespace CilView
                 return true;
             }
 
+            if (EqualsInvariant(m.Name, "Assert") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Diagnostics.Debug")
+                && c > 0)
+            {
+                //Debug.Assert - only relevant in debug mode
+                return true;
+            }
+
+            if (EqualsInvariant(m.Name, "get_Default") &&
+                EqualsInvariant(m.DeclaringType.FullName, "System.Text.Encoding")
+                && c > 0)
+            {
+                //NotSupportedException - rarely happens in practice
+                return true;
+            }
+
             return false;
         }
 
         static bool MethodHasThrow(MethodBase m)
         {
             //checks that method has throw instructions
-            CilGraph gr = CilGraph.Create(m);
+            CilGraph gr;
+            try
+            {
+                gr = CilGraph.Create(m);
+            }
+            catch (Exception ex) when (ex is TypeLoadException || ex is CilParserException)
+            {
+                return false;
+            }
 
             foreach (CilGraphNode node in gr.GetNodes())
             {
