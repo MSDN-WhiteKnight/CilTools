@@ -2,8 +2,11 @@
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.Collections.Generic;
 using System.Reflection;
+using System.Text;
 using CilTools.Reflection;
+using CilTools.Syntax;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -131,6 +134,55 @@ namespace CilTools.Metadata.Tests
                 Assert.IsTrue(paramtype.IsAssignableFrom(paramtype));
                 Assert.IsTrue(paramtype.IsAssignableFrom(typeof(Type)));
             }
+        }
+
+        [TestMethod]
+        public void Test_TypeAttributes()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.TestType");
+
+                //reflection
+                object[] attrs = t.GetCustomAttributes(false);
+
+                AssertThat.HasOnlyOneMatch(
+                    attrs,
+                    (x) => {
+                        return x is ICustomAttribute &&
+                        String.Equals(
+                            ((ICustomAttribute)x).Constructor.DeclaringType.Name,
+                            "MyAttribute",
+                            StringComparison.InvariantCulture);
+                            }
+                    );
+
+                //syntax
+                IEnumerable<SyntaxNode> syntax = SyntaxNode.GetTypeDefSyntax(t);
+
+                StringBuilder sb = new StringBuilder(1000);
+                foreach (SyntaxNode node in syntax) sb.Append(node.ToString());
+                string str = sb.ToString();
+
+                AssertThat.IsMatch(str, new MatchElement[] {
+                new Literal(".class"), MatchElement.Any,
+                new Literal(".custom"), MatchElement.Any,
+                new Literal("instance"), MatchElement.Any,
+                new Literal("void"), MatchElement.Any,
+                new Literal("CilTools.Tests.Common.MyAttribute"), MatchElement.Any,
+                new Literal(".ctor"), MatchElement.Any,
+                new Literal("("), MatchElement.Any,
+                new Literal("int32"), MatchElement.Any,
+                new Literal(")"), MatchElement.Any,
+                new Literal("="), MatchElement.Any,
+                new Literal("("), MatchElement.Any,
+                new Literal("01 00 30 02 00 00 00 00"), MatchElement.Any,
+                new Literal(")"), MatchElement.Any,
+                });
+            }//end using
         }
     }
 }

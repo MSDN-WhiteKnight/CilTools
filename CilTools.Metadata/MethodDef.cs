@@ -240,6 +240,41 @@ namespace CilTools.Metadata
             throw new NotImplementedException();
         }
 
+        internal static object[] ReadCustomAttributes(
+            CustomAttributeHandleCollection coll,MemberInfo owner,MetadataAssembly ass
+            )
+        {
+            object[] ret = new object[coll.Count];
+            int i = 0;
+
+            foreach (CustomAttributeHandle h in coll)
+            {
+                CustomAttribute ca = ass.MetadataReader.GetCustomAttribute(h);
+                EntityHandle eh = ca.Constructor;
+                MethodBase constr = null;
+
+                if (eh.Kind == HandleKind.MethodDefinition)
+                {
+                    MethodDefinition mdef = ass.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
+                    constr = new MethodDef(mdef, (MethodDefinitionHandle)eh, ass);
+                }
+                else if (eh.Kind == HandleKind.MemberReference)
+                {
+                    MemberReference mref = ass.MetadataReader.GetMemberReference((MemberReferenceHandle)eh);
+
+                    if (mref.GetKind() == MemberReferenceKind.Method)
+                        constr = new MethodRef(mref, (MemberReferenceHandle)eh, ass);
+                }
+
+                ret[i] = new MetadataCustomAttribute(
+                    owner as MethodBase, constr, ass.MetadataReader.GetBlobBytes(ca.Value)
+                    );
+                i++;
+            }
+
+            return ret;
+        }
+
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
@@ -248,33 +283,7 @@ namespace CilTools.Metadata
             //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
 
             CustomAttributeHandleCollection coll = this.mdef.GetCustomAttributes();
-            object[] ret = new object[coll.Count];
-            int i = 0;
-
-            foreach (CustomAttributeHandle h in coll)
-            {
-                CustomAttribute ca = this.assembly.MetadataReader.GetCustomAttribute(h);
-                EntityHandle eh = ca.Constructor;
-                MethodBase constr=null;
-
-                if (eh.Kind == HandleKind.MethodDefinition)
-                {
-                    MethodDefinition mdef = assembly.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                    constr = new MethodDef(mdef, (MethodDefinitionHandle)eh, this.assembly);
-                }
-                else if (eh.Kind == HandleKind.MemberReference)
-                {
-                    MemberReference mref = assembly.MetadataReader.GetMemberReference((MemberReferenceHandle)eh);
-
-                    if (mref.GetKind() == MemberReferenceKind.Method)
-                        constr = new MethodRef(mref, (MemberReferenceHandle)eh, this.assembly);
-                }
-
-                ret[i] = new MetadataCustomAttribute(this, constr, assembly.MetadataReader.GetBlobBytes(ca.Value));
-                i++;
-            }
-
-            return ret;
+            return ReadCustomAttributes(coll, this, this.assembly);
         }
 
         /// <inheritdoc/>

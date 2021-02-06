@@ -169,4 +169,10 @@ namespace CilTools.Tests.Common
         public float X { get; set; }
         public float Y { get; set; }
     }
+
+    [My(560)]
+    public class TestType
+    {
+        public int x;
+    }
 }

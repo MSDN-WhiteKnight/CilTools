@@ -196,7 +196,7 @@ namespace CilView
                 cMethodsList.Child = this.tlv;
 
                 string plaintext;
-                UIElement elem = CilVisualization.VisualizeType(t,out plaintext);
+                UIElement elem = CilVisualization.VisualizeType(t, Navigated,out plaintext);
                 gridStructure.Children.Clear();
                 gridStructure.Children.Add(elem);
                 tbMainContent.Text = plaintext;

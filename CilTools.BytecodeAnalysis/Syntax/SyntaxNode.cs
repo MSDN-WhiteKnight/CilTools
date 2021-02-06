@@ -99,7 +99,7 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
-        internal static SyntaxNode[] GetAttributesSyntax(MethodBase m)
+        internal static SyntaxNode[] GetAttributesSyntax(MemberInfo m)
         {
             object[] attrs = m.GetCustomAttributes(false);
             List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
@@ -437,9 +437,31 @@ namespace CilTools.Syntax
             DirectiveSyntax header = new DirectiveSyntax( String.Empty, "class",content.ToArray());
             yield return header;
             
-            //members
+            //body
             content.Clear();
 
+            //custom attributes
+            try
+            {
+                SyntaxNode[] arr = SyntaxNode.GetAttributesSyntax(t);
+
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    content.Add(arr[i]);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                content.Add(new CommentSyntax(" ", "NOTE: Custom attributes are not shown."));
+            }
+            catch (NotImplementedException)
+            {
+                content.Add(new CommentSyntax(" ", "NOTE: Custom attributes are not shown."));
+            }
+
+            content.Add(new GenericSyntax(Environment.NewLine));
+
+            //members
             FieldInfo[] fields = t.GetFields(
                 BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
                 );
@@ -525,7 +547,7 @@ namespace CilTools.Syntax
 
                 inner.Add(new GenericSyntax(Environment.NewLine));
 
-                DirectiveSyntax field = new DirectiveSyntax("  ", "field", inner.ToArray());
+                DirectiveSyntax field = new DirectiveSyntax(" ", "field", inner.ToArray());
                 content.Add(field);
             }
 

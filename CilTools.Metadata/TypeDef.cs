@@ -357,9 +357,16 @@ namespace CilTools.Metadata
             return new object[] { };
         }
 
+        /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
-            return new object[] { };
+            //we can't instantiate actual attribute objects here
+            //so we will create special ICustomAttribute objects that CilTools.BytecodeAnalysis recognizes
+            //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
+
+            CustomAttributeHandleCollection coll = this.type.GetCustomAttributes();
+            
+            return MethodDef.ReadCustomAttributes(coll, this, this.assembly);
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)

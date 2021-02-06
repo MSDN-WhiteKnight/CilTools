@@ -188,7 +188,7 @@ namespace CilView
 
                     Hyperlink lnk = new Hyperlink(r);
                     lnk.Tag = (MethodBase)mrs.Member;
-                    lnk.Click += ctx.navigation;
+                    if(ctx.navigation!=null)lnk.Click += ctx.navigation;
                     target.Inlines.Add(lnk);
                 }
                 else
@@ -317,7 +317,7 @@ namespace CilView
             return scroll;
         }
 
-        public static UIElement VisualizeType(Type t,out string plaintext)
+        public static UIElement VisualizeType(Type t, RoutedEventHandler navigation,out string plaintext)
         {
             FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
             scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -334,6 +334,7 @@ namespace CilView
             Paragraph par = new Paragraph();
 
             VisualizeGraphContext ctx = new VisualizeGraphContext();
+            ctx.navigation = navigation;
 
             foreach (SyntaxNode node in tree) 
             {
