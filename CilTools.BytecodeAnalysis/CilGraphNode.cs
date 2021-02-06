@@ -88,6 +88,10 @@ namespace CilTools.BytecodeAnalysis
             return res;            
         }
 
+        /// <summary>
+        /// Gets an array of exception handling blocks in which this node is enclosed
+        /// </summary>
+        /// <returns>An array of exception blocks, or an empty array if there are none</returns>
         public ExceptionBlock[] GetExceptionBlocks()
         {
             List<ExceptionBlock> ret = new List<ExceptionBlock>(20);

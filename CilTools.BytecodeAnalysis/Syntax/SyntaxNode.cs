@@ -255,6 +255,11 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
+        /// <summary>
+        /// Gets the CIL assembler syntax for the definition of the specified type 
+        /// </summary>
+        /// <param name="t">Type to get definition syntax</param>
+        /// <returns>The collection of syntax nodes that make up type definition syntax</returns>
         public static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t)
         {
             List<SyntaxNode> content = new List<SyntaxNode>(10);

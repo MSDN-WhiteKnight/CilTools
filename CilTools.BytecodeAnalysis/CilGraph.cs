@@ -851,6 +851,17 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        /// <summary>
+        /// Gets the collection of nodes that make up the handler of the specified exception block
+        /// </summary>
+        /// <param name="block">The exception block to get handler</param>
+        /// <returns>The collection of nodes corresponding to exception block</returns>
+        /// <remarks>
+        /// The exception block must belong to the method from which this graph was created. If the 
+        /// block belongs to another method, the behaviour is undefined. You can get exception blocks 
+        /// that enclose the given graph node using <see cref="CilGraphNode.GetExceptionBlocks"/> 
+        /// method.
+        /// </remarks>
         public IEnumerable<CilGraphNode> GetHandlerNodes(ExceptionBlock block)
         {
             int start = block.HandlerOffset;
