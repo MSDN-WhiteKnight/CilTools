@@ -10,7 +10,7 @@ using System.Reflection.Emit;
 using System.Xml;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
-
+using CilView.Common;
 
 namespace CilView.Exceptions
 {
@@ -87,10 +87,7 @@ namespace CilView.Exceptions
             }
         }
 
-        static bool EqualsInvariant(string left, string right)
-        {
-            return String.Equals(left, right, StringComparison.InvariantCulture);
-        }
+        
 
         static bool SameType(MethodBase left, MethodBase right)
         {
@@ -102,7 +99,7 @@ namespace CilView.Exceptions
                 return false;
             }
 
-            return EqualsInvariant(t1.FullName, t2.FullName);
+            return Utils.StringEquals(t1.FullName, t2.FullName);
         }
 
         static bool AddTypeToResults(
@@ -118,12 +115,12 @@ namespace CilView.Exceptions
 
             //exclude some common false positives
             
-            if ((EqualsInvariant(t.FullName, "System.ArgumentOutOfRangeException") ||
-                EqualsInvariant(t.FullName, "System.ArgumentNullException") ||
-                EqualsInvariant(t.FullName, "System.ArgumentException") ||
-                EqualsInvariant(t.FullName, "System.IndexOutOfRangeException") ||
-                EqualsInvariant(t.FullName, "System.FormatException")||
-                EqualsInvariant(t.FullName, "System.RankException")
+            if ((Utils.StringEquals(t.FullName, "System.ArgumentOutOfRangeException") ||
+                Utils.StringEquals(t.FullName, "System.ArgumentNullException") ||
+                Utils.StringEquals(t.FullName, "System.ArgumentException") ||
+                Utils.StringEquals(t.FullName, "System.IndexOutOfRangeException") ||
+                Utils.StringEquals(t.FullName, "System.FormatException")||
+                Utils.StringEquals(t.FullName, "System.RankException")
                 ) && c>0 && !SameType(m,ctx.first))
             {
                 //Exceptions that indicate incorrect arguments are excluded when they are thrown not
@@ -133,7 +130,7 @@ namespace CilView.Exceptions
                 return false;
             }
 
-            if (EqualsInvariant(t.FullName, "System.InvalidOperationException") && 
+            if (Utils.StringEquals(t.FullName, "System.InvalidOperationException") && 
                 c > 0 && !SameType(m, ctx.first))
             {
                 //InvalidOperationException indicate that method was called in the wrong 
@@ -142,14 +139,14 @@ namespace CilView.Exceptions
                 return false;
             }
 
-            if (EqualsInvariant(t.FullName, "System.ObjectDisposedException") && c > 0)
+            if (Utils.StringEquals(t.FullName, "System.ObjectDisposedException") && c > 0)
             {
                 //ObjectDisposedException pops up every time unmanaged resources are involved,  
                 //but in practice it rarely happens
                 return false;
             }
 
-            if (EqualsInvariant(t.FullName, "System.OutOfMemoryException") && c > 0)
+            if (Utils.StringEquals(t.FullName, "System.OutOfMemoryException") && c > 0)
             {
                 //OutOfMemoryException can happen any time we allocate memory.  
                 //Excluded, unless directly thrown by this method.
@@ -170,8 +167,8 @@ namespace CilView.Exceptions
         {
             //exclude some common false positives
 
-            if (EqualsInvariant(m.Name, "Sleep") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Threading.Thread")
+            if (Utils.StringEquals(m.Name, "Sleep") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Threading.Thread")
                 && c > 0)
             {
                 //Thread.Sleep initiates wait and thus brings up some exceptions it 
@@ -180,8 +177,8 @@ namespace CilView.Exceptions
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "GetWinRTResourceManager") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Resources.ResourceManager")
+            if (Utils.StringEquals(m.Name, "GetWinRTResourceManager") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Resources.ResourceManager")
                 && c > 0)
             {
                 //Tries to load System.Resources.WindowsRuntimeResourceManager type  
@@ -191,8 +188,8 @@ namespace CilView.Exceptions
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, ".ctor") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Resources.ResourceManager")
+            if (Utils.StringEquals(m.Name, ".ctor") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Resources.ResourceManager")
                 && c > 0)
             {
                 //Uses reflection to check attributes, and brings up exceptions like 
@@ -200,8 +197,8 @@ namespace CilView.Exceptions
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "get_CurrentCulture") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Threading.Thread")
+            if (Utils.StringEquals(m.Name, "get_CurrentCulture") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Threading.Thread")
                 && c > 0)
             {
                 //Thread.CurrentCulture brings up System.Globalization.CultureNotFoundException
@@ -209,32 +206,32 @@ namespace CilView.Exceptions
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "get_CurrentUICulture") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Threading.Thread")
+            if (Utils.StringEquals(m.Name, "get_CurrentUICulture") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Threading.Thread")
                 && c > 0)
             {
                 //Thread.CurrentUICulture - same issue as Thread.CurrentCulture above 
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "get_CurrentCulture") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Globalization.CultureInfo")
+            if (Utils.StringEquals(m.Name, "get_CurrentCulture") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Globalization.CultureInfo")
                 && c > 0)
             {
                 //CultureInfo.CurrentCulture - same issue as Thread.CurrentCulture above 
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "get_UserDefaultUICulture") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Globalization.CultureInfo")
+            if (Utils.StringEquals(m.Name, "get_UserDefaultUICulture") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Globalization.CultureInfo")
                 && c > 0)
             {
                 //CultureInfo.get_UserDefaultUICulture - same issue as Thread.CurrentCulture above 
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "ParseTargetFrameworkName") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.AppContextDefaultValues")
+            if (Utils.StringEquals(m.Name, "ParseTargetFrameworkName") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.AppContextDefaultValues")
                 && c > 0)
             {
                 //ParseTargetFrameworkName brings up some exceptions, such as OverflowException, 
@@ -243,8 +240,8 @@ namespace CilView.Exceptions
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "GetWinRTContext") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Threading.SynchronizationContext")
+            if (Utils.StringEquals(m.Name, "GetWinRTContext") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Threading.SynchronizationContext")
                 && c > 0)
             {
                 //Tries to load System.Threading.WinRTSynchronizationContextFactory via GetType, 
@@ -252,8 +249,8 @@ namespace CilView.Exceptions
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "CreatePermission") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Security.Util.XMLUtil")
+            if (Utils.StringEquals(m.Name, "CreatePermission") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Security.Util.XMLUtil")
                 && c > 0)
             {
                 //Tries to load security permission type using GetType, and brings up TypeLoadException. 
@@ -262,8 +259,8 @@ namespace CilView.Exceptions
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "get_Now") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.DateTime")
+            if (Utils.StringEquals(m.Name, "get_Now") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.DateTime")
                 && c > 0)
             {
                 //Can throw InvalidTimeZoneException, but usually args passed to  
@@ -271,16 +268,16 @@ namespace CilView.Exceptions
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "Assert") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Diagnostics.Debug")
+            if (Utils.StringEquals(m.Name, "Assert") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Diagnostics.Debug")
                 && c > 0)
             {
                 //Debug.Assert - only relevant in debug mode
                 return true;
             }
 
-            if (EqualsInvariant(m.Name, "get_Default") &&
-                EqualsInvariant(m.DeclaringType.FullName, "System.Text.Encoding")
+            if (Utils.StringEquals(m.Name, "get_Default") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.Text.Encoding")
                 && c > 0)
             {
                 //NotSupportedException - rarely happens in practice
