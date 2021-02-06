@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.ComponentModel;
@@ -12,13 +12,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using CilTools.BytecodeAnalysis;
-using CilTools.Runtime;
-using Microsoft.Diagnostics.Runtime;
-using Microsoft.Win32;
 using System.Windows.Input;
 using System.Windows.Documents;
-using System.Windows.Media;
+using CilTools.BytecodeAnalysis;
+using CilTools.Runtime;
+using CilView.Exceptions;
+using Microsoft.Diagnostics.Runtime;
+using Microsoft.Win32;
 
 namespace CilView
 {
@@ -30,6 +30,7 @@ namespace CilView
         AssemblySource source;
         TextListViewer tlv;
         MethodBase current_method = null;
+        Type current_type = null;
 
         void SetSource(AssemblySource newval)
         {
@@ -201,6 +202,7 @@ namespace CilView
                 gridStructure.Children.Add(elem);
                 tbMainContent.Text = plaintext;
                 this.current_method = null;
+                this.current_type = t;
                 tbCurrLocation.Text = String.Empty;
             }
             catch (Exception ex)
@@ -624,15 +626,18 @@ to provide feedback" +
                 path = dlg.FileName;
                 //path = "c:\\Test\\String.xml";
 
-                Dictionary<string,string[]> dict=ExceptionInfo.GetFromXML(path);
+                TypeExceptionInfo tei;
+                tei= TypeExceptionInfo.GetFromXML(path);
 
                 StringBuilder sb = new StringBuilder(5000);
+                sb.AppendLine(tei.TypeName);
+                sb.AppendLine();
 
-                foreach (string key in dict.Keys)
+                foreach (string key in tei.Methods)
                 {
-                    string[] arr = dict[key];
+                    string[] arr = tei.GetExceptions(key);
                     sb.AppendLine(key);
-                    sb.AppendLine(arr.Length.ToString()+" exceptions");
+                    sb.AppendLine(arr.Length.ToString() + " exceptions");
                     sb.AppendLine(String.Join(";", arr));
                     sb.AppendLine();
                 }
@@ -640,7 +645,37 @@ to provide feedback" +
                 TextViewWindow wnd = new TextViewWindow();
                 wnd.Owner = this;
                 wnd.Text = sb.ToString();
-                wnd.Title = "Exceptions";
+                wnd.Title = "Exceptions from XML";
+                wnd.Show();
+            }
+            else if (e.Key == Key.F3)
+            {
+                if (current_type == null)
+                {
+                    MessageBox.Show("Select type to show exceptions", "Error");
+                    return;
+                }
+
+                TypeExceptionInfo tei;
+                tei = TypeExceptionInfo.GetFromType(current_type);
+
+                StringBuilder sb = new StringBuilder(5000);
+                sb.AppendLine(tei.TypeName);
+                sb.AppendLine();
+
+                foreach (string key in tei.Methods)
+                {
+                    string[] arr = tei.GetExceptions(key);
+                    sb.AppendLine(key);
+                    sb.AppendLine(arr.Length.ToString() + " exceptions");
+                    sb.AppendLine(String.Join(";", arr));
+                    sb.AppendLine();
+                }
+
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Text = sb.ToString();
+                wnd.Title = "Exceptions from current type";
                 wnd.Show();
             }
         }
