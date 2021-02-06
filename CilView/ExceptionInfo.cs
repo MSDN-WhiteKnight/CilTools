@@ -2,12 +2,15 @@
  * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Xml;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+
 
 namespace CilView
 {
@@ -505,6 +508,54 @@ namespace CilView
             GetExceptionsRecursive(m, ctx,0,false);
 
             foreach (ExceptionInfo ex in results.Values) yield return ex;
+        }
+
+        public static Dictionary<string, string[]> GetFromXML(string file)
+        {
+            Dictionary<string, string[]> ret = new Dictionary<string, string[]>();
+
+            XmlDocument doc = new XmlDocument();
+            doc.Load(file);
+            XmlNode members = doc.FirstChild["Members"];
+
+            foreach (XmlNode node in members.ChildNodes)
+            {
+                if (!(node.NodeType == XmlNodeType.Element)) continue;
+                if (!(node.Name == "Member")) continue;
+                if (node["MemberType"].InnerText != "Method") continue;
+                
+                string mname = node.Attributes["MemberName"].Value;
+
+                //signature
+                string docid = "";
+                foreach (XmlNode x in node.ChildNodes)
+                {
+                    if (x.Name == "MemberSignature" && x.Attributes["Language"].Value == "DocId")
+                    {
+                        docid = x.Attributes["Value"].Value;
+                        break;
+                    }
+                }
+
+                if (String.IsNullOrEmpty(docid)) docid = mname;
+
+                //exceptions
+                XmlNode docs = node["Docs"];
+                if (docs == null) continue;
+                List<string> exceptions = new List<string>(10);
+
+                foreach (XmlNode x in docs.ChildNodes)
+                {
+                    if (x.Name == "exception")
+                    {
+                        exceptions.Add(x.Attributes["cref"].Value);
+                    }
+                }
+
+                ret[docid] = exceptions.ToArray();
+            }//end foreach
+
+            return ret;
         }
 
         public override string ToString()

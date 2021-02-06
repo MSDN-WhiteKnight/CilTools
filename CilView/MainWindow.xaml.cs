@@ -608,5 +608,41 @@ to provide feedback" +
         {
             if (e.Key == Key.Enter) OnSearchClick();
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F2)
+            {
+                string path = "";
+
+                OpenFileDialog dlg = new OpenFileDialog();
+                dlg.RestoreDirectory = true;
+                dlg.Filter = "XML document (*.xml)|*.xml|All files|*";
+
+                if (dlg.ShowDialog(this) != true) return;
+
+                path = dlg.FileName;
+                //path = "c:\\Test\\String.xml";
+
+                Dictionary<string,string[]> dict=ExceptionInfo.GetFromXML(path);
+
+                StringBuilder sb = new StringBuilder(5000);
+
+                foreach (string key in dict.Keys)
+                {
+                    string[] arr = dict[key];
+                    sb.AppendLine(key);
+                    sb.AppendLine(arr.Length.ToString()+" exceptions");
+                    sb.AppendLine(String.Join(";", arr));
+                    sb.AppendLine();
+                }
+
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Text = sb.ToString();
+                wnd.Title = "Exceptions";
+                wnd.Show();
+            }
+        }
     }
 }
