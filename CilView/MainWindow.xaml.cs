@@ -285,7 +285,7 @@ namespace CilView
             }
         }
 
-        private void bOpenFile_Click(object sender, RoutedEventArgs e)
+        void OnOpenFileClick()
         {
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.RestoreDirectory = true;
@@ -295,6 +295,11 @@ namespace CilView
             {
                 this.OpenFile(dlg.FileName);
             }
+        }
+
+        private void bOpenFile_Click(object sender, RoutedEventArgs e)
+        {
+            OnOpenFileClick();
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -440,7 +445,7 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             wnd.Show();
         }
 
-        private void miHelp_Click(object sender, RoutedEventArgs e)
+        void OnHelpClick()
         {
             try
             {
@@ -459,6 +464,11 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             {
                 ErrorHandler.Current.Error(ex);
             }
+        }
+
+        private void miHelp_Click(object sender, RoutedEventArgs e)
+        {
+            OnHelpClick();
         }
 
         private void miLicense_Click(object sender, RoutedEventArgs e)
@@ -677,6 +687,17 @@ to provide feedback" +
                 wnd.Text = sb.ToString();
                 wnd.Title = "Exceptions from current type";
                 wnd.Show();
+            }
+            else if (
+                e.Key == Key.O &&
+                (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                )
+            {
+                this.OnOpenFileClick();
+            }
+            else if (e.Key == Key.F1)
+            {
+                this.OnHelpClick();
             }
         }
     }

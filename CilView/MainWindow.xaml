@@ -5,7 +5,7 @@
     <Grid >
         <Menu HorizontalAlignment="Stretch" Height="25" Margin="0,0,0,0" VerticalAlignment="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Open" Click="bOpenFile_Click"/>
+                <MenuItem Header="Open" Click="bOpenFile_Click" InputGestureText="Ctrl+O"/>
                 <MenuItem Header="Open process" Click="bOpenProcess_Click"/>
                 <Separator/>
                 <MenuItem x:Name="miExportMethod" Header="Export code" Click="miExportMethod_Click"/>
@@ -18,7 +18,7 @@
                 <MenuItem x:Name="miThreads" Header="Threads" Click="miThreads_Click" />
             </MenuItem>
             <MenuItem Header="Help" >
-                <MenuItem x:Name="miHelp" Header="Show help" Click="miHelp_Click"/>
+                <MenuItem x:Name="miHelp" Header="Show help" Click="miHelp_Click" InputGestureText="F1"/>
                 <MenuItem x:Name="miLicense" Header="License" Click="miLicense_Click"/>
                 <MenuItem x:Name="miSource" Header="Source code" Click="miSource_Click"/>
                 <MenuItem x:Name="miFeedback" Header="Feedback" Click="miFeedback_Click"/>
