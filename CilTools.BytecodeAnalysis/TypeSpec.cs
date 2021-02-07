@@ -1022,5 +1022,16 @@ namespace CilTools.BytecodeAnalysis
         {
             return this._ElementType == (byte)ElementType.FnPtr;
         }
+
+        /// <inheritdoc/>
+        protected override bool IsValueTypeImpl()
+        {
+            //For struct and class we can deterimine IsValueType without checking the base type.
+            //This fixes exception when the actual type in an external assembly which can't be 
+            //resolved.
+            if (this._ElementType == (byte)ElementType.Class) return false;
+            else if (this._ElementType == (byte)ElementType.ValueType) return true;
+            else return base.IsValueTypeImpl();
+        }
     }
 }
