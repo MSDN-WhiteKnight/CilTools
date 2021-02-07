@@ -17,6 +17,7 @@ using System.Windows.Documents;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using CilView.Exceptions;
+using CilView.UI.Dialogs;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.Win32;
 
@@ -125,6 +126,16 @@ namespace CilView
 
                 SetSource(op.Result);
              }
+        }
+
+        private void miOpenBCL_Click(object sender, RoutedEventArgs e)
+        {
+            OpenBclWindow wnd = new OpenBclWindow();
+            wnd.Owner = this;
+            if (wnd.ShowDialog() != true) return;
+
+            string path = wnd.SelectedFile.Path;
+            this.OpenFile(path);
         }
 
         private void cb_KeyDown(object sender, KeyEventArgs e)

@@ -7,6 +7,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="Open" Click="bOpenFile_Click" InputGestureText="Ctrl+O"/>
                 <MenuItem Header="Open process" Click="bOpenProcess_Click"/>
+                <MenuItem x:Name="miOpenBCL" Header="Open BCL assembly" Click="miOpenBCL_Click"/>
                 <Separator/>
                 <MenuItem x:Name="miExportMethod" Header="Export code" Click="miExportMethod_Click"/>
                 <MenuItem x:Name="miShowExceptions" Header="Show exceptions" Click="miShowExceptions_Click"/>

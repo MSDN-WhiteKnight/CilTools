@@ -103,6 +103,7 @@
     <Compile Include="CilVisualization.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="Exceptions\TypeExceptionInfo.cs" />
+    <Compile Include="FileSystem\AssemblyFile.cs" />
     <Compile Include="FileSystem\RuntimeDir.cs" />
     <Compile Include="SearchResult.cs" />
     <Compile Include="TextListViewer.cs" />
@@ -120,6 +121,9 @@
     </Compile>
     <Compile Include="ThreadsWindow.xaml.cs">
       <DependentUpon>ThreadsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI.Dialogs\OpenBclWindow.xaml.cs">
+      <DependentUpon>OpenBclWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="wndError.xaml.cs">
       <DependentUpon>wndError.xaml</DependentUpon>
@@ -151,6 +155,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ThreadsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI.Dialogs\OpenBclWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

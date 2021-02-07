@@ -4,7 +4,9 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Text;
+using System.Reflection;
 using CilView.Common;
 
 namespace CilView.FileSystem
@@ -13,9 +15,14 @@ namespace CilView.FileSystem
     {
         public string Name { get; set; }
         public string Path { get; set; }
+        AssemblyFile[] assemblies = null;
+
+        static RuntimeDir[] cache = null;
 
         public static RuntimeDir[] GetRuntimeDirs()
         {
+            if (cache != null) return cache;
+
             List<RuntimeDir> ret = new List<RuntimeDir>(20);
             RuntimeDir rd;
 
@@ -107,7 +114,55 @@ namespace CilView.FileSystem
                 System.Diagnostics.Debug.WriteLine(ex.ToString());
             }
 
-            return ret.ToArray();
+            RuntimeDir[] arr = ret.ToArray();
+            cache = arr;
+            return arr;
+        }
+
+        public async Task<AssemblyFile[]> GetAssemblies()
+        {
+            if (this.assemblies != null) return this.assemblies;
+            List<AssemblyFile> ret;
+            ret = new List<AssemblyFile>(200);
+
+            await Task.Run(() =>
+            {
+                string[] files = Directory.GetFiles(this.Path, "*.dll");
+                
+                for (int i = 0; i < files.Length; i++)
+                {
+                    string name = System.IO.Path.GetFileNameWithoutExtension(files[i]);
+
+                    try
+                    {
+                        AssemblyName an = AssemblyName.GetAssemblyName(files[i]);
+                        if (!String.IsNullOrEmpty(an.Name)) name = an.Name;
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ex is BadImageFormatException)
+                        {
+                            continue;//not an assembly
+                        }
+                        else throw;
+                    }
+
+                    AssemblyFile file = new AssemblyFile();
+                    file.Name = name;
+                    file.Path = files[i];
+                    ret.Add(file);
+                }
+            });
+
+            AssemblyFile[] arr = ret.ToArray();
+            this.assemblies = arr;
+            return arr;
+        }
+
+        public override string ToString()
+        {
+            if (this.Name == null) return "(RuntimeDir)";
+            else return this.Name;
         }
     }
 }
