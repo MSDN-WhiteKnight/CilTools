@@ -248,7 +248,7 @@ namespace CilTools.BytecodeAnalysis
                 if (!isspec) //for TypeSpec, we omit class/valuetype keyword
                 {
                     if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);
-                    else if (t.IsClass) yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
+                    else yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
                 }
 
                 Assembly ass = t.Assembly;
