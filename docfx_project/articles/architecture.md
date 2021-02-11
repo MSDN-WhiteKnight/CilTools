@@ -10,7 +10,7 @@
 
 **.NET Metadata** - a set of structures that describe the contents of .NET asssemblies defined in ECMA-335 specification. Metadata is a concept related to CIL; some CIL assembler directives represent corresponding metadata structures. A .NET assembly consists of metadata and CIL bytecode.
 
-**Reflection** - a set of APIs that support programmatic inspection of .NET assemblies using types derived from base type in standard reflection library, such as System.Type, System.Reflection.MethodBase etc. These base type could be called a *reflection contract*, then a set of actual concrete types implementing them is a *reflection implementation*.
+**Reflection** - a set of APIs that support programmatic inspection of .NET assemblies using types derived from base types in standard reflection library, such as System.Type, System.Reflection.MethodBase etc. These base types could be called a *reflection contract*, then a set of actual concrete types implementing them is a *reflection implementation*.
 
 ## Overview
 
@@ -43,7 +43,7 @@ CilTools.Runtime is a reflection implementation that reads information about ass
 
 ## CilTools.Metadata
 
-CilTools.Metadata is a reflection implementation that reads information about assembly files without loading them into the current execution context. It enables inspecting assemblies for another target framework (such as .NET Standard assemblies when your application is on .NET Framework) or when some dependencies could not be resolved using the same API shape as the standard reflection. It also implements fetching information not supported by standard reflection: P/Invoke parameters, custom modifiers, function pointer signatures etc. CilTools.Metadata is build upon the [System.Reflection.Metadata](https://docs.microsoft.com/en-us/dotnet/api/system.reflection.metadata) library shipped by .NET Team. 
+CilTools.Metadata is a reflection implementation that reads information about assembly files without loading them into the current execution context. It enables inspecting assemblies for another target framework (such as .NET Standard assemblies when your application is on .NET Framework) or when some dependencies could not be resolved, using the same API shape as the standard reflection. It also implements fetching information not supported by standard reflection: P/Invoke parameters, custom modifiers, function pointer signatures etc. CilTools.Metadata is build upon the [System.Reflection.Metadata](https://docs.microsoft.com/en-us/dotnet/api/system.reflection.metadata) library shipped by .NET Team. 
 
 The key type in this library is [CilTools.Metadata.AssemblyReader](https://msdn-whiteknight.github.io/CilTools/api/CilTools.Metadata.AssemblyReader.html) that exposes methods to load assemblies.
 
