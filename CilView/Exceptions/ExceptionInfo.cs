@@ -153,6 +153,18 @@ namespace CilView.Exceptions
                 return false;
             }
 
+            if (Utils.StringEquals(t.FullName, "System.OperationCanceledException") && c > 0)
+            {
+                //OperationCanceledException pops up on any IO-related API
+                return false;
+            }
+
+            if (Utils.StringEquals(t.FullName, "System.NullReferenceException"))
+            {
+                //NullReferenceException could happen everywhere
+                return false;
+            }
+
             //-----------------------------------
 
             if (!ctx.results.ContainsKey(t))
