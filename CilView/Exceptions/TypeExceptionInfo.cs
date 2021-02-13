@@ -45,6 +45,19 @@ namespace CilView.Exceptions
             }
         }
 
+        static string ExtractType(string docid)
+        {
+            int start = 0;
+            int end = docid.IndexOf('(');
+            if (end < 0) end = docid.Length - 1;
+            string fullname = docid.Substring(start, end - start);
+
+            end = fullname.LastIndexOf('.');
+            if (end < 0) end = fullname.Length - 1;
+
+            return fullname.Substring(start,end);
+        }
+
         public static TypeExceptionInfo GetFromXML(string file, Type t)
         {
             Dictionary<string, string[]> ret = new Dictionary<string, string[]>();
@@ -110,7 +123,9 @@ namespace CilView.Exceptions
                     //signature
                     docid = node.Attributes["name"].Value;
                     if (String.IsNullOrEmpty(docid)) continue;
-                    if (!docid.StartsWith(typename_match)) continue;
+
+                    string str = ExtractType(docid);
+                    if (!Utils.StringEquals(typename_match, str)) continue;
 
                     //exceptions
                     exceptionsNode = node;
