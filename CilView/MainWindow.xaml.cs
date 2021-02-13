@@ -657,23 +657,31 @@ to provide feedback" +
             path = dlg.FileName;
             //path = "c:\\Test\\String.xml";
 
-            TypeExceptionInfo tei;
-            tei = TypeExceptionInfo.GetFromXML(path);
+            try
+            {
+                TypeExceptionInfo tei;
+                tei = TypeExceptionInfo.GetFromXML(path, current_type);
 
-            StringBuilder sb = new StringBuilder(5000);
-            sb.AppendLine(tei.TypeName);
-            sb.AppendLine();
+                StringBuilder sb = new StringBuilder(5000);
+                sb.AppendLine(tei.TypeName);
+                //sb.AppendLine(tei.ToString());
+                sb.AppendLine();
 
-            StringWriter wr = new StringWriter(sb);
-            TypeExceptionInfo teiFromCode;
-            teiFromCode = TypeExceptionInfo.GetFromType(current_type);
-            TypeExceptionInfo.Compare(tei, teiFromCode, wr);
+                StringWriter wr = new StringWriter(sb);
+                TypeExceptionInfo teiFromCode;
+                teiFromCode = TypeExceptionInfo.GetFromType(current_type);
+                TypeExceptionInfo.Compare(tei, teiFromCode, wr);
 
-            TextViewWindow wnd = new TextViewWindow();
-            wnd.Owner = this;
-            wnd.Text = sb.ToString();
-            wnd.Title = "Compare exceptions";
-            wnd.Show();
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Text = sb.ToString();
+                wnd.Title = "Compare exceptions";
+                wnd.Show();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

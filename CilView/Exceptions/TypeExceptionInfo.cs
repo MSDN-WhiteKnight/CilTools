@@ -10,6 +10,7 @@ using System.Reflection.Emit;
 using System.Xml;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+using CilView.Common;
 
 namespace CilView.Exceptions
 {
@@ -44,45 +45,83 @@ namespace CilView.Exceptions
             }
         }
 
-        public static TypeExceptionInfo GetFromXML(string file)
+        public static TypeExceptionInfo GetFromXML(string file, Type t)
         {
             Dictionary<string, string[]> ret = new Dictionary<string, string[]>();
-
+            bool mdoc;
             XmlDocument doc = new XmlDocument();
             doc.Load(file);
-            XmlNode members = doc.FirstChild["Members"];
-            string typename = doc.FirstChild.Attributes["FullName"].Value;
+
+            if (Utils.StringEquals(doc.DocumentElement.Name, "Type")) mdoc = true;
+            else if ((Utils.StringEquals(doc.DocumentElement.Name, "doc"))) mdoc = false;
+            else throw new ArgumentException("Incorrect XML. Root tag must be 'Type' or 'doc'.");
+
+            if (t == null && !mdoc) throw new ArgumentNullException("t");
+
+            XmlNode members;
+
+            if(mdoc)members = doc.FirstChild["Members"];
+            else members = doc.DocumentElement["members"];
+
+            string typename;
+            if (mdoc) typename = doc.FirstChild.Attributes["FullName"].Value;
+            else typename = t.FullName;
+
+            string typename_match = "M:" + typename;
 
             foreach (XmlNode node in members.ChildNodes)
             {
                 if (!(node.NodeType == XmlNodeType.Element)) continue;
-                if (!(node.Name == "Member")) continue;
-                if (node["MemberType"].InnerText != "Method") continue;
 
-                string mname = node.Attributes["MemberName"].Value;
-
-                //signature
+                string mname;
                 string docid = "";
-                foreach (XmlNode x in node.ChildNodes)
+                List<string> exceptions = new List<string>(10);
+                XmlNode exceptionsNode;
+
+                //parse member node
+                if (mdoc)
                 {
-                    if (x.Name == "MemberSignature" && x.Attributes["Language"].Value == "DocId")
+                    if (!(node.Name == "Member")) continue;
+                    if (node["MemberType"].InnerText != "Method") continue;
+
+                    mname = node.Attributes["MemberName"].Value;
+
+                    //signature
+                    foreach (XmlNode x in node.ChildNodes)
                     {
-                        docid = x.Attributes["Value"].Value;
-                        break;
+                        if (x.Name == "MemberSignature" && x.Attributes["Language"].Value == "DocId")
+                        {
+                            docid = x.Attributes["Value"].Value;
+                            break;
+                        }
                     }
+
+                    if (String.IsNullOrEmpty(docid)) docid = mname;
+
+                    //exceptions
+                    XmlNode docs = node["Docs"];
+                    if (docs == null) continue;
+                    exceptionsNode = docs;
+                }
+                else
+                {
+                    if (!(node.Name == "member")) continue;
+
+                    //signature
+                    docid = node.Attributes["name"].Value;
+                    if (String.IsNullOrEmpty(docid)) continue;
+                    if (!docid.StartsWith(typename_match)) continue;
+
+                    //exceptions
+                    exceptionsNode = node;
                 }
 
-                if (String.IsNullOrEmpty(docid)) docid = mname;
-
                 //exclude explicit interface implementations
+                //and other special methods
                 if (docid.Contains("#")) continue;
 
-                //exceptions
-                XmlNode docs = node["Docs"];
-                if (docs == null) continue;
-                List<string> exceptions = new List<string>(10);
-
-                foreach (XmlNode x in docs.ChildNodes)
+                //read exceptions
+                foreach (XmlNode x in exceptionsNode.ChildNodes)
                 {
                     if (x.Name == "exception")
                     {
@@ -90,6 +129,7 @@ namespace CilView.Exceptions
                     }
                 }
 
+                //add exceptions to result
                 ret[docid] = exceptions.ToArray();
             }//end foreach
 
@@ -240,6 +280,23 @@ namespace CilView.Exceptions
             StringBuilder sb = new StringBuilder(1000);
             StringWriter wr = new StringWriter(sb);
             Compare(fromDocs, fromCode, wr);
+            return sb.ToString();
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder(5000);
+            sb.AppendLine(this.TypeName);
+
+            foreach (string key in this.Methods)
+            {
+                string[] arr = this.GetExceptions(key);
+                sb.AppendLine(key);
+                sb.AppendLine(arr.Length.ToString() + " exceptions");
+                sb.AppendLine(String.Join(";", arr));
+                sb.AppendLine();
+            }
+
             return sb.ToString();
         }
     }
