@@ -74,6 +74,9 @@ namespace CilView.Exceptions
 
                 if (String.IsNullOrEmpty(docid)) docid = mname;
 
+                //exclude explicit interface implementations
+                if (docid.Contains("#")) continue;
+
                 //exceptions
                 XmlNode docs = node["Docs"];
                 if (docs == null) continue;
@@ -106,6 +109,14 @@ namespace CilView.Exceptions
                 MethodBase mb = members[i] as MethodBase;
                 if (mb == null) continue;
                 if (mb.IsConstructor) continue;
+
+                //constructor check does not work for CustomMethod
+                if(mb is CustomMethod && ((CustomMethod)mb).ReturnType==null) continue;
+
+                if (mb.Name.StartsWith("get_") || mb.Name.StartsWith("set_"))
+                {
+                    continue; //exclude property access methods
+                }
 
                 List<string> list = new List<string>(10);
                 IEnumerable<ExceptionInfo> exceptions = ExceptionInfo.GetExceptions(mb);
@@ -143,6 +154,93 @@ namespace CilView.Exceptions
             }
 
             return new TypeExceptionInfo(t.FullName,ret);
+        }
+
+        public static void CompareMethodExceptions(string[] fromDocs, string[] fromCode, TextWriter output)
+        {
+            HashSet<string> fromDocsSet = new HashSet<string>(fromDocs,StringComparer.InvariantCulture);
+            HashSet<string> fromCodeSet = new HashSet<string>(fromCode, StringComparer.InvariantCulture);
+            int c = 0;
+
+            for (int i = 0; i < fromCode.Length; i++)
+            {
+                if (!fromDocsSet.Contains(fromCode[i]))
+                {
+                    output.Write(fromCode[i]);
+                    output.Write(" thrown by code, but not included in docs");
+                    output.WriteLine();
+                    c++;
+                }
+            }
+
+            for (int i = 0; i < fromDocs.Length; i++)
+            {
+                if (!fromCodeSet.Contains(fromDocs[i]))
+                {
+                    output.Write(fromDocs[i]);
+                    output.Write(" included in docs, but is not thrown in code");
+                    output.WriteLine();
+                    c++;
+                }
+            }
+
+            if(c==0) output.WriteLine("(No differences found)");
+
+            output.Flush();
+        }
+
+        public static void Compare(TypeExceptionInfo fromDocs, TypeExceptionInfo fromCode, TextWriter output)
+        {
+            HashSet<string> fromDocsMethods = new HashSet<string>(fromDocs.Methods, StringComparer.InvariantCulture);
+            HashSet<string> fromCodeMethods = new HashSet<string>(fromCode.Methods, StringComparer.InvariantCulture);
+            HashSet<string> intersect=new HashSet<string>(StringComparer.InvariantCulture);
+
+            foreach (string m in fromDocsMethods)
+            {
+                if (!fromCodeMethods.Contains(m))
+                {
+                    output.Write(m);
+                    output.Write(" included in docs, but not found in code");
+                    output.WriteLine();
+                }
+                else
+                {
+                    intersect.Add(m);
+                }
+            }
+
+            output.WriteLine();
+
+            foreach (string m in fromCodeMethods)
+            {
+                if (!fromDocsMethods.Contains(m))
+                {
+                    output.Write(m);
+                    output.Write(" present in code, but not found in docs");
+                    output.WriteLine();
+                }
+            }
+
+            output.WriteLine();
+
+            foreach (string m in intersect)
+            {
+                string[] excFromCode=fromCode.GetExceptions(m);
+                string[] excFromDocs=fromDocs.GetExceptions(m);
+                output.WriteLine("Method: "+m);
+                CompareMethodExceptions(excFromDocs, excFromCode, output);
+                output.WriteLine();
+            }
+
+            output.Flush();
+        }
+
+        public static string Compare(TypeExceptionInfo fromDocs, TypeExceptionInfo fromCode)
+        {
+            StringBuilder sb = new StringBuilder(1000);
+            StringWriter wr = new StringWriter(sb);
+            Compare(fromDocs, fromCode, wr);
+            return sb.ToString();
         }
     }
 }

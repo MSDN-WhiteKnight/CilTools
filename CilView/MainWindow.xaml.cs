@@ -406,6 +406,11 @@ License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
             wnd.Show();
         }
 
+        private void miCompareExceptions_Click(object sender, RoutedEventArgs e)
+        {
+            CompareExceptions();
+        }
+
         private void bProcessInfo_Click(object sender, RoutedEventArgs e)
         {
             string s="";
@@ -632,42 +637,50 @@ to provide feedback" +
             if (e.Key == Key.Enter) OnSearchClick();
         }
 
+        void CompareExceptions()
+        {
+            if (current_type == null)
+            {
+                MessageBox.Show("Select type to compare exceptions", "Error");
+                return;
+            }
+
+            string path = "";
+
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.RestoreDirectory = true;
+            dlg.Filter = "XML document (*.xml)|*.xml|All files|*";
+            dlg.Title = "Select XML type documentation file";
+
+            if (dlg.ShowDialog(this) != true) return;
+
+            path = dlg.FileName;
+            //path = "c:\\Test\\String.xml";
+
+            TypeExceptionInfo tei;
+            tei = TypeExceptionInfo.GetFromXML(path);
+
+            StringBuilder sb = new StringBuilder(5000);
+            sb.AppendLine(tei.TypeName);
+            sb.AppendLine();
+
+            StringWriter wr = new StringWriter(sb);
+            TypeExceptionInfo teiFromCode;
+            teiFromCode = TypeExceptionInfo.GetFromType(current_type);
+            TypeExceptionInfo.Compare(tei, teiFromCode, wr);
+
+            TextViewWindow wnd = new TextViewWindow();
+            wnd.Owner = this;
+            wnd.Text = sb.ToString();
+            wnd.Title = "Compare exceptions";
+            wnd.Show();
+        }
+
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.F2)
             {
-                string path = "";
-
-                OpenFileDialog dlg = new OpenFileDialog();
-                dlg.RestoreDirectory = true;
-                dlg.Filter = "XML document (*.xml)|*.xml|All files|*";
-
-                if (dlg.ShowDialog(this) != true) return;
-
-                path = dlg.FileName;
-                //path = "c:\\Test\\String.xml";
-
-                TypeExceptionInfo tei;
-                tei= TypeExceptionInfo.GetFromXML(path);
-
-                StringBuilder sb = new StringBuilder(5000);
-                sb.AppendLine(tei.TypeName);
-                sb.AppendLine();
-
-                foreach (string key in tei.Methods)
-                {
-                    string[] arr = tei.GetExceptions(key);
-                    sb.AppendLine(key);
-                    sb.AppendLine(arr.Length.ToString() + " exceptions");
-                    sb.AppendLine(String.Join(";", arr));
-                    sb.AppendLine();
-                }
-
-                TextViewWindow wnd = new TextViewWindow();
-                wnd.Owner = this;
-                wnd.Text = sb.ToString();
-                wnd.Title = "Exceptions from XML";
-                wnd.Show();
+                this.CompareExceptions();
             }
             else if (e.Key == Key.F3)
             {

@@ -11,6 +11,8 @@
                 <Separator/>
                 <MenuItem x:Name="miExportMethod" Header="Export code" Click="miExportMethod_Click"/>
                 <MenuItem x:Name="miShowExceptions" Header="Show exceptions" Click="miShowExceptions_Click"/>
+                <MenuItem x:Name="miCompareExceptions" Header="Compare exceptions" 
+                          InputGestureText="F2" Click="miCompareExceptions_Click"/>
                 <Separator/>
                 <MenuItem x:Name="miExit" Header="Exit" Click="miExit_Click"/>
             </MenuItem>
