@@ -19,6 +19,33 @@ namespace CilView.FileSystem
 
         static RuntimeDir[] cache = null;
 
+        static HashSet<string> nativelibs = new HashSet<string>(new string[] {
+"alink",
+"AdoNetDiag",
+"clr",
+"clrcompression",
+"clretwrc",
+"clrjit",
+"compatjit",
+"CORPerfMonExt",
+"Culture",
+"dfdll",
+"diasymreader",
+"EventLogMessages",
+"FileTracker",
+"InstallUtilLib",
+"fusion",
+"nlssorting",
+"normalization",
+"peverify",
+"SOS",
+"TLBREF",
+"dbgshim",
+"coreclr",
+"hostpolicy",
+"ucrtbase",
+        },StringComparer.InvariantCultureIgnoreCase);
+
         public static RuntimeDir[] GetRuntimeDirs()
         {
             if (cache != null) return cache;
@@ -119,6 +146,27 @@ namespace CilView.FileSystem
             return arr;
         }
 
+        static bool IsExcludedFromAssemblies(string name)
+        {
+            string name_low = name.ToLower();
+
+            //native libraries
+            if (nativelibs.Contains(name_low)) return true;
+            if (name_low.StartsWith("mscor") && !Utils.StringEquals(name, "mscorlib")) return true;
+            if (name_low.StartsWith("csc")) return true;
+            if (name_low.StartsWith("sos_amd64")) return true;
+            if (name_low.Contains("native")) return true;
+            
+            //Windows API sets
+            if (name_low.StartsWith("api-ms-win-")) return true;
+
+            //ASP.NET native tools
+            if (name_low.StartsWith("aspnet_")) return true;
+            if (name_low.StartsWith("webengine")) return true;
+
+            return false;
+        }
+
         public async Task<AssemblyFile[]> GetAssemblies()
         {
             if (this.assemblies != null) return this.assemblies;
@@ -133,19 +181,7 @@ namespace CilView.FileSystem
                 {
                     string name = System.IO.Path.GetFileNameWithoutExtension(files[i]);
 
-                    try
-                    {
-                        AssemblyName an = AssemblyName.GetAssemblyName(files[i]);
-                        if (!String.IsNullOrEmpty(an.Name)) name = an.Name;
-                    }
-                    catch (Exception ex)
-                    {
-                        if (ex is BadImageFormatException)
-                        {
-                            continue;//not an assembly
-                        }
-                        else throw;
-                    }
+                    if (IsExcludedFromAssemblies(name)) continue;
 
                     AssemblyFile file = new AssemblyFile();
                     file.Name = name;
