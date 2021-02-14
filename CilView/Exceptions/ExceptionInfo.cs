@@ -296,6 +296,14 @@ namespace CilView.Exceptions
                 return true;
             }
 
+            if (Utils.StringEquals(m.Name, "GetResourceString") &&
+                Utils.StringEquals(m.DeclaringType.FullName, "System.SR")
+                && c > 0)
+            {
+                //.NET Core internal class to access resource strings - usually does not throw
+                return true;
+            }
+
             return false;
         }
 
@@ -415,12 +423,7 @@ namespace CilView.Exceptions
                             MethodBase constr = prev.Instruction.ReferencedMember as MethodBase;
                             if (constr != null)
                             {
-                                bool added = AddTypeToResults(constr.DeclaringType, stackstr, m, ctx, c);
-
-                                if (added)
-                                {
-                                    System.Diagnostics.Debug.WriteLine("Newobj: " + constr.DeclaringType.ToString());
-                                }
+                                AddTypeToResults(constr.DeclaringType, stackstr, m, ctx, c);
                             }
                         }
                         else if (prev.Instruction.OpCode == OpCodes.Ldloc)
