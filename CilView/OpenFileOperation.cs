@@ -13,6 +13,7 @@ namespace CilView
     {
         string filename;
         FileAssemblySource result;
+        Exception error = null;
 
         public OpenFileOperation(string fname)
         {
@@ -27,9 +28,22 @@ namespace CilView
 
             await Task.Run(() =>
             {
-                FileAssemblySource res = new FileAssemblySource(this.filename);
-                this.result = res;
+                try
+                {
+                    FileAssemblySource res = new FileAssemblySource(this.filename);
+                    this.result = res;
+                }
+                catch (Exception ex)
+                {
+                    this.error = ex;
+                    this.result = null;
+                }
             });
+            
+            if(this.error!=null)
+            {
+                ErrorHandler.Current.Error(this.error);
+            }
         }
     }
 }

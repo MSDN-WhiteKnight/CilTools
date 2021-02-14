@@ -60,6 +60,8 @@ namespace CilView
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+            
             string[] args = Environment.GetCommandLineArgs();
 
             if (args.Length >= 2)
@@ -95,6 +97,22 @@ namespace CilView
             }
         }
 
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            this.Dispatcher.Invoke((Action)(() =>
+            {
+                Exception ex = e.ExceptionObject as Exception;
+                if (ex != null)
+                {
+                    ErrorHandler.Current.Error(ex);
+                }
+                else
+                {
+                    ErrorHandler.Current.Error(new ApplicationException(e.ExceptionObject.ToString()));
+                }
+            }));
+        }
+
         void OpenFile(string file)
         {
             OpenFileOperation op = new OpenFileOperation(file);
@@ -103,6 +121,7 @@ namespace CilView
             bool? res = pwnd.ShowDialog();
 
             if (res != true) return;
+            if (op.Result == null) return;
 
             SetSource(op.Result);
 
