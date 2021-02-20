@@ -1,73 +1,26 @@
-# CIL Tools
+# CIL Tools documentation
 
-![logo](../images/il.png)
+![logo](../images/IL.png)
 
-## CilTools.BytecodeAnalysis
+CIL Tools consist of the following projects:
 
-**License:** BSD 2.0  
-**Requirements:** .NET Framework 3.5+  
+- [CilTools.BytecodeAnalysis](https://www.nuget.org/packages/CilTools.BytecodeAnalysis/)
+- [CilTools.Runtime](https://www.nuget.org/packages/CilTools.Runtime/)
+- [CilTools.Metadata](https://www.nuget.org/packages/CilTools.Metadata/)
+- [CIL View](https://github.com/MSDN-WhiteKnight/CilTools/tree/master/CilView)
 
-CilTools.BytecodeAnalysis library reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
+Documentation pages:
 
-*Usage*
+- [Using CilTools.BytecodeAnalysis](using-bytecode-analysis.md)
+- [Using CIL Tools syntax API](using-syntax-api.md)
+- [Using CilTools.Metadata](using-ciltools-metadata.md)
+- [CIL View user manual](cilview-manual.md)
+- [API Reference](../api/index.md)
 
-Add reference to CilTools.BytecodeAnalysis.dll, import CilTools.BytecodeAnalysis namespace. Use <xref:CilTools.BytecodeAnalysis.CilReader.GetInstructions(System.Reflection.MethodBase)> to get the collection of instructions from method, <xref:CilTools.BytecodeAnalysis.CilGraph.Create(System.Reflection.MethodBase)> to get a a graph that represents a flow of control between method's instructions, or <xref:CilTools.BytecodeAnalysis.CilAnalysis.MethodToText(System.Reflection.MethodBase)> when you need to output method's CIL code as text. <xref:CilTools.BytecodeAnalysis.Extensions> namespace provides an alternative syntax via extension methods.
+## See also
 
-*Example*
+[Source code](https://github.com/MSDN-WhiteKnight/CilTools)
 
-```
-using System;
-using System.Collections.Generic;
-using CilTools.BytecodeAnalysis;
-using CilTools.BytecodeAnalysis.Extensions;
+[Releases](https://github.com/MSDN-WhiteKnight/CilTools/releases)
 
-class Program
-{
-    public static void Hello()
-    {
-        int a = 1;
-        int b = 2;
-        Console.WriteLine("Hello, World");
-        Console.WriteLine("{0} + {1} = {2}",a,b,a+b);
-    }
-
-    static void Main(string[] args)
-    {
-        IEnumerable<CilInstruction> instructions = typeof(Program).GetMethod("Hello").GetInstructions();
-
-        foreach (CilInstruction instr in instructions)
-        {
-            Console.WriteLine(instr.ToString());
-        }
-        Console.ReadKey();
-    }
-
-}
-
-
-/* Output:
-
-nop
-ldc.i4.1
-stloc.0
-ldc.i4.2
-stloc.1
-ldstr "Hello, World"
-call void [mscorlib]System.Console::WriteLine(string)
-nop
-ldstr "{0} + {1} = {2}"
-ldloc.0
-box [mscorlib]System.Int32
-ldloc.1
-box [mscorlib]System.Int32
-ldloc.0
-ldloc.1
-add
-box [mscorlib]System.Int32
-call void [mscorlib]System.Console::WriteLine(string, System.Object, System.Object, System.Object)
-nop
-ret
-*/
-```
-
-Copyright (c) 2020, MSDN.WhiteKnight
+[Examples](https://github.com/MSDN-WhiteKnight/CilTools/tree/master/Examples)
