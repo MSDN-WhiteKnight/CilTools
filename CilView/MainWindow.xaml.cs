@@ -340,17 +340,21 @@ namespace CilView
         private void miAbout_Click(object sender, RoutedEventArgs e)
         {
             string text = String.Format(@"CIL View {0}
-Windows application to display CIL code of methods in the .NET assemblies
+Windows application to display CIL code of methods in .NET assemblies
 
 Author: MSDN.WhiteKnight
 Repository: https://github.com/MSDN-WhiteKnight/CilTools
-License: BSD 2.0", typeof(MainWindow).Assembly.GetName().Version.ToString());
+License: BSD 2.0
+
+This CIL View distribution contains binary code of the ClrMD library (https://github.com/microsoft/clrmd); Copyright (c) .NET Foundation and Contributors, MIT License.
+", 
+typeof(MainWindow).Assembly.GetName().Version.ToString());
 
             TextViewWindow wnd = new TextViewWindow();
             wnd.Owner = this;
             wnd.Text = text;
             wnd.Title = "About";
-            wnd.Height = 250;
+            wnd.Height = 270;
             wnd.Show();
         }
 
