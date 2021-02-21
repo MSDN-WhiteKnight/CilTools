@@ -15,6 +15,7 @@ namespace CilView.FileSystem
     {
         public string Name { get; set; }
         public string Path { get; set; }
+        public bool IsNetFramework { get; set; }
         AssemblyFile[] assemblies = null;
 
         static RuntimeDir[] cache = null;
@@ -57,8 +58,15 @@ namespace CilView.FileSystem
             string curr_framework = System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory();
             rd = new RuntimeDir();
 
-            if(Environment.Version.Major>=5) rd.Name = ".NET " + Environment.Version;
-            else rd.Name = ".NET Framework " + Environment.Version;
+            if (Environment.Version.Major >= 5)
+            {
+                rd.Name = ".NET " + Environment.Version;
+            }
+            else
+            {
+                rd.Name = ".NET Framework " + Environment.Version;
+                rd.IsNetFramework = true;
+            }
 
             rd.Path = curr_framework;
             ret.Add(rd);
@@ -129,6 +137,7 @@ namespace CilView.FileSystem
                     rd = new RuntimeDir();
                     rd.Name = ".NET Framework " + name;
                     rd.Path = fxpaths[i];
+                    rd.IsNetFramework = true;
                     ret.Add(rd);
                 }
             }
@@ -167,6 +176,18 @@ namespace CilView.FileSystem
             return false;
         }
 
+        static bool IsSystemAssembly(string name, bool netfx)
+        {
+            if (netfx && name.StartsWith("mscorlib", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return true;
+            }
+
+            if (name.StartsWith("System", StringComparison.InvariantCultureIgnoreCase)) return true;
+
+            return false;
+        }
+
         public async Task<AssemblyFile[]> GetAssemblies()
         {
             if (this.assemblies != null) return this.assemblies;
@@ -191,6 +212,28 @@ namespace CilView.FileSystem
             });
 
             AssemblyFile[] arr = ret.ToArray();
+
+            //Sort such as system assemblies are first on the list.
+            //They are more intresting than stuff like "Accessibility" that shows up first 
+            //with regular alphabetical order.
+
+            Array.Sort<AssemblyFile>(arr, (x, y) => 
+            {
+                if (x.Name == null) return 0;
+                if (y.Name == null) return 0;
+                
+                if (IsSystemAssembly(x.Name,this.IsNetFramework))
+                {
+                    if (!IsSystemAssembly(y.Name, this.IsNetFramework)) return -1;
+                }
+                else if (IsSystemAssembly(y.Name, this.IsNetFramework))
+                {
+                    return 1;
+                }
+
+                return String.Compare(x.Name, y.Name, StringComparison.InvariantCultureIgnoreCase);
+            });
+
             this.assemblies = arr;
             return arr;
         }
