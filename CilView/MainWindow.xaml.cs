@@ -18,6 +18,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using CilView.Exceptions;
 using CilView.UI.Dialogs;
+using CilView.UI.Controls;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.Win32;
 
@@ -29,9 +30,6 @@ namespace CilView
     public partial class MainWindow : Window
     {
         AssemblySource source;
-        TextListViewer tlv;
-        MethodBase current_method = null;
-        Type current_type = null;
 
         void SetSource(AssemblySource newval)
         {
@@ -41,13 +39,8 @@ namespace CilView
                 this.source = null;
                 this.DataContext = null;
             }
-
-            if(tlv!=null)tlv.Clear();
-
-            tbCurrLocation.Text = String.Empty;
-            tbMainContent.Text = String.Empty;
-            gridStructure.Children.Clear();
-            this.current_method = null;
+            
+            this.cilbrowser.Clear();
             
             this.source = newval;
             this.DataContext = newval;
@@ -223,91 +216,7 @@ namespace CilView
                 source.Methods.Clear();
                 source.Methods = AssemblySource.LoadMethods(t);
 
-                this.tlv = CilVisualization.VisualizeMethodList(source.Methods, Navigated);
-                cMethodsList.Child = this.tlv;
-
-                string plaintext;
-                UIElement elem = CilVisualization.VisualizeType(t, Navigated,out plaintext);
-                gridStructure.Children.Clear();
-                gridStructure.Children.Add(elem);
-                tbMainContent.Text = plaintext;
-                this.current_method = null;
-                this.current_type = t;
-                tbCurrLocation.Text = String.Empty;
-            }
-            catch (Exception ex)
-            {
-                ErrorHandler.Current.Error(ex);
-            }
-        }
-
-        void NavigateToMethod(MethodBase mb)
-        {
-            StringBuilder sb = new StringBuilder(1000);
-            StringWriter wr = new StringWriter(sb);
-
-            using (wr)
-            {
-                CilGraph gr = CilGraph.Create(mb);
-                gr.Print(wr, true, true, true, true);
-                wr.Flush();
-                tbMainContent.Text = sb.ToString();
-
-                UIElement elem = CilVisualization.VisualizeGraph(gr, Navigated);
-                gridStructure.Children.Clear();
-                gridStructure.Children.Add(elem);
-
-                this.current_method = mb;
-            }
-
-            sb.Clear();
-            
-            //select method in method list
-            this.tlv.SelectedItem = null;
-
-            for (int i = 0; i < this.tlv.ItemCount; i++)
-            {
-                Inline item = this.tlv.GetItem(i);
-                MethodBase itemmethod = item.Tag as MethodBase;
-
-                if (itemmethod == null) continue;
-
-                if(ReferenceEquals(itemmethod, mb))
-                {
-                    this.tlv.SelectedIndex = i;
-                    break;
-                }
-            }
-
-            //display method location
-            Type t = mb.DeclaringType;
-            Assembly ass=null;
-            if(t!=null) ass = t.Assembly;
-
-            if (ass != null) sb.Append(ass.GetName().Name);
-            else sb.Append("???");
-
-            sb.Append(" / ");
-
-            if (t != null) sb.Append(t.FullName);
-            else sb.Append("???");
-
-            sb.Append(" / ");
-            sb.Append(mb.Name);
-
-            tbCurrLocation.Text = sb.ToString();
-        }
-
-        void Navigated(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                FrameworkContentElement elem = (FrameworkContentElement)sender;
-                MethodBase mb = (MethodBase)(elem.Tag);
-
-                if (mb == null) return;
-
-                this.NavigateToMethod(mb);
+                this.cilbrowser.NavigateToType(t);
             }
             catch (Exception ex)
             {
@@ -365,7 +274,9 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
         private async void miExportMethod_Click(object sender, RoutedEventArgs e)
         {
-            if (tbMainContent.Text == String.Empty)
+            string txt = cilbrowser.GetTextContent();
+
+            if (String.IsNullOrEmpty(txt))
             {
                 MessageBox.Show(this, "No content to export. Open type or method first to export its code", "Error");
                 return;
@@ -377,8 +288,9 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
                 dlg.RestoreDirectory = true;
                 dlg.DefaultExt = ".il";
                 dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
+                MethodBase current_method= this.cilbrowser.GetCurrentMethod();
 
-                if (this.current_method != null) dlg.FileName = this.current_method.Name;
+                if (current_method != null) dlg.FileName = current_method.Name;
 
                 if (dlg.ShowDialog(this) == true)
                 {
@@ -386,7 +298,7 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
                     using (wr)
                     {
-                        await wr.WriteAsync(tbMainContent.Text);
+                        await wr.WriteAsync(txt);
                     }
                 }
             }
@@ -398,6 +310,8 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
         private void miShowExceptions_Click(object sender, RoutedEventArgs e)
         {
+            MethodBase current_method = this.cilbrowser.GetCurrentMethod();
+
             if (current_method == null)
             {
                 MessageBox.Show(this, "No method selected. Select method first to show exceptions.", "Error");
@@ -646,7 +560,7 @@ to provide feedback" +
             }
             else if (val.Kind == SearchResultKind.Method)
             {
-                NavigateToMethod((MethodBase)val.Value);
+                this.cilbrowser.NavigateToMethod((MethodBase)val.Value);
             }
         }
 
@@ -662,6 +576,8 @@ to provide feedback" +
 
         void CompareExceptions()
         {
+            Type current_type = this.cilbrowser.GetCurrentType();
+
             if (current_type == null)
             {
                 MessageBox.Show("Select type to compare exceptions", "Error");
@@ -715,6 +631,8 @@ to provide feedback" +
             }
             else if (e.Key == Key.F3)
             {
+                Type current_type = this.cilbrowser.GetCurrentType();
+
                 if (current_type == null)
                 {
                     MessageBox.Show("Select type to show exceptions", "Error");

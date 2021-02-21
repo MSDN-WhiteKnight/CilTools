@@ -1,6 +1,7 @@
-﻿<Window x:Class="CilView.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:Controls="clr-namespace:CilView.UI.Controls" x:Class="CilView.MainWindow"
         Title="CIL View" Height="500" Width="700" Closed="Window_Closed" Loaded="Window_Loaded" KeyDown="Window_KeyDown">
     <Grid >
         <Menu HorizontalAlignment="Stretch" Height="25" Margin="0,0,0,0" VerticalAlignment="Top">
@@ -32,18 +33,18 @@
         <Button x:Name="bOpenFile" Content="Open file" HorizontalAlignment="Left" Height="24" Margin="10,30,0,0" VerticalAlignment="Top" 
                 Width="90" Click="bOpenFile_Click" />
         <Button x:Name="bOpenProcess" Content="Open process" HorizontalAlignment="Left" Height="24" Margin="120,30,0,0" VerticalAlignment="Top" 
-                Width="90" Click="bOpenProcess_Click"/> 
+                Width="90" Click="bOpenProcess_Click"/>
         <Button x:Name="bExport" Content="Export" HorizontalAlignment="Left" Height="24" Margin="230,30,0,0" VerticalAlignment="Top" 
                 Width="90" Click="miExportMethod_Click" />
         <Button x:Name="bProcessInfo" Content="Process Info" HorizontalAlignment="Left" Height="24" Margin="340,30,0,0" 
                 VerticalAlignment="Top" IsEnabled="{Binding HasProcessInfo, FallbackValue=False}"
                 Width="90" Click="bProcessInfo_Click" />
-        
+
         <Button x:Name="bAbout" Content="About" HorizontalAlignment="Left" Height="24" Margin="475,30,0,0" VerticalAlignment="Top" 
                 Width="90" Click="miAbout_Click" />
         <Button x:Name="bExit" Content="Exit" HorizontalAlignment="Left" Height="24" Margin="585,30,0,0" VerticalAlignment="Top" 
                 Width="90" Click="miExit_Click" />
-        
+
         <Label Content="Assembly" HorizontalAlignment="Left" Margin="10,57,0,0" VerticalAlignment="Top" Width="65"/>
         <ComboBox x:Name="cbAssembly" HorizontalAlignment="Left" Height="21" Margin="80,60,0,0" ItemsSource="{Binding Assemblies}"
                   VerticalAlignment="Top" Width="160" 
@@ -63,38 +64,11 @@
         <Label Content="Find" HorizontalAlignment="Left" Margin="500,57,0,0" VerticalAlignment="Top" Width="40"/>
         <TextBox x:Name="tbFind" HorizontalAlignment="Left" Height="22" Margin="545,60,0,0" TextWrapping="NoWrap" Text="" 
                  VerticalAlignment="Top" Width="100" AcceptsReturn="False" KeyDown="tbFind_KeyDown"/>
-        <Button x:Name="bFind" Content=">" HorizontalAlignment="Left" Height="24" Margin="650,58,0,0" VerticalAlignment="Top" 
+        <Button x:Name="bFind" Content="&gt;" HorizontalAlignment="Left" Height="24" Margin="650,58,0,0" VerticalAlignment="Top" 
                 Width="24" Click="bFind_Click"/>
 
-        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="0,90,0,0" 
-              Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Border x:Name="cMethodsList" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" 
-                     Grid.Column="0" Margin="5 5 5 5" Background="White"
-                    VerticalAlignment="Stretch" Padding="5 0 0 0"/>
-            <Border BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Stretch" 
-                     Grid.Column="1" Margin="0 5 5 5"
-                    VerticalAlignment="Stretch">
-                <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                    <TextBox HorizontalAlignment="Stretch" Height="25" Margin="2,2,2,2" TextWrapping="NoWrap" Text="" 
-                 VerticalAlignment="Top" IsReadOnly="True" x:Name="tbCurrLocation" />
-                    <TabControl HorizontalAlignment="Stretch" Margin="2,34,2,2" VerticalAlignment="Stretch">
-                        <TabItem Header="Formatted">
-                            <Grid x:Name="gridStructure" Background="White"/>
-                        </TabItem>
-                        <TabItem Header="Plain text">
-                            <TextBox x:Name="tbMainContent" HorizontalAlignment="Stretch"  Margin="0,0,0,0" TextWrapping="Wrap" Text="" 
-                 VerticalAlignment="Stretch" IsReadOnly="True" FontFamily="Courier New" FontSize="14" 
-                 VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" />
-                        </TabItem>
-                    </TabControl>
-                </Grid>
-            </Border>
-            <GridSplitter Grid.Column ="0" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"  
-                          Width="5"/>
-        </Grid>
+        <Controls:CilBrowser x:Name="cilbrowser" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" 
+                             Margin="0,90,0,0" />
+
     </Grid>
 </Window>
