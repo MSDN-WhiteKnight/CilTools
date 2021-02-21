@@ -9,7 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace CilView
+namespace CilView.UI.Dialogs
 {
     /// <summary>
     /// TextViewWindow codebehind

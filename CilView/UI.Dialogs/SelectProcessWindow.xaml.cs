@@ -9,7 +9,7 @@ using System.Windows.Input;
 using System.Windows.Shapes;
 using Microsoft.Diagnostics.Runtime;
 
-namespace CilView
+namespace CilView.UI.Dialogs
 {
     /// <summary>
     /// Select Process Window codebehind

@@ -1,4 +1,4 @@
-﻿<Window x:Class="CilView.SelectProcessWindow"
+﻿<Window x:Class="CilView.UI.Dialogs.SelectProcessWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Attach to process" Height="300" Width="400" Closed="Window_Closed" WindowStartupLocation="CenterOwner">

@@ -1,4 +1,4 @@
-﻿<Window x:Class="CilView.ProgressWindow"
+﻿<Window x:Class="CilView.UI.Dialogs.ProgressWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
         Title="Operation progress" Height="200" Width="350" Loaded="Window_Loaded_1" WindowStartupLocation="CenterOwner"

@@ -110,13 +110,13 @@
     <Compile Include="OpenFileOperation.cs" />
     <Compile Include="OpenProcessOperation.cs" />
     <Compile Include="OperationBase.cs" />
-    <Compile Include="ProgressWindow.xaml.cs">
+    <Compile Include="UI.Dialogs\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SelectProcessWindow.xaml.cs">
+    <Compile Include="UI.Dialogs\SelectProcessWindow.xaml.cs">
       <DependentUpon>SelectProcessWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="TextViewWindow.xaml.cs">
+    <Compile Include="UI.Dialogs\TextViewWindow.xaml.cs">
       <DependentUpon>TextViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="ThreadsWindow.xaml.cs">
@@ -125,7 +125,7 @@
     <Compile Include="UI.Dialogs\OpenBclWindow.xaml.cs">
       <DependentUpon>OpenBclWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="wndError.xaml.cs">
+    <Compile Include="UI.Dialogs\wndError.xaml.cs">
       <DependentUpon>wndError.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
@@ -142,15 +142,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="ProgressWindow.xaml">
+    <Page Include="UI.Dialogs\ProgressWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SelectProcessWindow.xaml">
+    <Page Include="UI.Dialogs\SelectProcessWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="TextViewWindow.xaml">
+    <Page Include="UI.Dialogs\TextViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -162,7 +162,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="wndError.xaml">
+    <Page Include="UI.Dialogs\wndError.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
