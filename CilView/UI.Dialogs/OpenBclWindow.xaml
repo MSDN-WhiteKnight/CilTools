@@ -9,12 +9,18 @@
     <Grid>
         <ComboBox x:Name="cbRuntime" HorizontalAlignment="Left" Margin="20,20,0,0" 
                   VerticalAlignment="Top" Width="350" Height="28" SelectionChanged="cbRuntime_SelectionChanged"/>
-        <ListBox x:Name="listAssemblies" HorizontalAlignment="Stretch"  Margin="20,70,20,60" 
+        <TextBox x:Name="tbSearch" HorizontalAlignment="Left" Height="28" Margin="20,55,0,0"  
+                 Text="" VerticalAlignment="Top" Width="260" AcceptsReturn="False" KeyDown="tbSearch_KeyDown"/>
+        <Button x:Name="bFind" Content="Find" HorizontalAlignment="Left" Height="28" Margin="295,55,0,0" 
+                VerticalAlignment="Top" Width="75" Click="bFind_Click"/>
+        <ListBox x:Name="listAssemblies" HorizontalAlignment="Stretch"  Margin="20,90,20,60" 
                  VerticalAlignment="Stretch" />
         <Button x:Name="bOpen" Content="Open" HorizontalAlignment="Left" Margin="20,0,20,20" 
                 VerticalAlignment="Bottom" Width="75" Click="bOpen_Click"/>
         <Button x:Name="bCancel" Content="Cancel" HorizontalAlignment="Left" Height="22" Margin="120,0,20,20" 
                 VerticalAlignment="Bottom" Width="75" Click="bCancel_Click"/>
+        
+
 
     </Grid>
 </Window>

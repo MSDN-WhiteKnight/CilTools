@@ -38,5 +38,21 @@ namespace CilView.Common
             right = right.ToLower();
             return StringEquals(left,right);
         }
+
+        public static int Search<T>(T[] array, Func<T, string, bool> func, string text, int start_index)
+        {
+            if (start_index < 0) start_index = 0;
+            if (start_index >= array.Length) return -1;
+
+            for (int i = start_index; i < array.Length; i++)
+            {
+                if (func(array[i], text))
+                {
+                    return i; //found item
+                }
+            }
+
+            return -1; //not found
+        }
     }
 }
