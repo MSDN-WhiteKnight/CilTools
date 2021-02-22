@@ -112,6 +112,20 @@ namespace CilView.UI.Controls
             sb.Append(mb.Name);
 
             tbCurrLocation.Text = sb.ToString();
+
+            //make sure content is visible
+            ExpandContentPane();
+        }
+
+        void ExpandContentPane()
+        {
+            GridLength gl = columnContent.Width;
+
+            if ((gl.IsAbsolute && gl.Value < 10.0) || columnContent.ActualWidth<10.0)
+            {
+                columnContent.Width = new GridLength(0.7,GridUnitType.Star);
+                columnLeftPane.Width = new GridLength(0.3,GridUnitType.Star);
+            }
         }
 
         void Navigated(object sender, RoutedEventArgs e)
@@ -166,6 +180,18 @@ namespace CilView.UI.Controls
             this.current_method = null;
             this.current_type = t;
             tbCurrLocation.Text = String.Empty;
+
+            //make sure content is visible
+            ExpandContentPane();
+        }
+
+        public void NavigateToStackTrace(ClrThreadInfo th)
+        {
+            this.tlv = CilVisualization.VisualizeStackTrace(th, Navigated, null);
+            cMethodsList.Child = this.tlv;
+            gridContent.Children.Clear();
+            tbMainContent.Text = String.Empty;
+            tbCurrLocation.Text = "(Stack trace)";
         }
 
         public void Clear()
@@ -180,13 +206,13 @@ namespace CilView.UI.Controls
 
         public void SetLeftPaneWidth(int? w)
         {
-            if (w == null) columnLeftPane.Width = GridLength.Auto;
+            if (w == null) columnLeftPane.Width = new GridLength(1,GridUnitType.Star);
             else columnLeftPane.Width = new GridLength(w.Value);
         }
 
         public void SetContentWidth(int? w)
         {
-            if (w == null) columnContent.Width = GridLength.Auto;
+            if (w == null) columnContent.Width = new GridLength(1,GridUnitType.Star);
             else columnContent.Width = new GridLength(w.Value);
         }
 
