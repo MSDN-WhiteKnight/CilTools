@@ -23,7 +23,7 @@ namespace CilView.UI.Dialogs
             InitializeComponent();
             
             if (action == null) action = "";
-            if (ex == null) ex = new ApplicationException("Unknown error");                        
+            if (ex == null) ex = new ApplicationException("Unknown error");
 
             try
             {
