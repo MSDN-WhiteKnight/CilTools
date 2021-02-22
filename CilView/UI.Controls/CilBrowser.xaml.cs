@@ -179,7 +179,17 @@ namespace CilView.UI.Controls
             tbMainContent.Text = plaintext;
             this.current_method = null;
             this.current_type = t;
-            tbCurrLocation.Text = String.Empty;
+            
+            //display type location
+            StringBuilder sb = new StringBuilder(1000);
+            Assembly ass = t.Assembly;
+
+            if (ass != null) sb.Append(ass.GetName().Name);
+            else sb.Append("???");
+
+            sb.Append(" / ");
+            sb.Append(t.FullName);
+            tbCurrLocation.Text = sb.ToString();
 
             //make sure content is visible
             ExpandContentPane();
