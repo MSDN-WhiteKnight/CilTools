@@ -164,9 +164,9 @@ namespace CilView.UI.Controls
             }
         }
 
-        public void NavigateToType(Type t)
+        public ObservableCollection<MethodBase> NavigateToType(Type t)
         {
-            if (t == null) return;
+            if (t == null) return new ObservableCollection<MethodBase>();
 
             ObservableCollection<MethodBase> methods = AssemblySource.LoadMethods(t);
             this.tlv = CilVisualization.VisualizeMethodList(methods, Navigated);
@@ -193,6 +193,8 @@ namespace CilView.UI.Controls
 
             //make sure content is visible
             ExpandContentPane();
+
+            return methods;
         }
 
         public void NavigateToStackTrace(ClrThreadInfo th)

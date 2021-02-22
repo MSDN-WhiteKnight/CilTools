@@ -551,6 +551,10 @@ namespace CilTools.Syntax
                 content.Add(field);
             }
 
+            //add comment to indicate that not all members are listed here
+            content.Add(new CommentSyntax(Environment.NewLine+" ", "..."));
+            content.Add(new GenericSyntax(Environment.NewLine));
+
             BlockSyntax body = new BlockSyntax(String.Empty, SyntaxNode.EmptyArray, content.ToArray());
             yield return body;
         }

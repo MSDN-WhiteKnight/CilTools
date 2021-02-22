@@ -106,7 +106,7 @@
     <Compile Include="FileSystem\AssemblyFile.cs" />
     <Compile Include="FileSystem\RuntimeDir.cs" />
     <Compile Include="SearchResult.cs" />
-    <Compile Include="TextListViewer.cs" />
+    <Compile Include="UI.Controls\TextListViewer.cs" />
     <Compile Include="OpenFileOperation.cs" />
     <Compile Include="OpenProcessOperation.cs" />
     <Compile Include="OperationBase.cs" />

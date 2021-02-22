@@ -15,6 +15,7 @@ using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
+using CilView.UI.Controls;
 
 namespace CilView
 {

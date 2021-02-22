@@ -214,9 +214,7 @@ namespace CilView
                 if (source == null) return;
 
                 source.Methods.Clear();
-                source.Methods = AssemblySource.LoadMethods(t);
-
-                this.cilbrowser.NavigateToType(t);
+                source.Methods = this.cilbrowser.NavigateToType(t);
             }
             catch (Exception ex)
             {

@@ -13,7 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 
-namespace CilView
+namespace CilView.UI.Controls
 {
     class TextListViewer : FlowDocumentScrollViewer
     {
