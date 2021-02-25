@@ -54,7 +54,7 @@ static void PrintMethods(string assemblyPath)
 
 ## Getting P/Invoke parameters for the unmanaged method
 
-To get P/Invoke parameters for the method imported from unmanaged library, such as a DLL name or calling convention, use the <xref:CustomMethod.GetPInvokeParams%2A> method. The following example displays P/Invoke information for all unmanaged methods in the given assembly:
+To get P/Invoke parameters for the method imported from unmanaged library, such as a DLL name or calling convention, use the <xref:CilTools.Reflection.CustomMethod.GetPInvokeParams> method. The following example displays P/Invoke information for all unmanaged methods in the given assembly:
 
 ```csharp
 using System;
