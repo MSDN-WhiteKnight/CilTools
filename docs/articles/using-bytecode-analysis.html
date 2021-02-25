@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Using CilTools.BytecodeAnalysis | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Using CilTools.BytecodeAnalysis | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="using-ciltoolsbytecodeanalysis">Using CilTools.BytecodeAnalysis</h1>
+
+<p>CilTools.BytecodeAnalysis library reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed. The input data for the bytecode analysis is either the raw byte array with bytecode, or the reflection <code>MethodBase</code> object. When the bytecode source is the raw byte array, metadata tokens resolution is not supported; you can only read opcodes and raw operands. For <code>MethodBase</code> objects, you can use both the standard reflection implementation or custom implementations, as long as they support fetching the method body.</p>
+<p>Classes are declared in the <a class="xref" href="../api/CilTools.BytecodeAnalysis.html">CilTools.BytecodeAnalysis</a> namespace. The <a class="xref" href="../api/CilTools.BytecodeAnalysis.Extensions.html">CilTools.BytecodeAnalysis.Extensions</a> namespace provides an alternative syntax via extension methods for reflection classes.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>To use CilTools.BytecodeAnalysis, install <a href="https://www.nuget.org/packages/CilTools.BytecodeAnalysis/">CilTools.BytecodeAnalysis</a> NuGet package. You can also build the library from sources or download released binaries in <a href="https://github.com/MSDN-WhiteKnight/CilTools">CIL Tools repository</a>. The minimum target framework is .NET Framework 3.5 or .NET Standard 2.0.</p>
+<h2 id="working-with-instructions">Working with instructions</h2>
+<p>To get the collection of instructions that make up the method body, use <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilReader.html#CilTools_BytecodeAnalysis_CilReader_GetInstructions_System_Reflection_MethodBase_">GetInstructions(MethodBase)</a>. You can also use extension method <code>GetInstructions</code> for <code>MethodBase</code> class. To print the CIL assembler representation of the instruction, call its <code>ToString</code> method. The following example shows how to display all instructions in the method.</p>
+<pre><code>using System;
+using System.Collections.Generic;
+using CilTools.BytecodeAnalysis;
+using CilTools.BytecodeAnalysis.Extensions;
+
+class Program
+{
+    public static void Hello()
+    {
+        int a = 1;
+        int b = 2;
+        Console.WriteLine(&quot;Hello, World&quot;);
+        Console.WriteLine(&quot;{0} + {1} = {2}&quot;,a,b,a+b);
+    }
+
+    static void Main(string[] args)
+    {
+        IEnumerable&lt;CilInstruction&gt; instructions = typeof(Program).GetMethod(&quot;Hello&quot;).GetInstructions();
+
+        foreach (CilInstruction instr in instructions)
+        {
+            Console.WriteLine(instr.ToString());
+        }
+        Console.ReadKey();
+    }
+
+}
+
+
+/* Output:
+
+nop
+ldc.i4.1
+stloc.0
+ldc.i4.2
+stloc.1
+ldstr      &quot;Hello, World&quot;
+call       void [mscorlib]System.Console::WriteLine(string)
+nop
+ldstr      &quot;{0} + {1} = {2}&quot;
+ldloc.0
+box        [mscorlib]System.Int32
+ldloc.1
+box        [mscorlib]System.Int32
+ldloc.0
+ldloc.1
+add
+box        [mscorlib]System.Int32
+call       void [mscorlib]System.Console::WriteLine(string, object, object, object)
+nop
+ret
+*/
+</code></pre>
+<p>You can also access individual instruction properties, such as <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilInstruction.html#CilTools_BytecodeAnalysis_CilInstruction_OpCode">OpCode</a> or <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilInstruction.html#CilTools_BytecodeAnalysis_CilInstruction_Operand">Operand</a>, to figure out what the instruction does. If the instruction references other member, for example, calls a method, you can use the <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilInstruction.html#CilTools_BytecodeAnalysis_CilInstruction_ReferencedMember">ReferencedMember</a> property to get the reflection object for that member.</p>
+<h2 id="working-with-cil-graph">Working with CIL graph</h2>
+<p>Use the <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_Create_System_Reflection_MethodBase_">Create(MethodBase)</a> method to get a a graph that represents a flow of control between method's instructions. Working with CIL graph enables you to process branching or exception blocks, which is not possible when working with individual instructions. CIL graph consists of nodes that represents instuctions, with edges representing control flow between them. Use <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_GetNodes">GetNodes()</a> method to get the collection of nodes. You can also disassemble method using the <code>ToText</code> method on <code>CilGraph</code> class, or using the <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilAnalysis.html#CilTools_BytecodeAnalysis_CilAnalysis_MethodToText_System_Reflection_MethodBase_">MethodToText(MethodBase)</a> static helper, when you need to output method's CIL code as text.</p>
+<p>The following example shows how to construct the CIL graph for the specified method and print its disassembled CIL:</p>
+<pre><code>using System;
+using CilTools.BytecodeAnalysis;
+using CilTools.BytecodeAnalysis.Extensions;
+
+class Program
+{
+    public static void Foo(int x,int y)
+    {
+        if(x&gt;y) Console.WriteLine(&quot;x&gt;y&quot;);
+        else if(x==y) Console.WriteLine(&quot;x=y&quot;);
+        else Console.WriteLine(&quot;x&lt;y&quot;);
+    }
+
+    static void Main(string[] args)
+    {
+        CilGraph graph = typeof(Program).GetMethod(&quot;Foo&quot;).GetCilGraph();
+        Console.WriteLine(graph.ToText());
+        Console.ReadKey();
+    }
+}
+
+/* Output:
+
+.method   public hidebysig static void Foo(
+    int32 x,
+    int32 y
+) cil managed
+{
+ .maxstack   2
+ .locals   init (bool V_0,
+    bool V_1)
+
+          nop
+          ldarg.0
+          ldarg.1
+          cgt
+          stloc.0
+          ldloc.0
+          brfalse.s   IL_0001
+          ldstr       &quot;x&gt;y&quot;
+          call        void [mscorlib]System.Console::WriteLine(string)
+          nop
+          br.s        IL_0003
+ IL_0001: ldarg.0
+          ldarg.1
+          ceq
+          stloc.1
+          ldloc.1
+          brfalse.s   IL_0002
+          ldstr       &quot;x=y&quot;
+          call        void [mscorlib]System.Console::WriteLine(string)
+          nop
+          br.s        IL_0003
+ IL_0002: ldstr       &quot;x&lt;y&quot;
+          call        void [mscorlib]System.Console::WriteLine(string)
+          nop
+ IL_0003: ret
+}
+*/
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

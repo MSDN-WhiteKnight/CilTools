@@ -5,9 +5,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>CIL Tools | CIL Tools </title>
+    <title>CIL Tools documentation | CIL Tools </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="CIL Tools | CIL Tools ">
+    <meta name="title" content="CIL Tools documentation | CIL Tools ">
     <meta name="generator" content="docfx 2.40.12.0">
     
     <link rel="shortcut icon" href="../favicon.ico">
@@ -67,70 +67,29 @@
         <div class="article row grid-right">
           <div class="col-md-10">
             <article class="content wrap" id="_content" data-uid="">
-<h1 id="cil-tools">CIL Tools</h1>
+<h1 id="cil-tools-documentation">CIL Tools documentation</h1>
 
 <p><img src="../images/IL.png" alt="logo"></p>
-<h2 id="ciltoolsbytecodeanalysis">CilTools.BytecodeAnalysis</h2>
-<p><strong>License:</strong> BSD 2.0<br>
-<strong>Requirements:</strong> .NET Framework 3.5+</p>
-<p>CilTools.BytecodeAnalysis library reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.</p>
-<p><em>Usage</em></p>
-<p>Add reference to CilTools.BytecodeAnalysis.dll, import CilTools.BytecodeAnalysis namespace. Use <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilReader.html#CilTools_BytecodeAnalysis_CilReader_GetInstructions_System_Reflection_MethodBase_">GetInstructions(MethodBase)</a> to get the collection of instructions from method, <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_Create_System_Reflection_MethodBase_">Create(MethodBase)</a> to get a a graph that represents a flow of control between method's instructions, or <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilAnalysis.html#CilTools_BytecodeAnalysis_CilAnalysis_MethodToText_System_Reflection_MethodBase_">MethodToText(MethodBase)</a> when you need to output method's CIL code as text. <a class="xref" href="../api/CilTools.BytecodeAnalysis.Extensions.html">CilTools.BytecodeAnalysis.Extensions</a> namespace provides an alternative syntax via extension methods.</p>
-<p><em>Example</em></p>
-<pre><code>using System;
-using System.Collections.Generic;
-using CilTools.BytecodeAnalysis;
-using CilTools.BytecodeAnalysis.Extensions;
-
-class Program
-{
-    public static void Hello()
-    {
-        int a = 1;
-        int b = 2;
-        Console.WriteLine(&quot;Hello, World&quot;);
-        Console.WriteLine(&quot;{0} + {1} = {2}&quot;,a,b,a+b);
-    }
-
-    static void Main(string[] args)
-    {
-        IEnumerable&lt;CilInstruction&gt; instructions = typeof(Program).GetMethod(&quot;Hello&quot;).GetInstructions();
-
-        foreach (CilInstruction instr in instructions)
-        {
-            Console.WriteLine(instr.ToString());
-        }
-        Console.ReadKey();
-    }
-
-}
-
-
-/* Output:
-
-nop
-ldc.i4.1
-stloc.0
-ldc.i4.2
-stloc.1
-ldstr &quot;Hello, World&quot;
-call void [mscorlib]System.Console::WriteLine(string)
-nop
-ldstr &quot;{0} + {1} = {2}&quot;
-ldloc.0
-box [mscorlib]System.Int32
-ldloc.1
-box [mscorlib]System.Int32
-ldloc.0
-ldloc.1
-add
-box [mscorlib]System.Int32
-call void [mscorlib]System.Console::WriteLine(string, System.Object, System.Object, System.Object)
-nop
-ret
-*/
-</code></pre>
-<p>Copyright (c) 2020, MSDN.WhiteKnight</p>
+<p>CIL Tools consist of the following projects:</p>
+<ul>
+<li><a href="https://www.nuget.org/packages/CilTools.BytecodeAnalysis/">CilTools.BytecodeAnalysis</a></li>
+<li><a href="https://www.nuget.org/packages/CilTools.Runtime/">CilTools.Runtime</a></li>
+<li><a href="https://www.nuget.org/packages/CilTools.Metadata/">CilTools.Metadata</a></li>
+<li><a href="https://github.com/MSDN-WhiteKnight/CilTools/tree/master/CilView">CIL View</a></li>
+</ul>
+<p>Documentation pages:</p>
+<ul>
+<li><a href="using-bytecode-analysis.html">Using CilTools.BytecodeAnalysis</a></li>
+<li><a href="using-syntax-api.html">Using CIL Tools syntax API</a></li>
+<li><a href="using-ciltools-metadata.html">Using CilTools.Metadata</a></li>
+<li><a href="cilview-manual.html">CIL View user manual</a></li>
+<li><a href="architecture.html">Architecture</a></li>
+<li><a href="../api/index.html">API Reference</a></li>
+</ul>
+<h2 id="see-also">See also</h2>
+<p><a href="https://github.com/MSDN-WhiteKnight/CilTools">Source code</a></p>
+<p><a href="https://github.com/MSDN-WhiteKnight/CilTools/releases">Releases</a></p>
+<p><a href="https://github.com/MSDN-WhiteKnight/CilTools/tree/master/Examples">Examples</a></p>
 </article>
           </div>
           

@@ -1,0 +1,182 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Using CIL Tools syntax API | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Using CIL Tools syntax API | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="using-cil-tools-syntax-api">Using CIL Tools syntax API</h1>
+
+<p>CIL Tools syntax API enables you to convert a method's bytecode into the syntax tree, the high-level structure representing its syntax in IlAsm that can be programmatically processed. The syntax tree and all of its nodes are convertible to the corresonding textual CIL assembler code. The node of the syntax tree either represent the token that have no child nodes, just the textual content, or the node with child nodes for a more complex construct. For a node with child nodes, the textual content is combination of all its child nodes content. Syntax API is useful to support things such as syntax highlighting or code navigation.</p>
+<p>The syntax API is a part of CilTools.BytecodeAnalysis library, and is located under <a class="xref" href="../api/CilTools.Syntax.html">CilTools.Syntax</a> namespace. See <a href="using-bytecode-analysis.html">Using CilTools.BytecodeAnalysis</a> for a guidance how to get started using the library.</p>
+<p>To get the syntax tree for the specified method, create a <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilGraph.html">CilGraph</a> and call <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_ToSyntaxTree">ToSyntaxTree()</a> on it. This method returns the <a class="xref" href="../api/CilTools.Syntax.MethodDefSyntax.html">MethodDefSyntax</a> object whose child nodes, obtained by <code>GetChildNodes</code>, make up the CIL method definition. The syntax nodes are derived from the common base class <a class="xref" href="../api/CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>. To check specific details about what the node do, check its type and cast it to one of the subclasses in <code>CilTools.Syntax</code> namespace. To get the textual content of the node, you can use either the <code>ToText</code> method that outputs it into the specified <code>TextWriter</code>, or the <code>ToString</code> method.</p>
+<p>The following example shows how to display the CIL code for a method, highlighting keywords with the different color (it might not work properly on non-Windows platforms):</p>
+<pre><code class="lang-csharp">using System;
+using CilTools.BytecodeAnalysis;
+using CilTools.Syntax;
+
+class Program
+{
+    public static int CalcSumOfDigits(int x)
+    {
+        //sample method: calculate the sum of decimal digits in integer
+
+        if (x &lt; 0) x = -x;
+
+        int sum = 0; 
+        int remainder;
+        
+        while (true)
+        {
+            remainder = x % 10;
+            x = x / 10;            
+            sum += remainder;
+            if (x &lt;= 0) break;
+        }
+
+        return sum;
+    }
+
+    static void VisitNode(SyntaxNode node)
+    {
+        //recursively prints CIL syntax tree to console
+
+        SyntaxNode[] children = node.GetChildNodes();
+
+        if (children.Length == 0)
+        {
+            //if it a leaf node, print its content to console
+
+            if (node is KeywordSyntax)
+            {
+                Console.ForegroundColor = ConsoleColor.Cyan; //hightlight keywords
+            }
+            
+            node.ToText(Console.Out);
+            Console.ForegroundColor = ConsoleColor.White;
+        }
+        else
+        {
+            //if the node has child nodes, process them
+
+            for (int i = 0; i &lt; children.Length; i++)
+            {
+                VisitNode(children[i]);
+            }
+        }
+    }
+
+    static void Main(string[] args)
+    {
+        //get CIL syntax tree for the method definition
+        CilGraph graph = CilGraph.Create(typeof(Program).GetMethod(&quot;CalcSumOfDigits&quot;));
+        MethodDefSyntax mds = graph.ToSyntaxTree();
+
+        //print it to the console
+        Console.ForegroundColor = ConsoleColor.White;
+        Console.BackgroundColor = ConsoleColor.Black;
+        VisitNode(mds);
+
+        Console.ReadKey();
+    }
+}
+
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

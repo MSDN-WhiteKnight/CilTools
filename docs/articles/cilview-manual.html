@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>CilView user manual | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="CilView user manual | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="cilview-user-manual">CilView user manual</h1>
+
+<p><strong>Requirements:</strong> .NET Framework 4.5+<br>
+<strong>License:</strong> BSD 3-Clause<br>
+<strong>Repository:</strong> <a href="https://github.com/MSDN-WhiteKnight/CilTools">https://github.com/MSDN-WhiteKnight/CilTools</a></p>
+<p>CilView is a windows application to display CIL code of methods in .NET assemblies. The key features are:</p>
+<ul>
+<li>Displaying CIL code of methods in the specified assembly file or process</li>
+<li>Syntax highlighting</li>
+<li>Navigation to the referenced method's code by clicking on the method reference</li>
+<li>Exporting the method's code into file</li>
+<li>Displaying process information and stack traces of managed threads (when process is opened)</li>
+</ul>
+<h2 id="displaying-code-from-the-assembly-file">Displaying code from the assembly file</h2>
+<p>1. Click <strong>File</strong> -&gt; <strong>Open</strong> menu or press the <strong>Open file</strong> button.</p>
+<p>2. Select the managed assembly EXE or DLL file in the file open dialog.</p>
+<p>3. Select type from the <strong>Type</strong> drop-down list in the main window</p>
+<p>You can also search type by entering the fragment of the type name to <strong>Find</strong> text field and pressing the &quot;<strong>&gt;</strong>&quot; button. The search will select the matching type if it's found. Press the button again to go to the next matching type. The program will display message if when the end of list is reached.</p>
+<p>4. Select method in the left panel.</p>
+<p>5. The right panel will display the CIL disassembly of the selected method.</p>
+<p>All method references on the <strong>Formatted</strong> tab are hyperlinks to the referenced methods. Clicking one them will open the referenced method's code in the right panel, even if the method is from another assembly, as long as that assembly could be loaded.</p>
+<p><img src="../images/cilview.png" alt="CilView main window"></p>
+<h2 id="displaying-code-from-the-process">Displaying code from the process</h2>
+<p>1. Click <strong>File</strong> -&gt; <strong>Open process</strong> menu or press the <strong>Open process</strong> button.</p>
+<p><img src="../images/cilview2.png" alt="CilView attaching to process"></p>
+<p>2. Select the process from the list in the appearing <strong>Attach to process</strong> dialog.</p>
+<p>You can search process by entering the process name starting fragment or ID into the text field and pressing <strong>Search</strong>.</p>
+<blockquote>
+<p><strong>NOTE:</strong> Only 32-bit processes are supported. .NET Core shared host is 64-bit on 64-bit Windows, but you can attach to .NET Core application if it was build targeting the win-x86 runtime ID and started from the resulting EXE file rather than using shared host.</p>
+</blockquote>
+<p>3. Check the <strong>active mode</strong> checkbox if you want to get more accurate info.</p>
+<blockquote>
+<p><strong>NOTE:</strong> When attaching in active mode, the target process is suspended. Do not use active mode on the application that is currently performing critical business tasks.</p>
+</blockquote>
+<p>4. Press <strong>OK</strong>. The CIL View will scan the target process for loaded assemblies and open them.</p>
+<p>5. Select assembly from the <strong>Assembly</strong> drop-down list in the main window</p>
+<p>6. Select type from the <strong>Type</strong> drop-down list in the main window</p>
+<p>7. Select method in the left panel.</p>
+<p>You can also search assemblies, types and methods by entering the fragment of their names into the <strong>Find</strong> text field and pressing the &quot;<strong>&gt;</strong>&quot; button. CIL View searches methods in the currently selected type, if the type is selected. In a similar way, types are searched in the currently selected assembly, if one is selected. The search results are shown in the context menu. Clicking on the menu item navigates to the corresponding object.</p>
+<p>8. The right panel will display the CIL disassembly of the selected method.</p>
+<p>You can also view the code of dynamic methods generated at runtime in the target process by selecting the <code>&lt;...DynamicMethods&gt;</code> entry in the assembly drop-down list (it is displayed at the end of the list).</p>
+<h2 id="limitations-when-displaying-code-from-the-process">Limitations when displaying code from the process</h2>
+<p>If the assembly could not be loaded by the CIL View application (this is usually happens with some mixed-mode assemblies which have some PE structures stripped off, so they could be loaded by CLR, but not by System.Reflection.Metadata), the following limitations apply:</p>
+<ul>
+<li>Method return value or parameter types are not shown</li>
+<li>String literal tokens are not resolved</li>
+<li>Standalone signature tokens are not resolved</li>
+<li>Tokens of external assembly members are not resolved</li>
+<li>Local variables and exception handling blocks are not shown</li>
+</ul>
+<p>For dynamic methods, the following limitations apply:</p>
+<ul>
+<li>Method signatures are not shown</li>
+<li>All tokens, except for method tokens, are not resolved</li>
+<li>Local variables are not shown</li>
+</ul>
+<h2 id="examining-managed-threads">Examining managed threads</h2>
+<p>To examine managed threads when process is opened, click <strong>Process</strong> -&gt; <strong>Threads</strong> menu. The Threads window displays a drop-down list of managed threads. Each list item contains native thread ID, thread type for special threads (GC, Finalizer, Thread pool), COM apartment type (STA or MTA), and the topmost stack frame info. Select thread from the list to view the full stack trace.</p>
+<p>The stack trace will be displayed in the left panel. Some stack frames are hyperlinks, and clicking on them will open the corresponding method in the right panel. The instructions belonging to the approximate currently executed code fragment are highlighted in red. This feature only works reliably when attaching in active mode.</p>
+<p><img src="../images/cilview3.png" alt="CilView threads window"></p>
+<h2 id="clickonce-installation-with-auto-update">ClickOnce installation with auto-update</h2>
+<p>You can install CIL View via ClickOnce if you want to download updates automatically. The ClickOnce download URL: <a href="https://msdn-whiteknight.github.io/CilTools/update/">https://msdn-whiteknight.github.io/CilTools/update/</a></p>
+<p>Using auto-update requires stable internet connection and access to the <a href="https://msdn-whiteknight.github.io/">https://msdn-whiteknight.github.io/</a> website. If you are using old Windows or .NET Framework versions, you might be unable to connect due to TLS protocol version or ciphersuite mismatch.</p>
+<h2 id="changelog">Changelog</h2>
+<p>2.1</p>
+<ul>
+<li>Update assembly reading mechanism to use CilTools.Metadata instead of loading assemblies directly into the current process. This enables inspecting assemblies for another target framework (such as .NET Standard) or when some dependencies could not be resolved. This also means assemblies can be unloaded from memory when they are no longer needed.</li>
+<li>Add support for method implementation flags when outputting method signatures</li>
+<li>Add support for function pointer types</li>
+<li>Add support for module-level (&quot;global&quot;) functions and fields</li>
+<li>Add syntax highlighting for calli instruction's operand</li>
+<li>Add full custom modifiers support (they were previously only supported in standalone signatures)</li>
+<li>Add custom modifier syntax highlighting</li>
+<li>Add pinvokeimpl support</li>
+<li>Add exception block support for dynamic methods</li>
+<li>Add method token resolution for dynamic methods</li>
+<li>Support auto-completion in assembly and type combo boxes</li>
+<li>Improve performance for type combo box when assembly has a lot of types</li>
+<li>Rework search. Search results are now displayed in context menu. Method search is added.</li>
+<li>Format char default values as hex</li>
+<li>Improve custom attribute support (now custom attribute data is properly shown for any attribute)</li>
+<li>Improve empty method body handling. Now empty body is ignored only when method is is abstract, P/Invoke or implemented by runtime. In other cases the error message is displayed.</li>
+<li>Place custom attributes before default parameter values in disassembled method code</li>
+<li>Fix ldloc.s/stloc.s instruction handling</li>
+<li>Fix ldtoken instruction handling with field operand</li>
+<li>Fix exception when method implementation is provided by runtime</li>
+<li>Fix possible null reference exception when reading array/pointer of generic args</li>
+<li>Fix BadImageFormatException on C++/CLI assemblies</li>
+<li>Fix signatures with function pointers being incorrectly displayed in left panel</li>
+</ul>
+<hr>
+<p><em>Copyright (c) 2021,  MSDN.WhiteKnight</em></p>
+<p><em>This CIL View distribution contains the binary code of <a href="https://github.com/microsoft/clrmd">ClrMD</a> library: Copyright (c) .NET Foundation and Contributors, MIT License.</em></p>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>
