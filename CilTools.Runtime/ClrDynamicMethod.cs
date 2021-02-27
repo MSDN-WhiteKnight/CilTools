@@ -66,13 +66,20 @@ namespace CilTools.Runtime
                     long handle = val.GetField<long>("m_handle");
                     ClrMethod m = r.GetMethodByHandle((ulong)handle);
                     MethodBase mb = null;
-                    ClrAssemblyInfo ass = owner.AssemblyReader.Read(m.Type.Module);
+
+                    ITokenResolver tokenResolver = owner.AssemblyReader.GetResolver(m.Type.Module);
+                    if (tokenResolver == null) continue;
 
                     //try to resolve existing MethodBase by (static) token
-                    mb = ass.ResolveMethod((int)m.MetadataToken);
+                    mb = tokenResolver.ResolveMethod((int)m.MetadataToken);
 
                     //if failed, construct new ClrMethodInfo
-                    if (mb == null) mb = new ClrMethodInfo(m, new ClrTypeInfo(m.Type, ass));
+                    if (mb == null)
+                    {
+                        ClrAssemblyInfo ass = tokenResolver as ClrAssemblyInfo;
+                        if (ass == null) ass = owner.AssemblyReader.Read(m.Type.Module);
+                        mb = new ClrMethodInfo(m, new ClrTypeInfo(m.Type, ass));
+                    }
 
                     //construct dynamic token
                     int dtoken = 0x06000000 | i;
@@ -183,14 +190,20 @@ namespace CilTools.Runtime
                     }
 
                     //get Type object for the given catch type
-                    ClrAssemblyInfo ass = owner.AssemblyReader.Read(rt.Module);
+                    ITokenResolver resolver = owner.AssemblyReader.GetResolver(rt.Module);
+                    if (resolver == null) continue;
                     Type t=null;
 
                     //try to resolve existing type by token
-                    t = ass.ResolveType((int)rt.MetadataToken);
+                    t = resolver.ResolveType((int)rt.MetadataToken);
 
                     //if failed, construct new ClrTypeInfo
-                    if (t==null) t = new ClrTypeInfo(rt, ass);
+                    if (t == null)
+                    {
+                        ClrAssemblyInfo ass = resolver as ClrAssemblyInfo;
+                        if (ass == null) ass = owner.AssemblyReader.Read(rt.Module);
+                        t = new ClrTypeInfo(rt, ass);
+                    }
                     catchTypes[j] = t;
                 }
 

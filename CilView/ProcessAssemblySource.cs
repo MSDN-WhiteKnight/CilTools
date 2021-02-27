@@ -108,6 +108,12 @@ namespace CilView
                 {
                     ass = reader.Read(x);
                 }
+                else
+                {
+                    //add assembly to preloaded, so some CilTools.Runtime parts will avoid the 
+                    //expensive AssemblyReader.Read calls
+                    reader.AddPreloadedAssembly(ass);
+                }
 
                 ret.Add(ass);
                 c++;

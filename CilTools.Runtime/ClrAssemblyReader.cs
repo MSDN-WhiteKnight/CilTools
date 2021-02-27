@@ -8,6 +8,7 @@ using System.Text;
 using System.Reflection;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
 using Microsoft.Diagnostics.Runtime;
 
 namespace CilTools.Runtime
@@ -120,6 +121,7 @@ namespace CilTools.Runtime
 
         ClrRuntime runtime;
         Dictionary<ulong, ClrAssemblyInfo> cache = new Dictionary<ulong, ClrAssemblyInfo>();
+        Dictionary<string,Assembly> preloaded = new Dictionary<string, Assembly>(50);
 
         /// <summary>
         /// Creates <c>ClrAssemblyReader</c> to read information from the specified CLR instance
@@ -224,6 +226,52 @@ namespace CilTools.Runtime
         public DynamicMethodsAssembly GetDynamicMethods()
         {
             return new DynamicMethodsAssembly(this.runtime.DataTarget,this, false);
+        }
+
+        /// <summary>
+        /// Adds the specified assembly into the preloaded assembly collection
+        /// </summary>
+        /// <param name="ass">Preloaded assembly instance</param>
+        /// <remarks>
+        /// Adding preloaded assemblies enables some <c>CilTools.Runtime</c> mechanisms to avoid 
+        /// expensive <c>AssemblyReader.Read</c> calls. The preloaded assembly must implement 
+        /// <see cref="CilTools.Reflection.ITokenResolver"/> interface to be useful.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">Assembly is null</exception>
+        public void AddPreloadedAssembly(Assembly ass)
+        {
+            if (ass == null) throw new ArgumentNullException("ass");
+            string key = ass.GetName().Name;
+            if (String.IsNullOrEmpty(key)) return;
+
+            this.preloaded[key] = ass;
+        }
+
+        internal Assembly GetPreloadedAssembly(string name)
+        {
+            Assembly ass = null;
+
+            if (this.preloaded.TryGetValue(name, out ass))
+            {
+                return ass; //return preloaded assembly
+            }
+            else
+            {
+                return null; //not found
+            }
+        }
+
+        internal ITokenResolver GetResolver(ClrModule module)
+        {
+            ITokenResolver ret;
+
+            //try preloaded
+            Assembly ass = this.GetPreloadedAssembly(Path.GetFileNameWithoutExtension(module.Name));
+            ret = ass as ITokenResolver;
+            if (ret != null) return ret;
+
+            //if not found, read via ClrMD
+            return this.ReadImpl(module);
         }
     }
 }
