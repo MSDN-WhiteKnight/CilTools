@@ -558,6 +558,9 @@ namespace CilTools.Syntax
             content.Add(new GenericSyntax(Environment.NewLine));
 
             BlockSyntax body = new BlockSyntax(String.Empty, SyntaxNode.EmptyArray, content.ToArray());
+
+            for (int i = 0; i < body._children.Count; i++) body._children[i]._parent = body;
+
             yield return body;
         }
     }
