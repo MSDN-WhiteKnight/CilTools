@@ -371,7 +371,7 @@ namespace CilTools.Syntax
             string tname = "";
             if (!t.IsNested && !String.IsNullOrEmpty(t.Namespace)) tname += t.Namespace + ".";
             tname += t.Name;
-            content.Add(new IdentifierSyntax(String.Empty, tname, String.Empty, true));
+            content.Add(new IdentifierSyntax(String.Empty, tname, String.Empty, true,t));
 
             //generic parameters
             if (t.IsGenericType)
@@ -385,7 +385,9 @@ namespace CilTools.Syntax
 
                     if (targs[i].IsGenericParameter)
                     {
-                        content.Add(new IdentifierSyntax(String.Empty, targs[i].Name, String.Empty, false));
+                        content.Add(
+                            new IdentifierSyntax(String.Empty, targs[i].Name, String.Empty, false, targs[i])
+                            );
                     }
                     else content.Add(new GenericSyntax(CilAnalysis.GetTypeName(targs[i])));
                 }
@@ -529,7 +531,7 @@ namespace CilTools.Syntax
                     CilAnalysis.GetTypeNameSyntax(fields[i].FieldType).ToArray(), fields[i].FieldType
                     ));
 
-                inner.Add(new IdentifierSyntax(" ", fields[i].Name, String.Empty, true));
+                inner.Add(new IdentifierSyntax(" ", fields[i].Name, String.Empty, true, fields[i]));
 
                 object constval = DBNull.Value;
 

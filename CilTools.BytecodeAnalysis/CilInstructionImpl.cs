@@ -325,7 +325,7 @@ namespace CilTools.BytecodeAnalysis
                 if (ReferencesLocal(this.OpCode))
                 {
                     //local variable
-                    yield return new IdentifierSyntax("", "V_" + this.Operand.ToString(), "", false);
+                    yield return new IdentifierSyntax("", "V_" + this.Operand.ToString(), "", false,null);
                 }
                 else if (ReferencesParam(this.OpCode) && this.Method != null)
                 {
@@ -336,17 +336,17 @@ namespace CilTools.BytecodeAnalysis
                     {
                         if (String.IsNullOrEmpty(par.Name))
                         {
-                            yield return new IdentifierSyntax("", "par" + (par.Position + 1).ToString(), "", false);
+                            yield return new IdentifierSyntax("", "par" + (par.Position + 1).ToString(), "", false,par);
                         }
                         else
                         {
-                            yield return new IdentifierSyntax("", par.Name, "", false);
+                            yield return new IdentifierSyntax("", par.Name, "", false,par);
                         }
 
                     }
                     else
                     {
-                        yield return new IdentifierSyntax("", "par" + this.Operand.ToString(), "", false);
+                        yield return new IdentifierSyntax("", "par" + this.Operand.ToString(), "", false,null);
                     }
                 }
                 else
@@ -372,7 +372,7 @@ namespace CilTools.BytecodeAnalysis
             else if (typeof(T) == typeof(sbyte) && ReferencesLocal(this.OpCode))
             {
                 //local variable
-                yield return new IdentifierSyntax("", "V_" + this.Operand.ToString(), "", false);
+                yield return new IdentifierSyntax("", "V_" + this.Operand.ToString(), "", false,null);
             }
             else if (typeof(T) == typeof(sbyte) && ReferencesParam(this.OpCode) && this.Method != null)
             {
@@ -383,17 +383,19 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (String.IsNullOrEmpty(par.Name))
                     {
-                        yield return new IdentifierSyntax("", "par" + (par.Position + 1).ToString(), "", false);
+                        yield return new IdentifierSyntax(
+                            "", "par" + (par.Position + 1).ToString(), "", false,par
+                            );
                     }
                     else
                     {
-                        yield return new IdentifierSyntax("", par.Name, "", false);
+                        yield return new IdentifierSyntax("", par.Name, "", false,par);
                     }
 
                 }
                 else
                 {
-                    yield return new IdentifierSyntax("", "par" + this.Operand.ToString(), "", false);
+                    yield return new IdentifierSyntax("", "par" + this.Operand.ToString(), "", false,null);
                 }
             }
             else

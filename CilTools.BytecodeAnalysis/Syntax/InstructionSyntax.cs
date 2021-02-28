@@ -29,7 +29,9 @@ namespace CilTools.Syntax
             //label and operation nodes
             if (!String.IsNullOrEmpty(graphnode.Name))
             {
-                labelnodes.Add(new IdentifierSyntax(lead + " ", graphnode.Name, String.Empty, false) { _parent = this });
+                labelnodes.Add(
+                    new IdentifierSyntax(lead + " ", graphnode.Name, String.Empty, false,null) { _parent = this }
+                    );
                 labelnodes.Add(new PunctuationSyntax(String.Empty, ":", " ") { _parent = this });
                 pad = "";
             }
@@ -51,9 +53,10 @@ namespace CilTools.Syntax
             if (graphnode.BranchTarget != null) //if instruction itself targets branch, append its label
             {
                 operandnodes.Add( 
-                    new IdentifierSyntax(String.Empty, this._node.BranchTarget.Name, Environment.NewLine, false) { 
-                        _parent = this 
-                    });
+                    new IdentifierSyntax(
+                        String.Empty, this._node.BranchTarget.Name, Environment.NewLine, false,null
+                        ) {  _parent = this }
+                    );
             }
             else
             {
@@ -66,7 +69,9 @@ namespace CilTools.Syntax
                     for (int i = 0; i < swtargets.Length; i++)
                     {
                         if (i >= 1) operandnodes.Add(new PunctuationSyntax(String.Empty, ",", String.Empty));
-                        operandnodes.Add(new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty, false));
+                        operandnodes.Add(
+                            new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty, false,null)
+                            );
                     }
 
                     operandnodes.Add(new PunctuationSyntax(String.Empty, ")", Environment.NewLine));

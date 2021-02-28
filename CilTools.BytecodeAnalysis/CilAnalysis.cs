@@ -256,7 +256,7 @@ namespace CilTools.BytecodeAnalysis
                 if (ass != null)
                 {
                     yield return new PunctuationSyntax(String.Empty, "[", String.Empty);
-                    yield return new IdentifierSyntax(String.Empty, ass.GetName().Name, String.Empty, false);
+                    yield return new IdentifierSyntax(String.Empty, ass.GetName().Name, String.Empty, false, ass);
                     yield return new PunctuationSyntax(String.Empty, "]", String.Empty);
                 }
 
@@ -275,7 +275,7 @@ namespace CilTools.BytecodeAnalysis
                 }
 
                 sb.Append(t.Name);
-                yield return new IdentifierSyntax(String.Empty, sb.ToString(), String.Empty, true);
+                yield return new IdentifierSyntax(String.Empty, sb.ToString(), String.Empty, true,t);
 
                 if (t.IsGenericType)
                 {
@@ -491,7 +491,7 @@ namespace CilTools.BytecodeAnalysis
             }
 
             //append name
-            children.Add(new IdentifierSyntax("",m.Name,"",true));
+            children.Add(new IdentifierSyntax("",m.Name,"",true,m));
 
             if (m.IsGenericMethod)
             {

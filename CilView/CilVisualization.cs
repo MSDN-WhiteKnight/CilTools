@@ -176,29 +176,11 @@ namespace CilView
             if (node is MemberRefSyntax)
             {
                 MemberRefSyntax mrs = (MemberRefSyntax)node;
-                
-                if (mrs.Member != null && mrs.Member is MethodBase)
-                {
-                    //if operand is method, enable navigation functionality
 
-                    r = new Run();
-                    sb.Clear();
-                    node.ToText(wr);
-                    wr.Flush();
-                    r.Text = sb.ToString();
+                //render member ref
+                IEnumerable<SyntaxNode> children = mrs.EnumerateChildNodes();
 
-                    Hyperlink lnk = new Hyperlink(r);
-                    lnk.Tag = (MethodBase)mrs.Member;
-                    if(ctx.navigation!=null)lnk.Click += ctx.navigation;
-                    target.Inlines.Add(lnk);
-                }
-                else
-                {
-                    //render regular operand
-                    IEnumerable<SyntaxNode> children = mrs.EnumerateChildNodes();
-
-                    foreach (SyntaxNode child in children) VisualizeNode(child, target, ctx);
-                }
+                foreach (SyntaxNode child in children) VisualizeNode(child, target, ctx);
             }
             else if (node is KeywordSyntax)
             {
@@ -243,9 +225,30 @@ namespace CilView
             {
                 IdentifierSyntax id = (IdentifierSyntax)node;
                 r = new Run();
-                if (id.IsMemberName) r.Foreground = Brushes.CornflowerBlue;
-                r.Text = node.ToString();
-                target.Inlines.Add(r);
+                MethodBase m = id.TargetMember as MethodBase;
+
+                if (m != null && !(node.Parent is DirectiveSyntax))
+                {
+                    //if target is method and we are not in directive (method sig), 
+                    //enable navigation functionality
+
+                    sb.Clear();
+                    node.ToText(wr);
+                    wr.Flush();
+                    r.Text = sb.ToString();
+
+                    Hyperlink lnk = new Hyperlink(r);
+                    lnk.TextDecorations = new TextDecorationCollection(); //remove underline
+                    lnk.Tag = m;
+                    if (ctx.navigation != null) lnk.Click += ctx.navigation;
+                    target.Inlines.Add(lnk);
+                }
+                else
+                {
+                    if (id.IsMemberName) r.Foreground = Brushes.CornflowerBlue;
+                    r.Text = node.ToString();
+                    target.Inlines.Add(r);
+                }
             }
             else if (node is LiteralSyntax)
             {

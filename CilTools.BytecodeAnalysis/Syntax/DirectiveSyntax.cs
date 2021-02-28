@@ -223,7 +223,7 @@ namespace CilTools.Syntax
                 inner.Add(new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(cm.ReturnType).ToArray(), cm.ReturnType));
             }
             
-            inner.Add(new IdentifierSyntax(" ", m.Name, String.Empty, true));
+            inner.Add(new IdentifierSyntax(" ", m.Name, String.Empty, true,m));
 
             if (m.IsGenericMethod)
             {
@@ -272,7 +272,7 @@ namespace CilTools.Syntax
                 else parname = "par" + (i + 1).ToString();
 
                 inner.Add(new MemberRefSyntax(partype, pars[i].ParameterType));
-                inner.Add(new IdentifierSyntax(" ", parname, String.Empty,false));
+                inner.Add(new IdentifierSyntax(" ", parname, String.Empty,false, pars[i]));
             }
 
             if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine));

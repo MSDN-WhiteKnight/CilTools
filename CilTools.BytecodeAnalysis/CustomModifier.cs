@@ -78,7 +78,7 @@ namespace CilTools.BytecodeAnalysis
             else
             {
                 yield return new IdentifierSyntax(
-                    String.Empty, "Type" + _token.ToString("X"), String.Empty, true
+                    String.Empty, "Type" + _token.ToString("X"), String.Empty, true,null
                     );
             }
 

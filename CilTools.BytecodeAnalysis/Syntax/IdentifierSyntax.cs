@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 
@@ -16,6 +17,7 @@ namespace CilTools.Syntax
     {
         string _content;
         bool _ismember;
+        object _target = null;
 
         /// <summary>
         /// Gets the content of this identifier as string
@@ -27,7 +29,23 @@ namespace CilTools.Syntax
         /// </summary>
         public bool IsMemberName { get { return this._ismember; } }
 
-        internal IdentifierSyntax(string lead, string content, string trail, bool ismember)
+        /// <summary>
+        /// Gets the item (such as assembly, member or variable) that this identifier represents
+        /// </summary>
+        /// <value>
+        /// The reference to the target item, or <c>null</c> if the target item is unknown
+        /// </value>
+        public object TargetItem { get { return this._target; } }
+
+        /// <summary>
+        /// Gets the assembly member represented by this identifier
+        /// </summary>
+        /// /// <value>
+        /// The reference to the target member, or <c>null</c> if the target item is unknown or not a member
+        /// </value>
+        public MemberInfo TargetMember { get { return this._target as MemberInfo; } }
+
+        internal IdentifierSyntax(string lead, string content, string trail, bool ismember,object target)
         {
             if (lead == null) lead = "";
             if (trail == null) trail = "";
@@ -35,6 +53,7 @@ namespace CilTools.Syntax
             this._content = content;
             this._trail = trail;
             this._ismember = ismember;
+            this._target = target;
         }
 
         /// <inheritdoc/>
