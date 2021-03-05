@@ -1,5 +1,5 @@
 ﻿/* CIL Tools
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Text;
 using CilTools.BytecodeAnalysis;
+using CilTools.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Tests.Common
@@ -65,6 +66,38 @@ namespace CilTools.Tests.Common
             if(String.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern: " + pattern;
 
             Assert.IsTrue(Regex.IsMatch(s, pattern), message);
+        }
+
+        static void IsCorrectRecusive(SyntaxNode node,SyntaxNode parent, int c)
+        {
+            if (c > 100000)
+            {
+                Assert.Fail("Recursion is too deep in AssertThat.IsCorrectRecusive");
+            }
+
+            Assert.IsNotNull(node.Parent, "Parent node should not be null");
+            Assert.AreSame(parent, node.Parent);
+
+            foreach (SyntaxNode child in node.EnumerateChildNodes())
+            {
+                IsCorrectRecusive(child, node, c+1);
+            }
+        }
+
+        public static void IsSyntaxTreeCorrect(SyntaxNode root)
+        {
+            foreach (SyntaxNode child in root.EnumerateChildNodes())
+            {
+                IsCorrectRecusive(child,root, 0);
+            }
+        }
+
+        public static void IsSyntaxTreeCorrect(IEnumerable<SyntaxNode> nodes)
+        {
+            foreach (SyntaxNode node in nodes)
+            {
+                IsSyntaxTreeCorrect(node);
+            }
         }
     }
 

@@ -70,6 +70,7 @@
     <Compile Include="CilReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReflectionTests.cs" />
+    <Compile Include="SyntaxTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

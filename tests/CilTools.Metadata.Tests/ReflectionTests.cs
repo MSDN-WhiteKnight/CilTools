@@ -162,6 +162,7 @@ namespace CilTools.Metadata.Tests
 
                 //syntax
                 IEnumerable<SyntaxNode> syntax = SyntaxNode.GetTypeDefSyntax(t);
+                AssertThat.IsSyntaxTreeCorrect(syntax);
 
                 StringBuilder sb = new StringBuilder(1000);
                 foreach (SyntaxNode node in syntax) sb.Append(node.ToString());

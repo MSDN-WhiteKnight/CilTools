@@ -60,6 +60,7 @@
     <Compile Include="CilGraphTests_Text.cs" />
     <Compile Include="ReflectionTests.cs" />
     <Compile Include="CilGraphNodeTests.cs" />
+    <Compile Include="SyntaxTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj">

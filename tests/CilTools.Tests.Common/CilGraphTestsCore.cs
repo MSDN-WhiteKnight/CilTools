@@ -213,6 +213,7 @@ namespace CilTools.Tests.Common
 
             //syntax
             MethodDefSyntax mds = graph.ToSyntaxTree();
+            AssertThat.IsSyntaxTreeCorrect(mds);
             SyntaxNode[] chilren = mds.Body.GetChildNodes();
 
             AssertThat.HasOnlyOneMatch(
@@ -362,6 +363,7 @@ namespace CilTools.Tests.Common
 
             //syntax
             MethodDefSyntax mds = graph.ToSyntaxTree();
+            AssertThat.IsSyntaxTreeCorrect(mds);
             SyntaxNode[] chilren = mds.Body.GetChildNodes();
 
             AssertThat.HasOnlyOneMatch(
