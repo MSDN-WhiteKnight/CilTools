@@ -98,6 +98,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\Audio.cs" />
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Exceptions\ExceptionInfo.cs" />
     <Compile Include="CilVisualization.cs" />
@@ -106,6 +107,9 @@
     <Compile Include="FileSystem\AssemblyFile.cs" />
     <Compile Include="FileSystem\RuntimeDir.cs" />
     <Compile Include="SearchResult.cs" />
+    <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
+      <DependentUpon>CilBrowserPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI.Controls\TextListViewer.cs" />
     <Compile Include="OpenFileOperation.cs" />
     <Compile Include="OpenProcessOperation.cs" />
@@ -146,6 +150,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="UI.Controls\CilBrowser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI.Controls\CilBrowserPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

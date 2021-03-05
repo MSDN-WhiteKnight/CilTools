@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
+using CilView.Common;
 
 namespace CilView.UI.Controls
 {
@@ -26,6 +27,7 @@ namespace CilView.UI.Controls
         TextListViewer tlv;
         MethodBase current_method = null;
         Type current_type = null;
+        string text = String.Empty;
 
         public CilBrowser()
         {
@@ -59,23 +61,25 @@ namespace CilView.UI.Controls
 
         public void NavigateToMethod(MethodBase mb, int start, int end)
         {
+            CilGraph gr = CilGraph.Create(mb);
             StringBuilder sb = new StringBuilder(1000);
             StringWriter wr = new StringWriter(sb);
 
             using (wr)
             {
-                CilGraph gr = CilGraph.Create(mb);
                 gr.Print(wr, true, true, true, true);
                 wr.Flush();
-                tbMainContent.Text = sb.ToString();
-
-                UIElement elem = CilVisualization.VisualizeGraph(gr, Navigated, start, end);
-                gridContent.Children.Clear();
-                gridContent.Children.Add(elem);
-
-                this.current_method = mb;
+                //tbMainContent.Text = sb.ToString();
             }
 
+            UIElement elem = CilVisualization.VisualizeGraph(gr, Navigated, start, end);
+            string contentText = sb.ToString();
+            this.text = contentText;
+            
+                /*gridContent.Children.Clear();
+                gridContent.Children.Add(elem);*/
+
+            this.current_method = mb;            
             sb.Clear();
 
             //select method in method list
@@ -111,7 +115,10 @@ namespace CilView.UI.Controls
             sb.Append(" / ");
             sb.Append(mb.Name);
 
-            tbCurrLocation.Text = sb.ToString();
+            //tbCurrLocation.Text = sb.ToString();
+            CilBrowserPage page = new CilBrowserPage(elem, contentText, sb.ToString());
+            page.Title = mb.Name;
+            frameContent.Navigate(page);
 
             //make sure content is visible
             ExpandContentPane();
@@ -174,9 +181,9 @@ namespace CilView.UI.Controls
 
             string plaintext;
             UIElement elem = CilVisualization.VisualizeType(t, Navigated, out plaintext);
-            gridContent.Children.Clear();
+            /*gridContent.Children.Clear();
             gridContent.Children.Add(elem);
-            tbMainContent.Text = plaintext;
+            tbMainContent.Text = plaintext;*/
             this.current_method = null;
             this.current_type = t;
             
@@ -189,7 +196,12 @@ namespace CilView.UI.Controls
 
             sb.Append(" / ");
             sb.Append(t.FullName);
-            tbCurrLocation.Text = sb.ToString();
+            //tbCurrLocation.Text = sb.ToString();
+
+            CilBrowserPage page = new CilBrowserPage(elem, plaintext, sb.ToString());
+            page.Title = "Type: "+t.Name;
+            frameContent.Navigate(page);
+            this.text = plaintext;
 
             //make sure content is visible
             ExpandContentPane();
@@ -201,18 +213,24 @@ namespace CilView.UI.Controls
         {
             this.tlv = CilVisualization.VisualizeStackTrace(th, Navigated, null);
             cMethodsList.Child = this.tlv;
-            gridContent.Children.Clear();
+            /*gridContent.Children.Clear();
             tbMainContent.Text = String.Empty;
-            tbCurrLocation.Text = "(Stack trace)";
+            tbCurrLocation.Text = "(Stack trace)";*/
+            
+            frameContent.Navigate("(Stack trace)");
+            this.text = String.Empty;
         }
 
         public void Clear()
         {
             if (tlv != null) tlv.Clear();
 
-            tbCurrLocation.Text = String.Empty;
+            /*tbCurrLocation.Text = String.Empty;
             tbMainContent.Text = String.Empty;
-            gridContent.Children.Clear();
+            gridContent.Children.Clear();*/
+
+            this.text = String.Empty;
+            frameContent.Navigate(String.Empty);
             this.current_method = null;
         }
 
@@ -240,7 +258,18 @@ namespace CilView.UI.Controls
 
         public string GetTextContent()
         {
-            return this.tbMainContent.Text;
+            //return this.tbMainContent.Text;
+            return this.text;
         }
-    }
+
+        private void frameContent_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            
+        }
+
+        private void frameContent_Navigated(object sender, NavigationEventArgs e)
+        {
+            Audio.SetMute(true);
+        }
+    }    
 }
