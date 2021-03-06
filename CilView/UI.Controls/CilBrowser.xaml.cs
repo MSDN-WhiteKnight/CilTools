@@ -69,16 +69,11 @@ namespace CilView.UI.Controls
             {
                 gr.Print(wr, true, true, true, true);
                 wr.Flush();
-                //tbMainContent.Text = sb.ToString();
             }
 
             UIElement elem = CilVisualization.VisualizeGraph(gr, Navigated, start, end);
             string contentText = sb.ToString();
             this.text = contentText;
-            
-                /*gridContent.Children.Clear();
-                gridContent.Children.Add(elem);*/
-
             this.current_method = mb;            
             sb.Clear();
 
@@ -114,8 +109,7 @@ namespace CilView.UI.Controls
 
             sb.Append(" / ");
             sb.Append(mb.Name);
-
-            //tbCurrLocation.Text = sb.ToString();
+            
             CilBrowserPage page = new CilBrowserPage(elem, contentText, sb.ToString());
             page.Title = mb.Name;
             frameContent.Navigate(page);
@@ -181,9 +175,6 @@ namespace CilView.UI.Controls
 
             string plaintext;
             UIElement elem = CilVisualization.VisualizeType(t, Navigated, out plaintext);
-            /*gridContent.Children.Clear();
-            gridContent.Children.Add(elem);
-            tbMainContent.Text = plaintext;*/
             this.current_method = null;
             this.current_type = t;
             
@@ -196,8 +187,7 @@ namespace CilView.UI.Controls
 
             sb.Append(" / ");
             sb.Append(t.FullName);
-            //tbCurrLocation.Text = sb.ToString();
-
+            
             CilBrowserPage page = new CilBrowserPage(elem, plaintext, sb.ToString());
             page.Title = "Type: "+t.Name;
             frameContent.Navigate(page);
@@ -213,9 +203,6 @@ namespace CilView.UI.Controls
         {
             this.tlv = CilVisualization.VisualizeStackTrace(th, Navigated, null);
             cMethodsList.Child = this.tlv;
-            /*gridContent.Children.Clear();
-            tbMainContent.Text = String.Empty;
-            tbCurrLocation.Text = "(Stack trace)";*/
             
             frameContent.Navigate("(Stack trace)");
             this.text = String.Empty;
@@ -224,11 +211,7 @@ namespace CilView.UI.Controls
         public void Clear()
         {
             if (tlv != null) tlv.Clear();
-
-            /*tbCurrLocation.Text = String.Empty;
-            tbMainContent.Text = String.Empty;
-            gridContent.Children.Clear();*/
-
+            
             this.text = String.Empty;
             frameContent.Navigate(String.Empty);
             this.current_method = null;
@@ -258,18 +241,20 @@ namespace CilView.UI.Controls
 
         public string GetTextContent()
         {
-            //return this.tbMainContent.Text;
             return this.text;
         }
 
         private void frameContent_Navigating(object sender, NavigatingCancelEventArgs e)
         {
-            
+            //disable sound for current process to prevent Frame's navigation click sound
+            Audio.SetMute(true);
         }
 
-        private void frameContent_Navigated(object sender, NavigationEventArgs e)
+        private async void frameContent_LoadCompleted(object sender, NavigationEventArgs e)
         {
-            Audio.SetMute(true);
+            //enable sound back after delay
+            await Task.Delay(250);
+            Audio.SetMute(false);
         }
     }    
 }

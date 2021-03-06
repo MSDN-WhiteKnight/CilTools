@@ -20,7 +20,9 @@
                     VerticalAlignment="Stretch">
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
                 <Frame x:Name="frameContent" Content="" HorizontalAlignment="Stretch" 
-                       VerticalAlignment="Stretch" NavigationUIVisibility="Visible" Navigating="frameContent_Navigating" Navigated="frameContent_Navigated" />
+                       VerticalAlignment="Stretch" NavigationUIVisibility="Visible" 
+                       Navigating="frameContent_Navigating" 
+                       LoadCompleted="frameContent_LoadCompleted" />
             </Grid>
         </Border>
         <GridSplitter Grid.Column ="0" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"  

@@ -26,13 +26,5 @@ namespace CilView.UI.Controls
             gridContent.Children.Clear();
             gridContent.Children.Add(content);
         }
-
-        public void SetContent(UIElement content, string contentText, string location)
-        {
-            this.tbCurrLocation.Text = location;
-            this.tbMainContent.Text = contentText;
-            gridContent.Children.Clear();
-            gridContent.Children.Add(content);
-        }
     }
 }
