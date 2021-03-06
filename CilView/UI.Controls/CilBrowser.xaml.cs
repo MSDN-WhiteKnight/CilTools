@@ -28,6 +28,7 @@ namespace CilView.UI.Controls
         MethodBase current_method = null;
         Type current_type = null;
         string text = String.Empty;
+        bool shouldClearHistory = false;
 
         public CilBrowser()
         {
@@ -211,7 +212,8 @@ namespace CilView.UI.Controls
         public void Clear()
         {
             if (tlv != null) tlv.Clear();
-            
+
+            this.shouldClearHistory = true;
             this.text = String.Empty;
             frameContent.Navigate(String.Empty);
             this.current_method = null;
@@ -252,6 +254,17 @@ namespace CilView.UI.Controls
 
         private async void frameContent_LoadCompleted(object sender, NavigationEventArgs e)
         {
+            if (shouldClearHistory)
+            {
+                shouldClearHistory = false;
+
+                while (true)
+                {
+                    if (frameContent.CanGoBack) frameContent.RemoveBackEntry();
+                    else break;
+                }
+            }
+
             //enable sound back after delay
             await Task.Delay(250);
             Audio.SetMute(false);
