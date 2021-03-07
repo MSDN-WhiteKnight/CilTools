@@ -263,5 +263,5 @@ namespace CilView.UI.Controls
             nav_counter--;
             if(nav_counter<=0) Audio.SetMute(false);
         }
-    }    
+    }
 }
