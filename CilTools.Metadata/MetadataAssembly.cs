@@ -177,7 +177,10 @@ namespace CilTools.Metadata
 
                 if (genericMethodArguments != null && genericMethodArguments.Length > 0)
                 {
-                    declaringMethod = genericMethodArguments[0].DeclaringMethod;
+                    if (genericMethodArguments[0].IsGenericParameter)
+                    {
+                        declaringMethod = genericMethodArguments[0].DeclaringMethod;
+                    }
 
                     //we need non-null value here to indicate that this type is a generic method argument
                     if (declaringMethod == null) declaringMethod = UnknownMethod.Value;
@@ -268,7 +271,10 @@ namespace CilTools.Metadata
 
             if (genericMethodArguments != null && genericMethodArguments.Length > 0)
             {
-                declaringMethod = genericMethodArguments[0].DeclaringMethod;
+                if (genericMethodArguments[0].IsGenericParameter)
+                {
+                    declaringMethod = genericMethodArguments[0].DeclaringMethod;
+                }
 
                 //we need non-null value here to provide generic context
                 if (declaringMethod == null) declaringMethod = UnknownMethod.Value;
@@ -318,7 +324,10 @@ namespace CilTools.Metadata
 
             if (genericMethodArguments != null && genericMethodArguments.Length > 0)
             {
-                declaringMethod = genericMethodArguments[0].DeclaringMethod;
+                if (genericMethodArguments[0].IsGenericParameter)
+                {
+                    declaringMethod = genericMethodArguments[0].DeclaringMethod;
+                }
 
                 //we need non-null value here to provide generic context
                 if (declaringMethod == null) declaringMethod = UnknownMethod.Value;

@@ -162,6 +162,12 @@ namespace CilTools.Tests.Common
 
         [DllImport("user32.dll",SetLastError = true)]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
+
+        public static void GenericsTest()
+        {
+            int[] arr=GenerateArray<int>(10);
+            Console.WriteLine(arr.Rank);
+        }
     }
 
     public class MyPoint

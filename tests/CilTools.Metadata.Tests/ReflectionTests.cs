@@ -185,5 +185,19 @@ namespace CilTools.Metadata.Tests
                 });
             }//end using
         }
+
+        [TestMethod]
+        public void Test_NavigationGenericMethod()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("GenericsTest")[0] as MethodBase;
+                ReflectionTestsCore.Test_NavigationGenericMethod(mi);
+            }
+        }
     }
 }

@@ -177,5 +177,68 @@ namespace CilTools.Tests.Common
 
             //.method public hidebysig static void TypedRefTest(typedref tr) cil managed
         }
+
+        public static void Test_NavigationGenericMethod(MethodBase mb)
+        {
+            CilGraph graph = CilGraph.Create(mb);
+            CilGraphNode[] nodes = graph.GetNodes().ToArray();
+
+            //find called GenerateArray method
+            MethodBase navigated = null;
+
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                if (nodes[i].Instruction.OpCode.FlowControl == FlowControl.Call)
+                {
+                    MethodBase target = nodes[i].Instruction.ReferencedMember as MethodBase;
+
+                    if (String.Equals(target.Name, "GenerateArray", StringComparison.InvariantCulture))
+                    {
+                        navigated = target;
+                        break;
+                    }
+                }
+            }
+
+            Assert.IsNotNull(navigated, "GenericsTest should contain a call to GenerateArray");
+
+            //decompile called method
+            graph = CilGraph.Create(navigated);
+            nodes = graph.GetNodes().ToArray();
+            AssertThat.IsCorrect(graph);
+            string str = graph.ToText();
+
+            AssertThat.HasOnlyOneMatch(
+                nodes,
+                (x) => x.Instruction.OpCode == OpCodes.Newarr 
+                && x.Instruction.ReferencedType.IsGenericParameter == true
+                && x.Instruction.ReferencedType.GenericParameterPosition == 0
+                );
+
+            AssertThat.IsMatch(str, new MatchElement[] {
+                new Literal(".method"), MatchElement.Any,
+                new Literal("GenerateArray"), MatchElement.Any,
+                new Literal("newarr"), MatchElement.Any,
+                new Literal("!!"), MatchElement.Any
+            });
+
+/*
+.method   public hidebysig static !!0[] GenerateArray<T>(
+    int32 len
+) cil managed
+{
+ .maxstack   1
+ .locals   init (!!0[] V_0)
+
+          nop          
+          ldarg.0      
+          newarr       !!0
+          stloc.0      
+          br.s         IL_0001
+ IL_0001: ldloc.0      
+          ret          
+}
+*/
+        }
     }
 }
