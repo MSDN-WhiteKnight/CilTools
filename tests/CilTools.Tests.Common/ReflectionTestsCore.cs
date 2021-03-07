@@ -35,7 +35,7 @@ namespace CilTools.Tests.Common
                 {
                     MethodBase target = nodes[i].Instruction.ReferencedMember as MethodBase;
 
-                    if (String.Equals(target.Name,"WriteLine",StringComparison.InvariantCulture))
+                    if (String.Equals(target.Name, "WriteLine", StringComparison.InvariantCulture))
                     {
                         navigated = target;
                         break;
@@ -52,7 +52,7 @@ namespace CilTools.Tests.Common
             Assert.IsTrue(nodes.Length > 0, "WriteLine method should not be empty");
 
             AssertThat.HasAtLeastOneMatch(
-                nodes,(x) => x.Instruction.OpCode == OpCodes.Ret,
+                nodes, (x) => x.Instruction.OpCode == OpCodes.Ret,
                 "WriteLine method should contain 'ret' instruction");
 
             string str = graph.ToText();
@@ -67,17 +67,17 @@ namespace CilTools.Tests.Common
                 new Literal("}")
             });
 
-/*.method  public hidebysig static void WriteLine(
-    string value
-) cil managed noinlining
-{
- .maxstack  8
+            /*.method  public hidebysig static void WriteLine(
+                string value
+            ) cil managed noinlining
+            {
+             .maxstack  8
 
-          call        class [mscorlib]System.IO.TextWriter [mscorlib]System.Console::get_Out()
-          ldarg.0     
-          callvirt    instance void [mscorlib]System.IO.TextWriter::WriteLine(string)
-          ret         
-}*/
+                      call        class [mscorlib]System.IO.TextWriter [mscorlib]System.Console::get_Out()
+                      ldarg.0     
+                      callvirt    instance void [mscorlib]System.IO.TextWriter::WriteLine(string)
+                      ret         
+            }*/
         }//end Test
 
         public static void Test_NavigationInternal(MethodBase mb)
@@ -116,8 +116,8 @@ namespace CilTools.Tests.Common
             Assert.IsTrue(nodes.Length > 0, "set_X method should not be empty");
 
             AssertThat.HasAtLeastOneMatch(
-                nodes, 
-                (x) => x.Instruction.OpCode == OpCodes.Stfld && 
+                nodes,
+                (x) => x.Instruction.OpCode == OpCodes.Stfld &&
                 String.Equals(
                     (x.Instruction.ReferencedMember as FieldInfo).FieldType.Name,
                     "Single",
@@ -139,18 +139,19 @@ namespace CilTools.Tests.Common
                 new Literal("}")
             });
 
-/*.method  public hidebysig instance void set_X(
-    float32 value
-) cil managed
-{
- .custom instance void [mscorlib]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor() = ( 01 00 00 00 )
- .maxstack  8
+            /*.method  public hidebysig instance void set_X(
+                float32 value
+            ) cil managed
+            {
+             .custom instance void [mscorlib]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor() = 
+            ( 01 00 00 00 )
+             .maxstack  8
 
-          ldarg.0     
-          ldarg.1     
-          stfld       float32 [CilTools.Tests.Common]CilTools.Tests.Common.MyPoint::<X>k__BackingField
-          ret         
-}*/
+                      ldarg.0     
+                      ldarg.1     
+                      stfld       float32 [CilTools.Tests.Common]CilTools.Tests.Common.MyPoint::<X>k__BackingField
+                      ret         
+            }*/
         }//end Test
 
         public static void Test_TypedReferenceParam(MethodBase m)
@@ -160,19 +161,19 @@ namespace CilTools.Tests.Common
             ParameterInfo[] pars = m.GetParameters();
 
             Assert.IsTrue(
-                String.Equals(pars[0].ParameterType.Name,"TypedReference",StringComparison.InvariantCulture)
+                String.Equals(pars[0].ParameterType.Name, "TypedReference", StringComparison.InvariantCulture)
                 );
 
             CilGraph graph = CilGraph.Create(m);
             string str = graph.ToString();
 
             AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any, 
+                new Literal(".method"), MatchElement.Any,
                 new Literal("TypedRefTest"), MatchElement.Any,
                 new Literal("("), MatchElement.Any,
                 new Literal("typedref"), MatchElement.Any,
                 new Literal(")"), MatchElement.Any,
-                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any 
+                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any
             });
 
             //.method public hidebysig static void TypedRefTest(typedref tr) cil managed
@@ -210,7 +211,7 @@ namespace CilTools.Tests.Common
 
             AssertThat.HasOnlyOneMatch(
                 nodes,
-                (x) => x.Instruction.OpCode == OpCodes.Newarr 
+                (x) => x.Instruction.OpCode == OpCodes.Newarr
                 && x.Instruction.ReferencedType.IsGenericParameter == true
                 && x.Instruction.ReferencedType.GenericParameterPosition == 0
                 );
@@ -222,23 +223,22 @@ namespace CilTools.Tests.Common
                 new Literal("!!"), MatchElement.Any
             });
 
-/*
-.method   public hidebysig static !!0[] GenerateArray<T>(
-    int32 len
-) cil managed
-{
- .maxstack   1
- .locals   init (!!0[] V_0)
+            /*
+            .method   public hidebysig static !!0[] GenerateArray<T>(
+                int32 len
+            ) cil managed
+            {
+             .maxstack   1
+             .locals   init (!!0[] V_0)
 
-          nop          
-          ldarg.0      
-          newarr       !!0
-          stloc.0      
-          br.s         IL_0001
- IL_0001: ldloc.0      
-          ret          
-}
-*/
-        }
+                      nop          
+                      ldarg.0      
+                      newarr       !!0
+                      stloc.0      
+                      br.s         IL_0001
+             IL_0001: ldloc.0      
+                      ret          
+            }*/
+        }//end test
     }
 }
