@@ -19,18 +19,10 @@
                      Grid.Column="1" Margin="0 5 5 5"
                     VerticalAlignment="Stretch">
             <Grid VerticalAlignment="Stretch" HorizontalAlignment="Stretch">
-                <TextBox HorizontalAlignment="Stretch" Height="25" Margin="2,2,2,2" TextWrapping="NoWrap" Text="" 
-                 VerticalAlignment="Top" IsReadOnly="True" x:Name="tbCurrLocation" />
-                <TabControl HorizontalAlignment="Stretch" Margin="2,34,2,2" VerticalAlignment="Stretch">
-                    <TabItem Header="Formatted">
-                        <Grid x:Name="gridContent" Background="White"/>
-                    </TabItem>
-                    <TabItem Header="Plain text">
-                        <TextBox x:Name="tbMainContent" HorizontalAlignment="Stretch"  Margin="0,0,0,0" TextWrapping="Wrap" Text="" 
-                 VerticalAlignment="Stretch" IsReadOnly="True" FontFamily="Courier New" FontSize="14" 
-                 VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Hidden" />
-                    </TabItem>
-                </TabControl>
+                <Frame x:Name="frameContent" Content="" HorizontalAlignment="Stretch" 
+                       VerticalAlignment="Stretch" NavigationUIVisibility="Visible" 
+                       Navigating="frameContent_Navigating" 
+                       LoadCompleted="frameContent_LoadCompleted" />
             </Grid>
         </Border>
         <GridSplitter Grid.Column ="0" Background="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"  
