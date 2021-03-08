@@ -99,6 +99,19 @@ namespace CilTools.Tests.Common
                 IsSyntaxTreeCorrect(node);
             }
         }
+
+        public static void Throws<T>(Action action)
+        {
+            try 
+            {
+                action();
+                Assert.Fail("Method did not throw exception");
+            }
+            catch (Exception ex)
+            {
+                Assert.AreEqual(typeof(T),ex.GetType());
+            }
+        }
     }
 
     public abstract class MatchElement

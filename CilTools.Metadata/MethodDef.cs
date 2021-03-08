@@ -63,6 +63,14 @@ namespace CilTools.Metadata
             else this.decltype = null;
         }
 
+        void ThrowIfDisposed()
+        {
+            if (this.assembly.MetadataReader == null)
+            {
+                throw new ObjectDisposedException("MetadataReader");
+            }
+        }
+
         /// <summary>
         /// Gets the method's returned type
         /// </summary>
@@ -87,6 +95,8 @@ namespace CilTools.Metadata
         public override byte[] GetBytecode()
         {
             if (this.mb == null) return null;
+
+            this.ThrowIfDisposed();
 
             return mb.GetILBytes(); //load CIL as byte array
         }
@@ -173,6 +183,8 @@ namespace CilTools.Metadata
         {
             get
             {
+                this.ThrowIfDisposed();
+
                 MethodAttributes ret = mdef.Attributes;
                 return ret;
             }
@@ -181,6 +193,8 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override MethodImplAttributes GetMethodImplementationFlags()
         {
+            this.ThrowIfDisposed();
+
             return this.mdef.ImplAttributes;
         }
 

@@ -199,5 +199,24 @@ namespace CilTools.Metadata.Tests
                 ReflectionTestsCore.Test_NavigationGenericMethod(mi);
             }
         }
+
+        [TestMethod]
+        public void Test_MethodDef_ObjectDisposedException()
+        {
+            AssemblyReader reader = new AssemblyReader();
+            CustomMethod m = null;
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                m = t.GetMember("PrintHelloWorld")[0] as CustomMethod;
+            }
+
+            //test access after AssemblyReader is disposed
+            AssertThat.Throws<ObjectDisposedException>(() => m.GetBytecode());
+            AssertThat.Throws<ObjectDisposedException>(() => { var x = m.Attributes; });
+            AssertThat.Throws<ObjectDisposedException>(() => { var x = m.MethodImplementationFlags; });
+        }
     }
 }
