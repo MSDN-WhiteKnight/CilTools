@@ -247,6 +247,14 @@ namespace CilTools.Runtime
             this.preloaded[key] = ass;
         }
 
+        /// <summary>
+        /// Removes all assemblies from the preloaded assembly collection
+        /// </summary>
+        public void ClearPreloadedAssemblies()
+        {
+            this.preloaded.Clear();
+        }
+
         internal Assembly GetPreloadedAssembly(string name)
         {
             Assembly ass = null;

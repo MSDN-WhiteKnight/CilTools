@@ -448,6 +448,11 @@ namespace CilTools.Metadata
 
         public override int GetHashCode()
         {
+            if (this.assembly.MetadataReader == null)
+            {
+                return 0;
+            }
+
             return this.FullName.GetHashCode();
         }
 

@@ -282,6 +282,7 @@ namespace CilView
         {
             if (this.dt != null)
             {
+                reader.ClearPreloadedAssemblies();
                 this.dt.Dispose();
                 this.process.Dispose();
                 this.Assemblies.Clear();

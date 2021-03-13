@@ -33,14 +33,16 @@ namespace CilView
 
         void SetSource(AssemblySource newval)
         {
+            this.cbType.SelectedItem = null;
+            this.cbAssembly.SelectedItem = null;
+            this.cilbrowser.Clear();
+            this.DataContext = null;
+
             if (this.source != null)
-            {
+            { 
                 this.source.Dispose();
                 this.source = null;
-                this.DataContext = null;
             }
-            
-            this.cilbrowser.Clear();
             
             this.source = newval;
             this.DataContext = newval;
