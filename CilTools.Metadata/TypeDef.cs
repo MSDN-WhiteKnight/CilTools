@@ -28,6 +28,14 @@ namespace CilTools.Metadata
             this.assembly = ass;
         }
 
+        void ThrowIfDisposed()
+        {
+            if (this.assembly.MetadataReader == null)
+            {
+                throw new ObjectDisposedException("MetadataReader");
+            }
+        }
+
         bool IsMemberMatching(MemberInfo m, BindingFlags bindingAttr)
         {
             bool access_match = false;
@@ -335,6 +343,7 @@ namespace CilTools.Metadata
         {
             get
             {
+                this.ThrowIfDisposed();
                 string tn = assembly.MetadataReader.GetString(type.Namespace);
 
                 if (String.IsNullOrEmpty(tn) && this.IsNested)
@@ -378,6 +387,7 @@ namespace CilTools.Metadata
         {
             get
             {
+                this.ThrowIfDisposed();
                 string tn=assembly.MetadataReader.GetString(type.Name);
                 return tn;
             }
@@ -518,7 +528,13 @@ namespace CilTools.Metadata
 
         public override string ToString()
         {
-            return this.FullName;
+            //check if disposed
+            if (this.assembly.MetadataReader == null) return "(TypeDef)";
+
+            //return full name
+            string ret = this.FullName;
+            if (String.IsNullOrEmpty(ret)) ret = "(TypeDef)";
+            return ret;
         }
     }
 }

@@ -112,6 +112,24 @@ namespace CilTools.Tests.Common
                 Assert.AreEqual(typeof(T),ex.GetType());
             }
         }
+
+        public static void DoesNotThrow(Action action)
+        {
+            try
+            {
+                action(); 
+            }
+            catch (Exception ex)
+            {
+                //this is technically useless, as exception automatically fails test
+                //but i use it for more expressiveness in case i'm testing that some
+                //property or method should not throw
+
+                Assert.Fail(
+                    "The callback expected not to throw, but actually throws " + 
+                    ex.ToString());
+            }
+        }
     }
 
     public abstract class MatchElement

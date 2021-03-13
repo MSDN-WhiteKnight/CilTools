@@ -218,5 +218,25 @@ namespace CilTools.Metadata.Tests
             AssertThat.Throws<ObjectDisposedException>(() => { var x = m.Attributes; });
             AssertThat.Throws<ObjectDisposedException>(() => { var x = m.MethodImplementationFlags; });
         }
+
+        [TestMethod]
+        public void Test_TypeDef_ObjectDisposedException()
+        {
+            AssemblyReader reader = new AssemblyReader();
+            Type t = null;
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+            }
+            
+            //test access after AssemblyReader is disposed
+            AssertThat.Throws<ObjectDisposedException>(() => { var x = t.Namespace; });
+            AssertThat.Throws<ObjectDisposedException>(() => { var x = t.Name; });
+            AssertThat.Throws<ObjectDisposedException>(() => { var x = t.FullName; });
+            AssertThat.DoesNotThrow(() => t.ToString());
+            AssertThat.DoesNotThrow(() => t.GetHashCode());
+        }
     }
 }
