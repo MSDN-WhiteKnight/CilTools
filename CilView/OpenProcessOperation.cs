@@ -7,6 +7,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using Microsoft.Diagnostics.Runtime;
 
 namespace CilView
 {
@@ -14,7 +15,7 @@ namespace CilView
     {
         Process process;
         bool activemode;
-        ProcessAssemblySource result;
+        AssemblySource result;
 
         public OpenProcessOperation(Process pr, bool active)
         {
@@ -22,7 +23,7 @@ namespace CilView
             this.activemode = active;
         }
 
-        public ProcessAssemblySource Result { get { return this.result; } }
+        public AssemblySource Result { get { return this.result; } }
 
         internal static void DoWpfEvents()
         {
@@ -45,7 +46,15 @@ namespace CilView
             this.ReportProgress("Attaching to process...", 0, 0);
             this.DoEvents();
 
-            ProcessAssemblySource res = new ProcessAssemblySource(this.process, this.activemode, this);
+            AssemblySource res=null;
+            try
+            {
+                res = new ProcessAssemblySource(this.process, this.activemode, this);
+            }
+            catch (ClrDiagnosticsException)
+            {
+                res = new WmiAssemblySource(this.process, this);
+            }
 
             if (this.Stopped) res.Dispose();
             else this.result = res;

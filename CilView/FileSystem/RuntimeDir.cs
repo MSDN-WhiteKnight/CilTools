@@ -155,7 +155,7 @@ namespace CilView.FileSystem
             return arr;
         }
 
-        static bool IsExcludedFromAssemblies(string name)
+        internal static bool IsNativeLibrary(string name)
         {
             string name_low = name.ToLower();
 
@@ -202,7 +202,7 @@ namespace CilView.FileSystem
                 {
                     string name = System.IO.Path.GetFileNameWithoutExtension(files[i]);
 
-                    if (IsExcludedFromAssemblies(name)) continue;
+                    if (IsNativeLibrary(name)) continue;
 
                     AssemblyFile file = new AssemblyFile();
                     file.Name = name;
