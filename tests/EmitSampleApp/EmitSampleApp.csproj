@@ -9,7 +9,7 @@
     <Copyright>Copyright (c) 2021, MSDN.WhiteKnight</Copyright>
   </PropertyGroup>
   
-  <PropertyGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
+  <PropertyGroup>
     <RuntimeIdentifier>win-x86</RuntimeIdentifier>
   </PropertyGroup>
 
