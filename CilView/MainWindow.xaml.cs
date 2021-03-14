@@ -33,6 +33,7 @@ namespace CilView
 
         void SetSource(AssemblySource newval)
         {
+            AssemblySource.TypeCacheClear();
             this.cbType.SelectedItem = null;
             this.cbAssembly.SelectedItem = null;
             this.cilbrowser.Clear();
