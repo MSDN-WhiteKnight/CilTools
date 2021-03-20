@@ -55,6 +55,66 @@ namespace CilTools.Runtime
             get { return this.assembly; }
         }
 
+        ClrDynamicMethod FindDynamicMethod()
+        {
+            if (this.method.Type == null) return null;
+            ClrModule module = this.method.Type.Module;
+            if (module == null) return null;
+
+            DynamicMethodsAssembly dma = this.assembly.AssemblyReader.GetDynamicMethods();
+
+            //search GC heap for MethodBuilder objects
+
+            foreach (ClrInfo runtimeInfo in target.ClrVersions)
+            {
+                ClrRuntime runtime = runtimeInfo.CreateRuntime();
+
+                var en = runtime.Heap.EnumerateObjects();
+
+                foreach (ClrObject o in en)
+                {
+                    if (o.Type == null) continue;
+
+                    if (!String.Equals(
+                        o.Type.Name,
+                        "System.Reflection.Emit.MethodBuilder",
+                        StringComparison.InvariantCulture)
+                        ) continue;
+
+                    //get dynamic module
+                    ClrObject objModule = o.GetObjectField("m_module");
+                    if (objModule.IsNull) continue;
+
+                    ClrObject objModuleData = objModule.GetObjectField("m_internalModuleBuilder");
+                    if(objModuleData.IsNull) continue;
+
+                    //get dynamic module address
+                    long pData = objModuleData.GetField<long>("m_pData");
+
+                    //check that method is in this module
+                    if (module.Address != (ulong)pData) continue;
+
+                    //check method token
+                    ClrValueClass cvc_tkMethod=o.GetValueClassField("m_tkMethod");
+                    int token=cvc_tkMethod.GetField<int>("m_method");
+
+                    if (token == this.method.MetadataToken)
+                    {
+                        ClrDynamicMethod dm = new ClrDynamicMethod(o, dma);
+                        return dm;
+                    }
+
+                }//end foreach (ClrObject...)
+            }
+
+            /* MethodBuilder.m_module (ModuleBuilder)
+             * ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
+             * System.Reflection.Emit.AssemblyBuilder.m_assemblyData (System.Reflection.Emit.AssemblyBuilderData)
+             * AssemblyBuilderData.m_strAssemblyName (string)
+             */
+            return null;
+        }
+
         /// <inheritdoc/>
         public override byte[] GetBytecode()
         {
@@ -64,6 +124,19 @@ namespace CilTools.Runtime
 
             if (ildata == null)
             {
+                //P/Invoke methods does not have IL body
+                if (this.method.IsPInvoke) return new byte[0];
+
+                //try to lookup dynamic method that backs up this 
+                //method in dynamic module
+                ClrDynamicMethod dm = this.FindDynamicMethod();
+
+                if (dm != null)
+                {
+                    il=dm.GetBytecode();
+                    if (il != null) return il;
+                }
+
                 throw new CilParserException("Cannot read IL of the method "+method.Name);
             }
             else

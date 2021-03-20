@@ -57,6 +57,7 @@
     <Compile Include="DynamicResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnknownType.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj">

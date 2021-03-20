@@ -178,7 +178,7 @@ namespace CilTools.Runtime
 
                     var bt = o.Type.BaseType;
 
-                    if (o.Type.Name == "System.Reflection.Emit.DynamicMethod" || o.Type.Name == "System.Reflection.Emit.MethodBuilder")
+                    if (o.Type.Name == "System.Reflection.Emit.DynamicMethod")
                     {
                         ClrDynamicMethod dm = new ClrDynamicMethod(o,this);
                         yield return dm;
