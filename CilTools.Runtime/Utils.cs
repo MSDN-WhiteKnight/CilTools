@@ -24,45 +24,6 @@ namespace CilTools.Runtime
         {
             if (obj.IsNull) return null;
             return GetFieldValue(obj, name);
-            /*ClrInstanceField f = obj.Type.GetFieldByName(name);
-
-            switch (f.ElementType)
-            {
-                //primitive types
-                case ClrElementType.Int32: return (object)obj.GetField<int>(name);
-                case ClrElementType.UInt32: return (object)obj.GetField<uint>(name);
-                case ClrElementType.Int8: return (object)obj.GetField<sbyte>(name);
-                case ClrElementType.UInt8: return (object)obj.GetField<byte>(name);
-                case ClrElementType.Int16: return (object)obj.GetField<short>(name);
-                case ClrElementType.UInt16: return (object)obj.GetField<ushort>(name);
-                case ClrElementType.Int64: return (object)obj.GetField<long>(name);
-                case ClrElementType.UInt64: return (object)obj.GetField<ulong>(name);
-                case ClrElementType.Boolean: return (object)obj.GetField<bool>(name);
-                case ClrElementType.String: return obj.GetStringField(name);
-
-                //IntPtr
-                case ClrElementType.NativeInt:
-                    try
-                    {
-                        long i = obj.GetField<long>(name);
-                        IntPtr ptr = new IntPtr(i);
-                        return (object)ptr;
-                    }
-                    catch (InvalidCastException)
-                    {
-                        return (object)f.ElementType;
-                    }
-
-                //class
-                case ClrElementType.Class:
-                case ClrElementType.Object:
-                    ClrObject ret = obj.GetObjectField(name);
-                    if (ret.IsNull) return null;
-                    return ret;
-
-                //other
-                default: return (object)f.ElementType;
-            }*/
         }
 
         internal static object GetFieldValue(IAddressableTypedEntity obj, string name)
