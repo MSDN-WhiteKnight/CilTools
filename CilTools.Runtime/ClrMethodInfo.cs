@@ -23,6 +23,10 @@ namespace CilTools.Runtime
         DataTarget target;
         ClrTypeInfo type;
 
+        //backing dynamic method, if this is a method from dynamic module
+        ClrDynamicMethod dynamicMethod=null;
+        bool dynamicMethodInitialized=false;
+
         internal ClrMethodInfo(ClrMethod m, ClrTypeInfo owner)
         {
             this.method = m;
@@ -60,59 +64,27 @@ namespace CilTools.Runtime
             if (this.method.Type == null) return null;
             ClrModule module = this.method.Type.Module;
             if (module == null) return null;
-
-            DynamicMethodsAssembly dma = this.assembly.AssemblyReader.GetDynamicMethods();
-
-            //search GC heap for MethodBuilder objects
-
-            foreach (ClrInfo runtimeInfo in target.ClrVersions)
+            
+            if (this.dynamicMethodInitialized)
             {
-                ClrRuntime runtime = runtimeInfo.CreateRuntime();
-
-                var en = runtime.Heap.EnumerateObjects();
-
-                foreach (ClrObject o in en)
-                {
-                    if (o.Type == null) continue;
-
-                    if (!String.Equals(
-                        o.Type.Name,
-                        "System.Reflection.Emit.MethodBuilder",
-                        StringComparison.InvariantCulture)
-                        ) continue;
-
-                    //get dynamic module
-                    ClrObject objModule = o.GetObjectField("m_module");
-                    if (objModule.IsNull) continue;
-
-                    ClrObject objModuleData = objModule.GetObjectField("m_internalModuleBuilder");
-                    if(objModuleData.IsNull) continue;
-
-                    //get dynamic module address
-                    long pData = objModuleData.GetField<long>("m_pData");
-
-                    //check that method is in this module
-                    if (module.Address != (ulong)pData) continue;
-
-                    //check method token
-                    ClrValueClass cvc_tkMethod=o.GetValueClassField("m_tkMethod");
-                    int token=cvc_tkMethod.GetField<int>("m_method");
-
-                    if (token == this.method.MetadataToken)
-                    {
-                        ClrDynamicMethod dm = new ClrDynamicMethod(o, dma);
-                        return dm;
-                    }
-
-                }//end foreach (ClrObject...)
+                return this.dynamicMethod;
             }
 
-            /* MethodBuilder.m_module (ModuleBuilder)
-             * ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
-             * System.Reflection.Emit.AssemblyBuilder.m_assemblyData (System.Reflection.Emit.AssemblyBuilderData)
-             * AssemblyBuilderData.m_strAssemblyName (string)
-             */
-            return null;
+            //try to lookup dynamic method that backs up this 
+            //method in dynamic module
+
+            int token = 0;
+
+            unchecked { token = (int)this.method.MetadataToken; }
+
+            ClrDynamicMethod ret = this.assembly.AssemblyReader.GetDynamicAssemblyMethod(
+                module.Address,
+                token
+                );
+
+            this.dynamicMethod = ret;
+            this.dynamicMethodInitialized = true;
+            return ret;
         }
 
         /// <inheritdoc/>
@@ -174,7 +146,21 @@ namespace CilTools.Runtime
         /// <inheritdoc/>
         public override ExceptionBlock[] GetExceptionBlocks()
         {
-            return new ExceptionBlock[] { }; //not implemented
+            //P/Invoke methods does not have exception blocks
+            if (this.method.IsPInvoke) return new ExceptionBlock[] { };
+
+            //try to lookup dynamic method that backs up this 
+            //method in dynamic module
+            ClrDynamicMethod dm = this.FindDynamicMethod();
+
+            if (dm != null)
+            {
+                return dm.GetExceptionBlocks();
+            }
+            else
+            {
+                return new ExceptionBlock[] { };
+            }
         }
 
         /// <inheritdoc/>
