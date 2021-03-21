@@ -10,6 +10,7 @@ using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using Microsoft.Diagnostics.Runtime;
+using System.Linq;
 
 namespace CilTools.Runtime
 {
@@ -18,6 +19,12 @@ namespace CilTools.Runtime
     /// </summary>
     public class ClrAssemblyReader
     {
+        ClrRuntime runtime;
+        Dictionary<ulong, ClrAssemblyInfo> cache = new Dictionary<ulong, ClrAssemblyInfo>();
+        Dictionary<string, Assembly> preloaded = new Dictionary<string, Assembly>(50);
+        DynamicMethodsAssembly dynamicMethods = null;
+        Dictionary<MethodId, ClrDynamicMethod> dynAssMethods = null;
+
         /// <summary>
         /// Gets the pseudo-assembly that represents the collection of dynamic methods in the specified process
         /// </summary>
@@ -119,10 +126,6 @@ namespace CilTools.Runtime
             }//end using
         }
 
-        ClrRuntime runtime;
-        Dictionary<ulong, ClrAssemblyInfo> cache = new Dictionary<ulong, ClrAssemblyInfo>();
-        Dictionary<string,Assembly> preloaded = new Dictionary<string, Assembly>(50);
-
         /// <summary>
         /// Creates <c>ClrAssemblyReader</c> to read information from the specified CLR instance
         /// </summary>
@@ -221,11 +224,17 @@ namespace CilTools.Runtime
         }
 
         /// <summary>
-        /// Gets the pseudo-assembly that represents the collection of dynamic methods in the process containing CLR instance
+        /// Gets the pseudo-assembly that represents the collection of dynamic methods in the process 
+        /// containing the CLR instance
         /// </summary>
         public DynamicMethodsAssembly GetDynamicMethods()
         {
-            return new DynamicMethodsAssembly(this.runtime.DataTarget,this, false);
+            if (this.dynamicMethods == null)
+            {
+                this.dynamicMethods = new DynamicMethodsAssembly(this.runtime.DataTarget, this, false);
+            }
+
+            return this.dynamicMethods;
         }
 
         /// <summary>
@@ -280,6 +289,122 @@ namespace CilTools.Runtime
 
             //if not found, read via ClrMD
             return this.ReadImpl(module);
+        }
+
+        Dictionary<MethodId, ClrDynamicMethod> LoadDynamicAssemblyMethods()
+        {
+            Dictionary<MethodId, ClrDynamicMethod> ret = new Dictionary<MethodId, ClrDynamicMethod>();
+            DynamicMethodsAssembly dma = this.GetDynamicMethods();
+
+            //search GC heap for MethodBuilder objects
+
+            ClrRuntime runtime = this.runtime;
+            var en = runtime.Heap.EnumerateObjects();
+
+            foreach (ClrObject o in en)
+            {
+                if (o.Type == null) continue;
+
+                if (!String.Equals(
+                    o.Type.Name,
+                    "System.Reflection.Emit.MethodBuilder",
+                    StringComparison.InvariantCulture)
+                    ) continue;
+
+                //get dynamic module
+                ClrObject objModule = o.GetObjectField("m_module");
+                if (objModule.IsNull) continue;
+
+                ClrObject objModuleData = new ClrObject();
+
+                if (objModule.Type.GetFieldByName("m_internalModuleBuilder") != null)
+                {
+                    //.NET Framework
+                    objModuleData = objModule.GetObjectField("m_internalModuleBuilder");
+                }
+                else
+                {
+                    //.NET Core 3.1+
+                    objModuleData = objModule.GetObjectField("_internalModuleBuilder");
+                }
+
+                if (objModuleData.IsNull) continue; 
+
+                //get dynamic module address
+                long pData = objModuleData.GetField<long>("m_pData");
+                if (pData == 0) continue;
+
+                //get method token
+                int token = 0;
+
+                if (o.Type.GetFieldByName("m_tkMethod") != null)
+                {
+                    ClrValueClass cvc_tkMethod = o.GetValueClassField("m_tkMethod");
+                    string tokenField=null;
+
+                    if (cvc_tkMethod.Type != null)
+                    {
+                        //Get the single field of MethodToken struct
+                        //(its name varies between runtimes)
+                        tokenField = Utils.GetInstanceFields(cvc_tkMethod).FirstOrDefault();
+                    }
+
+                    if (tokenField != null)
+                    {
+                        //.NET Framework or .NET Core 3.1
+                        token = cvc_tkMethod.GetField<int>(tokenField);
+                    }
+                    else
+                    {
+                        //.NET 5+
+                        token = o.GetField<int>("m_token");
+                    }
+                }
+                else
+                {
+                    //.NET 5+
+                    token = o.GetField<int>("m_token");
+                }
+
+                if (token == 0) continue;
+
+                MethodId mid = new MethodId((ulong)pData, token);
+                ClrDynamicMethod dm = new ClrDynamicMethod(o, dma);
+                ret[mid] = dm;
+
+            }//end foreach (ClrObject...)
+
+            /* MethodBuilder.m_module (ModuleBuilder)
+             * ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
+             * System.Reflection.Emit.AssemblyBuilder.m_assemblyData (System.Reflection.Emit.AssemblyBuilderData)
+             * AssemblyBuilderData.m_strAssemblyName (string)
+             */
+
+            return ret;
+        }
+
+        internal ClrDynamicMethod GetDynamicAssemblyMethod(MethodId mid)
+        {
+            if (this.dynAssMethods == null)
+            {
+                this.dynAssMethods = this.LoadDynamicAssemblyMethods();
+            }
+
+            ClrDynamicMethod ret;
+
+            if (this.dynAssMethods.TryGetValue(mid, out ret))
+            {
+                return ret;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        internal ClrDynamicMethod GetDynamicAssemblyMethod(ulong module, int token)
+        {
+            return this.GetDynamicAssemblyMethod(new MethodId(module, token));
         }
     }
 }

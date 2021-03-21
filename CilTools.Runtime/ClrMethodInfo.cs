@@ -23,6 +23,10 @@ namespace CilTools.Runtime
         DataTarget target;
         ClrTypeInfo type;
 
+        //backing dynamic method, if this is a method from dynamic module
+        ClrDynamicMethod dynamicMethod=null;
+        bool dynamicMethodInitialized=false;
+
         internal ClrMethodInfo(ClrMethod m, ClrTypeInfo owner)
         {
             this.method = m;
@@ -55,6 +59,34 @@ namespace CilTools.Runtime
             get { return this.assembly; }
         }
 
+        ClrDynamicMethod FindDynamicMethod()
+        {
+            if (this.method.Type == null) return null;
+            ClrModule module = this.method.Type.Module;
+            if (module == null) return null;
+            
+            if (this.dynamicMethodInitialized)
+            {
+                return this.dynamicMethod;
+            }
+
+            //try to lookup dynamic method that backs up this 
+            //method in dynamic module
+
+            int token = 0;
+
+            unchecked { token = (int)this.method.MetadataToken; }
+
+            ClrDynamicMethod ret = this.assembly.AssemblyReader.GetDynamicAssemblyMethod(
+                module.Address,
+                token
+                );
+
+            this.dynamicMethod = ret;
+            this.dynamicMethodInitialized = true;
+            return ret;
+        }
+
         /// <inheritdoc/>
         public override byte[] GetBytecode()
         {
@@ -64,6 +96,19 @@ namespace CilTools.Runtime
 
             if (ildata == null)
             {
+                //P/Invoke methods does not have IL body
+                if (this.method.IsPInvoke) return new byte[0];
+
+                //try to lookup dynamic method that backs up this 
+                //method in dynamic module
+                ClrDynamicMethod dm = this.FindDynamicMethod();
+
+                if (dm != null)
+                {
+                    il=dm.GetBytecode();
+                    if (il != null) return il;
+                }
+
                 throw new CilParserException("Cannot read IL of the method "+method.Name);
             }
             else
@@ -101,7 +146,21 @@ namespace CilTools.Runtime
         /// <inheritdoc/>
         public override ExceptionBlock[] GetExceptionBlocks()
         {
-            return new ExceptionBlock[] { }; //not implemented
+            //P/Invoke methods does not have exception blocks
+            if (this.method.IsPInvoke) return new ExceptionBlock[] { };
+
+            //try to lookup dynamic method that backs up this 
+            //method in dynamic module
+            ClrDynamicMethod dm = this.FindDynamicMethod();
+
+            if (dm != null)
+            {
+                return dm.GetExceptionBlocks();
+            }
+            else
+            {
+                return new ExceptionBlock[] { };
+            }
         }
 
         /// <inheritdoc/>
