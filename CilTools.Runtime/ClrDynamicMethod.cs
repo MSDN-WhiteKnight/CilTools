@@ -117,7 +117,7 @@ namespace CilTools.Runtime
             }
             else
             {
-                exceptions = method.GetObjectField("m_exceptions");
+                exceptions = ilgen.GetObjectField("m_exceptions");
             }
 
             if (exceptions.IsNull) return new ExceptionBlock[0];
@@ -139,6 +139,7 @@ namespace CilTools.Runtime
 
                 ClrObject o = new ClrObject(obj_addr, exceptions.Type.ComponentType);
 
+                if(o.IsNull) continue;
                 if (o.Type.GetFieldByName("m_startAddr") == null) continue;
                 if (o.Type.GetFieldByName("m_endAddr") == null) continue;
 
