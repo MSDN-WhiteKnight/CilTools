@@ -20,30 +20,45 @@ namespace CilTools.Runtime
 
         internal static Type LoadTypeInfo(ClrTypeInfo ownertype, ClrType ft)
         {
-            ClrTypeInfo ftTypeInfo;
             ClrAssemblyInfo ownerass = (ClrAssemblyInfo)ownertype.Assembly;
-            
+            Type t=null;
+
             if (ownerass.AssemblyReader == null) return UnknownType.Value;
             if (ft.Module == null) return UnknownType.Value;
             if (ownertype.InnerType.Module == null) return UnknownType.Value;
 
             //determine type's containing assembly
             ClrAssemblyInfo ftAss;
-            if (ft.Module.AssemblyId == ownertype.InnerType.Module.AssemblyId) ftAss = ownerass;
-            else ftAss = ownerass.AssemblyReader.Read(ft.Module);
-
-            if (ftAss == null) new ClrTypeInfo(ft, ClrAssemblyInfo.UnknownAssembly);
-
-            //load type from assembly
-            Type t = ftAss.GetType(ft.Name);
-            ftTypeInfo = t as ClrTypeInfo;
-
-            if (ftTypeInfo == null) //unable to find existing type instance, create new one
+            if (ft.Module.AssemblyId == ownertype.InnerType.Module.AssemblyId)
             {
-                ftTypeInfo = new ClrTypeInfo(ft, ftAss);
+                //same assembly
+                ftAss = ownerass;
+            }
+            else
+            {
+                //try preloaded assemblies
+                //this is an optimization to avoid calling the expensive AssemblyReader.Read
+                Assembly ass = ownerass.AssemblyReader.GetResolver(ft.Module) as Assembly;
+
+                if (ass != null) 
+                {
+                    t = ass.GetType(ft.Name);
+                }
+
+                if (t != null) return t;
+
+                //read containing assembly
+                ftAss = ownerass.AssemblyReader.Read(ft.Module);
             }
 
-            return ftTypeInfo;
+            if (ftAss == null) //unable to find existing type instance, create new one
+            {
+                return new ClrTypeInfo(ft, ClrAssemblyInfo.UnknownAssembly);
+            }
+
+            //load type from assembly
+            t = ftAss.GetType(ft.Name);
+            return t;
         }
 
         public ClrTypeInfo(ClrType t, ClrAssemblyInfo ass)
@@ -138,31 +153,12 @@ namespace CilTools.Runtime
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
         {
-            bool access_match;
-            bool sem_match;
+            FieldInfo[] fields = this.GetFields(bindingAttr);
 
-            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            for (int i = 0; i < fields.Length; i++) 
             {
-                if (!String.Equals(m.DeclaringType.FullName, this.type.Name, StringComparison.InvariantCulture)) continue;
-
-                access_match = false;
-                sem_match = false;
-
-                if (m is FieldInfo)
-                {
-                    FieldInfo fi = (FieldInfo)m;
-
-                    if (!String.Equals(fi.Name, name, StringComparison.InvariantCulture)) continue;
-
-                    if (bindingAttr.HasFlag(BindingFlags.Public) && fi.IsPublic) access_match = true;
-                    else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !fi.IsPublic) access_match = true;
-
-                    if (bindingAttr.HasFlag(BindingFlags.Static) && fi.IsStatic) sem_match = true;
-                    else if (bindingAttr.HasFlag(BindingFlags.Instance) && !fi.IsStatic) sem_match = true;
-
-                    if (access_match && sem_match) return fi;
-                }
-                else continue;
+                FieldInfo fi = fields[i];
+                if (StrEquals(fi.Name, name)) return fi;
             }
 
             return null;
@@ -170,31 +166,49 @@ namespace CilTools.Runtime
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
+            int cap = this.type.Fields.Count + this.type.Fields.Count + this.type.ThreadStaticFields.Count;
+            List<ClrField> clrFields = new List<ClrField>(cap);
             List<FieldInfo> fields = new List<FieldInfo>();
+            FieldInfo fi;
             bool access_match;
             bool sem_match;
 
-            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            foreach (var f in this.type.Fields)
             {
-                if (m.DeclaringType == null) continue;
-                if (!String.Equals(m.DeclaringType.FullName, this.type.Name, StringComparison.InvariantCulture)) continue;
+                clrFields.Add(f);
+            }
+
+            foreach (var f in this.type.StaticFields)
+            {
+                clrFields.Add(f);
+            }
+
+            foreach (var f in this.type.ThreadStaticFields)
+            {
+                clrFields.Add(f);
+            }
+
+            for (int i = 0; i < clrFields.Count; i++) 
+            {
+                int token = (int)clrFields[i].Token;
+                fi = this.assembly.ResolveField(token);
+
+                if (fi == null)
+                {
+                    fi = new ClrFieldInfo(clrFields[i], this);
+                    this.assembly.SetMemberByToken(token, fi);
+                }
 
                 access_match = false;
                 sem_match = false;
 
-                if (m is FieldInfo)
-                {
-                    FieldInfo fi = (FieldInfo)m;
+                if (bindingAttr.HasFlag(BindingFlags.Public) && fi.IsPublic) access_match = true;
+                else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !fi.IsPublic) access_match = true;
 
-                    if (bindingAttr.HasFlag(BindingFlags.Public) && fi.IsPublic) access_match = true;
-                    else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !fi.IsPublic) access_match = true;
+                if (bindingAttr.HasFlag(BindingFlags.Static) && fi.IsStatic) sem_match = true;
+                else if (bindingAttr.HasFlag(BindingFlags.Instance) && !fi.IsStatic) sem_match = true;
 
-                    if (bindingAttr.HasFlag(BindingFlags.Static) && fi.IsStatic) sem_match = true;
-                    else if (bindingAttr.HasFlag(BindingFlags.Instance) && !fi.IsStatic) sem_match = true;
-
-                    if (access_match && sem_match) fields.Add(fi);
-                }
-                else continue;
+                if (access_match && sem_match) fields.Add(fi);
             }
 
             return fields.ToArray();
@@ -250,33 +264,47 @@ namespace CilTools.Runtime
 
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
         {
-            List<MemberInfo> members = new List<MemberInfo>();
+            List<MemberInfo> ret = new List<MemberInfo>();
 
-            foreach (MemberInfo m in this.assembly.EnumerateMembers())
+            MemberInfo[] members = this.GetMembers(bindingAttr);
+
+            for (int i = 0; i < members.Length; i++)
             {
-                if (m.DeclaringType == null) continue;
-
-                if (!String.Equals(m.DeclaringType.FullName, this.type.Name, StringComparison.InvariantCulture)) continue;
-
-                if (!String.Equals(m.Name, name, StringComparison.InvariantCulture)) continue;
-                
-                if(IsMemberMatching(m,bindingAttr)) members.Add(m);
+                MemberInfo mi = members[i];
+                if (StrEquals(mi.Name, name)) ret.Add(mi);
             }
 
-            return members.ToArray();
+            return ret.ToArray();
         }
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
             List<MemberInfo> members = new List<MemberInfo>();
-            
-            foreach (MemberInfo m in this.assembly.EnumerateMembers())
-            {
-                if (m.DeclaringType == null) continue;
 
-                if (!String.Equals(m.DeclaringType.FullName, this.type.Name, StringComparison.InvariantCulture)) continue;
-                
-                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+            FieldInfo[] fields = this.GetFields(bindingAttr);
+
+            for (int i = 0; i < fields.Length; i++) 
+            {
+                members.Add(fields[i]);
+            }
+
+            foreach (ClrMethod m in this.type.Methods)
+            {
+                if (m.Type != null)
+                {
+                    if (!StrEquals(m.Type.Name,this.type.Name)) continue; //skip inherited methods
+                }
+
+                int token = (int)m.MetadataToken;
+                MethodBase mb = this.assembly.ResolveMethod(token);
+
+                if (mb == null) 
+                {
+                    mb = new ClrMethodInfo(m, this);
+                    this.assembly.SetMemberByToken((int)m.MetadataToken, mb);
+                }
+
+                if (IsMemberMatching(mb, bindingAttr)) members.Add(mb);
             }
 
             return members.ToArray();
