@@ -34,8 +34,6 @@ All method references on the "Formatted" tab are hyperlinks to the referenced me
 
 You can search process by entering the process name starting fragment or ID into the text field and pressing "Search".
 
-NOTE: Only 32-bit processes are supported. .NET Core shared host is 64-bit on 64-bit Windows, but you can attach to .NET Core application if it was build targeting the win-x86 runtime ID and started from the resulting EXE file rather than using shared host.
-
 3. Check the "active mode" checkbox if you want to get more accurate info.
 
 NOTE: When attaching in active mode, the target process is suspended. Do not use active mode on the application that is currently performing critical business tasks.
@@ -49,21 +47,32 @@ You can also search assemblies, types and methods by entering the fragment of th
 
 8. The right panel will display the CIL disassembly of the selected method.
 
-You can also view the code of dynamic methods generated at runtime in the target process by selecting the <...DynamicMethods> entry in the assembly drop-down list (it is displayed at the end of the list).
+You can also view the code of dynamic methods generated at runtime in the target process by selecting the `<...DynamicMethods>` entry in the assembly drop-down list (it is displayed at the end of the list). Starting from version 2.2, methods from dynamic assemblies are not included under dynamic methods and instead can be opened under the corresponding dynamic assembly.
 
 * Limitations when displaying code from the process *
 
-If the assembly could not be loaded by the CIL View application (this is usually happens with some mixed-mode assemblies which have some PE structures stripped off, so they could be loaded by CLR, but not by System.Reflection.Metadata), the following limitations apply:
+If the assembly is a dynamic assembly or an assembly that could not be loaded by CIL View as file (this is usually happens with some mixed-mode assemblies which have some PE structures stripped off, so they could be loaded by CLR, but not by System.Reflection.Metadata), the following limitations apply:
+
 - Method return value or parameter types are not shown 
 - String literal tokens are not resolved
 - Standalone signature tokens are not resolved
 - Tokens of external assembly members are not resolved
-- Local variables and exception handling blocks are not shown
+- Local variables are not shown 
+- Exception handling blocks are not shown (except for methods from dynamic assemblies)
 
 For dynamic methods, the following limitations apply:
+
 - Method signatures are not shown 
 - All tokens, except for method tokens, are not resolved
 - Local variables are not shown
+
+When opening the 64-bit process, the following limitations apply:
+
+- Dynamic assemblies and dynamic methods are not shown
+- Assemblies that could not be loaded by CIL View as files (see above) are not shown
+- Process and threads information is not available
+
+NOTE: .NET Core shared host is 64-bit on 64-bit Windows, but if you want to overcome these limitations, you can build it targeting the win-x86 runtime ID and start it from the resulting EXE file rather than using shared host.
 
 * Examining managed threads *
 
@@ -77,35 +86,8 @@ You can install CIL View via ClickOnce if you want to download updates automatic
 
 Using auto-update requires stable internet connection and access to the https://msdn-whiteknight.github.io/ website. If you are using old Windows or .NET Framework versions, you might be unable to connect due to TLS protocol version or ciphersuite mismatch.
 
-* Changelog *
-
-2.1
-- Update assembly reading mechanism to use CilTools.Metadata instead of loading assemblies directly into the current process. This enables inspecting assemblies for another target framework (such as .NET Standard) or when some dependencies could not be resolved. This also means assemblies can be unloaded from memory when they are no longer needed.
-- Add support for method implementation flags when outputting method signatures
-- Add support for function pointer types
-- Add support for module-level ("global") functions and fields
-- Add syntax highlighting for calli instruction's operand
-- Add full custom modifiers support (they were previously only supported in standalone signatures)
-- Add custom modifier syntax highlighting
-- Add pinvokeimpl support
-- Add exception block support for dynamic methods
-- Add method token resolution for dynamic methods
-- Support auto-completion in assembly and type combo boxes
-- Improve performance for type combo box when assembly has a lot of types
-- Rework search. Search results are now displayed in context menu. Method search is added.
-- Format char default values as hex
-- Improve custom attribute support (now custom attribute data is properly shown for any attribute)
-- Improve empty method body handling. Now empty body is ignored only when method is is abstract, P/Invoke or implemented by runtime. In other cases the error message is displayed.
-- Place custom attributes before default parameter values in disassembled method code
-- Fix ldloc.s/stloc.s instruction handling
-- Fix ldtoken instruction handling with field operand
-- Fix exception when method implementation is provided by runtime
-- Fix possible null reference exception when reading array/pointer of generic args
-- Fix BadImageFormatException on C++/CLI assemblies
-- Fix signatures with function pointers being incorrectly displayed in left panel
-
 ---------------------------------------------
 
-Copyright (c) 2020,  MSDN.WhiteKnight
+Copyright (c) 2021,  MSDN.WhiteKnight
 
 This CIL View distribution contains the binary code of ClrMD library (https://github.com/microsoft/clrmd): Copyright (c) .NET Foundation and Contributors, MIT License. 

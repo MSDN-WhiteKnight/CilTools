@@ -40,8 +40,6 @@ All method references on the **Formatted** tab are hyperlinks to the referenced 
 
 You can search process by entering the process name starting fragment or ID into the text field and pressing **Search**.
 
-> **NOTE:** Only 32-bit processes are supported. .NET Core shared host is 64-bit on 64-bit Windows, but you can attach to .NET Core application if it was build targeting the win-x86 runtime ID and started from the resulting EXE file rather than using shared host.
-
 3\. Check the **active mode** checkbox if you want to get more accurate info.
 
 > **NOTE:** When attaching in active mode, the target process is suspended. Do not use active mode on the application that is currently performing critical business tasks.
@@ -58,23 +56,32 @@ You can also search assemblies, types and methods by entering the fragment of th
 
 8\. The right panel will display the CIL disassembly of the selected method.
 
-You can also view the code of dynamic methods generated at runtime in the target process by selecting the `<...DynamicMethods>` entry in the assembly drop-down list (it is displayed at the end of the list).
+You can also view the code of dynamic methods generated at runtime in the target process by selecting the `<...DynamicMethods>` entry in the assembly drop-down list (it is displayed at the end of the list). Starting from version 2.2, methods from dynamic assemblies are not included under dynamic methods and instead can be opened under the corresponding dynamic assembly.
 
 ## Limitations when displaying code from the process
 
-If the assembly could not be loaded by the CIL View application (this is usually happens with some mixed-mode assemblies which have some PE structures stripped off, so they could be loaded by CLR, but not by System.Reflection.Metadata), the following limitations apply:
+If the assembly is a dynamic assembly or an assembly that could not be loaded by CIL View as file (this is usually happens with some mixed-mode assemblies which have some PE structures stripped off, so they could be loaded by CLR, but not by System.Reflection.Metadata), the following limitations apply:
 
 - Method return value or parameter types are not shown 
 - String literal tokens are not resolved
 - Standalone signature tokens are not resolved
 - Tokens of external assembly members are not resolved
-- Local variables and exception handling blocks are not shown
+- Local variables are not shown 
+- Exception handling blocks are not shown (except for methods from dynamic assemblies)
 
 For dynamic methods, the following limitations apply:
 
 - Method signatures are not shown 
 - All tokens, except for method tokens, are not resolved
 - Local variables are not shown
+
+When opening the 64-bit process, the following limitations apply:
+
+- Dynamic assemblies and dynamic methods are not shown
+- Assemblies that could not be loaded by CIL View as files (see above) are not shown
+- Process and threads information is not available
+
+> **NOTE:** .NET Core shared host is 64-bit on 64-bit Windows, but if you want to overcome these limitations, you can build it targeting the win-x86 runtime ID and start it from the resulting EXE file rather than using shared host.
 
 ## Examining managed threads
 
@@ -83,6 +90,14 @@ To examine managed threads when process is opened, click **Process** -> **Thread
 The stack trace will be displayed in the left panel. Some stack frames are hyperlinks, and clicking on them will open the corresponding method in the right panel. The instructions belonging to the approximate currently executed code fragment are highlighted in red. This feature only works reliably when attaching in active mode. 
 
 ![CilView threads window](../images/cilview3.png)
+
+## Exception analysis
+
+To figure out exceptions that the method could potentially throw, open that method and use **Analysis** -> **Show exception (methods)** menu command. In the opened window you'll see the list of exception types as well as the call stack that could trigger them. The CIL View recursively scans the analysed method and all methods called by it, and searches for exceptions that are thrown and not handled up the stack. Not that exception analysis might be inaccurate (bot false positives and false negatives, so it's only good for a quick estimate of thrown exceptions. To perform exception analysis on all methods of the current type, use **Analysis** -> **Show exception (type)**.
+
+To compare exceptions actually thrown by methods of the type and exceptions mentioned in their documentation, select the type and use **Analysis** -> **Compare exceptions** command. In the appearing dialog box, select the XML documentation file to compare. CIL View supports both regular ECMA XML emitted by C# compiler and monodoc XML format. The opened window will show the differences between exceptions reported by analysis and exceptions documented in ECMA XML `<exception>` tags.
+
+The exception analysis supported when opening both files and processes. However, when you hit any limitations mentioned above, the analysis accuracy decreases.
 
 ## ClickOnce installation with auto-update
 
