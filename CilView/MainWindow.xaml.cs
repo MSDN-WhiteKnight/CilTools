@@ -344,9 +344,9 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             wnd.Show();
         }
 
-        private void miCompareExceptions_Click(object sender, RoutedEventArgs e)
+        private async void miCompareExceptions_Click(object sender, RoutedEventArgs e)
         {
-            CompareExceptions();
+            await CompareExceptions();
         }
 
         private void bProcessInfo_Click(object sender, RoutedEventArgs e)
