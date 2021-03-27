@@ -25,20 +25,9 @@ namespace CilView
 
         public AssemblySource Result { get { return this.result; } }
 
-        internal static void DoWpfEvents()
-        {
-            DispatcherFrame frame = new DispatcherFrame();
-            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
-                 new DispatcherOperationCallback((f) =>
-                 {
-                     ((DispatcherFrame)f).Continue = false; return null;
-                 }), frame);
-            Dispatcher.PushFrame(frame);
-        }
-
         public override void DoEvents()
         {
-            DoWpfEvents();
+            Common.Utils.DoWpfEvents();
         }
 
         public override Task Start()

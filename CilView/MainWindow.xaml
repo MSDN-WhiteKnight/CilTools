@@ -10,16 +10,21 @@
                 <MenuItem Header="Open process" Click="bOpenProcess_Click"/>
                 <MenuItem x:Name="miOpenBCL" Header="Open BCL assembly" Click="miOpenBCL_Click"/>
                 <Separator/>
-                <MenuItem x:Name="miExportMethod" Header="Export code" Click="miExportMethod_Click"/>
-                <MenuItem x:Name="miShowExceptions" Header="Show exceptions" Click="miShowExceptions_Click"/>
-                <MenuItem x:Name="miCompareExceptions" Header="Compare exceptions" 
-                          InputGestureText="F2" Click="miCompareExceptions_Click"/>
+                <MenuItem x:Name="miExportMethod" Header="Export code" Click="miExportMethod_Click"/>   
                 <Separator/>
                 <MenuItem x:Name="miExit" Header="Exit" Click="miExit_Click"/>
             </MenuItem>
             <MenuItem Header="Process" IsEnabled="{Binding HasProcessInfo, FallbackValue=False}">
                 <MenuItem Header="Process info" Click="bProcessInfo_Click"/>
                 <MenuItem x:Name="miThreads" Header="Threads" Click="miThreads_Click" />
+            </MenuItem>
+            <MenuItem Header="Analysis">
+                <MenuItem x:Name="miShowExceptions" Header="Show exceptions (method)" 
+                          Click="miShowExceptions_Click"/>
+                <MenuItem x:Name="miShowExceptionsType" Header="Show exceptions (type)" 
+                          InputGestureText="F2" Click="miShowExceptionsType_Click"/>
+                <MenuItem x:Name="miCompareExceptions" Header="Compare exceptions" 
+                           InputGestureText="F4" Click="miCompareExceptions_Click"/>
             </MenuItem>
             <MenuItem Header="Help" >
                 <MenuItem x:Name="miHelp" Header="Show help" Click="miHelp_Click" InputGestureText="F1"/>

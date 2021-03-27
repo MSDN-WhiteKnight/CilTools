@@ -4,6 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace CilView.Common
 {
@@ -53,6 +55,32 @@ namespace CilView.Common
             }
 
             return -1; //not found
+        }
+
+        public static void DoWpfEvents()
+        {
+            DispatcherFrame frame = new DispatcherFrame();
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Background,
+                 new DispatcherOperationCallback((f) =>
+                 {
+                     ((DispatcherFrame)f).Continue = false; return null;
+                 }), frame);
+            Dispatcher.PushFrame(frame);
+        }
+
+        public static async Task RunInBackground(Action action)
+        {
+            Exception err = null;
+
+            await Task.Run(() => {
+                try { action(); }
+                catch (Exception ex)
+                {
+                    err = ex;
+                }
+            });
+
+            if (err != null) throw err;
         }
     }
 }

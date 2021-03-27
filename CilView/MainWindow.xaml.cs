@@ -575,71 +575,19 @@ to provide feedback" +
             if (e.Key == Key.Enter) OnSearchClick();
         }
 
-        void CompareExceptions()
+        void ShowExceptionsType()
         {
             Type current_type = this.cilbrowser.GetCurrentType();
 
             if (current_type == null)
             {
-                MessageBox.Show("Select type to compare exceptions", "Error");
+                MessageBox.Show("Select type to show exceptions", "Error");
                 return;
             }
 
-            string path = "";
-
-            OpenFileDialog dlg = new OpenFileDialog();
-            dlg.RestoreDirectory = true;
-            dlg.Filter = "XML document (*.xml)|*.xml|All files|*";
-            dlg.Title = "Select XML type documentation file";
-
-            if (dlg.ShowDialog(this) != true) return;
-
-            path = dlg.FileName;
-            //path = "c:\\Test\\String.xml";
-
             try
             {
-                TypeExceptionInfo tei;
-                tei = TypeExceptionInfo.GetFromXML(path, current_type);
-
-                StringBuilder sb = new StringBuilder(5000);
-                sb.AppendLine(tei.TypeName);
-                //sb.AppendLine(tei.ToString());
-                sb.AppendLine();
-
-                StringWriter wr = new StringWriter(sb);
-                TypeExceptionInfo teiFromCode;
-                teiFromCode = TypeExceptionInfo.GetFromType(current_type);
-                TypeExceptionInfo.Compare(tei, teiFromCode, wr);
-
-                TextViewWindow wnd = new TextViewWindow();
-                wnd.Owner = this;
-                wnd.Text = sb.ToString();
-                wnd.Title = "Compare exceptions";
-                wnd.Show();
-            }
-            catch (Exception ex)
-            {
-                ErrorHandler.Current.Error(ex);
-            }
-        }
-
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.F2)
-            {
-                this.CompareExceptions();
-            }
-            else if (e.Key == Key.F3)
-            {
-                Type current_type = this.cilbrowser.GetCurrentType();
-
-                if (current_type == null)
-                {
-                    MessageBox.Show("Select type to show exceptions", "Error");
-                    return;
-                }
-
+                Mouse.OverrideCursor = Cursors.Wait;
                 TypeExceptionInfo tei;
                 tei = TypeExceptionInfo.GetFromType(current_type);
 
@@ -662,8 +610,83 @@ to provide feedback" +
                 wnd.Title = "Exceptions from current type";
                 wnd.Show();
             }
-            else if (
-                e.Key == Key.O &&
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+        async Task CompareExceptions()
+        {
+            Type current_type = this.cilbrowser.GetCurrentType();
+
+            if (current_type == null)
+            {
+                MessageBox.Show("Select type to compare exceptions", "Error");
+                return;
+            }
+
+            string path = "";
+
+            OpenFileDialog dlg = new OpenFileDialog();
+            dlg.RestoreDirectory = true;
+            dlg.Filter = "XML document (*.xml)|*.xml|All files|*";
+            dlg.Title = "Select XML type documentation file";
+
+            if (dlg.ShowDialog(this) != true) return;
+
+            path = dlg.FileName;
+
+            try
+            {
+                Mouse.OverrideCursor = Cursors.Wait;
+                TypeExceptionInfo tei=null;
+
+                await Common.Utils.RunInBackground(() => {
+                    tei = TypeExceptionInfo.GetFromXML(path, current_type);
+                });
+                
+                StringBuilder sb = new StringBuilder(5000);
+                sb.AppendLine(tei.TypeName);
+                sb.AppendLine();
+
+                StringWriter wr = new StringWriter(sb);
+                TypeExceptionInfo teiFromCode;
+                teiFromCode = TypeExceptionInfo.GetFromType(current_type);
+
+                await Common.Utils.RunInBackground(() =>
+                {
+                    TypeExceptionInfo.Compare(tei, teiFromCode, wr);
+                });
+
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Text = sb.ToString();
+                wnd.Title = "Compare exceptions";
+                wnd.Show();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+            finally
+            {
+                Mouse.OverrideCursor = null;
+            }
+        }
+
+        private void miShowExceptionsType_Click(object sender, RoutedEventArgs e)
+        {
+            this.ShowExceptionsType();
+        }
+
+        private async void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.O &&
                 (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
                 )
             {
@@ -672,6 +695,16 @@ to provide feedback" +
             else if (e.Key == Key.F1)
             {
                 this.OnHelpClick();
+            }
+            else if (e.Key == Key.F2)
+            {
+                //show exceptions (type)
+                this.ShowExceptionsType();
+            }
+            else if (e.Key == Key.F4)
+            {
+                //compare exceptions
+                await this.CompareExceptions();
             }
         }
     }
