@@ -1,12 +1,11 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Diagnostics;
 using System.Threading.Tasks;
-using System.Windows.Threading;
 using Microsoft.Diagnostics.Runtime;
 
 namespace CilView
@@ -40,7 +39,7 @@ namespace CilView
             {
                 res = new ProcessAssemblySource(this.process, this.activemode, this);
             }
-            catch (ClrDiagnosticsException)
+            catch (Exception ex) when (ex is ClrDiagnosticsException || ex is ProcessLoadException)
             {
                 res = new WmiAssemblySource(this.process, this);
             }

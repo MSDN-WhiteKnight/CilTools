@@ -38,8 +38,8 @@ namespace CilView
 
             if (dt.ClrVersions.Count == 0)
             {
-                MessageBox.Show("Error: unable to find .NET Runtime in target process!");
-                return ret;
+                this.Deattach();
+                throw new ProcessLoadException("Unable to find .NET Runtime in target process!");
             }
 
             ClrInfo runtimeInfo = dt.ClrVersions[0];
@@ -166,7 +166,7 @@ namespace CilView
 
             if (active) at = AttachFlag.NonInvasive;
             else at = AttachFlag.Passive;
-            
+
             DataTarget dt = DataTarget.AttachToProcess(pr.Id, 5000, at);
             this.Init(dt);
         }
@@ -184,7 +184,7 @@ namespace CilView
                 {
                     if (File.Exists(path)) ret = this.rd.LoadFrom(path);
                 }
-                catch (FileNotFoundException) { }                
+                catch (FileNotFoundException) { }
                 catch (BadImageFormatException) { }
                 catch (InvalidOperationException) { }
 
@@ -217,7 +217,7 @@ namespace CilView
             try
             {
                 mainmodule = process.MainModule.FileName;
-                
+
                 FileVersionInfo vinfo = process.MainModule.FileVersionInfo;
                 descr = vinfo.FileDescription;
                 vendor = vinfo.CompanyName;
@@ -268,29 +268,54 @@ namespace CilView
         public override ClrThreadInfo[] GetProcessThreads()
         {
             if (this.dt == null) throw new ObjectDisposedException("Data target");
-            
+
             ClrInfo runtimeInfo = dt.ClrVersions[0];
             ClrRuntime runtime = runtimeInfo.CreateRuntime();
-            
+
             if (this.reader == null) this.reader = new ClrAssemblyReader(runtime);
 
             ClrThreadInfo[] threads = ClrThreadInfo.Get(runtime, this.Assemblies, this.reader);
             return threads;
         }
 
-        public override void Dispose()
+        void Deattach() 
         {
             if (this.dt != null)
             {
-                reader.ClearPreloadedAssemblies();
                 this.dt.Dispose();
-                this.process.Dispose();
                 this.Assemblies.Clear();
                 this.Types.Clear();
                 this.Methods.Clear();
-                this.rd.Dispose();
                 this.dt = null;
             }
+
+            if (this.rd != null)
+            {
+                this.rd.Dispose();
+                this.rd = null;
+            }
         }
+
+        public override void Dispose()
+        {
+            this.Deattach();
+
+            if (this.reader != null)
+            {
+                this.reader.ClearPreloadedAssemblies();
+                this.reader = null;
+            }
+
+            if (this.process != null)
+            {
+                this.process.Dispose();
+                this.process = null;
+            }
+        }
+    }
+
+    public class ProcessLoadException : ApplicationException
+    {
+        public ProcessLoadException(string mes) : base(mes) { }
     }
 }
