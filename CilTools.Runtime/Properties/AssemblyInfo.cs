@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("CilTools.Runtime")]
-[assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight 2020")]
+[assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -18,5 +18,5 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("9399e692-bce7-4ec9-b92a-3426a94c0fbc")]
 
-[assembly: AssemblyVersion("2.1.0.0")]
-[assembly: AssemblyFileVersion("2.1.0.0")]
+[assembly: AssemblyVersion("2.2.0.0")]
+[assembly: AssemblyFileVersion("2.2.0.0")]

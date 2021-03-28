@@ -133,6 +133,24 @@ Using auto-update requires stable internet connection and access to the https://
 - Fix BadImageFormatException on C++/CLI assemblies
 - Fix signatures with function pointers being incorrectly displayed in left panel
 
+2.2
+
+- Add support for `constrained.` instruction prefix
+- Add type definition disassembler
+- Add **Open BCL assembly** dialog
+- Add navigation history
+- Add partial support for 64-bit processes
+- Add support for dynamic assemblies
+- Add exception analysis
+- Disable wrapping in search textbox
+- Method navigation hyperlink now spans only over the method name identifier, instead of the whole method reference syntax
+- Method navigation hyperlink is no longer underlined (to fix cases where it was obscuring _ chars in name)
+- Improve performance of "Open process" by preloading assemblies from files instead of reading target process memory, where it's possible
+- Fix null reference on typedref parameter
+- Fix unhandled exception when opening file on background thread
+- Fix token resolution bug after navigating to generic method instantiation
+- Fix crashes on access to disposed assemblies
+
 ---------------------------------------------
 
 *Copyright (c) 2021,  MSDN.WhiteKnight*

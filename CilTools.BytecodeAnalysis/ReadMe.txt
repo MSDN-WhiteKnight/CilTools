@@ -1,5 +1,5 @@
 ﻿*** CilTools.BytecodeAnalysis library ***
-Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
 License: BSD 2.0
 
 CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
@@ -159,3 +159,12 @@ v2.0
 - Fix ldtoken instruction handling with field operand
 - Fix possible null reference when converting array/pointer of generic args to syntax
 - Fix return type output for CustomMethod implementations
+
+2.2
+- Add support for dynamic methods on .NET Core (token resolution still does not work properly on .NET Core 3+ Linux)
+- Add support for `constrained.` instruction prefix
+- Add type definition disassembler
+- Add CilGraphNode.GetExceptionBlocks
+- Add CilGraph.GetHandlerNodes
+- Implement IsAssignableFrom on TypeSpec
+- Fix exception on TypeSpec.IsValueType
