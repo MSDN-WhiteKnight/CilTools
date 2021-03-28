@@ -900,7 +900,7 @@ namespace CilTools.BytecodeAnalysis
         /// <inheritdoc/>
         public override bool IsAssignableFrom(Type c)
         {
-            if (this._Type != null) return base.IsAssignableFrom(c);
+            if (this._Type == null) return base.IsAssignableFrom(c);
             else return this._Type.IsAssignableFrom(c);
         }
 
