@@ -135,9 +135,20 @@ namespace CilView.UI.Controls
         {
             if (t == null) return new ObservableCollection<MethodBase>();
 
-            CilBrowserPage page = new CilBrowserPage(t, Navigated);
-            page.Title = "Type: " + t.Name;
-            frameContent.Navigate(page);
+            string contenttext = String.Empty;
+
+            try
+            {
+                CilBrowserPage page = new CilBrowserPage(t, Navigated);
+                page.Title = "Type: " + t.Name;
+                frameContent.Navigate(page);
+                contenttext = page.ContentText;
+            }
+            catch (TypeLoadException ex) 
+            {
+                ErrorHandler.Current.Error(ex);
+                frameContent.Navigate(String.Empty);
+            }
 
             //display method list in left pane
             ObservableCollection<MethodBase> methods = AssemblySource.LoadMethods(t);
@@ -146,7 +157,7 @@ namespace CilView.UI.Controls
             
             this.current_method = null;
             this.current_type = t;
-            this.text = page.ContentText;
+            this.text = contenttext;
 
             //make sure content is visible
             ExpandContentPane();

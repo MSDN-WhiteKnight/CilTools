@@ -398,10 +398,23 @@ namespace CilTools.Syntax
             content.Add(new GenericSyntax(Environment.NewLine));
 
             //base type
-            if ((t.IsClass || t.IsValueType) && t.BaseType!=null)
+            if (!t.IsInterface && t.BaseType!=null)
             {
                 content.Add(new KeywordSyntax(String.Empty, "extends", " ", KeywordKind.Other));
-                content.Add(new MemberRefSyntax(CilAnalysis.GetTypeFullNameSyntax(t.BaseType).ToArray(), t.BaseType));
+
+                try
+                {
+                    content.Add(new MemberRefSyntax(CilAnalysis.GetTypeFullNameSyntax(t.BaseType).ToArray(), t.BaseType));
+                }
+                catch (TypeLoadException ex) 
+                {
+                    //handle error when base type is not available
+                    content.Add(new IdentifierSyntax(String.Empty, "UnknownType", String.Empty, false, null));
+
+                    Diagnostics.OnError(
+                        t, new CilErrorEventArgs(ex, "Failed to read base type for: "+ t.Name)
+                        );
+                }
                 content.Add(new GenericSyntax(Environment.NewLine));
             }
 
