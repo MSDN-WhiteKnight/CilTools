@@ -210,7 +210,25 @@
         </member>
         <member name="M:CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods">
             <summary>
-            Gets the pseudo-assembly that represents the collection of dynamic methods in the process containing CLR instance
+            Gets the pseudo-assembly that represents the collection of dynamic methods in the process 
+            containing the CLR instance
+            </summary>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly(System.Reflection.Assembly)">
+            <summary>
+            Adds the specified assembly into the preloaded assembly collection
+            </summary>
+            <param name="ass">Preloaded assembly instance</param>
+            <remarks>
+            Adding preloaded assemblies enables some <c>CilTools.Runtime</c> mechanisms to avoid 
+            expensive <c>AssemblyReader.Read</c> calls. The preloaded assembly must implement 
+            <see cref="T:CilTools.Reflection.ITokenResolver"/> interface to be useful.
+            </remarks>
+            <exception cref="T:System.ArgumentNullException">Assembly is null</exception>
+        </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies">
+            <summary>
+            Removes all assemblies from the preloaded assembly collection
             </summary>
         </member>
         <member name="T:CilTools.Runtime.ClrDynamicMethod">
