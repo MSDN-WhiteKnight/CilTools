@@ -7,6 +7,7 @@ items:
   children:
   - CilTools.BytecodeAnalysis.CilGraph.Create(System.Reflection.MethodBase)
   - CilTools.BytecodeAnalysis.CilGraph.EmitTo(System.Reflection.Emit.ILGenerator,System.Func{CilTools.BytecodeAnalysis.CilInstruction,System.Boolean})
+  - CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes(CilTools.Reflection.ExceptionBlock)
   - CilTools.BytecodeAnalysis.CilGraph.GetInstructions
   - CilTools.BytecodeAnalysis.CilGraph.GetNodes
   - CilTools.BytecodeAnalysis.CilGraph.Method
@@ -400,6 +401,40 @@ items:
       description: The collection of instructions
     content.vb: Public Function GetInstructions As IEnumerable(Of CilInstruction)
   overload: CilTools.BytecodeAnalysis.CilGraph.GetInstructions*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes(CilTools.Reflection.ExceptionBlock)
+  commentId: M:CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes(CilTools.Reflection.ExceptionBlock)
+  id: GetHandlerNodes(CilTools.Reflection.ExceptionBlock)
+  parent: CilTools.BytecodeAnalysis.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: GetHandlerNodes(ExceptionBlock)
+  nameWithType: CilGraph.GetHandlerNodes(ExceptionBlock)
+  fullName: CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes(CilTools.Reflection.ExceptionBlock)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the collection of nodes that make up the handler of the specified exception block\n"
+  remarks: "\nThe exception block must belong to the method from which this graph was created. If the \nblock belongs to another method, the behaviour is undefined. You can get exception blocks \nthat enclose the given graph node using <xref href=\"CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks\" data-throw-if-not-resolved=\"false\"></xref> \nmethod.\n"
+  syntax:
+    content: public IEnumerable<CilGraphNode> GetHandlerNodes(ExceptionBlock block)
+    parameters:
+    - id: block
+      type: CilTools.Reflection.ExceptionBlock
+      description: The exception block to get handler
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.CilGraphNode}
+      description: The collection of nodes corresponding to exception block
+    content.vb: Public Function GetHandlerNodes(block As ExceptionBlock) As IEnumerable(Of CilGraphNode)
+  overload: CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes*
   modifiers.csharp:
   - public
   modifiers.vb:
@@ -1064,6 +1099,25 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes
+  isExternal: true
+  name: GetHandlerNodes
+  nameWithType: CilGraph.GetHandlerNodes
+  fullName: CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes
+- uid: CilTools.Reflection.ExceptionBlock
+  commentId: T:CilTools.Reflection.ExceptionBlock
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ExceptionBlock
+  nameWithType: ExceptionBlock
+  fullName: CilTools.Reflection.ExceptionBlock
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
 - uid: CilTools.BytecodeAnalysis.CilGraph.EmitTo*
   commentId: Overload:CilTools.BytecodeAnalysis.CilGraph.EmitTo
   isExternal: true

@@ -37,6 +37,7 @@ items:
   - CilTools.BytecodeAnalysis.CilGraphNode
   inheritedMembers:
   - CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets
+  - CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
   - CilTools.BytecodeAnalysis.CilGraphNode.ToString
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
@@ -321,6 +322,37 @@ references:
     name: GetSwitchTargets
     nameWithType: CilGraphNode.GetSwitchTargets
     fullName: CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
+  commentId: M:CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  isExternal: true
+  name: GetExceptionBlocks()
+  nameWithType: CilGraphNode.GetExceptionBlocks()
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks()
+  spec.csharp:
+  - uid: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
+    name: GetExceptionBlocks
+    nameWithType: CilGraphNode.GetExceptionBlocks
+    fullName: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
+    name: GetExceptionBlocks
+    nameWithType: CilGraphNode.GetExceptionBlocks
+    fullName: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
     isExternal: true
   - name: (
     nameWithType: (

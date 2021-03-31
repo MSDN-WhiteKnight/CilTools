@@ -284,6 +284,51 @@ content, both syntactically meaningful and indentation-only, is stored within on
   </table>
   
   
+  <a id="CilTools_Syntax_SyntaxNode_GetTypeDefSyntax_" data-uid="CilTools.Syntax.SyntaxNode.GetTypeDefSyntax*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_GetTypeDefSyntax_System_Type_" data-uid="CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)">GetTypeDefSyntax(Type)</h4>
+  <div class="markdown level1 summary"><p>Gets the CIL assembler syntax for the definition of the specified type</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;SyntaxNode&gt; GetTypeDefSyntax(Type t)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">t</span></td>
+        <td><p>Type to get definition syntax</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>&gt;</td>
+        <td><p>The collection of syntax nodes that make up type definition syntax</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="CilTools_Syntax_SyntaxNode_ToString_" data-uid="CilTools.Syntax.SyntaxNode.ToString*"></a>
   <h4 id="CilTools_Syntax_SyntaxNode_ToString" data-uid="CilTools.Syntax.SyntaxNode.ToString">ToString()</h4>
   <div class="markdown level1 summary"><p>Gets the text representation of this node, including whitespace content</p>

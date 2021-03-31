@@ -6,6 +6,8 @@ items:
   parent: CilTools.Runtime
   children:
   - CilTools.Runtime.ClrAssemblyReader.#ctor(Microsoft.Diagnostics.Runtime.ClrRuntime)
+  - CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly(System.Reflection.Assembly)
+  - CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies
   - CilTools.Runtime.ClrAssemblyReader.EnumerateMethods(System.Diagnostics.Process)
   - CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods(System.Diagnostics.Process,System.String)
   - CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods
@@ -262,13 +264,74 @@ items:
   assemblies:
   - CilTools.Runtime
   namespace: CilTools.Runtime
-  summary: "\nGets the pseudo-assembly that represents the collection of dynamic methods in the process containing CLR instance\n"
+  summary: "\nGets the pseudo-assembly that represents the collection of dynamic methods in the process \ncontaining the CLR instance\n"
   syntax:
     content: public DynamicMethodsAssembly GetDynamicMethods()
     return:
       type: CilTools.Runtime.DynamicMethodsAssembly
     content.vb: Public Function GetDynamicMethods As DynamicMethodsAssembly
   overload: CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly(System.Reflection.Assembly)
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly(System.Reflection.Assembly)
+  id: AddPreloadedAssembly(System.Reflection.Assembly)
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: AddPreloadedAssembly(Assembly)
+  nameWithType: ClrAssemblyReader.AddPreloadedAssembly(Assembly)
+  fullName: CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly(System.Reflection.Assembly)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nAdds the specified assembly into the preloaded assembly collection\n"
+  remarks: "\nAdding preloaded assemblies enables some <code>CilTools.Runtime</code> mechanisms to avoid \nexpensive <code>AssemblyReader.Read</code> calls. The preloaded assembly must implement \n<xref href=\"CilTools.Reflection.ITokenResolver\" data-throw-if-not-resolved=\"false\"></xref> interface to be useful.\n"
+  syntax:
+    content: public void AddPreloadedAssembly(Assembly ass)
+    parameters:
+    - id: ass
+      type: System.Reflection.Assembly
+      description: Preloaded assembly instance
+    content.vb: Public Sub AddPreloadedAssembly(ass As Assembly)
+  overload: CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Assembly is null
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies
+  id: ClearPreloadedAssemblies
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: ClearPreloadedAssemblies()
+  nameWithType: ClrAssemblyReader.ClearPreloadedAssemblies()
+  fullName: CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies()
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nRemoves all assemblies from the preloaded assembly collection\n"
+  syntax:
+    content: public void ClearPreloadedAssemblies()
+    content.vb: Public Sub ClearPreloadedAssemblies
+  overload: CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies*
   modifiers.csharp:
   - public
   modifiers.vb:
@@ -758,6 +821,34 @@ references:
   name: ClrModule
   nameWithType: ClrModule
   fullName: Microsoft.Diagnostics.Runtime.ClrModule
+- uid: CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly*
+  commentId: Overload:CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly
+  isExternal: true
+  name: AddPreloadedAssembly
+  nameWithType: ClrAssemblyReader.AddPreloadedAssembly
+  fullName: CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.Reflection.Assembly
+  commentId: T:System.Reflection.Assembly
+  parent: System.Reflection
+  isExternal: true
+  name: Assembly
+  nameWithType: Assembly
+  fullName: System.Reflection.Assembly
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies*
+  commentId: Overload:CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies
+  isExternal: true
+  name: ClearPreloadedAssemblies
+  nameWithType: ClrAssemblyReader.ClearPreloadedAssemblies
+  fullName: CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies
 - uid: CilTools.Runtime.ClrAssemblyReader.SourceRuntime*
   commentId: Overload:CilTools.Runtime.ClrAssemblyReader.SourceRuntime
   isExternal: true

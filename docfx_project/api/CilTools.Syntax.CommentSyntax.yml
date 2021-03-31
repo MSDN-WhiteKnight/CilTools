@@ -32,6 +32,7 @@ items:
   inheritedMembers:
   - CilTools.Syntax.SyntaxNode.ToString
   - CilTools.Syntax.SyntaxNode.GetChildNodes
+  - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
   - CilTools.Syntax.SyntaxNode.LeadingWhitespace
   - CilTools.Syntax.SyntaxNode.TrailingWhitespace
   - CilTools.Syntax.SyntaxNode.Parent
@@ -191,6 +192,47 @@ references:
   - name: (
     nameWithType: (
     fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+  commentId: M:CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: GetTypeDefSyntax(Type)
+  nameWithType: SyntaxNode.GetTypeDefSyntax(Type)
+  fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+  spec.csharp:
+  - uid: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+    name: GetTypeDefSyntax
+    nameWithType: SyntaxNode.GetTypeDefSyntax
+    fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+    name: GetTypeDefSyntax
+    nameWithType: SyntaxNode.GetTypeDefSyntax
+    fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
   - name: )
     nameWithType: )
     fullName: )

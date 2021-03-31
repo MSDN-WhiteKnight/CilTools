@@ -174,6 +174,67 @@
   </h3>
   
   
+  <a id="CilTools_Runtime_ClrAssemblyReader_AddPreloadedAssembly_" data-uid="CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_AddPreloadedAssembly_System_Reflection_Assembly_" data-uid="CilTools.Runtime.ClrAssemblyReader.AddPreloadedAssembly(System.Reflection.Assembly)">AddPreloadedAssembly(Assembly)</h4>
+  <div class="markdown level1 summary"><p>Adds the specified assembly into the preloaded assembly collection</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddPreloadedAssembly(Assembly ass)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.Assembly</span></td>
+        <td><span class="parametername">ass</span></td>
+        <td><p>Preloaded assembly instance</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Runtime_ClrAssemblyReader_AddPreloadedAssembly_System_Reflection_Assembly__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Adding preloaded assemblies enables some <code>CilTools.Runtime</code> mechanisms to avoid
+expensive <code>AssemblyReader.Read</code> calls. The preloaded assembly must implement
+<a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a> interface to be useful.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Assembly is null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrAssemblyReader_ClearPreloadedAssemblies_" data-uid="CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_ClearPreloadedAssemblies" data-uid="CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies">ClearPreloadedAssemblies()</h4>
+  <div class="markdown level1 summary"><p>Removes all assemblies from the preloaded assembly collection</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void ClearPreloadedAssemblies()</code></pre>
+  </div>
+  
+  
   <a id="CilTools_Runtime_ClrAssemblyReader_EnumerateMethods_" data-uid="CilTools.Runtime.ClrAssemblyReader.EnumerateMethods*"></a>
   <h4 id="CilTools_Runtime_ClrAssemblyReader_EnumerateMethods_System_Diagnostics_Process_" data-uid="CilTools.Runtime.ClrAssemblyReader.EnumerateMethods(System.Diagnostics.Process)">EnumerateMethods(Process)</h4>
   <div class="markdown level1 summary"><p>Gets the collection of all methods in the specified process</p>
@@ -270,7 +331,8 @@
   
   <a id="CilTools_Runtime_ClrAssemblyReader_GetDynamicMethods_" data-uid="CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods*"></a>
   <h4 id="CilTools_Runtime_ClrAssemblyReader_GetDynamicMethods" data-uid="CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods">GetDynamicMethods()</h4>
-  <div class="markdown level1 summary"><p>Gets the pseudo-assembly that represents the collection of dynamic methods in the process containing CLR instance</p>
+  <div class="markdown level1 summary"><p>Gets the pseudo-assembly that represents the collection of dynamic methods in the process
+containing the CLR instance</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>

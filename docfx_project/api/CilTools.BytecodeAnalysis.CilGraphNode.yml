@@ -7,6 +7,7 @@ items:
   children:
   - CilTools.BytecodeAnalysis.CilGraphNode.#ctor
   - CilTools.BytecodeAnalysis.CilGraphNode.BranchTarget
+  - CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
   - CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets
   - CilTools.BytecodeAnalysis.CilGraphNode.Instruction
   - CilTools.BytecodeAnalysis.CilGraphNode.Name
@@ -73,6 +74,35 @@ items:
       type: CilTools.BytecodeAnalysis.CilGraphNode[]
     content.vb: Public Function GetSwitchTargets As CilGraphNode()
   overload: CilTools.BytecodeAnalysis.CilGraphNode.GetSwitchTargets*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
+  commentId: M:CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
+  id: GetExceptionBlocks
+  parent: CilTools.BytecodeAnalysis.CilGraphNode
+  langs:
+  - csharp
+  - vb
+  name: GetExceptionBlocks()
+  nameWithType: CilGraphNode.GetExceptionBlocks()
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets an array of exception handling blocks in which this node is enclosed\n"
+  syntax:
+    content: public ExceptionBlock[] GetExceptionBlocks()
+    return:
+      type: CilTools.Reflection.ExceptionBlock[]
+      description: An array of exception blocks, or an empty array if there are none
+    content.vb: Public Function GetExceptionBlocks As ExceptionBlock()
+  overload: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks*
   modifiers.csharp:
   - public
   modifiers.vb:
@@ -590,6 +620,38 @@ references:
     name: CilGraphNode
     nameWithType: CilGraphNode
     fullName: CilTools.BytecodeAnalysis.CilGraphNode
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
+  isExternal: true
+  name: GetExceptionBlocks
+  nameWithType: CilGraphNode.GetExceptionBlocks
+  fullName: CilTools.BytecodeAnalysis.CilGraphNode.GetExceptionBlocks
+- uid: CilTools.Reflection.ExceptionBlock[]
+  isExternal: true
+  name: ExceptionBlock[]
+  nameWithType: ExceptionBlock[]
+  fullName: CilTools.Reflection.ExceptionBlock[]
+  nameWithType.vb: ExceptionBlock()
+  fullName.vb: CilTools.Reflection.ExceptionBlock()
+  name.vb: ExceptionBlock()
+  spec.csharp:
+  - uid: CilTools.Reflection.ExceptionBlock
+    name: ExceptionBlock
+    nameWithType: ExceptionBlock
+    fullName: CilTools.Reflection.ExceptionBlock
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilTools.Reflection.ExceptionBlock
+    name: ExceptionBlock
+    nameWithType: ExceptionBlock
+    fullName: CilTools.Reflection.ExceptionBlock
     isExternal: true
   - name: ()
     nameWithType: ()

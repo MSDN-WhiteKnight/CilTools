@@ -272,6 +272,57 @@ Return <span class="xref">true</span> to skip emitting instruction, or <span cla
 </div>
   
   
+  <a id="CilTools_BytecodeAnalysis_CilGraph_GetHandlerNodes_" data-uid="CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_CilGraph_GetHandlerNodes_CilTools_Reflection_ExceptionBlock_" data-uid="CilTools.BytecodeAnalysis.CilGraph.GetHandlerNodes(CilTools.Reflection.ExceptionBlock)">GetHandlerNodes(ExceptionBlock)</h4>
+  <div class="markdown level1 summary"><p>Gets the collection of nodes that make up the handler of the specified exception block</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IEnumerable&lt;CilGraphNode&gt; GetHandlerNodes(ExceptionBlock block)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ExceptionBlock.html">ExceptionBlock</a></td>
+        <td><span class="parametername">block</span></td>
+        <td><p>The exception block to get handler</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilTools.BytecodeAnalysis.CilGraphNode.html">CilGraphNode</a>&gt;</td>
+        <td><p>The collection of nodes corresponding to exception block</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_BytecodeAnalysis_CilGraph_GetHandlerNodes_CilTools_Reflection_ExceptionBlock__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The exception block must belong to the method from which this graph was created. If the
+block belongs to another method, the behaviour is undefined. You can get exception blocks
+that enclose the given graph node using <a class="xref" href="CilTools.BytecodeAnalysis.CilGraphNode.html#CilTools_BytecodeAnalysis_CilGraphNode_GetExceptionBlocks">GetExceptionBlocks()</a>
+method.</p>
+</div>
+  
+  
   <a id="CilTools_BytecodeAnalysis_CilGraph_GetInstructions_" data-uid="CilTools.BytecodeAnalysis.CilGraph.GetInstructions*"></a>
   <h4 id="CilTools_BytecodeAnalysis_CilGraph_GetInstructions" data-uid="CilTools.BytecodeAnalysis.CilGraph.GetInstructions">GetInstructions()</h4>
   <div class="markdown level1 summary"><p>Enumerates all instructions represented by this graph's nodes</p>

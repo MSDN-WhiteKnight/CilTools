@@ -8,6 +8,7 @@ items:
   - CilTools.Syntax.SyntaxNode.#ctor
   - CilTools.Syntax.SyntaxNode.EnumerateChildNodes
   - CilTools.Syntax.SyntaxNode.GetChildNodes
+  - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
   - CilTools.Syntax.SyntaxNode.LeadingWhitespace
   - CilTools.Syntax.SyntaxNode.Parent
   - CilTools.Syntax.SyntaxNode.ToString
@@ -181,6 +182,41 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+  commentId: M:CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+  id: GetTypeDefSyntax(System.Type)
+  parent: CilTools.Syntax.SyntaxNode
+  langs:
+  - csharp
+  - vb
+  name: GetTypeDefSyntax(Type)
+  nameWithType: SyntaxNode.GetTypeDefSyntax(Type)
+  fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nGets the CIL assembler syntax for the definition of the specified type \n"
+  syntax:
+    content: public static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t)
+    parameters:
+    - id: t
+      type: System.Type
+      description: Type to get definition syntax
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+      description: The collection of syntax nodes that make up type definition syntax
+    content.vb: Public Shared Function GetTypeDefSyntax(t As Type) As IEnumerable(Of SyntaxNode)
+  overload: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
 - uid: CilTools.Syntax.SyntaxNode.#ctor
   commentId: M:CilTools.Syntax.SyntaxNode.#ctor
   id: '#ctor'
@@ -759,6 +795,19 @@ references:
   - name: ()
     nameWithType: ()
     fullName: ()
+- uid: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax*
+  commentId: Overload:CilTools.Syntax.SyntaxNode.GetTypeDefSyntax
+  isExternal: true
+  name: GetTypeDefSyntax
+  nameWithType: SyntaxNode.GetTypeDefSyntax
+  fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
 - uid: CilTools.Syntax.SyntaxNode.#ctor*
   commentId: Overload:CilTools.Syntax.SyntaxNode.#ctor
   isExternal: true

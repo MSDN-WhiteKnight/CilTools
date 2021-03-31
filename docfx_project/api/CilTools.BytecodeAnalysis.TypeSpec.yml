@@ -42,6 +42,7 @@ items:
   - CilTools.BytecodeAnalysis.TypeSpec.InnerTypeSpec
   - CilTools.BytecodeAnalysis.TypeSpec.InvokeMember(System.String,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object,System.Object[],System.Reflection.ParameterModifier[],System.Globalization.CultureInfo,System.String[])
   - CilTools.BytecodeAnalysis.TypeSpec.IsArrayImpl
+  - CilTools.BytecodeAnalysis.TypeSpec.IsAssignableFrom(System.Type)
   - CilTools.BytecodeAnalysis.TypeSpec.IsByRefImpl
   - CilTools.BytecodeAnalysis.TypeSpec.IsCOMObjectImpl
   - CilTools.BytecodeAnalysis.TypeSpec.IsDefined(System.Type,System.Boolean)
@@ -52,6 +53,7 @@ items:
   - CilTools.BytecodeAnalysis.TypeSpec.IsPinned
   - CilTools.BytecodeAnalysis.TypeSpec.IsPointerImpl
   - CilTools.BytecodeAnalysis.TypeSpec.IsPrimitiveImpl
+  - CilTools.BytecodeAnalysis.TypeSpec.IsValueTypeImpl
   - CilTools.BytecodeAnalysis.TypeSpec.MakeArrayType
   - CilTools.BytecodeAnalysis.TypeSpec.MakeByRefType
   - CilTools.BytecodeAnalysis.TypeSpec.MakeGenericType(System.Type[])
@@ -159,7 +161,6 @@ items:
   - System.Type.GetDefaultMembers
   - System.Type.FindMembers(System.Reflection.MemberTypes,System.Reflection.BindingFlags,System.Reflection.MemberFilter,System.Object)
   - System.Type.GetGenericParameterConstraints
-  - System.Type.IsValueTypeImpl
   - System.Type.IsContextfulImpl
   - System.Type.IsMarshalByRefImpl
   - System.Type.GetEnumNames
@@ -169,7 +170,6 @@ items:
   - System.Type.GetEnumName(System.Object)
   - System.Type.IsSubclassOf(System.Type)
   - System.Type.IsInstanceOfType(System.Object)
-  - System.Type.IsAssignableFrom(System.Type)
   - System.Type.IsEquivalentTo(System.Type)
   - System.Type.GetTypeArray(System.Object[])
   - System.Type.Equals(System.Object)
@@ -1503,6 +1503,39 @@ items:
   modifiers.vb:
   - Public
   - Overrides
+- uid: CilTools.BytecodeAnalysis.TypeSpec.IsAssignableFrom(System.Type)
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.IsAssignableFrom(System.Type)
+  id: IsAssignableFrom(System.Type)
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: IsAssignableFrom(Type)
+  nameWithType: TypeSpec.IsAssignableFrom(Type)
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.IsAssignableFrom(System.Type)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  syntax:
+    content: public override bool IsAssignableFrom(Type c)
+    parameters:
+    - id: c
+      type: System.Type
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function IsAssignableFrom(c As Type) As Boolean
+  overridden: System.Type.IsAssignableFrom(System.Type)
+  overload: CilTools.BytecodeAnalysis.TypeSpec.IsAssignableFrom*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
 - uid: CilTools.BytecodeAnalysis.TypeSpec.ToString
   commentId: M:CilTools.BytecodeAnalysis.TypeSpec.ToString
   id: ToString
@@ -1562,6 +1595,36 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilTools.BytecodeAnalysis.TypeSpec.IsValueTypeImpl
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.IsValueTypeImpl
+  id: IsValueTypeImpl
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: IsValueTypeImpl()
+  nameWithType: TypeSpec.IsValueTypeImpl()
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.IsValueTypeImpl()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  syntax:
+    content: protected override bool IsValueTypeImpl()
+    return:
+      type: System.Boolean
+    content.vb: Protected Overrides Function IsValueTypeImpl As Boolean
+  overridden: System.Type.IsValueTypeImpl
+  overload: CilTools.BytecodeAnalysis.TypeSpec.IsValueTypeImpl*
+  modifiers.csharp:
+  - protected
+  - override
+  modifiers.vb:
+  - Protected
+  - Overrides
 - uid: CilTools.BytecodeAnalysis.TypeSpec.ElementType
   commentId: P:CilTools.BytecodeAnalysis.TypeSpec.ElementType
   id: ElementType
@@ -6230,37 +6293,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Type.IsValueTypeImpl
-  commentId: M:System.Type.IsValueTypeImpl
-  parent: System.Type
-  isExternal: true
-  name: IsValueTypeImpl()
-  nameWithType: Type.IsValueTypeImpl()
-  fullName: System.Type.IsValueTypeImpl()
-  spec.csharp:
-  - uid: System.Type.IsValueTypeImpl
-    name: IsValueTypeImpl
-    nameWithType: Type.IsValueTypeImpl
-    fullName: System.Type.IsValueTypeImpl
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Type.IsValueTypeImpl
-    name: IsValueTypeImpl
-    nameWithType: Type.IsValueTypeImpl
-    fullName: System.Type.IsValueTypeImpl
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: System.Type.IsContextfulImpl
   commentId: M:System.Type.IsContextfulImpl
   parent: System.Type
@@ -6576,47 +6608,6 @@ references:
     name: Object
     nameWithType: Object
     fullName: System.Object
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: System.Type.IsAssignableFrom(System.Type)
-  commentId: M:System.Type.IsAssignableFrom(System.Type)
-  parent: System.Type
-  isExternal: true
-  name: IsAssignableFrom(Type)
-  nameWithType: Type.IsAssignableFrom(Type)
-  fullName: System.Type.IsAssignableFrom(System.Type)
-  spec.csharp:
-  - uid: System.Type.IsAssignableFrom(System.Type)
-    name: IsAssignableFrom
-    nameWithType: Type.IsAssignableFrom
-    fullName: System.Type.IsAssignableFrom
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Type
-    name: Type
-    nameWithType: Type
-    fullName: System.Type
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Type.IsAssignableFrom(System.Type)
-    name: IsAssignableFrom
-    nameWithType: Type.IsAssignableFrom
-    fullName: System.Type.IsAssignableFrom
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.Type
-    name: Type
-    nameWithType: Type
-    fullName: System.Type
     isExternal: true
   - name: )
     nameWithType: )
@@ -10878,6 +10869,53 @@ references:
   name: GetGenericTypeDefinition
   nameWithType: TypeSpec.GetGenericTypeDefinition
   fullName: CilTools.BytecodeAnalysis.TypeSpec.GetGenericTypeDefinition
+- uid: System.Type.IsAssignableFrom(System.Type)
+  commentId: M:System.Type.IsAssignableFrom(System.Type)
+  parent: System.Type
+  isExternal: true
+  name: IsAssignableFrom(Type)
+  nameWithType: Type.IsAssignableFrom(Type)
+  fullName: System.Type.IsAssignableFrom(System.Type)
+  spec.csharp:
+  - uid: System.Type.IsAssignableFrom(System.Type)
+    name: IsAssignableFrom
+    nameWithType: Type.IsAssignableFrom
+    fullName: System.Type.IsAssignableFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Type.IsAssignableFrom(System.Type)
+    name: IsAssignableFrom
+    nameWithType: Type.IsAssignableFrom
+    fullName: System.Type.IsAssignableFrom
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.TypeSpec.IsAssignableFrom*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.IsAssignableFrom
+  isExternal: true
+  name: IsAssignableFrom
+  nameWithType: TypeSpec.IsAssignableFrom
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.IsAssignableFrom
 - uid: System.Type.ToString
   commentId: M:System.Type.ToString
   parent: System.Type
@@ -10921,6 +10959,43 @@ references:
   name: IsFunctionPointer
   nameWithType: TypeSpec.IsFunctionPointer
   fullName: CilTools.BytecodeAnalysis.TypeSpec.IsFunctionPointer
+- uid: System.Type.IsValueTypeImpl
+  commentId: M:System.Type.IsValueTypeImpl
+  parent: System.Type
+  isExternal: true
+  name: IsValueTypeImpl()
+  nameWithType: Type.IsValueTypeImpl()
+  fullName: System.Type.IsValueTypeImpl()
+  spec.csharp:
+  - uid: System.Type.IsValueTypeImpl
+    name: IsValueTypeImpl
+    nameWithType: Type.IsValueTypeImpl
+    fullName: System.Type.IsValueTypeImpl
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Type.IsValueTypeImpl
+    name: IsValueTypeImpl
+    nameWithType: Type.IsValueTypeImpl
+    fullName: System.Type.IsValueTypeImpl
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.TypeSpec.IsValueTypeImpl*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.IsValueTypeImpl
+  isExternal: true
+  name: IsValueTypeImpl
+  nameWithType: TypeSpec.IsValueTypeImpl
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.IsValueTypeImpl
 - uid: CilTools.BytecodeAnalysis.TypeSpec.ElementType*
   commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.ElementType
   isExternal: true

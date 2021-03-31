@@ -91,6 +91,9 @@
       <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetChildNodes">SyntaxNode.GetChildNodes()</a>
     </div>
     <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetTypeDefSyntax_System_Type_">SyntaxNode.GetTypeDefSyntax(Type)</a>
+    </div>
+    <div>
       <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_LeadingWhitespace">SyntaxNode.LeadingWhitespace</a>
     </div>
     <div>
@@ -175,6 +178,60 @@
       <tr>
         <td><span class="xref">System.Boolean</span></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Syntax_IdentifierSyntax_TargetItem_" data-uid="CilTools.Syntax.IdentifierSyntax.TargetItem*"></a>
+  <h4 id="CilTools_Syntax_IdentifierSyntax_TargetItem" data-uid="CilTools.Syntax.IdentifierSyntax.TargetItem">TargetItem</h4>
+  <div class="markdown level1 summary"><p>Gets the item (such as assembly, member or variable) that this identifier represents</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object TargetItem { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>The reference to the target item, or <code>null</code> if the target item is unknown</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Syntax_IdentifierSyntax_TargetMember_" data-uid="CilTools.Syntax.IdentifierSyntax.TargetMember*"></a>
+  <h4 id="CilTools_Syntax_IdentifierSyntax_TargetMember" data-uid="CilTools.Syntax.IdentifierSyntax.TargetMember">TargetMember</h4>
+  <div class="markdown level1 summary"><p>Gets the assembly member represented by this identifier</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MemberInfo TargetMember { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td><p>The reference to the target member, or <code>null</code> if the target item is unknown or not a member</p>
+</td>
       </tr>
     </tbody>
   </table>
