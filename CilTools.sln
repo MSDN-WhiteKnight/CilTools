@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.Tests.Common", "te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.BytecodeAnalysis.Tests.NetCore", "tests\CilTools.BytecodeAnalysis.Tests.NetCore\CilTools.BytecodeAnalysis.Tests.NetCore.csproj", "{8AAFFA44-ED7E-46B7-B425-8B881505EA0F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EmitSampleApp", "tests\EmitSampleApp\EmitSampleApp.csproj", "{43AC5DE1-B38D-47EE-B027-64AE237D939E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EmitSampleApp", "tests\EmitSampleApp\EmitSampleApp.csproj", "{43AC5DE1-B38D-47EE-B027-64AE237D939E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Runtime.Tests", "tests\CilTools.Runtime.Tests\CilTools.Runtime.Tests.csproj", "{AC54AC2F-492C-4089-AFEC-288F8C8A4260}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -147,6 +149,18 @@ Global
 		{43AC5DE1-B38D-47EE-B027-64AE237D939E}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{43AC5DE1-B38D-47EE-B027-64AE237D939E}.Release|Win32.ActiveCfg = Release|Any CPU
 		{43AC5DE1-B38D-47EE-B027-64AE237D939E}.Release|Win32.Build.0 = Release|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Debug|Win32.ActiveCfg = Debug|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Debug|Win32.Build.0 = Debug|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Release|Win32.ActiveCfg = Release|Any CPU
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260}.Release|Win32.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -157,6 +171,7 @@ Global
 		{CC09C7FC-6B32-43BD-B4DA-E3C8CAF8EA91} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
 		{8AAFFA44-ED7E-46B7-B425-8B881505EA0F} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
 		{43AC5DE1-B38D-47EE-B027-64AE237D939E} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
+		{AC54AC2F-492C-4089-AFEC-288F8C8A4260} = {4A7BB35F-E42B-4A4E-8833-6B048065F45A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E67EF443-831E-47A3-A9FD-F4EAD03CEEED}
