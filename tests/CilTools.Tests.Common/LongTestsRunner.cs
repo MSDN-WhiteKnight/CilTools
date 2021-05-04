@@ -1,7 +1,6 @@
 ﻿/* CIL Tools tests
  * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -30,13 +29,14 @@ namespace CilTools.Tests.Common
             }
             catch (TargetInvocationException ex)
             {
-                if (ex.InnerException is AssertFailedException)
+                if (ex.InnerException.GetType().Name.Contains("Assert"))
                 {
                     Console.WriteLine("Test assertion failed");                    
                 }
                 else
                 {
                     Console.WriteLine("Test thrown an exception");
+                    Console.WriteLine(ex.InnerException.GetType().ToString());
                 }
 
                 Console.WriteLine("Test: " + mi.Name);
@@ -62,6 +62,7 @@ namespace CilTools.Tests.Common
             Console.WriteLine("Test assembly: " + testAssembly.GetName().Name);
             Type[] types = testAssembly.GetTypes();
             Console.WriteLine("Running tests...");
+            Console.WriteLine();
 
             //find test classes
 
