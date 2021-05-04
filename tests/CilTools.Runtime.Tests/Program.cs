@@ -54,7 +54,7 @@ namespace CilTools.Runtime.Tests
                  new Literal("managed"), MatchElement.Any,
                  new Literal(".try"), MatchElement.Any,
                  new Literal("catch"), MatchElement.Any,
-                 new Literal("System.Exception"), MatchElement.Any,
+                 new Literal("System.Exception!"), MatchElement.Any,
                  new Literal("call"), MatchElement.Any,
                  new Literal("System.Console::WriteLine"), MatchElement.Any,
                  new Literal("ret"), MatchElement.Any
