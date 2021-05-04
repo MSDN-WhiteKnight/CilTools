@@ -31,3 +31,6 @@ jobs:
     - name: Test CilTools.Metadata
       run: |
         & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilTools.Metadata.Tests\bin\Debug\CilTools.Metadata.Tests.dll
+    - name: Test CilTools.Runtime
+      run: |
+        Set-Location -Path tests\CilTools.Runtime.Tests\bin\Debug; .\CilTools.Runtime.Tests.exe    
