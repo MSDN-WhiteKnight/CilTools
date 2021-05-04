@@ -13,9 +13,11 @@ using Microsoft.Diagnostics.Runtime;
 
 namespace CilTools.Runtime.Tests
 {
-    class Program
+    [LongTest]
+    public class ClrTests
     {
-        static int Main(string[] args)
+        [LongTest]
+        public void TestDynamicMethod()
         {
             //start test app
             string path = @"..\..\..\EmitSampleApp\bin\Debug\net45\win-x86\EmitSampleApp.exe";
@@ -25,45 +27,47 @@ namespace CilTools.Runtime.Tests
             psi.UseShellExecute = false;
             Process pr = Process.Start(psi);
 
-            //wait for init
-            Console.WriteLine("Running test...");
-            Thread.Sleep(2000);
-
-            //attach to process via ClrMD
-            DataTarget dt = DataTarget.AttachToProcess(pr.Id, 5000, AttachFlag.NonInvasive);
-
-            using (dt)
+            try
             {
-                ClrInfo runtimeInfo = dt.ClrVersions[0];
-                ClrRuntime runtime = runtimeInfo.CreateRuntime();
-                ClrAssemblyReader reader = new ClrAssemblyReader(runtime);
-                DynamicMethodsAssembly ass = reader.GetDynamicMethods();
-                Type t = ass.ChildType;
+                //wait for init
+                Thread.Sleep(2000);
 
-                //get dynamic method
-                MethodBase mb = (MethodBase)(t.GetMembers(
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
-                    )[0]);
+                //attach to process via ClrMD
+                DataTarget dt = DataTarget.AttachToProcess(pr.Id, 5000, AttachFlag.NonInvasive);
 
-                string str = CilAnalysis.MethodToText(mb);
+                using (dt)
+                {
+                    ClrInfo runtimeInfo = dt.ClrVersions[0];
+                    ClrRuntime runtime = runtimeInfo.CreateRuntime();
+                    ClrAssemblyReader reader = new ClrAssemblyReader(runtime);
+                    DynamicMethodsAssembly ass = reader.GetDynamicMethods();
+                    Type t = ass.ChildType;
 
-                AssertThat.IsMatch(str, new MatchElement[] {
-                 new Literal(".method"), MatchElement.Any,
-                 new Literal("Method1"), MatchElement.Any,
-                 new Literal("cil"), MatchElement.Any,
-                 new Literal("managed"), MatchElement.Any,
-                 new Literal(".try"), MatchElement.Any,
-                 new Literal("catch"), MatchElement.Any,
-                 new Literal("System.Exception"), MatchElement.Any,
-                 new Literal("call"), MatchElement.Any,
-                 new Literal("System.Console::WriteLine"), MatchElement.Any,
-                 new Literal("ret"), MatchElement.Any
-                });
+                    //get dynamic method
+                    MethodBase mb = (MethodBase)(t.GetMembers(
+                        BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
+                        )[0]);
+
+                    string str = CilAnalysis.MethodToText(mb);
+
+                    AssertThat.IsMatch(str, new MatchElement[] {
+                     new Literal(".method"), MatchElement.Any,
+                     new Literal("Method1"), MatchElement.Any,
+                     new Literal("cil"), MatchElement.Any,
+                     new Literal("managed"), MatchElement.Any,
+                     new Literal(".try"), MatchElement.Any,
+                     new Literal("catch"), MatchElement.Any,
+                     new Literal("System.Exception"), MatchElement.Any,
+                     new Literal("call"), MatchElement.Any,
+                     new Literal("System.Console::WriteLine"), MatchElement.Any,
+                     new Literal("ret"), MatchElement.Any
+                     });
+                }//end using
             }
-
-            pr.Kill();
-            Console.WriteLine("Test passed");
-            return 0;
+            finally
+            {
+                pr.Kill();
+            }
         }
 
         /*
@@ -88,5 +92,13 @@ namespace CilTools.Runtime.Tests
                   ret          
         }
         */
+    }
+
+    class Program
+    {
+        static int Main(string[] args)
+        {
+            return LongTestsRunner.Run(typeof(Program).Assembly);
+        }
     }
 }
