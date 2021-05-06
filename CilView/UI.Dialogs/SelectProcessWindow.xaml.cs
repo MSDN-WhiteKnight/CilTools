@@ -135,7 +135,9 @@ namespace CilView.UI.Dialogs
             {
                 try
                 {
-                    if (this.processes[i].ProcessName.StartsWith(text))
+                    if (this.processes[i].ProcessName.StartsWith(
+                        text,StringComparison.InvariantCultureIgnoreCase)
+                        )
                     {
                         lbProcesses.SelectedIndex = i;
                         lbProcesses.ScrollIntoView(lbProcesses.SelectedItem);
