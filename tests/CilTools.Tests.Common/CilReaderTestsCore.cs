@@ -208,5 +208,15 @@ namespace CilTools.Tests.Common
                 "The result of Path.GetExtension method parsing should contain at least one instruction which is not 'nop' or 'ret'"
                 );
         }
+
+        public static void Test_CilReader_CanIterateTwice(MethodBase mi)
+        {
+            IEnumerable<CilInstruction> instructions = CilReader.GetInstructions(mi);
+            CilInstruction[] arr1 = instructions.ToArray();
+            CilInstruction[] arr2 = instructions.ToArray();
+            AssertThat.NotEmpty(arr1);
+            AssertThat.NotEmpty(arr2);
+            Assert.AreEqual(arr1.Length, arr2.Length);
+        }
     }
 }

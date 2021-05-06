@@ -130,6 +130,13 @@ namespace CilTools.BytecodeAnalysis.Tests
         {
             MethodInfo mi = typeof(System.IO.Path).GetMethod("GetExtension");
             CilReaderTestsCore.Test_CilReader_ExternalAssemblyAccess(mi);
-        }        
+        }
+
+        [TestMethod]
+        public void Test_CilReader_CanIterateTwice()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
+            CilReaderTestsCore.Test_CilReader_CanIterateTwice(mi);
+        }
     }
 }

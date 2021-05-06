@@ -374,7 +374,9 @@ namespace CilTools.BytecodeAnalysis
         public static IEnumerable<CilInstruction> GetInstructions(byte[] src)
         {            
             CilReader reader = new CilReader(src);
-            return reader.ReadAll();
+            IEnumerable<CilInstruction> ret = reader.ReadAll();
+
+            foreach (CilInstruction x in ret) yield return x;
         }
 
         /// <summary>
@@ -388,7 +390,9 @@ namespace CilTools.BytecodeAnalysis
         public static IEnumerable<CilInstruction> GetInstructions(MethodBase m)
         {
             CilReader reader = new CilReader(m);
-            return reader.ReadAll();
+            IEnumerable<CilInstruction> ret=reader.ReadAll();
+
+            foreach (CilInstruction x in ret) yield return x;
         }
     }
 }
