@@ -246,6 +246,23 @@ namespace CilView
             sb.AppendLine("AppDomain count: " + runtime.AppDomains.Count.ToString());
 
             sb.AppendLine();
+            sb.AppendLine("Native modules:");
+
+            foreach (ModuleInfo mi in this.dt.EnumerateModules())
+            {
+                if (!mi.IsManaged) sb.AppendLine(mi.FileName);
+            }
+
+            sb.AppendLine();
+            sb.AppendLine("Managed modules:");
+
+            for (int i=0;i<runtime.Modules.Count;i++)
+            {
+                if(runtime.Modules[i].IsFile) sb.AppendLine(runtime.Modules[i].FileName);
+                else sb.AppendLine("(Dynamic module)");
+            }
+
+            sb.AppendLine();
 
             sb.AppendLine("Managed threads:");
             sb.AppendLine();
