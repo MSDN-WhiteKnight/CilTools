@@ -24,6 +24,7 @@ namespace CilTools.Runtime
         Dictionary<string, Assembly> preloaded = new Dictionary<string, Assembly>(50);
         DynamicMethodsAssembly dynamicMethods = null;
         Dictionary<MethodId, ClrDynamicMethod> dynAssMethods = null;
+        Dictionary<long, string> dynModuleNames = null;
 
         /// <summary>
         /// Gets the pseudo-assembly that represents the collection of dynamic methods in the specified process
@@ -291,9 +292,50 @@ namespace CilTools.Runtime
             return this.ReadImpl(module);
         }
 
-        Dictionary<MethodId, ClrDynamicMethod> LoadDynamicAssemblyMethods()
+        void ProcessDynamicModule(ClrObject o /*ModuleBuilder*/,Dictionary<long,string> names) 
+        {
+            ClrObject obj;
+            obj = GetModuleData(o);
+            if(obj.IsNull) return;
+
+            long pData = obj.GetField<long>("m_pData");
+            if (pData == 0) return;
+
+            obj=o.GetObjectField("m_assemblyBuilder");
+            if (obj.IsNull) return;
+            obj=obj.GetObjectField("m_assemblyData");
+            if (obj.IsNull) return;
+            string name = obj.GetStringField("m_strAssemblyName");
+            if (String.IsNullOrEmpty(name)) return;
+
+            //store the mapping between module address and its name in dictionary
+            names[pData] = name;
+        }
+
+        static ClrObject GetModuleData(ClrObject objModule) 
+        {
+            if (objModule.IsNull) return new ClrObject();
+
+            ClrObject objModuleData = new ClrObject();
+
+            if (objModule.Type.GetFieldByName("m_internalModuleBuilder") != null)
+            {
+                //.NET Framework
+                objModuleData = objModule.GetObjectField("m_internalModuleBuilder");
+            }
+            else
+            {
+                //.NET Core 3.1+
+                objModuleData = objModule.GetObjectField("_internalModuleBuilder");
+            }
+
+            return objModuleData;
+        }
+
+        void ScanHeap()
         {
             Dictionary<MethodId, ClrDynamicMethod> ret = new Dictionary<MethodId, ClrDynamicMethod>();
+            Dictionary<long, string> moduleNames = new Dictionary<long, string>();
             DynamicMethodsAssembly dma = this.GetDynamicMethods();
 
             //search GC heap for MethodBuilder objects
@@ -301,10 +343,29 @@ namespace CilTools.Runtime
             ClrRuntime runtime = this.runtime;
             var en = runtime.Heap.EnumerateObjects();
 
+            /*     Objects chain:
+             * MethodBuilder.m_module (ModuleBuilder)
+             * ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
+             * System.Reflection.Emit.AssemblyBuilder.m_assemblyData (System.Reflection.Emit.AssemblyBuilderData)
+             * AssemblyBuilderData.m_strAssemblyName (string)
+             */
+
             foreach (ClrObject o in en)
             {
                 if (o.Type == null) continue;
 
+                //Dynamic module
+                if (String.Equals(
+                    o.Type.Name,
+                    "System.Reflection.Emit.ModuleBuilder",
+                    StringComparison.InvariantCulture)
+                    ) 
+                {
+                    ProcessDynamicModule(o, moduleNames);
+                    continue;
+                }
+
+                //Method builder
                 if (!String.Equals(
                     o.Type.Name,
                     "System.Reflection.Emit.MethodBuilder",
@@ -315,19 +376,8 @@ namespace CilTools.Runtime
                 ClrObject objModule = o.GetObjectField("m_module");
                 if (objModule.IsNull) continue;
 
-                ClrObject objModuleData = new ClrObject();
-
-                if (objModule.Type.GetFieldByName("m_internalModuleBuilder") != null)
-                {
-                    //.NET Framework
-                    objModuleData = objModule.GetObjectField("m_internalModuleBuilder");
-                }
-                else
-                {
-                    //.NET Core 3.1+
-                    objModuleData = objModule.GetObjectField("_internalModuleBuilder");
-                }
-
+                ClrObject objModuleData = GetModuleData(objModule);
+                
                 if (objModuleData.IsNull) continue; 
 
                 //get dynamic module address
@@ -373,21 +423,16 @@ namespace CilTools.Runtime
                 ret[mid] = dm;
 
             }//end foreach (ClrObject...)
-
-            /* MethodBuilder.m_module (ModuleBuilder)
-             * ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
-             * System.Reflection.Emit.AssemblyBuilder.m_assemblyData (System.Reflection.Emit.AssemblyBuilderData)
-             * AssemblyBuilderData.m_strAssemblyName (string)
-             */
-
-            return ret;
+            
+            this.dynAssMethods = ret; //dynamic assembly methods
+            this.dynModuleNames = moduleNames; //dynamic module names
         }
 
         internal ClrDynamicMethod GetDynamicAssemblyMethod(MethodId mid)
         {
             if (this.dynAssMethods == null)
             {
-                this.dynAssMethods = this.LoadDynamicAssemblyMethods();
+                this.ScanHeap();
             }
 
             ClrDynamicMethod ret;
@@ -405,6 +450,27 @@ namespace CilTools.Runtime
         internal ClrDynamicMethod GetDynamicAssemblyMethod(ulong module, int token)
         {
             return this.GetDynamicAssemblyMethod(new MethodId(module, token));
+        }
+
+        internal string GetDynamicModuleName(long module) 
+        {
+            if (this.dynModuleNames == null)
+            {
+                this.ScanHeap();
+            }
+
+            if (this.dynModuleNames == null) return null;
+
+            string ret;
+
+            if (this.dynModuleNames.TryGetValue(module, out ret))
+            {
+                return ret;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
