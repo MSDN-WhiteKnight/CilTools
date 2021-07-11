@@ -40,7 +40,14 @@ namespace CilTools.Runtime
 
                 if (String.IsNullOrEmpty(m.Name))
                 {
-                    if (m.IsDynamic) n.Name = "<DynamicAssembly>";
+                    if (m.IsDynamic)
+                    {
+                        //try to get dynamic module name from heap scan data
+                        string dname=r.GetDynamicModuleName(m.Address);
+
+                        if (!String.IsNullOrEmpty(dname)) n.Name = dname+" (dynamic)";
+                        else n.Name = "<DynamicAssembly>";
+                    }
                     else n.Name = "???";
                 }
 

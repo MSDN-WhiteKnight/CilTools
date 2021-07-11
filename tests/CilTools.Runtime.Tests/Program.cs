@@ -221,6 +221,27 @@ namespace CilTools.Runtime.Tests
             Assert.IsNotNull(fi, "MyDynamicType should have field 'number'");
             Assert.AreEqual(fi.FieldType.Name, "Int32");
         }
+
+        [LongTest]
+        public void Test_DynamicAssembly_Name()
+        {
+            ClrAssemblyReader reader = GetReader();
+
+            //get dynamic assembly
+            ClrModule module = runtime.Modules.Where(x => x.IsDynamic == true).First();
+            ClrAssemblyInfo ass = reader.Read(module);
+
+            //verify dynamic assembly short name
+            Assert.AreEqual(
+                "DynamicAssemblyExample (dynamic)",
+                ass.GetName().Name,
+                false,
+                System.Globalization.CultureInfo.InvariantCulture
+                );
+
+            //dynamic assembly file path should be empty
+            Assert.AreEqual(String.Empty, ass.Location);
+        }
     }
 
     class Program
