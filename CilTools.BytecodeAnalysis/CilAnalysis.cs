@@ -237,7 +237,7 @@ namespace CilTools.BytecodeAnalysis
 
                 yield return new PunctuationSyntax(String.Empty, "*", String.Empty);
             }
-            else if (t is ITypeInfo && ((ITypeInfo)t).IsFunctionPointer())
+            else if (t is ITypeInfo && ((ITypeInfo)t).IsFunctionPointer)
             {
                 yield return new KeywordSyntax(String.Empty, "method", " ", KeywordKind.Other);
                 IEnumerable<SyntaxNode> nodes = ((ITypeInfo)t).TargetSignature.ToSyntax(true);

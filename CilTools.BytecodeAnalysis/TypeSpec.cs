@@ -1021,9 +1021,9 @@ namespace CilTools.BytecodeAnalysis
         /// Gets a value indicating whether this <c>TypeSpec</c> represents a function pointer
         /// </summary>
         /// <returns></returns>
-        public bool IsFunctionPointer()
+        public bool IsFunctionPointer
         {
-            return this._ElementType == (byte)ElementType.FnPtr;
+            get { return this._ElementType == (byte)ElementType.FnPtr; }
         }
 
         /// <inheritdoc/>

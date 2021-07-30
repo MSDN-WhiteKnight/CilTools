@@ -2,9 +2,11 @@
  * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
@@ -151,13 +153,14 @@ namespace CilTools.Metadata.Tests
 
                 AssertThat.HasOnlyOneMatch(
                     attrs,
-                    (x) => {
+                    (x) =>
+                    {
                         return x is ICustomAttribute &&
                         String.Equals(
                             ((ICustomAttribute)x).Constructor.DeclaringType.Name,
                             "MyAttribute",
                             StringComparison.InvariantCulture);
-                            }
+                    }
                     );
 
                 //syntax
@@ -230,13 +233,84 @@ namespace CilTools.Metadata.Tests
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
                 t = ass.GetType("CilTools.Tests.Common.SampleMethods");
             }
-            
+
             //test access after AssemblyReader is disposed
             AssertThat.Throws<ObjectDisposedException>(() => { var x = t.Namespace; });
             AssertThat.Throws<ObjectDisposedException>(() => { var x = t.Name; });
             AssertThat.Throws<ObjectDisposedException>(() => { var x = t.FullName; });
             AssertThat.DoesNotThrow(() => t.ToString());
             AssertThat.DoesNotThrow(() => t.GetHashCode());
+        }
+
+        [TestMethod]
+        public void Test_FunctionPointers()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                string path = Path.Combine(
+                    System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory(),
+                    "WPF\\PresentationCore.dll"
+                    );
+
+                Assembly ass = reader.LoadFrom(path);
+                Type mt = ass.GetType("<Module>");
+                MethodBase mi = mt.GetMember(
+                    "_atexit_helper",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
+                    )[0] as MethodBase;
+
+                /*.method  assembly static int32 _atexit_helper(
+                method void *() func, 
+                uint32* __pexit_list_size, 
+                method void *()** __ponexitend_e, 
+                method void *()** __ponexitbegin_e
+                ) cil managed*/
+
+                ParameterInfo[] pars = mi.GetParameters();
+                Type t = pars[0].ParameterType;
+
+                Assert.IsTrue(t is ITypeInfo);
+                ITypeInfo ti = (ITypeInfo)t;
+
+                Assert.IsTrue(ti.IsFunctionPointer);
+                Assert.AreEqual(CallingConvention.Default, ti.TargetSignature.CallingConvention);
+                Assert.AreEqual("System.Void", ti.TargetSignature.ReturnType.FullName);
+                Assert.AreEqual(0, ti.TargetSignature.ParamsCount);
+
+                /*.method  assembly static void* bsearch(
+                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* key, 
+                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* base, 
+                uint32 num, 
+                uint32 width, 
+                method int32 *( void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*, 
+                                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*
+                              ) compare
+                ) cil managed*/
+
+                mi = mt.GetMember(
+                    "bsearch",
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
+                    )[0] as MethodBase;
+
+                pars = mi.GetParameters();
+                t = pars[4].ParameterType;
+
+                Assert.IsTrue(t is ITypeInfo);
+                ti = (ITypeInfo)t;
+
+                Assert.IsTrue(ti.IsFunctionPointer);
+                Assert.AreEqual(CallingConvention.Default, ti.TargetSignature.CallingConvention);
+                Assert.AreEqual("System.Int32", ti.TargetSignature.ReturnType.FullName);
+                Assert.AreEqual(2, ti.TargetSignature.ParamsCount);
+
+                TypeSpec ts = ti.TargetSignature.GetParamType(0);
+                Assert.IsTrue(ts.IsPointer);
+                Assert.AreEqual("System.Void", ts.GetElementType().FullName);
+                Assert.IsFalse(ts.InnerTypeSpec.GetModifier(0).IsRequired);
+                Assert.AreEqual("IsConst", ts.InnerTypeSpec.GetModifier(0).ModifierType.Name);
+            }
         }
     }
 }

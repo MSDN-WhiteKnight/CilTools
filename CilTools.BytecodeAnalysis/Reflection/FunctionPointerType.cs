@@ -268,9 +268,9 @@ namespace CilTools.Reflection
             return this.FullName;
         }
 
-        public bool IsFunctionPointer()
+        public bool IsFunctionPointer
         {
-            return true;
+            get { return true; }
         }
     }
 }
