@@ -13,6 +13,11 @@ namespace CilTools.Syntax
     /// <summary>
     /// Represents identifier in CIL assembler. Identifier is a name of the member or variable.
     /// </summary>
+    /// <remarks>
+    /// Starting from the version 2.3, identifiers that overlap with CIL assembler keywords are 
+    /// escaped when converting to text. For example, if the method is called <c>method</c>, 
+    /// its name will be represented like <c>'method'</c> in text output.
+    /// </remarks>
     public class IdentifierSyntax : SyntaxNode
     {
         string _content;
@@ -67,7 +72,14 @@ namespace CilTools.Syntax
             }
         }
 
-        /// <inheritdoc/>
+        /// <summary>
+        /// Writes text representation of this node into the specified TextWriter
+        /// </summary>
+        /// <remarks>
+        /// Starting from the version 2.3, identifiers that overlap with CIL assembler keywords are 
+        /// escaped when converting to text. For example, if the method is called <c>method</c>, 
+        /// its name will be represented like <c>'method'</c> in text output.
+        /// </remarks>
         public override void ToText(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");

@@ -11,6 +11,15 @@ namespace CilTools.Reflection
     /// <summary>
     /// Represents type information not covered by standard reflection.
     /// </summary>
+    /// <remarks>
+    /// <para>This interface exposes the information applicable to types in signatures (such as a method signature), 
+    /// not to type definitions. For example, it enables you to programmatically inspect function 
+    /// pointer types, which is currently (as of .NET 5) not supported by the standard reflection implementation.</para>
+    /// <para>Some APIs in <c>CilTools.Metadata</c>, such as <c>ParameterInfo.ParameterType</c> 
+    /// from methods loading using this library, 
+    /// could return <see cref="Type"/> instances that implements this interface. Cast them to the interface 
+    /// using <c>is</c>/<c>as</c> C# operators and use properties to get the information you need. </para>
+    /// </remarks>
     public interface ITypeInfo
     {
         /// <summary>
