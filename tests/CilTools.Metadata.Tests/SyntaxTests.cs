@@ -24,5 +24,19 @@ namespace CilTools.Metadata.Tests
                 SyntaxTestsCore.Test_ToSyntaxTree(mi);
             }
         }
+
+        [TestMethod]
+        public void Test_KeywordAsIdentifier()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase mi = t.GetMember("method")[0] as MethodBase;
+                SyntaxTestsCore.Test_KeywordAsIdentifier(mi);
+            }
+        }
     }
 }

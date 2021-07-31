@@ -17,5 +17,12 @@ namespace CilTools.BytecodeAnalysis.Tests
             MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
             SyntaxTestsCore.Test_ToSyntaxTree(mi);
         }
+
+        [TestMethod]
+        public void Test_KeywordAsIdentifier()
+        {
+            MethodInfo mi = typeof(SampleMethods).GetMethod("method");
+            SyntaxTestsCore.Test_KeywordAsIdentifier(mi);
+        }
     }
 }

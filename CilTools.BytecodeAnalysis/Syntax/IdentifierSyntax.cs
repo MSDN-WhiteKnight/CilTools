@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
@@ -18,6 +18,7 @@ namespace CilTools.Syntax
         string _content;
         bool _ismember;
         object _target = null;
+        string _contentEscaped;
 
         /// <summary>
         /// Gets the content of this identifier as string
@@ -54,6 +55,16 @@ namespace CilTools.Syntax
             this._trail = trail;
             this._ismember = ismember;
             this._target = target;
+
+            //ECMA-335 VI.C.1 - ILAsm keywords
+            if (SyntaxClassifier.IsKeyword(content))
+            {
+                this._contentEscaped = "'" + content + "'";
+            }
+            else 
+            {
+                this._contentEscaped = content;
+            }
         }
 
         /// <inheritdoc/>
@@ -62,7 +73,7 @@ namespace CilTools.Syntax
             if (target == null) throw new ArgumentNullException("target");
 
             target.Write(this._lead);
-            target.Write(this._content);
+            target.Write(this._contentEscaped);
             target.Write(this._trail);
             target.Flush();
         }

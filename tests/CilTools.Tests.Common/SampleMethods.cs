@@ -168,6 +168,8 @@ namespace CilTools.Tests.Common
             int[] arr=GenerateArray<int>(10);
             Console.WriteLine(arr.Rank);
         }
+
+        public static void method() { }
     }
 
     public class MyPoint

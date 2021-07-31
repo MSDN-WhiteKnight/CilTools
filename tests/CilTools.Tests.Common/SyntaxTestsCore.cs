@@ -41,5 +41,17 @@ namespace CilTools.Tests.Common
                 "Method body should contain 'ldstr' instruction"
                 );
         }
+
+        public static void Test_KeywordAsIdentifier(MethodBase mi)
+        {
+            string str = CilAnalysis.MethodToText(mi);
+
+            AssertThat.IsMatch(str, new MatchElement[] {
+                new Literal(".method"), MatchElement.Any, new Literal("public"), MatchElement.Any,
+                new Literal("void"), MatchElement.Any,
+                new Literal("'method'"), MatchElement.Any,
+                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any,                
+            });
+        }
     }
 }
