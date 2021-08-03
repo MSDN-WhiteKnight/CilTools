@@ -63,6 +63,8 @@
     name: ICustomAttribute
   - uid: CilTools.Reflection.ITokenResolver
     name: ITokenResolver
+  - uid: CilTools.Reflection.ITypeInfo
+    name: ITypeInfo
   - uid: CilTools.Reflection.LocalVariable
     name: LocalVariable
   - uid: CilTools.Reflection.PInvokeParams

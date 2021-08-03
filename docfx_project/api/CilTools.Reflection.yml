@@ -11,6 +11,7 @@ items:
   - CilTools.Reflection.GenericParamType
   - CilTools.Reflection.ICustomAttribute
   - CilTools.Reflection.ITokenResolver
+  - CilTools.Reflection.ITypeInfo
   - CilTools.Reflection.LocalVariable
   - CilTools.Reflection.PInvokeParams
   langs:
@@ -69,6 +70,13 @@ references:
   name: ITokenResolver
   nameWithType: ITokenResolver
   fullName: CilTools.Reflection.ITokenResolver
+- uid: CilTools.Reflection.ITypeInfo
+  commentId: T:CilTools.Reflection.ITypeInfo
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ITypeInfo
+  nameWithType: ITypeInfo
+  fullName: CilTools.Reflection.ITypeInfo
 - uid: CilTools.Reflection.LocalVariable
   commentId: T:CilTools.Reflection.LocalVariable
   isExternal: true

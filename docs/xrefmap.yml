@@ -2324,11 +2324,11 @@ references:
   fullName: CilTools.BytecodeAnalysis.TypeSpec.IsDefined
   nameWithType: TypeSpec.IsDefined
 - uid: CilTools.BytecodeAnalysis.TypeSpec.IsFunctionPointer
-  name: IsFunctionPointer()
+  name: IsFunctionPointer
   href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_IsFunctionPointer
-  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.IsFunctionPointer
-  fullName: CilTools.BytecodeAnalysis.TypeSpec.IsFunctionPointer()
-  nameWithType: TypeSpec.IsFunctionPointer()
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.IsFunctionPointer
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.IsFunctionPointer
+  nameWithType: TypeSpec.IsFunctionPointer
 - uid: CilTools.BytecodeAnalysis.TypeSpec.IsFunctionPointer*
   name: IsFunctionPointer
   href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_IsFunctionPointer_
@@ -4330,6 +4330,48 @@ references:
   commentId: Overload:CilTools.Reflection.ITokenResolver.ResolveType
   fullName: CilTools.Reflection.ITokenResolver.ResolveType
   nameWithType: ITokenResolver.ResolveType
+- uid: CilTools.Reflection.ITypeInfo
+  name: ITypeInfo
+  href: api/CilTools.Reflection.ITypeInfo.html
+  commentId: T:CilTools.Reflection.ITypeInfo
+  fullName: CilTools.Reflection.ITypeInfo
+  nameWithType: ITypeInfo
+- uid: CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  name: IsFunctionPointer
+  href: api/CilTools.Reflection.ITypeInfo.html#CilTools_Reflection_ITypeInfo_IsFunctionPointer
+  commentId: P:CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  fullName: CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  nameWithType: ITypeInfo.IsFunctionPointer
+- uid: CilTools.Reflection.ITypeInfo.IsFunctionPointer*
+  name: IsFunctionPointer
+  href: api/CilTools.Reflection.ITypeInfo.html#CilTools_Reflection_ITypeInfo_IsFunctionPointer_
+  commentId: Overload:CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  fullName: CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  nameWithType: ITypeInfo.IsFunctionPointer
+- uid: CilTools.Reflection.ITypeInfo.Modifiers
+  name: Modifiers
+  href: api/CilTools.Reflection.ITypeInfo.html#CilTools_Reflection_ITypeInfo_Modifiers
+  commentId: P:CilTools.Reflection.ITypeInfo.Modifiers
+  fullName: CilTools.Reflection.ITypeInfo.Modifiers
+  nameWithType: ITypeInfo.Modifiers
+- uid: CilTools.Reflection.ITypeInfo.Modifiers*
+  name: Modifiers
+  href: api/CilTools.Reflection.ITypeInfo.html#CilTools_Reflection_ITypeInfo_Modifiers_
+  commentId: Overload:CilTools.Reflection.ITypeInfo.Modifiers
+  fullName: CilTools.Reflection.ITypeInfo.Modifiers
+  nameWithType: ITypeInfo.Modifiers
+- uid: CilTools.Reflection.ITypeInfo.TargetSignature
+  name: TargetSignature
+  href: api/CilTools.Reflection.ITypeInfo.html#CilTools_Reflection_ITypeInfo_TargetSignature
+  commentId: P:CilTools.Reflection.ITypeInfo.TargetSignature
+  fullName: CilTools.Reflection.ITypeInfo.TargetSignature
+  nameWithType: ITypeInfo.TargetSignature
+- uid: CilTools.Reflection.ITypeInfo.TargetSignature*
+  name: TargetSignature
+  href: api/CilTools.Reflection.ITypeInfo.html#CilTools_Reflection_ITypeInfo_TargetSignature_
+  commentId: Overload:CilTools.Reflection.ITypeInfo.TargetSignature
+  fullName: CilTools.Reflection.ITypeInfo.TargetSignature
+  nameWithType: ITypeInfo.TargetSignature
 - uid: CilTools.Reflection.LocalVariable
   name: LocalVariable
   href: api/CilTools.Reflection.LocalVariable.html

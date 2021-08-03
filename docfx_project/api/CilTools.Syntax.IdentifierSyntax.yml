@@ -25,6 +25,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
   summary: "\nRepresents identifier in CIL assembler. Identifier is a name of the member or variable.\n"
+  remarks: "\nStarting from the version 2.3, identifiers that overlap with CIL assembler keywords are \nescaped when converting to text. For example, if the method is called <code>method</code>, \nits name will be represented like <code>&apos;method&apos;</code> in text output.\n"
   syntax:
     content: 'public class IdentifierSyntax : SyntaxNode'
     content.vb: >-
@@ -70,6 +71,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
   summary: "\nWrites text representation of this node into the specified TextWriter\n"
+  remarks: "\nStarting from the version 2.3, identifiers that overlap with CIL assembler keywords are \nescaped when converting to text. For example, if the method is called <code>method</code>, \nits name will be represented like <code>&apos;method&apos;</code> in text output.\n"
   syntax:
     content: public override void ToText(TextWriter target)
     parameters:

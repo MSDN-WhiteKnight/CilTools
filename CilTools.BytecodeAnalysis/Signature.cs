@@ -87,7 +87,7 @@ namespace CilTools.BytecodeAnalysis
         }
 
         /// <summary>
-        /// Initializes a new signature object, respoving metadata tokens using the specified resolver
+        /// Initializes a new signature object, resolving metadata tokens using the specified resolver
         /// </summary>
         /// <param name="data">The byte array containing the signature data</param>
         /// <param name="resolver">The object used to resolve metadata tokens</param>
@@ -107,7 +107,7 @@ namespace CilTools.BytecodeAnalysis
         }
 
         /// <summary>
-        /// Initializes a new signature object, respoving metadata tokens using the specified resolver in 
+        /// Initializes a new signature object, resolving metadata tokens using the specified resolver in 
         /// the specified generic context
         /// </summary>
         /// <param name="data">The byte array containing the signature data</param>
@@ -130,7 +130,7 @@ namespace CilTools.BytecodeAnalysis
         }
 
         /// <summary>
-        /// Initializes a new signature object from the stream, respoving metadata tokens using the specified 
+        /// Initializes a new signature object from the stream, resolving metadata tokens using the specified 
         /// resolver in the specified generic context
         /// </summary>
         /// <param name="src">The stream to read signature data from</param>

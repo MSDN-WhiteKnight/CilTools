@@ -1,0 +1,261 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.ITypeInfo
+  commentId: T:CilTools.Reflection.ITypeInfo
+  id: ITypeInfo
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  - CilTools.Reflection.ITypeInfo.Modifiers
+  - CilTools.Reflection.ITypeInfo.TargetSignature
+  langs:
+  - csharp
+  - vb
+  name: ITypeInfo
+  nameWithType: ITypeInfo
+  fullName: CilTools.Reflection.ITypeInfo
+  type: Interface
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents type information not covered by standard reflection.\n"
+  remarks: "\n<p>This interface exposes the information applicable to types in signatures (such as a method signature), \nnot to type definitions. For example, it enables you to programmatically inspect function \npointer types, which is currently (as of .NET 5) not supported by the standard reflection implementation.</p>\n<p>Some APIs in <code>CilTools.Metadata</code>, such as <code>ParameterInfo.ParameterType</code> \nfrom methods loading using this library, \ncould return <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> instances that implements this interface. Cast them to the interface \nusing <code>is</code>/<code>as</code> C# operators and use properties to get the information you need. </p>\n"
+  syntax:
+    content: public interface ITypeInfo
+    content.vb: Public Interface ITypeInfo
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: CilTools.Reflection.ITypeInfo.Modifiers
+  commentId: P:CilTools.Reflection.ITypeInfo.Modifiers
+  id: Modifiers
+  parent: CilTools.Reflection.ITypeInfo
+  langs:
+  - csharp
+  - vb
+  name: Modifiers
+  nameWithType: ITypeInfo.Modifiers
+  fullName: CilTools.Reflection.ITypeInfo.Modifiers
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nEnumerates custom modifiers associated with the type\n"
+  syntax:
+    content: IEnumerable<CustomModifier> Modifiers { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.CustomModifier}
+    content.vb: ReadOnly Property Modifiers As IEnumerable(Of CustomModifier)
+  overload: CilTools.Reflection.ITypeInfo.Modifiers*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  commentId: P:CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  id: IsFunctionPointer
+  parent: CilTools.Reflection.ITypeInfo
+  langs:
+  - csharp
+  - vb
+  name: IsFunctionPointer
+  nameWithType: ITypeInfo.IsFunctionPointer
+  fullName: CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets a value indicating whether the type represents a function pointer\n"
+  syntax:
+    content: bool IsFunctionPointer { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property IsFunctionPointer As Boolean
+  overload: CilTools.Reflection.ITypeInfo.IsFunctionPointer*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: CilTools.Reflection.ITypeInfo.TargetSignature
+  commentId: P:CilTools.Reflection.ITypeInfo.TargetSignature
+  id: TargetSignature
+  parent: CilTools.Reflection.ITypeInfo
+  langs:
+  - csharp
+  - vb
+  name: TargetSignature
+  nameWithType: ITypeInfo.TargetSignature
+  fullName: CilTools.Reflection.ITypeInfo.TargetSignature
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the target function signature, if the type represents a function pointer. Otherwise, returns <code>null</code>.\n"
+  syntax:
+    content: Signature TargetSignature { get; }
+    parameters: []
+    return:
+      type: CilTools.BytecodeAnalysis.Signature
+    content.vb: ReadOnly Property TargetSignature As Signature
+  overload: CilTools.Reflection.ITypeInfo.TargetSignature*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: CilTools.Reflection.ITypeInfo.Modifiers*
+  commentId: Overload:CilTools.Reflection.ITypeInfo.Modifiers
+  isExternal: true
+  name: Modifiers
+  nameWithType: ITypeInfo.Modifiers
+  fullName: CilTools.Reflection.ITypeInfo.Modifiers
+- uid: System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.CustomModifier}
+  commentId: T:System.Collections.Generic.IEnumerable{CilTools.BytecodeAnalysis.CustomModifier}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<CustomModifier>
+  nameWithType: IEnumerable<CustomModifier>
+  fullName: System.Collections.Generic.IEnumerable<CilTools.BytecodeAnalysis.CustomModifier>
+  nameWithType.vb: IEnumerable(Of CustomModifier)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilTools.BytecodeAnalysis.CustomModifier)
+  name.vb: IEnumerable(Of CustomModifier)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.BytecodeAnalysis.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilTools.BytecodeAnalysis.CustomModifier
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.BytecodeAnalysis.CustomModifier
+    name: CustomModifier
+    nameWithType: CustomModifier
+    fullName: CilTools.BytecodeAnalysis.CustomModifier
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilTools.Reflection.ITypeInfo.IsFunctionPointer*
+  commentId: Overload:CilTools.Reflection.ITypeInfo.IsFunctionPointer
+  isExternal: true
+  name: IsFunctionPointer
+  nameWithType: ITypeInfo.IsFunctionPointer
+  fullName: CilTools.Reflection.ITypeInfo.IsFunctionPointer
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.ITypeInfo.TargetSignature*
+  commentId: Overload:CilTools.Reflection.ITypeInfo.TargetSignature
+  isExternal: true
+  name: TargetSignature
+  nameWithType: ITypeInfo.TargetSignature
+  fullName: CilTools.Reflection.ITypeInfo.TargetSignature
+- uid: CilTools.BytecodeAnalysis.Signature
+  commentId: T:CilTools.BytecodeAnalysis.Signature
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: Signature
+  nameWithType: Signature
+  fullName: CilTools.BytecodeAnalysis.Signature
+- uid: CilTools.BytecodeAnalysis
+  commentId: N:CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CilTools.BytecodeAnalysis
+  nameWithType: CilTools.BytecodeAnalysis
+  fullName: CilTools.BytecodeAnalysis
