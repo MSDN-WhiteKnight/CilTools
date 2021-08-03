@@ -168,3 +168,9 @@ v2.0
 - Add CilGraph.GetHandlerNodes
 - Implement IsAssignableFrom on TypeSpec
 - Fix exception on TypeSpec.IsValueType
+
+v2.3
+- Escape IL assembler keywords when used as identifiers
+- Make ITypeInfo interface public to enable inspecting function pointer types with CilTools.Metadata
+- Change TypeSpec.IsFunctionPointer from method to property (breaking change)
+- Fix bug that prevented CilReader.GetInstructions from correctly enumerating instuctions more than once for the same iterator instance

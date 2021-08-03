@@ -151,6 +151,13 @@ Using auto-update requires stable internet connection and access to the https://
 - Fix token resolution bug after navigating to generic method instantiation
 - Fix crashes on access to disposed assemblies
 
+2.3
+
+- Escape IL assembler keywords when used as identifiers
+- Make search in **Open process** window case-insensitive
+- Add support for displaying dynamic assembly names when inspecting process (.NET Framework only)
+- Show loaded modules in process info
+
 ---------------------------------------------
 
 *Copyright (c) 2021,  MSDN.WhiteKnight*

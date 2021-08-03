@@ -16,3 +16,6 @@ Requirements: .NET Framework 4.5+
 - Add support for dynamic assemblies
 - Implement IsAssignableFrom on ClrTypeInfo
 - Improve performance of some ClrTypeInfo methods
+
+2.3
+- Add support for Assembly.GetName() on dynamic assemblies (.NET Framework only)
