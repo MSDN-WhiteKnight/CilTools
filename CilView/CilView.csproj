@@ -30,7 +30,7 @@
     <ErrorReportUrl>https://github.com/MSDN-WhiteKnight/CilTools/issues</ErrorReportUrl>
     <ProductName>CilView</ProductName>
     <PublisherName>CIL Tools</PublisherName>
-    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationRevision>1</ApplicationRevision>
     <ApplicationVersion>2.3.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
