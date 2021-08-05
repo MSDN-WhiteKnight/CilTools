@@ -122,7 +122,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
-  summary: "\nInitializes a new signature object, respoving metadata tokens using the specified resolver\n"
+  summary: "\nInitializes a new signature object, resolving metadata tokens using the specified resolver\n"
   remarks: "The signature could be the method signature or the standalone signature \n(ECMA-335 II.23.2.3: StandAloneMethodSig)"
   syntax:
     content: public Signature(byte[] data, ITokenResolver resolver)
@@ -175,7 +175,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
-  summary: "\nInitializes a new signature object, respoving metadata tokens using the specified resolver in \nthe specified generic context\n"
+  summary: "\nInitializes a new signature object, resolving metadata tokens using the specified resolver in \nthe specified generic context\n"
   remarks: "The signature could be the method signature or the standalone signature \n(ECMA-335 II.23.2.3: StandAloneMethodSig)"
   syntax:
     content: public Signature(byte[] data, ITokenResolver resolver, MemberInfo member)
@@ -231,7 +231,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
-  summary: "\nInitializes a new signature object from the stream, respoving metadata tokens using the specified \nresolver in the specified generic context\n"
+  summary: "\nInitializes a new signature object from the stream, resolving metadata tokens using the specified \nresolver in the specified generic context\n"
   remarks: "The signature could be the method signature or the standalone signature \n(ECMA-335 II.23.2.3: StandAloneMethodSig)"
   syntax:
     content: public Signature(Stream src, ITokenResolver resolver, MemberInfo member)

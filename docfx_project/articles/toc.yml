@@ -6,6 +6,8 @@
   href: using-syntax-api.md
 - name: Using CilTools.Metadata
   href: using-ciltools-metadata.md
+- name: Inspecting function pointer types with CilTools.Metadata
+  href: inspect-function-pointers.md
 - name: CIL View user manual
   href: cilview-manual.md
 - name: Architecture

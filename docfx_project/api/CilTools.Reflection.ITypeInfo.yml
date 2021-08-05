@@ -22,7 +22,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Reflection
   summary: "\nRepresents type information not covered by standard reflection.\n"
-  remarks: "\n<p>This interface exposes the information applicable to types in signatures (such as a method signature), \nnot to type definitions. For example, it enables you to programmatically inspect function \npointer types, which is currently (as of .NET 5) not supported by the standard reflection implementation.</p>\n<p>Some APIs in <code>CilTools.Metadata</code>, such as <code>ParameterInfo.ParameterType</code> \nfrom methods loading using this library, \ncould return <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> instances that implements this interface. Cast them to the interface \nusing <code>is</code>/<code>as</code> C# operators and use properties to get the information you need. </p>\n"
+  remarks: "\n<p>This interface exposes the information applicable to types in signatures (such as a method signature), \nnot to type definitions. For example, it enables you to programmatically inspect function \npointer types, which is currently (as of .NET 5) not supported by the standard reflection implementation.</p>\n<p>Some APIs in <code>CilTools.Metadata</code>, such as <code>ParameterInfo.ParameterType</code> \nfrom methods loaded using this library, \ncould return <xref href=\"System.Type\" data-throw-if-not-resolved=\"false\"></xref> instances that implements this interface. Cast them to the interface \nusing <code>is</code>/<code>as</code> C# operators and use properties to get the information you need. </p>\n"
   syntax:
     content: public interface ITypeInfo
     content.vb: Public Interface ITypeInfo

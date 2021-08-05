@@ -16,7 +16,7 @@ namespace CilTools.Reflection
     /// not to type definitions. For example, it enables you to programmatically inspect function 
     /// pointer types, which is currently (as of .NET 5) not supported by the standard reflection implementation.</para>
     /// <para>Some APIs in <c>CilTools.Metadata</c>, such as <c>ParameterInfo.ParameterType</c> 
-    /// from methods loading using this library, 
+    /// from methods loaded using this library, 
     /// could return <see cref="Type"/> instances that implements this interface. Cast them to the interface 
     /// using <c>is</c>/<c>as</c> C# operators and use properties to get the information you need. </para>
     /// </remarks>

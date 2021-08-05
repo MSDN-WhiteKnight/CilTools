@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Inspecting function pointer types with CilTools.Metadata | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Inspecting function pointer types with CilTools.Metadata | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="">
+<h1 id="inspecting-function-pointer-types-with-ciltoolsmetadata">Inspecting function pointer types with CilTools.Metadata</h1>
+
+<p>The .NET platform from the start had supported function types that enable developers to pass around and store addresses of functions (mostly useful for interop with native C++ code). Initially only Visual C++ compiler emitted function pointer types, but starting from the version 9.0 C# compiler takes advantage of them as well. However, the runtime reflection functionality is severely lacking in its ability to handle function pointers (now as of .NET 5). The standard reflection implementation substitutes IntPtr type when encountering them, MetadataLoadContext just dies with NotSupportedException. The CIL Tools suite added the API to support inspecting function pointers in the version 2.3 to help fill this gap.</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>To inspect function pointers, install the <a href="https://www.nuget.org/packages/CilTools.Metadata/">CilTools.Metadata</a> NuGet package version 2.3 or above. You can also build the library from sources or download released binaries in <a href="https://github.com/MSDN-WhiteKnight/CilTools">CIL Tools repository</a>. The minimum target framework is .NET Framework 4.5 or .NET Standard 2.0.</p>
+<h2 id="overview">Overview</h2>
+<p>The function pointer support is provided via the <a class="xref" href="../api/CilTools.Reflection.ITypeInfo.html">ITypeInfo</a> interface. Some APIs in CilTools.Metadata, such as <code>ParameterInfo.ParameterType</code> property on objects loaded using this library, could return <code>System.Type</code> instances that implements this interface. Cast them to the interface using <code>is</code>/<code>as</code> C# operators and use <a class="xref" href="../api/CilTools.Reflection.ITypeInfo.html#CilTools_Reflection_ITypeInfo_IsFunctionPointer">IsFunctionPointer</a> property to determine whether a type is a function pointer type. If it is the case, you could use <a class="xref" href="../api/CilTools.Reflection.ITypeInfo.html#CilTools_Reflection_ITypeInfo_TargetSignature">TargetSignature</a> property to get information about the signature of the function this type refers to.</p>
+<h2 id="example">Example</h2>
+<p>The example below shows how to inspect function pointer types on the example of the <code>bsearch</code> function from the WPF's <em>PresentationCore.dll</em> library. WPF is one of the most famous C++/CLI consumers, and this <em>PresentationCore.dll</em> is a module partially written in C++/CLI to help with DirectWrite interop. The <code>bsearch</code> function that was statically embedded into this module is a standard C library function which performs binary search using the supplied comparer callback. Its signature looks as follows in CIL:</p>
+<pre><code>.method  assembly static void* bsearch(
+                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* key, 
+                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* base, 
+                uint32 num, 
+                uint32 width, 
+                method int32 *( void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*, 
+                                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*
+                              ) compare
+                ) cil managed
+</code></pre>
+<p>You can see that the fifth parameter is a function pointer type. Here's the example how to read infomation about this function's params, including the function pointer signature, and print it into the console:</p>
+<pre><code class="lang-csharp">using System;
+using System.Reflection;
+using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
+using CilTools.Metadata;
+
+namespace ExampleFunctionPointers
+{
+    class Program
+    {
+        static void PrintType(Type t) 
+        {
+            if (t is ITypeInfo)
+            {
+                ITypeInfo ti = (ITypeInfo)t;
+
+                if (ti.IsFunctionPointer)
+                {
+                    Console.WriteLine(&quot;Function pointer type.&quot;);
+                    Signature sig = ti.TargetSignature;
+                    Console.WriteLine(&quot;Return type: &quot; + sig.ReturnType.FullName);
+                    Console.WriteLine(&quot;Calling convention: &quot; + sig.CallingConvention.ToString());
+                    Console.WriteLine(&quot;Parameters: &quot; + sig.ParamsCount.ToString());
+
+                    for (int i = 0; i &lt; sig.ParamsCount; i++)
+                    {
+                        TypeSpec paramType = sig.GetParamType(i);
+                        Console.WriteLine(&quot; Parameter {0} type: {1}&quot;, i, paramType.FullName);
+                    }
+                }
+                else 
+                {
+                    Console.WriteLine(t.FullName);
+                }
+            }
+        }
+
+        static void Main()
+        {
+            // Path to .NET Framework's PresentationCore
+            string path = &quot;C:\\Windows\\Microsoft.NET\\Framework\\v4.0.30319\\WPF\\PresentationCore.dll&quot;;
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                // Load function from the assembly
+                // (the function is exposed via the special &lt;Module&gt; type used to host global functions)
+                Assembly ass = reader.LoadFrom(path);
+                Type mt = ass.GetType(&quot;&lt;Module&gt;&quot;);
+                MethodBase mi = mt.GetMember(
+                    &quot;bsearch&quot;,
+                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
+                    )[0] as MethodBase;
+                
+                ParameterInfo[] pars = mi.GetParameters();
+
+                // Print information about function parameters
+
+                for (int i = 0; i &lt; pars.Length; i++) 
+                {
+                    Console.WriteLine(&quot;Parameter &quot;+i.ToString());
+                    PrintType(pars[i].ParameterType);
+                    Console.WriteLine();
+                }
+            }
+
+            Console.ReadLine();
+        }
+    }
+}
+
+/* Output:
+Parameter 0
+System.Void*
+
+Parameter 1
+System.Void*
+
+Parameter 2
+System.UInt32
+
+Parameter 3
+System.UInt32
+
+Parameter 4
+Function pointer type.
+Return type: System.Int32
+Calling convention: Default
+Parameters: 2
+ Parameter 0 type: System.Void*
+ Parameter 1 type: System.Void*
+*/
+</code></pre>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

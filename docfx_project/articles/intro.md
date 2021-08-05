@@ -14,6 +14,7 @@ Documentation pages:
 - [Using CilTools.BytecodeAnalysis](using-bytecode-analysis.md)
 - [Using CIL Tools syntax API](using-syntax-api.md)
 - [Using CilTools.Metadata](using-ciltools-metadata.md)
+- [Inspecting function pointer types with CilTools.Metadata](inspect-function-pointers.md)
 - [CIL View user manual](cilview-manual.md)
 - [Architecture](architecture.md)
 - [API Reference](../api/index.md)
