@@ -12,11 +12,11 @@ namespace CilTools.Metadata
     class MetadataCustomAttribute : ICustomAttribute
     {
         //ICustomAttribute is recognized by CilTools.BytecodeAnalysis when printing attributes
-        MethodBase _owner;
+        object _owner;
         MethodBase _constr;
         byte[] _data;
 
-        public MetadataCustomAttribute(MethodBase owner, MethodBase constr, byte[] data)
+        public MetadataCustomAttribute(object owner, MethodBase constr, byte[] data)
         {
             if (data == null) data = new byte[0];
 
@@ -29,7 +29,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                return this._owner;
+                return this._owner as MethodBase;
             }
         }
 

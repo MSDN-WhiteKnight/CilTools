@@ -672,6 +672,17 @@ namespace CilTools.Metadata
         /// <value>This implementation always returns <c>true</c></value>
         public override bool ReflectionOnly { get { return true; } }
 
+        /// <inheritdoc/>
+        public override object[] GetCustomAttributes(bool inherit)
+        {
+            //we can't instantiate actual attribute objects here
+            //so we will create special ICustomAttribute objects that CilTools.BytecodeAnalysis recognizes
+            //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
+
+            CustomAttributeHandleCollection coll = this.reader.CustomAttributes;
+            return MethodDef.ReadCustomAttributes(coll, this, this);
+        }
+
         /// <summary>
         /// Releases resources associated with this instance
         /// </summary>

@@ -255,7 +255,7 @@ namespace CilTools.Metadata
         }
 
         internal static object[] ReadCustomAttributes(
-            CustomAttributeHandleCollection coll,MemberInfo owner,MetadataAssembly ass
+            CustomAttributeHandleCollection coll,object owner,MetadataAssembly ass
             )
         {
             object[] ret = new object[coll.Count];
@@ -281,7 +281,7 @@ namespace CilTools.Metadata
                 }
 
                 ret[i] = new MetadataCustomAttribute(
-                    owner as MethodBase, constr, ass.MetadataReader.GetBlobBytes(ca.Value)
+                    owner, constr, ass.MetadataReader.GetBlobBytes(ca.Value)
                     );
                 i++;
             }

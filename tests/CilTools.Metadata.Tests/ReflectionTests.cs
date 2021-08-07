@@ -312,5 +312,48 @@ namespace CilTools.Metadata.Tests
                 Assert.AreEqual("IsConst", ts.InnerTypeSpec.GetModifier(0).ModifierType.Name);
             }
         }
+
+        [TestMethod]
+        public void Test_AssemblyCustomAttributes()
+        {
+            // Verify fetching assembly-level custom attributes using CilTools.Metadata.
+            AssemblyReader reader = new AssemblyReader();
+            
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                object[] attrs = ass.GetCustomAttributes(false);
+                Assert.IsTrue(attrs.Length > 0);
+                bool found = false;
+
+                for (int i = 0; i < attrs.Length; i++) 
+                {
+                    Assert.IsTrue(attrs[i] is ICustomAttribute);
+                    ICustomAttribute ica = (ICustomAttribute)attrs[i];
+                    Assert.IsNotNull(ica.Constructor);
+                    Assert.IsNotNull(ica.Data);
+
+                    if (ica.Constructor.DeclaringType.Name.Equals(
+                        "AssemblyCompanyAttribute", StringComparison.InvariantCulture))
+                    {
+                        CollectionAssert.AreEqual(
+                            new byte[] {
+                                0x01,0x00,0x09,0x43,0x49,0x4C,0x20,0x54,0x6F,0x6F,0x6C,0x73,0x00,0x00
+                            },
+                            ica.Data);
+                        //\u0001\0\tCIL Tools\0\0
+                        
+                        found = true;
+                    }
+                }//end for
+
+                if (!found)
+                {
+                    Assert.Fail(
+                        "AssemblyCompanyAttribute is not found on assembly " + ass.FullName
+                        );
+                }
+            }
+        }
     }
 }
