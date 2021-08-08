@@ -11,6 +11,9 @@ using System.ComponentModel;
 using System.Runtime.InteropServices;
 using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
+using CilTools.Reflection;
+using CilView.FileSystem;
+using CilView.Common;
 
 namespace CilView
 {
@@ -69,6 +72,56 @@ namespace CilView
             this.Assemblies = ret;
             this.Types = new ObservableCollection<Type>();
             this.Methods = new ObservableCollection<MethodBase>();
+
+            //check assembly TargetFramework attribute to determine runtime directory
+            object[] attrs = main.GetCustomAttributes(false);
+
+            for (int i = 0; i < attrs.Length; i++)
+            {
+                if (!(attrs[i] is ICustomAttribute)) continue;
+
+                ICustomAttribute ica = (ICustomAttribute)attrs[i];
+                
+                if (ica.Constructor.DeclaringType.Name.Equals(
+                    "TargetFrameworkAttribute", StringComparison.InvariantCulture))
+                {
+                    string tfm = Encoding.ASCII.GetString(ica.Data);                    
+                    tfm = Utils.GetReadableString(tfm);
+
+                    if (tfm.Length == 0) break;
+
+                    //only interested in .NET Core
+                    if (!tfm.Contains(".NETCoreApp")) break;
+
+                    string[] arr = tfm.Split(
+                        new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries
+                        );
+
+                    if (arr.Length == 0) break;
+
+                    string tfmid = arr[0]; //.NETCoreApp,Version=v3.1
+                    if (!tfmid.StartsWith(".NETCoreApp",StringComparison.InvariantCulture)) break;
+
+                    int idx=tfmid.IndexOf("Version=");
+                    string version = String.Empty;
+
+                    if (idx > 0)
+                    {
+                        int ver_idx = idx + 9;
+                        if (ver_idx >= tfmid.Length) ver_idx = tfmid.Length - 1;
+
+                         version = tfmid.Substring(ver_idx);
+                    }
+
+                    version = "";
+                    string path = RuntimeDir.GetNetCorePath(version);
+                    if (path == null) break;
+
+                    //set the runtime path for assembly resolving
+                    this.rd.RuntimeDirectory = path;
+                    break;
+                }//end if
+            }//end for
         }
 
         public override bool HasProcessInfo

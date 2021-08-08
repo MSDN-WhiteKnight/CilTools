@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -57,7 +57,8 @@ namespace CilTools.Metadata
         }
 
         Dictionary<AssemblyId, MetadataAssembly> _assemblies = new Dictionary<AssemblyId, MetadataAssembly>();
-
+        string _runtimeDir = RuntimeEnvironment.GetRuntimeDirectory();
+        
         void SetAssembly(ref AssemblyId key, MetadataAssembly val)
         {
             if (this._assemblies.ContainsKey(key)) return;
@@ -123,7 +124,7 @@ namespace CilTools.Metadata
 
             //try from runtime directory first
             string sname = n.Name;
-            string path = Path.Combine(RuntimeEnvironment.GetRuntimeDirectory(), sname + ".dll");
+            string path = Path.Combine(this._runtimeDir, sname + ".dll");
             Assembly ret = null;
 
             if (File.Exists(path))
@@ -212,6 +213,33 @@ namespace CilTools.Metadata
             if (ret == null) throw new TypeLoadException("Failed to resolve type " + t.AssemblyQualifiedName);
 
             return ret;
+        }
+
+        /// <summary>
+        /// Gets or sets the directory to search for framework assemblies.
+        /// </summary>
+        /// <value>
+        /// The directory to search for framework assemblies. The default value is the current runtime directory.
+        /// </value>
+        /// <remarks>
+        /// Settings this property ro <c>null</c> or empty string resets it to default value.
+        /// </remarks>
+        public string RuntimeDirectory
+        {
+            get { return this._runtimeDir; }
+
+            set
+            {
+                if (String.IsNullOrEmpty(value))
+                {
+                    //reset to default value
+                    this._runtimeDir = RuntimeEnvironment.GetRuntimeDirectory();
+                }
+                else
+                {
+                    this._runtimeDir = value;
+                }
+            }
         }
 
         /// <summary>

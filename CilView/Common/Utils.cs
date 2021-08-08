@@ -82,5 +82,27 @@ namespace CilView.Common
 
             if (err != null) throw err;
         }
+
+        public static string GetReadableString(string x)
+        {
+            StringBuilder sb = new StringBuilder(x.Length);
+
+            for(int i = 0; i < x.Length; i++)
+            {
+                char c = x[i];
+
+                if (Char.IsLetterOrDigit(c) || Char.IsPunctuation(c) || 
+                    Char.IsWhiteSpace(c) || c=='=')
+                {
+                    sb.Append(c);
+                }
+                else
+                {
+                    sb.Append(' ');
+                }
+            }
+
+            return sb.ToString();
+        }
     }
 }

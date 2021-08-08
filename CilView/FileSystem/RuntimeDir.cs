@@ -16,6 +16,7 @@ namespace CilView.FileSystem
         public string Name { get; set; }
         public string Path { get; set; }
         public bool IsNetFramework { get; set; }
+        public string RuntimeVersion { get; set; }
         AssemblyFile[] assemblies = null;
 
         static RuntimeDir[] cache = null;
@@ -69,6 +70,7 @@ namespace CilView.FileSystem
             }
 
             rd.Path = curr_framework;
+            rd.RuntimeVersion = Environment.Version.ToString();
             ret.Add(rd);
 
             string path = "C:\\Program Files\\dotnet\\shared\\Microsoft.NETCore.App";
@@ -96,8 +98,14 @@ namespace CilView.FileSystem
                         {
                             if (v.Major >= 5) rd.Name = ".NET ";
                             else rd.Name = ".NET Core ";
+
+                            rd.RuntimeVersion = v.ToString();
                         }
-                        else rd.Name = ".NET Core ";
+                        else
+                        {
+                            rd.Name = ".NET Core ";
+                            rd.RuntimeVersion = String.Empty;
+                        }
 
                         rd.Name += name;
                         rd.Path = dirs[i];
@@ -138,6 +146,7 @@ namespace CilView.FileSystem
                     rd.Name = ".NET Framework " + name;
                     rd.Path = fxpaths[i];
                     rd.IsNetFramework = true;
+                    rd.RuntimeVersion = name;
                     ret.Add(rd);
                 }
             }
@@ -153,6 +162,42 @@ namespace CilView.FileSystem
             RuntimeDir[] arr = ret.ToArray();
             cache = arr;
             return arr;
+        }
+
+        public static string GetNetCorePath(string ver)
+        {
+            RuntimeDir[] dirs = RuntimeDir.GetRuntimeDirs();
+
+            //Try find the specified version first
+
+            if (!String.IsNullOrEmpty(ver))
+            {
+                for (int i = 0; i < dirs.Length; i++)
+                {
+                    if (!dirs[i].IsNetFramework &&
+                        dirs[i].RuntimeVersion.StartsWith(ver))
+                    {
+                        return dirs[i].Path;
+                    }
+                }//end for
+            }//end if
+
+            //Get the newest version, if unable to find the specified version
+
+            List<string> paths = new List<string>(dirs.Length);
+
+            for (int i = 0; i < dirs.Length; i++)
+            {
+                if (!dirs[i].IsNetFramework)
+                {
+                    paths.Add(dirs[i].Path);
+                }
+            }//end for
+
+            paths.Sort();
+
+            if(paths.Count==0) return null;
+            else return paths[paths.Count - 1];
         }
 
         internal static bool IsNativeLibrary(string name)
