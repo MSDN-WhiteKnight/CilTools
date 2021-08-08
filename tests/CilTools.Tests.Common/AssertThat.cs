@@ -145,6 +145,19 @@ namespace CilTools.Tests.Common
         {
             get { return AnyCharsElement.Value; }
         }
+
+        public static bool IsMatch(string s, MatchElement[] match)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < match.Length; i++)
+            {
+                sb.Append(match[i].ToString());
+            }
+
+            string pattern = sb.ToString();
+            return Regex.IsMatch(s, pattern);
+        }
     }
 
     public class Literal : MatchElement
