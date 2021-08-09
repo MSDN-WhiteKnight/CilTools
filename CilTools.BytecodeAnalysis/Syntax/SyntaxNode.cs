@@ -114,7 +114,7 @@ namespace CilTools.Syntax
                     ICustomAttribute ca = (ICustomAttribute)attrs[i];
 
                     List<SyntaxNode> children = new List<SyntaxNode>();
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor);
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor,false);
                     children.Add(mref);
                     children.Add(new PunctuationSyntax(" ", "=", " "));
                     children.Add(new PunctuationSyntax("", "(", " "));
@@ -153,7 +153,7 @@ namespace CilTools.Syntax
                     {
                         //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
                         List<SyntaxNode> children = new List<SyntaxNode>();
-                        MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0]);
+                        MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0], false);
                         children.Add(mref);
                         children.Add(new PunctuationSyntax(" ", "=", " "));
                         children.Add(new PunctuationSyntax("", "(", " "));

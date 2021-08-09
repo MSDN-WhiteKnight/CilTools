@@ -117,7 +117,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (called_method != null)
                 {
-                    yield return CilAnalysis.GetMethodRefSyntax(called_method);
+                    yield return CilAnalysis.GetMethodRefSyntax(called_method,false);
                 }
                 else
                 {
@@ -196,7 +196,7 @@ namespace CilTools.BytecodeAnalysis
             }
             else if (OpCode.Equals(OpCodes.Ldtoken))
             {
-                //metadata token
+                //metadata token (ECMA-335 VI.C.4.13)
                 int token = this._operand;
 
                 MemberInfo mi = this.ReferencedMember;
@@ -223,14 +223,19 @@ namespace CilTools.BytecodeAnalysis
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
                         children.Add(new PunctuationSyntax("", "::", ""));
-                        children.Add(new IdentifierSyntax("", fi.Name, "", true,fi));
+                        children.Add(new IdentifierSyntax("", fi.Name, "", true, fi));
 
                         yield return new MemberRefSyntax(children.ToArray(), fi);
+                    }
+                    else if (mi is MethodBase) 
+                    {
+                        MethodBase mb = (MethodBase)mi;
+                        yield return CilAnalysis.GetMethodRefSyntax(mb,true);
                     }
                     else
                     {
                         yield return new MemberRefSyntax(
-                            new SyntaxNode[] { new IdentifierSyntax("", mi.Name, "", true,mi) },
+                            new SyntaxNode[] { new IdentifierSyntax("", mi.Name, "", true, mi) },
                             mi);
                     }
                 }

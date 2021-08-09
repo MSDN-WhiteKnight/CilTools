@@ -445,7 +445,7 @@ namespace CilTools.BytecodeAnalysis
             return bytes[0] == 0x01 && bytes[3] == 0x02;
         }
 
-        internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m)
+        internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m,bool inlineTok)
         {
             List<SyntaxNode> children = new List<SyntaxNode>(50);
             Type t = m.DeclaringType;
@@ -453,6 +453,12 @@ namespace CilTools.BytecodeAnalysis
 
             MethodInfo mi = m as MethodInfo;
             IEnumerable<SyntaxNode> rt;
+
+            if (inlineTok) 
+            {
+                //for ldtoken instruction the method reference is preceded by "method" keyword
+                children.Add(new KeywordSyntax("", "method", " ", KeywordKind.Other));
+            }
 
             //append return type
             if (mi != null)
