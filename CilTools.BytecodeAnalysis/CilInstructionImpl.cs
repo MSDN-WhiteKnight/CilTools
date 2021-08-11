@@ -248,74 +248,10 @@ namespace CilTools.BytecodeAnalysis
         public override void OperandToString(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
+                        
+            foreach (SyntaxNode node in this.OperandToSyntax()) node.ToText(target);
 
-            if (typeof(T) == typeof(int))
-            {
-                if (ReferencesLocal(this.OpCode))
-                {
-                    //local variable
-                    target.Write("V_" + this.Operand.ToString());
-                }
-                else if (ReferencesParam(this.OpCode) && this.Method != null)
-                {
-                    //parameter
-                    ParameterInfo par = this.ReferencedParameter;
-
-                    if (par != null)
-                    {
-                        if (String.IsNullOrEmpty(par.Name)) target.Write("par" + (par.Position + 1).ToString());
-                        else target.Write(par.Name);
-                    }
-                    else
-                    {
-                        target.Write("par" + this.Operand.ToString());
-                    }
-                }
-                else
-                {
-                    target.Write(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
-                }
-            }
-            else if (typeof(T) == typeof(int[]) && OpCode.OperandType == System.Reflection.Emit.OperandType.InlineSwitch)
-            {
-                int[] labels = (int[])this.Operand;
-
-                target.Write('(');
-
-                for (int i = 0; i < labels.Length; i++)
-                {
-                    if (i >= 1) target.Write(", ");
-                    int targ = (int)this._ByteOffset + (int)this.TotalSize + labels[i];
-                    target.Write("0x");
-                    target.Write(targ.ToString("X4"));
-                }
-
-                target.Write(')');
-            }
-            else if (typeof(T) == typeof(sbyte) && ReferencesLocal(this.OpCode))
-            {
-                //local variable
-                target.Write("V_" + this.Operand.ToString());
-            }
-            else if (typeof(T) == typeof(sbyte) && ReferencesParam(this.OpCode) && this.Method != null)
-            {
-                //parameter
-                ParameterInfo par = this.ReferencedParameter;
-
-                if (par != null)
-                {
-                    if (String.IsNullOrEmpty(par.Name)) target.Write("par" + (par.Position + 1).ToString());
-                    else target.Write(par.Name);
-                }
-                else
-                {
-                    target.Write("par" + this.Operand.ToString());
-                }
-            }
-            else
-            {
-                target.Write(Convert.ToString(Operand, System.Globalization.CultureInfo.InvariantCulture));
-            }
+            target.Flush();
         }
 
         internal override IEnumerable<SyntaxNode> OperandToSyntax()

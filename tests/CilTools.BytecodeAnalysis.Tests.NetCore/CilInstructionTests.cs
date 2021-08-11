@@ -9,7 +9,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CilTools.BytecodeAnalysis.Tests
+namespace CilTools.BytecodeAnalysis.Tests.NetCore
 {
     [TestClass]
     public class CilInstructionTests
