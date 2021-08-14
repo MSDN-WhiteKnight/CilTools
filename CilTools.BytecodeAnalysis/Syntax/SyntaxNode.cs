@@ -143,7 +143,6 @@ namespace CilTools.Syntax
 
                 if (constr.Length == 1)
                 {
-                    s_attr = CilAnalysis.MethodToString(constr[0]);
                     int parcount = constr[0].GetParameters().Length;
 
                     if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
@@ -165,6 +164,7 @@ namespace CilTools.Syntax
                     }
                     else
                     {
+                        s_attr = CilAnalysis.MethodToString(constr[0]);
                         output.Write(".custom ");
                         output.Write(s_attr);
                         output.Flush();

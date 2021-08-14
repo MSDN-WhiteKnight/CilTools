@@ -366,69 +366,12 @@ namespace CilTools.BytecodeAnalysis
 
         internal static string MethodToString(MethodBase m)
         {
-            StringBuilder sb = new StringBuilder();                        
-            Type t = m.DeclaringType;
-            ParameterInfo[] pars = m.GetParameters();
-
-            MethodInfo mi = m as MethodInfo;
-            string rt;
-
-            //append return type
-            if (mi != null)
-            {
-                //standard reflection implementation: return type exposed via MethodInfo
-                rt = CilAnalysis.GetTypeName(mi.ReturnType);
-            }
-            else if (m is CustomMethod)
-            {
-                //CilTools reflection implementation: return type exposed via CustomMethod
-                Type tReturn = ((CustomMethod)m).ReturnType;
-
-                if(tReturn!=null) rt = CilAnalysis.GetTypeName(tReturn);
-                else rt = "void";
-            }
-            else
-            {
-                //we append return type here even for constructors
-                rt = "void";
-            }
-
-            if (!m.IsStatic) sb.Append("instance ");
-
-            sb.Append(rt);
-            sb.Append(' ');
-
-            if (t != null)
-            {
-                sb.Append(CilAnalysis.GetTypeSpecString(t));
-                sb.Append("::");
-            }
-            sb.Append(m.Name);
-
-            if (m.IsGenericMethod)
-            {                
-                sb.Append('<');
-
-                Type[] args = m.GetGenericArguments();
-                for (int i = 0; i < args.Length; i++)
-                {
-                    if (i >= 1) sb.Append(", ");
-
-                    sb.Append(CilAnalysis.GetTypeName(args[i]));
-                }
-
-                sb.Append('>');
-            }
-
-            sb.Append('(');
-
-            for (int i = 0; i < pars.Length; i++)
-            {
-                if (i >= 1) sb.Append(", ");
-                sb.Append(CilAnalysis.GetTypeName(pars[i].ParameterType));
-            }
-
-            sb.Append(')');
+            //gets the CIL code of the reference to the specified method
+            StringBuilder sb = new StringBuilder(200);
+            StringWriter wr = new StringWriter(sb);
+            SyntaxNode node = CilAnalysis.GetMethodRefSyntax(m, false);
+            node.ToText(wr);            
+            wr.Flush();
             return sb.ToString();
         }
 
