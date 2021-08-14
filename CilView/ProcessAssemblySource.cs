@@ -64,6 +64,27 @@ namespace CilView
                 if (op.Stopped) return new ObservableCollection<Assembly>(ret);
             }
 
+            //determine runtime directory and pass it to
+            //AssemblyReader for proper assembly resolution
+            try
+            {
+                ClrInfo runtimeInfo = runtime.ClrInfo;
+                string clrfile = runtimeInfo.ModuleInfo.FileName;
+                string runtimedir = Path.GetDirectoryName(clrfile);
+
+                if (!String.IsNullOrEmpty(runtimedir))
+                {
+                    if (Directory.Exists(runtimedir)) rd.RuntimeDirectory = runtimedir;
+                }
+            }
+            catch (Exception ex)
+            {
+                //Ignore all errors here as we don't want to crash just because 
+                //we don't know runtime directory.
+                //We can fallback to resolving assemblies from current runtime.
+                ErrorHandler.Current.Error(ex, "Determining runtime directory", true);
+            }            
+
             reader = new ClrAssemblyReader(runtime);
 
             double max = runtime.Modules.Count;
