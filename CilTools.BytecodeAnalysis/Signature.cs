@@ -325,32 +325,14 @@ namespace CilTools.BytecodeAnalysis
         internal string ToString(bool pointer)
         {
             StringBuilder sb_sig = new StringBuilder(100);
+            StringWriter wr = new StringWriter(sb_sig);
 
-            switch (this._conv)
+            foreach (SyntaxNode node in this.ToSyntax(pointer))
             {
-                case CallingConvention.CDecl: sb_sig.Append("unmanaged cdecl "); break;
-                case CallingConvention.StdCall: sb_sig.Append("unmanaged stdcall "); break;
-                case CallingConvention.ThisCall: sb_sig.Append("unmanaged thiscall "); break;
-                case CallingConvention.FastCall: sb_sig.Append("unmanaged fastcall "); break;
-                case CallingConvention.Vararg: sb_sig.Append("vararg "); break;
+                node.ToText(wr);
             }
 
-            if (this._HasThis) sb_sig.Append("instance ");
-
-            if (this._ExplicitThis) sb_sig.Append("explicit ");
-
-            sb_sig.Append(this._ReturnType.ToString());
-            sb_sig.Append(' ');
-            if(pointer) sb_sig.Append('*');
-            sb_sig.Append('(');
-
-            for (int i = 0; i < this._ParamTypes.Length; i++)
-            {
-                if (i >= 1) sb_sig.Append(", ");
-                sb_sig.Append(this._ParamTypes[i].ToString());
-            }
-
-            sb_sig.Append(')');
+            wr.Flush();
             return sb_sig.ToString();
         }
 

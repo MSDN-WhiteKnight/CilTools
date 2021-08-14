@@ -279,6 +279,16 @@ namespace CilTools.Metadata.Tests
                 Assert.AreEqual("System.Void", ti.TargetSignature.ReturnType.FullName);
                 Assert.AreEqual(0, ti.TargetSignature.ParamsCount);
 
+                string sig_string = ti.TargetSignature.ToString();
+
+                AssertThat.IsMatch(
+                    sig_string, 
+                    new MatchElement[] {
+                        new Literal("void"),MatchElement.Any, new Literal("("),
+                        MatchElement.Any,new Literal(")")
+                    }
+                );
+
                 /*.method  assembly static void* bsearch(
                 void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* key, 
                 void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* base, 
@@ -310,6 +320,26 @@ namespace CilTools.Metadata.Tests
                 Assert.AreEqual("System.Void", ts.GetElementType().FullName);
                 Assert.IsFalse(ts.InnerTypeSpec.GetModifier(0).IsRequired);
                 Assert.AreEqual("IsConst", ts.InnerTypeSpec.GetModifier(0).ModifierType.Name);
+
+                sig_string = ti.TargetSignature.ToString();
+                
+                AssertThat.IsMatch(
+                    sig_string,
+                    new MatchElement[] {
+                        new Literal("int32"),MatchElement.Any, 
+                        new Literal("("),MatchElement.Any,
+                        new Literal("void"),MatchElement.Any,
+                        new Literal("modopt"),MatchElement.Any,new Literal("("),MatchElement.Any,
+                        new Literal("System.Runtime.CompilerServices.IsConst"),MatchElement.Any,
+                        new Literal(")"),MatchElement.Any,new Literal("*"),MatchElement.Any,
+                        new Literal(","),MatchElement.Any,
+                        new Literal("void"),MatchElement.Any,
+                        new Literal("modopt"),MatchElement.Any,new Literal("("),MatchElement.Any,
+                        new Literal("System.Runtime.CompilerServices.IsConst"),MatchElement.Any,
+                        new Literal(")"),MatchElement.Any,new Literal("*"),MatchElement.Any,                        
+                        new Literal(")")
+                    }
+                );
             }
         }
 
