@@ -233,6 +233,14 @@ namespace CilView
 
             if (dlg.ShowDialog(this) == true)
             {
+                if (dlg.FileName.EndsWith(".csproj"))
+                {
+                    CilView.Build.ProjectInfo info;
+                    info=CilView.Build.ProjectInfo.ReadFile(dlg.FileName);
+                    ;
+                    return;
+                }
+
                 this.OpenFile(dlg.FileName);
             }
         }

@@ -99,6 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Build\ProjectInfo.cs" />
     <Compile Include="Common\Audio.cs" />
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Exceptions\ExceptionInfo.cs" />
