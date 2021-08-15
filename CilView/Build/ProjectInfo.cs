@@ -13,6 +13,7 @@ namespace CilView.Build
     {
         public bool IsSDK { get; set; }
         public string Name { get; set; }
+        public string ProjectPath { get; set; }
         public string OutputType { get; set; }
         public string[] TargetFrameworks { get; set; }
 
@@ -28,6 +29,7 @@ namespace CilView.Build
             XmlDocument doc = new XmlDocument();
             doc.Load(projectPath);
             ProjectInfo ret = new ProjectInfo();
+            ret.ProjectPath = projectPath;
 
             if (doc.DocumentElement.Name.Equals("Project", StringComparison.Ordinal))
             {

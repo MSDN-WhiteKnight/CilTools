@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Documents;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
+using CilView.Build;
 using CilView.Exceptions;
 using CilView.UI.Dialogs;
 using CilView.UI.Controls;
@@ -229,20 +230,52 @@ namespace CilView
         {
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.RestoreDirectory = true;
-            dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|All files|*";
+            dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|" +
+                "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|All files|*";
 
-            if (dlg.ShowDialog(this) == true)
+            if (dlg.ShowDialog(this) != true) return;
+
+            if (dlg.FileName.EndsWith(".csproj", StringComparison.Ordinal) ||
+                dlg.FileName.EndsWith(".vbproj", StringComparison.Ordinal))
             {
-                if (dlg.FileName.EndsWith(".csproj"))
+                //MSBuild project
+                ProjectInfo info = ProjectInfo.ReadFile(dlg.FileName);
+                BuildSystemInvocation builder = new BuildSystemInvocation(info);
+
+                bool res = false;
+                Mouse.OverrideCursor = Cursors.Wait;
+
+                try
                 {
-                    CilView.Build.ProjectInfo info;
-                    info=CilView.Build.ProjectInfo.ReadFile(dlg.FileName);
-                    ;
-                    return;
+                    //build the project
+                    res = builder.Invoke();
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
                 }
 
-                this.OpenFile(dlg.FileName);
+                if (res)
+                {
+                    //success - open the build output binary
+                    this.OpenFile(builder.BinaryPath);
+                }
+                else
+                {
+                    //error
+                    wndError wnd = new wndError(
+                        "Failed to build project. The build system output is provided below.",
+                        builder.OutputText
+                        );
+                    wnd.Owner = this;
+                    wnd.ShowDialog();
+                }//end if (res)
+
+                return;
             }
+
+            //regular assembly
+            this.OpenFile(dlg.FileName);
         }
 
         private void bOpenFile_Click(object sender, RoutedEventArgs e)

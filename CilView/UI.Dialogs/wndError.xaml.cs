@@ -64,6 +64,25 @@ namespace CilView.UI.Dialogs
             catch (Exception) {}
         }
 
+        public wndError(string shortMessage, string detailsMessage)
+        {
+            InitializeComponent();
+
+            if (shortMessage == null) shortMessage = String.Empty;
+            if (detailsMessage == null) detailsMessage = String.Empty;
+
+            try
+            {
+                //заполнение краткого сообщения об ошибке
+                txtErrorMessage.Text = shortMessage;
+                
+                //заполнение подробной информации                
+                txtErrorDetails.Text = detailsMessage;
+
+            }
+            catch (Exception) { }
+        }
+
         private void btnOK_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
