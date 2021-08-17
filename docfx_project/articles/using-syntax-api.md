@@ -1,6 +1,6 @@
 # Using CIL Tools syntax API
 
-CIL Tools syntax API enables you to convert a method's bytecode into the syntax tree, the high-level structure representing its syntax in IlAsm that can be programmatically processed. The syntax tree and all of its nodes are convertible to the corresonding textual CIL assembler code. The node of the syntax tree either represent the token that have no child nodes, just the textual content, or the node with child nodes for a more complex construct. For a node with child nodes, the textual content is combination of all its child nodes content. Syntax API is useful to support things such as syntax highlighting or code navigation.
+CIL Tools syntax API enables you to convert a method's bytecode into the syntax tree, the high-level structure representing its syntax in IlAsm that can be programmatically processed. The syntax tree and all of its nodes are convertible to the corresonding textual CIL assembler code. The node of the syntax tree either represent the token that have no child nodes, just the textual content, or the node with child nodes for a more complex construct. For a node with child nodes, the textual content is a combination of all its child nodes content. Syntax API is useful to support things such as syntax highlighting or code navigation.
 
 The syntax API is a part of CilTools.BytecodeAnalysis library, and is located under <xref:CilTools.Syntax> namespace. See [Using CilTools.BytecodeAnalysis](./using-bytecode-analysis.md) for a guidance how to get started using the library.
 

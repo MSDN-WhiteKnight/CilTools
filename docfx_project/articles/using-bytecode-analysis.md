@@ -12,7 +12,7 @@ To use CilTools.BytecodeAnalysis, install [CilTools.BytecodeAnalysis](https://ww
 
 To get the collection of instructions that make up the method body, use <xref:CilTools.BytecodeAnalysis.CilReader.GetInstructions(System.Reflection.MethodBase)>. You can also use extension method `GetInstructions` for `MethodBase` class. To print the CIL assembler representation of the instruction, call its `ToString` method. The following example shows how to display all instructions in the method.
 
-```
+```csharp
 using System;
 using System.Collections.Generic;
 using CilTools.BytecodeAnalysis;
@@ -75,7 +75,7 @@ Use the <xref:CilTools.BytecodeAnalysis.CilGraph.Create(System.Reflection.Method
 
 The following example shows how to construct the CIL graph for the specified method and print its disassembled CIL:
 
-```
+```csharp
 using System;
 using CilTools.BytecodeAnalysis;
 using CilTools.BytecodeAnalysis.Extensions;

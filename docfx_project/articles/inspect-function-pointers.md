@@ -16,14 +16,14 @@ The example below shows how to inspect function pointer types on the example of 
 
 ```
 .method  assembly static void* bsearch(
-                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* key, 
-                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* base, 
-                uint32 num, 
-                uint32 width, 
-                method int32 *( void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*, 
-                                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*
-                              ) compare
-                ) cil managed
+    void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* key, 
+    void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* base, 
+    uint32 num, 
+    uint32 width, 
+    method int32 *( void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*, 
+        void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*
+        ) compare
+    ) cil managed
 ```
 
 You can see that the fifth parameter is a function pointer type. Here's the example how to read infomation about this function's params, including the function pointer signature, and print it into the console:

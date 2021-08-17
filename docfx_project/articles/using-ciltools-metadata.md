@@ -10,7 +10,7 @@ To use CilTools.Metadata, install [CilTools.Metadata](https://www.nuget.org/pack
 
 ## Enumerating methods in an assembly
 
-To read assembly information, use <xref:CilTools.Metadata.AssemblyReader> class. It provides `Load` and `LoadFrom` methods that returns `Assembly` instances for a given assembly name or file path, respectively. Then you can work with that assemblies using regular reflection methods, such as `Assembly.GetTypes`. When you no longer need loaded assemblies, release them with `Dispose` method or `using` block.
+To read assembly information, use <xref:CilTools.Metadata.AssemblyReader> class. It provides `Load` and `LoadFrom` methods that returns `Assembly` instances for a given assembly name or file path, respectively. Then you can work with these assemblies using regular reflection methods, such as `Assembly.GetTypes`. When you no longer need loaded assemblies, release them with `Dispose` method or `using` block.
 
 To enumerate methods in the given type, use `Type.GetMembers` method and filter out methods from the returned list. The returned method instances derive from <xref:CilTools.Reflection.CustomMethod>, which in turn is derived from `MethodBase` class. `Type.GetMethods` and `Type.GetConstructors` are not supported.
 
