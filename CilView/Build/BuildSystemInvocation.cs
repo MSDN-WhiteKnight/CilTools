@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.Runtime.InteropServices;
 using System.Text;
 using CilView.Common;
 
@@ -47,12 +48,78 @@ namespace CilView.Build
             get { return this._binpath; }
         }
         
-        public bool Invoke()
+        bool InvokeMsbuild()
         {
             ProcessStartInfo psi = new ProcessStartInfo();
 
-            psi.FileName = "C:\\Program Files\\dotnet\\dotnet.exe";
+            psi.FileName = Path.Combine(
+                RuntimeEnvironment.GetRuntimeDirectory(),
+                "msbuild.exe"
+                );
 
+            string ext = ".dll";
+
+            if (!this._InputProject.IsSDK)
+            {
+                if (Utils.StringEqualsIgnoreCase(this._InputProject.OutputType, "Exe") ||
+                   Utils.StringEqualsIgnoreCase(this._InputProject.OutputType, "WinExe"))
+                {
+                    ext = ".exe";
+                }
+            }
+
+            string projectDir = Path.GetDirectoryName(this._InputProject.ProjectPath);
+            string outputPath = Path.Combine(projectDir, "bin\\Debug");
+
+            psi.Arguments = "-p:OutputPath=\"" + outputPath + "\"";
+            psi.Arguments += " \"" + this._InputProject.ProjectPath + "\"";
+
+            if (CultureInfo.InstalledUICulture != null)
+            {
+                string culture = CultureInfo.InstalledUICulture.Name;
+
+                if (Utils.StringEqualsIgnoreCase(culture, "ru-ru"))
+                {
+                    psi.StandardOutputEncoding = Encoding.GetEncoding(866);
+                }
+            }
+
+            psi.UseShellExecute = false;
+            psi.RedirectStandardInput = true;
+            psi.RedirectStandardOutput = true;
+            psi.CreateNoWindow = true;
+
+            Process pr = new Process();
+
+            using (pr)
+            {
+                pr.StartInfo = psi;
+                pr.Start();
+                string s = pr.StandardOutput.ReadToEnd(); //получение вывода
+                pr.WaitForExit();
+                this._output += s;
+                this._output += Environment.NewLine;
+
+                if (pr.ExitCode == 0)
+                {
+                    this._success = true;
+                    this._binpath = Path.Combine(outputPath, this._InputProject.Name + ext);
+                }
+                else
+                {
+                    this._success = false;
+                }
+
+                this._invoked = true;
+            }//end using
+
+            return this._success;
+        }//end InvokeMsbuild()
+
+        bool InvokeDotnetBuild()
+        {
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = "C:\\Program Files\\dotnet\\dotnet.exe";
             string ext = ".dll";
 
             if (!this._InputProject.IsSDK)
@@ -81,8 +148,8 @@ namespace CilView.Build
             {
                 outputPath = Path.Combine(projectDir, "bin\\Debug");
             }
-                
-            psi.Arguments = "build -o \""+ outputPath+ "\"";
+
+            psi.Arguments = "build -o \"" + outputPath + "\"";
 
             if (!String.IsNullOrEmpty(tfm))
             {
@@ -100,7 +167,7 @@ namespace CilView.Build
                     psi.StandardOutputEncoding = Encoding.GetEncoding(866);
                 }
             }
-            
+
             psi.UseShellExecute = false;
             psi.RedirectStandardInput = true;
             psi.RedirectStandardOutput = true;
@@ -114,7 +181,8 @@ namespace CilView.Build
                 pr.Start();
                 string s = pr.StandardOutput.ReadToEnd(); //получение вывода
                 pr.WaitForExit();
-                this._output = s;
+                this._output += s;
+                this._output += Environment.NewLine;
 
                 if (pr.ExitCode == 0)
                 {
@@ -125,12 +193,21 @@ namespace CilView.Build
                 {
                     this._success = false;
                 }
-                
+
                 this._invoked = true;
             }//end using
 
             return this._success;
-        }//end Invoke()
+        }//end InvokeDotnetBuild()
+
+        public bool Invoke()
+        {
+            bool res = this.InvokeDotnetBuild();
+
+            if (res == false) res = this.InvokeMsbuild();
+
+            return res;
+        }
 
     }
 }
