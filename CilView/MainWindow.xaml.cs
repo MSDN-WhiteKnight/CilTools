@@ -286,6 +286,15 @@ namespace CilView
         private void Window_Closed(object sender, EventArgs e)
         {
             SetSource(null);
+
+            try
+            {
+                BuildSystemInvocation.CleanupTempFiles();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex, "BuildSystemInvocation.CleanupTempFiles", true);
+            }
         }
 
         private void miAbout_Click(object sender, RoutedEventArgs e)

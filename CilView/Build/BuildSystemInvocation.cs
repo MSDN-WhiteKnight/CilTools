@@ -20,6 +20,8 @@ namespace CilView.Build
         string _output;
         string _binpath;
 
+        static List<string> s_tempdirs = new List<string>(20);
+
         public BuildSystemInvocation(ProjectInfo inputProject)
         {
             this._InputProject = inputProject;
@@ -47,6 +49,90 @@ namespace CilView.Build
         {
             get { return this._binpath; }
         }
+
+        static bool CleanupTempFiles_ProcessDirectory(string dir)
+        {
+            string[] files = Directory.GetFiles(dir);
+            bool success = true;
+
+            //delete files in a dir
+            for (int i = 0; i < files.Length; i++)
+            {
+                try
+                {
+                    File.Delete(files[i]);
+                }
+                catch (Exception ex)
+                {
+                    success = false;
+                    ErrorHandler.Current.Error(ex, "Removing temp file "+files[i],true);
+                }
+            }
+
+            //delete subdirs
+            string[] subdirs = Directory.GetDirectories(dir);
+
+            for (int i = 0; i < subdirs.Length; i++)
+            {
+                bool res=CleanupTempFiles_ProcessDirectory(subdirs[i]);
+                if (res == false) success = false;
+            }
+
+            //if all files and subdirs are removed, we can remove the whole directory
+            if (success)
+            {
+                try
+                {
+                    Directory.Delete(dir);
+                }
+                catch (Exception ex)
+                {
+                    ErrorHandler.Current.Error(ex, "Removing temp dir " + dir, true);
+                }
+            }
+
+            return success;
+        }
+
+        public static void CleanupTempFiles()
+        {
+            //remove registered temp directories
+            for (int i = 0; i < s_tempdirs.Count; i++)
+            {
+                CleanupTempFiles_ProcessDirectory(s_tempdirs[i]);
+            }
+
+            //cleanup the list of temp directories
+            s_tempdirs.Clear();
+        }
+
+        static string CreateTempDir(string proj)
+        {
+            string t = Path.GetTempPath();
+            string ret = String.Empty;
+            Random rnd = new Random();
+            int n = 0;
+
+            //generate unique temp directory path
+
+            while (true)
+            {
+                int x = rnd.Next();
+                string name = proj+"_build"+x.ToString("X");
+                ret = Path.Combine(t, name);
+
+                if (!File.Exists(ret) && !Directory.Exists(ret))
+                {
+                    //found unique name
+                    Directory.CreateDirectory(ret);
+                    return ret;
+                }
+
+                n++;
+
+                if (n > 2000) throw new IOException("Failed to generate temp directory name");
+            }
+        }
         
         bool InvokeMsbuild()
         {
@@ -69,7 +155,10 @@ namespace CilView.Build
             }
 
             string projectDir = Path.GetDirectoryName(this._InputProject.ProjectPath);
-            string outputPath = Path.Combine(projectDir, "bin\\Debug");
+            string outputPath = CreateTempDir(this._InputProject.Name);
+
+            //register in global temp dirs list
+            s_tempdirs.Add(outputPath);
 
             psi.Arguments = "-p:OutputPath=\"" + outputPath + "\"";
             psi.Arguments += " \"" + this._InputProject.ProjectPath + "\"";
@@ -139,15 +228,10 @@ namespace CilView.Build
                 tfm = this._InputProject.TargetFrameworks[0];
             }
 
-            string outputPath;
-            if (!String.IsNullOrEmpty(tfm))
-            {
-                outputPath = Path.Combine(projectDir, "bin\\Debug", tfm);
-            }
-            else
-            {
-                outputPath = Path.Combine(projectDir, "bin\\Debug");
-            }
+            string outputPath=CreateTempDir(this._InputProject.Name);
+
+            //register in global temp dirs list
+            s_tempdirs.Add(outputPath);
 
             psi.Arguments = "build -o \"" + outputPath + "\"";
 
