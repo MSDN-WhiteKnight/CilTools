@@ -133,6 +133,31 @@ namespace CilView.Build
                 if (n > 2000) throw new IOException("Failed to generate temp directory name");
             }
         }
+
+        static string FindOutputFile(string dir, string name, string ext)
+        {
+            try
+            {
+                //try the same name as project
+                string ret = Path.Combine(dir, name + ext);
+
+                if (File.Exists(ret)) return ret;
+
+                //if not found, fallback to any file with desired extension
+                string[] files = Directory.GetFiles(dir, "*." + ext);
+
+                if (files.Length > 0)
+                {
+                    return files[0];
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex, "BuildSystemInvocation.FindOutputFile", true);
+            }
+
+            return String.Empty;
+        }
         
         bool InvokeMsbuild()
         {
@@ -192,7 +217,7 @@ namespace CilView.Build
                 if (pr.ExitCode == 0)
                 {
                     this._success = true;
-                    this._binpath = Path.Combine(outputPath, this._InputProject.Name + ext);
+                    this._binpath = FindOutputFile(outputPath, this._InputProject.Name, ext);
                 }
                 else
                 {
@@ -209,6 +234,14 @@ namespace CilView.Build
         {
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = "C:\\Program Files\\dotnet\\dotnet.exe";
+
+            if (!File.Exists(psi.FileName))
+            {
+                this._output += ".NET CLI not found";
+                this._output += Environment.NewLine;
+                return false;
+            }
+
             string ext = ".dll";
 
             if (!this._InputProject.IsSDK)
@@ -271,7 +304,7 @@ namespace CilView.Build
                 if (pr.ExitCode == 0)
                 {
                     this._success = true;
-                    this._binpath = Path.Combine(outputPath, this._InputProject.Name + ext);
+                    this._binpath = FindOutputFile(outputPath, this._InputProject.Name, ext);
                 }
                 else
                 {
