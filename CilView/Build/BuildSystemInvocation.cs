@@ -106,7 +106,24 @@ namespace CilView.Build
             s_tempdirs.Clear();
         }
 
-        static string CreateTempDir(string proj)
+        static string PreparePath(string input)
+        {
+            if (String.IsNullOrEmpty(input)) return String.Empty;
+
+            //ensure trailing backslash            
+            if (input[input.Length - 1] != '\\')
+            {
+                input += "\\";
+            }
+
+            //escape backslash
+            //this is needed to set IntermediateOutputPath properly 
+            //in MSBuild command line
+            input += "\\";
+            return input;
+        }
+
+        static string CreateTempDir(string proj,string dirname)
         {
             string t = Path.GetTempPath();
             string ret = String.Empty;
@@ -118,7 +135,7 @@ namespace CilView.Build
             while (true)
             {
                 int x = rnd.Next();
-                string name = proj+"_build"+x.ToString("X");
+                string name = proj+"_"+dirname+x.ToString("X");
                 ret = Path.Combine(t, name);
 
                 if (!File.Exists(ret) && !Directory.Exists(ret))
@@ -180,12 +197,16 @@ namespace CilView.Build
             }
 
             string projectDir = Path.GetDirectoryName(this._InputProject.ProjectPath);
-            string outputPath = CreateTempDir(this._InputProject.Name);
+            string outputPath = CreateTempDir(this._InputProject.Name,"build");
+            string objPath = CreateTempDir(this._InputProject.Name, "obj");
 
             //register in global temp dirs list
             s_tempdirs.Add(outputPath);
+            s_tempdirs.Add(objPath);
 
+            objPath = PreparePath(objPath);
             psi.Arguments = "-p:OutputPath=\"" + outputPath + "\"";
+            psi.Arguments += " -p:IntermediateOutputPath=\"" + objPath + "\"";
             psi.Arguments += " \"" + this._InputProject.ProjectPath + "\"";
 
             if (CultureInfo.InstalledUICulture != null)
@@ -261,10 +282,12 @@ namespace CilView.Build
                 tfm = this._InputProject.TargetFrameworks[0];
             }
 
-            string outputPath=CreateTempDir(this._InputProject.Name);
+            string outputPath=CreateTempDir(this._InputProject.Name,"build");
+            string objPath=CreateTempDir(this._InputProject.Name, "obj");
 
             //register in global temp dirs list
             s_tempdirs.Add(outputPath);
+            s_tempdirs.Add(objPath);
 
             psi.Arguments = "build -o \"" + outputPath + "\"";
 
@@ -273,6 +296,8 @@ namespace CilView.Build
                 psi.Arguments += " -f " + tfm;
             }
 
+            objPath = PreparePath(objPath);
+            psi.Arguments += " -p:IntermediateOutputPath=\"" + objPath + "\"";
             psi.Arguments += " \"" + this._InputProject.ProjectPath + "\"";
 
             if (CultureInfo.InstalledUICulture != null)
