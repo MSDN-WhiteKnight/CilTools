@@ -112,7 +112,53 @@ namespace CilView
 
         void OpenFile(string file)
         {
-            OpenFileOperation op = new OpenFileOperation(file);
+            string assemblyPath = String.Empty;
+
+            if (file.EndsWith(".csproj", StringComparison.Ordinal) ||
+                file.EndsWith(".vbproj", StringComparison.Ordinal))
+            {
+                //MSBuild project
+                ProjectInfo info = ProjectInfo.ReadFile(file);
+                BuildSystemInvocation builder = new BuildSystemInvocation(info);
+
+                bool bres = false;
+                Mouse.OverrideCursor = Cursors.Wait;
+
+                try
+                {
+                    //build the project
+                    bres = builder.Invoke();
+                }
+                finally
+                {
+                    Mouse.OverrideCursor = null;
+                }
+
+                if (bres)
+                {
+                    //success - open the build output binary
+                    assemblyPath = builder.BinaryPath;
+                }
+                else
+                {
+                    //error
+                    wndError wnd = new wndError(
+                        "Failed to build project. The build system output is provided below.",
+                        builder.OutputText
+                        );
+                    wnd.Owner = this;
+                    wnd.ShowDialog();
+                    return;
+                }//end if (res)
+            }
+            else 
+            {
+                //regular assembly
+                assemblyPath = file;
+            }
+
+            //open assembly
+            OpenFileOperation op = new OpenFileOperation(assemblyPath);
             ProgressWindow pwnd = new ProgressWindow(op);
             pwnd.Owner = this;
             bool? res = pwnd.ShowDialog();
@@ -233,48 +279,8 @@ namespace CilView
             dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|" +
                 "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|All files|*";
 
-            if (dlg.ShowDialog(this) != true) return;
-
-            if (dlg.FileName.EndsWith(".csproj", StringComparison.Ordinal) ||
-                dlg.FileName.EndsWith(".vbproj", StringComparison.Ordinal))
-            {
-                //MSBuild project
-                ProjectInfo info = ProjectInfo.ReadFile(dlg.FileName);
-                BuildSystemInvocation builder = new BuildSystemInvocation(info);
-
-                bool res = false;
-                Mouse.OverrideCursor = Cursors.Wait;
-
-                try
-                {
-                    //build the project
-                    res = builder.Invoke();
-                }
-                finally
-                {
-                    Mouse.OverrideCursor = null;
-                }
-
-                if (res)
-                {
-                    //success - open the build output binary
-                    this.OpenFile(builder.BinaryPath);
-                }
-                else
-                {
-                    //error
-                    wndError wnd = new wndError(
-                        "Failed to build project. The build system output is provided below.",
-                        builder.OutputText
-                        );
-                    wnd.Owner = this;
-                    wnd.ShowDialog();
-                }//end if (res)
-
-                return;
-            }
-
-            //regular assembly
+            if (dlg.ShowDialog(this) != true) return;                       
+            
             this.OpenFile(dlg.FileName);
         }
 
