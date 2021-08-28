@@ -21,6 +21,7 @@ namespace CilView.Build
         string _binpath;
 
         static List<string> s_tempdirs = new List<string>(20);
+        static readonly object s_tempdirsSync = new object();
 
         public BuildSystemInvocation(ProjectInfo inputProject)
         {
@@ -96,14 +97,25 @@ namespace CilView.Build
 
         public static void CleanupTempFiles()
         {
-            //remove registered temp directories
-            for (int i = 0; i < s_tempdirs.Count; i++)
+            lock (s_tempdirsSync)
             {
-                CleanupTempFiles_ProcessDirectory(s_tempdirs[i]);
-            }
+                //remove registered temp directories
+                for (int i = 0; i < s_tempdirs.Count; i++)
+                {
+                    CleanupTempFiles_ProcessDirectory(s_tempdirs[i]);
+                }
 
-            //cleanup the list of temp directories
-            s_tempdirs.Clear();
+                //cleanup the list of temp directories
+                s_tempdirs.Clear();
+            }
+        }
+
+        static void RegisterTempDir(string dir)
+        {
+            lock (s_tempdirsSync)
+            {
+                s_tempdirs.Add(dir);
+            }
         }
 
         static string PreparePath(string input)
@@ -201,8 +213,8 @@ namespace CilView.Build
             string objPath = CreateTempDir(this._InputProject.Name, "obj");
 
             //register in global temp dirs list
-            s_tempdirs.Add(outputPath);
-            s_tempdirs.Add(objPath);
+            RegisterTempDir(outputPath);
+            RegisterTempDir(objPath);
 
             objPath = PreparePath(objPath);
             psi.Arguments = "-p:OutputPath=\"" + outputPath + "\"";
@@ -286,8 +298,8 @@ namespace CilView.Build
             string objPath=CreateTempDir(this._InputProject.Name, "obj");
 
             //register in global temp dirs list
-            s_tempdirs.Add(outputPath);
-            s_tempdirs.Add(objPath);
+            RegisterTempDir(outputPath);
+            RegisterTempDir(objPath);
 
             psi.Arguments = "build -o \"" + outputPath + "\"";
 

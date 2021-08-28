@@ -113,38 +113,35 @@ namespace CilView
         void OpenFile(string file)
         {
             string assemblyPath = String.Empty;
+            ProgressWindow pwnd;
 
             if (file.EndsWith(".csproj", StringComparison.Ordinal) ||
                 file.EndsWith(".vbproj", StringComparison.Ordinal))
             {
                 //MSBuild project
-                ProjectInfo info = ProjectInfo.ReadFile(file);
-                BuildSystemInvocation builder = new BuildSystemInvocation(info);
+                BuildProjectOperation opBuild = new BuildProjectOperation(file);
+                pwnd = new ProgressWindow(opBuild);
+                pwnd.Owner = this;
 
-                bool bres = false;
-                Mouse.OverrideCursor = Cursors.Wait;
+                //build project in background with progress window
+                bool? opres = pwnd.ShowDialog();
 
-                try
-                {
-                    //build the project
-                    bres = builder.Invoke();
-                }
-                finally
-                {
-                    Mouse.OverrideCursor = null;
-                }
+                if (opres != true) return; //cancelled
+                if (opBuild.Result == null) return; //Process.Start error
 
+                bool bres = opBuild.Result.IsSuccessful;
+                
                 if (bres)
                 {
                     //success - open the build output binary
-                    assemblyPath = builder.BinaryPath;
+                    assemblyPath = opBuild.Result.BinaryPath;
                 }
                 else
                 {
-                    //error
+                    //build error
                     wndError wnd = new wndError(
                         "Failed to build project. The build system output is provided below.",
-                        builder.OutputText
+                        opBuild.Result.OutputText
                         );
                     wnd.Owner = this;
                     wnd.ShowDialog();
@@ -159,7 +156,7 @@ namespace CilView
 
             //open assembly
             OpenFileOperation op = new OpenFileOperation(assemblyPath);
-            ProgressWindow pwnd = new ProgressWindow(op);
+            pwnd = new ProgressWindow(op);
             pwnd.Owner = this;
             bool? res = pwnd.ShowDialog();
 
