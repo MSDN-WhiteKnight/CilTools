@@ -187,6 +187,49 @@ namespace CilView.Build
 
             return String.Empty;
         }
+
+        bool InvokeProcess(ProcessStartInfo psi, string outputPath,string ext)
+        {
+            Process pr = new Process();
+
+            using (pr)
+            {
+                pr.StartInfo = psi;
+                pr.Start();
+                string s = pr.StandardOutput.ReadToEnd(); //получение вывода
+                pr.WaitForExit();
+                this._output += s;
+                this._output += Environment.NewLine;
+
+                if (pr.ExitCode == 0)
+                {
+                    //build succeeded
+                    string binpath = FindOutputFile(outputPath, this._InputProject.Name, ext);
+
+                    if (String.IsNullOrEmpty(binpath)) 
+                    {
+                        this._output += "Error: Can't find project output file.";
+                        this._output += Environment.NewLine;
+                        this._success = false;
+                    }
+                    else 
+                    {
+                        //found output file
+                        this._success = true;
+                        this._binpath = binpath;
+                    }
+                }
+                else
+                {
+                    //build failed
+                    this._success = false;
+                }
+
+                this._invoked = true;
+            }//end using
+
+            return this._success;
+        }
         
         bool InvokeMsbuild()
         {
@@ -235,32 +278,8 @@ namespace CilView.Build
             psi.RedirectStandardInput = true;
             psi.RedirectStandardOutput = true;
             psi.CreateNoWindow = true;
-
-            Process pr = new Process();
-
-            using (pr)
-            {
-                pr.StartInfo = psi;
-                pr.Start();
-                string s = pr.StandardOutput.ReadToEnd(); //получение вывода
-                pr.WaitForExit();
-                this._output += s;
-                this._output += Environment.NewLine;
-
-                if (pr.ExitCode == 0)
-                {
-                    this._success = true;
-                    this._binpath = FindOutputFile(outputPath, this._InputProject.Name, ext);
-                }
-                else
-                {
-                    this._success = false;
-                }
-
-                this._invoked = true;
-            }//end using
-
-            return this._success;
+            
+            return this.InvokeProcess(psi,outputPath,ext);
         }//end InvokeMsbuild()
 
         bool InvokeDotnetBuild()
@@ -326,32 +345,8 @@ namespace CilView.Build
             psi.RedirectStandardInput = true;
             psi.RedirectStandardOutput = true;
             psi.CreateNoWindow = true;
-
-            Process pr = new Process();
-
-            using (pr)
-            {
-                pr.StartInfo = psi;
-                pr.Start();
-                string s = pr.StandardOutput.ReadToEnd(); //получение вывода
-                pr.WaitForExit();
-                this._output += s;
-                this._output += Environment.NewLine;
-
-                if (pr.ExitCode == 0)
-                {
-                    this._success = true;
-                    this._binpath = FindOutputFile(outputPath, this._InputProject.Name, ext);
-                }
-                else
-                {
-                    this._success = false;
-                }
-
-                this._invoked = true;
-            }//end using
-
-            return this._success;
+            
+            return this.InvokeProcess(psi, outputPath, ext);
         }//end InvokeDotnetBuild()
 
         public bool Invoke()
