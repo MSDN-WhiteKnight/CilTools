@@ -276,9 +276,10 @@ namespace CilView
             dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|" +
                 "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|All files|*";
 
-            if (dlg.ShowDialog(this) != true) return;                       
-            
-            this.OpenFile(dlg.FileName);
+            if (dlg.ShowDialog(this) == true)
+            {
+                this.OpenFile(dlg.FileName);
+            }
         }
 
         private void bOpenFile_Click(object sender, RoutedEventArgs e)
