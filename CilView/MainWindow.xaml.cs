@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Documents;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
+using CilView.Build;
 using CilView.Exceptions;
 using CilView.UI.Dialogs;
 using CilView.UI.Controls;
@@ -111,8 +112,51 @@ namespace CilView
 
         void OpenFile(string file)
         {
-            OpenFileOperation op = new OpenFileOperation(file);
-            ProgressWindow pwnd = new ProgressWindow(op);
+            string assemblyPath = String.Empty;
+            ProgressWindow pwnd;
+
+            if (file.EndsWith(".csproj", StringComparison.Ordinal) ||
+                file.EndsWith(".vbproj", StringComparison.Ordinal))
+            {
+                //MSBuild project
+                BuildProjectOperation opBuild = new BuildProjectOperation(file);
+                pwnd = new ProgressWindow(opBuild);
+                pwnd.Owner = this;
+
+                //build project in background with progress window
+                bool? opres = pwnd.ShowDialog();
+
+                if (opres != true) return; //cancelled
+                if (opBuild.Result == null) return; //Process.Start error
+
+                bool bres = opBuild.Result.IsSuccessful;
+                
+                if (bres)
+                {
+                    //success - open the build output binary
+                    assemblyPath = opBuild.Result.BinaryPath;
+                }
+                else
+                {
+                    //build error
+                    wndError wnd = new wndError(
+                        "Failed to build project. The build system output is provided below.",
+                        opBuild.Result.OutputText
+                        );
+                    wnd.Owner = this;
+                    wnd.ShowDialog();
+                    return;
+                }//end if (res)
+            }
+            else 
+            {
+                //regular assembly
+                assemblyPath = file;
+            }
+
+            //open assembly
+            OpenFileOperation op = new OpenFileOperation(assemblyPath);
+            pwnd = new ProgressWindow(op);
             pwnd.Owner = this;
             bool? res = pwnd.ShowDialog();
 
@@ -229,7 +273,8 @@ namespace CilView
         {
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.RestoreDirectory = true;
-            dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|All files|*";
+            dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|" +
+                "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|All files|*";
 
             if (dlg.ShowDialog(this) == true)
             {
@@ -245,6 +290,15 @@ namespace CilView
         private void Window_Closed(object sender, EventArgs e)
         {
             SetSource(null);
+
+            try
+            {
+                BuildSystemInvocation.CleanupTempFiles();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex, "BuildSystemInvocation.CleanupTempFiles", true);
+            }
         }
 
         private void miAbout_Click(object sender, RoutedEventArgs e)

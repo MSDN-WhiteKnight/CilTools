@@ -16,6 +16,11 @@ namespace CilView.Common
             return String.Equals(left, right, StringComparison.InvariantCulture);
         }
 
+        public static bool StringEqualsIgnoreCase(string left, string right)
+        {
+            return String.Equals(left, right, StringComparison.InvariantCultureIgnoreCase);
+        }
+
         public static bool PathEquals(string left, string right)
         {
             if (left == null)
