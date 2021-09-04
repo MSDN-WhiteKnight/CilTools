@@ -7,6 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
@@ -101,6 +102,16 @@ namespace CilTools.Metadata
 
             if (ret != null) this.SetAssembly(ref assid, ret); //save to cache
 
+            return ret;
+        }
+
+        public Assembly LoadImage(MemoryImage image)
+        {
+            if (_assemblies == null) throw new ObjectDisposedException("AssemblyReader");
+            if (image == null) throw new ArgumentNullException("image");
+
+            MetadataAssembly ret = null;
+            ret = new MetadataAssembly(image, this);
             return ret;
         }
 

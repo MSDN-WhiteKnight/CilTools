@@ -506,5 +506,48 @@ namespace CilTools.Runtime
                 return null;
             }
         }
+
+        public static MemoryImage GetMemoryImage(ClrModule module)
+        {
+            if (module == null) throw new ArgumentNullException("module");
+            
+            if (module.Size == 0) return null;
+            if (module.MetadataLength == 0) return null;
+
+            byte[] imageBytes = new byte[module.Size];
+            byte[] metadataBytes = new byte[module.MetadataLength];
+
+            DataTarget dt = module.Runtime.DataTarget;
+
+            int c = 0;
+            bool res=dt.ReadProcessMemory(module.ImageBase, imageBytes, (int)module.Size, out c);
+
+            if (res == false) throw new ApplicationException("Failed to read image");
+
+            if ((ulong)c < module.Size)
+            {
+                //Partial read
+                return null;
+            }
+
+            res = dt.ReadProcessMemory(
+                module.MetadataAddress, metadataBytes, (int)module.MetadataLength, out c
+                );
+
+            if (res == false) throw new ApplicationException("Failed to read metadata");
+            if ((ulong)c<module.MetadataLength) throw new ApplicationException("Metadata partial read");
+
+            MemoryImage img = new MemoryImage(
+                module.ImageBase,
+                module.Address,
+                module.Size,
+                module.MetadataAddress,
+                module.MetadataLength,
+                imageBytes,
+                metadataBytes
+                );
+
+            return img;
+        }
     }
 }

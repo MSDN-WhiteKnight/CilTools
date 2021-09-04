@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+using System.Runtime.InteropServices;
 
 namespace CilTools.Metadata
 {
@@ -26,7 +27,7 @@ namespace CilTools.Metadata
     /// </remarks>
     internal sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
     {
-        static MetadataAssembly unknown = new MetadataAssembly(null,null);
+        static MetadataAssembly unknown = new MetadataAssembly((string)null,null);
 
         internal static MetadataAssembly UnknownAssembly
         {
@@ -78,6 +79,41 @@ namespace CilTools.Metadata
             }
 
             n.CodeBase = path;
+            this.asn = n;
+        }
+
+        internal unsafe MetadataAssembly(MemoryImage image, AssemblyReader ar)
+        {
+            this.assreader = ar;
+            AssemblyName n = new AssemblyName();
+
+            //open PE image
+            GCHandle gchPE = GCHandle.Alloc(image.Image, GCHandleType.Pinned);
+            PEReader pr = new PEReader(
+                (byte*)gchPE.AddrOfPinnedObject(),(int)image.Size,true
+                );
+
+            //create MetadataReader
+            this.reader = pr.GetMetadataReader();
+            this.peReader = pr;
+
+            //read assembly information and fill AssemblyName properties
+            AssemblyDefinition adef = this.reader.GetAssemblyDefinition();
+            n.Name = reader.GetString(adef.Name);
+            n.Version = adef.Version;
+            n.HashAlgorithm = (System.Configuration.Assemblies.AssemblyHashAlgorithm)adef.HashAlgorithm;
+
+            StringHandle culture = adef.Culture;
+            if (!culture.IsNil) n.CultureInfo = new CultureInfo(reader.GetString(culture));
+
+            BlobHandle key = adef.PublicKey;
+            if (!key.IsNil)
+            {
+                n.SetPublicKey(reader.GetBlobBytes(key));
+                n.Flags |= AssemblyNameFlags.PublicKey;
+            }
+
+            n.CodeBase = String.Empty;
             this.asn = n;
         }
 
