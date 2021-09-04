@@ -114,12 +114,21 @@ namespace CilView
                 string name = Path.GetFileNameWithoutExtension(path.Trim());
 
                 //try CilTools.Metadata first
-                //from memory...
-                MemoryImage img = ClrAssemblyReader.GetMemoryImage(x);
-                
-                if (img != null)
+                try
                 {
-                    ass = rd.LoadImage(img);
+                    //from memory...
+                    MemoryImage img = ClrAssemblyReader.GetMemoryImage(x);
+
+                    if (img != null)
+                    {
+                        ass = rd.LoadImage(img);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorHandler.Current.Error(
+                        ex, "Loading image from memory: "+name, true
+                        );
                 }
 
                 //from file...

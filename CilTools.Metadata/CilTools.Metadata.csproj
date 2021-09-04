@@ -15,7 +15,6 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <FileVersion>2.3.0.0</FileVersion>
     <Description>The library that supports inspecting the contents of .NET assembly via reflection without loading it into the current process</Description>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">

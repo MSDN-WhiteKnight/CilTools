@@ -111,7 +111,23 @@ namespace CilTools.Metadata
             if (image == null) throw new ArgumentNullException("image");
 
             MetadataAssembly ret = null;
+            AssemblyId assid=new AssemblyId();
+            bool hasid = false;
+
+            if (!String.IsNullOrEmpty(image.FilePath))
+            {
+                //if path is known, try cache first
+                assid = new AssemblyId(AssemblyIdKind.Path, image.FilePath);
+                hasid = true;
+                ret = this.GetAssembly(ref assid);
+            }
+
+            if (ret != null) return ret; //from cache
+
             ret = new MetadataAssembly(image, this);
+
+            if(ret!=null && hasid) this.SetAssembly(ref assid, ret); //save to cache
+
             return ret;
         }
 

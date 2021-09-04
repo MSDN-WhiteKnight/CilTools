@@ -2,6 +2,7 @@
  * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 
@@ -9,66 +10,37 @@ namespace CilTools.Reflection
 {
     public class MemoryImage
     {
-        ulong _imageBase;
-        ulong _address;
-        ulong _size;
-        ulong _metadataAddress;
-        ulong _metadataSize;
         byte[] _image;
-        byte[] _metadata;
+        string _filepath;
 
-        public MemoryImage(
-            ulong imageBase,
-            ulong address,
-            ulong size,
-            ulong metadataAddress,
-            ulong metadataSize,
-            byte[] image,
-            byte[] metadata
-            )
+        public MemoryImage(byte[] image,string filepath)
         {
-            this._imageBase = imageBase;
-            this._address = address;
-            this._size = size;
-            this._metadataAddress = metadataAddress;
-            this._metadataSize = metadataSize;
+            if (image == null) throw new ArgumentNullException("image");
+            if (image.Length==0) throw new ArgumentException("Image should not be empty array");
+
+            if (filepath == null) filepath = String.Empty;
             this._image = image;
-            this._metadata = metadata;
+            this._filepath = filepath;
         }
-
-        public ulong ImageBase
-        {
-            get { return this._imageBase; }
-        }
-
-        public ulong Address
-        {
-            get { return this._address; }
-        }
-
-        public ulong Size
-        {
-            get { return this._size; }
-        }
-
-        public ulong MetadataAddress
-        {
-            get { return this._metadataAddress; }
-        }
-
-        public ulong MetadataSize
-        {
-            get { return this._metadataSize; }
-        }
-
+        
         public byte[] Image
         {
             get { return this._image; }
         }
 
-        public byte[] Metadata
+        public string FilePath
         {
-            get { return this._metadata; }
+            get { return this._filepath; }
+        }
+
+        public int Size
+        {
+            get { return this._image.Length; }
+        }
+
+        public Stream GetStream()
+        {
+            return new MemoryStream(this._image);
         }
     }
 }

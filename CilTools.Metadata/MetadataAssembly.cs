@@ -39,6 +39,7 @@ namespace CilTools.Metadata
         AssemblyName asn;
         AssemblyReader assreader;
         Dictionary<int, MemberInfo> cache = new Dictionary<int, MemberInfo>();
+        bool fromMemory;
 
         internal MetadataAssembly(string path, AssemblyReader ar)
         {
@@ -80,18 +81,18 @@ namespace CilTools.Metadata
 
             n.CodeBase = path;
             this.asn = n;
+            this.fromMemory = false;
+            System.Diagnostics.Debug.WriteLine("Loaded from file: "+n.Name);
         }
 
-        internal unsafe MetadataAssembly(MemoryImage image, AssemblyReader ar)
+        internal MetadataAssembly(MemoryImage image, AssemblyReader ar)
         {
             this.assreader = ar;
             AssemblyName n = new AssemblyName();
 
             //open PE image
-            GCHandle gchPE = GCHandle.Alloc(image.Image, GCHandleType.Pinned);
-            PEReader pr = new PEReader(
-                (byte*)gchPE.AddrOfPinnedObject(),(int)image.Size,true
-                );
+            Stream s = image.GetStream();
+            PEReader pr = new PEReader(s,PEStreamOptions.IsLoadedImage);
 
             //create MetadataReader
             this.reader = pr.GetMetadataReader();
@@ -115,6 +116,8 @@ namespace CilTools.Metadata
 
             n.CodeBase = String.Empty;
             this.asn = n;
+            this.fromMemory = true;
+            System.Diagnostics.Debug.WriteLine("Loaded from memory: " + n.Name);
         }
 
         MemberInfo CacheGetValue(int token)
