@@ -8,6 +8,7 @@ using System.Diagnostics;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
 
 namespace CilTools.Metadata.Tests
 {
@@ -25,6 +26,8 @@ namespace CilTools.Metadata.Tests
             
             foreach (ProcessModule m in pmc)
             {
+                Logger.LogMessage(m.ModuleName);
+
                 if (m.ModuleName.Equals(name, StringComparison.OrdinalIgnoreCase)) 
                 {
                     module = m;
