@@ -92,7 +92,9 @@ namespace CilTools.Metadata
 
             //open PE image
             Stream s = image.GetStream();
-            PEReader pr = new PEReader(s,PEStreamOptions.IsLoadedImage);
+            PEStreamOptions options = PEStreamOptions.Default;
+            if (!image.IsFileLayout) options = PEStreamOptions.IsLoadedImage;
+            PEReader pr = new PEReader(s,options);
 
             //create MetadataReader
             this.reader = pr.GetMetadataReader();

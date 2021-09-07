@@ -553,7 +553,7 @@ namespace CilTools.Runtime
                 return null;
             }
 
-            MemoryImage img = new MemoryImage(imageBytes, path);
+            MemoryImage img = new MemoryImage(imageBytes, path, false);
             return img;
         }
     }
