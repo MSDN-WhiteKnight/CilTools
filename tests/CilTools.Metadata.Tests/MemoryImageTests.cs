@@ -17,7 +17,7 @@ namespace CilTools.Metadata.Tests
     {
     
         [DllImport("kernel32.dll", SetLastError = true)]
-        static extern IntPtr LoadLibraryEx(string lpFileName, IntPtr hReservedNull, LoadLibraryFlags dwFlags);
+        static extern IntPtr LoadLibraryEx(string lpFileName, IntPtr hReservedNull, uint dwFlags);
         
         [StructLayout(LayoutKind.Sequential)]
         public struct MODULEINFO
