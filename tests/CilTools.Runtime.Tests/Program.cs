@@ -10,6 +10,7 @@ using System.Reflection.Emit;
 using System.Text;
 using System.Threading;
 using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
 using CilTools.Tests.Common;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -241,6 +242,23 @@ namespace CilTools.Runtime.Tests
 
             //dynamic assembly file path should be empty
             Assert.AreEqual(String.Empty, ass.Location);
+        }
+
+        [LongTest]
+        public void Test_MemoryImage()
+        {
+            ClrAssemblyReader reader = GetReader();
+            
+            ClrModule module = runtime.Modules.Where(
+                x => x.IsFile && x.Name.EndsWith("EmitSampleApp.exe",StringComparison.OrdinalIgnoreCase)
+                ).First();
+
+            MemoryImage img=ClrAssemblyReader.GetMemoryImage(module);
+            Assert.IsNotNull(img);
+            Assert.AreEqual(module.Size, (ulong)img.Image.Length);
+            Assert.AreEqual(module.FileName, img.FilePath);
+            Assert.IsFalse(img.IsFileLayout);
+            AssertThat.HasAtLeastOneMatch(img.Image, x => x != 0);
         }
     }
 
