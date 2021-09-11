@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
 using CilTools.Runtime;
 using CilTools.Metadata;
 using Microsoft.Diagnostics.Runtime;
@@ -113,7 +114,26 @@ namespace CilView
                 string name = Path.GetFileNameWithoutExtension(path.Trim());
 
                 //try CilTools.Metadata first
-                if (path != "")
+                try
+                {
+                    //from memory...
+                    MemoryImage img = ClrAssemblyReader.GetMemoryImage(x);
+
+                    if (img != null)
+                    {
+                        ass = rd.LoadImage(img);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorHandler.Current.Error(
+                        ex, "Loading image from memory: "+name, true
+                        );
+                }
+
+                //from file...
+
+                if (ass==null && path != "")
                 {
                     try
                     {

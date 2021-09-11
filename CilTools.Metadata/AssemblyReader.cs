@@ -7,6 +7,7 @@ using System.IO;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
@@ -100,6 +101,49 @@ namespace CilTools.Metadata
             ret = new MetadataAssembly(path,this);
 
             if (ret != null) this.SetAssembly(ref assid, ret); //save to cache
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Loads the assembly from the specified memory image
+        /// </summary>
+        /// <param name="image">The memory image to load</param>
+        /// <returns>The assembly object or null if the assembly reader failed to read 
+        /// the requested assembly.</returns>
+        /// <remarks>
+        /// <para> 
+        /// If the assembly is read successfully and the path is set for a memory image, 
+        /// the loaded assembly is saved to cache. Eventual attempts to read assembly 
+        /// with the same path will fetch it from the cache instead of loading it again. 
+        /// If the path is not set, each call to this method will load a new assembly 
+        /// instance, potentially leading to an unbounded growth of consumed memory.
+        /// </para>
+        /// <para>The <c>CilTools.Runtime.ClrAssemblyReader.GetMemoryImage</c> method could be  
+        /// used to load a memory image from a process.</para>
+        /// </remarks>
+        public Assembly LoadImage(MemoryImage image)
+        {
+            if (_assemblies == null) throw new ObjectDisposedException("AssemblyReader");
+            if (image == null) throw new ArgumentNullException("image");
+
+            MetadataAssembly ret = null;
+            AssemblyId assid=new AssemblyId();
+            bool hasid = false;
+
+            if (!String.IsNullOrEmpty(image.FilePath))
+            {
+                //if path is known, try cache first
+                assid = new AssemblyId(AssemblyIdKind.Path, image.FilePath);
+                hasid = true;
+                ret = this.GetAssembly(ref assid);
+            }
+
+            if (ret != null) return ret; //from cache
+
+            ret = new MetadataAssembly(image, this);
+
+            if(ret!=null && hasid) this.SetAssembly(ref assid, ret); //save to cache
 
             return ret;
         }

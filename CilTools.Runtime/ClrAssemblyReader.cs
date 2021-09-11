@@ -1,16 +1,16 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using Microsoft.Diagnostics.Runtime;
-using System.Linq;
 
 namespace CilTools.Runtime
 {
@@ -505,6 +505,86 @@ namespace CilTools.Runtime
             {
                 return null;
             }
+        }
+
+        static byte[] ReadMemoryIgnoreErrors(DataTarget dt, ulong address, int size)
+        {
+            //Reads the specified memory region, ignoring any uncommitted or inaccessible pages.
+            //This is needed because loaded PE image has uncommitted "holes" in it due to 
+            //a section alignment.
+            byte[] ret = new byte[size];
+            int count_errors = 0;
+            int page_size = Environment.SystemPageSize;
+            byte[] buffer = new byte[page_size];
+            int c;
+
+            for (int i = 0; i < size; i += page_size)
+            {
+                if (i + page_size > size) break;
+
+                bool res = dt.ReadProcessMemory(address + (ulong)i, buffer, page_size, out c);
+
+                if (res == false || c < page_size) count_errors += page_size;
+                else Array.Copy(buffer, 0, ret, i, page_size);
+            }
+
+            if (count_errors >= size)
+            {
+                Debug.WriteLine("ReadMemoryIgnoreErrors failed");
+                return new byte[0];//couldn't read anything
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Gets the executable image data for the specified module
+        /// </summary>
+        /// <param name="module">The ClMD module object</param>
+        /// <remarks>
+        /// This method gets the executable image data loaded into the target process. This enables you 
+        /// to inspect that image with PE reader libraries without the extra cost of reading the image from
+        /// file. The method can fail if the memory pages where the image is stored are inaccessible. 
+        /// It also does not work for memory-only dynamic modules that don't have the backing PE image.
+        /// </remarks>
+        /// <returns>In-memory executable image data, or <c>null</c> if the operation failed</returns>
+        /// <exception cref="ArgumentNullException">module is <c>null</c></exception>
+        public static MemoryImage GetMemoryImage(ClrModule module)
+        {
+            if (module == null) throw new ArgumentNullException("module");
+            if (module.Size == 0) return null;
+            
+            byte[] imageBytes = new byte[module.Size];
+            DataTarget dt = module.Runtime.DataTarget;
+
+            string path = String.Empty;
+            if (module.IsFile) path = module.FileName;
+            
+            int c = 0;
+            bool res=dt.ReadProcessMemory(module.ImageBase, imageBytes, (int)module.Size, out c);
+
+            if (res == false)
+            {
+                //Failed to read memory
+                Debug.WriteLine("ReadProcessMemory failed. Module: " + path);
+                return null;
+            }
+
+            if ((ulong)c < module.Size)
+            {
+                //Partial read. Try to read ignoring errors.
+                
+                imageBytes = ReadMemoryIgnoreErrors(dt, module.ImageBase, (int)module.Size);
+
+                if (imageBytes.Length == 0)
+                {
+                    Debug.WriteLine("ReadProcessMemory partial read. Module: " + path);
+                    return null;
+                }
+            }
+
+            MemoryImage img = new MemoryImage(imageBytes, path, false);
+            return img;
         }
     }
 }

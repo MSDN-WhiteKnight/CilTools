@@ -26,7 +26,7 @@ namespace CilTools.Metadata
     /// </remarks>
     internal sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
     {
-        static MetadataAssembly unknown = new MetadataAssembly(null,null);
+        static MetadataAssembly unknown = new MetadataAssembly((string)null,null);
 
         internal static MetadataAssembly UnknownAssembly
         {
@@ -38,6 +38,7 @@ namespace CilTools.Metadata
         AssemblyName asn;
         AssemblyReader assreader;
         Dictionary<int, MemberInfo> cache = new Dictionary<int, MemberInfo>();
+        bool fromMemory;
 
         internal MetadataAssembly(string path, AssemblyReader ar)
         {
@@ -79,6 +80,45 @@ namespace CilTools.Metadata
 
             n.CodeBase = path;
             this.asn = n;
+            this.fromMemory = false;
+            System.Diagnostics.Debug.WriteLine("Loaded from file: "+n.Name);
+        }
+
+        internal MetadataAssembly(MemoryImage image, AssemblyReader ar)
+        {
+            this.assreader = ar;
+            AssemblyName n = new AssemblyName();
+
+            //open PE image
+            Stream s = image.GetStream();
+            PEStreamOptions options = PEStreamOptions.Default;
+            if (!image.IsFileLayout) options = PEStreamOptions.IsLoadedImage;
+            PEReader pr = new PEReader(s,options);
+
+            //create MetadataReader
+            this.reader = pr.GetMetadataReader();
+            this.peReader = pr;
+
+            //read assembly information and fill AssemblyName properties
+            AssemblyDefinition adef = this.reader.GetAssemblyDefinition();
+            n.Name = reader.GetString(adef.Name);
+            n.Version = adef.Version;
+            n.HashAlgorithm = (System.Configuration.Assemblies.AssemblyHashAlgorithm)adef.HashAlgorithm;
+
+            StringHandle culture = adef.Culture;
+            if (!culture.IsNil) n.CultureInfo = new CultureInfo(reader.GetString(culture));
+
+            BlobHandle key = adef.PublicKey;
+            if (!key.IsNil)
+            {
+                n.SetPublicKey(reader.GetBlobBytes(key));
+                n.Flags |= AssemblyNameFlags.PublicKey;
+            }
+
+            n.CodeBase = String.Empty;
+            this.asn = n;
+            this.fromMemory = true;
+            System.Diagnostics.Debug.WriteLine("Loaded from memory: " + n.Name);
         }
 
         MemberInfo CacheGetValue(int token)
@@ -101,6 +141,11 @@ namespace CilTools.Metadata
         /// Gets an object used to read .NET metadata of this assembly
         /// </summary>
         public AssemblyReader AssemblyReader { get { return this.assreader; } }
+
+        public bool FromMemoryImage
+        {
+            get { return this.fromMemory; }
+        }
 
         /// <summary>
         /// Gets the display name of the assembly

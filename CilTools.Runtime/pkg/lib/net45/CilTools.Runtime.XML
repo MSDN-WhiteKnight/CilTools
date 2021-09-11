@@ -231,6 +231,20 @@
             Removes all assemblies from the preloaded assembly collection
             </summary>
         </member>
+        <member name="M:CilTools.Runtime.ClrAssemblyReader.GetMemoryImage(Microsoft.Diagnostics.Runtime.ClrModule)">
+            <summary>
+            Gets the executable image data for the specified module
+            </summary>
+            <param name="module">The ClMD module object</param>
+            <remarks>
+            This method gets the executable image data loaded into the target process. This enables you 
+            to inspect that image with PE reader libraries without the extra cost of reading the image from
+            file. The method can fail if the memory pages where the image is stored are inaccessible. 
+            It also does not work for memory-only dynamic modules that don't have the backing PE image.
+            </remarks>
+            <returns>In-memory executable image data, or <c>null</c> if the operation failed</returns>
+            <exception cref="T:System.ArgumentNullException">module is <c>null</c></exception>
+        </member>
         <member name="T:CilTools.Runtime.ClrDynamicMethod">
             <summary>
             Represents information about a dynamic method in the external CLR instance
