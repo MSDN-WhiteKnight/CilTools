@@ -12,7 +12,6 @@ using System.Globalization;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
-using System.Runtime.InteropServices;
 
 namespace CilTools.Metadata
 {

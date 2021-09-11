@@ -111,7 +111,7 @@ namespace CilTools.Metadata
         /// <param name="image">The memory image to load</param>
         /// <returns>The assembly object or null if the assembly reader failed to read 
         /// the requested assembly.</returns>
-        /// /// <remarks>
+        /// <remarks>
         /// <para> 
         /// If the assembly is read successfully and the path is set for a memory image, 
         /// the loaded assembly is saved to cache. Eventual attempts to read assembly 
