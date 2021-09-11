@@ -31,10 +31,41 @@ namespace CilTools.Metadata.Tests
         [DllImport("psapi.dll", SetLastError = true)]
         static extern bool GetModuleInformation(IntPtr hProcess, IntPtr hModule, out MODULEINFO lpmodinfo, uint cb);
 
+        [DllImport("kernel32.dll", SetLastError = true)]
+        static extern bool ReadProcessMemory(
+            IntPtr hProcess, IntPtr lpBaseAddress, [Out] byte[] lpBuffer, int dwSize, out IntPtr lpNumberOfBytesRead
+            );
+
         [DllImport("kernel32.dll", SetLastError = true, EntryPoint = "ReadProcessMemory")]
         static extern bool ReadProcessMemory_Byte(
             IntPtr hProcess, IntPtr lpBaseAddress, out byte lpBuffer, int dwSize, out IntPtr lpNumberOfBytesRead
             );
+
+        byte[] ReadMemoryIgnoreErrors(IntPtr hProcess,IntPtr address, int size)
+        {
+            //Reads the specified memory region, ignoring any uncommitted or inaccessible pages.
+            //This is needed because loaded PE image has uncommitted "holes" in it due to 
+            //a section alignment.
+            byte[] ret = new byte[size];
+            int count_errors = 0;
+            int page_size = Environment.SystemPageSize;
+            byte[] buffer = new byte[page_size];
+            IntPtr c;
+
+            for (int i = 0; i < size; i+=page_size)
+            {
+                if (i + page_size > size) break;
+
+                bool res = ReadProcessMemory(hProcess, address + i, buffer, page_size, out c);
+
+                if (res == false || (int)c < page_size) count_errors+=page_size;
+                else Array.Copy(buffer, 0, ret, i, page_size);
+            }
+
+            Assert.IsTrue(count_errors < size);
+
+            return ret;
+        }
 
         [TestMethod]
         public void Test_MemoryImage_Load()
@@ -42,8 +73,7 @@ namespace CilTools.Metadata.Tests
             //find corelib module
             string path = typeof(object).Assembly.Location;
             string assname = typeof(object).Assembly.GetName().Name;
-            string name = assname + ".dll";
-
+            
             IntPtr hProcess = Process.GetCurrentProcess().Handle;
             Assert.AreNotEqual(IntPtr.Zero, hProcess);
 
@@ -55,22 +85,8 @@ namespace CilTools.Metadata.Tests
             if (res == false) throw new Win32Exception(Marshal.GetLastWin32Error());
 
             //get corelib image as byte array
-            byte[] data = new byte[mi.SizeOfImage];
-
-            IntPtr c;
-            int count_errors = 0;
-
-            for (int i = 0; i < data.Length; i++)
-            {
-                byte b = 0;
-                res = ReadProcessMemory_Byte(hProcess, mi.lpBaseOfDll + i, out b, 1, out c);
-
-                if (res == false || c == IntPtr.Zero) count_errors++;
-                else data[i] = b;
-            }
-
-            Assert.IsTrue(count_errors < data.Length);
-
+            byte[] data = ReadMemoryIgnoreErrors(hProcess, mi.lpBaseOfDll, (int)mi.SizeOfImage);
+            
             //load memory image
             MemoryImage img = new MemoryImage(data, path,false);
 
