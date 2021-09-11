@@ -507,6 +507,36 @@ namespace CilTools.Runtime
             }
         }
 
+        static byte[] ReadMemoryIgnoreErrors(DataTarget dt, ulong address, int size)
+        {
+            //Reads the specified memory region, ignoring any uncommitted or inaccessible pages.
+            //This is needed because loaded PE image has uncommitted "holes" in it due to 
+            //a section alignment.
+            byte[] ret = new byte[size];
+            int count_errors = 0;
+            int page_size = Environment.SystemPageSize;
+            byte[] buffer = new byte[page_size];
+            int c;
+
+            for (int i = 0; i < size; i += page_size)
+            {
+                if (i + page_size > size) break;
+
+                bool res = dt.ReadProcessMemory(address + (ulong)i, buffer, page_size, out c);
+
+                if (res == false || c < page_size) count_errors += page_size;
+                else Array.Copy(buffer, 0, ret, i, page_size);
+            }
+
+            if (count_errors >= size)
+            {
+                Debug.WriteLine("ReadMemoryIgnoreErrors failed");
+                return new byte[0];//couldn't read anything
+            }
+
+            return ret;
+        }
+
         /// <summary>
         /// Gets the executable image data for the specified module
         /// </summary>
@@ -514,9 +544,8 @@ namespace CilTools.Runtime
         /// <remarks>
         /// This method gets the executable image data loaded into the target process. This enables you 
         /// to inspect that image with PE reader libraries without the extra cost of reading the image from
-        /// file. The method can fail if the memory pages where the image is stored are inaccessible or 
-        /// moved out of RAM working set to the backing store. It also does not work for memory-only dynamic 
-        /// modules that don't have the backing PE image.
+        /// file. The method can fail if the memory pages where the image is stored are inaccessible. 
+        /// It also does not work for memory-only dynamic modules that don't have the backing PE image.
         /// </remarks>
         /// <returns>In-memory executable image data, or <c>null</c> if the operation failed</returns>
         /// <exception cref="ArgumentNullException">module is <c>null</c></exception>
@@ -543,14 +572,15 @@ namespace CilTools.Runtime
 
             if ((ulong)c < module.Size)
             {
-                //Partial read. This could happen because some memory pages in the target process 
-                //were moved out from RAM working set to backing store ("pagefault"). 
-                //The PSAPI_WORKING_SET_EX_BLOCK.Valid field's value on the struct returned by QueryWorkingSetEx  
-                //WINAPI function (https://docs.microsoft.com/en-us/windows/win32/api/psapi/nf-psapi-queryworkingsetex)
-                //is 0 for such memory addresses. It's OK to error out in this case, because callers could 
-                //just fallback to reading image from file.
-                Debug.WriteLine("ReadProcessMemory partial read. Module: "+ path);
-                return null;
+                //Partial read. Try to read ignoring errors.
+                
+                imageBytes = ReadMemoryIgnoreErrors(dt, module.ImageBase, (int)module.Size);
+
+                if (imageBytes.Length == 0)
+                {
+                    Debug.WriteLine("ReadProcessMemory partial read. Module: " + path);
+                    return null;
+                }
             }
 
             MemoryImage img = new MemoryImage(imageBytes, path, false);

@@ -143,6 +143,11 @@ namespace CilTools.Metadata
         /// </summary>
         public AssemblyReader AssemblyReader { get { return this.assreader; } }
 
+        public bool FromMemoryImage
+        {
+            get { return this.fromMemory; }
+        }
+
         /// <summary>
         /// Gets the display name of the assembly
         /// </summary>

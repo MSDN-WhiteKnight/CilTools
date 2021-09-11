@@ -105,6 +105,23 @@ namespace CilTools.Metadata
             return ret;
         }
 
+        /// <summary>
+        /// Loads the assembly from the specified memory image
+        /// </summary>
+        /// <param name="image">The memory image to load</param>
+        /// <returns>The assembly object or null if the assembly reader failed to read 
+        /// the requested assembly.</returns>
+        /// /// <remarks>
+        /// <para> 
+        /// If the assembly is read successfully and the path is set for a memory image, 
+        /// the loaded assembly is saved to cache. Eventual attempts to read assembly 
+        /// with the same path will fetch it from the cache instead of loading it again. 
+        /// If the path is not set, each call to this method will load a new assembly 
+        /// instance, potentially leading to an unbounded growth of consumed memory.
+        /// </para>
+        /// <para>The <c>CilTools.Runtime.ClrAssemblyReader.GetMemoryImage</c> method could be  
+        /// used to load a memory image from a process.</para>
+        /// </remarks>
         public Assembly LoadImage(MemoryImage image)
         {
             if (_assemblies == null) throw new ObjectDisposedException("AssemblyReader");
