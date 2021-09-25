@@ -17,9 +17,10 @@ namespace CilTools.BytecodeAnalysis.Tests.NetCore
     public class CilGraphTests
     {
         [TestMethod]
-        public void Test_CilGraph_HelloWorld()
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", MethodSource.All)]
+        public void Test_CilGraph_HelloWorld(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
+            //MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
             CilGraphTestsCore.Test_CilGraph_HelloWorld(mi);
         }
 

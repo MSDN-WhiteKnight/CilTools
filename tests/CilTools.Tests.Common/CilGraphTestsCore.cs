@@ -16,6 +16,10 @@ namespace CilTools.Tests.Common
     {
         public static void Test_CilGraph_HelloWorld(MethodBase mi)
         {
+            Microsoft.VisualStudio.TestTools.UnitTesting.Logging.Logger.LogMessage(
+                "Test_CilGraph_HelloWorld " + mi.GetType().ToString()
+                );
+
             CilGraph graph = CilGraph.Create(mi);
             AssertThat.IsCorrect(graph);
 
