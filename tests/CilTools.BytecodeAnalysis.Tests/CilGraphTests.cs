@@ -21,7 +21,68 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilGraphTestsCore.Test_CilGraph_HelloWorld(mi);
         }
 
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", MethodSource.All)]
+        public void Test_CilGraph_Loop(MethodBase mi)
+        {
+            CilGraphTestsCore.Test_CilGraph_Loop(mi);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "DivideNumbers", MethodSource.All)]
+        public void Test_CilGraph_Exceptions(MethodBase mi)
+        {
+            CilGraphTestsCore.Test_CilGraph_Exceptions(mi);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "DivideNumbers", MethodSource.All)]
+        public void Test_CilGraph_GetHandlerNodes(MethodBase mi)
+        {
+            CilGraphTestsCore.Test_CilGraph_GetHandlerNodes(mi);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestTokens", MethodSource.All)]
+        public void Test_CilGraph_Tokens(MethodBase mi)
+        {
+            CilGraphTestsCore.Test_CilGraph_Tokens(mi);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "ConstrainedTest", MethodSource.All)]
+        public void Test_CilGraph_Constrained(MethodBase mi)
+        {
+            CilGraphTestsCore.Test_CilGraph_Constrained(mi);
+        }
+
+#if DEBUG
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PointerTest", MethodSource.All)]
+        public void Test_CilGraph_Pointer(MethodBase mi)
+        {
+            CilGraphTestsCore.Test_CilGraph_Pointer(mi);
+        }
+#endif
+
 #if NETFRAMEWORK
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", MethodSource.FromReflection)]
+        public void Test_CilGraph_Loop_Emit(MethodBase mi)
+        {
+            //Test EmitTo: only NetFX
+
+            CilGraph graph = CilGraph.Create(mi);
+            DynamicMethod dm = new DynamicMethod(
+                "CilGraphTests_PrintTenNumbersDynamic", typeof(void), new Type[] { }, 
+                typeof(SampleMethods).Module);
+
+            ILGenerator ilg = dm.GetILGenerator(512);
+            graph.EmitTo(ilg);
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();
+        }
+
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", MethodSource.FromReflection)]
         public void Test_CilGraph_HelloWorld_Emit(MethodBase mi)
@@ -38,36 +99,19 @@ namespace CilTools.BytecodeAnalysis.Tests
             Action deleg = (Action)dm.CreateDelegate(typeof(Action));
             deleg();
         }
-#endif
 
         [TestMethod]
-        public void Test_CilGraph_Loop()
+        [MethodTestData(typeof(SampleMethods), "DivideNumbers", MethodSource.FromReflection)]
+        public void Test_CilGraph_Exceptions_Emit(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintTenNumbers");            
-            CilGraphTestsCore.Test_CilGraph_Loop(mi);
-
             //Test EmitTo: only NetFX
-#if NETFRAMEWORK
-            CilGraph graph = CilGraph.Create(mi);
-            DynamicMethod dm = new DynamicMethod("CilGraphTests_PrintTenNumbersDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
-            ILGenerator ilg = dm.GetILGenerator(512);
-            graph.EmitTo(ilg);
-            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
-            deleg();
-#endif
-        }
 
-        [TestMethod]
-        public void Test_CilGraph_Exceptions()
-        {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("DivideNumbers");
-            CilGraphTestsCore.Test_CilGraph_Exceptions(mi);
-
-            //Test EmitTo: only NetFX
-#if NETFRAMEWORK
             CilGraph graph = CilGraph.Create(mi);
-            DynamicMethod dm = new DynamicMethod("CilGraphTests_DivideNumbersDynamic", typeof(bool),
-                new Type[] { typeof(int), typeof(int), typeof(int).MakeByRefType() }, typeof(SampleMethods).Module);
+            DynamicMethod dm = new DynamicMethod(
+                "CilGraphTests_DivideNumbersDynamic", typeof(bool),
+                new Type[] { typeof(int), typeof(int), typeof(int).MakeByRefType() }, 
+                typeof(SampleMethods).Module);
+
             ILGenerator ilg = dm.GetILGenerator(512);
             graph.EmitTo(ilg);
             SampleMethods.DivideNumbersDelegate deleg = (SampleMethods.DivideNumbersDelegate)dm.CreateDelegate(
@@ -83,52 +127,27 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             success = deleg(1, 0, out res);
             Assert.IsFalse(success, "The calculation of 1/0 should fail");
-#endif
         }
 
         [TestMethod]
-        public void Test_CilGraph_GetHandlerNodes()
+        [MethodTestData(typeof(SampleMethods), "TestTokens", MethodSource.FromReflection)]
+        public void Test_CilGraph_Tokens_Emit(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("DivideNumbers");
-            CilGraphTestsCore.Test_CilGraph_GetHandlerNodes(mi);
-        }
-
-        [TestMethod]
-        public void Test_CilGraph_Tokens()
-        {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("TestTokens");
             CilGraphTestsCore.Test_CilGraph_Tokens(mi);
 
             //Test EmitTo: only NetFX
-#if NETFRAMEWORK
+
             CilGraph graph = CilGraph.Create(mi);
             DynamicMethod dm = new DynamicMethod(
-                "CilGraphTests_TestTokensDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module
-                );
+                "CilGraphTests_TestTokensDynamic", typeof(void), new Type[] { }, 
+                typeof(SampleMethods).Module);
+
             ILGenerator ilg = dm.GetILGenerator(512);
             graph.EmitTo(ilg);
             Action deleg = (Action)dm.CreateDelegate(typeof(Action));
             deleg();
-#endif
         }
 
-        [TestMethod]
-        public void Test_CilGraph_Constrained()
-        {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("ConstrainedTest");
-            CilGraphTestsCore.Test_CilGraph_Constrained(mi);
-        }
-
-#if DEBUG
-        [TestMethod]
-        public void Test_CilGraph_Pointer()
-        {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("PointerTest");
-            CilGraphTestsCore.Test_CilGraph_Pointer(mi);
-        }
-#endif
-
-#if NETFRAMEWORK
         [TestMethod]
         public void Test_CilGraph_Emit() //Test EmitTo: only NetFX
         {

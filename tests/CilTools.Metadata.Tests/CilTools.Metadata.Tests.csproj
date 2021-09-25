@@ -65,7 +65,6 @@
   <ItemGroup>
     <Compile Include="CilAnalysisTests.cs" />
     <Compile Include="CilGraphNodeTests.cs" />
-    <Compile Include="CilGraphTests.cs" />
     <Compile Include="CilGraphTests_Text.cs" />
     <Compile Include="CilReaderTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

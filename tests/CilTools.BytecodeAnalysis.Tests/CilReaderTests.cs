@@ -74,7 +74,7 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             //Test EmitTo: only NetFX
             //Dont' run in debug, because compiler generates branching here for some reason
-#if !NETSTANDARD && !DEBUG
+#if NETFRAMEWORK && !DEBUG
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
             DynamicMethod dm = new DynamicMethod(
                 "GetInterfaceCountDynamic", typeof(int), new Type[] {typeof(Type) }, typeof(SampleMethods).Module
