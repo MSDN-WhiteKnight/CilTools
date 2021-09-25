@@ -1,5 +1,5 @@
 ﻿/* CilTools.Metadata tests
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Reflection;
@@ -11,20 +11,6 @@ namespace CilTools.Metadata.Tests
     [TestClass]
     public class CilGraphTests
     {
-        [TestMethod]
-        public void Test_CilGraph_HelloWorld()
-        {
-            AssemblyReader reader = new AssemblyReader();
-
-            using (reader)
-            {
-                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-                MethodBase mi = t.GetMember("PrintHelloWorld")[0] as MethodBase;
-                CilGraphTestsCore.Test_CilGraph_HelloWorld(mi);
-            }
-        }
-
         [TestMethod]
         public void Test_CilGraph_Loop()
         {

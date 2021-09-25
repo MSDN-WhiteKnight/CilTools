@@ -27,7 +27,7 @@ jobs:
         & CilToolsDemo\bin\Debug\CilToolsDemo.exe
     - name: Test CilTools.BytecodeAnalysis
       run: |
-        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilTools.BytecodeAnalysis.Tests\bin\Debug\CilTools.BytecodeAnalysis.Tests.dll
+        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilTools.BytecodeAnalysis.Tests\bin\Debug\net45\CilTools.BytecodeAnalysis.Tests.dll
     - name: Test CilTools.Metadata
       run: |
         & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilTools.Metadata.Tests\bin\Debug\CilTools.Metadata.Tests.dll

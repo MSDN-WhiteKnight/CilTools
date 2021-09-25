@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Linq;
@@ -15,23 +15,30 @@ namespace CilTools.BytecodeAnalysis.Tests
     public class CilGraphTests
     {
         [TestMethod]
-        public void Test_CilGraph_HelloWorld()
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", MethodSource.All)]
+        public void Test_CilGraph_HelloWorld(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
             CilGraphTestsCore.Test_CilGraph_HelloWorld(mi);
+        }
 
+#if NETFRAMEWORK
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", MethodSource.FromReflection)]
+        public void Test_CilGraph_HelloWorld_Emit(MethodBase mi)
+        {
             //Test EmitTo: only NetFX
-#if !NETSTANDARD
+
             CilGraph graph = CilGraph.Create(mi);
             DynamicMethod dm = new DynamicMethod(
-                "CilGraphTests_PrintHelloWorldDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module
+                "CilGraphTests_PrintHelloWorldDynamic", typeof(void), new Type[] { }, 
+                typeof(SampleMethods).Module
                 );
             ILGenerator ilg = dm.GetILGenerator(512);
             graph.EmitTo(ilg);
             Action deleg = (Action)dm.CreateDelegate(typeof(Action));
             deleg();
-#endif
         }
+#endif
 
         [TestMethod]
         public void Test_CilGraph_Loop()
@@ -40,7 +47,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilGraphTestsCore.Test_CilGraph_Loop(mi);
 
             //Test EmitTo: only NetFX
-#if !NETSTANDARD
+#if NETFRAMEWORK
             CilGraph graph = CilGraph.Create(mi);
             DynamicMethod dm = new DynamicMethod("CilGraphTests_PrintTenNumbersDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
             ILGenerator ilg = dm.GetILGenerator(512);
@@ -57,7 +64,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilGraphTestsCore.Test_CilGraph_Exceptions(mi);
 
             //Test EmitTo: only NetFX
-#if !NETSTANDARD
+#if NETFRAMEWORK
             CilGraph graph = CilGraph.Create(mi);
             DynamicMethod dm = new DynamicMethod("CilGraphTests_DivideNumbersDynamic", typeof(bool),
                 new Type[] { typeof(int), typeof(int), typeof(int).MakeByRefType() }, typeof(SampleMethods).Module);
@@ -93,7 +100,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilGraphTestsCore.Test_CilGraph_Tokens(mi);
 
             //Test EmitTo: only NetFX
-#if !NETSTANDARD
+#if NETFRAMEWORK
             CilGraph graph = CilGraph.Create(mi);
             DynamicMethod dm = new DynamicMethod(
                 "CilGraphTests_TestTokensDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module
@@ -121,7 +128,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 #endif
 
-#if !NETSTANDARD
+#if NETFRAMEWORK
         [TestMethod]
         public void Test_CilGraph_Emit() //Test EmitTo: only NetFX
         {

@@ -9,7 +9,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Metadata;
 
-namespace CilTools.BytecodeAnalysis.Tests.NetCore
+namespace CilTools.BytecodeAnalysis.Tests
 {
     [Flags]
     public enum MethodSource
@@ -64,21 +64,16 @@ namespace CilTools.BytecodeAnalysis.Tests.NetCore
 
         public string GetDisplayName(MethodInfo methodInfo, object[] data)
         {
-            if (data != null)
+            if (data != null && data.Length>=1)
             {
                 StringBuilder sb = new StringBuilder(150);
                 sb.Append(methodInfo.Name);
-
-                if (data.Length >= 1)
-                {
-                    sb.AppendFormat(" ({0}, Type: {1})",data[0],data[0].GetType().ToString());
-                }
-
+                sb.AppendFormat(" ({0}, Type: {1})",data[0],data[0].GetType().ToString());
                 return sb.ToString();
             }
             else
             {
-                return methodInfo.Name;
+                return null;
             }
         }
     }

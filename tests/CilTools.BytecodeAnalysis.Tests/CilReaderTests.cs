@@ -22,7 +22,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilReaderTestsCore.Test_CilReader_HelloWorld(mi);
 
             //Test EmitTo: only NetFX
-#if !NETSTANDARD
+#if NETFRAMEWORK
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
             DynamicMethod dm = new DynamicMethod(
                 "PrintHelloWorldDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module
@@ -51,7 +51,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilReaderTestsCore.Test_CilReader_StaticFieldAccess(mi);
 
             //Test EmitTo: only NetFX
-#if !NETSTANDARD
+#if NETFRAMEWORK
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
             DynamicMethod dm = new DynamicMethod("SquareFooDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
             ILGenerator ilg = dm.GetILGenerator(512);
@@ -100,7 +100,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilReaderTestsCore.Test_CilReader_GenericType(mi);
 
             //Test EmitTo: only NetFX            
-#if !NETSTANDARD
+#if NETFRAMEWORK
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
             DynamicMethod dm = new DynamicMethod(
                 "PrintListDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module
@@ -125,12 +125,16 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilReaderTestsCore.Test_CilReader_GenericParameter(mi);
         }
 
+#if NETFRAMEWORK
         [TestMethod]
         public void Test_CilReader_ExternalAssemblyAccess()
         {
+            //Disabled on .NET Core: method GetExtension has multiple overloads 
+            //now, so this lookup crashes with ambigous match error.
             MethodInfo mi = typeof(System.IO.Path).GetMethod("GetExtension");
             CilReaderTestsCore.Test_CilReader_ExternalAssemblyAccess(mi);
         }
+#endif
 
         [TestMethod]
         public void Test_CilReader_CanIterateTwice()
