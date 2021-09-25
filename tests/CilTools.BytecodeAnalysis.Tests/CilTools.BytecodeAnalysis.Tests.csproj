@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netcoreapp2.1;net45</TargetFrameworks>
+    <EnableDefaultItems>false</EnableDefaultItems>
     <Authors>MSDN-WhiteKnight</Authors>
     <Company>CIL Tools</Company>
     <Product>CIL Tools</Product>
@@ -20,6 +21,22 @@
     <ProjectReference Include="..\..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
     <ProjectReference Include="..\..\CilTools.Metadata\CilTools.Metadata.csproj" />
     <ProjectReference Include="..\CilTools.Tests.Common\CilTools.Tests.Common.csproj" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Compile Include="MethodTestDataAttribute.cs" />
+    <Compile Include="CilAnalysisTests.cs" />
+    <Compile Include="CilInstructionTests.cs" />
+    <Compile Include="CilGraphTests.cs" />
+    <Compile Include="CilGraphTests_Text.cs" />
+    <Compile Include="CilGraphNodeTests.cs" />    
+    <Compile Include="CilReaderTests.cs" />    
+    <Compile Include="ReflectionTests.cs" />    
+    <Compile Include="SyntaxTests.cs" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)'=='net45'">
+    <Compile Include="CilGraphTests_Emit.cs" />
   </ItemGroup>
 
 </Project>
