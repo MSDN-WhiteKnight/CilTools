@@ -26,6 +26,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         MethodSource _src;
 
         static AssemblyReader s_reader;
+        static readonly object s_sync=new object();
 
         static MethodTestDataAttribute()
         {
@@ -55,10 +56,13 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             if (this._src.HasFlag(MethodSource.FromMetadata))
             {
-                Assembly ass = s_reader.LoadFrom(this._type.Assembly.Location);
-                Type t = ass.GetType(this._type.FullName);
-                m=t.GetMember(this._method)[0] as MethodBase;
-                yield return new object[] { m };
+                lock (s_sync)
+                {
+                    Assembly ass = s_reader.LoadFrom(this._type.Assembly.Location);
+                    Type t = ass.GetType(this._type.FullName);
+                    m = t.GetMember(this._method)[0] as MethodBase;
+                    yield return new object[] { m };
+                }
             }
         }
 
@@ -68,7 +72,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             {
                 StringBuilder sb = new StringBuilder(150);
                 sb.Append(methodInfo.Name);
-                sb.AppendFormat(" ({0}, Type: {1})",data[0],data[0].GetType().ToString());
+                sb.AppendFormat(" ({0})",data[0].GetType().ToString());
                 return sb.ToString();
             }
             else
