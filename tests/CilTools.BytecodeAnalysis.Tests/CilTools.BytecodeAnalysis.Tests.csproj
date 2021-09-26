@@ -36,7 +36,11 @@
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework)'=='net45'">
-    <Compile Include="CilGraphTests_Emit.cs" />
+    <Compile Include="EmitTests.cs" />
+  </ItemGroup>
+  
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.1'">
+    <None Include="EmitTests.cs" />
   </ItemGroup>
 
 </Project>

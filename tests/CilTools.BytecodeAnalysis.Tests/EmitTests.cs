@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CilTools.BytecodeAnalysis.Tests
 {
     [TestClass]
-    public class CilGraphTests_Emit
+    public class EmitTests
     {
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", MethodSource.FromReflection)]
@@ -271,6 +271,91 @@ namespace CilTools.BytecodeAnalysis.Tests
                 new Literal("}")
             });
 
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", MethodSource.FromReflection)]
+        public void Test_CilReader_HelloWorld_Emit(MethodBase mi)
+        {
+            //Test EmitTo: only NetFX
+
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
+            DynamicMethod dm = new DynamicMethod(
+                "PrintHelloWorldDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module
+                );
+            ILGenerator ilg = dm.GetILGenerator(512);
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "SquareFoo", MethodSource.FromReflection)]
+        public void Test_CilReader_StaticFieldAccess_Emit(MethodBase mi)
+        {
+            //Test EmitTo: only NetFX
+
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
+            DynamicMethod dm = new DynamicMethod("SquareFooDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module);
+            ILGenerator ilg = dm.GetILGenerator(512);
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();
+            Assert.AreEqual(4, SampleMethods.Foo, "The value of SampleMethods.Foo is wrong");
+        }
+
+#if !DEBUG
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "GetInterfaceCount", MethodSource.FromReflection)]
+        public void Test_CilReader_VirtualCall_Emit(MethodBase mi)
+        {
+            //Test EmitTo: only NetFX
+            //Dont' run in debug, because compiler generates branching here for some reason
+
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
+            DynamicMethod dm = new DynamicMethod(
+                "GetInterfaceCountDynamic", typeof(int), new Type[] {typeof(Type) }, typeof(SampleMethods).Module
+            );
+            ILGenerator ilg = dm.GetILGenerator(512);
+
+            ilg.DeclareLocal(typeof(Type[]));
+            
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            var deleg = (Func<Type, int>)dm.CreateDelegate(typeof(Func<Type, int>));
+            int res = deleg(typeof(List<>));
+            Assert.AreEqual(SampleMethods.GetInterfaceCount(typeof(List<>)), res, "The result of GetInterfaceCountDynamic is wrong");
+        }
+#endif
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintList", MethodSource.FromReflection)]
+        public void Test_CilReader_GenericType_Emit(MethodBase mi)
+        {
+            //Test EmitTo: only NetFX            
+
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
+            DynamicMethod dm = new DynamicMethod(
+                "PrintListDynamic", typeof(void), new Type[] { }, typeof(SampleMethods).Module
+                );
+            ILGenerator ilg = dm.GetILGenerator(512);
+
+            ilg.DeclareLocal(typeof(List<string>));
+
+            for (int i = 0; i < instructions.Length; i++)
+            {
+                instructions[i].EmitTo(ilg);
+            }
+            Action deleg = (Action)dm.CreateDelegate(typeof(Action));
+            deleg();
         }
     }
 }
