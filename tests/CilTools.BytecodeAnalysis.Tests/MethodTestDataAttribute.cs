@@ -10,19 +10,36 @@ using CilTools.Metadata;
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
+    /// <summary>
+    /// Represents APIs that could be used to fetch method's bytecode from .NET assembly
+    /// </summary>
     [Flags]
-    public enum MethodSource
+    public enum BytecodeProviders
     {
-        FromReflection = 0x01,
-        FromMetadata = 0x02,
-        All = FromReflection|FromMetadata
+        /// <summary>
+        /// Standard reflection
+        /// </summary>
+        Reflection = 0x01,
+
+        /// <summary>
+        /// CilTools.Metadata library
+        /// </summary>
+        Metadata = 0x02,
+
+        /// <summary>
+        /// All supported providers
+        /// </summary>
+        All = Reflection|Metadata
     }
 
+    /// <summary>
+    /// Represents data for the data-oriented test that takes a method as its argument
+    /// </summary>
     public class MethodTestDataAttribute : Attribute, ITestDataSource
     {
         Type _type;
         string _method;
-        MethodSource _src;
+        BytecodeProviders _prov;
 
         static AssemblyReader s_reader;
         static readonly object s_sync=new object();
@@ -32,14 +49,22 @@ namespace CilTools.BytecodeAnalysis.Tests
             s_reader = new AssemblyReader();
         }
 
-        public MethodTestDataAttribute(Type type, string method, MethodSource src)
+        /// <summary>
+        /// Initializes a new method test data
+        /// </summary>
+        /// <param name="type">Type in which test data method is housed</param>
+        /// <param name="method">Name of the test data method</param>
+        /// <param name="src">
+        /// Bitmask that specifies bytecode providers used to fetch method's bytecode
+        /// </param>
+        public MethodTestDataAttribute(Type type, string method, BytecodeProviders prov)
         {
             this._type = type;
             this._method = method;
-            this._src = src;
+            this._prov = prov;
         }
 
-        public MethodSource Source { get { return this._src; } }
+        public BytecodeProviders Providers { get { return this._prov; } }
         public Type Type { get { return this._type; } }
         public string Method { get { return this._method; } }
 
@@ -47,13 +72,13 @@ namespace CilTools.BytecodeAnalysis.Tests
         {
             MethodBase m;
 
-            if (this._src.HasFlag(MethodSource.FromReflection))
+            if (this._prov.HasFlag(BytecodeProviders.Reflection))
             {
                 m = this._type.GetMethod(this._method);
                 yield return new object[] { m };
             }
 
-            if (this._src.HasFlag(MethodSource.FromMetadata))
+            if (this._prov.HasFlag(BytecodeProviders.Metadata))
             {
                 lock (s_sync)
                 {

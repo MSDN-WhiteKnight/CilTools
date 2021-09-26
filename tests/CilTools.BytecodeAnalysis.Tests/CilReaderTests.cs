@@ -14,42 +14,42 @@ namespace CilTools.BytecodeAnalysis.Tests
     public class CilReaderTests
     {
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", MethodSource.All)]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
         public void Test_CilReader_HelloWorld(MethodBase mi)
         {
             CilReaderTestsCore.Test_CilReader_HelloWorld(mi);
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "CalcSum", MethodSource.All)]
+        [MethodTestData(typeof(SampleMethods), "CalcSum", BytecodeProviders.All)]
         public void Test_CilReader_CalcSum(MethodBase mi)
         {
             CilReaderTestsCore.Test_CilReader_CalcSum(mi);
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "SquareFoo", MethodSource.All)]
+        [MethodTestData(typeof(SampleMethods), "SquareFoo", BytecodeProviders.All)]
         public void Test_CilReader_StaticFieldAccess(MethodBase mi)
         {
             CilReaderTestsCore.Test_CilReader_StaticFieldAccess(mi);
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "GetInterfaceCount", MethodSource.All)]
+        [MethodTestData(typeof(SampleMethods), "GetInterfaceCount", BytecodeProviders.All)]
         public void Test_CilReader_VirtualCall(MethodBase mi)
         {
             CilReaderTestsCore.Test_CilReader_VirtualCall(mi);
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "PrintList", MethodSource.All)]
+        [MethodTestData(typeof(SampleMethods), "PrintList", BytecodeProviders.All)]
         public void Test_CilReader_GenericType(MethodBase mi)
         {
             CilReaderTestsCore.Test_CilReader_GenericType(mi);
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "GenerateArray", MethodSource.All)]
+        [MethodTestData(typeof(SampleMethods), "GenerateArray", BytecodeProviders.All)]
         public void Test_CilReader_GenericParameter(MethodBase mi)
         {
             CilReaderTestsCore.Test_CilReader_GenericParameter(mi);
@@ -67,7 +67,7 @@ namespace CilTools.BytecodeAnalysis.Tests
 #endif
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", MethodSource.All)]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
         public void Test_CilReader_CanIterateTwice(MethodBase mi)
         {
             CilReaderTestsCore.Test_CilReader_CanIterateTwice(mi);

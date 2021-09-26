@@ -17,7 +17,7 @@ namespace CilTools.BytecodeAnalysis.Tests
     public class EmitTests
     {
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", MethodSource.FromReflection)]
+        [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", BytecodeProviders.Reflection)]
         public void Test_CilGraph_Loop_Emit(MethodBase mi)
         {
             //Test EmitTo: only NetFX
@@ -34,7 +34,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", MethodSource.FromReflection)]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.Reflection)]
         public void Test_CilGraph_HelloWorld_Emit(MethodBase mi)
         {
             //Test EmitTo: only NetFX
@@ -51,7 +51,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "DivideNumbers", MethodSource.FromReflection)]
+        [MethodTestData(typeof(SampleMethods), "DivideNumbers", BytecodeProviders.Reflection)]
         public void Test_CilGraph_Exceptions_Emit(MethodBase mi)
         {
             //Test EmitTo: only NetFX
@@ -80,7 +80,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "TestTokens", MethodSource.FromReflection)]
+        [MethodTestData(typeof(SampleMethods), "TestTokens", BytecodeProviders.Reflection)]
         public void Test_CilGraph_Tokens_Emit(MethodBase mi)
         {
             //Test EmitTo: only NetFX
@@ -274,7 +274,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", MethodSource.FromReflection)]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.Reflection)]
         public void Test_CilReader_HelloWorld_Emit(MethodBase mi)
         {
             //Test EmitTo: only NetFX
@@ -293,7 +293,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "SquareFoo", MethodSource.FromReflection)]
+        [MethodTestData(typeof(SampleMethods), "SquareFoo", BytecodeProviders.Reflection)]
         public void Test_CilReader_StaticFieldAccess_Emit(MethodBase mi)
         {
             //Test EmitTo: only NetFX
@@ -337,7 +337,7 @@ namespace CilTools.BytecodeAnalysis.Tests
 #endif
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "PrintList", MethodSource.FromReflection)]
+        [MethodTestData(typeof(SampleMethods), "PrintList", BytecodeProviders.Reflection)]
         public void Test_CilReader_GenericType_Emit(MethodBase mi)
         {
             //Test EmitTo: only NetFX            
