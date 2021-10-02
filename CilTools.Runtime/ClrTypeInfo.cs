@@ -447,7 +447,7 @@ namespace CilTools.Runtime
             else return 0;
         }
 
-        static bool StrEquals(string left, string right)
+        internal static bool StrEquals(string left, string right)
         {
             return String.Equals(left, right, StringComparison.InvariantCulture);
         }

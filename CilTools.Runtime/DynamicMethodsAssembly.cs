@@ -165,25 +165,21 @@ namespace CilTools.Runtime
         {
             if (this.target == null) throw new ObjectDisposedException("DataTarget");
 
-            foreach (ClrInfo runtimeInfo in target.ClrVersions)
-            {
-                ClrRuntime runtime = runtimeInfo.CreateRuntime();
+            List<MethodBase> ret = new List<MethodBase>(50);
 
-                //dump dynamic methods
-                var en = runtime.Heap.EnumerateObjects();
-
-                foreach (ClrObject o in en)
+            //dump dynamic methods
+            HeapScanner.ScanHeap(this.Target, (o) => {
+                
+                if (ClrTypeInfo.StrEquals(o.Type.Name,"System.Reflection.Emit.DynamicMethod"))
                 {
-                    if (o.Type == null) continue;
-
-                    var bt = o.Type.BaseType;
-
-                    if (o.Type.Name == "System.Reflection.Emit.DynamicMethod")
-                    {
-                        ClrDynamicMethod dm = new ClrDynamicMethod(o,this);
-                        yield return dm;
-                    }
+                    ClrDynamicMethod dm = new ClrDynamicMethod(o, this);
+                    ret.Add(dm);
                 }
+            });
+
+            for (int i = 0; i < ret.Count; i++)
+            {
+                yield return ret[i];
             }
         }
 
