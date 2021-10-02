@@ -372,51 +372,41 @@ namespace CilTools.Runtime
             Dictionary<ulong, string> moduleNames = new Dictionary<ulong, string>();
             DynamicMethodsAssembly dma = this.GetDynamicMethods();
 
-            //search GC heap for MethodBuilder objects
+            //search GC heap for ModuleBuilder and MethodBuilder objects
 
-            ClrRuntime runtime = this.runtime;
-            var en = runtime.Heap.EnumerateObjects();
+            HeapScanner.ScanHeap(this.runtime.DataTarget, (o) => {
 
-            /*     Objects chain:
-             * MethodBuilder.m_module (ModuleBuilder)
-             * ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
-             * System.Reflection.Emit.AssemblyBuilder.m_assemblyData (System.Reflection.Emit.AssemblyBuilderData)
-             * AssemblyBuilderData.m_strAssemblyName (string)
-             */
-
-            foreach (ClrObject o in en)
-            {
-                if (o.Type == null) continue;
-
-                //Dynamic module
-                if (String.Equals(
-                    o.Type.Name,
-                    "System.Reflection.Emit.ModuleBuilder",
-                    StringComparison.InvariantCulture)
-                    ) 
+                //dynamic module
+                if (ClrTypeInfo.StrEquals(o.Type.Name, "System.Reflection.Emit.ModuleBuilder"))
                 {
                     ProcessDynamicModule(o, moduleNames);
-                    continue;
+                    return;
                 }
 
-                //Method builder
-                if (!String.Equals(
-                    o.Type.Name,
-                    "System.Reflection.Emit.MethodBuilder",
-                    StringComparison.InvariantCulture)
-                    ) continue;
+                if (!ClrTypeInfo.StrEquals(o.Type.Name, "System.Reflection.Emit.MethodBuilder"))
+                {
+                    return;
+                }
+
+                //MethodBuilder
+
+                /*   Objects chain:
+                 * MethodBuilder.m_module (ModuleBuilder)
+                 * ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
+                 * System.Reflection.Emit.AssemblyBuilder.m_assemblyData (System.Reflection.Emit.AssemblyBuilderData)
+                 * AssemblyBuilderData.m_strAssemblyName (string)*/
 
                 //get dynamic module
                 ClrObject objModule = o.GetObjectField("m_module");
-                if (objModule.IsNull) continue;
+                if (objModule.IsNull) return;
 
                 ClrObject objModuleData = GetModuleData(objModule);
-                
-                if (objModuleData.IsNull) continue; 
+
+                if (objModuleData.IsNull) return;
 
                 //get dynamic module address
                 long pData = objModuleData.GetField<long>("m_pData");
-                if (pData == 0) continue;
+                if (pData == 0) return;
 
                 //get method token
                 int token = 0;
@@ -450,14 +440,13 @@ namespace CilTools.Runtime
                     token = o.GetField<int>("m_token");
                 }
 
-                if (token == 0) continue;
+                if (token == 0) return;
 
                 MethodId mid = new MethodId((ulong)pData, token);
                 ClrDynamicMethod dm = new ClrDynamicMethod(o, dma);
                 ret[mid] = dm;
-
-            }//end foreach (ClrObject...)
-            
+            });
+                        
             this.dynAssMethods = ret; //dynamic assembly methods
             this.dynModuleNames = moduleNames; //dynamic module names
         }
