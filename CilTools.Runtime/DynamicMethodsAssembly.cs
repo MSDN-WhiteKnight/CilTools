@@ -165,19 +165,9 @@ namespace CilTools.Runtime
         {
             if (this.target == null) throw new ObjectDisposedException("DataTarget");
 
-            List<MethodBase> ret = new List<MethodBase>(50);
+            MethodBase[] ret=this.reader.GetDynamicMethodsArray();
 
-            //dump dynamic methods
-            HeapScanner.ScanHeap(this.Target, (o) => {
-                
-                if (ClrTypeInfo.StrEquals(o.Type.Name,"System.Reflection.Emit.DynamicMethod"))
-                {
-                    ClrDynamicMethod dm = new ClrDynamicMethod(o, this);
-                    ret.Add(dm);
-                }
-            });
-
-            for (int i = 0; i < ret.Count; i++)
+            for (int i=0;i<ret.Length;i++)
             {
                 yield return ret[i];
             }

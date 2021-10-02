@@ -22,9 +22,10 @@ namespace CilTools.Runtime
         ClrRuntime runtime;
         Dictionary<ulong, ClrAssemblyInfo> cache = new Dictionary<ulong, ClrAssemblyInfo>();
         Dictionary<string, Assembly> preloaded = new Dictionary<string, Assembly>(50);
-        DynamicMethodsAssembly dynamicMethods = null;
+        DynamicMethodsAssembly dynamicMethodsAssembly = null;
         Dictionary<MethodId, ClrDynamicMethod> dynAssMethods = null;
         Dictionary<ulong, string> dynModuleNames = null;
+        MethodBase[] dynMethods = null;
 
         /// <summary>
         /// Gets the pseudo-assembly that represents the collection of dynamic methods in the specified process
@@ -230,12 +231,12 @@ namespace CilTools.Runtime
         /// </summary>
         public DynamicMethodsAssembly GetDynamicMethods()
         {
-            if (this.dynamicMethods == null)
+            if (this.dynamicMethodsAssembly == null)
             {
-                this.dynamicMethods = new DynamicMethodsAssembly(this.runtime.DataTarget, this, false);
+                this.dynamicMethodsAssembly = new DynamicMethodsAssembly(this.runtime.DataTarget, this, false);
             }
 
-            return this.dynamicMethods;
+            return this.dynamicMethodsAssembly;
         }
 
         /// <summary>
@@ -365,14 +366,23 @@ namespace CilTools.Runtime
 
             return objModuleData;
         }
+        
+        internal MethodBase[] GetDynamicMethodsArray()
+        {
+            if (this.dynMethods == null) this.ScanHeap();
+
+            return this.dynMethods;
+        }
 
         void ScanHeap()
         {
             Dictionary<MethodId, ClrDynamicMethod> ret = new Dictionary<MethodId, ClrDynamicMethod>();
             Dictionary<ulong, string> moduleNames = new Dictionary<ulong, string>();
+            List<MethodBase> dms = new List<MethodBase>(50);
             DynamicMethodsAssembly dma = this.GetDynamicMethods();
+            ClrDynamicMethod dm;
 
-            //search GC heap for ModuleBuilder and MethodBuilder objects
+            //scan GC heap for dynamic modules and methods
 
             HeapScanner.ScanHeap(this.runtime.DataTarget, (o) => {
 
@@ -383,13 +393,20 @@ namespace CilTools.Runtime
                     return;
                 }
 
+                //dynamic method
+                if (ClrTypeInfo.StrEquals(o.Type.Name, "System.Reflection.Emit.DynamicMethod"))
+                {
+                    dm = new ClrDynamicMethod(o, dma);
+                    dms.Add(dm);
+                    return;
+                }
+
+                //method in dynamic assembly
                 if (!ClrTypeInfo.StrEquals(o.Type.Name, "System.Reflection.Emit.MethodBuilder"))
                 {
                     return;
                 }
-
-                //MethodBuilder
-
+                
                 /*   Objects chain:
                  * MethodBuilder.m_module (ModuleBuilder)
                  * ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
@@ -443,12 +460,13 @@ namespace CilTools.Runtime
                 if (token == 0) return;
 
                 MethodId mid = new MethodId((ulong)pData, token);
-                ClrDynamicMethod dm = new ClrDynamicMethod(o, dma);
+                dm = new ClrDynamicMethod(o, dma);
                 ret[mid] = dm;
             });
                         
-            this.dynAssMethods = ret; //dynamic assembly methods
+            this.dynAssMethods = ret; //methods in dynamic assemblies
             this.dynModuleNames = moduleNames; //dynamic module names
+            this.dynMethods = dms.ToArray(); //dynamic methods (not in assembly)
         }
 
         internal ClrDynamicMethod GetDynamicAssemblyMethod(MethodId mid)
