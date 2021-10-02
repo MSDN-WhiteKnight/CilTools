@@ -1,5 +1,5 @@
 ﻿/* CilTools.Metadata tests
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Reflection;
@@ -13,48 +13,6 @@ namespace CilTools.Metadata.Tests
     [TestClass]
     public class CilGraphTests_Text
     {
-        [TestMethod]
-        public void Test_CilGraph_ToString()
-        {
-            AssemblyReader reader = new AssemblyReader();
-
-            using (reader)
-            {
-                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-                MethodBase mi = t.GetMember("PrintHelloWorld")[0] as MethodBase;
-                CilGraphTestsCore_Text.Test_CilGraph_ToString(mi);
-            }
-        }
-
-        [TestMethod]
-        public void Test_CilGraph_EmptyString()
-        {
-            AssemblyReader reader = new AssemblyReader();
-
-            using (reader)
-            {
-                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-                MethodBase mi = t.GetMember("TestEmptyString")[0] as MethodBase;
-                CilGraphTestsCore_Text.Test_CilGraph_EmptyString(mi);
-            }
-        }
-
-        [TestMethod]
-        public void Test_CilGraph_OptionalParams()
-        {
-            AssemblyReader reader = new AssemblyReader();
-
-            using (reader)
-            {
-                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-                MethodBase mi = t.GetMember("TestOptionalParams")[0] as MethodBase;
-                CilGraphTestsCore_Text.Test_CilGraph_OptionalParams(mi);
-            }
-        }
-
         [TestMethod]
         public void Test_CilGraph_Attributes()
         {
@@ -133,35 +91,5 @@ namespace CilTools.Metadata.Tests
             bool ShowWindow(native int hWnd,
                              int32 nCmdShow) cil managed preservesig*/
         }
-
-        [TestMethod]
-        public void Test_CilGraph_ImplRuntime()
-        {
-            AssemblyReader reader = new AssemblyReader();
-
-            using (reader)
-            {
-                Assembly ass = reader.LoadFrom(typeof(System.Func<>).Assembly.Location);
-                Type t = ass.GetType("System.Func`1");
-                MethodBase mi = t.GetMember("Invoke")[0] as MethodBase;
-                CilGraphTestsCore_Text.Test_CilGraph_ImplRuntime(mi);
-            }
-        }
-
-#if DEBUG
-        [TestMethod]
-        public void Test_CilGraph_Locals()
-        {
-            AssemblyReader reader = new AssemblyReader();
-
-            using (reader)
-            {
-                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-                MethodBase mi = t.GetMember("CreatePoint")[0] as MethodBase;
-                CilGraphTestsCore_Text.Test_CilGraph_Locals(mi);
-            }
-        }
-#endif
     }
 }

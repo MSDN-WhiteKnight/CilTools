@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Reflection;
@@ -13,37 +13,37 @@ namespace CilTools.BytecodeAnalysis.Tests
     public class CilGraphTests_Text
     {
         [TestMethod]
-        public void Test_CilGraph_ToString()
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_CilGraph_ToString(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
             CilGraphTestsCore_Text.Test_CilGraph_ToString(mi);
         }
 
         [TestMethod]
-        public void Test_CilGraph_EmptyString()
+        [MethodTestData(typeof(SampleMethods), "TestEmptyString", BytecodeProviders.All)]
+        public void Test_CilGraph_EmptyString(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("TestEmptyString");
             CilGraphTestsCore_Text.Test_CilGraph_EmptyString(mi);
         }
 
         [TestMethod]
-        public void Test_CilGraph_OptionalParams()
+        [MethodTestData(typeof(SampleMethods), "TestOptionalParams", BytecodeProviders.All)]
+        public void Test_CilGraph_OptionalParams(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("TestOptionalParams");
             CilGraphTestsCore_Text.Test_CilGraph_OptionalParams(mi);
         }
 
         [TestMethod]
-        public void Test_CilGraph_ImplRuntime()
-        {
-            MethodInfo mi = typeof(System.Func<>).GetMethod("Invoke");
+        [MethodTestData(typeof(Func<>), "Invoke", BytecodeProviders.All)]
+        public void Test_CilGraph_ImplRuntime(MethodBase mi)
+        {            
             CilGraphTestsCore_Text.Test_CilGraph_ImplRuntime(mi);
         }
 
         [TestMethod]
-        public void Test_CilGraph_Attributes()
+        [MethodTestData(typeof(SampleMethods), "AttributeTest", BytecodeProviders.Reflection)]
+        public void Test_CilGraph_Attributes(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("AttributeTest");
             CilGraph graph = CilGraph.Create(mi);
             string str = graph.ToText();
 
@@ -75,9 +75,9 @@ namespace CilTools.BytecodeAnalysis.Tests
 
 #if DEBUG
         [TestMethod]
-        public void Test_CilGraph_Locals()
+        [MethodTestData(typeof(SampleMethods), "CreatePoint", BytecodeProviders.All)]
+        public void Test_CilGraph_Locals(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("CreatePoint");
             CilGraphTestsCore_Text.Test_CilGraph_Locals(mi);
         }
 #endif
