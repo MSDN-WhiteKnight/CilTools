@@ -92,7 +92,7 @@ namespace CilTools.BytecodeAnalysis.Tests
 
         public string GetDisplayName(MethodInfo methodInfo, object[] data)
         {
-            if (data != null && data.Length>=1)
+            if (data != null && data.Length>=1 && data[0]!=null)
             {
                 StringBuilder sb = new StringBuilder(150);
                 sb.Append(methodInfo.Name);
