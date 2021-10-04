@@ -383,87 +383,87 @@ namespace CilTools.Runtime
             ClrDynamicMethod dm;
 
             //scan GC heap for dynamic modules and methods
+            HeapScanner scanner = new HeapScanner();
 
-            HeapScanner.ScanHeap(this.runtime.DataTarget, (o) => {
+            //dynamic module
+            scanner.RegisterAction(
+                "System.Reflection.Emit.ModuleBuilder", 
+                (o) => { ProcessDynamicModule(o, moduleNames);}
+                );
 
-                //dynamic module
-                if (ClrTypeInfo.StrEquals(o.Type.Name, "System.Reflection.Emit.ModuleBuilder"))
-                {
-                    ProcessDynamicModule(o, moduleNames);
-                    return;
-                }
-
-                //dynamic method
-                if (ClrTypeInfo.StrEquals(o.Type.Name, "System.Reflection.Emit.DynamicMethod"))
-                {
+            //dynamic method
+            scanner.RegisterAction(
+                "System.Reflection.Emit.DynamicMethod",
+                (o) => {
                     dm = new ClrDynamicMethod(o, dma);
                     dms.Add(dm);
-                    return;
-                }
+                });
 
-                //method in dynamic assembly
-                if (!ClrTypeInfo.StrEquals(o.Type.Name, "System.Reflection.Emit.MethodBuilder"))
-                {
-                    return;
-                }
-                
-                /*   Objects chain:
-                 * MethodBuilder.m_module (ModuleBuilder)
-                 * ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
-                 * System.Reflection.Emit.AssemblyBuilder.m_assemblyData (System.Reflection.Emit.AssemblyBuilderData)
-                 * AssemblyBuilderData.m_strAssemblyName (string)*/
+            //method in dynamic assembly
+            scanner.RegisterAction(
+                "System.Reflection.Emit.MethodBuilder",
+                (o) => {
+                    //   Objects chain:
+                    // MethodBuilder.m_module (ModuleBuilder)
+                    // ModuleBuilder.m_assemblyBuilder (AssemblyBuilder)
+                    // System.Reflection.Emit.AssemblyBuilder.m_assemblyData (System.Reflection.Emit.AssemblyBuilderData)
+                    // AssemblyBuilderData.m_strAssemblyName (string)
 
-                //get dynamic module
-                ClrObject objModule = o.GetObjectField("m_module");
-                if (objModule.IsNull) return;
+                    //get dynamic module
+                    ClrObject objModule = o.GetObjectField("m_module");
+                    if (objModule.IsNull) return;
 
-                ClrObject objModuleData = GetModuleData(objModule);
+                    ClrObject objModuleData = GetModuleData(objModule);
 
-                if (objModuleData.IsNull) return;
+                    if (objModuleData.IsNull) return;
 
-                //get dynamic module address
-                long pData = objModuleData.GetField<long>("m_pData");
-                if (pData == 0) return;
+                    //get dynamic module address
+                    long pData = objModuleData.GetField<long>("m_pData");
+                    if (pData == 0) return;
 
-                //get method token
-                int token = 0;
+                    //get method token
+                    int token = 0;
 
-                if (o.Type.GetFieldByName("m_tkMethod") != null)
-                {
-                    ClrValueClass cvc_tkMethod = o.GetValueClassField("m_tkMethod");
-                    string tokenField=null;
-
-                    if (cvc_tkMethod.Type != null)
+                    if (o.Type.GetFieldByName("m_tkMethod") != null)
                     {
-                        //Get the single field of MethodToken struct
-                        //(its name varies between runtimes)
-                        tokenField = Utils.GetInstanceFields(cvc_tkMethod).FirstOrDefault();
-                    }
+                        ClrValueClass cvc_tkMethod = o.GetValueClassField("m_tkMethod");
+                        string tokenField = null;
 
-                    if (tokenField != null)
-                    {
-                        //.NET Framework or .NET Core 3.1
-                        token = cvc_tkMethod.GetField<int>(tokenField);
+                        if (cvc_tkMethod.Type != null)
+                        {
+                            //Get the single field of MethodToken struct
+                            //(its name varies between runtimes)
+                            tokenField = Utils.GetInstanceFields(cvc_tkMethod).FirstOrDefault();
+                        }
+
+                        if (tokenField != null)
+                        {
+                            //.NET Framework or .NET Core 3.1
+                            token = cvc_tkMethod.GetField<int>(tokenField);
+                        }
+                        else
+                        {
+                            //.NET 5+
+                            token = o.GetField<int>("m_token");
+                        }
                     }
                     else
                     {
                         //.NET 5+
                         token = o.GetField<int>("m_token");
                     }
-                }
-                else
-                {
-                    //.NET 5+
-                    token = o.GetField<int>("m_token");
-                }
 
-                if (token == 0) return;
+                    if (token == 0) return;
 
-                MethodId mid = new MethodId((ulong)pData, token);
-                dm = new ClrDynamicMethod(o, dma);
-                ret[mid] = dm;
-            });
-                        
+                    MethodId mid = new MethodId((ulong)pData, token);
+                    dm = new ClrDynamicMethod(o, dma);
+                    ret[mid] = dm;
+                });
+
+            //run the scanning process
+            scanner.ScanHeap(this.runtime.DataTarget);
+            
+            //handle results
             this.dynAssMethods = ret; //methods in dynamic assemblies
             this.dynModuleNames = moduleNames; //dynamic module names
             this.dynMethods = dms.ToArray(); //dynamic methods (not in assembly)
