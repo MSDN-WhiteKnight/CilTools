@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -12,15 +13,17 @@ namespace CilTools.BytecodeAnalysis.Tests
     public class CilAnalysisTests
     {
         [TestMethod]
-        public void Test_GetReferencedMethods()
+        [MethodTestData(typeof(SampleMethods), "PrintProcessId", BytecodeProviders.All)]
+        public void Test_GetReferencedMethods(MethodBase m)
         {
-            CilAnalysisTestsCore.Test_GetReferencedMethods(typeof(SampleMethods).GetMethod("PrintProcessId"));
+            CilAnalysisTestsCore.Test_GetReferencedMethods(m);
         }
 
         [TestMethod]
-        public void Test_GetReferencedMembers()
+        [MethodTestData(typeof(SampleMethods), "SquareFoo", BytecodeProviders.All)]
+        public void Test_GetReferencedMembers(MethodBase m)
         {
-            CilAnalysisTestsCore.Test_GetReferencedMembers(typeof(SampleMethods).GetMethod("SquareFoo"));
+            CilAnalysisTestsCore.Test_GetReferencedMembers(m);
         }
     }
 }

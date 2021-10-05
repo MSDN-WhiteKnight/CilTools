@@ -12,16 +12,16 @@ namespace CilTools.BytecodeAnalysis.Tests
     public class SyntaxTests
     {
         [TestMethod]
-        public void Test_ToSyntaxTree()
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_ToSyntaxTree(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
             SyntaxTestsCore.Test_ToSyntaxTree(mi);
         }
 
         [TestMethod]
-        public void Test_KeywordAsIdentifier()
+        [MethodTestData(typeof(SampleMethods), "method", BytecodeProviders.All)]
+        public void Test_KeywordAsIdentifier(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("method");
             SyntaxTestsCore.Test_KeywordAsIdentifier(mi);
         }
     }

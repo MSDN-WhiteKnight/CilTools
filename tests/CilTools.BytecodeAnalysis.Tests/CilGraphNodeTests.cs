@@ -12,9 +12,9 @@ namespace CilTools.BytecodeAnalysis.Tests
     public class CilGraphNodeTests
     {
         [TestMethod]
-        public void Test_CilGraphNode_Exceptions()
+        [MethodTestData(typeof(SampleMethods), "DivideNumbers", BytecodeProviders.All)]
+        public void Test_CilGraphNode_Exceptions(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("DivideNumbers");
             CilGraphNodeTestsCore.Test_CilGraphNode_Exceptions(mi);
         }
     }

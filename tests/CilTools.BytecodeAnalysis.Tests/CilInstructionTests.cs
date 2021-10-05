@@ -4,7 +4,6 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
 using CilTools.BytecodeAnalysis;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -21,9 +20,9 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
-        public void Test_CilInstruction_ToString()
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_CilInstruction_ToString(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
             CilInstructionTestsCore.Test_CilInstruction_ToString(mi);
         }
     }

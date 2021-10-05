@@ -12,23 +12,23 @@ namespace CilTools.BytecodeAnalysis.Tests
     public class ReflectionTests
     {
         [TestMethod]
-        public void Test_NavigationExternal()
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_NavigationExternal(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
             ReflectionTestsCore.Test_NavigationExternal(mi);
         }
 
         [TestMethod]
-        public void Test_NavigationInternal()
+        [MethodTestData(typeof(SampleMethods), "CreatePoint", BytecodeProviders.All)]
+        public void Test_NavigationInternal(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("CreatePoint");
             ReflectionTestsCore.Test_NavigationInternal(mi);
         }
 
         [TestMethod]
-        public void Test_TypedReferenceParam()
+        [MethodTestData(typeof(SampleMethods), "TypedRefTest", BytecodeProviders.All)]
+        public void Test_TypedReferenceParam(MethodBase mi)
         {
-            MethodInfo mi = typeof(SampleMethods).GetMethod("TypedRefTest");
             ReflectionTestsCore.Test_TypedReferenceParam(mi);
         }
     }

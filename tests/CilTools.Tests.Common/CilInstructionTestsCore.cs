@@ -31,7 +31,7 @@ namespace CilTools.Tests.Common
             Assert.AreEqual<int>(1, (int)instr2.Operand, "The result of CilInstruction.Parse doesn't have expected operand");
         }
 
-        public static void Test_CilInstruction_ToString(MethodInfo mi)
+        public static void Test_CilInstruction_ToString(MethodBase mi)
         {
             CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
 
