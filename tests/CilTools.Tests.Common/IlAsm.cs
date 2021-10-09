@@ -10,7 +10,10 @@ using System.Text;
 
 namespace CilTools.Tests.Common
 {
-    public class IlAsm
+    /// <summary>
+    /// Provides helper methods to invoke IlAsm tool
+    /// </summary>
+    public static class IlAsm
     {
         const string IlAsmCmd = " /NOLOGO /DLL /OUTPUT:\"{0}\" \"{1}\"";
         const string AssemblyDefIL = ".assembly CilProject_@Name { }\r\n";
@@ -36,6 +39,12 @@ namespace CilTools.Tests.Common
             return AssemblyDefIL.Replace("@Name", name);
         }
 
+        /// <summary>
+        /// Assembles the specified CIL source file
+        /// </summary>
+        /// <param name="inputFilePath">Path to CIL source file</param>
+        /// <param name="outputFilePath">Path to the output assembly</param>
+        /// <returns>true if assembling succeeds, otherwise false</returns>
         public static bool BuildFile(string inputFilePath, string outputFilePath)
         {
             if (File.Exists(outputFilePath))
@@ -74,6 +83,12 @@ namespace CilTools.Tests.Common
             }
         }
 
+        /// <summary>
+        /// Assembles the specified CIL code passed as a string
+        /// </summary>
+        /// <param name="inputCode">String with CIL code to assemble</param>
+        /// <param name="outputFilePath">Path to the output assembly</param>
+        /// <returns>true if assembling succeeds, otherwise false</returns>
         public static bool BuildCode(string inputCode, string outputFilePath)
         {
             string path = Path.Combine(GetOutDir(), "temp.il");
@@ -88,20 +103,35 @@ namespace CilTools.Tests.Common
             return BuildFile(path, outputFilePath);
         }
 
+        /// <summary>
+        /// Assembles the CIL code of the specified function and returns the resulting 
+        /// MethodBase object
+        /// </summary>
+        /// <param name="funcCode">String with the function's CIL code</param>
+        /// <param name="funcName">Function name</param>
+        /// <returns>
+        /// The MethodBase object for the assembled function, or null if the 
+        /// assembling failed
+        /// </returns>
         public static MethodBase BuildFunction(string funcCode, string funcName)
         {
+            //prepare CIL code
             StringBuilder sb = new StringBuilder(funcCode.Length + AssemblyDefIL.Length + 10);
             sb.AppendLine(GetAssemblyDefIL(funcName));
             sb.AppendLine(funcCode);
             string inputCode = sb.ToString();
 
+            //assemble code
             string filename = string.Format(AssemblyFileName, funcName);
             string assemblyPath = Path.Combine(GetOutDir(), filename);
             bool res = BuildCode(inputCode, assemblyPath);
 
             if (res == false) return null;
 
+            //load the output assembly
             Assembly ass = Assembly.LoadFrom(assemblyPath);
+
+            //return reflection object for the resulting function
             MethodBase mb = ass.ManifestModule.GetMethod(funcName);
             return mb;
         }
