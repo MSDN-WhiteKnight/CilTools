@@ -17,6 +17,11 @@ namespace CilTools.BytecodeAnalysis.Tests
         [TestMethod]
         public void Test_IndirectCall_IlAsm()
         {
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                Assert.Inconclusive("IlAsm not available on non-Windows platforms");
+            }
+
             const string code = @"
 .method public static void IndirectCallTest(string x) cil managed 
 { 
