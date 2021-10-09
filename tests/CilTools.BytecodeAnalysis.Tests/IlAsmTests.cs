@@ -3,24 +3,94 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+// * Tests that use IlAsm to produce assembly with test data method *
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
     [TestClass]
     public class IlAsmTests
     {
-        [TestMethod]
-        public void Test_IndirectCall_IlAsm()
+        static void CheckEnvironment()
         {
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
             {
-                Assert.Inconclusive("IlAsm not available on non-Windows platforms");
+                Assert.Inconclusive("IlAsm is not available on non-Windows platforms");
             }
+        }
+
+        /// <summary>
+        /// Shared test logic for indirect call tests
+        /// </summary>
+        public static void IndirectCall_VerifyMethod(MethodBase m)
+        {
+            //create CilGraph from method
+            CilGraph graph = CilGraph.Create(m);
+
+            //verify CilGraph
+            AssertThat.IsCorrect(graph);
+
+            CilGraphNode[] nodes = graph.GetNodes().ToArray();
+
+            AssertThat.NotEmpty(
+                nodes, "The result of IndirectCallTest method parsing should not be empty collection"
+            );
+
+            AssertThat.HasOnlyOneMatch(
+                nodes, (x) => x.Instruction.OpCode == OpCodes.Ldarg_0,
+                "The result of IndirectCallTest method parsing should contain a single 'ldarg.0' instruction"
+                );
+
+            AssertThat.HasOnlyOneMatch(
+                nodes,
+                (x) => x.Instruction.OpCode == OpCodes.Ldftn && (x.Instruction.ReferencedMember as MethodInfo).Name == "WriteLine",
+                "The result of IndirectCallTest method parsing should contain a single 'ldftn' instruction referencing Console.WriteLine"
+                );
+
+            AssertThat.HasOnlyOneMatch(
+                nodes,
+                (x) => x.Instruction.OpCode == OpCodes.Calli &&
+                    x.Instruction.ReferencedSignature != null &&
+                    x.Instruction.ReferencedSignature.ReturnType.Type.Name == "Void" &&
+                    x.Instruction.ReferencedSignature.GetParamType(0).Type.Name == "String" &&
+                    x.Instruction.ReferencedSignature.CallingConvention == CallingConvention.Default,
+                "The result of IndirectCallTest method parsing should contain a single 'calli' instruction with signature matching Console.WriteLine"
+                );
+
+            AssertThat.HasOnlyOneMatch(
+                nodes, (x) => x.Instruction.OpCode == OpCodes.Ret,
+                "The result of IndirectCallTest method parsing should contain a single 'ret' instruction"
+                );
+
+            //Verify CilGraph.ToString() output
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new MatchElement[] {
+                new Literal(".method"), MatchElement.Any, new Literal("void"), MatchElement.Any,
+                new Literal("IndirectCallTest"), MatchElement.Any,
+                new Literal("("),MatchElement.Any, new Literal("string"),MatchElement.Any, new Literal(")"), MatchElement.Any,
+                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any,
+                new Literal("{"), MatchElement.Any,
+                new Literal("ldarg.0"), MatchElement.Any,
+                new Literal("ldftn"), MatchElement.Any, new Literal("System.Console::WriteLine"), MatchElement.Any,
+                new Literal("calli"), MatchElement.Any, new Literal("void"), MatchElement.Any,
+                 new Literal("("),MatchElement.Any, new Literal("string"),MatchElement.Any, new Literal(")"), MatchElement.Any,
+                new Literal("ret"), MatchElement.Any,
+                new Literal("}")
+            });
+        }
+
+        [TestMethod]
+        public void Test_IndirectCall_IlAsm()
+        {
+            CheckEnvironment();
 
             const string code = @"
 .method public static void IndirectCallTest(string x) cil managed 
@@ -34,13 +104,12 @@ namespace CilTools.BytecodeAnalysis.Tests
 }";
             //compile method from CIL
             MethodBase mb = IlAsm.BuildFunction(code, "IndirectCallTest");
+
+            //verify method executes and does not crash
             mb.Invoke(null, new object[] { "Hello from CIL Tools tests!" });
 
-            //create CilGraph from method
-            CilGraph graph = CilGraph.Create(mb);
-
-            //verify CilGraph
-            AssertThat.IsCorrect(graph);
+            //main test logic
+            IndirectCall_VerifyMethod(mb);
         }
     }
 }
