@@ -19,6 +19,8 @@ namespace CilTools.Tests.Common
         const string AssemblyDefIL = ".assembly CilProject_@Name { }\r\n";
         const string AssemblyFileName = "CilProject_{0}.dll";
 
+        static readonly object _sync = new object();
+
         static string GetIlAsmDir()
         {
             //Hardcoded to .NET Framework path to work the same in any runtime.
@@ -91,16 +93,19 @@ namespace CilTools.Tests.Common
         /// <returns>true if assembling succeeds, otherwise false</returns>
         public static bool BuildCode(string inputCode, string outputFilePath)
         {
-            string path = Path.Combine(GetOutDir(), "temp.il");
-            FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);
-            StreamWriter wr = new StreamWriter(fs, Encoding.UTF8);
-
-            using (wr)
+            lock (_sync)
             {
-                wr.Write(inputCode);
-            }
+                string path = Path.Combine(GetOutDir(), "temp.il");
+                FileStream fs = new FileStream(path, FileMode.Create, FileAccess.Write, FileShare.Read);
+                StreamWriter wr = new StreamWriter(fs, Encoding.UTF8);
 
-            return BuildFile(path, outputFilePath);
+                using (wr)
+                {
+                    wr.Write(inputCode);
+                }
+
+                return BuildFile(path, outputFilePath);
+            }
         }
 
         /// <summary>
