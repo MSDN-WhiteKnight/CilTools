@@ -213,64 +213,12 @@ namespace CilTools.BytecodeAnalysis.Tests
             ilg.EmitCalli(OpCodes.Calli, CallingConventions.Standard, typeof(void), new Type[] { typeof(string) }, null);
             ilg.Emit(OpCodes.Ret);
 
+            //verify that dynamic method executes and does not throw
             var deleg = (Action<string>)dm.CreateDelegate(typeof(Action<string>));
             deleg("Hello from System.Reflection.Emit!");
 
-            //create CilGraph from DynamicMethod
-            CilGraph graph = CilGraph.Create(dm);
-
-            //verify CilGraph
-            AssertThat.IsCorrect(graph);
-
-            CilGraphNode[] nodes = graph.GetNodes().ToArray();
-
-            AssertThat.NotEmpty(
-                nodes, "The result of IndirectCallTest method parsing should not be empty collection"
-            );
-
-            AssertThat.HasOnlyOneMatch(
-                nodes, (x) => x.Instruction.OpCode == OpCodes.Ldarg_0, 
-                "The result of IndirectCallTest method parsing should contain a single 'ldarg.0' instruction"
-                );
-
-            AssertThat.HasOnlyOneMatch(
-                nodes,
-                (x) => x.Instruction.OpCode == OpCodes.Ldftn && (x.Instruction.ReferencedMember as MethodInfo).Name == "WriteLine",
-                "The result of IndirectCallTest method parsing should contain a single 'ldftn' instruction referencing Console.WriteLine"
-                );
-
-            AssertThat.HasOnlyOneMatch(
-                nodes,
-                (x) => x.Instruction.OpCode == OpCodes.Calli &&
-                    x.Instruction.ReferencedSignature != null &&
-                    x.Instruction.ReferencedSignature.ReturnType.Type.Name == "Void" &&
-                    x.Instruction.ReferencedSignature.GetParamType(0).Type.Name == "String" &&
-                    x.Instruction.ReferencedSignature.CallingConvention == CallingConvention.Default,
-                "The result of IndirectCallTest method parsing should contain a single 'calli' instruction with signature matching Console.WriteLine"
-                );
-
-            AssertThat.HasOnlyOneMatch(
-                nodes, (x) => x.Instruction.OpCode == OpCodes.Ret,
-                "The result of IndirectCallTest method parsing should contain a single 'ret' instruction"
-                );
-
-            //Verify CilGraph.ToString() output
-            string str = graph.ToText();
-
-            AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any, new Literal("void"), MatchElement.Any,
-                new Literal("IndirectCallTest"), MatchElement.Any,
-                new Literal("("),MatchElement.Any, new Literal("string"),MatchElement.Any, new Literal(")"), MatchElement.Any,
-                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any,
-                new Literal("{"), MatchElement.Any,
-                new Literal("ldarg.0"), MatchElement.Any,
-                new Literal("ldftn"), MatchElement.Any, new Literal("System.Console::WriteLine"), MatchElement.Any,
-                new Literal("calli"), MatchElement.Any, new Literal("void"), MatchElement.Any,
-                 new Literal("("),MatchElement.Any, new Literal("string"),MatchElement.Any, new Literal(")"), MatchElement.Any,
-                new Literal("ret"), MatchElement.Any,
-                new Literal("}")
-            });
-
+            //main test logic
+            IlAsmTests.IndirectCall_VerifyMethod(dm);
         }
 
         [TestMethod]

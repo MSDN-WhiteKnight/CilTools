@@ -24,6 +24,7 @@
   </ItemGroup>
   
   <ItemGroup>
+    <Compile Include="IlAsmTests.cs" />
     <Compile Include="MethodTestDataAttribute.cs" />
     <Compile Include="CilAnalysisTests.cs" />
     <Compile Include="CilInstructionTests.cs" />
