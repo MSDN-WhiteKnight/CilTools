@@ -14,21 +14,54 @@ namespace CilTools.Tests.Common
 {
     public static class AssertThat
     {
+        static void Fail(string message) 
+        {
+            throw new AssertFailedException(message);
+        }
+
         public static void NotEmpty<T>(IEnumerable<T> collection,string message="")
         {
-            Assert.IsTrue(collection.Count() > 0, message);
+            if (string.IsNullOrEmpty(message))
+            {
+                message = "The collection should be non-empty.";
+            }
+            
+            if (collection.Count() <= 0) 
+            {
+                Fail("AssertThat.NotEmpty failed. " + message);
+            }
         }
 
         public static void HasOnlyOneMatch<T>(IEnumerable<T> collection, Func<T, bool> condition, string message = "")
         {
             IEnumerable<T> match = collection.Where(condition);
-            Assert.AreEqual(1, match.Count(), message);
+            int c = match.Count();
+
+            if (c != 1)
+            {
+                if (string.IsNullOrEmpty(message))
+                {
+                    message = "The collection should contain only one occurance of the matching element. " +
+                        "Actual number of occurances: " + c.ToString();
+                }
+
+                Fail("AssertThat.HasOnlyOneMatch failed. " + message);
+            }
         }
 
         public static void HasAtLeastOneMatch<T>(IEnumerable<T> collection, Func<T, bool> condition, string message = "")
         {
+            if (string.IsNullOrEmpty(message))
+            {
+                message = "The collection should contain at least one occurance of the matching element.";
+            }
+
             IEnumerable<T> match = collection.Where(condition);
-            Assert.IsTrue(match.Count() > 0, message);
+
+            if (match.Count() <= 0)
+            {
+                Fail("AssertThat.HasAtLeastOneMatch failed. " + message);
+            }
         }
 
         public static void IsCorrect(CilGraph graph)
