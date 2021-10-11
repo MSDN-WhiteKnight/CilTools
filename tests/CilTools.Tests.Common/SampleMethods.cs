@@ -1,9 +1,9 @@
 ﻿/* CIL Tools
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace CilTools.Tests.Common
@@ -170,6 +170,22 @@ namespace CilTools.Tests.Common
         }
 
         public static void method() { }
+
+        public static string FilteredExceptionsTest()
+        {
+            string ret;
+
+            try
+            {
+                ret=File.ReadAllLines("test.txt")[0];
+            }
+            catch (Exception ex) when (ex.Message.Contains("does not exist"))
+            {
+                ret=string.Empty;
+            }
+            
+            return ret;
+        }
     }
 
     public class MyPoint
