@@ -98,29 +98,29 @@ namespace CilTools.BytecodeAnalysis.Tests
             //verify disassembler output
             string str = graph.ToText();
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any, "static", MatchElement.Any,
-                "string", MatchElement.Any,
-                "FilteredExceptionsTest", MatchElement.Any,
-                "(",MatchElement.Any, ")", MatchElement.Any,
-                "cil", MatchElement.Any, "managed", MatchElement.Any,
-                "{", MatchElement.Any,
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "static", Text.Any,
+                "string", Text.Any,
+                "FilteredExceptionsTest", Text.Any,
+                "(",Text.Any, ")", Text.Any,
+                "cil", Text.Any, "managed", Text.Any,
+                "{", Text.Any,
                 
-                ".try", MatchElement.Any, "{", MatchElement.Any,                
-                "call", MatchElement.Any, "System.IO.File::ReadAllLines", MatchElement.Any,
-                "}", MatchElement.Any,
+                ".try", Text.Any, "{", Text.Any,                
+                "call", Text.Any, "System.IO.File::ReadAllLines", Text.Any,
+                "}", Text.Any,
 
-                "filter", MatchElement.Any, "{", MatchElement.Any,
-                "callvirt", MatchElement.Any, "get_Message", MatchElement.Any,
-                "callvirt", MatchElement.Any, "Contains", MatchElement.Any,
-                "endfilter", MatchElement.Any,"}", MatchElement.Any,
+                "filter", Text.Any, "{", Text.Any,
+                "callvirt", Text.Any, "get_Message", Text.Any,
+                "callvirt", Text.Any, "Contains", Text.Any,
+                "endfilter", Text.Any,"}", Text.Any,
 
                 //handler
-                "{", MatchElement.Any,
-                "ldsfld", MatchElement.Any, "System.String::Empty", MatchElement.Any,
-                "}", MatchElement.Any,
+                "{", Text.Any,
+                "ldsfld", Text.Any, "System.String::Empty", Text.Any,
+                "}", Text.Any,
 
-                "ret", MatchElement.Any,
+                "ret", Text.Any,
                 "}"
             });
         }

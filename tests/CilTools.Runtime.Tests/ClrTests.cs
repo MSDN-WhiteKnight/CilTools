@@ -79,17 +79,17 @@ namespace CilTools.Runtime.Tests
 
             string str = CilAnalysis.MethodToText(mb);
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                     new Literal(".method"), MatchElement.Any,
-                     new Literal("Method1"), MatchElement.Any,
-                     new Literal("cil"), MatchElement.Any,
-                     new Literal("managed"), MatchElement.Any,
-                     new Literal(".try"), MatchElement.Any,
-                     new Literal("catch"), MatchElement.Any,
-                     new Literal("System.Exception"), MatchElement.Any,
-                     new Literal("call"), MatchElement.Any,
-                     new Literal("System.Console::WriteLine"), MatchElement.Any,
-                     new Literal("ret"), MatchElement.Any
+            AssertThat.IsMatch(str, new Text[] {
+                     new Literal(".method"), Text.Any,
+                     new Literal("Method1"), Text.Any,
+                     new Literal("cil"), Text.Any,
+                     new Literal("managed"), Text.Any,
+                     new Literal(".try"), Text.Any,
+                     new Literal("catch"), Text.Any,
+                     new Literal("System.Exception"), Text.Any,
+                     new Literal("call"), Text.Any,
+                     new Literal("System.Console::WriteLine"), Text.Any,
+                     new Literal("ret"), Text.Any
              });
         }
 
@@ -162,20 +162,20 @@ namespace CilTools.Runtime.Tests
             //test disassembler
             string str = CilAnalysis.MethodToText(mb);
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                     new Literal(".method"), MatchElement.Any,
-                     new Literal("Method2"), MatchElement.Any,
-                     new Literal("cil"), MatchElement.Any,
-                     new Literal("managed"), MatchElement.Any,
-                     new Literal(".try"), MatchElement.Any,
-                     new Literal("add"), MatchElement.Any,
-                     new Literal("stsfld"), MatchElement.Any,
-                     new Literal("catch"), MatchElement.Any,
-                     new Literal("System.Exception"), MatchElement.Any,
-                     new Literal("ldstr"), MatchElement.Any,
-                     new Literal("call"), MatchElement.Any,
-                     new Literal("ldsfld"), MatchElement.Any,
-                     new Literal("ret"), MatchElement.Any
+            AssertThat.IsMatch(str, new Text[] {
+                     new Literal(".method"), Text.Any,
+                     new Literal("Method2"), Text.Any,
+                     new Literal("cil"), Text.Any,
+                     new Literal("managed"), Text.Any,
+                     new Literal(".try"), Text.Any,
+                     new Literal("add"), Text.Any,
+                     new Literal("stsfld"), Text.Any,
+                     new Literal("catch"), Text.Any,
+                     new Literal("System.Exception"), Text.Any,
+                     new Literal("ldstr"), Text.Any,
+                     new Literal("call"), Text.Any,
+                     new Literal("ldsfld"), Text.Any,
+                     new Literal("ret"), Text.Any
              });
 
             /*

@@ -46,11 +46,11 @@ namespace CilTools.Tests.Common
         {
             string str = CilAnalysis.MethodToText(mi);
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any, "public", MatchElement.Any,
-                "void", MatchElement.Any,
-                "'method'", MatchElement.Any,
-                "cil", MatchElement.Any, "managed", MatchElement.Any,                
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "public", Text.Any,
+                "void", Text.Any,
+                "'method'", Text.Any,
+                "cil", Text.Any, "managed", Text.Any,                
             });
         }
     }

@@ -20,13 +20,13 @@ namespace CilTools.Tests.Common
 
             //Test that ToString returns signature
             string str = graph.ToString();
-            AssertThat.IsMatch(str, new MatchElement[] { ".method", MatchElement.Any, "public" });
-            AssertThat.IsMatch(str, new MatchElement[] { ".method", MatchElement.Any, "static" });
+            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "public" });
+            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "static" });
 
-            AssertThat.IsMatch(str, new MatchElement[] { 
-                ".method", MatchElement.Any, "void", MatchElement.Any, 
-                "PrintHelloWorld", MatchElement.Any, 
-                "cil", MatchElement.Any, "managed", MatchElement.Any
+            AssertThat.IsMatch(str, new Text[] { 
+                ".method", Text.Any, "void", Text.Any, 
+                "PrintHelloWorld", Text.Any, 
+                "cil", Text.Any, "managed", Text.Any
             });
 
             Assert.IsFalse(str.Contains("call"), "The result of CilGraph.ToString should not contain instructions");
@@ -39,8 +39,8 @@ namespace CilTools.Tests.Common
             //Test correct empty string output
             string str = graph.ToText();
 
-            AssertThat.IsMatch(str, new MatchElement[] { 
-                MatchElement.Any, "ldstr", MatchElement.Any, "\"\"", MatchElement.Any 
+            AssertThat.IsMatch(str, new Text[] { 
+                Text.Any, "ldstr", Text.Any, "\"\"", Text.Any 
             });
         }
         
@@ -51,15 +51,15 @@ namespace CilTools.Tests.Common
             //Test correct empty string output
             string str = graph.ToText();
             
-            AssertThat.IsMatch(str, new MatchElement[] { 
-                MatchElement.Any, ".method",
-                MatchElement.Any, "[opt]",MatchElement.Any, "string",
-                MatchElement.Any, "[opt]",MatchElement.Any, "int32",
-                MatchElement.Any, ".param", MatchElement.Any, "[1]",
-                MatchElement.Any, "\"\"", 
-                MatchElement.Any, ".param", MatchElement.Any, "[2]",
-                MatchElement.Any, "int32(0)", 
-                MatchElement.Any 
+            AssertThat.IsMatch(str, new Text[] { 
+                Text.Any, ".method",
+                Text.Any, "[opt]",Text.Any, "string",
+                Text.Any, "[opt]",Text.Any, "int32",
+                Text.Any, ".param", Text.Any, "[1]",
+                Text.Any, "\"\"", 
+                Text.Any, ".param", Text.Any, "[2]",
+                Text.Any, "int32(0)", 
+                Text.Any 
             });
         }
 
@@ -73,10 +73,10 @@ namespace CilTools.Tests.Common
             wr.Flush();
             string str = sb.ToString();
 
-            AssertThat.IsMatch(str, new MatchElement[] { 
-                MatchElement.Any, ".locals",MatchElement.Any, "(",
-                MatchElement.Any, "MyPoint",MatchElement.Any, ")",
-                MatchElement.Any 
+            AssertThat.IsMatch(str, new Text[] { 
+                Text.Any, ".locals",Text.Any, "(",
+                Text.Any, "MyPoint",Text.Any, ")",
+                Text.Any 
             });
         }
 
@@ -87,13 +87,13 @@ namespace CilTools.Tests.Common
 
             //.method   public hidebysig newslot virtual instance !0 Invoke() runtime managed
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                MatchElement.Any, ".method",MatchElement.Any,
-                "!",MatchElement.Any,
-                "Invoke",MatchElement.Any,
-                "(", MatchElement.Any,")",MatchElement.Any
-                ,"runtime",MatchElement.Any
-                ,"managed",MatchElement.Any
+            AssertThat.IsMatch(str, new Text[] {
+                Text.Any, ".method",Text.Any,
+                "!",Text.Any,
+                "Invoke",Text.Any,
+                "(", Text.Any,")",Text.Any
+                ,"runtime",Text.Any
+                ,"managed",Text.Any
             });
         }
     }

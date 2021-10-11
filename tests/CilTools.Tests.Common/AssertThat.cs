@@ -86,7 +86,11 @@ namespace CilTools.Tests.Common
 
         }
 
-        public static void IsMatch(string s, MatchElement[] match, string message="")
+        /// <summary>
+        /// Asserts that the specified string matches the specified pattern defined as a 
+        /// sequence of <see cref="Text"/> objects.
+        /// </summary>
+        public static void IsMatch(string s, Text[] match, string message="")
         {
             StringBuilder sb = new StringBuilder();
 
@@ -165,8 +169,20 @@ namespace CilTools.Tests.Common
         }
     }
 
-    public abstract class MatchElement
-    {       
+    /// <summary>
+    /// Represents an element of the strings sequence. The element could be either a literal 
+    /// string or a mask allowing multiple string values.
+    /// </summary>
+    /// <remarks>
+    /// This class is used in tests to verify that CIL code produced by disassembler 
+    /// matches the expected pattern. It is a high-level wrapper for a regular expressions
+    /// mechanism.
+    /// </remarks>
+    public abstract class Text
+    {
+        /// <summary>
+        /// Converts this element to the equivalent regex representation
+        /// </summary>
         public abstract string GetString();
 
         public override string ToString()
@@ -174,12 +190,18 @@ namespace CilTools.Tests.Common
             return GetString();
         }
 
-        public static MatchElement Any
+        /// <summary>
+        /// Defines a text element allowing any string values
+        /// </summary>
+        public static Text Any
         {
-            get { return AnyCharsElement.Value; }
+            get { return AnyCharsText.Value; }
         }
 
-        public static bool IsMatch(string s, MatchElement[] match)
+        /// <summary>
+        /// Checks whether a specified string matches a specified sequence of text elements
+        /// </summary>
+        public static bool IsMatch(string s, Text[] match)
         {
             StringBuilder sb = new StringBuilder();
 
@@ -192,10 +214,13 @@ namespace CilTools.Tests.Common
             return Regex.IsMatch(s, pattern);
         }
 
-        public static implicit operator MatchElement(string s) => new Literal(s);
+        public static implicit operator Text(string s) => new Literal(s);
     }
 
-    public class Literal : MatchElement
+    /// <summary>
+    /// Represents a text element with the exact string value
+    /// </summary>
+    public class Literal : Text
     {
         string val;
 
@@ -210,17 +235,23 @@ namespace CilTools.Tests.Common
         }
     }
 
-    public class AnyCharsElement : MatchElement
+    /// <summary>
+    /// Represents a text element allowing any sequence of characters
+    /// </summary>
+    public class AnyCharsText : Text
     {
-        static AnyCharsElement val=null;
+        static AnyCharsText val=null;
 
-        protected AnyCharsElement() { }
+        protected AnyCharsText() { }
 
-        public static AnyCharsElement Value
+        /// <summary>
+        /// Provides the singleton value for the AnyCharsText class
+        /// </summary>
+        public static AnyCharsText Value
         {
             get
             {
-                if (val == null) val = new AnyCharsElement();
+                if (val == null) val = new AnyCharsText();
                 return val;
             }
         }

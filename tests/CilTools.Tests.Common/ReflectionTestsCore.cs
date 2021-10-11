@@ -57,13 +57,13 @@ namespace CilTools.Tests.Common
 
             string str = graph.ToText();
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any, "public", MatchElement.Any,
-                "WriteLine", MatchElement.Any,
-                "string", MatchElement.Any,
-                "cil", MatchElement.Any, "managed", MatchElement.Any,
-                "{", MatchElement.Any,
-                "ret", MatchElement.Any,
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "public", Text.Any,
+                "WriteLine", Text.Any,
+                "string", Text.Any,
+                "cil", Text.Any, "managed", Text.Any,
+                "{", Text.Any,
+                "ret", Text.Any,
                 "}"
             });
 
@@ -126,16 +126,16 @@ namespace CilTools.Tests.Common
 
             string str = graph.ToText();
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any, "public", MatchElement.Any,
-                "set_X", MatchElement.Any,
-                "float32", MatchElement.Any,
-                "cil", MatchElement.Any, "managed", MatchElement.Any,
-                "{", MatchElement.Any,
-                "ldarg", MatchElement.Any,
-                "stfld", MatchElement.Any,"float32", MatchElement.Any,
-                "MyPoint", MatchElement.Any,
-                "ret", MatchElement.Any,
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "public", Text.Any,
+                "set_X", Text.Any,
+                "float32", Text.Any,
+                "cil", Text.Any, "managed", Text.Any,
+                "{", Text.Any,
+                "ldarg", Text.Any,
+                "stfld", Text.Any,"float32", Text.Any,
+                "MyPoint", Text.Any,
+                "ret", Text.Any,
                 "}"
             });
 
@@ -167,13 +167,13 @@ namespace CilTools.Tests.Common
             CilGraph graph = CilGraph.Create(m);
             string str = graph.ToString();
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any,
-                "TypedRefTest", MatchElement.Any,
-                "(", MatchElement.Any,
-                "typedref", MatchElement.Any,
-                ")", MatchElement.Any,
-                "cil", MatchElement.Any, "managed", MatchElement.Any
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,
+                "TypedRefTest", Text.Any,
+                "(", Text.Any,
+                "typedref", Text.Any,
+                ")", Text.Any,
+                "cil", Text.Any, "managed", Text.Any
             });
 
             //.method public hidebysig static void TypedRefTest(typedref tr) cil managed
@@ -216,11 +216,11 @@ namespace CilTools.Tests.Common
                 && x.Instruction.ReferencedType.GenericParameterPosition == 0
                 );
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any,
-                "GenerateArray", MatchElement.Any,
-                "newarr", MatchElement.Any,
-                "!!", MatchElement.Any
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,
+                "GenerateArray", Text.Any,
+                "newarr", Text.Any,
+                "!!", Text.Any
             });
 
             /*

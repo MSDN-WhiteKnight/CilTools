@@ -129,20 +129,20 @@ namespace CilTools.Metadata.Tests
                 foreach (SyntaxNode node in syntax) sb.Append(node.ToString());
                 string str = sb.ToString();
 
-                AssertThat.IsMatch(str, new MatchElement[] {
-                ".class", MatchElement.Any,
-                ".custom", MatchElement.Any,
-                "instance", MatchElement.Any,
-                "void", MatchElement.Any,
-                "CilTools.Tests.Common.MyAttribute", MatchElement.Any,
-                ".ctor", MatchElement.Any,
-                "(", MatchElement.Any,
-                "int32", MatchElement.Any,
-                ")", MatchElement.Any,
-                "=", MatchElement.Any,
-                "(", MatchElement.Any,
-                "01 00 30 02 00 00 00 00", MatchElement.Any,
-                ")", MatchElement.Any,
+                AssertThat.IsMatch(str, new Text[] {
+                ".class", Text.Any,
+                ".custom", Text.Any,
+                "instance", Text.Any,
+                "void", Text.Any,
+                "CilTools.Tests.Common.MyAttribute", Text.Any,
+                ".ctor", Text.Any,
+                "(", Text.Any,
+                "int32", Text.Any,
+                ")", Text.Any,
+                "=", Text.Any,
+                "(", Text.Any,
+                "01 00 30 02 00 00 00 00", Text.Any,
+                ")", Text.Any,
                 });
             }//end using
         }
@@ -241,9 +241,9 @@ namespace CilTools.Metadata.Tests
 
                 AssertThat.IsMatch(
                     sig_string, 
-                    new MatchElement[] {
-                        "void",MatchElement.Any, "(",
-                        MatchElement.Any,")"
+                    new Text[] {
+                        "void",Text.Any, "(",
+                        Text.Any,")"
                     }
                 );
 
@@ -283,18 +283,18 @@ namespace CilTools.Metadata.Tests
                 
                 AssertThat.IsMatch(
                     sig_string,
-                    new MatchElement[] {
-                        "int32",MatchElement.Any, 
-                        "(",MatchElement.Any,
-                        "void",MatchElement.Any,
-                        "modopt",MatchElement.Any,"(",MatchElement.Any,
-                        "System.Runtime.CompilerServices.IsConst",MatchElement.Any,
-                        ")",MatchElement.Any,"*",MatchElement.Any,
-                        ",",MatchElement.Any,
-                        "void",MatchElement.Any,
-                        "modopt",MatchElement.Any,"(",MatchElement.Any,
-                        "System.Runtime.CompilerServices.IsConst",MatchElement.Any,
-                        ")",MatchElement.Any,"*",MatchElement.Any,                        
+                    new Text[] {
+                        "int32",Text.Any, 
+                        "(",Text.Any,
+                        "void",Text.Any,
+                        "modopt",Text.Any,"(",Text.Any,
+                        "System.Runtime.CompilerServices.IsConst",Text.Any,
+                        ")",Text.Any,"*",Text.Any,
+                        ",",Text.Any,
+                        "void",Text.Any,
+                        "modopt",Text.Any,"(",Text.Any,
+                        "System.Runtime.CompilerServices.IsConst",Text.Any,
+                        ")",Text.Any,"*",Text.Any,                        
                         ")"
                     }
                 );

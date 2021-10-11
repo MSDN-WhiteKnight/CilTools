@@ -49,18 +49,18 @@ namespace CilTools.Tests.Common
 
             //Test conversion to string
             string str = graph.ToText();
-            AssertThat.IsMatch(str, new MatchElement[] { ".method", MatchElement.Any, "public" });
-            AssertThat.IsMatch(str, new MatchElement[] { ".method", MatchElement.Any, "static" });
+            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "public" });
+            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "static" });
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any, "void", MatchElement.Any, 
-                "PrintHelloWorld", MatchElement.Any, 
-                "cil", MatchElement.Any, "managed", MatchElement.Any, 
-                "{", MatchElement.Any, 
-                "ldstr", MatchElement.Any, "\"Hello, World\"", MatchElement.Any,
-                "call", MatchElement.Any, 
-                "void", MatchElement.Any, "System.Console::WriteLine", MatchElement.Any,
-                "ret", MatchElement.Any, 
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "void", Text.Any, 
+                "PrintHelloWorld", Text.Any, 
+                "cil", Text.Any, "managed", Text.Any, 
+                "{", Text.Any, 
+                "ldstr", Text.Any, "\"Hello, World\"", Text.Any,
+                "call", Text.Any, 
+                "void", Text.Any, "System.Console::WriteLine", Text.Any,
+                "ret", Text.Any, 
                 "}" 
             });
         }
@@ -86,22 +86,22 @@ namespace CilTools.Tests.Common
 
             //Test conversion to string
             string str = graph.ToText();
-            AssertThat.IsMatch(str, new MatchElement[] { ".method", MatchElement.Any, "public" });
-            AssertThat.IsMatch(str, new MatchElement[] { ".method", MatchElement.Any, "static" });
+            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "public" });
+            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "static" });
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any, "void", MatchElement.Any, 
-                "PrintTenNumbers", MatchElement.Any, 
-                "cil", MatchElement.Any, "managed", MatchElement.Any, 
-                "{", MatchElement.Any, 
-                ".locals", MatchElement.Any, "int32", MatchElement.Any, 
-                "call", MatchElement.Any, 
-                "void", MatchElement.Any, "System.Console::WriteLine", MatchElement.Any,
-                "ret", MatchElement.Any, 
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "void", Text.Any, 
+                "PrintTenNumbers", Text.Any, 
+                "cil", Text.Any, "managed", Text.Any, 
+                "{", Text.Any, 
+                ".locals", Text.Any, "int32", Text.Any, 
+                "call", Text.Any, 
+                "void", Text.Any, "System.Console::WriteLine", Text.Any,
+                "ret", Text.Any, 
                 "}" 
             });
 
-            AssertThat.IsMatch(str, new MatchElement[] { "IL_", MatchElement.Any, ":" });
+            AssertThat.IsMatch(str, new Text[] { "IL_", Text.Any, ":" });
         }
 
         public static void Test_CilGraph_Exceptions(MethodBase mi)
@@ -111,24 +111,24 @@ namespace CilTools.Tests.Common
 
             //Test conversion to string
             string str = graph.ToText();
-            AssertThat.IsMatch(str, new MatchElement[] { ".method", MatchElement.Any, "public" });
-            AssertThat.IsMatch(str, new MatchElement[] { ".method", MatchElement.Any, "static" });
+            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "public" });
+            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "static" });
 
-            AssertThat.IsMatch(str, new MatchElement[] { 
-                ".method", MatchElement.Any, "bool", MatchElement.Any, 
-                "DivideNumbers", MatchElement.Any, 
-                "cil", MatchElement.Any, "managed", MatchElement.Any, 
-                "{", MatchElement.Any, 
-                ".try", MatchElement.Any, "{", MatchElement.Any, 
-                "}", MatchElement.Any, 
-                "catch", MatchElement.Any, "DivideByZeroException", MatchElement.Any,
-                "{", MatchElement.Any,
-                "}", MatchElement.Any, 
-                "finally", MatchElement.Any, 
-                "{", MatchElement.Any,
-                "endfinally", MatchElement.Any, 
-                "}", MatchElement.Any, 
-                "ret", MatchElement.Any, 
+            AssertThat.IsMatch(str, new Text[] { 
+                ".method", Text.Any, "bool", Text.Any, 
+                "DivideNumbers", Text.Any, 
+                "cil", Text.Any, "managed", Text.Any, 
+                "{", Text.Any, 
+                ".try", Text.Any, "{", Text.Any, 
+                "}", Text.Any, 
+                "catch", Text.Any, "DivideByZeroException", Text.Any,
+                "{", Text.Any,
+                "}", Text.Any, 
+                "finally", Text.Any, 
+                "{", Text.Any,
+                "endfinally", Text.Any, 
+                "}", Text.Any, 
+                "ret", Text.Any, 
                 "}" 
             });
         }
@@ -183,7 +183,7 @@ namespace CilTools.Tests.Common
 
             //Test conversion to string
             string str = graph.ToText();
-            AssertThat.IsMatch(str, new MatchElement[] { "ldtoken", MatchElement.Any, "System.Int32" });
+            AssertThat.IsMatch(str, new Text[] { "ldtoken", Text.Any, "System.Int32" });
         }
 
         public static void Test_CilGraph_Pointer(MethodBase mi)
@@ -205,10 +205,10 @@ namespace CilTools.Tests.Common
             string str = graph.ToText();
             Assert.IsTrue(str.Contains("int32*"), "PointerTest disassembled code should contain 'int32*'");
             
-            AssertThat.IsMatch(str, new MatchElement[] { 
-                MatchElement.Any, "ldsflda", MatchElement.Any,
-                "SampleMethods", MatchElement.Any,"::", MatchElement.Any,
-                "f", MatchElement.Any
+            AssertThat.IsMatch(str, new Text[] { 
+                Text.Any, "ldsflda", Text.Any,
+                "SampleMethods", Text.Any,"::", Text.Any,
+                "f", Text.Any
             });
 
             //syntax
@@ -286,32 +286,32 @@ namespace CilTools.Tests.Common
             string str = graph.ToText();
             Console.WriteLine(str);
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any, "int32", MatchElement.Any,
-                "DynamicMethodTest", MatchElement.Any,
-                "(",MatchElement.Any, "string",MatchElement.Any, ")", MatchElement.Any,
-                "cil", MatchElement.Any, "managed", MatchElement.Any,
-                "{", MatchElement.Any,
-                ".locals", MatchElement.Any,
-                "(", MatchElement.Any, "string", MatchElement.Any, ")", MatchElement.Any,
-                ".try", MatchElement.Any, "{", MatchElement.Any,
-                "ldstr", MatchElement.Any, "\"Hello, world.\"", MatchElement.Any,
-                "call", MatchElement.Any, "System.Console::WriteLine", MatchElement.Any,
-                "ldsfld", MatchElement.Any, "f", MatchElement.Any,
-                "call", MatchElement.Any, "System.Console::WriteLine", MatchElement.Any,
-                "leave", MatchElement.Any,
-                "}", MatchElement.Any,
-                "catch", MatchElement.Any, "Exception", MatchElement.Any,
-                "{", MatchElement.Any,
-                "}", MatchElement.Any,
-                "finally", MatchElement.Any, "{", MatchElement.Any,
-                "ldc.i4", MatchElement.Any,"10", MatchElement.Any,
-                "newarr", MatchElement.Any,"System.Guid", MatchElement.Any,
-                "pop", MatchElement.Any,
-                "endfinally", MatchElement.Any,
-                "}", MatchElement.Any,
-                "ldc.i4.0", MatchElement.Any,
-                "ret", MatchElement.Any,
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "int32", Text.Any,
+                "DynamicMethodTest", Text.Any,
+                "(",Text.Any, "string",Text.Any, ")", Text.Any,
+                "cil", Text.Any, "managed", Text.Any,
+                "{", Text.Any,
+                ".locals", Text.Any,
+                "(", Text.Any, "string", Text.Any, ")", Text.Any,
+                ".try", Text.Any, "{", Text.Any,
+                "ldstr", Text.Any, "\"Hello, world.\"", Text.Any,
+                "call", Text.Any, "System.Console::WriteLine", Text.Any,
+                "ldsfld", Text.Any, "f", Text.Any,
+                "call", Text.Any, "System.Console::WriteLine", Text.Any,
+                "leave", Text.Any,
+                "}", Text.Any,
+                "catch", Text.Any, "Exception", Text.Any,
+                "{", Text.Any,
+                "}", Text.Any,
+                "finally", Text.Any, "{", Text.Any,
+                "ldc.i4", Text.Any,"10", Text.Any,
+                "newarr", Text.Any,"System.Guid", Text.Any,
+                "pop", Text.Any,
+                "endfinally", Text.Any,
+                "}", Text.Any,
+                "ldc.i4.0", Text.Any,
+                "ret", Text.Any,
                 "}"
             });
         }
@@ -336,12 +336,12 @@ namespace CilTools.Tests.Common
             //text
             string str = graph.ToText();
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                MatchElement.Any, "ConstrainedTest",
-                MatchElement.Any, "constrained.", MatchElement.Any,
-                "!!", MatchElement.Any,
-                "callvirt", MatchElement.Any,
-                "ToString", MatchElement.Any,
+            AssertThat.IsMatch(str, new Text[] {
+                Text.Any, "ConstrainedTest",
+                Text.Any, "constrained.", Text.Any,
+                "!!", Text.Any,
+                "callvirt", Text.Any,
+                "ToString", Text.Any,
             });
 
             /*

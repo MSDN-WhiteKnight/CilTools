@@ -27,32 +27,32 @@ namespace CilTools.Metadata.Tests
 
                 string str = graph.ToText();
 
-                AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any,
-                ".custom", MatchElement.Any,
-                "instance", MatchElement.Any,
-                "void", MatchElement.Any,
-                "System.STAThreadAttribute", MatchElement.Any,
-                ".ctor", MatchElement.Any,
-                "(", MatchElement.Any,
-                "01 00 00 00", MatchElement.Any,
-                ")", MatchElement.Any
+                AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,
+                ".custom", Text.Any,
+                "instance", Text.Any,
+                "void", Text.Any,
+                "System.STAThreadAttribute", Text.Any,
+                ".ctor", Text.Any,
+                "(", Text.Any,
+                "01 00 00 00", Text.Any,
+                ")", Text.Any
                 });
 
-                AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any,
-                ".custom", MatchElement.Any,
-                "instance", MatchElement.Any,
-                "void", MatchElement.Any,
-                "CilTools.Tests.Common.MyAttribute", MatchElement.Any,
-                ".ctor", MatchElement.Any,
-                "(", MatchElement.Any,
-                "int32", MatchElement.Any,
-                ")", MatchElement.Any,
-                "=", MatchElement.Any,
-                "(", MatchElement.Any,
-                "01 00 01 00 00 00 00 00", MatchElement.Any,
-                ")", MatchElement.Any,
+                AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,
+                ".custom", Text.Any,
+                "instance", Text.Any,
+                "void", Text.Any,
+                "CilTools.Tests.Common.MyAttribute", Text.Any,
+                ".ctor", Text.Any,
+                "(", Text.Any,
+                "int32", Text.Any,
+                ")", Text.Any,
+                "=", Text.Any,
+                "(", Text.Any,
+                "01 00 01 00 00 00 00 00", Text.Any,
+                ")", Text.Any,
                 });
             }
         }
@@ -70,20 +70,20 @@ namespace CilTools.Metadata.Tests
                 CilGraph graph = CilGraph.Create(mi);
                 string str = graph.ToText();
 
-                AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any,
-                "static", MatchElement.Any,
-                "pinvokeimpl", MatchElement.Any,
-                "(", MatchElement.Any,
-                "\"user32.dll\"", MatchElement.Any,
-                "lasterr", MatchElement.Any,
-                ")", MatchElement.Any,
-                "bool", MatchElement.Any,
-                "ShowWindow", MatchElement.Any,
-                "native int", MatchElement.Any,
-                "int32", MatchElement.Any,
-                "cil", MatchElement.Any,
-                "managed", MatchElement.Any
+                AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,
+                "static", Text.Any,
+                "pinvokeimpl", Text.Any,
+                "(", Text.Any,
+                "\"user32.dll\"", Text.Any,
+                "lasterr", Text.Any,
+                ")", Text.Any,
+                "bool", Text.Any,
+                "ShowWindow", Text.Any,
+                "native int", Text.Any,
+                "int32", Text.Any,
+                "cil", Text.Any,
+                "managed", Text.Any
                 });
             }
 

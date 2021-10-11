@@ -72,17 +72,17 @@ namespace CilTools.BytecodeAnalysis.Tests
             //Verify CilGraph.ToString() output
             string str = graph.ToText();
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any, "void", MatchElement.Any,
-                "IndirectCallTest", MatchElement.Any,
-                "(",MatchElement.Any, "string",MatchElement.Any, ")", MatchElement.Any,
-                "cil", MatchElement.Any, "managed", MatchElement.Any,
-                "{", MatchElement.Any,
-                "ldarg.0", MatchElement.Any,
-                "ldftn", MatchElement.Any, "System.Console::WriteLine", MatchElement.Any,
-                "calli", MatchElement.Any, "void", MatchElement.Any,
-                 "(",MatchElement.Any, "string",MatchElement.Any, ")", MatchElement.Any,
-                "ret", MatchElement.Any,
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "void", Text.Any,
+                "IndirectCallTest", Text.Any,
+                "(",Text.Any, "string",Text.Any, ")", Text.Any,
+                "cil", Text.Any, "managed", Text.Any,
+                "{", Text.Any,
+                "ldarg.0", Text.Any,
+                "ldftn", Text.Any, "System.Console::WriteLine", Text.Any,
+                "calli", Text.Any, "void", Text.Any,
+                 "(",Text.Any, "string",Text.Any, ")", Text.Any,
+                "ret", Text.Any,
                 "}"
             });
         }

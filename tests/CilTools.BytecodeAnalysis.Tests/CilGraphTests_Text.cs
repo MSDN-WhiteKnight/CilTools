@@ -47,29 +47,29 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilGraph graph = CilGraph.Create(mi);
             string str = graph.ToText();
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any,
-                ".custom", MatchElement.Any,
-                "instance", MatchElement.Any,
-                "void", MatchElement.Any,
-                "System.STAThreadAttribute", MatchElement.Any,
-                ".ctor", MatchElement.Any,
-                "(", MatchElement.Any,
-                "01 00 00 00", MatchElement.Any,
-                ")", MatchElement.Any
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,
+                ".custom", Text.Any,
+                "instance", Text.Any,
+                "void", Text.Any,
+                "System.STAThreadAttribute", Text.Any,
+                ".ctor", Text.Any,
+                "(", Text.Any,
+                "01 00 00 00", Text.Any,
+                ")", Text.Any
                 });
 
-            AssertThat.IsMatch(str, new MatchElement[] {
-                ".method", MatchElement.Any,
-                ".custom", MatchElement.Any,
-                "instance", MatchElement.Any,
-                "void", MatchElement.Any,
-                "CilTools.Tests.Common.MyAttribute", MatchElement.Any,
-                ".ctor", MatchElement.Any,
-                "(", MatchElement.Any,
-                "int32", MatchElement.Any,
-                ")", MatchElement.Any,
-                MatchElement.Any,
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,
+                ".custom", Text.Any,
+                "instance", Text.Any,
+                "void", Text.Any,
+                "CilTools.Tests.Common.MyAttribute", Text.Any,
+                ".ctor", Text.Any,
+                "(", Text.Any,
+                "int32", Text.Any,
+                ")", Text.Any,
+                Text.Any,
                 });
         }
 
