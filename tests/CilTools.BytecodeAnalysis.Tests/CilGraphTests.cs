@@ -99,29 +99,29 @@ namespace CilTools.BytecodeAnalysis.Tests
             string str = graph.ToText();
 
             AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any, new Literal("static"), MatchElement.Any,
-                new Literal("string"), MatchElement.Any,
-                new Literal("FilteredExceptionsTest"), MatchElement.Any,
-                new Literal("("),MatchElement.Any, new Literal(")"), MatchElement.Any,
-                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any,
-                new Literal("{"), MatchElement.Any,
+                ".method", MatchElement.Any, "static", MatchElement.Any,
+                "string", MatchElement.Any,
+                "FilteredExceptionsTest", MatchElement.Any,
+                "(",MatchElement.Any, ")", MatchElement.Any,
+                "cil", MatchElement.Any, "managed", MatchElement.Any,
+                "{", MatchElement.Any,
                 
-                new Literal(".try"), MatchElement.Any, new Literal("{"), MatchElement.Any,                
-                new Literal("call"), MatchElement.Any, new Literal("System.IO.File::ReadAllLines"), MatchElement.Any,
-                new Literal("}"), MatchElement.Any,
+                ".try", MatchElement.Any, "{", MatchElement.Any,                
+                "call", MatchElement.Any, "System.IO.File::ReadAllLines", MatchElement.Any,
+                "}", MatchElement.Any,
 
-                new Literal("filter"), MatchElement.Any, new Literal("{"), MatchElement.Any,
-                new Literal("callvirt"), MatchElement.Any, new Literal("get_Message"), MatchElement.Any,
-                new Literal("callvirt"), MatchElement.Any, new Literal("Contains"), MatchElement.Any,
-                new Literal("endfilter"), MatchElement.Any,new Literal("}"), MatchElement.Any,
+                "filter", MatchElement.Any, "{", MatchElement.Any,
+                "callvirt", MatchElement.Any, "get_Message", MatchElement.Any,
+                "callvirt", MatchElement.Any, "Contains", MatchElement.Any,
+                "endfilter", MatchElement.Any,"}", MatchElement.Any,
 
                 //handler
-                new Literal("{"), MatchElement.Any,
-                new Literal("ldsfld"), MatchElement.Any, new Literal("System.String::Empty"), MatchElement.Any,
-                new Literal("}"), MatchElement.Any,
+                "{", MatchElement.Any,
+                "ldsfld", MatchElement.Any, "System.String::Empty", MatchElement.Any,
+                "}", MatchElement.Any,
 
-                new Literal("ret"), MatchElement.Any,
-                new Literal("}")
+                "ret", MatchElement.Any,
+                "}"
             });
         }
 

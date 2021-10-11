@@ -28,31 +28,31 @@ namespace CilTools.Metadata.Tests
                 string str = graph.ToText();
 
                 AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any,
-                new Literal(".custom"), MatchElement.Any,
-                new Literal("instance"), MatchElement.Any,
-                new Literal("void"), MatchElement.Any,
-                new Literal("System.STAThreadAttribute"), MatchElement.Any,
-                new Literal(".ctor"), MatchElement.Any,
-                new Literal("("), MatchElement.Any,
-                new Literal("01 00 00 00"), MatchElement.Any,
-                new Literal(")"), MatchElement.Any
+                ".method", MatchElement.Any,
+                ".custom", MatchElement.Any,
+                "instance", MatchElement.Any,
+                "void", MatchElement.Any,
+                "System.STAThreadAttribute", MatchElement.Any,
+                ".ctor", MatchElement.Any,
+                "(", MatchElement.Any,
+                "01 00 00 00", MatchElement.Any,
+                ")", MatchElement.Any
                 });
 
                 AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any,
-                new Literal(".custom"), MatchElement.Any,
-                new Literal("instance"), MatchElement.Any,
-                new Literal("void"), MatchElement.Any,
-                new Literal("CilTools.Tests.Common.MyAttribute"), MatchElement.Any,
-                new Literal(".ctor"), MatchElement.Any,
-                new Literal("("), MatchElement.Any,
-                new Literal("int32"), MatchElement.Any,
-                new Literal(")"), MatchElement.Any,
-                new Literal("="), MatchElement.Any,
-                new Literal("("), MatchElement.Any,
-                new Literal("01 00 01 00 00 00 00 00"), MatchElement.Any,
-                new Literal(")"), MatchElement.Any,
+                ".method", MatchElement.Any,
+                ".custom", MatchElement.Any,
+                "instance", MatchElement.Any,
+                "void", MatchElement.Any,
+                "CilTools.Tests.Common.MyAttribute", MatchElement.Any,
+                ".ctor", MatchElement.Any,
+                "(", MatchElement.Any,
+                "int32", MatchElement.Any,
+                ")", MatchElement.Any,
+                "=", MatchElement.Any,
+                "(", MatchElement.Any,
+                "01 00 01 00 00 00 00 00", MatchElement.Any,
+                ")", MatchElement.Any,
                 });
             }
         }
@@ -71,19 +71,19 @@ namespace CilTools.Metadata.Tests
                 string str = graph.ToText();
 
                 AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any,
-                new Literal("static"), MatchElement.Any,
-                new Literal("pinvokeimpl"), MatchElement.Any,
-                new Literal("("), MatchElement.Any,
-                new Literal("\"user32.dll\""), MatchElement.Any,
-                new Literal("lasterr"), MatchElement.Any,
-                new Literal(")"), MatchElement.Any,
-                new Literal("bool"), MatchElement.Any,
-                new Literal("ShowWindow"), MatchElement.Any,
-                new Literal("native int"), MatchElement.Any,
-                new Literal("int32"), MatchElement.Any,
-                new Literal("cil"), MatchElement.Any,
-                new Literal("managed"), MatchElement.Any
+                ".method", MatchElement.Any,
+                "static", MatchElement.Any,
+                "pinvokeimpl", MatchElement.Any,
+                "(", MatchElement.Any,
+                "\"user32.dll\"", MatchElement.Any,
+                "lasterr", MatchElement.Any,
+                ")", MatchElement.Any,
+                "bool", MatchElement.Any,
+                "ShowWindow", MatchElement.Any,
+                "native int", MatchElement.Any,
+                "int32", MatchElement.Any,
+                "cil", MatchElement.Any,
+                "managed", MatchElement.Any
                 });
             }
 

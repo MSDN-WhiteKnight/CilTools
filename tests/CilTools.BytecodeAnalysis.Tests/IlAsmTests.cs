@@ -73,17 +73,17 @@ namespace CilTools.BytecodeAnalysis.Tests
             string str = graph.ToText();
 
             AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any, new Literal("void"), MatchElement.Any,
-                new Literal("IndirectCallTest"), MatchElement.Any,
-                new Literal("("),MatchElement.Any, new Literal("string"),MatchElement.Any, new Literal(")"), MatchElement.Any,
-                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any,
-                new Literal("{"), MatchElement.Any,
-                new Literal("ldarg.0"), MatchElement.Any,
-                new Literal("ldftn"), MatchElement.Any, new Literal("System.Console::WriteLine"), MatchElement.Any,
-                new Literal("calli"), MatchElement.Any, new Literal("void"), MatchElement.Any,
-                 new Literal("("),MatchElement.Any, new Literal("string"),MatchElement.Any, new Literal(")"), MatchElement.Any,
-                new Literal("ret"), MatchElement.Any,
-                new Literal("}")
+                ".method", MatchElement.Any, "void", MatchElement.Any,
+                "IndirectCallTest", MatchElement.Any,
+                "(",MatchElement.Any, "string",MatchElement.Any, ")", MatchElement.Any,
+                "cil", MatchElement.Any, "managed", MatchElement.Any,
+                "{", MatchElement.Any,
+                "ldarg.0", MatchElement.Any,
+                "ldftn", MatchElement.Any, "System.Console::WriteLine", MatchElement.Any,
+                "calli", MatchElement.Any, "void", MatchElement.Any,
+                 "(",MatchElement.Any, "string",MatchElement.Any, ")", MatchElement.Any,
+                "ret", MatchElement.Any,
+                "}"
             });
         }
 

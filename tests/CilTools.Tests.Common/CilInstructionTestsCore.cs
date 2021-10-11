@@ -25,7 +25,7 @@ namespace CilTools.Tests.Common
             instr = CilInstruction.Create<int>(OpCodes.Ldc_I4, 1, sizeof(int));
             str = instr.ToString();
             Assert.IsTrue(str.Contains("ldc.i4"), "The result of instr.ToString() should contain instruction name");
-            AssertThat.IsMatch(str, new MatchElement[] { new Literal("ldc.i4"), MatchElement.Any, new Literal("1") });
+            AssertThat.IsMatch(str, new MatchElement[] { "ldc.i4", MatchElement.Any, "1" });
             instr2 = CilInstruction.Parse(str);
             Assert.AreEqual<OpCode>(OpCodes.Ldc_I4, instr2.OpCode, "The result of CilInstruction.Parse doesn't have expected opcode");
             Assert.AreEqual<int>(1, (int)instr2.Operand, "The result of CilInstruction.Parse doesn't have expected operand");
@@ -47,12 +47,12 @@ namespace CilTools.Tests.Common
                     //call       void [mscorlib]System.Console::WriteLine(string)
 
                     return MatchElement.IsMatch(s, new MatchElement[] {
-                        new Literal("call"),MatchElement.Any,
-                        new Literal("void"),MatchElement.Any,
-                        new Literal("System.Console::WriteLine"),MatchElement.Any,
-                        new Literal("("),MatchElement.Any,
-                        new Literal("string"),MatchElement.Any,
-                        new Literal(")"),MatchElement.Any,
+                        "call",MatchElement.Any,
+                        "void",MatchElement.Any,
+                        "System.Console::WriteLine",MatchElement.Any,
+                        "(",MatchElement.Any,
+                        "string",MatchElement.Any,
+                        ")",MatchElement.Any,
                     });
                 }
                 );

@@ -58,13 +58,13 @@ namespace CilTools.Tests.Common
             string str = graph.ToText();
 
             AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any, new Literal("public"), MatchElement.Any,
-                new Literal("WriteLine"), MatchElement.Any,
-                new Literal("string"), MatchElement.Any,
-                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any,
-                new Literal("{"), MatchElement.Any,
-                new Literal("ret"), MatchElement.Any,
-                new Literal("}")
+                ".method", MatchElement.Any, "public", MatchElement.Any,
+                "WriteLine", MatchElement.Any,
+                "string", MatchElement.Any,
+                "cil", MatchElement.Any, "managed", MatchElement.Any,
+                "{", MatchElement.Any,
+                "ret", MatchElement.Any,
+                "}"
             });
 
             /*.method  public hidebysig static void WriteLine(
@@ -127,16 +127,16 @@ namespace CilTools.Tests.Common
             string str = graph.ToText();
 
             AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any, new Literal("public"), MatchElement.Any,
-                new Literal("set_X"), MatchElement.Any,
-                new Literal("float32"), MatchElement.Any,
-                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any,
-                new Literal("{"), MatchElement.Any,
-                new Literal("ldarg"), MatchElement.Any,
-                new Literal("stfld"), MatchElement.Any,new Literal("float32"), MatchElement.Any,
-                new Literal("MyPoint"), MatchElement.Any,
-                new Literal("ret"), MatchElement.Any,
-                new Literal("}")
+                ".method", MatchElement.Any, "public", MatchElement.Any,
+                "set_X", MatchElement.Any,
+                "float32", MatchElement.Any,
+                "cil", MatchElement.Any, "managed", MatchElement.Any,
+                "{", MatchElement.Any,
+                "ldarg", MatchElement.Any,
+                "stfld", MatchElement.Any,"float32", MatchElement.Any,
+                "MyPoint", MatchElement.Any,
+                "ret", MatchElement.Any,
+                "}"
             });
 
             /*.method  public hidebysig instance void set_X(
@@ -168,12 +168,12 @@ namespace CilTools.Tests.Common
             string str = graph.ToString();
 
             AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any,
-                new Literal("TypedRefTest"), MatchElement.Any,
-                new Literal("("), MatchElement.Any,
-                new Literal("typedref"), MatchElement.Any,
-                new Literal(")"), MatchElement.Any,
-                new Literal("cil"), MatchElement.Any, new Literal("managed"), MatchElement.Any
+                ".method", MatchElement.Any,
+                "TypedRefTest", MatchElement.Any,
+                "(", MatchElement.Any,
+                "typedref", MatchElement.Any,
+                ")", MatchElement.Any,
+                "cil", MatchElement.Any, "managed", MatchElement.Any
             });
 
             //.method public hidebysig static void TypedRefTest(typedref tr) cil managed
@@ -217,10 +217,10 @@ namespace CilTools.Tests.Common
                 );
 
             AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any,
-                new Literal("GenerateArray"), MatchElement.Any,
-                new Literal("newarr"), MatchElement.Any,
-                new Literal("!!"), MatchElement.Any
+                ".method", MatchElement.Any,
+                "GenerateArray", MatchElement.Any,
+                "newarr", MatchElement.Any,
+                "!!", MatchElement.Any
             });
 
             /*

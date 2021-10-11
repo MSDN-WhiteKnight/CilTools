@@ -48,27 +48,27 @@ namespace CilTools.BytecodeAnalysis.Tests
             string str = graph.ToText();
 
             AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any,
-                new Literal(".custom"), MatchElement.Any,
-                new Literal("instance"), MatchElement.Any,
-                new Literal("void"), MatchElement.Any,
-                new Literal("System.STAThreadAttribute"), MatchElement.Any,
-                new Literal(".ctor"), MatchElement.Any,
-                new Literal("("), MatchElement.Any,
-                new Literal("01 00 00 00"), MatchElement.Any,
-                new Literal(")"), MatchElement.Any
+                ".method", MatchElement.Any,
+                ".custom", MatchElement.Any,
+                "instance", MatchElement.Any,
+                "void", MatchElement.Any,
+                "System.STAThreadAttribute", MatchElement.Any,
+                ".ctor", MatchElement.Any,
+                "(", MatchElement.Any,
+                "01 00 00 00", MatchElement.Any,
+                ")", MatchElement.Any
                 });
 
             AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".method"), MatchElement.Any,
-                new Literal(".custom"), MatchElement.Any,
-                new Literal("instance"), MatchElement.Any,
-                new Literal("void"), MatchElement.Any,
-                new Literal("CilTools.Tests.Common.MyAttribute"), MatchElement.Any,
-                new Literal(".ctor"), MatchElement.Any,
-                new Literal("("), MatchElement.Any,
-                new Literal("int32"), MatchElement.Any,
-                new Literal(")"), MatchElement.Any,
+                ".method", MatchElement.Any,
+                ".custom", MatchElement.Any,
+                "instance", MatchElement.Any,
+                "void", MatchElement.Any,
+                "CilTools.Tests.Common.MyAttribute", MatchElement.Any,
+                ".ctor", MatchElement.Any,
+                "(", MatchElement.Any,
+                "int32", MatchElement.Any,
+                ")", MatchElement.Any,
                 MatchElement.Any,
                 });
         }

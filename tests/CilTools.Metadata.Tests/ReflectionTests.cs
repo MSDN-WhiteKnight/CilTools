@@ -130,19 +130,19 @@ namespace CilTools.Metadata.Tests
                 string str = sb.ToString();
 
                 AssertThat.IsMatch(str, new MatchElement[] {
-                new Literal(".class"), MatchElement.Any,
-                new Literal(".custom"), MatchElement.Any,
-                new Literal("instance"), MatchElement.Any,
-                new Literal("void"), MatchElement.Any,
-                new Literal("CilTools.Tests.Common.MyAttribute"), MatchElement.Any,
-                new Literal(".ctor"), MatchElement.Any,
-                new Literal("("), MatchElement.Any,
-                new Literal("int32"), MatchElement.Any,
-                new Literal(")"), MatchElement.Any,
-                new Literal("="), MatchElement.Any,
-                new Literal("("), MatchElement.Any,
-                new Literal("01 00 30 02 00 00 00 00"), MatchElement.Any,
-                new Literal(")"), MatchElement.Any,
+                ".class", MatchElement.Any,
+                ".custom", MatchElement.Any,
+                "instance", MatchElement.Any,
+                "void", MatchElement.Any,
+                "CilTools.Tests.Common.MyAttribute", MatchElement.Any,
+                ".ctor", MatchElement.Any,
+                "(", MatchElement.Any,
+                "int32", MatchElement.Any,
+                ")", MatchElement.Any,
+                "=", MatchElement.Any,
+                "(", MatchElement.Any,
+                "01 00 30 02 00 00 00 00", MatchElement.Any,
+                ")", MatchElement.Any,
                 });
             }//end using
         }
@@ -242,8 +242,8 @@ namespace CilTools.Metadata.Tests
                 AssertThat.IsMatch(
                     sig_string, 
                     new MatchElement[] {
-                        new Literal("void"),MatchElement.Any, new Literal("("),
-                        MatchElement.Any,new Literal(")")
+                        "void",MatchElement.Any, "(",
+                        MatchElement.Any,")"
                     }
                 );
 
@@ -284,18 +284,18 @@ namespace CilTools.Metadata.Tests
                 AssertThat.IsMatch(
                     sig_string,
                     new MatchElement[] {
-                        new Literal("int32"),MatchElement.Any, 
-                        new Literal("("),MatchElement.Any,
-                        new Literal("void"),MatchElement.Any,
-                        new Literal("modopt"),MatchElement.Any,new Literal("("),MatchElement.Any,
-                        new Literal("System.Runtime.CompilerServices.IsConst"),MatchElement.Any,
-                        new Literal(")"),MatchElement.Any,new Literal("*"),MatchElement.Any,
-                        new Literal(","),MatchElement.Any,
-                        new Literal("void"),MatchElement.Any,
-                        new Literal("modopt"),MatchElement.Any,new Literal("("),MatchElement.Any,
-                        new Literal("System.Runtime.CompilerServices.IsConst"),MatchElement.Any,
-                        new Literal(")"),MatchElement.Any,new Literal("*"),MatchElement.Any,                        
-                        new Literal(")")
+                        "int32",MatchElement.Any, 
+                        "(",MatchElement.Any,
+                        "void",MatchElement.Any,
+                        "modopt",MatchElement.Any,"(",MatchElement.Any,
+                        "System.Runtime.CompilerServices.IsConst",MatchElement.Any,
+                        ")",MatchElement.Any,"*",MatchElement.Any,
+                        ",",MatchElement.Any,
+                        "void",MatchElement.Any,
+                        "modopt",MatchElement.Any,"(",MatchElement.Any,
+                        "System.Runtime.CompilerServices.IsConst",MatchElement.Any,
+                        ")",MatchElement.Any,"*",MatchElement.Any,                        
+                        ")"
                     }
                 );
             }

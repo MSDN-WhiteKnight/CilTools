@@ -191,6 +191,8 @@ namespace CilTools.Tests.Common
             string pattern = sb.ToString();
             return Regex.IsMatch(s, pattern);
         }
+
+        public static implicit operator MatchElement(string s) => new Literal(s);
     }
 
     public class Literal : MatchElement
