@@ -9,6 +9,7 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
 
 namespace CilTools.Tests.Common
 {
@@ -92,17 +93,17 @@ namespace CilTools.Tests.Common
         /// </summary>
         public static void IsMatch(string s, Text[] match, string message="")
         {
-            StringBuilder sb = new StringBuilder();
+            bool res = Text.IsMatch(s, match);
 
-            for (int i = 0; i < match.Length; i++)
+            if (res == false) 
             {
-                sb.Append(match[i].ToString());
+                Logger.LogMessage("Input string: ");
+                Logger.LogMessage(s);
+
+                if (String.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern.";
+
+                Fail("AssertThat.IsMatch failed. " + message);
             }
-
-            string pattern = sb.ToString();
-            if(String.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern: " + pattern;
-
-            Assert.IsTrue(Regex.IsMatch(s, pattern), message);
         }
 
         static void IsCorrectRecusive(SyntaxNode node,SyntaxNode parent, int c)
@@ -199,6 +200,14 @@ namespace CilTools.Tests.Common
         }
 
         /// <summary>
+        /// Defines a text element allowing one or more whitespace characters
+        /// </summary>
+        public static Text Whitespace
+        {
+            get { return AtLeastOneWhitespaceText.Value; }
+        }
+
+        /// <summary>
         /// Checks whether a specified string matches a specified sequence of text elements
         /// </summary>
         public static bool IsMatch(string s, Text[] match)
@@ -207,7 +216,7 @@ namespace CilTools.Tests.Common
 
             for (int i = 0; i < match.Length; i++)
             {
-                sb.Append(match[i].ToString());
+                sb.Append(match[i].GetString());
             }
 
             string pattern = sb.ToString();
@@ -259,6 +268,30 @@ namespace CilTools.Tests.Common
         public override string GetString()
         {
             return "[\\s\\S]*";
+        }
+    }
+
+    public class AtLeastOneWhitespaceText : Text 
+    {
+        static AtLeastOneWhitespaceText val = null;
+
+        AtLeastOneWhitespaceText() { }
+
+        /// <summary>
+        /// Provides the singleton value for the AtLeastOneWhitespaceText class
+        /// </summary>
+        public static AtLeastOneWhitespaceText Value
+        {
+            get
+            {
+                if (val == null) val = new AtLeastOneWhitespaceText();
+                return val;
+            }
+        }
+
+        public override string GetString()
+        {
+            return "\\s+";
         }
     }
 }
