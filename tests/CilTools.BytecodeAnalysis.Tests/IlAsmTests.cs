@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -110,6 +111,98 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             //main test logic
             IndirectCall_VerifyMethod(mb);
+        }
+
+        [TestMethod]
+        public void Test_FaultExceptionBlock()
+        {
+            CheckEnvironment();
+
+            const string code = @"
+.method  public hidebysig static int32 FaultTest(
+    int32 x, int32 y
+) cil managed
+{
+ .maxstack  2
+ .locals  init (int32 V_0)
+
+ .try
+ {
+           ldarg.0      
+           ldarg.1      
+           div          
+           stloc.0      
+           leave.s      IL_0001    //return x / y;
+ }
+ fault
+ {
+           ldstr        ""Exception occured""
+           call         void [mscorlib]System.Console::WriteLine(string)
+           endfault
+ }
+ IL_0001: ldloc.0      
+          ret
+}";
+            //compile method from CIL
+            MethodBase mb = IlAsm.BuildFunction(code, "FaultTest");
+
+            //verify method executes and does not crash
+            object res=mb.Invoke(null, new object[] {4, 2});            
+            Assert.AreEqual(2, (int)res);
+
+            //*** Main test logic ***
+            CilGraph graph = CilGraph.Create(mb);
+            AssertThat.IsCorrect(graph);
+            CilGraphNode[] nodes = graph.GetNodes().ToArray();
+            AssertThat.NotEmpty(nodes);
+
+            //find node inside try block
+            CilGraphNode node = nodes.Where((x) => x.Instruction.OpCode == OpCodes.Div).Single();
+
+            //find fault block
+            ExceptionBlock[] blocks = node.GetExceptionBlocks();
+            Assert.AreEqual(1, blocks.Length);
+            ExceptionBlock block = blocks[0];
+            Assert.AreEqual(ExceptionHandlingClauseOptions.Fault, block.Flags);
+
+            //verify contents of fault block
+            AssertThat.HasOnlyOneMatch(nodes, (x) =>
+            {
+                return x.Instruction.OpCode == OpCodes.Ldstr &&
+                x.Instruction.ReferencedString == "Exception occured" &&
+                x.Instruction.ByteOffset >= block.HandlerOffset &&
+                x.Instruction.ByteOffset <= block.HandlerOffset+block.HandlerLength;
+            });
+
+            AssertThat.HasOnlyOneMatch(nodes, (x) =>
+            {
+                return x.Instruction.OpCode == OpCodes.Call &&
+                x.Instruction.ReferencedMember.Name == "WriteLine" &&
+                x.Instruction.ByteOffset >= block.HandlerOffset &&
+                x.Instruction.ByteOffset <= block.HandlerOffset + block.HandlerLength;
+            });
+
+            //verify disassembler output
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "static", Text.Any, "int32", Text.Any,
+                "FaultTest", Text.Any, "(",Text.Any, ")", Text.Any,
+                "cil", Text.Any, "managed", Text.Any,
+                "{", Text.Any,
+
+                ".try", Text.Any, "{", Text.Any,
+                "div", Text.Any, 
+                "}", Text.Any,
+
+                "fault", Text.Any, "{", Text.Any,
+                "ldstr", Text.Any, "\"Exception occured\"", Text.Any,
+                "call", Text.Any, "System.Console::WriteLine", Text.Any,
+                "}", Text.Any,
+
+                "ret", Text.Any,
+                "}"
+            });
         }
     }
 }
