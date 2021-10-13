@@ -213,6 +213,8 @@ namespace CilTools.BytecodeAnalysis.Tests
         [MethodTestData(typeof(SampleMethods), "GenericsTest", BytecodeProviders.Metadata)]        
         public void Test_Disassembler_Roundtrip(MethodBase m)
         {
+            CheckEnvironment();
+
             CilGraph graph = CilGraph.Create(m);
             string code = graph.ToText();
 
