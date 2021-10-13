@@ -147,33 +147,9 @@ namespace CilView
             }//end if (res)
         }
 
-        void OpenFile(string file)
+        void OpenAssembly(string assemblyPath) 
         {
-            string assemblyPath = String.Empty;
             ProgressWindow pwnd;
-
-            if (file.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase) ||
-                file.EndsWith(".vbproj", StringComparison.OrdinalIgnoreCase))
-            {
-                //MSBuild project
-                bool bres = BuildProject(file, out assemblyPath);
-                if (bres == false) return;
-            }
-            else if (file.EndsWith(".cs", StringComparison.OrdinalIgnoreCase)) 
-            {
-                //C# code file
-                string proj = ProjectGenerator.CreateProject(file);
-
-                bool bres = BuildProject(proj, out assemblyPath);
-                if (bres == false) return;
-            }
-            else
-            {
-                //regular assembly
-                assemblyPath = file;
-            }
-
-            //open assembly
             OpenFileOperation op = new OpenFileOperation(assemblyPath);
             pwnd = new ProgressWindow(op);
             pwnd.Owner = this;
@@ -185,6 +161,42 @@ namespace CilView
             SetSource(op.Result);
 
             if (this.source.Assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
+        }
+
+        void OpenFile(string file)
+        {
+            try
+            {
+                string assemblyPath = String.Empty;
+
+                if (file.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".vbproj", StringComparison.OrdinalIgnoreCase))
+                {
+                    //MSBuild project
+                    bool bres = BuildProject(file, out assemblyPath);
+                    if (bres == false) return;
+                }
+                else if (file.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
+                {
+                    //C# code file
+                    string proj = ProjectGenerator.CreateProject(file);
+
+                    bool bres = BuildProject(proj, out assemblyPath);
+                    if (bres == false) return;
+                }
+                else
+                {
+                    //regular assembly
+                    assemblyPath = file;
+                }
+
+                //open assembly
+                this.OpenAssembly(assemblyPath);
+            }
+            catch (Exception ex) 
+            {
+                ErrorHandler.Current.Error(ex);
+            }
         }
         
         private void bOpenProcess_Click(object sender, RoutedEventArgs e)
@@ -778,6 +790,32 @@ to provide feedback" +
             {
                 //compare exceptions
                 await this.CompareExceptions();
+            }
+        }
+
+        private void miOpenCode_Click(object sender, RoutedEventArgs e)
+        {
+            OpenCodeWindow wnd = new OpenCodeWindow();
+            wnd.Owner = this;
+
+            if (wnd.ShowDialog() != true) return;
+
+            try
+            {
+                //generate project
+                string proj = ProjectGenerator.CreateProjectFromCode(wnd.Code, wnd.SelectedLanguage, "Project");
+
+                //build project
+                string assemblyPath = string.Empty;
+                bool bres = BuildProject(proj, out assemblyPath);
+                if (bres == false) return;
+
+                //open resulting assembly
+                this.OpenAssembly(assemblyPath);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
             }
         }
     }

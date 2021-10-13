@@ -122,6 +122,9 @@
     <Compile Include="UI.Controls\CilBrowser.xaml.cs">
       <DependentUpon>CilBrowser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI.Dialogs\OpenCodeWindow.xaml.cs">
+      <DependentUpon>OpenCodeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI.Dialogs\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
     </Compile>
@@ -160,6 +163,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI.Controls\CilBrowserPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI.Dialogs\OpenCodeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
