@@ -60,6 +60,7 @@ namespace CilTools.Tests.Common
             psi.UseShellExecute = false;
             psi.RedirectStandardInput = true;
             psi.RedirectStandardOutput = true;
+            psi.RedirectStandardError = true;
             psi.CreateNoWindow = true;
             psi.Arguments = string.Format(IlAsmCmd, outputFilePath, inputFilePath);
             Debug.WriteLine(">" + psi.FileName + " " + psi.Arguments);
@@ -72,6 +73,8 @@ namespace CilTools.Tests.Common
                 pr.Start();
                 string s = pr.StandardOutput.ReadToEnd(); //получение вывода
                 pr.WaitForExit();
+                Debug.WriteLine(s);
+                s = pr.StandardError.ReadToEnd();
                 Debug.WriteLine(s);
 
                 if (pr.ExitCode != 0)
