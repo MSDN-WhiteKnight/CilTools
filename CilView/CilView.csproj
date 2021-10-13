@@ -101,6 +101,7 @@
     </ApplicationDefinition>
     <Compile Include="Build\BuildProjectOperation.cs" />
     <Compile Include="Build\BuildSystemInvocation.cs" />
+    <Compile Include="Build\ProjectGenerator.cs" />
     <Compile Include="Build\ProjectInfo.cs" />
     <Compile Include="Common\Audio.cs" />
     <Compile Include="Common\Utils.cs" />
@@ -231,6 +232,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Build\CsTemplate.xml" />
     <Content Include="license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -244,12 +246,12 @@
   <ItemGroup>
     <PublishFile Include="Microsoft.Diagnostics.Runtime.pdb">
       <Visible>False</Visible>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
   </ItemGroup>

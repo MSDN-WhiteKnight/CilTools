@@ -110,45 +110,64 @@ namespace CilView
             }));
         }
 
+        bool BuildProject(string file, out string assemblyPath) 
+        {
+            ProgressWindow pwnd;
+            assemblyPath = string.Empty;
+
+            //MSBuild project
+            BuildProjectOperation opBuild = new BuildProjectOperation(file);
+            pwnd = new ProgressWindow(opBuild);
+            pwnd.Owner = this;
+
+            //build project in background with progress window
+            bool? opres = pwnd.ShowDialog();
+
+            if (opres != true) return false; //cancelled
+            if (opBuild.Result == null) return false; //Process.Start error
+
+            bool bres = opBuild.Result.IsSuccessful;
+
+            if (bres)
+            {
+                //success - open the build output binary
+                assemblyPath = opBuild.Result.BinaryPath;
+                return true;
+            }
+            else
+            {
+                //build error
+                wndError wnd = new wndError(
+                    "Failed to build project. The build system output is provided below.",
+                    opBuild.Result.OutputText
+                    );
+                wnd.Owner = this;
+                wnd.ShowDialog();
+                return false;
+            }//end if (res)
+        }
+
         void OpenFile(string file)
         {
             string assemblyPath = String.Empty;
             ProgressWindow pwnd;
 
-            if (file.EndsWith(".csproj", StringComparison.Ordinal) ||
-                file.EndsWith(".vbproj", StringComparison.Ordinal))
+            if (file.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase) ||
+                file.EndsWith(".vbproj", StringComparison.OrdinalIgnoreCase))
             {
                 //MSBuild project
-                BuildProjectOperation opBuild = new BuildProjectOperation(file);
-                pwnd = new ProgressWindow(opBuild);
-                pwnd.Owner = this;
-
-                //build project in background with progress window
-                bool? opres = pwnd.ShowDialog();
-
-                if (opres != true) return; //cancelled
-                if (opBuild.Result == null) return; //Process.Start error
-
-                bool bres = opBuild.Result.IsSuccessful;
-                
-                if (bres)
-                {
-                    //success - open the build output binary
-                    assemblyPath = opBuild.Result.BinaryPath;
-                }
-                else
-                {
-                    //build error
-                    wndError wnd = new wndError(
-                        "Failed to build project. The build system output is provided below.",
-                        opBuild.Result.OutputText
-                        );
-                    wnd.Owner = this;
-                    wnd.ShowDialog();
-                    return;
-                }//end if (res)
+                bool bres = BuildProject(file, out assemblyPath);
+                if (bres == false) return;
             }
-            else 
+            else if (file.EndsWith(".cs", StringComparison.OrdinalIgnoreCase)) 
+            {
+                //C# code file
+                string proj = ProjectGenerator.CreateProject(file);
+
+                bool bres = BuildProject(proj, out assemblyPath);
+                if (bres == false) return;
+            }
+            else
             {
                 //regular assembly
                 assemblyPath = file;
