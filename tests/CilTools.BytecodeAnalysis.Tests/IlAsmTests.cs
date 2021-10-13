@@ -12,7 +12,7 @@ using CilTools.Reflection;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// * Tests that use IlAsm to produce assembly with test data method *
+// * Tests that use IlAsm to produce test data or verify disassembler output *
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
@@ -203,6 +203,25 @@ namespace CilTools.BytecodeAnalysis.Tests
                 "ret", Text.Any,
                 "}"
             });
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.Metadata)]
+        [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", BytecodeProviders.Metadata)]
+        [MethodTestData(typeof(SampleMethods), "PrintList", BytecodeProviders.Metadata)]
+        [MethodTestData(typeof(SampleMethods), "AttributeTest", BytecodeProviders.Metadata)]
+        [MethodTestData(typeof(SampleMethods), "GenericsTest", BytecodeProviders.Metadata)]        
+        public void Test_Disassembler_Roundtrip(MethodBase m)
+        {
+            CilGraph graph = CilGraph.Create(m);
+            string code = graph.ToText();
+
+            //compile method from CIL
+            MethodBase mAssembled = IlAsm.BuildFunction(code, m.Name);
+            Assert.IsNotNull(mAssembled);
+
+            //verify method executes and does not crash
+            mAssembled.Invoke(null, new object[0]);
         }
     }
 }

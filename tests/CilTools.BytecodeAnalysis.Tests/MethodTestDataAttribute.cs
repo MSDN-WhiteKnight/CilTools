@@ -35,6 +35,7 @@ namespace CilTools.BytecodeAnalysis.Tests
     /// <summary>
     /// Represents data for the data-oriented test that takes a method as its argument
     /// </summary>
+    [AttributeUsage(AttributeTargets.Method,AllowMultiple = true)]
     public class MethodTestDataAttribute : Attribute, ITestDataSource
     {
         Type _type;
@@ -94,9 +95,11 @@ namespace CilTools.BytecodeAnalysis.Tests
         {
             if (data != null && data.Length>=1 && data[0]!=null)
             {
+                string name = (data[0] as MethodBase).Name;
+
                 StringBuilder sb = new StringBuilder(150);
                 sb.Append(methodInfo.Name);
-                sb.AppendFormat(" ({0})",data[0].GetType().ToString());
+                sb.AppendFormat(" ({0} {1})",data[0].GetType().Name,name);
                 return sb.ToString();
             }
             else
