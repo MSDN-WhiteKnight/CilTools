@@ -8,15 +8,25 @@
         Title="Open code" Height="450" Width="600" WindowStartupLocation="CenterOwner">
     <Grid>
         <Label Content="Language" HorizontalAlignment="Left" Margin="20,18,0,0" VerticalAlignment="Top"/>
-        <ComboBox x:Name="cbLang" HorizontalAlignment="Left" Margin="100,20,0,0" VerticalAlignment="Top" Width="120"/>
+        <ComboBox x:Name="cbLang" HorizontalAlignment="Left" Margin="100,20,0,0" VerticalAlignment="Top" Width="120" 
+                  SelectionChanged="cbLang_SelectionChanged"/>
+        <Label x:Name="labelHelp" Content="[?]" HorizontalAlignment="Left" Margin="230,18,0,0" VerticalAlignment="Top"
+               Foreground="Blue" Cursor="Hand" MouseDown="labelHelp_MouseDown" 
+               ToolTip="Click for more information"/>
+        <TextBlock x:Name="tbVersionInfo" HorizontalAlignment="Stretch" Margin="260,23,20,20" TextWrapping="NoWrap" 
+                   Text="..." VerticalAlignment="Top" />
         <TextBox x:Name="tbContent" HorizontalAlignment="Stretch"  Margin="20,60,20,60" TextWrapping="Wrap" Text="" 
                  VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" 
-                 FontFamily="Courier New"/>
+                 FontFamily="Courier New" IsInactiveSelectionHighlightEnabled="True"
+                 SelectionBrush="CornflowerBlue"/>
         <Button x:Name="bOK" Content="OK" HorizontalAlignment="Left" Margin="50,20,20,20" VerticalAlignment="Bottom" 
                 Width="75" Height="28" Click="bOK_Click"/>
         <Button x:Name="bCancel" Content="Cancel" HorizontalAlignment="Left" Margin="150,20,20,20" VerticalAlignment="Bottom" 
                 Width="75" Height="28" Click="bCancel_Click"/>
-
+        <Button x:Name="bInsert" Content="Insert" HorizontalAlignment="Left" Margin="285,20,20,20" VerticalAlignment="Bottom" 
+                Width="75" Height="28" ToolTip="Insert text from clipboard" Click="bInsert_Click"/>
+        <Button x:Name="bFromFile" Content="From file.." HorizontalAlignment="Left" Margin="380,20,20,20" 
+                VerticalAlignment="Bottom" Width="80" Height="28" Click="bFromFile_Click"/>
 
 
     </Grid>
