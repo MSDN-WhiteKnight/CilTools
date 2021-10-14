@@ -24,7 +24,7 @@ namespace CilView.Build
 
         public override async Task Start()
         {
-            this.ReportProgress("Building project...", 0, 0);
+            this.ReportProgress("Building code...", 0, 0);
 
             await Task.Run(() =>
             {

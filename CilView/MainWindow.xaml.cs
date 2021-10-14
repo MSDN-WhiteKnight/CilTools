@@ -138,13 +138,13 @@ namespace CilView
             {
                 //build error
                 wndError wnd = new wndError(
-                    "Failed to build project. The build system output is provided below.",
+                    "Failed to build code. The build system output is provided below.",
                     opBuild.Result.OutputText
                     );
                 wnd.Owner = this;
                 wnd.ShowDialog();
                 return false;
-            }//end if (res)
+            }
         }
 
         void OpenAssembly(string assemblyPath) 
@@ -176,9 +176,10 @@ namespace CilView
                     bool bres = BuildProject(file, out assemblyPath);
                     if (bres == false) return;
                 }
-                else if (file.EndsWith(".cs", StringComparison.OrdinalIgnoreCase))
+                else if (file.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".vb", StringComparison.OrdinalIgnoreCase))
                 {
-                    //C# code file
+                    //Code file
                     string proj = ProjectGenerator.CreateProject(file);
 
                     bool bres = BuildProject(proj, out assemblyPath);
@@ -305,6 +306,7 @@ namespace CilView
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.RestoreDirectory = true;
             dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|" +
+                "Code files (*.cs,*.vb)|*.cs;*.vb|" +
                 "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|All files|*";
 
             if (dlg.ShowDialog(this) == true)
