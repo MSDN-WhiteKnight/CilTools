@@ -318,9 +318,11 @@ namespace CilView
 
         private void cbType_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            Type t;
+
             try
             {
-                Type t = (Type)cbType.SelectedItem;
+                t = (Type)cbType.SelectedItem;
 
                 if (t == null) return;
                 if (source == null) return;
@@ -331,6 +333,52 @@ namespace CilView
             catch (Exception ex)
             {
                 ErrorHandler.Current.Error(ex);
+                return;
+            }
+
+            try
+            {
+                //count number of methods and other members
+                int c_methods = 0;
+                int c_others = 0;
+                MemberInfo[] members = Utils.GetAllMembers(t);
+
+                for (int i = 0; i < members.Length; i++)
+                {
+                    if (Utils.IsMethodAndNotConstructor(members[i]))
+                    {
+                        c_methods++;
+                    }
+                    else if (!Utils.IsConstructor(members[i]))
+                    {
+                        c_others++;
+                    }
+
+                    if (c_methods >= 2) break;
+                    if (c_others >= 1) break;
+                }
+
+                //If there's only one non-constructor method, navigate to it.
+                //It is what user most likely needs, as there's no other useful info
+                //to show about type in this case.
+
+                if (c_methods == 1 && c_others == 0)
+                {
+                    for (int i = 0; i < this.source.Methods.Count; i++)
+                    {
+                        if (Utils.IsMethodAndNotConstructor(this.source.Methods[i]))
+                        {
+                            this.cilbrowser.NavigateToMethod(this.source.Methods[i]);
+                            break;
+                        }
+                    }//end for
+                }
+            }
+            catch (Exception ex)
+            {
+                //We don't want a visible error here as it only affects the initially 
+                //selected method.
+                ErrorHandler.Current.Error(ex, "cbType_SelectionChanged", silent:true);
             }
         }
 

@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
@@ -108,6 +109,29 @@ namespace CilView.Common
             }
 
             return sb.ToString();
+        }
+
+        public static MemberInfo[] GetAllMembers(Type t)
+        {
+            return t.GetMembers(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static|
+                BindingFlags.Instance);
+        }
+
+        public static bool IsMethodAndNotConstructor(MemberInfo m)
+        {
+            MethodBase mb = m as MethodBase;
+            if (mb == null) return false;
+
+            return mb.MemberType == MemberTypes.Method && !StringEquals(mb.Name,".ctor") 
+                && !StringEquals(mb.Name, ".cctor");
+        }
+
+        public static bool IsConstructor(MemberInfo m)
+        {
+            MethodBase mb = m as MethodBase;
+            if (mb == null) return false;
+
+            return StringEquals(mb.Name, ".ctor")|| StringEquals(mb.Name, ".cctor");
         }
     }
 }
