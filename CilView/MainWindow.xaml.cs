@@ -17,6 +17,7 @@ using System.Windows.Documents;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using CilView.Build;
+using CilView.Common;
 using CilView.Exceptions;
 using CilView.UI.Dialogs;
 using CilView.UI.Controls;
@@ -272,6 +273,38 @@ namespace CilView
                 source.Types.Clear();
                 source.Methods.Clear();
                 source.Types = AssemblySource.LoadTypes(ass);
+
+                if (source.Types.Count == 1)
+                {
+                    //if there's only one type, select it automatically
+                    cbType.SelectedIndex = 0;
+                }
+                else
+                {
+                    int c = 0;
+                    int index = 0;
+
+                    for (int i = 0; i < source.Types.Count; i++)
+                    {
+                        if (Utils.StringEquals(source.Types[i].Name, "<Module>"))
+                        {
+                            continue;
+                        }
+
+                        c++;
+                        index = i;
+
+                        if (c >= 2) break;
+                    }
+
+                    //If there's only one non-module type, select it automatically.
+                    //There's a good chance it's exactly what user needs.
+
+                    if (c == 1)
+                    {
+                        cbType.SelectedIndex = index;
+                    }
+                }
             }
             catch (Exception ex)
             {
