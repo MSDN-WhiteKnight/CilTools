@@ -101,6 +101,7 @@
     </ApplicationDefinition>
     <Compile Include="Build\BuildProjectOperation.cs" />
     <Compile Include="Build\BuildSystemInvocation.cs" />
+    <Compile Include="Build\ProjectGenerator.cs" />
     <Compile Include="Build\ProjectInfo.cs" />
     <Compile Include="Common\Audio.cs" />
     <Compile Include="Common\Utils.cs" />
@@ -120,6 +121,9 @@
     <Compile Include="OperationBase.cs" />
     <Compile Include="UI.Controls\CilBrowser.xaml.cs">
       <DependentUpon>CilBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI.Dialogs\OpenCodeWindow.xaml.cs">
+      <DependentUpon>OpenCodeWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI.Dialogs\ProgressWindow.xaml.cs">
       <DependentUpon>ProgressWindow.xaml</DependentUpon>
@@ -159,6 +163,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI.Controls\CilBrowserPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI.Dialogs\OpenCodeWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -231,6 +239,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Build\CsTemplate.xml" />
+    <EmbeddedResource Include="Build\VbTemplate.xml" />
     <Content Include="license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -244,12 +254,12 @@
   <ItemGroup>
     <PublishFile Include="Microsoft.Diagnostics.Runtime.pdb">
       <Visible>False</Visible>
-      <PublishState>Include</PublishState>
-      <IncludeHash>True</IncludeHash>
       <Group>
       </Group>
       <TargetPath>
       </TargetPath>
+      <PublishState>Include</PublishState>
+      <IncludeHash>True</IncludeHash>
       <FileType>File</FileType>
     </PublishFile>
   </ItemGroup>

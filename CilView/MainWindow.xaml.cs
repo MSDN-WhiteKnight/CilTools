@@ -110,51 +110,46 @@ namespace CilView
             }));
         }
 
-        void OpenFile(string file)
+        bool BuildProject(string file, out string assemblyPath) 
         {
-            string assemblyPath = String.Empty;
             ProgressWindow pwnd;
+            assemblyPath = string.Empty;
 
-            if (file.EndsWith(".csproj", StringComparison.Ordinal) ||
-                file.EndsWith(".vbproj", StringComparison.Ordinal))
+            //MSBuild project
+            BuildProjectOperation opBuild = new BuildProjectOperation(file);
+            pwnd = new ProgressWindow(opBuild);
+            pwnd.Owner = this;
+
+            //build project in background with progress window
+            bool? opres = pwnd.ShowDialog();
+
+            if (opres != true) return false; //cancelled
+            if (opBuild.Result == null) return false; //Process.Start error
+
+            bool bres = opBuild.Result.IsSuccessful;
+
+            if (bres)
             {
-                //MSBuild project
-                BuildProjectOperation opBuild = new BuildProjectOperation(file);
-                pwnd = new ProgressWindow(opBuild);
-                pwnd.Owner = this;
-
-                //build project in background with progress window
-                bool? opres = pwnd.ShowDialog();
-
-                if (opres != true) return; //cancelled
-                if (opBuild.Result == null) return; //Process.Start error
-
-                bool bres = opBuild.Result.IsSuccessful;
-                
-                if (bres)
-                {
-                    //success - open the build output binary
-                    assemblyPath = opBuild.Result.BinaryPath;
-                }
-                else
-                {
-                    //build error
-                    wndError wnd = new wndError(
-                        "Failed to build project. The build system output is provided below.",
-                        opBuild.Result.OutputText
-                        );
-                    wnd.Owner = this;
-                    wnd.ShowDialog();
-                    return;
-                }//end if (res)
+                //success - open the build output binary
+                assemblyPath = opBuild.Result.BinaryPath;
+                return true;
             }
-            else 
+            else
             {
-                //regular assembly
-                assemblyPath = file;
+                //build error
+                wndError wnd = new wndError(
+                    "Failed to build code. The build system output is provided below.",
+                    opBuild.Result.OutputText
+                    );
+                wnd.Owner = this;
+                wnd.ShowDialog();
+                return false;
             }
+        }
 
-            //open assembly
+        void OpenAssembly(string assemblyPath) 
+        {
+            ProgressWindow pwnd;
             OpenFileOperation op = new OpenFileOperation(assemblyPath);
             pwnd = new ProgressWindow(op);
             pwnd.Owner = this;
@@ -166,6 +161,43 @@ namespace CilView
             SetSource(op.Result);
 
             if (this.source.Assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
+        }
+
+        void OpenFile(string file)
+        {
+            try
+            {
+                string assemblyPath = String.Empty;
+
+                if (file.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".vbproj", StringComparison.OrdinalIgnoreCase))
+                {
+                    //MSBuild project
+                    bool bres = BuildProject(file, out assemblyPath);
+                    if (bres == false) return;
+                }
+                else if (file.EndsWith(".cs", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".vb", StringComparison.OrdinalIgnoreCase))
+                {
+                    //Code file
+                    string proj = ProjectGenerator.CreateProject(file);
+
+                    bool bres = BuildProject(proj, out assemblyPath);
+                    if (bres == false) return;
+                }
+                else
+                {
+                    //regular assembly
+                    assemblyPath = file;
+                }
+
+                //open assembly
+                this.OpenAssembly(assemblyPath);
+            }
+            catch (Exception ex) 
+            {
+                ErrorHandler.Current.Error(ex);
+            }
         }
         
         private void bOpenProcess_Click(object sender, RoutedEventArgs e)
@@ -274,6 +306,7 @@ namespace CilView
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.RestoreDirectory = true;
             dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|" +
+                "Code files (*.cs,*.vb)|*.cs;*.vb|" +
                 "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|All files|*";
 
             if (dlg.ShowDialog(this) == true)
@@ -759,6 +792,32 @@ to provide feedback" +
             {
                 //compare exceptions
                 await this.CompareExceptions();
+            }
+        }
+
+        private void miOpenCode_Click(object sender, RoutedEventArgs e)
+        {
+            OpenCodeWindow wnd = new OpenCodeWindow();
+            wnd.Owner = this;
+
+            if (wnd.ShowDialog() != true) return;
+
+            try
+            {
+                //generate project
+                string proj = ProjectGenerator.CreateProjectFromCode(wnd.Code, wnd.SelectedLanguage, "Project");
+
+                //build project
+                string assemblyPath = string.Empty;
+                bool bres = BuildProject(proj, out assemblyPath);
+                if (bres == false) return;
+
+                //open resulting assembly
+                this.OpenAssembly(assemblyPath);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
             }
         }
     }

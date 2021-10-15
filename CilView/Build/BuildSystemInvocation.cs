@@ -110,7 +110,7 @@ namespace CilView.Build
             }
         }
 
-        static void RegisterTempDir(string dir)
+        public static void RegisterTempDir(string dir)
         {
             lock (s_tempdirsSync)
             {
@@ -135,7 +135,7 @@ namespace CilView.Build
             return input;
         }
 
-        static string CreateTempDir(string proj,string dirname)
+        public static string CreateTempDir(string proj,string dirname)
         {
             string t = Path.GetTempPath();
             string ret = String.Empty;
