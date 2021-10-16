@@ -64,6 +64,24 @@ namespace CilTools.Tests.Common
             }
         }
 
+        /// <summary>
+        /// Asserts that the specified collection has no elements matching the specified predicate
+        /// </summary>        
+        public static void HasNoMatches<T>(IEnumerable<T> collection, Func<T, bool> condition, string message = "")
+        {
+            if (string.IsNullOrEmpty(message))
+            {
+                message = "The collection should NOT contain any occurances of matching elements.";
+            }
+
+            IEnumerable<T> match = collection.Where(condition);
+
+            if (match.Count() > 0)
+            {
+                Fail("AssertThat.HasNoMatches failed. " + message);
+            }
+        }
+
         public static void IsCorrect(CilGraph graph)
         {
             CilGraphNode[] nodes = graph.GetNodes().ToArray();

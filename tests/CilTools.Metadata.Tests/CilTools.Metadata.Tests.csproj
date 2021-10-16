@@ -68,6 +68,7 @@
     <Compile Include="ReflectionTests.cs" />
     <Compile Include="MemoryImageTests.cs" />
     <Compile Include="AssemblyReaderTests.cs" />
+    <Compile Include="TypeDefTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
