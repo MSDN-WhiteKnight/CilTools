@@ -21,6 +21,12 @@ namespace CilView
 {
     static class CilVisualization
     {
+        //Default WPF hyperlink color
+        //static readonly SolidColorBrush HyperlinkBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x66, 0xCC));
+
+        //Default in Visual Studio for types
+        static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
+
         internal static string MethodToString(MethodBase m)
         {
             if (m is CilTools.Runtime.ClrMethodInfo)
@@ -245,7 +251,7 @@ namespace CilView
                 }
                 else
                 {
-                    if (id.IsMemberName) r.Foreground = Brushes.CornflowerBlue;
+                    if (id.IsMemberName) r.Foreground = IdentifierBrush;
                     r.Text = node.ToString();
                     target.Inlines.Add(r);
                 }
