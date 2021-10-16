@@ -129,6 +129,8 @@ namespace CilTools.Runtime.Tests
             Type t = ass.GetType("MyDynamicType");
             MethodBase mb = (MethodBase)(t.GetMember("Method2")[0]);
 
+            Assert.AreEqual(MemberTypes.Method, mb.MemberType);
+
             //test instructions
             CilInstruction[] instructions = CilReader.GetInstructions(mb).ToArray();
 
@@ -200,6 +202,24 @@ namespace CilTools.Runtime.Tests
                       ret          
             } 
             */
+        }
+
+        [LongTest]
+        public void Test_Constructor()
+        {
+            ClrAssemblyReader reader = GetReader();
+
+            //get dynamic assembly
+            ClrModule module = runtime.Modules.Where(x => x.IsDynamic == true).First();
+            ClrAssemblyInfo ass = reader.Read(module);
+
+            //get constructor
+            Type t = ass.GetType("MyDynamicType");
+            CustomMethod m = (CustomMethod)(t.GetMember(".ctor",Utils.AllMembers())[0]);
+
+            Assert.AreEqual(".ctor", m.Name);
+            Assert.AreEqual(MemberTypes.Constructor, m.MemberType);
+            Assert.IsNull(m.ReturnType);
         }
 
         [LongTest]

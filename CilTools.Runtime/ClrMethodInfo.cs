@@ -236,7 +236,17 @@ namespace CilTools.Runtime
         /// <inheritdoc/>
         public override MemberTypes MemberType
         {
-            get { return MemberTypes.Method; }
+            get 
+            {
+                if (method.IsConstructor || method.IsClassConstructor)
+                {
+                    return MemberTypes.Constructor;
+                }
+                else
+                {
+                    return MemberTypes.Method;
+                }
+            }
         }
 
         /// <inheritdoc/>

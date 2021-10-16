@@ -78,7 +78,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                if (String.Equals(this.Name, ".ctor", StringComparison.InvariantCulture)) return null;
+                if (this.MemberType == MemberTypes.Constructor) return null;
 
                 if (this.sig == null) return UnknownType.Value;
                 else return this.sig.ReturnType.Type;
@@ -309,7 +309,19 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override MemberTypes MemberType
         {
-            get { return MemberTypes.Method; }
+            get 
+            {
+                this.ThrowIfDisposed();
+
+                if (TypeDef.StrEquals(this.Name, ".ctor") || TypeDef.StrEquals(this.Name, ".cctor"))
+                {
+                    return MemberTypes.Constructor;
+                }
+                else
+                {
+                    return MemberTypes.Method;
+                }
+            }
         }
 
         /// <inheritdoc/>
