@@ -16,6 +16,8 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
 using CilView.UI.Controls;
+using CilView.UI.Dialogs;
+using Internal.Pdb.Windows;
 
 namespace CilView
 {
@@ -26,6 +28,80 @@ namespace CilView
 
         //Default in Visual Studio for types
         static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
+
+        static ContextMenu s_instructionMenu;
+        static FrameworkContentElement s_instructionMenuTarget;
+
+        static ContextMenu GetInstructionMenu()
+        {
+            if (s_instructionMenu != null) return s_instructionMenu;
+
+            ContextMenu menu = new ContextMenu();
+            MenuItem mi;
+            mi = new MenuItem();
+            mi.Header = "Show source";
+            mi.Click += Mi_ShowSource_Click;
+            menu.Items.Add(mi);
+            s_instructionMenu = menu;
+            return menu;
+        }
+
+        private static void Mi_ShowSource_Click(object sender, RoutedEventArgs e)
+        {
+            if (s_instructionMenuTarget == null) return;
+
+            //show source code corresponding to instruction
+            InstructionSyntax syntax = s_instructionMenuTarget.Tag as InstructionSyntax;
+            if(syntax==null) return;
+            if(syntax.Instruction==null) return;
+
+            CilInstruction instr = syntax.Instruction;
+
+            try
+            {
+                string src = PdbUtils.GetSourceFromPdb(instr.Method, instr.ByteOffset, instr.ByteOffset, false);
+                src = src.Trim();
+
+                if (string.IsNullOrEmpty(src))
+                {
+                    MessageBox.Show("Failed to get source code", "Error");
+                    return;
+                }
+
+                //build display string
+                StringBuilder sb = new StringBuilder(src.Length * 2);
+                sb.AppendLine("Instruction: ");
+                sb.AppendLine(instr.ToString());
+                sb.AppendLine();
+
+                sb.AppendLine("Source code: ");
+                sb.AppendLine(src);
+                sb.AppendLine();
+
+                //show source code
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Title = "Source code";
+                wnd.Text = sb.ToString();
+                wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                wnd.ShowDialog();
+            }
+            catch (NotSupportedException ex) 
+            {
+                //don't pollute logs with expected errors
+                MessageBox.Show(ex.Message, "Error");
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+        }
+
+        private static void R_ContextMenuOpening(object sender, ContextMenuEventArgs e)
+        {
+            //saves the content element that user right-clicked on, so we can figure out later
+            //which instruction this context menu points to
+            s_instructionMenuTarget = sender as FrameworkContentElement;
+        }
 
         internal static string MethodToString(MethodBase m)
         {
@@ -192,6 +268,26 @@ namespace CilView
             {
                 KeywordSyntax ks = (KeywordSyntax)node;
                 r = new Run();
+                string text=node.ToString();
+
+                if (ks.Kind == KeywordKind.InstructionName) 
+                {
+                    InstructionSyntax par = ks.Parent as InstructionSyntax;
+                    CilInstruction instr = null;
+
+                    if (par != null)
+                    {
+                        instr = par.Instruction;
+                    }
+
+                    if (instr != null)
+                    {
+                        //attach context menu to instruction opcode
+                        r.ContextMenu = GetInstructionMenu();
+                        r.ContextMenuOpening += R_ContextMenuOpening;
+                        r.Tag = par;
+                    }
+                }
 
                 if (ks.Kind == KeywordKind.InstructionName && ctx.highlight_start >= 0)
                 {
@@ -224,7 +320,7 @@ namespace CilView
                 else if (ks.Kind == KeywordKind.DirectiveName)
                     r.Foreground = Brushes.Magenta;
                 
-                r.Text = node.ToString();
+                r.Text = text;
                 target.Inlines.Add(r);
             }
             else if (node is IdentifierSyntax)
