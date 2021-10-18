@@ -15,9 +15,9 @@ using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
+using CilView.Symbols;
 using CilView.UI.Controls;
 using CilView.UI.Dialogs;
-using Internal.Pdb.Windows;
 
 namespace CilView
 {
@@ -39,11 +39,89 @@ namespace CilView
             ContextMenu menu = new ContextMenu();
             MenuItem mi;
             mi = new MenuItem();
-            mi.Header = "Show source";
+            mi.Header = "Show source (instruction)";
             mi.Click += Mi_ShowSource_Click;
+            menu.Items.Add(mi);
+            mi = new MenuItem();
+            mi.Header = "Show source (method)";
+            mi.Click += Mi_ShowSource_Method_Click;
             menu.Items.Add(mi);
             s_instructionMenu = menu;
             return menu;
+        }
+
+        static void ShowSource(CilInstruction instr, bool wholeMethod)
+        {
+            try
+            {
+                SourceInfo srcinfo;
+
+                if (wholeMethod)
+                {
+                    srcinfo = PdbUtils.GetSourceFromPdb(instr.Method,
+                        0, uint.MaxValue, true);
+                }
+                else
+                {
+                    srcinfo = PdbUtils.GetSourceFromPdb(instr.Method,
+                        instr.ByteOffset, instr.ByteOffset, false);
+                }
+
+                string src = srcinfo.SourceCode;
+                
+                if (string.IsNullOrWhiteSpace(src))
+                {
+                    MessageBox.Show("Failed to get source code", "Error");
+                    return;
+                }
+                
+                //build display string
+                StringBuilder sb = new StringBuilder(src.Length * 2);
+
+                if (wholeMethod)
+                {
+                    sb.AppendLine("Method: ");
+                    sb.AppendLine(MethodToString(srcinfo.Method));
+                    sb.AppendLine();
+                }
+                else
+                {
+                    sb.AppendLine("Instruction: ");
+                    sb.AppendLine(instr.ToString());
+                    sb.Append("(method: ");
+                    sb.Append(MethodToString(srcinfo.Method));
+                    sb.AppendFormat(", byte offset: {0})", srcinfo.CilStart);
+                    sb.AppendLine();
+                    sb.AppendLine();
+                }
+
+                sb.AppendLine("Source code: ");
+                sb.AppendFormat("({0}, ", srcinfo.SourceFile);
+                sb.AppendFormat("lines {0}-{1})", srcinfo.LineStart, srcinfo.LineEnd);
+                sb.AppendLine();
+                sb.AppendLine();
+                sb.AppendLine(src);
+                sb.AppendLine();
+
+                //show source code
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Title = "Source code";
+                wnd.Text = sb.ToString();
+                wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                wnd.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                if (ex is NotSupportedException || ex is SymbolsException)
+                {
+                    //don't pollute logs with expected errors
+                    MessageBox.Show(ex.Message, "Error");
+                }
+                else
+                {
+                    ErrorHandler.Current.Error(ex);
+                }
+            }
         }
 
         private static void Mi_ShowSource_Click(object sender, RoutedEventArgs e)
@@ -56,44 +134,23 @@ namespace CilView
             if(syntax.Instruction==null) return;
 
             CilInstruction instr = syntax.Instruction;
+                        
+            ShowSource(instr, false);
+        }
 
-            try
-            {
-                string src = PdbUtils.GetSourceFromPdb(instr.Method, instr.ByteOffset, instr.ByteOffset, false);
-                src = src.Trim();
+        private static void Mi_ShowSource_Method_Click(object sender, RoutedEventArgs e)
+        {
+            if (s_instructionMenuTarget == null) return;
+            
+            //get instruction that user right-clicked on
+            InstructionSyntax syntax = s_instructionMenuTarget.Tag as InstructionSyntax;
+            if (syntax == null) return;
+            if (syntax.Instruction == null) return;
 
-                if (string.IsNullOrEmpty(src))
-                {
-                    MessageBox.Show("Failed to get source code", "Error");
-                    return;
-                }
+            CilInstruction instr = syntax.Instruction;
 
-                //build display string
-                StringBuilder sb = new StringBuilder(src.Length * 2);
-                sb.AppendLine("Instruction: ");
-                sb.AppendLine(instr.ToString());
-                sb.AppendLine();
-
-                sb.AppendLine("Source code: ");
-                sb.AppendLine(src);
-                sb.AppendLine();
-
-                //show source code
-                TextViewWindow wnd = new TextViewWindow();
-                wnd.Title = "Source code";
-                wnd.Text = sb.ToString();
-                wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                wnd.ShowDialog();
-            }
-            catch (NotSupportedException ex) 
-            {
-                //don't pollute logs with expected errors
-                MessageBox.Show(ex.Message, "Error");
-            }
-            catch (Exception ex)
-            {
-                ErrorHandler.Current.Error(ex);
-            }
+            //show source code of method
+            ShowSource(instr, true);
         }
 
         private static void R_ContextMenuOpening(object sender, ContextMenuEventArgs e)

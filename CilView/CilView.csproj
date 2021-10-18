@@ -133,8 +133,10 @@
     <Compile Include="Internal.Pdb.Windows\PdbSlot.cs" />
     <Compile Include="Internal.Pdb.Windows\PdbSource.cs" />
     <Compile Include="Internal.Pdb.Windows\PdbStreamHelper.cs" />
-    <Compile Include="Internal.Pdb.Windows\PdbUtils.cs" />
+    <Compile Include="Symbols\PdbUtils.cs" />
     <Compile Include="SearchResult.cs" />
+    <Compile Include="Symbols\SourceInfo.cs" />
+    <Compile Include="Symbols\SymbolsException.cs" />
     <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
       <DependentUpon>CilBrowserPage.xaml</DependentUpon>
     </Compile>

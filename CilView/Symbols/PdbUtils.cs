@@ -7,23 +7,34 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Internal.Pdb.Windows;
 
-namespace Internal.Pdb.Windows
+namespace CilView.Symbols
 {
     class PdbUtils
     {
         public static string GetSourceFromPdb<T>(Predicate<T> match) 
         {
-            return GetSourceFromPdb(match.Method,0,uint.MaxValue,true);
+            return GetSourceFromPdb(match.Method,0,uint.MaxValue,true).SourceCode;
         }
 
-        public static string GetSourceFromPdb(MethodBase m,uint startOffset,uint endOffset,bool exact)
+        /// <summary>
+        /// Gets the source code for the specified bytecode fragment using PDB symbols
+        /// </summary>
+        /// <param name="m">Method for which to get the source code</param>
+        /// <param name="startOffset">Byte offset of the bytecode fragment's start</param>
+        /// <param name="endOffset">Byte offset of the bytecode fragment's end</param>
+        /// <param name="exact">
+        /// <c>true</c> to return the sources for exact specified bytecode fragment; <c>false</c> to get the sources 
+        /// for the sequence point in which starting offset lies.
+        /// </param>
+        public static SourceInfo GetSourceFromPdb(MethodBase m,uint startOffset,uint endOffset,bool exact)
         {
             int token = m.MetadataToken;
 
             //построим путь к файлу символов
             string module_path = m.DeclaringType.Assembly.Location;
-            if(string.IsNullOrEmpty(module_path)) return string.Empty;
+            if(string.IsNullOrEmpty(module_path)) return SourceInfo.Empty;
 
             string pdb_path = Path.Combine(
                 Path.GetDirectoryName(module_path),
@@ -32,22 +43,35 @@ namespace Internal.Pdb.Windows
 
             if (!File.Exists(pdb_path)) 
             {
-                return string.Empty;
+                throw new SymbolsException("Symbols file not found: "+pdb_path);
             }
 
             StringBuilder sb = new StringBuilder();
             PdbReader reader = new PdbReader(pdb_path);
+            SourceInfo ret = new SourceInfo();
+            ret.SymbolsFile = pdb_path;
+            ret.Method = m;
+            ret.CilStart = startOffset;
+            ret.CilEnd = endOffset;
 
             using (reader)
             {
                 //найдем метод в символах
                 var func = reader.GetFunctionFromToken((uint)token);
 
-                if(func==null) return string.Empty;
-                if(func.SequencePoints==null) return string.Empty;
+                if (func==null) return SourceInfo.Empty;
+                if (func.SequencePoints==null) return SourceInfo.Empty;
 
                 foreach (PdbSequencePointCollection coll in func.SequencePoints)
                 {
+                    if (coll.File == null) continue;
+                    if (string.IsNullOrEmpty(coll.File.Name)) continue;
+
+                    if (!File.Exists(coll.File.Name))
+                    {
+                        throw new SymbolsException("Source file not found: "+coll.File.Name);
+                    }
+
                     //считываем файл исходников
                     string[] lines = File.ReadAllLines(coll.File.Name, Encoding.UTF8);
 
@@ -64,7 +88,7 @@ namespace Internal.Pdb.Windows
 
                         if (points_sorted.Count() == 0)
                         {
-                            return string.Empty;
+                            return SourceInfo.Empty;
                         }
 
                         start = points_sorted.First();
@@ -79,12 +103,16 @@ namespace Internal.Pdb.Windows
 
                         if (points_sorted.Count() == 0)
                         {
-                            return string.Empty;
+                            return SourceInfo.Empty;
                         }
 
                         start = points_sorted.Last();
                         end = start;
                     }
+
+                    ret.SourceFile = coll.File.Name;
+                    ret.LineStart = (int)start.LineBegin;
+                    ret.LineEnd = (int)end.LineEnd;
 
                     bool reading = false;
                     int index_start;
@@ -103,8 +131,16 @@ namespace Internal.Pdb.Windows
                             {
                                 //первая строка
                                 reading = true;
-                                index_start = start.ColBegin - 1;
-                                if (index_start < 0) index_start = 0;
+
+                                if (startOffset != 0 || endOffset != uint.MaxValue)
+                                {
+                                    index_start = start.ColBegin - 1;
+                                    if (index_start < 0) index_start = 0;
+                                }
+                                else 
+                                {
+                                    index_start = 0;
+                                }
                             }
                         }
 
@@ -124,11 +160,11 @@ namespace Internal.Pdb.Windows
                             sb.AppendLine(line.Substring(index_start, index_end - index_start));
                         }
                     }
-                }
+                }//end foreach
+            }//end using
 
-            }
-
-            return sb.ToString();
+            ret.SourceCode = sb.ToString();
+            return ret;
         }
 
         public static void Test()
