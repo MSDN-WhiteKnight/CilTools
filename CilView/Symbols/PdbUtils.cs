@@ -96,18 +96,36 @@ namespace CilView.Symbols
                     }
                     else 
                     {
-                        var points_sorted = coll.Lines.
-                            Where((x) => x.LineBegin <= lines.Length && x.LineEnd <= lines.Length &&
-                            x.Offset <= startOffset).
-                            OrderBy((x) => x.Offset);
+                        PdbSequencePoint[] points=coll.Lines.
+                            Where((x) => x.LineBegin <= lines.Length && x.LineEnd <= lines.Length).
+                            OrderBy((x) => x.Offset).ToArray();
 
-                        if (points_sorted.Count() == 0)
+                        if(pdb_path.Length==0) return SourceInfo.Empty;
+
+                        PdbSequencePoint p=points[0];
+                        int p_index = 0;
+
+                        for (int i = 1; i < points.Length; i++) 
                         {
-                            return SourceInfo.Empty;
+                            if (points[i].Offset > startOffset) break;
+
+                            p = points[i];
+                            p_index = i;
                         }
 
-                        start = points_sorted.Last();
-                        end = start;
+                        if(p.Offset > startOffset) return SourceInfo.Empty;
+
+                        start = p;
+                        end = p;
+                        ret.CilStart = p.Offset;
+
+                        int pNext_index = p_index + 1;
+
+                        if (pNext_index < points.Length) 
+                        {
+                            PdbSequencePoint pNext = points[pNext_index];
+                            ret.CilEnd = pNext.Offset;
+                        }
                     }
 
                     ret.SourceFile = coll.File.Name;
