@@ -39,7 +39,7 @@ namespace CilView
             ContextMenu menu = new ContextMenu();
             MenuItem mi;
             mi = new MenuItem();
-            mi.Header = "Show source (instruction)";
+            mi.Header = "Show source";
             mi.Click += Mi_ShowSource_Click;
             menu.Items.Add(mi);
             mi = new MenuItem();
@@ -86,12 +86,26 @@ namespace CilView
                 }
                 else
                 {
-                    sb.AppendLine("Instruction: ");
-                    sb.AppendLine(instr.ToString());
+                    sb.AppendLine("CIL: ");
                     sb.Append("(method: ");
                     sb.Append(MethodToString(srcinfo.Method));
-                    sb.AppendFormat(", byte offset: {0})", srcinfo.CilStart);
+                    sb.AppendFormat(", byte offset: {0}-{1})", srcinfo.CilStart, srcinfo.CilEnd);
                     sb.AppendLine();
+                    sb.AppendLine();
+
+                    try
+                    {
+                        //get CIL for the range of the sequence point
+                        sb.AppendLine(PdbUtils.GetCilText(srcinfo.Method, srcinfo.CilStart, srcinfo.CilEnd));
+                    }
+                    catch (Exception ex) 
+                    {
+                        //don't stop the rest of method to work if this errors out
+                        //showing source can still be useful
+                        sb.AppendLine("[error!]");
+                        ErrorHandler.Current.Error(ex);
+                    }
+
                     sb.AppendLine();
                 }
 

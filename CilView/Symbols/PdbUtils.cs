@@ -7,12 +7,33 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 using Internal.Pdb.Windows;
 
 namespace CilView.Symbols
 {
     class PdbUtils
     {
+        public static string GetCilText(MethodBase mb, uint startOffset, uint endOffset) 
+        {
+            StringBuilder sb = new StringBuilder(500);
+
+            foreach (CilInstruction instr in CilReader.GetInstructions(mb)) 
+            {
+                if (instr.ByteOffset >= startOffset &&
+                    instr.ByteOffset + instr.TotalSize <= endOffset)
+                {
+                    sb.AppendLine(instr.ToString());
+                }
+                else if (instr.ByteOffset > endOffset)
+                {
+                    break;
+                }
+            }
+
+            return sb.ToString();
+        }
+
         public static string GetSourceFromPdb<T>(Predicate<T> match) 
         {
             return GetSourceFromPdb(match.Method,0,uint.MaxValue,true).SourceCode;
