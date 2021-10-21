@@ -12,7 +12,7 @@ namespace CilView.Symbols
     /// Contains information about a source code fragment corresponding to some bytecode fragment 
     /// (or whole method body)
     /// </summary>
-    class SourceInfo
+    public class SourceInfo
     {
         public SourceInfo() 
         {

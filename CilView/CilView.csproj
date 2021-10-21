@@ -156,6 +156,9 @@
     <Compile Include="UI.Dialogs\SelectProcessWindow.xaml.cs">
       <DependentUpon>SelectProcessWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI.Dialogs\SourceViewWindow.xaml.cs">
+      <DependentUpon>SourceViewWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI.Dialogs\TextViewWindow.xaml.cs">
       <DependentUpon>TextViewWindow.xaml</DependentUpon>
     </Compile>
@@ -200,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI.Dialogs\SelectProcessWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI.Dialogs\SourceViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

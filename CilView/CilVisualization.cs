@@ -75,54 +75,34 @@ namespace CilView
                     return;
                 }
                 
-                //build display string
-                StringBuilder sb = new StringBuilder(src.Length * 2);
-
                 if (wholeMethod)
                 {
+                    //build display string
+                    StringBuilder sb = new StringBuilder(src.Length * 2);
                     sb.AppendLine("Method: ");
                     sb.AppendLine(MethodToString(srcinfo.Method));
                     sb.AppendLine();
+
+                    sb.AppendLine("Source code: ");
+                    sb.AppendFormat("({0}, ", srcinfo.SourceFile);
+                    sb.AppendFormat("lines {0}-{1})", srcinfo.LineStart, srcinfo.LineEnd);
+                    sb.AppendLine();
+                    sb.AppendLine();
+                    sb.AppendLine(src);
+                    sb.AppendLine();
+
+                    //show source code
+                    TextViewWindow wnd = new TextViewWindow();
+                    wnd.Title = "Source code";
+                    wnd.Text = sb.ToString();
+                    wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                    wnd.ShowDialog();
                 }
                 else
                 {
-                    sb.AppendLine("CIL: ");
-                    sb.Append("(method: ");
-                    sb.Append(MethodToString(srcinfo.Method));
-                    sb.AppendFormat(", byte offset: {0}-{1})", srcinfo.CilStart, srcinfo.CilEnd);
-                    sb.AppendLine();
-                    sb.AppendLine();
-
-                    try
-                    {
-                        //get CIL for the range of the sequence point
-                        sb.AppendLine(PdbUtils.GetCilText(srcinfo.Method, srcinfo.CilStart, srcinfo.CilEnd));
-                    }
-                    catch (Exception ex) 
-                    {
-                        //don't stop the rest of method to work if this errors out
-                        //showing source can still be useful
-                        sb.AppendLine("[error!]");
-                        ErrorHandler.Current.Error(ex);
-                    }
-
-                    sb.AppendLine();
+                    SourceViewWindow srcwnd = new SourceViewWindow(srcinfo);
+                    srcwnd.ShowDialog();
                 }
-
-                sb.AppendLine("Source code: ");
-                sb.AppendFormat("({0}, ", srcinfo.SourceFile);
-                sb.AppendFormat("lines {0}-{1})", srcinfo.LineStart, srcinfo.LineEnd);
-                sb.AppendLine();
-                sb.AppendLine();
-                sb.AppendLine(src);
-                sb.AppendLine();
-
-                //show source code
-                TextViewWindow wnd = new TextViewWindow();
-                wnd.Title = "Source code";
-                wnd.Text = sb.ToString();
-                wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                wnd.ShowDialog();
             }
             catch (Exception ex)
             {
