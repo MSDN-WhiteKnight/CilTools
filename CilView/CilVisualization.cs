@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.ObjectModel;
@@ -15,9 +15,7 @@ using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
-using CilView.Symbols;
 using CilView.UI.Controls;
-using CilView.UI.Dialogs;
 
 namespace CilView
 {
@@ -28,132 +26,7 @@ namespace CilView
 
         //Default in Visual Studio for types
         static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
-
-        static ContextMenu s_instructionMenu;
-        static FrameworkContentElement s_instructionMenuTarget;
-
-        static ContextMenu GetInstructionMenu()
-        {
-            if (s_instructionMenu != null) return s_instructionMenu;
-
-            ContextMenu menu = new ContextMenu();
-            MenuItem mi;
-            mi = new MenuItem();
-            mi.Header = "Show source";
-            mi.Click += Mi_ShowSource_Click;
-            menu.Items.Add(mi);
-            mi = new MenuItem();
-            mi.Header = "Show source (method)";
-            mi.Click += Mi_ShowSource_Method_Click;
-            menu.Items.Add(mi);
-            s_instructionMenu = menu;
-            return menu;
-        }
-
-        static void ShowSource(CilInstruction instr, bool wholeMethod)
-        {
-            try
-            {
-                SourceInfo srcinfo;
-
-                if (wholeMethod)
-                {
-                    srcinfo = PdbUtils.GetSourceFromPdb(instr.Method,
-                        0, uint.MaxValue, true);
-                }
-                else
-                {
-                    srcinfo = PdbUtils.GetSourceFromPdb(instr.Method,
-                        instr.ByteOffset, instr.ByteOffset, false);
-                }
-
-                string src = srcinfo.SourceCode;
-                
-                if (string.IsNullOrWhiteSpace(src))
-                {
-                    MessageBox.Show("Failed to get source code", "Error");
-                    return;
-                }
-                
-                if (wholeMethod)
-                {
-                    //build display string
-                    StringBuilder sb = new StringBuilder(src.Length * 2);
-                    sb.AppendLine("Method: ");
-                    sb.AppendLine(MethodToString(srcinfo.Method));
-                    sb.AppendLine();
-
-                    sb.AppendLine("Source code: ");
-                    sb.AppendFormat("({0}, ", srcinfo.SourceFile);
-                    sb.AppendFormat("lines {0}-{1})", srcinfo.LineStart, srcinfo.LineEnd);
-                    sb.AppendLine();
-                    sb.AppendLine();
-                    sb.AppendLine(src);
-                    sb.AppendLine();
-
-                    //show source code
-                    TextViewWindow wnd = new TextViewWindow();
-                    wnd.Title = "Source code";
-                    wnd.Text = sb.ToString();
-                    wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    wnd.ShowDialog();
-                }
-                else
-                {
-                    SourceViewWindow srcwnd = new SourceViewWindow(srcinfo);
-                    srcwnd.ShowDialog();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex is NotSupportedException || ex is SymbolsException)
-                {
-                    //don't pollute logs with expected errors
-                    MessageBox.Show(ex.Message, "Error");
-                }
-                else
-                {
-                    ErrorHandler.Current.Error(ex);
-                }
-            }
-        }
-
-        private static void Mi_ShowSource_Click(object sender, RoutedEventArgs e)
-        {
-            if (s_instructionMenuTarget == null) return;
-
-            //show source code corresponding to instruction
-            InstructionSyntax syntax = s_instructionMenuTarget.Tag as InstructionSyntax;
-            if(syntax==null) return;
-            if(syntax.Instruction==null) return;
-
-            CilInstruction instr = syntax.Instruction;
-                        
-            ShowSource(instr, false);
-        }
-
-        private static void Mi_ShowSource_Method_Click(object sender, RoutedEventArgs e)
-        {
-            if (s_instructionMenuTarget == null) return;
-            
-            //get instruction that user right-clicked on
-            InstructionSyntax syntax = s_instructionMenuTarget.Tag as InstructionSyntax;
-            if (syntax == null) return;
-            if (syntax.Instruction == null) return;
-
-            CilInstruction instr = syntax.Instruction;
-
-            //show source code of method
-            ShowSource(instr, true);
-        }
-
-        private static void R_ContextMenuOpening(object sender, ContextMenuEventArgs e)
-        {
-            //saves the content element that user right-clicked on, so we can figure out later
-            //which instruction this context menu points to
-            s_instructionMenuTarget = sender as FrameworkContentElement;
-        }
-
+        
         internal static string MethodToString(MethodBase m)
         {
             if (m is CilTools.Runtime.ClrMethodInfo)
@@ -334,8 +207,8 @@ namespace CilView
                     if (instr != null)
                     {
                         //attach context menu to instruction opcode
-                        r.ContextMenu = GetInstructionMenu();
-                        r.ContextMenuOpening += R_ContextMenuOpening;
+                        r.ContextMenu = InstructionMenu.GetInstructionMenu();
+                        r.ContextMenuOpening += InstructionMenu.R_ContextMenuOpening;
                         r.Tag = par;
                     }
                 }

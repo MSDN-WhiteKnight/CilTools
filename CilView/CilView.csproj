@@ -140,6 +140,7 @@
     <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
       <DependentUpon>CilBrowserPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI.Controls\InstructionMenu.cs" />
     <Compile Include="UI.Controls\TextListViewer.cs" />
     <Compile Include="OpenFileOperation.cs" />
     <Compile Include="OpenProcessOperation.cs" />
