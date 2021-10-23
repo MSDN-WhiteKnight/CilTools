@@ -616,33 +616,16 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
         private void miSource_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Process.Start("https://github.com/MSDN-WhiteKnight/CilTools");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this, 
-"Failed to open URL. Navigate to https://github.com/MSDN-WhiteKnight/CilTools manually in browser to access source code"+
-                    Environment.NewLine+ Environment.NewLine+ ex.Message,
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            const string url = "https://github.com/MSDN-WhiteKnight/CilTools";
+            string mes = string.Format("Failed to open URL. Navigate to {0} manually in browser to access source code", url);
+            Utils.ShellExecute(url,this,mes);
         }
 
         private void miFeedback_Click(object sender, RoutedEventArgs e)
         {
-            try
-            {
-                Process.Start("https://github.com/MSDN-WhiteKnight/CilTools/issues/new");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(this,
-@"Failed to open URL. Navigate to https://github.com/MSDN-WhiteKnight/CilTools/issues/new manually in browser
-to provide feedback" +
-                    Environment.NewLine + Environment.NewLine + ex.Message,
-                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+            const string url = "https://github.com/MSDN-WhiteKnight/CilTools/issues/new";
+            string mes = string.Format("Failed to open URL. Navigate to {0} manually in browser to provide feedback", url);
+            Utils.ShellExecute(url,this,mes);
         }
 
         void OnSearchClick()
