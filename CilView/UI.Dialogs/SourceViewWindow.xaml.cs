@@ -6,15 +6,20 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using CilView.Common;
 using CilView.Symbols;
 
 namespace CilView.UI.Dialogs
 {
     public partial class SourceViewWindow : Window
     {
+        SourceInfo _info;
+
         public SourceViewWindow(SourceInfo info)
         {
             InitializeComponent();
+            this._info = info;
             tbMethod.Text = CilVisualization.MethodToString(info.Method);
             tbOffset.Text = info.CilStart.ToString() + "-" + info.CilEnd.ToString();
 
@@ -45,6 +50,15 @@ namespace CilView.UI.Dialogs
         private void bClose_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
+        }
+
+        private void tbFileName_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton != MouseButtonState.Pressed) return;
+
+            //open the source file in external editor
+            Utils.ShellExecute(this._info.SourceFile, this, 
+                "Failed to open source code file");
         }
     }
 }
