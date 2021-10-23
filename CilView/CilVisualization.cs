@@ -26,7 +26,7 @@ namespace CilView
 
         //Default in Visual Studio for types
         static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
-        
+
         internal static string MethodToString(MethodBase m)
         {
             if (m is CilTools.Runtime.ClrMethodInfo)
