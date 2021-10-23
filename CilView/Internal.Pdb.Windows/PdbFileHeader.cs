@@ -2,6 +2,7 @@
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file for more information.
 
+using System;
 using System.IO;
 
 namespace Internal.Pdb.Windows
@@ -18,6 +19,14 @@ namespace Internal.Pdb.Windows
         //  this.pageSize = pageSize;
         //}
 
+        void ValidateSignature(byte[] sig) 
+        {
+            if (sig[0] == 0x42 && sig[1] == 0x53 && sig[2] == 0x4A && sig[3] == 0x42) 
+            {
+                throw new NotSupportedException("Portable PDB is not supported");
+            }
+        }
+
         internal PdbFileHeader(Stream reader, BitAccess bits)
         {
             bits.MinCapacity(56);
@@ -26,6 +35,8 @@ namespace Internal.Pdb.Windows
 
             Magic = new byte[32];
             bits.ReadBytes(Magic); //   0..31
+            this.ValidateSignature(Magic);
+
             bits.ReadInt32(out PageSize); //  32..35
             bits.ReadInt32(out FreePageMap); //  36..39
             bits.ReadInt32(out PagesUsed); //  40..43

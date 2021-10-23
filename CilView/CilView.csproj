@@ -111,10 +111,36 @@
     <Compile Include="Exceptions\TypeExceptionInfo.cs" />
     <Compile Include="FileSystem\AssemblyFile.cs" />
     <Compile Include="FileSystem\RuntimeDir.cs" />
+    <Compile Include="Internal.Pdb.Windows\BitAccess.cs" />
+    <Compile Include="Internal.Pdb.Windows\BitSet.cs" />
+    <Compile Include="Internal.Pdb.Windows\CvInfo.cs" />
+    <Compile Include="Internal.Pdb.Windows\DataStream.cs" />
+    <Compile Include="Internal.Pdb.Windows\DbiDbgHdr.cs" />
+    <Compile Include="Internal.Pdb.Windows\DbiHeader.cs" />
+    <Compile Include="Internal.Pdb.Windows\DbiModuleInfo.cs" />
+    <Compile Include="Internal.Pdb.Windows\DbiSecCon.cs" />
+    <Compile Include="Internal.Pdb.Windows\MsfDirectory.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbConstant.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbDebugException.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbException.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbFile.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbFileHeader.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbFunction.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbReader.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbScope.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbSequencePoint.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbSequencePointCollection.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbSlot.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbSource.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbStreamHelper.cs" />
+    <Compile Include="Symbols\PdbUtils.cs" />
     <Compile Include="SearchResult.cs" />
+    <Compile Include="Symbols\SourceInfo.cs" />
+    <Compile Include="Symbols\SymbolsException.cs" />
     <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
       <DependentUpon>CilBrowserPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI.Controls\InstructionMenu.cs" />
     <Compile Include="UI.Controls\TextListViewer.cs" />
     <Compile Include="OpenFileOperation.cs" />
     <Compile Include="OpenProcessOperation.cs" />
@@ -130,6 +156,9 @@
     </Compile>
     <Compile Include="UI.Dialogs\SelectProcessWindow.xaml.cs">
       <DependentUpon>SelectProcessWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI.Dialogs\SourceViewWindow.xaml.cs">
+      <DependentUpon>SourceViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI.Dialogs\TextViewWindow.xaml.cs">
       <DependentUpon>TextViewWindow.xaml</DependentUpon>
@@ -178,6 +207,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI.Dialogs\SourceViewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI.Dialogs\TextViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -214,6 +247,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Internal.Pdb.Windows\LICENSE" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -241,6 +275,7 @@
   <ItemGroup>
     <EmbeddedResource Include="Build\CsTemplate.xml" />
     <EmbeddedResource Include="Build\VbTemplate.xml" />
+    <None Include="Internal.Pdb.Windows\ReadMe.txt" />
     <Content Include="license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

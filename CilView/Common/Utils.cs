@@ -3,9 +3,11 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace CilView.Common
@@ -132,6 +134,27 @@ namespace CilView.Common
             if (mb == null) return false;
 
             return StringEquals(mb.Name, ".ctor")|| StringEquals(mb.Name, ".cctor");
+        }
+
+        /// <summary>
+        /// Opens the specified file or URL in the default associated application. 
+        /// Does not throw exceptions on failure.
+        /// </summary>
+        /// <param name="filepath">File or URL to open</param>
+        public static void ShellExecute(string filepath, Window wnd, string errmsg)
+        {
+            try
+            {
+                Process.Start(filepath);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex, "Utils.ShellExecute", silent: true);
+
+                MessageBox.Show(wnd,
+                    errmsg + Environment.NewLine + Environment.NewLine + ex.Message,
+                    "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

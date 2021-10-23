@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.ObjectModel;
@@ -192,6 +192,26 @@ namespace CilView
             {
                 KeywordSyntax ks = (KeywordSyntax)node;
                 r = new Run();
+                string text=node.ToString();
+
+                if (ks.Kind == KeywordKind.InstructionName) 
+                {
+                    InstructionSyntax par = ks.Parent as InstructionSyntax;
+                    CilInstruction instr = null;
+
+                    if (par != null)
+                    {
+                        instr = par.Instruction;
+                    }
+
+                    if (instr != null)
+                    {
+                        //attach context menu to instruction opcode
+                        r.ContextMenu = InstructionMenu.GetInstructionMenu();
+                        r.ContextMenuOpening += InstructionMenu.R_ContextMenuOpening;
+                        r.Tag = par;
+                    }
+                }
 
                 if (ks.Kind == KeywordKind.InstructionName && ctx.highlight_start >= 0)
                 {
@@ -224,7 +244,7 @@ namespace CilView
                 else if (ks.Kind == KeywordKind.DirectiveName)
                     r.Foreground = Brushes.Magenta;
                 
-                r.Text = node.ToString();
+                r.Text = text;
                 target.Inlines.Add(r);
             }
             else if (node is IdentifierSyntax)

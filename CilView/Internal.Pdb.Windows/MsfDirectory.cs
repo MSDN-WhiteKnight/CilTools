@@ -1,6 +1,7 @@
 // Licensed to the .NET Foundation under one or more agreements.
 // The .NET Foundation licenses this file to you under the MIT license.
 // See the LICENSE file for more information.
+using System.IO;
 
 namespace Internal.Pdb.Windows
 {
@@ -32,6 +33,11 @@ namespace Internal.Pdb.Windows
             // 0..3 in directory pages
             int count;
             bits.ReadInt32(out count);
+
+            if (count > 500000)
+            {
+                throw new PdbException("PDB data is invalid");
+            }
 
             // 4..n
             int[] sizes = new int[count];
