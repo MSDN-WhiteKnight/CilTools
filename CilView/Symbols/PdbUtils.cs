@@ -8,6 +8,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
+using CilView.Common;
 using Internal.Pdb.Windows;
 
 namespace CilView.Symbols
@@ -205,13 +207,128 @@ namespace CilView.Symbols
             ret.SourceCode = sb.ToString();
             return ret;
         }
-
-        public static void Test()
+      
+        public static string GetMethodSigString(MethodBase m)
         {
-            string source;
-            Console.WriteLine("*** Source from PDB: ***");
-            source = GetSourceFromPdb<string>((s) => s == "Test" || s.Length == 0);
-            Console.WriteLine(source);
+            StringBuilder sb = new StringBuilder(500);
+            ParameterInfo[] pars = m.GetParameters();
+
+            if (m.IsPublic) sb.Append("public ");
+            else if(m.IsFamily) sb.Append("protected ");
+            else if (m.IsAssembly) sb.Append("internal ");
+
+            if(m.IsStatic) sb.Append("static ");
+
+            string rettype = string.Empty;
+
+            if (m is CustomMethod)
+            {
+                CustomMethod cm = (CustomMethod)m;
+                Type t = cm.ReturnType;
+
+                if (t != null)
+                {
+                    if (Utils.StringEquals(t.FullName, "System.Void"))
+                    {
+                        rettype = "void";
+                    }
+                    else
+                    {
+                        rettype = t.Name;
+                    }
+                }
+            }
+
+            sb.Append(rettype);
+            sb.Append(' ');
+            sb.Append(m.Name);
+
+            if (m.IsGenericMethod)
+            {
+                sb.Append('<');
+
+                Type[] args = m.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) sb.Append(", ");
+
+                    sb.Append(args[i].Name);
+                }
+
+                sb.Append('>');
+            }
+
+            sb.Append('(');
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (i >= 1) sb.Append(", ");
+                sb.Append(pars[i].ParameterType.Name);
+                sb.Append(' ');
+
+                string parname = pars[i].Name;
+
+                if (string.IsNullOrEmpty(parname))
+                {
+                    parname = "par" + (i + 1).ToString();
+                }
+
+                sb.Append(parname);
+            }
+
+            sb.Append(')');
+            return sb.ToString();
+        }
+
+        /// <summary>
+        /// Removes redundant indentation from the start of each line in the specified string
+        /// </summary>
+        public static string Deindent(string code)
+        {
+            string code_normalized = code.Replace("\r\n", "\n");
+            char[] separators = new char[] { '\n' };
+            string[] lines = code_normalized.Split(separators);
+
+            //don't bother with single-line strings
+            if (lines.Length <= 1) return code;
+
+            //find common whitepace prefix length
+            int minWhitespace = int.MaxValue;
+            int cWhitespace;
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                if (lines[i].Length == 0) continue;
+
+                cWhitespace = 0;
+
+                for (int j = 0; j < lines[i].Length; j++)
+                {
+                    if (lines[i][j] == ' ') cWhitespace++;
+                    else break;
+                }
+
+                if (cWhitespace < minWhitespace)
+                {
+                    minWhitespace = cWhitespace;
+                }
+            }
+
+            if (minWhitespace <= 0) return code; //no common whitespace prefix
+
+            string[] lines_new = new string[lines.Length];
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                //string whitespace off the start of each line
+                string line = lines[i];
+                int index = minWhitespace;
+                if (index >= line.Length) index=0;
+                line = line.Substring(index);
+                lines_new[i] = line;
+            }
+
+            return string.Join(Environment.NewLine, lines_new);
         }
     }
 }

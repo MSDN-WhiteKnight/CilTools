@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilView.Symbols;
@@ -84,18 +85,24 @@ namespace CilView.UI.Controls
 
                 if (wholeMethod)
                 {
+                    string methodstr = string.Empty;
+
+                    try { methodstr = PdbUtils.GetMethodSigString(srcinfo.Method); }
+                    catch (Exception ex)
+                    {
+                        //don't error out if we can't build good signature string
+                        ErrorHandler.Current.Error(ex, "", silent: true);
+                        methodstr = CilVisualization.MethodToString(srcinfo.Method);
+                    }
+
                     //build display string
                     StringBuilder sb = new StringBuilder(src.Length * 2);
-                    sb.AppendLine("Method: ");
-                    sb.AppendLine(CilVisualization.MethodToString(srcinfo.Method));
-                    sb.AppendLine();
-
-                    sb.AppendLine("Source code: ");
                     sb.AppendFormat("({0}, ", srcinfo.SourceFile);
                     sb.AppendFormat("lines {0}-{1})", srcinfo.LineStart, srcinfo.LineEnd);
                     sb.AppendLine();
                     sb.AppendLine();
-                    sb.AppendLine(src);
+                    sb.AppendLine(methodstr);
+                    sb.AppendLine(PdbUtils.Deindent(src));
                     sb.AppendLine();
 
                     //show source code
@@ -103,6 +110,8 @@ namespace CilView.UI.Controls
                     wnd.Title = "Source code";
                     wnd.Text = sb.ToString();
                     wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                    wnd.TextFontFamily = new FontFamily("Courier New");
+                    wnd.TextFontSize = 14.0;
                     wnd.ShowDialog();
                 }
                 else
