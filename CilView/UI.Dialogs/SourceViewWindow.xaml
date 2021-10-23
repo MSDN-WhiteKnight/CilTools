@@ -26,17 +26,17 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
-            <TextBox x:Name="tbCIL" HorizontalAlignment="Stretch" Margin="5,5,5,5" TextWrapping="Wrap" Text="" 
-                 VerticalAlignment="Stretch" IsReadOnly="True" FontFamily="Courier New" FontSize="14"
-                 Grid.Column="0" VerticalScrollBarVisibility="Visible"/>
+            <TextBox x:Name="tbCIL" HorizontalAlignment="Stretch" Margin="5,5,5,5" Text="" 
+                 VerticalAlignment="Stretch" IsReadOnly="True" Style="{StaticResource CodeBlock}"
+                 Grid.Column="0" />
 
             <TextBlock x:Name="tbFileName" Text="File" HorizontalAlignment="Stretch" Margin="5,5,0,0" 
                  VerticalAlignment="Top" Foreground="Blue" Cursor="Hand"
                  ToolTip="Open in external editor" Grid.Column="1" 
                  MouseDown="tbFileName_MouseDown"/>
-            <TextBox x:Name="tbSource" HorizontalAlignment="Stretch" Margin="5,35,5,5" TextWrapping="Wrap" 
-                 Text="" VerticalAlignment="Stretch" IsReadOnly="True" FontFamily="Courier New"
-                 FontSize="14" Grid.Column="1" VerticalScrollBarVisibility="Visible" />
+            <TextBox x:Name="tbSource" HorizontalAlignment="Stretch" Margin="5,35,5,5" 
+                 Text="" VerticalAlignment="Stretch" IsReadOnly="True" Style="{StaticResource CodeBlock}" 
+                 Grid.Column="1" />
 
         </Grid>
         

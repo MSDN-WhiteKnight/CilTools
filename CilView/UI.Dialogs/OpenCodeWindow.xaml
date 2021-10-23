@@ -15,9 +15,9 @@
                ToolTip="Click for more information"/>
         <TextBlock x:Name="tbVersionInfo" HorizontalAlignment="Stretch" Margin="260,23,20,20" TextWrapping="NoWrap" 
                    Text="..." VerticalAlignment="Top" />
-        <TextBox x:Name="tbContent" HorizontalAlignment="Stretch"  Margin="20,60,20,60" TextWrapping="Wrap" Text="" 
-                 VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" AcceptsReturn="True" 
-                 FontFamily="Courier New" IsInactiveSelectionHighlightEnabled="True"
+        <TextBox x:Name="tbContent" HorizontalAlignment="Stretch"  Margin="20,60,20,60" Text="" 
+                 VerticalAlignment="Stretch" AcceptsReturn="True" Style="{StaticResource CodeBlock}"
+                 IsInactiveSelectionHighlightEnabled="True"
                  SelectionBrush="CornflowerBlue"/>
         <Button x:Name="bOK" Content="OK" HorizontalAlignment="Left" Margin="50,20,20,20" VerticalAlignment="Bottom" 
                 Width="75" Height="28" Click="bOK_Click"/>
