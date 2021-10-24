@@ -3,7 +3,7 @@
  * License: BSD 2.0 */
 using System;
 
-namespace CilView.Symbols
+namespace CilView.SourceCode
 {
     /// <summary>
     /// Specifies how to determine the bytecode fragment when reading symbols

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CilView.Symbols
+namespace CilView.SourceCode
 {
     class SymbolsException:Exception
     {

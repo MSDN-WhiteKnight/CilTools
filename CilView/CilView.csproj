@@ -132,12 +132,12 @@
     <Compile Include="Internal.Pdb.Windows\PdbSequencePointCollection.cs" />
     <Compile Include="Internal.Pdb.Windows\PdbSlot.cs" />
     <Compile Include="Internal.Pdb.Windows\PdbSource.cs" />
-    <Compile Include="Internal.Pdb.Windows\PdbStreamHelper.cs" />
-    <Compile Include="Symbols\PdbUtils.cs" />
+    <Compile Include="Internal.Pdb.Windows\PdbStreamHelper.cs" />    
     <Compile Include="SearchResult.cs" />
-    <Compile Include="Symbols\SourceInfo.cs" />
-    <Compile Include="Symbols\SymbolsException.cs" />
-    <Compile Include="Symbols\SymbolsQueryType.cs" />
+    <Compile Include="SourceCode\PdbUtils.cs" />
+    <Compile Include="SourceCode\SourceInfo.cs" />
+    <Compile Include="SourceCode\SymbolsException.cs" />
+    <Compile Include="SourceCode\SymbolsQueryType.cs" />
     <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
       <DependentUpon>CilBrowserPage.xaml</DependentUpon>
     </Compile>

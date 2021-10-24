@@ -10,7 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
-using CilView.Symbols;
+using CilView.SourceCode;
 using CilView.UI.Dialogs;
 
 namespace CilView.UI.Controls

@@ -8,7 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using CilView.Common;
-using CilView.Symbols;
+using CilView.SourceCode;
 
 namespace CilView.UI.Dialogs
 {

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 
-namespace CilView.Symbols
+namespace CilView.SourceCode
 {
     /// <summary>
     /// Contains information about a source code fragment corresponding to some bytecode fragment 

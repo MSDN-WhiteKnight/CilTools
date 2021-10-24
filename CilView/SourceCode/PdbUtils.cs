@@ -12,7 +12,7 @@ using CilTools.Reflection;
 using CilView.Common;
 using Internal.Pdb.Windows;
 
-namespace CilView.Symbols
+namespace CilView.SourceCode
 {
     class PdbUtils
     {
