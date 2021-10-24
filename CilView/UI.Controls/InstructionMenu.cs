@@ -7,11 +7,9 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilView.SourceCode;
-using CilView.UI.Dialogs;
 
 namespace CilView.UI.Controls
 {
@@ -58,82 +56,6 @@ namespace CilView.UI.Controls
             return menu;
         }
 
-        static void ShowSource(CilInstruction instr, bool wholeMethod)
-        {
-            try
-            {
-                SourceInfo srcinfo;
-
-                if (wholeMethod)
-                {
-                    srcinfo = PdbUtils.GetSourceFromPdb(instr.Method,
-                        0, uint.MaxValue, SymbolsQueryType.RangeExact);
-                }
-                else
-                {
-                    srcinfo = PdbUtils.GetSourceFromPdb(instr.Method,
-                        instr.ByteOffset, instr.ByteOffset, SymbolsQueryType.SequencePoint);
-                }
-
-                string src = srcinfo.SourceCode;
-
-                if (string.IsNullOrWhiteSpace(src))
-                {
-                    MessageBox.Show("Failed to get source code", "Error");
-                    return;
-                }
-
-                if (wholeMethod)
-                {
-                    string methodstr = string.Empty;
-
-                    try { methodstr = PdbUtils.GetMethodSigString(srcinfo.Method); }
-                    catch (Exception ex)
-                    {
-                        //don't error out if we can't build good signature string
-                        ErrorHandler.Current.Error(ex, "", silent: true);
-                        methodstr = CilVisualization.MethodToString(srcinfo.Method);
-                    }
-
-                    //build display string
-                    StringBuilder sb = new StringBuilder(src.Length * 2);
-                    sb.AppendFormat("({0}, ", srcinfo.SourceFile);
-                    sb.AppendFormat("lines {0}-{1})", srcinfo.LineStart, srcinfo.LineEnd);
-                    sb.AppendLine();
-                    sb.AppendLine();
-                    sb.AppendLine(methodstr);
-                    sb.AppendLine(PdbUtils.Deindent(src));
-                    sb.AppendLine();
-
-                    //show source code
-                    TextViewWindow wnd = new TextViewWindow();
-                    wnd.Title = "Source code";
-                    wnd.Text = sb.ToString();
-                    wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    wnd.TextFontFamily = new FontFamily("Courier New");
-                    wnd.TextFontSize = 14.0;
-                    wnd.ShowDialog();
-                }
-                else
-                {
-                    SourceViewWindow srcwnd = new SourceViewWindow(srcinfo);
-                    srcwnd.ShowDialog();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex is NotSupportedException || ex is SymbolsException)
-                {
-                    //don't pollute logs with expected errors
-                    MessageBox.Show(ex.Message, "Error");
-                }
-                else
-                {
-                    ErrorHandler.Current.Error(ex);
-                }
-            }
-        }
-
         private static void Mi_ShowSource_Click(object sender, RoutedEventArgs e)
         {
             if (s_instructionMenuTarget == null) return;
@@ -145,7 +67,7 @@ namespace CilView.UI.Controls
 
             CilInstruction instr = syntax.Instruction;
 
-            ShowSource(instr, false);
+            SourceCodeUI.ShowSource(instr.Method, instr.ByteOffset, false);
         }
 
         private static void Mi_ShowSource_Method_Click(object sender, RoutedEventArgs e)
@@ -160,7 +82,7 @@ namespace CilView.UI.Controls
             CilInstruction instr = syntax.Instruction;
 
             //show source code of method
-            ShowSource(instr, true);
+            SourceCodeUI.ShowSource(instr.Method, 0, true);
         }
 
         static FlowDocumentScrollViewer GetViewer()

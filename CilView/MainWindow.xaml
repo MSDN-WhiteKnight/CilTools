@@ -19,13 +19,16 @@
                 <MenuItem Header="Process info" Click="bProcessInfo_Click"/>
                 <MenuItem x:Name="miThreads" Header="Threads" Click="miThreads_Click" />
             </MenuItem>
-            <MenuItem Header="Analysis">
+            <MenuItem Header="Tools">
                 <MenuItem x:Name="miShowExceptions" Header="Show exceptions (method)" 
                           Click="miShowExceptions_Click"/>
                 <MenuItem x:Name="miShowExceptionsType" Header="Show exceptions (type)" 
                           InputGestureText="F2" Click="miShowExceptionsType_Click"/>
                 <MenuItem x:Name="miCompareExceptions" Header="Compare exceptions" 
                            InputGestureText="F4" Click="miCompareExceptions_Click"/>
+                <Separator/>
+                <MenuItem x:Name="miShowSource" Header="Show source code" Click="miShowSource_Click"/>
+                <MenuItem x:Name="miShowMethodSource" Header="Show source code (method)" Click="miShowMethodSource_Click"/>
             </MenuItem>
             <MenuItem Header="Help" >
                 <MenuItem x:Name="miHelp" Header="Show help" Click="miHelp_Click" InputGestureText="F1"/>

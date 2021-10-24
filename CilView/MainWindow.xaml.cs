@@ -2,26 +2,20 @@
  * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.ComponentModel;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Documents;
-using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using CilView.Build;
 using CilView.Common;
 using CilView.Exceptions;
+using CilView.SourceCode;
 using CilView.UI.Dialogs;
-using CilView.UI.Controls;
-using Microsoft.Diagnostics.Runtime;
 using Microsoft.Win32;
 
 namespace CilView
@@ -883,6 +877,32 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             {
                 ErrorHandler.Current.Error(ex);
             }
+        }
+
+        private void miShowSource_Click(object sender, RoutedEventArgs e)
+        {
+            MethodBase current_method = this.cilbrowser.GetCurrentMethod();
+
+            if (current_method == null)
+            {
+                MessageBox.Show(this, "No method selected. Select method first to show source code.", "Error");
+                return;
+            }
+
+            SourceCodeUI.ShowSource(current_method, 0, false);
+        }
+
+        private void miShowMethodSource_Click(object sender, RoutedEventArgs e)
+        {
+            MethodBase current_method = this.cilbrowser.GetCurrentMethod();
+
+            if (current_method == null)
+            {
+                MessageBox.Show(this, "No method selected. Select method first to show source code.", "Error");
+                return;
+            }
+
+            SourceCodeUI.ShowSource(current_method, 0, true);
         }
     }
 }
