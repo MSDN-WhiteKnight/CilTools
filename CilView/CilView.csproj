@@ -137,6 +137,7 @@
     <Compile Include="SearchResult.cs" />
     <Compile Include="Symbols\SourceInfo.cs" />
     <Compile Include="Symbols\SymbolsException.cs" />
+    <Compile Include="Symbols\SymbolsQueryType.cs" />
     <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
       <DependentUpon>CilBrowserPage.xaml</DependentUpon>
     </Compile>

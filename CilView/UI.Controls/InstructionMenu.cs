@@ -67,12 +67,12 @@ namespace CilView.UI.Controls
                 if (wholeMethod)
                 {
                     srcinfo = PdbUtils.GetSourceFromPdb(instr.Method,
-                        0, uint.MaxValue, true);
+                        0, uint.MaxValue, SymbolsQueryType.RangeExact);
                 }
                 else
                 {
                     srcinfo = PdbUtils.GetSourceFromPdb(instr.Method,
-                        instr.ByteOffset, instr.ByteOffset, false);
+                        instr.ByteOffset, instr.ByteOffset, SymbolsQueryType.SequencePoint);
                 }
 
                 string src = srcinfo.SourceCode;

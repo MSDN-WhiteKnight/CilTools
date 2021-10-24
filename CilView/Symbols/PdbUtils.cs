@@ -38,7 +38,7 @@ namespace CilView.Symbols
 
         public static string GetSourceFromPdb<T>(Predicate<T> match) 
         {
-            return GetSourceFromPdb(match.Method,0,uint.MaxValue,true).SourceCode;
+            return GetSourceFromPdb(match.Method,0,uint.MaxValue,SymbolsQueryType.RangeExact).SourceCode;
         }
 
         /// <summary>
@@ -47,11 +47,15 @@ namespace CilView.Symbols
         /// <param name="m">Method for which to get the source code</param>
         /// <param name="startOffset">Byte offset of the bytecode fragment's start</param>
         /// <param name="endOffset">Byte offset of the bytecode fragment's end</param>
-        /// <param name="exact">
-        /// <c>true</c> to return the sources for exact specified bytecode fragment; <c>false</c> to get the sources 
+        /// <param name="queryType"> Specifies how to determine the source bytecode fragment:  
+        /// <see cref="SymbolsQueryType.RangeExact"/> to return the sources for exact specified bytecode fragment; 
+        /// <see cref="SymbolsQueryType.SequencePoint"/> to get the sources 
         /// for the sequence point in which starting offset lies.
         /// </param>
-        public static SourceInfo GetSourceFromPdb(MethodBase m,uint startOffset,uint endOffset,bool exact)
+        public static SourceInfo GetSourceFromPdb(MethodBase m,
+            uint startOffset,
+            uint endOffset,
+            SymbolsQueryType queryType)
         {
             int token = m.MetadataToken;
 
@@ -102,7 +106,7 @@ namespace CilView.Symbols
                     PdbSequencePoint start;
                     PdbSequencePoint end;
 
-                    if (exact)
+                    if (queryType == SymbolsQueryType.RangeExact)
                     {
                         var points_sorted = coll.Lines.
                             Where((x) => x.LineBegin <= lines.Length && x.LineEnd <= lines.Length &&
@@ -117,7 +121,7 @@ namespace CilView.Symbols
                         start = points_sorted.First();
                         end = points_sorted.Last();
                     }
-                    else 
+                    else if (queryType == SymbolsQueryType.SequencePoint)
                     {
                         PdbSequencePoint[] points=coll.Lines.
                             Where((x) => x.LineBegin <= lines.Length && x.LineEnd <= lines.Length).
@@ -149,7 +153,13 @@ namespace CilView.Symbols
                             PdbSequencePoint pNext = points[pNext_index];
                             ret.CilEnd = pNext.Offset;
                         }
+                        else
+                        {
+                            int bodySize = Utils.GetMethodBodySize(m);
+                            if (bodySize > 0 && bodySize >= ret.CilStart) ret.CilEnd = (uint)bodySize;
+                        }
                     }
+                    else throw new NotSupportedException("Unknown symbols query type: "+queryType.ToString());
 
                     ret.SourceFile = coll.File.Name;
                     ret.LineStart = (int)start.LineBegin;

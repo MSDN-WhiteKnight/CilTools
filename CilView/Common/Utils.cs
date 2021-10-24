@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
+using CilTools.Reflection;
 
 namespace CilView.Common
 {
@@ -134,6 +135,24 @@ namespace CilView.Common
             if (mb == null) return false;
 
             return StringEquals(mb.Name, ".ctor")|| StringEquals(mb.Name, ".cctor");
+        }
+
+        public static int GetMethodBodySize(MethodBase mb)
+        {
+            if (mb.IsAbstract) return -1;
+            if (!(mb is CustomMethod)) return -1;
+
+            try
+            {
+                CustomMethod cm = (CustomMethod)mb;
+                byte[] body = cm.GetBytecode();
+                if (body.Length > 0) return body.Length;
+                else return -1;
+            }
+            catch (Exception)
+            {
+                return -1;
+            }
         }
 
         /// <summary>
