@@ -7,8 +7,7 @@
         mc:Ignorable="d"
         Title="View source" Height="450" Width="800" WindowStartupLocation="CenterOwner">
     <Grid>
-
-
+        
         <Grid Margin="15 20 15 50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -32,9 +31,14 @@
                  Grid.Column="1" />
 
         </Grid>
-        
-        
-        <Button x:Name="bClose" Content="Close" HorizontalAlignment="Left" Margin="20,10,20,12" VerticalAlignment="Bottom" 
+
+        <Button x:Name="bPrevious" Content="&lt;" HorizontalAlignment="Left" Margin="20,10,20,12" 
+                VerticalAlignment="Bottom" Width="40" Height="30" 
+                ToolTip="Previous sequence point" Click="bPrevious_Click"/>
+        <Button x:Name="bNext" Content="&gt;" HorizontalAlignment="Left" Margin="70,10,20,12" 
+                VerticalAlignment="Bottom" Width="40" Height="30" 
+                ToolTip="Next sequence point" Click="bNext_Click" />
+        <Button x:Name="bClose" Content="Close" HorizontalAlignment="Right" Margin="20,10,20,12" VerticalAlignment="Bottom" 
                 Width="100" Height="30" Click="bClose_Click"/>
 
     </Grid>
