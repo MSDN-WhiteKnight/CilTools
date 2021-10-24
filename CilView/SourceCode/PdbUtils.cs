@@ -105,6 +105,8 @@ namespace CilView.SourceCode
                     //найдем номера строк в файле, соответствующие началу и концу фрагмента
                     PdbSequencePoint start;
                     PdbSequencePoint end;
+                    PdbSequencePoint pNext=new PdbSequencePoint();
+                    bool has_pNext=false;
 
                     if (queryType == SymbolsQueryType.RangeExact)
                     {
@@ -120,6 +122,7 @@ namespace CilView.SourceCode
 
                         start = points_sorted.First();
                         end = points_sorted.Last();
+                        has_pNext = false;
                     }
                     else if (queryType == SymbolsQueryType.SequencePoint)
                     {
@@ -150,13 +153,15 @@ namespace CilView.SourceCode
 
                         if (pNext_index < points.Length) 
                         {
-                            PdbSequencePoint pNext = points[pNext_index];
+                            pNext = points[pNext_index];
                             ret.CilEnd = pNext.Offset;
+                            has_pNext = true;
                         }
                         else
                         {
                             int bodySize = Utils.GetMethodBodySize(m);
                             if (bodySize > 0 && bodySize >= ret.CilStart) ret.CilEnd = (uint)bodySize;
+                            has_pNext = false;
                         }
                     }
                     else throw new NotSupportedException("Unknown symbols query type: "+queryType.ToString());
@@ -164,6 +169,13 @@ namespace CilView.SourceCode
                     ret.SourceFile = coll.File.Name;
                     ret.LineStart = (int)start.LineBegin;
                     ret.LineEnd = (int)end.LineEnd;
+
+                    if (has_pNext && ret.LineStart == ret.LineEnd && start.ColBegin == end.ColEnd)
+                    {
+                        //C++/CLI
+                        end = pNext;
+                        ret.LineEnd = (int)end.LineEnd;
+                    }
 
                     bool reading = false;
                     int index_start;
@@ -202,6 +214,7 @@ namespace CilView.SourceCode
                                 //последняя строка
                                 index_end = end.ColEnd - 1;
                                 if (index_end > line.Length) index_end = line.Length;
+                                if (index_end < index_start) index_end = index_start;
 
                                 sb.AppendLine(line.Substring(index_start, index_end - index_start));
                                 break;
