@@ -7,17 +7,9 @@
         mc:Ignorable="d"
         Title="View source" Height="450" Width="800" WindowStartupLocation="CenterOwner">
     <Grid>
-        <Label  Content="Method:" HorizontalAlignment="Left" Margin="20,15,0,0" 
-               VerticalAlignment="Top"/>
-        <TextBox x:Name="tbMethod" HorizontalAlignment="Left" Height="23" Margin="110,18,0,0" TextWrapping="NoWrap" Text="" 
-                 VerticalAlignment="Top" Width="662" IsReadOnly="True"/>
-        <Label  Content="Byte offset:" HorizontalAlignment="Left" Margin="20,45,0,0" 
-               VerticalAlignment="Top"/>
-        <TextBox x:Name="tbOffset" HorizontalAlignment="Left" Height="23" Margin="110,48,0,0" TextWrapping="NoWrap" Text="" 
-                 VerticalAlignment="Top" Width="150" IsReadOnly="True"/>
-        
 
-        <Grid Margin="15 80 15 50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+
+        <Grid Margin="15 20 15 50" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
@@ -25,8 +17,9 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
-            <TextBox x:Name="tbCIL" HorizontalAlignment="Stretch" Margin="5,5,5,5" Text="" 
+            <TextBox x:Name="tbMethod" HorizontalAlignment="Stretch" Height="23" Margin="5,5,5,5" TextWrapping="NoWrap" 
+                 Text="" VerticalAlignment="Top" IsReadOnly="True"/>
+            <TextBox x:Name="tbCIL" HorizontalAlignment="Stretch" Margin="5,35,5,5" Text="" 
                  VerticalAlignment="Stretch" IsReadOnly="True" Style="{StaticResource CodeBlock}"
                  Grid.Column="0" />
 

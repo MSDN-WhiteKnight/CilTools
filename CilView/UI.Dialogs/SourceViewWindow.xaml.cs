@@ -20,8 +20,14 @@ namespace CilView.UI.Dialogs
         {
             InitializeComponent();
             this._info = info;
-            tbMethod.Text = CilVisualization.MethodToString(info.Method);
-            tbOffset.Text = info.CilStart.ToString() + "-" + info.CilEnd.ToString();
+
+            StringBuilder method_str = new StringBuilder(200);
+            method_str.Append(CilVisualization.MethodToString(info.Method));
+            method_str.Append(", byte offset: ");
+            method_str.Append(info.CilStart.ToString());
+            method_str.Append('-');
+            method_str.Append(info.CilEnd.ToString());
+            tbMethod.Text = method_str.ToString();
 
             StringBuilder sb = new StringBuilder(500);
             sb.Append(info.SourceFile);
