@@ -132,7 +132,7 @@ namespace CilView.SourceCode
                              x.LineEnd < PDB_HIDDEN_SEQUENCE_POINT).
                             OrderBy((x) => x.Offset).ToArray();
 
-                        if(pdb_path.Length==0) return SourceInfo.Empty;
+                        if(points.Length == 0) return SourceInfo.Empty;
 
                         PdbSequencePoint p=points[0];
                         int p_index = 0;
