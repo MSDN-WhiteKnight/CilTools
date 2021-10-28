@@ -41,6 +41,8 @@ namespace CilView.SourceCode
             return GetSourceFromPdb(match.Method,0,uint.MaxValue,SymbolsQueryType.RangeExact).SourceCode;
         }
 
+        const uint PDB_HIDDEN_SEQUENCE_POINT = 0x00feefee;
+
         /// <summary>
         /// Gets the source code for the specified bytecode fragment using PDB symbols
         /// </summary>
@@ -73,7 +75,8 @@ namespace CilView.SourceCode
                 throw new SymbolsException("Symbols file not found: "+pdb_path);
             }
 
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(500);
+            StringWriter wr = new StringWriter(sb);
             PdbReader reader = new PdbReader(pdb_path);
             SourceInfo ret = new SourceInfo();
             ret.SymbolsFile = pdb_path;
@@ -98,10 +101,7 @@ namespace CilView.SourceCode
                     {
                         throw new SymbolsException("Source file not found: "+coll.File.Name);
                     }
-
-                    //считываем файл исходников
-                    string[] lines = File.ReadAllLines(coll.File.Name, Encoding.UTF8);
-
+                    
                     //найдем номера строк в файле, соответствующие началу и концу фрагмента
                     PdbSequencePoint start;
                     PdbSequencePoint end;
@@ -111,8 +111,9 @@ namespace CilView.SourceCode
                     if (queryType == SymbolsQueryType.RangeExact)
                     {
                         var points_sorted = coll.Lines.
-                            Where((x) => x.LineBegin <= lines.Length && x.LineEnd <= lines.Length &&
-                            x.Offset >= startOffset && x.Offset < endOffset).
+                            Where((x) => x.Offset >= startOffset && x.Offset < endOffset && 
+                             x.LineBegin < PDB_HIDDEN_SEQUENCE_POINT &&
+                             x.LineEnd < PDB_HIDDEN_SEQUENCE_POINT).
                             OrderBy((x) => x.Offset);
 
                         if (points_sorted.Count() == 0)
@@ -126,8 +127,9 @@ namespace CilView.SourceCode
                     }
                     else if (queryType == SymbolsQueryType.SequencePoint)
                     {
-                        PdbSequencePoint[] points=coll.Lines.
-                            Where((x) => x.LineBegin <= lines.Length && x.LineEnd <= lines.Length).
+                        PdbSequencePoint[] points = coll.Lines.
+                            Where((x) => x.LineBegin < PDB_HIDDEN_SEQUENCE_POINT &&
+                             x.LineEnd < PDB_HIDDEN_SEQUENCE_POINT).
                             OrderBy((x) => x.Offset).ToArray();
 
                         if(pdb_path.Length==0) return SourceInfo.Empty;
@@ -151,7 +153,7 @@ namespace CilView.SourceCode
 
                         int pNext_index = p_index + 1;
 
-                        if (pNext_index < points.Length) 
+                        if (pNext_index < points.Length)
                         {
                             pNext = points[pNext_index];
                             ret.CilEnd = pNext.Offset;
@@ -177,60 +179,76 @@ namespace CilView.SourceCode
                         ret.LineEnd = (int)end.LineEnd;
                     }
 
-                    bool reading = false;
-                    int index_start;
-                    int index_end;
+                    bool exact = startOffset != 0 || endOffset != uint.MaxValue;
 
                     //считаем код метода из исходников
-                    for (int i = 1; i <= lines.Length; i++)
-                    {
-                        string line = lines[i - 1];
-                        index_start = 0;
-                        index_end = line.Length;
-
-                        if (!reading)
-                        {
-                            if (i >= start.LineBegin)
-                            {
-                                //первая строка
-                                reading = true;
-
-                                if (startOffset != 0 || endOffset != uint.MaxValue)
-                                {
-                                    index_start = start.ColBegin - 1;
-                                    if (index_start < 0) index_start = 0;
-                                }
-                                else 
-                                {
-                                    index_start = 0;
-                                }
-                            }
-                        }
-
-                        if (reading)
-                        {
-                            if (i >= end.LineEnd)
-                            {
-                                //последняя строка
-                                index_end = end.ColEnd - 1;
-                                if (index_end > line.Length) index_end = line.Length;
-                                if (index_end < index_start) index_end = index_start;
-
-                                sb.AppendLine(line.Substring(index_start, index_end - index_start));
-                                break;
-                            }
-
-                            //считывание текущей строки
-                            sb.AppendLine(line.Substring(index_start, index_end - index_start));
-                        }
-                    }
+                    ReadSourceFromFile(coll.File.Name, start.LineBegin, start.ColBegin, 
+                        end.LineEnd, end.ColEnd, exact, wr);
+                    
                 }//end foreach
             }//end using
 
             ret.SourceCode = sb.ToString();
             return ret;
         }
-      
+
+        static void ReadSourceFromFile(string filePath, uint lineBegin, ushort colBegin, 
+            uint lineEnd, ushort colEnd, bool exact, TextWriter target)
+        {
+            //считываем файл исходников
+            string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
+                        
+            bool reading = false;
+            int index_start;
+            int index_end;
+
+            //считаем код метода из исходников
+            for (int i = 1; i <= lines.Length; i++)
+            {
+                string line = lines[i - 1];
+                index_start = 0;
+                index_end = line.Length;
+
+                if (!reading)
+                {
+                    if (i >= lineBegin)
+                    {
+                        //первая строка
+                        reading = true;
+
+                        if (exact)
+                        {
+                            index_start = colBegin - 1;
+                            if (index_start < 0) index_start = 0;
+                        }
+                        else
+                        {
+                            index_start = 0;
+                        }
+                    }
+                }
+
+                if (reading)
+                {
+                    if (i >= lineEnd)
+                    {
+                        //последняя строка
+                        index_end = colEnd - 1;
+                        if (index_end > line.Length) index_end = line.Length;
+                        if (index_end < index_start) index_end = index_start;
+
+                        target.WriteLine(line.Substring(index_start, index_end - index_start));
+                        break;
+                    }
+
+                    //считывание текущей строки
+                    target.WriteLine(line.Substring(index_start, index_end - index_start));
+                }
+            }//end for
+
+            target.Flush();
+        }
+
         public static string GetMethodSigString(MethodBase m)
         {
             StringBuilder sb = new StringBuilder(500);
