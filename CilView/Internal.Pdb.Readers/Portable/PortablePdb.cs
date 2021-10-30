@@ -22,10 +22,12 @@ namespace Internal.Pdb.Portable
             while (true)
             {
                 BlobHandle bh = blob.ReadBlobHandle();
-                if (bh.IsNil) break;
 
-                byte[] nameBytes = reader.GetBlobBytes(bh);
-                sb.Append(Encoding.UTF8.GetString(nameBytes));
+                if (!bh.IsNil)
+                {
+                    byte[] nameBytes = reader.GetBlobBytes(bh);
+                    sb.Append(Encoding.UTF8.GetString(nameBytes));
+                }
 
                 if (blob.Offset >= blob.Length) break;
 
