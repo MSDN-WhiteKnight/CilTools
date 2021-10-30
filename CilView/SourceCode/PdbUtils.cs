@@ -10,6 +10,7 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilView.Common;
+using Internal.Pdb.Portable;
 using Internal.Pdb.Windows;
 
 namespace CilView.SourceCode
@@ -55,6 +56,24 @@ namespace CilView.SourceCode
         /// for the sequence point in which starting offset lies.
         /// </param>
         public static SourceInfo GetSourceFromPdb(MethodBase m,
+            uint startOffset,
+            uint endOffset,
+            SymbolsQueryType queryType)
+        {
+            SourceInfo ret;
+            try
+            {
+                ret = GetSourceFromPortablePdb(m, startOffset, endOffset, queryType);
+            }
+            catch (BadImageFormatException)
+            {
+                ret = GetSourceFromWindowsPdb(m, startOffset, endOffset, queryType);
+            }
+
+            return ret;
+        }
+        
+        static SourceInfo GetSourceFromWindowsPdb(MethodBase m,
             uint startOffset,
             uint endOffset,
             SymbolsQueryType queryType)
@@ -187,6 +206,166 @@ namespace CilView.SourceCode
                     
                 }//end foreach
             }//end using
+
+            ret.SourceCode = sb.ToString();
+            return ret;
+        }
+
+        static SourceInfo GetSourceFromPortablePdb(MethodBase m,
+            uint startOffset,
+            uint endOffset,
+            SymbolsQueryType queryType)
+        {
+            //построим путь к файлу символов
+            string module_path = m.DeclaringType.Assembly.Location;
+            if (string.IsNullOrEmpty(module_path)) return SourceInfo.Empty;
+
+            string pdb_path = Path.Combine(
+                Path.GetDirectoryName(module_path),
+                Path.GetFileNameWithoutExtension(module_path) + ".pdb"
+                );
+
+            if (!File.Exists(pdb_path))
+            {
+                throw new SymbolsException("Symbols file not found: " + pdb_path);
+            }
+
+            StringBuilder sb = new StringBuilder(500);
+            StringWriter wr = new StringWriter(sb);
+            SourceLineData[] linedata = PortablePdb.GetSourceLineData(pdb_path, m.MetadataToken).ToArray();
+            SourceInfo ret = new SourceInfo();
+            ret.SymbolsFile = pdb_path;
+            ret.Method = m;
+            ret.CilStart = startOffset;
+            ret.CilEnd = endOffset;
+
+            string filePath = string.Empty;
+            bool foundBegin = false;
+            bool foundEnd = false;
+            int lineBegin = 0, colBegin = 0;
+            int lineEnd = 0, colEnd = 0;            
+
+            for(int i=0;i<linedata.Length;i++)
+            {
+                SourceLineData line = linedata[i];
+
+                if (string.IsNullOrEmpty(line.FilePath)) continue;
+
+                filePath = line.FilePath;
+
+                if (queryType == SymbolsQueryType.RangeExact)
+                {
+                    if (line.CilOffset >= startOffset && !foundBegin)
+                    {
+                        lineBegin = line.LineStart;
+                        colBegin = line.ColStart;
+                        foundBegin = true;
+                    }
+
+                    if (line.CilOffset > endOffset)
+                    {
+                        SourceLineData endLineData;
+
+                        if (i >= 1) endLineData = linedata[i - 1];
+                        else endLineData = line;
+
+                        lineEnd = endLineData.LineEnd;
+                        colEnd = endLineData.ColEnd;
+                        ret.CilEnd = (uint)line.CilOffset;
+                        foundEnd = true;
+                        break;
+                    }
+
+                    if (i >= linedata.Length - 1)
+                    {
+                        lineEnd = line.LineEnd;
+                        colEnd = line.ColEnd;
+                        ret.CilEnd = (uint)line.CilOffset;
+                        foundEnd = true;
+                        break;
+                    }
+                }
+                else if (queryType == SymbolsQueryType.SequencePoint)
+                {
+                    if (line.CilOffset > startOffset)
+                    {
+                        SourceLineData beginLineData;
+                        SourceLineData endLineData;
+
+                        if (i >= 1)
+                        {
+                            beginLineData = linedata[i - 1];
+                            endLineData = line;
+                            ret.CilEnd = (uint)endLineData.CilOffset;
+                        }
+                        else
+                        {
+                            beginLineData = line;
+
+                            if (i < linedata.Length - 1)
+                            {
+                                endLineData = linedata[i + 1];
+                                ret.CilEnd = (uint)endLineData.CilOffset;
+                            }
+                            else
+                            {
+                                int bodySize = Utils.GetMethodBodySize(m);
+                                if (bodySize > 0 && bodySize >= ret.CilStart) ret.CilEnd = (uint)bodySize;
+                            }
+                        }
+
+                        lineBegin = beginLineData.LineStart;
+                        colBegin = beginLineData.ColStart;
+                        lineEnd = beginLineData.LineEnd;
+                        colEnd = beginLineData.ColEnd;
+                        ret.CilStart = (uint)beginLineData.CilOffset;
+                        foundEnd = true;
+
+                        break;
+                    }
+
+                    if (i >= linedata.Length - 1)
+                    {
+                        lineBegin = line.LineStart;
+                        colBegin = line.ColStart;
+                        lineEnd = line.LineEnd;
+                        colEnd = line.ColEnd;
+                        ret.CilStart = (uint)line.CilOffset;
+                        foundEnd = true;
+
+                        int bodySize = Utils.GetMethodBodySize(m);
+                        if (bodySize > 0 && bodySize >= ret.CilStart) ret.CilEnd = (uint)bodySize;
+                        
+                        break;
+                    }
+                }
+                else throw new NotSupportedException("Unknown symbols query type: " + queryType.ToString());
+                
+            }//end foreach
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                return SourceInfo.Empty;
+            }
+
+            if (!File.Exists(filePath))
+            {
+                throw new SymbolsException("Source file not found: " + filePath);
+            }
+
+            if (!foundEnd)
+            {
+                return SourceInfo.Empty;
+            }
+
+            ret.LineStart = lineBegin;
+            ret.LineEnd = lineEnd;
+            ret.SourceFile = filePath;
+
+            bool exact = startOffset != 0 || endOffset != uint.MaxValue;
+
+            //считаем код метода из исходников
+            ReadSourceFromFile(filePath, (uint)lineBegin, (ushort)colBegin, (uint)lineEnd, (ushort)colEnd, exact, wr);
 
             ret.SourceCode = sb.ToString();
             return ret;
