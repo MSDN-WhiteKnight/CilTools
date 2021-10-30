@@ -63,7 +63,23 @@ namespace CilView.SourceCode
         /// Gets or sets the byte offset of the end of the bytecode fragment in the method body 
         /// </summary>
         public uint CilEnd { get; set; }
-                
+
+        public SourceInfoError Error { get; set; }
+
         internal static readonly SourceInfo Empty = new SourceInfo();
+
+        internal static SourceInfo FromError(SourceInfoError err)
+        {
+            return new SourceInfo() { Error = err };
+        }
+    }
+
+    public enum SourceInfoError
+    {
+        Success = 0,
+        InvalidFormat = 1,
+        NoSourcePath = 2,
+        NoMatches = 3,
+        NoModulePath = 4
     }
 }

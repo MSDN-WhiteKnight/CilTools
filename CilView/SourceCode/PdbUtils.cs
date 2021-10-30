@@ -61,12 +61,20 @@ namespace CilView.SourceCode
             SymbolsQueryType queryType)
         {
             SourceInfo ret;
+
             try
             {
+                //try Portable PDB first
                 ret = GetSourceFromPortablePdb(m, startOffset, endOffset, queryType);
             }
             catch (BadImageFormatException)
             {
+                ret = SourceInfo.FromError(SourceInfoError.InvalidFormat);
+            }
+
+            if (ret.Error == SourceInfoError.InvalidFormat)
+            {
+                //read Windows PDB if failed
                 ret = GetSourceFromWindowsPdb(m, startOffset, endOffset, queryType);
             }
 
@@ -82,7 +90,11 @@ namespace CilView.SourceCode
 
             //построим путь к файлу символов
             string module_path = m.DeclaringType.Assembly.Location;
-            if(string.IsNullOrEmpty(module_path)) return SourceInfo.Empty;
+
+            if (string.IsNullOrEmpty(module_path))
+            {
+                return SourceInfo.FromError(SourceInfoError.NoModulePath);
+            }
 
             string pdb_path = Path.Combine(
                 Path.GetDirectoryName(module_path),
@@ -109,7 +121,7 @@ namespace CilView.SourceCode
                 var func = reader.GetFunctionFromToken((uint)token);
 
                 if (func==null) return SourceInfo.Empty;
-                if (func.SequencePoints==null) return SourceInfo.Empty;
+                if (func.SequencePoints==null) return SourceInfo.FromError(SourceInfoError.NoMatches);
 
                 foreach (PdbSequencePointCollection coll in func.SequencePoints)
                 {
@@ -137,7 +149,7 @@ namespace CilView.SourceCode
 
                         if (points_sorted.Count() == 0)
                         {
-                            return SourceInfo.Empty;
+                            return SourceInfo.FromError(SourceInfoError.NoMatches);
                         }
 
                         start = points_sorted.First();
@@ -151,7 +163,7 @@ namespace CilView.SourceCode
                              x.LineEnd < PDB_HIDDEN_SEQUENCE_POINT).
                             OrderBy((x) => x.Offset).ToArray();
 
-                        if(points.Length == 0) return SourceInfo.Empty;
+                        if(points.Length == 0) return SourceInfo.FromError(SourceInfoError.NoMatches);
 
                         PdbSequencePoint p=points[0];
                         int p_index = 0;
@@ -164,7 +176,7 @@ namespace CilView.SourceCode
                             p_index = i;
                         }
 
-                        if(p.Offset > startOffset) return SourceInfo.Empty;
+                        if(p.Offset > startOffset) return SourceInfo.FromError(SourceInfoError.NoMatches);
 
                         start = p;
                         end = p;
@@ -218,7 +230,11 @@ namespace CilView.SourceCode
         {
             //построим путь к файлу символов
             string module_path = m.DeclaringType.Assembly.Location;
-            if (string.IsNullOrEmpty(module_path)) return SourceInfo.Empty;
+
+            if (string.IsNullOrEmpty(module_path))
+            {
+                return SourceInfo.FromError(SourceInfoError.NoModulePath);
+            }
 
             string pdb_path = Path.Combine(
                 Path.GetDirectoryName(module_path),
@@ -229,10 +245,16 @@ namespace CilView.SourceCode
             {
                 throw new SymbolsException("Symbols file not found: " + pdb_path);
             }
+            
+            SourceLineData[] linedata = PortablePdb.GetSourceLineData(pdb_path, m.MetadataToken);
+
+            if (linedata == null) //not portable PDB file
+            {
+                return SourceInfo.FromError(SourceInfoError.InvalidFormat); 
+            }
 
             StringBuilder sb = new StringBuilder(500);
             StringWriter wr = new StringWriter(sb);
-            SourceLineData[] linedata = PortablePdb.GetSourceLineData(pdb_path, m.MetadataToken).ToArray();
             SourceInfo ret = new SourceInfo();
             ret.SymbolsFile = pdb_path;
             ret.Method = m;
@@ -345,7 +367,7 @@ namespace CilView.SourceCode
 
             if (string.IsNullOrEmpty(filePath))
             {
-                return SourceInfo.Empty;
+                return SourceInfo.FromError(SourceInfoError.NoSourcePath);
             }
 
             if (!File.Exists(filePath))
@@ -355,7 +377,7 @@ namespace CilView.SourceCode
 
             if (!foundEnd)
             {
-                return SourceInfo.Empty;
+                return SourceInfo.FromError(SourceInfoError.NoMatches);
             }
 
             ret.LineStart = lineBegin;

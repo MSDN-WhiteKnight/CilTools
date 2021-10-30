@@ -43,7 +43,14 @@ namespace CilView.SourceCode
 
                 if (string.IsNullOrWhiteSpace(src))
                 {
-                    MessageBox.Show("Failed to get source code", "Error");
+                    string str = "Failed to get source code";
+
+                    if (srcinfo.Error != SourceInfoError.Success)
+                    {
+                        str += ": "+srcinfo.Error.ToString();
+                    }
+
+                    MessageBox.Show(str, "Error");
                     return;
                 }
 

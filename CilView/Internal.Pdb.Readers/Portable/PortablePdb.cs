@@ -38,7 +38,48 @@ namespace Internal.Pdb.Portable
             return path;
         }
 
-        public static IEnumerable<SourceLineData> GetSourceLineData(string pdbPath, int methodToken)
+        static bool IsPortablePdb(FileStream fs)
+        {
+            if (fs.Length < 4) return false; //too short to be valid metadata
+
+            bool ret;
+
+            try
+            {
+                //read first 4 bytes
+                byte b1 = (byte)fs.ReadByte();
+                byte b2 = (byte)fs.ReadByte();
+                byte b3 = (byte)fs.ReadByte();
+                byte b4 = (byte)fs.ReadByte();
+
+                //CLI metadata signature (ECMA-335 II.24.2.1 - Metadata root)
+                if (b1 == 0x42 && b2 == 0x53 && b3 == 0x4A && b4 == 0x42)
+                {
+                    ret = true;
+                }
+                else
+                {
+                    ret = false;
+                }
+            }
+            finally
+            {
+                fs.Seek(0, SeekOrigin.Begin);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Gets the collection of mappings between CIL offsets and source code lines of the specified method 
+        /// from Portable PDB file. Returns null if the file is not in Portable PDB format.
+        /// </summary>
+        /// <param name="pdbPath">Path to PDB file</param>
+        /// <param name="methodToken">Metadata token of method in MethodDef table</param>
+        /// <returns>
+        /// The collection of source line mappings, or null if the file is not a Portable PDB file
+        /// </returns>
+        public static SourceLineData[] GetSourceLineData(string pdbPath, int methodToken)
         {
             //determine method row number
             EntityHandle ehMethod = MetadataTokens.EntityHandle(methodToken);
@@ -56,7 +97,12 @@ namespace Internal.Pdb.Portable
 
             //open Portable PDB file
             FileStream fs = new FileStream(pdbPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+
+            //check file format
+            if (!IsPortablePdb(fs)) return null;
+
             MetadataReaderProvider provider = MetadataReaderProvider.FromPortablePdbStream(fs);
+            List<SourceLineData> ret=new List<SourceLineData>(100);
 
             using (provider)
             {
@@ -86,7 +132,7 @@ namespace Internal.Pdb.Portable
                         s = ReadDocumentPath(reader, di.Document);
                     }
 
-                    yield return new SourceLineData()
+                    ret.Add(new SourceLineData()
                     {
                         FilePath = s,
                         CilOffset = sp.Offset,
@@ -94,9 +140,11 @@ namespace Internal.Pdb.Portable
                         LineEnd = sp.EndLine,
                         ColStart = sp.StartColumn,
                         ColEnd = sp.EndColumn
-                    };
+                    });
                 }
             }//end using
+
+            return ret.ToArray();
         }
     }
 }
