@@ -14,6 +14,26 @@ namespace CilView.SourceCode
 {
     static class SourceCodeUI
     {
+        static void ShowDecompiledSource(MethodBase method)
+        {
+            SourceInfo srcinfo;
+            srcinfo = Decompiler.GetSourceFromDecompiler(method);
+
+            //build display string
+            string src = srcinfo.SourceCode;
+            StringBuilder sb = new StringBuilder(src.Length * 2);            
+            sb.AppendLine(src);
+
+            //show source code
+            TextViewWindow wnd = new TextViewWindow();
+            wnd.Title = "Source code";
+            wnd.Text = sb.ToString();
+            wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            wnd.TextFontFamily = new FontFamily("Courier New");
+            wnd.TextFontSize = 14.0;
+            wnd.ShowDialog();
+        }
+
         /// <summary>
         /// Creates and shows View source window to display the source code of the specified method
         /// </summary>
@@ -29,6 +49,14 @@ namespace CilView.SourceCode
             {
                 SourceInfo srcinfo;
 
+                if (method.IsAbstract)
+                {
+                    //abstract method has no sequence points in PDB, just use decompiler
+                    ShowDecompiledSource(method);
+                    return;
+                }
+                
+                //from PDB
                 if (wholeMethod)
                 {
                     srcinfo = PdbUtils.GetSourceFromPdb(method,

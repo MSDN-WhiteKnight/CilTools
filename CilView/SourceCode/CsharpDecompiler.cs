@@ -56,6 +56,7 @@ namespace CilView.SourceCode
             else if (m.IsAssembly) sb.Append("internal ");
 
             if (m.IsStatic) sb.Append("static ");
+            if (m.IsAbstract) sb.Append("abstract ");
 
             string rettype = string.Empty;
 

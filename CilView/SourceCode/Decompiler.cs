@@ -71,5 +71,16 @@ namespace CilView.SourceCode
             else if (Utils.TypeEquals(t, typeof(double))) return "double";
             else return null;
         }
+
+        public static SourceInfo GetSourceFromDecompiler(MethodBase m)
+        {
+            //stub implementation that only works for abstract methods
+            SourceInfo ret = new SourceInfo();
+            ret.SymbolsFile = "DECOMPILED";
+            ret.SourceFile = "DECOMPILED";
+            ret.SourceCode = DecompileMethodSignature(".cs", m)+";";
+            ret.Method = m;
+            return ret;
+        }
     }
 }
