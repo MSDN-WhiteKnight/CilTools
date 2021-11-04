@@ -142,6 +142,9 @@
     <Compile Include="Internal.Pdb.Readers\Windows\PdbSource.cs" />
     <Compile Include="Internal.Pdb.Readers\Windows\PdbStreamHelper.cs" />
     <Compile Include="SearchResult.cs" />
+    <Compile Include="SourceCode\CppDecompiler.cs" />
+    <Compile Include="SourceCode\CsharpDecompiler.cs" />
+    <Compile Include="SourceCode\Decompiler.cs" />
     <Compile Include="SourceCode\PdbUtils.cs" />
     <Compile Include="SourceCode\SourceCodeUI.cs" />
     <Compile Include="SourceCode\SourceInfo.cs" />

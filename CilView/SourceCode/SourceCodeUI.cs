@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Windows;
@@ -57,8 +58,12 @@ namespace CilView.SourceCode
                 if (wholeMethod)
                 {
                     string methodstr = string.Empty;
+                    string ext = Path.GetExtension(srcinfo.SourceFile);
 
-                    try { methodstr = PdbUtils.GetMethodSigString(srcinfo.Method); }
+                    try
+                    {
+                        methodstr = Decompiler.DecompileMethodSignature(ext, srcinfo.Method);
+                    }
                     catch (Exception ex)
                     {
                         //don't error out if we can't build good signature string
@@ -74,6 +79,13 @@ namespace CilView.SourceCode
                     sb.AppendLine();
                     sb.AppendLine(methodstr);
                     sb.AppendLine(PdbUtils.Deindent(src));
+
+                    if (Decompiler.IsCppExtension(ext))
+                    {
+                        //C++ PDB sequence points don't include the trailing brace for some reason
+                        sb.AppendLine("}");
+                    }
+
                     sb.AppendLine();
 
                     //show source code
