@@ -175,5 +175,18 @@ namespace CilView.Common
                     "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        public static bool TypeEquals(Type left, Type right)
+        {
+            if (left == null)
+            {
+                if (right == null) return true;
+                else return false;
+            }
+
+            if (right == null) return false;
+
+            return StringEquals(left.FullName, right.FullName);
+        }
     }
 }

@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using CilView.Common;
 
 namespace CilView.SourceCode
 {
@@ -58,6 +59,17 @@ namespace CilView.SourceCode
         {
             Decompiler d = Create(ext, m);
             return d.GetMethodSigString();
+        }
+
+        protected static string ProcessCommonTypes(Type t)
+        {
+            //built-in types common between C# and C++/CLI
+            if (Utils.TypeEquals(t, typeof(bool)))        return "bool";
+            else if (Utils.TypeEquals(t, typeof(int)))    return "int";
+            else if (Utils.TypeEquals(t, typeof(short)))  return "short";
+            else if (Utils.TypeEquals(t, typeof(float)))  return "float";
+            else if (Utils.TypeEquals(t, typeof(double))) return "double";
+            else return null;
         }
     }
 }

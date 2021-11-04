@@ -18,6 +18,33 @@ namespace CilView.SourceCode
 
         }
 
+        static string GetTypeString(Type t)
+        {
+            if (t == null) return string.Empty;
+
+            if (t.IsArray && t.GetArrayRank() == 1)
+            {
+                return GetTypeString(t.GetElementType()) + "[]";
+            }
+
+            //process built-in types
+            string s = ProcessCommonTypes(t);
+
+            if (s != null) return s;
+
+            if (Utils.TypeEquals(t, typeof(string)))      return "string";
+            else if (Utils.TypeEquals(t, typeof(uint)))   return "uint";
+            else if (Utils.TypeEquals(t, typeof(ushort))) return "ushort";
+            else if (Utils.TypeEquals(t, typeof(long)))   return "long";
+            else if (Utils.TypeEquals(t, typeof(ulong)))  return "ulong";
+            else if (Utils.TypeEquals(t, typeof(byte)))   return "byte";
+            else if (Utils.TypeEquals(t, typeof(sbyte)))  return "sbyte";
+            else if (Utils.TypeEquals(t, typeof(char)))   return "char";
+            else if (Utils.TypeEquals(t, typeof(object))) return "object";
+
+            return t.Name;
+        }
+
         public override string GetMethodSigString()
         {
             MethodBase m = this._method;
@@ -45,7 +72,7 @@ namespace CilView.SourceCode
                     }
                     else
                     {
-                        rettype = t.Name;
+                        rettype = GetTypeString(t);
                     }
                 }
             }
@@ -74,7 +101,7 @@ namespace CilView.SourceCode
             for (int i = 0; i < pars.Length; i++)
             {
                 if (i >= 1) sb.Append(", ");
-                sb.Append(pars[i].ParameterType.Name);
+                sb.Append(GetTypeString(pars[i].ParameterType));
                 sb.Append(' ');
 
                 string parname = pars[i].Name;

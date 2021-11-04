@@ -32,7 +32,19 @@ namespace CilView.SourceCode
 
             //reference types are represented by handles in C++/CLI
             if (t.IsClass || t.IsInterface) return t.Name + " ^";
-            else return t.Name;
+
+            //process built-in types
+            string s = ProcessCommonTypes(t);
+
+            if (s != null) return s;
+
+            if (Utils.TypeEquals(t, typeof(uint)))        return "unsigned int";
+            else if (Utils.TypeEquals(t, typeof(ushort))) return "unsigned short";
+            else if (Utils.TypeEquals(t, typeof(byte)))   return "unsigned char";
+            else if (Utils.TypeEquals(t, typeof(sbyte)))  return "signed char";
+            else if (Utils.TypeEquals(t, typeof(char)))   return "wchar_t";
+
+            return t.Name;
         }
 
         public override string GetMethodSigString()
