@@ -27,6 +27,24 @@ namespace CilView.SourceCode
                 return GetTypeString(t.GetElementType()) + "[]";
             }
 
+            if (t.IsGenericType)
+            {
+                StringBuilder sb = new StringBuilder(100);
+                sb.Append(GetGenericDefinitionName(t.Name));
+                sb.Append('<');
+                Type[] args = t.GetGenericArguments();
+
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) sb.Append(", ");
+
+                    sb.Append(GetTypeString(args[i]));
+                }
+
+                sb.Append('>');
+                return sb.ToString();
+            }
+
             //process built-in types
             string s = ProcessCommonTypes(t);
 

@@ -82,5 +82,13 @@ namespace CilView.SourceCode
             ret.Method = m;
             return ret;
         }
+
+        protected static string GetGenericDefinitionName(string typeName)
+        {
+            int i = typeName.IndexOf('`');
+
+            if (i <= 0) return typeName;
+            else return typeName.Substring(0, i);
+        }
     }
 }
