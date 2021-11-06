@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -21,14 +21,12 @@ namespace CilTools.Metadata
         MethodBodyBlock mb;
         Signature sig;
         Type decltype;
-        GenericContext genericContext;
 
-        internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner, GenericContext gctx)
+        internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
         {           
             this.assembly = owner;
             this.mdef = m;
             this.mdefh = mh;
-            this.genericContext = gctx;
 
             int rva = mdef.RelativeVirtualAddress;
 
@@ -54,24 +52,24 @@ namespace CilTools.Metadata
                     else throw;
                 }
             }
-
-            MemberInfo declaringMember = this;
-            Type genericDeclaringType = gctx.GetDeclaringType();
-
-            if (genericDeclaringType != null)
-            {
-                //method inside generic type
-                declaringMember = genericDeclaringType;
-            }
-
-            byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
-            this.sig = new Signature(sigbytes, this.assembly, declaringMember);
-
+            
             //init declaring type
             TypeDefinitionHandle ht = mdef.GetDeclaringType();
 
-            if (!ht.IsNil) this.decltype=new TypeDef(assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
+            if (!ht.IsNil) this.decltype = new TypeDef(assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
             else this.decltype = null;
+
+            //read signature
+            MemberInfo declaringMember = this;
+
+            if (this.decltype!=null && this.decltype.IsGenericType)
+            {
+                //method inside generic type
+                declaringMember = decltype;
+            }
+            
+            byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
+            this.sig = new Signature(sigbytes, this.assembly, declaringMember);
         }
 
         void ThrowIfDisposed()
@@ -281,7 +279,7 @@ namespace CilTools.Metadata
                 if (eh.Kind == HandleKind.MethodDefinition)
                 {
                     MethodDefinition mdef = ass.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                    constr = new MethodDef(mdef, (MethodDefinitionHandle)eh, ass, GenericContext.Empty);
+                    constr = new MethodDef(mdef, (MethodDefinitionHandle)eh, ass);
                 }
                 else if (eh.Kind == HandleKind.MemberReference)
                 {

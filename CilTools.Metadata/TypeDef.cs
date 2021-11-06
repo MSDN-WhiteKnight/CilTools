@@ -234,16 +234,10 @@ namespace CilTools.Metadata
         {
             List<MemberInfo> members = new List<MemberInfo>();
             MemberInfo m;
-            Type[] targs = null; //generic context
-
-            if (this.IsGenericType)
-            {
-                targs = this.GetGenericArguments();
-            }
-
+            
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
             {
-                m = this.assembly.GetMethodDefinition(mdefh, targs, null);
+                m = this.assembly.GetMethodDefinition(mdefh);
                 if (IsMemberMatching(m, bindingAttr)) members.Add(m);
             }
 

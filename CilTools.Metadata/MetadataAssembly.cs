@@ -272,12 +272,10 @@ namespace CilTools.Metadata
                 if (m != null) return m;
             }
             
-            GenericContext gctx = new GenericContext(genericTypeArguments, genericMethodArguments);
-
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this, gctx);
+                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
@@ -383,9 +381,7 @@ namespace CilTools.Metadata
                 m = this.CacheGetValue(metadataToken);
                 if (m != null) return m;
             }
-
-            GenericContext gctx = new GenericContext(genericTypeArguments, genericMethodArguments);
-
+            
             if (genericMethodArguments != null && genericMethodArguments.Length > 0)
             {
                 if (genericMethodArguments[0].IsGenericParameter)
@@ -404,7 +400,7 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this, gctx);
+                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.FieldDefinition)
             {
@@ -515,7 +511,7 @@ namespace CilTools.Metadata
 
             foreach (MethodDefinitionHandle mdefh in reader.MethodDefinitions)
             {
-                yield return this.GetMethodDefinition(mdefh, null, null);
+                yield return this.GetMethodDefinition(mdefh);
             }
 
             foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
@@ -539,7 +535,7 @@ namespace CilTools.Metadata
 
             foreach (MethodDefinitionHandle mdefh in reader.MethodDefinitions)
             {
-                yield return this.GetMethodDefinition(mdefh, null, null);
+                yield return this.GetMethodDefinition(mdefh);
             }
         }
 
@@ -550,12 +546,11 @@ namespace CilTools.Metadata
             return this.ResolveType(token);
         }
 
-        internal MethodBase GetMethodDefinition(MethodDefinitionHandle hm, 
-            Type[] genericTypeArguments, Type[] genericMethodArguments)
+        internal MethodBase GetMethodDefinition(MethodDefinitionHandle hm)
         {
             int token = this.MetadataReader.GetToken(hm);
 
-            return this.ResolveMethod(token, genericTypeArguments, genericMethodArguments);
+            return this.ResolveMethod(token);
         }
 
         /// <summary>
