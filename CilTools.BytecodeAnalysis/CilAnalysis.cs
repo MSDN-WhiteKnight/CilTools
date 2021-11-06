@@ -47,16 +47,25 @@ namespace CilTools.BytecodeAnalysis
             {
                 string prefix;
 
-                if (t.DeclaringMethod == null) prefix = "!";
-                else prefix = "!!";
-
-                if (String.IsNullOrEmpty(t.Name))
+                if (t.DeclaringMethod == null)
                 {
+                    //generic type parameter
+                    prefix = "!";
                     yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
                 }
                 else
                 {
-                    yield return new GenericSyntax(prefix + t.Name);
+                    //generic method parameter
+                    prefix = "!!";
+
+                    if (string.IsNullOrEmpty(t.Name))
+                    {
+                        yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
+                    }
+                    else
+                    {
+                        yield return new GenericSyntax(prefix + t.Name);
+                    }
                 }
             }
             else if (t.IsByRef)

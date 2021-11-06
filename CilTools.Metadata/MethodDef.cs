@@ -21,12 +21,14 @@ namespace CilTools.Metadata
         MethodBodyBlock mb;
         Signature sig;
         Type decltype;
+        GenericContext genericContext;
 
-        internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
+        internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner, GenericContext gctx)
         {           
             this.assembly = owner;
             this.mdef = m;
             this.mdefh = mh;
+            this.genericContext = gctx;
 
             int rva = mdef.RelativeVirtualAddress;
 
@@ -53,8 +55,17 @@ namespace CilTools.Metadata
                 }
             }
 
+            MemberInfo declaringMember = this;
+            Type genericDeclaringType = gctx.GetDeclaringType();
+
+            if (genericDeclaringType != null)
+            {
+                //method inside generic type
+                declaringMember = genericDeclaringType;
+            }
+
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
-            this.sig = new Signature(sigbytes, this.assembly,this);
+            this.sig = new Signature(sigbytes, this.assembly, declaringMember);
 
             //init declaring type
             TypeDefinitionHandle ht = mdef.GetDeclaringType();
@@ -270,7 +281,7 @@ namespace CilTools.Metadata
                 if (eh.Kind == HandleKind.MethodDefinition)
                 {
                     MethodDefinition mdef = ass.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                    constr = new MethodDef(mdef, (MethodDefinitionHandle)eh, ass);
+                    constr = new MethodDef(mdef, (MethodDefinitionHandle)eh, ass, GenericContext.Empty);
                 }
                 else if (eh.Kind == HandleKind.MemberReference)
                 {

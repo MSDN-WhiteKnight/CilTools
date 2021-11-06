@@ -32,7 +32,7 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = owner.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                this.definition = new MethodDef(mdef, (MethodDefinitionHandle)eh, owner);
+                this.definition = new MethodDef(mdef, (MethodDefinitionHandle)eh, owner, GenericContext.Empty);
 
                 int rva = mdef.RelativeVirtualAddress;
 

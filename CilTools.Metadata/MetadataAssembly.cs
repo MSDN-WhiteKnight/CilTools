@@ -263,26 +263,45 @@ namespace CilTools.Metadata
 
             if (eh.IsNil) return null;
 
+            MethodBase m = null;
+            
+            if (genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, we can read value from cache
+                m = this.CacheGetValue(metadataToken) as MethodBase;
+                if (m != null) return m;
+            }
+            
+            GenericContext gctx = new GenericContext(genericTypeArguments, genericMethodArguments);
+
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                return new MethodDef(mdef, (MethodDefinitionHandle)eh, this);
+                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this, gctx);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Method)
-                    return new MethodRef(mref, (MemberReferenceHandle)eh, this);
+                    m = new MethodRef(mref, (MemberReferenceHandle)eh, this);
                 else
-                    return null;
+                    m = null;
             }
             else if (eh.Kind == HandleKind.MethodSpecification)
             {
                 MethodSpecification mspec = reader.GetMethodSpecification((MethodSpecificationHandle)eh);
-                return new MethodSpec(mspec, (MethodSpecificationHandle)eh, this);
+                m = new MethodSpec(mspec, (MethodSpecificationHandle)eh, this);
             }
-            else return null;
+            else m = null;
+
+            if (m != null && genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, store value in cache
+                this.cache[metadataToken] = m;
+            }
+
+            return m;
         }
 
         /// <summary>
@@ -365,6 +384,8 @@ namespace CilTools.Metadata
                 if (m != null) return m;
             }
 
+            GenericContext gctx = new GenericContext(genericTypeArguments, genericMethodArguments);
+
             if (genericMethodArguments != null && genericMethodArguments.Length > 0)
             {
                 if (genericMethodArguments[0].IsGenericParameter)
@@ -383,7 +404,7 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this);
+                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this, gctx);
             }
             else if (eh.Kind == HandleKind.FieldDefinition)
             {
@@ -494,7 +515,7 @@ namespace CilTools.Metadata
 
             foreach (MethodDefinitionHandle mdefh in reader.MethodDefinitions)
             {
-                yield return this.GetMethodDefinition(mdefh);
+                yield return this.GetMethodDefinition(mdefh, null, null);
             }
 
             foreach (TypeDefinitionHandle ht in reader.TypeDefinitions)
@@ -518,7 +539,7 @@ namespace CilTools.Metadata
 
             foreach (MethodDefinitionHandle mdefh in reader.MethodDefinitions)
             {
-                yield return this.GetMethodDefinition(mdefh);
+                yield return this.GetMethodDefinition(mdefh, null, null);
             }
         }
 
@@ -529,11 +550,12 @@ namespace CilTools.Metadata
             return this.ResolveType(token);
         }
 
-        internal MethodBase GetMethodDefinition(MethodDefinitionHandle hm)
+        internal MethodBase GetMethodDefinition(MethodDefinitionHandle hm, 
+            Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
             int token = this.MetadataReader.GetToken(hm);
 
-            return this.ResolveMethod(token);
+            return this.ResolveMethod(token, genericTypeArguments, genericMethodArguments);
         }
 
         /// <summary>

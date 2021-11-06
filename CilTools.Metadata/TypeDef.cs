@@ -234,10 +234,16 @@ namespace CilTools.Metadata
         {
             List<MemberInfo> members = new List<MemberInfo>();
             MemberInfo m;
+            Type[] targs = null; //generic context
+
+            if (this.IsGenericType)
+            {
+                targs = this.GetGenericArguments();
+            }
 
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
             {
-                m = this.assembly.GetMethodDefinition(mdefh);
+                m = this.assembly.GetMethodDefinition(mdefh, targs, null);
                 if (IsMemberMatching(m, bindingAttr)) members.Add(m);
             }
 
@@ -448,9 +454,9 @@ namespace CilTools.Metadata
                 StringHandle sh = gp.Name;
 
                 if (!sh.IsNil)
-                    ret[i] = new GenericParamType(null, gp.Index, assembly.MetadataReader.GetString(sh));
+                    ret[i] = GenericParamType.Create(this, gp.Index, assembly.MetadataReader.GetString(sh));
                 else
-                    ret[i] = new GenericParamType(null, gp.Index);
+                    ret[i] = GenericParamType.Create(this, gp.Index, string.Empty);
             }
 
             return ret;
