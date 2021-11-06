@@ -115,7 +115,7 @@ namespace CilTools.Metadata
                 n.Flags |= AssemblyNameFlags.PublicKey;
             }
 
-            n.CodeBase = String.Empty;
+            n.CodeBase = image.FilePath;
             this.asn = n;
             this.fromMemory = true;
             System.Diagnostics.Debug.WriteLine("Loaded from memory: " + n.Name);
@@ -168,8 +168,7 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets the full path to the PE file containing this assembly, or an empty string if the 
-        /// assembly wasn't loaded from file.
+        /// Gets the full path to the PE file containing this assembly.
         /// </summary>
         public override string Location
         {
@@ -180,8 +179,7 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets the full path to the PE file containing this assembly, or an empty string if the assembly 
-        /// wasn't loaded from file.
+        /// Gets the full path to the PE file containing this assembly.
         /// </summary>
         public override string CodeBase
         {
