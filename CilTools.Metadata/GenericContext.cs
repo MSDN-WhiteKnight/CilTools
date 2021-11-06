@@ -12,7 +12,7 @@ namespace CilTools.Metadata
         Type[] typeargs;
         Type[] methodargs;
 
-        public static readonly GenericContext Empty = default;
+        public static readonly GenericContext Empty = new GenericContext();
 
         public GenericContext(Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
