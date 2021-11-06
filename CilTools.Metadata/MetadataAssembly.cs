@@ -381,7 +381,7 @@ namespace CilTools.Metadata
                 m = this.CacheGetValue(metadataToken);
                 if (m != null) return m;
             }
-            
+
             if (genericMethodArguments != null && genericMethodArguments.Length > 0)
             {
                 if (genericMethodArguments[0].IsGenericParameter)

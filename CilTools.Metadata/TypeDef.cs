@@ -234,7 +234,7 @@ namespace CilTools.Metadata
         {
             List<MemberInfo> members = new List<MemberInfo>();
             MemberInfo m;
-            
+
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
             {
                 m = this.assembly.GetMethodDefinition(mdefh);
