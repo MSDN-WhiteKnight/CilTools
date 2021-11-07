@@ -7,6 +7,9 @@ using System.Text;
 
 namespace CilTools.Metadata
 {
+    /// <summary>
+    /// Represent a set of generic type and method parameters that defines a meaning of generic signature in some context
+    /// </summary>
     internal struct GenericContext
     {
         Type[] typeargs;

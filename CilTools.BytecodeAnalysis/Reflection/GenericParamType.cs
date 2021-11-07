@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -22,11 +22,17 @@ namespace CilTools.Reflection
         /// </summary>
         /// <param name="m">Declaring method, if this is a generic method parameter</param>
         /// <param name="index">Generic parameter index</param>
-        public GenericParamType(MethodBase m, int index):this((MemberInfo)m, index, string.Empty)
+        public GenericParamType(MethodBase m, int index):this((MemberInfo)m, index, null)
         {
 
         }
 
+        /// <summary>
+        /// Creates a new instance of the generic parameter
+        /// </summary>
+        /// <param name="declaringMember">Declaring generic type or method of this parameter</param>
+        /// <param name="index">Generic parameter index</param>
+        /// <param name="name">Generic parameter name, or null to fill name automatically</param>
         public static GenericParamType Create(MemberInfo declaringMember, int index, string name)
         {
             return new GenericParamType(declaringMember, index, name);
@@ -39,8 +45,9 @@ namespace CilTools.Reflection
             this._m = declaringMember;
             this._index = index;
 
-            if (!string.IsNullOrEmpty(name))
+            if (name!=null)
             {
+                //if name is provided, use it
                 this._name = name;
                 return;
             }
@@ -49,7 +56,7 @@ namespace CilTools.Reflection
             Type t = null;
             MethodBase m = declaringMember as MethodBase;
 
-            //try load parameter name from declaring method
+            //try load parameter name from declaring member
             if (m != null && m.IsGenericMethod)
             {
                 try

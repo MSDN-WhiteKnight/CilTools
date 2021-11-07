@@ -420,7 +420,7 @@ namespace CilTools.BytecodeAnalysis
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Var: //generic type arg
                         paramnum = MetadataReader.ReadCompressed(source);
-                        restype = GenericParamType.Create(member as Type, (int)paramnum, string.Empty);
+                        restype = GenericParamType.Create(member as Type, (int)paramnum, null);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.MVar: //generic method arg
                         paramnum = MetadataReader.ReadCompressed(source);
