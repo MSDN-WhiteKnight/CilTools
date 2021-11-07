@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -13,7 +13,7 @@ namespace CilTools.Reflection
     /// </summary>
     public class GenericParamType : Type
     {
-        MethodBase _m;
+        MemberInfo _m;
         int _index;
         string _name;
 
@@ -22,17 +22,41 @@ namespace CilTools.Reflection
         /// </summary>
         /// <param name="m">Declaring method, if this is a generic method parameter</param>
         /// <param name="index">Generic parameter index</param>
-        public GenericParamType(MethodBase m, int index)
+        public GenericParamType(MethodBase m, int index):this((MemberInfo)m, index, null)
+        {
+
+        }
+
+        /// <summary>
+        /// Creates a new instance of the generic parameter
+        /// </summary>
+        /// <param name="declaringMember">Declaring generic type or method of this parameter</param>
+        /// <param name="index">Generic parameter index</param>
+        /// <param name="name">Generic parameter name, or null to fill name automatically</param>
+        public static GenericParamType Create(MemberInfo declaringMember, int index, string name)
+        {
+            return new GenericParamType(declaringMember, index, name);
+        }
+        
+        GenericParamType(MemberInfo declaringMember, int index, string name)
         {
             if (index < 0) throw new ArgumentOutOfRangeException("index", "generic parameter index should be non-negative");
 
-            this._m = m;
+            this._m = declaringMember;
             this._index = index;
+
+            if (name!=null)
+            {
+                //if name is provided, use it
+                this._name = name;
+                return;
+            }
 
             Type[] args = null;
             Type t = null;
+            MethodBase m = declaringMember as MethodBase;
 
-            //try load parameter name from declaring method
+            //try load parameter name from declaring member
             if (m != null && m.IsGenericMethod)
             {
                 try
@@ -41,6 +65,20 @@ namespace CilTools.Reflection
                 }
                 catch (NotImplementedException) { }
                 catch (NotSupportedException) { }
+            }
+            else if (declaringMember!=null && declaringMember is Type)
+            {
+                Type declaringType = (Type)declaringMember;
+
+                if (declaringType.IsGenericType)
+                {
+                    try
+                    {
+                        args = declaringType.GetGenericArguments();
+                    }
+                    catch (NotImplementedException) { }
+                    catch (NotSupportedException) { }
+                }
             }
 
             if (args != null && index<args.Length)
@@ -345,7 +383,16 @@ namespace CilTools.Reflection
         {
             get
             {
-                return this._m;
+                return this._m as MethodBase;
+            }
+        }
+
+        /// <inheritdoc/>
+        public override Type DeclaringType
+        {
+            get
+            {
+                return this._m as Type;
             }
         }
 

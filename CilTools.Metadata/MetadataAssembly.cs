@@ -263,26 +263,43 @@ namespace CilTools.Metadata
 
             if (eh.IsNil) return null;
 
+            MethodBase m = null;
+            
+            if (genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, we can read value from cache
+                m = this.CacheGetValue(metadataToken) as MethodBase;
+                if (m != null) return m;
+            }
+            
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                return new MethodDef(mdef, (MethodDefinitionHandle)eh, this);
+                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Method)
-                    return new MethodRef(mref, (MemberReferenceHandle)eh, this);
+                    m = new MethodRef(mref, (MemberReferenceHandle)eh, this);
                 else
-                    return null;
+                    m = null;
             }
             else if (eh.Kind == HandleKind.MethodSpecification)
             {
                 MethodSpecification mspec = reader.GetMethodSpecification((MethodSpecificationHandle)eh);
-                return new MethodSpec(mspec, (MethodSpecificationHandle)eh, this);
+                m = new MethodSpec(mspec, (MethodSpecificationHandle)eh, this);
             }
-            else return null;
+            else m = null;
+
+            if (m != null && genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, store value in cache
+                this.cache[metadataToken] = m;
+            }
+
+            return m;
         }
 
         /// <summary>

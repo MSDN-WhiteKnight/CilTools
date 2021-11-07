@@ -448,9 +448,9 @@ namespace CilTools.Metadata
                 StringHandle sh = gp.Name;
 
                 if (!sh.IsNil)
-                    ret[i] = new GenericParamType(null, gp.Index, assembly.MetadataReader.GetString(sh));
+                    ret[i] = GenericParamType.Create(this, gp.Index, assembly.MetadataReader.GetString(sh));
                 else
-                    ret[i] = new GenericParamType(null, gp.Index);
+                    ret[i] = GenericParamType.Create(this, gp.Index, string.Empty);
             }
 
             return ret;
