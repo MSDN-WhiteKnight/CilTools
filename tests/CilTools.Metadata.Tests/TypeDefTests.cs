@@ -192,5 +192,19 @@ namespace CilTools.Metadata.Tests
                     (x) => x is FieldInfo && x.Name == "PrivateInstanceField");
             }
         }
+
+        [TestMethod]
+        public void Test_TypeDef_SameInstance()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                Type t2 = ass.GetType(SampleTypeName);
+                Assert.AreSame(t, t2);
+            }
+        }
     }
 }

@@ -50,5 +50,20 @@ namespace CilTools.Metadata.Tests
                 Assert.IsNull(m.ReturnType);
             }
         }
+
+        [TestMethod]
+        public void Test_AssemblyReader_Method_SameInstance()
+        {
+            AssemblyReader reader = new AssemblyReader();            
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
+                MethodBase m = t.GetMember("PrintHelloWorld")[0] as MethodBase;
+                MethodBase m2 = t.GetMember("PrintHelloWorld")[0] as MethodBase;
+                Assert.AreSame(m, m2);
+            }
+        }
     }
 }

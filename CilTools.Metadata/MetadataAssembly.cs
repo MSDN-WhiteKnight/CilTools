@@ -189,12 +189,7 @@ namespace CilTools.Metadata
             }
         }
 
-        /// <summary>
-        /// Returns the type identified by the specified metadata token, in the context defined by 
-        /// the specified generic parameters.
-        /// </summary>
-        /// <remarks>Generic  type parameters are ignored in this implementation.</remarks>
-        public Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+        Type ResolveTypeImpl(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments) 
         {
             if (this.reader == null) return null;
 
@@ -202,15 +197,24 @@ namespace CilTools.Metadata
 
             if (eh.IsNil) return null;
 
+            Type ret;
+
+            if (genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, we can read value from cache
+                ret = this.CacheGetValue(metadataToken) as Type;
+                if (ret != null) return ret;
+            }
+
             if (eh.Kind == HandleKind.TypeDefinition)
             {
                 TypeDefinition tdef = reader.GetTypeDefinition((TypeDefinitionHandle)eh);
-                return new TypeDef(tdef, (TypeDefinitionHandle)eh, this);
+                ret = new TypeDef(tdef, (TypeDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.TypeReference)
             {
                 TypeReference tref = reader.GetTypeReference((TypeReferenceHandle)eh);
-                return new TypeRef(tref, (TypeReferenceHandle)eh, this);
+                ret = new TypeRef(tref, (TypeReferenceHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.TypeSpecification)
             {
@@ -231,10 +235,28 @@ namespace CilTools.Metadata
 
                 TypeSpec decoded = TypeSpec.ReadFromArray(bytes, this, declaringMethod);
 
-                if (decoded != null) return decoded.Type;
-                else return null;
+                if (decoded != null) ret = decoded;
+                else ret = null;
             }
-            else return null;
+            else ret = null;
+
+            if (ret != null && genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, store value in cache
+                this.cache[metadataToken] = ret;
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Returns the type identified by the specified metadata token, in the context defined by 
+        /// the specified generic parameters.
+        /// </summary>
+        /// <remarks>Generic  type parameters are ignored in this implementation.</remarks>
+        public Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+        {
+            return this.ResolveTypeImpl(metadataToken, genericTypeArguments, genericMethodArguments);
         }
 
         /// <summary>
@@ -242,20 +264,10 @@ namespace CilTools.Metadata
         /// </summary>
         public Type ResolveType(int metadataToken)
         {
-            Type t = this.CacheGetValue(metadataToken) as Type;
-            if (t != null) return t;
-
-            t = this.ResolveType(metadataToken, null, null);
-            if (t != null) this.cache[metadataToken] = t;
-            return t;
+            return this.ResolveTypeImpl(metadataToken, null, null);
         }
 
-        /// <summary>
-        /// Returns the method or constructor identified by the specified metadata token, in the context defined by the 
-        /// specified generic parameters.
-        /// </summary>
-        /// <remarks>Generic parameters are ignored in this implementation.</remarks>
-        public MethodBase ResolveMethod(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+        MethodBase ResolveMethodImpl(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
             if (this.reader == null) return null;
 
@@ -264,14 +276,14 @@ namespace CilTools.Metadata
             if (eh.IsNil) return null;
 
             MethodBase m = null;
-            
+
             if (genericTypeArguments == null && genericMethodArguments == null)
             {
                 //if there's no generic context, we can read value from cache
                 m = this.CacheGetValue(metadataToken) as MethodBase;
                 if (m != null) return m;
             }
-            
+
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
@@ -303,24 +315,24 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
+        /// Returns the method or constructor identified by the specified metadata token, in the context defined by the 
+        /// specified generic parameters.
+        /// </summary>
+        /// <remarks>Generic parameters are ignored in this implementation.</remarks>
+        public MethodBase ResolveMethod(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+        {
+            return this.ResolveMethodImpl(metadataToken, genericTypeArguments, genericMethodArguments);
+        }
+
+        /// <summary>
         /// Returns the method or constructor identified by the specified metadata token.
         /// </summary>
         public MethodBase ResolveMethod(int metadataToken)
         {
-            MethodBase m = this.CacheGetValue(metadataToken) as MethodBase;
-            if (m != null) return m;
-
-            m = this.ResolveMethod(metadataToken, null, null);
-            if (m != null) this.cache[metadataToken] = m;
-            return m;
+            return this.ResolveMethodImpl(metadataToken, null, null);
         }
 
-        /// <summary>
-        /// Returns the field identified by the specified metadata token, in the context defined by 
-        /// the specified generic parameters.
-        /// </summary>
-        /// <remarks>Generic type parameters are ignored in this implementation.</remarks>
-        public FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+        FieldInfo ResolveFieldImpl(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
             if (this.reader == null) return null;
 
@@ -328,8 +340,15 @@ namespace CilTools.Metadata
             if (eh.IsNil) return null;
 
             MethodBase declaringMethod = null;
+            FieldInfo ret;
 
-            if (genericMethodArguments != null && genericMethodArguments.Length > 0)
+            if (genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, we can read value from cache
+                ret = this.CacheGetValue(metadataToken) as FieldInfo;
+                if (ret != null) return ret;
+            }
+            else if (genericMethodArguments != null && genericMethodArguments.Length > 0)
             {
                 if (genericMethodArguments[0].IsGenericParameter)
                 {
@@ -343,18 +362,36 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.FieldDefinition)
             {
                 FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
-                return new FieldDef(field, (FieldDefinitionHandle)eh, this, declaringMethod);
+                ret = new FieldDef(field, (FieldDefinitionHandle)eh, this, declaringMethod);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Field)
-                    return new FieldRef(mref, (MemberReferenceHandle)eh, this, declaringMethod);
+                    ret = new FieldRef(mref, (MemberReferenceHandle)eh, this, declaringMethod);
                 else
-                    return null;
+                    ret = null;
             }
-            else return null;
+            else ret = null;
+
+            if (ret != null && genericTypeArguments == null && genericMethodArguments == null)
+            {
+                //if there's no generic context, store value in cache
+                this.cache[metadataToken] = ret;
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Returns the field identified by the specified metadata token, in the context defined by 
+        /// the specified generic parameters.
+        /// </summary>
+        /// <remarks>Generic type parameters are ignored in this implementation.</remarks>
+        public FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+        {
+            return this.ResolveFieldImpl(metadataToken, genericTypeArguments, genericMethodArguments);
         }
 
         /// <summary>
@@ -362,7 +399,7 @@ namespace CilTools.Metadata
         /// </summary>
         public FieldInfo ResolveField(int metadataToken)
         {
-            return this.ResolveField(metadataToken, null, null);
+            return this.ResolveFieldImpl(metadataToken, null, null);
         }
 
         /// <summary>
@@ -371,87 +408,35 @@ namespace CilTools.Metadata
         /// </summary>
         public MemberInfo ResolveMember(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
         {
-            if (this.reader == null) return null;
-            MemberInfo m;
-            MethodBase declaringMethod = null;
-
-            if (genericTypeArguments == null && genericMethodArguments == null)
-            {
-                //if there's no generic context, we can read value from cache
-                m = this.CacheGetValue(metadataToken);
-                if (m != null) return m;
-            }
-
-            if (genericMethodArguments != null && genericMethodArguments.Length > 0)
-            {
-                if (genericMethodArguments[0].IsGenericParameter)
-                {
-                    declaringMethod = genericMethodArguments[0].DeclaringMethod;
-                }
-
-                //we need non-null value here to provide generic context
-                if (declaringMethod == null) declaringMethod = UnknownMethod.Value;
-            }
-
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
 
             if (eh.IsNil) return null;
 
-            if (eh.Kind == HandleKind.MethodDefinition)
+            if (eh.Kind == HandleKind.MethodDefinition || eh.Kind == HandleKind.MethodSpecification)
             {
-                MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                m = new MethodDef(mdef, (MethodDefinitionHandle)eh, this);
+                return this.ResolveMethodImpl(metadataToken, genericTypeArguments, genericMethodArguments);
             }
             else if (eh.Kind == HandleKind.FieldDefinition)
             {
-                FieldDefinition field = reader.GetFieldDefinition((FieldDefinitionHandle)eh);
-                m = new FieldDef(field, (FieldDefinitionHandle)eh, this, declaringMethod);
+                return this.ResolveFieldImpl(metadataToken, genericTypeArguments, genericMethodArguments);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Method)
-                    m = new MethodRef(mref, (MemberReferenceHandle)eh, this);
+                    return this.ResolveMethodImpl(metadataToken, genericTypeArguments, genericMethodArguments);
                 else if (mref.GetKind() == MemberReferenceKind.Field)
-                    m = new FieldRef(mref, (MemberReferenceHandle)eh, this, declaringMethod);
+                    return this.ResolveFieldImpl(metadataToken, genericTypeArguments, genericMethodArguments);
                 else
-                    m = null;
+                    return null;
             }
-            else if (eh.Kind == HandleKind.TypeDefinition)
+            else if (eh.Kind == HandleKind.TypeDefinition || eh.Kind == HandleKind.TypeReference ||
+                eh.Kind == HandleKind.TypeSpecification)
             {
-                TypeDefinition tdef = reader.GetTypeDefinition((TypeDefinitionHandle)eh);
-                m = new TypeDef(tdef, (TypeDefinitionHandle)eh, this);
+                return this.ResolveTypeImpl(metadataToken, genericTypeArguments, genericMethodArguments);
             }
-            else if (eh.Kind == HandleKind.TypeReference)
-            {
-                TypeReference tref = reader.GetTypeReference((TypeReferenceHandle)eh);
-                m = new TypeRef(tref, (TypeReferenceHandle)eh, this);
-            }
-            else if (eh.Kind == HandleKind.MethodSpecification)
-            {
-                MethodSpecification mspec = reader.GetMethodSpecification((MethodSpecificationHandle)eh);
-                m = new MethodSpec(mspec, (MethodSpecificationHandle)eh, this);
-            }
-            else if (eh.Kind == HandleKind.TypeSpecification)
-            {
-                TypeSpecification tspec = reader.GetTypeSpecification((TypeSpecificationHandle)eh);
-                byte[] bytes = this.reader.GetBlobBytes(tspec.Signature);
-                
-                TypeSpec decoded = TypeSpec.ReadFromArray(bytes, this, declaringMethod);
-
-                if (decoded != null) m = decoded.Type;
-                else m = null;
-            }
-            else m = null;
-
-            if (m!=null && genericTypeArguments == null && genericMethodArguments == null)
-            {
-                //if there's no generic context, store value in cache
-                this.cache[metadataToken] = m;
-            }
-
-            return m;
+            else return null;
         }
 
         /// <summary>
@@ -459,10 +444,7 @@ namespace CilTools.Metadata
         /// </summary>
         public MemberInfo ResolveMember(int metadataToken)
         {
-            MemberInfo m = this.CacheGetValue(metadataToken);
-
-            if (m != null) return m;
-            else return this.ResolveMember(metadataToken, null, null);
+            return this.ResolveMember(metadataToken, null, null);
         }
 
         /// <summary>
@@ -543,14 +525,14 @@ namespace CilTools.Metadata
         {
             int token = this.MetadataReader.GetToken(ht);
 
-            return this.ResolveType(token);
+            return this.ResolveTypeImpl(token, null, null);
         }
 
         internal MethodBase GetMethodDefinition(MethodDefinitionHandle hm)
         {
             int token = this.MetadataReader.GetToken(hm);
 
-            return this.ResolveMethod(token);
+            return this.ResolveMethodImpl(token, null, null);
         }
 
         /// <summary>
