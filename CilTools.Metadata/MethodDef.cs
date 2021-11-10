@@ -56,7 +56,7 @@ namespace CilTools.Metadata
             //init declaring type
             TypeDefinitionHandle ht = mdef.GetDeclaringType();
 
-            if (!ht.IsNil) this.decltype = new TypeDef(assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
+            if (!ht.IsNil) this.decltype = this.assembly.GetTypeDefinition(ht);
             else this.decltype = null;
 
             //read signature
@@ -159,10 +159,7 @@ namespace CilTools.Metadata
                         
                         if (eh.Kind == HandleKind.TypeDefinition)
                         {
-                            t = new TypeDef(
-                                assembly.MetadataReader.GetTypeDefinition((TypeDefinitionHandle)eh),
-                                (TypeDefinitionHandle)eh,
-                                this.assembly);
+                            t = this.assembly.GetTypeDefinition((TypeDefinitionHandle)eh);
                         }
                         else if (eh.Kind == HandleKind.TypeReference)
                         {

@@ -137,10 +137,7 @@ namespace CilTools.Metadata
 
                         if (eh.Kind == HandleKind.TypeDefinition)
                         {
-                            t = new TypeDef(
-                                assembly.MetadataReader.GetTypeDefinition((TypeDefinitionHandle)eh),
-                                (TypeDefinitionHandle)eh,
-                                this.assembly);
+                            t = assembly.GetTypeDefinition((TypeDefinitionHandle)eh);
                         }
                         else if (eh.Kind == HandleKind.TypeReference)
                         {

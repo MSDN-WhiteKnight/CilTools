@@ -71,7 +71,7 @@ namespace CilTools.Metadata
 
                 if (!htdef.IsNil)
                 {
-                    return new TypeDef(owner.MetadataReader.GetTypeDefinition(htdef), htdef, this.owner);
+                    return owner.GetTypeDefinition(htdef);
                 }
                 else return null;
             }

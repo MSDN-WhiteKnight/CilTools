@@ -73,9 +73,7 @@ namespace CilTools.Metadata
 
                 if (!tdefh.IsNil)
                 {
-                    this.decltype = new TypeDef(
-                        assembly.MetadataReader.GetTypeDefinition(tdefh), tdefh, this.assembly
-                        );
+                    this.decltype = this.assembly.GetTypeDefinition(tdefh);
                 }
                 else this.decltype = UnknownType.Value;
             }

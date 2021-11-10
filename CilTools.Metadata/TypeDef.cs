@@ -95,8 +95,7 @@ namespace CilTools.Metadata
                 if (eh.Kind == HandleKind.TypeDefinition)
                 {
                     TypeDefinitionHandle tdh = (TypeDefinitionHandle)eh;
-                    TypeDefinition btype = this.assembly.MetadataReader.GetTypeDefinition(tdh);
-                    ret= new TypeDef(btype, tdh, this.assembly);
+                    ret = this.assembly.GetTypeDefinition(tdh);
                 }
                 else if (eh.Kind == HandleKind.TypeReference)
                 {
@@ -473,7 +472,8 @@ namespace CilTools.Metadata
                 TypeDefinitionHandle ht = this.type.GetDeclaringType();
 
                 if (ht.IsNil) return null;
-                else return new TypeDef(this.assembly.MetadataReader.GetTypeDefinition(ht), ht, this.assembly);
+
+                return this.assembly.GetTypeDefinition(ht);
             }
         }
 
