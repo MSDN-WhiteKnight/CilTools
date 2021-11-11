@@ -275,8 +275,7 @@ namespace CilTools.Metadata
 
                 if (eh.Kind == HandleKind.MethodDefinition)
                 {
-                    MethodDefinition mdef = ass.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                    constr = new MethodDef(mdef, (MethodDefinitionHandle)eh, ass);
+                    constr = ass.GetMethodDefinition((MethodDefinitionHandle)eh);
                 }
                 else if (eh.Kind == HandleKind.MemberReference)
                 {

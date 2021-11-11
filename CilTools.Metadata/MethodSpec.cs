@@ -31,9 +31,8 @@ namespace CilTools.Metadata
 
             if (eh.Kind == HandleKind.MethodDefinition)
             {
+                this.definition = owner.GetMethodDefinition((MethodDefinitionHandle)eh) as CustomMethod;
                 MethodDefinition mdef = owner.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                this.definition = new MethodDef(mdef, (MethodDefinitionHandle)eh, owner);
-
                 int rva = mdef.RelativeVirtualAddress;
 
                 if (rva == 0)
