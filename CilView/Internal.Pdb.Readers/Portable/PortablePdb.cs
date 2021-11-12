@@ -99,7 +99,11 @@ namespace Internal.Pdb.Portable
             FileStream fs = new FileStream(pdbPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
 
             //check file format
-            if (!IsPortablePdb(fs)) return null;
+            if (!IsPortablePdb(fs)) 
+            {
+                fs.Dispose();
+                return null;
+            }
 
             MetadataReaderProvider provider = MetadataReaderProvider.FromPortablePdbStream(fs);
             List<SourceLineData> ret=new List<SourceLineData>(100);
