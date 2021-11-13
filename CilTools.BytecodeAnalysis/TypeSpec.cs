@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
@@ -253,6 +253,19 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        public static TypeSpec ReadFromArray(byte[] data, SignatureContext ctx)
+        {
+            //ECMA-335 II.23.2.14 TypeSpec
+            if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
+            if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
+            MemoryStream ms = new MemoryStream(data);
+
+            using (ms)
+            {
+                return TypeSpec.ReadFromStream(ms, ctx);
+            }
+        }
+
         internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver)
         {
             return TypeSpec.ReadFromStream(source, new SignatureContext(resolver, null));
@@ -262,7 +275,7 @@ namespace CilTools.BytecodeAnalysis
             Stream source, SignatureContext ctx
             ) //ECMA-335 II.23.2.12 Type
         {
-            Debug.Assert(source != null, "Source stream is null");//ITokenResolver resolver, MemberInfo member
+            Debug.Assert(source != null, "Source stream is null");
 
             ITokenResolver resolver = ctx.TokenResolver;
             MemberInfo member = ctx.GenericContext.GetDeclaringMember();
@@ -424,11 +437,15 @@ namespace CilTools.BytecodeAnalysis
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Var: //generic type arg
                         paramnum = MetadataReader.ReadCompressed(source);
-                        restype = GenericParamType.Create(member as Type, (int)paramnum, null);
+                        restype = GenericParamType.Create(ctx.GenericContext.DeclaringType, (int)paramnum, null);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.MVar: //generic method arg
                         paramnum = MetadataReader.ReadCompressed(source);
-                        restype = new GenericParamType(member as MethodBase, (int)paramnum);
+                        MethodBase declMethod = ctx.GenericContext.DeclaringMethod;
+
+                        if (declMethod == null) declMethod = member as MethodBase;
+
+                         restype = new GenericParamType(declMethod, (int)paramnum);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Internal:
                         //skip sizeof(IntPtr) bytes
@@ -436,7 +453,7 @@ namespace CilTools.BytecodeAnalysis
                         source.Read(buf, 0, buf.Length);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.FnPtr:
-                        Signature psig = new Signature(source, resolver, member);
+                        Signature psig = new Signature(source, ctx);
                         restype = new FunctionPointerType(psig);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.GenericInst:

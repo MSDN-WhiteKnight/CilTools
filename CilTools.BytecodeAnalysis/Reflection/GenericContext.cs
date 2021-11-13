@@ -48,10 +48,15 @@ namespace CilTools.Reflection
             {
                 try
                 {
-                    declmethod = methodargs[0].DeclaringMethod;
+                    if (methodargs[0].IsGenericParameter)
+                    {
+                        declmethod = methodargs[0].DeclaringMethod;
+                    }
                 }
                 catch (NotImplementedException) { }
                 catch (NotSupportedException) { }
+
+                if (declmethod == null) declmethod = UnknownMethod.Value;
             }
 
             return new GenericContext(decltype, declmethod, typeargs, methodargs);
