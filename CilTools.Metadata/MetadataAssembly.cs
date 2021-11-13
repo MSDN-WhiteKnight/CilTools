@@ -220,20 +220,9 @@ namespace CilTools.Metadata
             {
                 TypeSpecification tspec = reader.GetTypeSpecification((TypeSpecificationHandle)eh);
                 byte[] bytes = this.reader.GetBlobBytes(tspec.Signature);
-                MethodBase declaringMethod = null;
-
-                if (genericMethodArguments != null && genericMethodArguments.Length > 0)
-                {
-                    if (genericMethodArguments[0].IsGenericParameter)
-                    {
-                        declaringMethod = genericMethodArguments[0].DeclaringMethod;
-                    }
-
-                    //we need non-null value here to indicate that this type is a generic method argument
-                    if (declaringMethod == null) declaringMethod = UnknownMethod.Value;
-                }
-
-                TypeSpec decoded = TypeSpec.ReadFromArray(bytes, this, declaringMethod);
+                GenericContext gctx = GenericContext.Create(genericTypeArguments, genericMethodArguments);
+                SignatureContext ctx = new SignatureContext(this, gctx);
+                TypeSpec decoded = TypeSpec.ReadFromArray(bytes, ctx);
 
                 if (decoded != null) ret = decoded;
                 else ret = null;

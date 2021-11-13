@@ -44,7 +44,7 @@ namespace CilTools.Reflection
 
             MethodBase declmethod = null;
 
-            if (methodargs != null && methodargs.Length > 0 && methodargs[0].IsGenericParameter)
+            if (methodargs != null && methodargs.Length > 0)
             {
                 try
                 {
