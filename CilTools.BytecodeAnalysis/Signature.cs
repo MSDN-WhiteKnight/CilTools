@@ -83,7 +83,7 @@ namespace CilTools.BytecodeAnalysis
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
                         
             ModuleWrapper mwr = new ModuleWrapper(module);
-            Initialize(data, mwr, null);
+            Initialize(data, new SignatureContext(mwr, GenericContext.Empty));
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace CilTools.BytecodeAnalysis
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
 
-            Initialize(data, resolver,null);
+            Initialize(data, new SignatureContext(resolver, GenericContext.Empty));
         }
 
         /// <summary>
@@ -126,7 +126,9 @@ namespace CilTools.BytecodeAnalysis
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
 
-            Initialize(data, resolver, member);
+            GenericContext gctx = GenericContext.FromMember(member);
+            SignatureContext ctx = new SignatureContext(resolver, gctx);
+            Initialize(data, ctx);
         }
 
         /// <summary>
@@ -147,11 +149,15 @@ namespace CilTools.BytecodeAnalysis
         {
             if (src == null) throw new ArgumentNullException("src", "Source stream cannot be null");
 
-            this.Initialize(src, resolver, member);
+            GenericContext gctx = GenericContext.FromMember(member);
+            SignatureContext ctx = new SignatureContext(resolver, gctx);
+            this.Initialize(src, ctx);
         }
 
-        void Initialize(Stream src, ITokenResolver resolver, MemberInfo member)
+        void Initialize(Stream src, SignatureContext ctx)
         {
+            ITokenResolver resolver = ctx.TokenResolver;
+            MemberInfo member = ctx.GenericContext.GetDeclaringMember();
             byte b = MetadataReader.ReadByte(src); //calling convention & method flags
             int conv = b & CALLCONV_MASK;
             this._conv = (CallingConvention)conv;
@@ -170,7 +176,7 @@ namespace CilTools.BytecodeAnalysis
 
                 for (int i = 0; i < genparams; i++)
                 {
-                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, resolver, member);
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, ctx);
                 }
             }
             else
@@ -183,22 +189,22 @@ namespace CilTools.BytecodeAnalysis
 
                 uint paramcount = MetadataReader.ReadCompressed(src);
                 this._ParamTypes = new TypeSpec[paramcount];
-                this._ReturnType = TypeSpec.ReadFromStream(src, resolver, member);
+                this._ReturnType = TypeSpec.ReadFromStream(src, ctx);
 
                 for (int i = 0; i < paramcount; i++)
                 {
-                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, resolver, member);
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, ctx);
                 }
             }
         }
 
-        void Initialize(byte[] data, ITokenResolver resolver, MemberInfo member)
+        void Initialize(byte[] data, SignatureContext ctx)
         {
             MemoryStream ms = new MemoryStream(data);
 
             using (ms)
             {
-                this.Initialize(ms, resolver, member);
+                this.Initialize(ms, ctx);
             }
         }
 
@@ -226,6 +232,8 @@ namespace CilTools.BytecodeAnalysis
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
             MemoryStream ms = new MemoryStream(data);
+            GenericContext gctx = GenericContext.FromMember(member);
+            SignatureContext ctx = new SignatureContext(resolver, gctx);
 
             using (ms)
             {
@@ -233,7 +241,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (b != 0x6) throw new InvalidDataException("Invalid field signature");
 
-                return TypeSpec.ReadFromStream(ms, resolver,member);
+                return TypeSpec.ReadFromStream(ms, ctx);
             }
         }
 

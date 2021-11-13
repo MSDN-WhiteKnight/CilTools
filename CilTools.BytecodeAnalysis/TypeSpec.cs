@@ -247,21 +247,25 @@ namespace CilTools.BytecodeAnalysis
 
             using (ms)
             {
-                return TypeSpec.ReadFromStream(ms, resolver,member);
+                GenericContext gctx = GenericContext.FromMember(member);
+                SignatureContext ctx = new SignatureContext(resolver, gctx);
+                return TypeSpec.ReadFromStream(ms, ctx);
             }
         }
 
         internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver)
         {
-            return TypeSpec.ReadFromStream(source, resolver, null);
+            return TypeSpec.ReadFromStream(source, new SignatureContext(resolver, null));
         }
 
         internal static TypeSpec ReadFromStream(
-            Stream source, ITokenResolver resolver, MemberInfo member
+            Stream source, SignatureContext ctx
             ) //ECMA-335 II.23.2.12 Type
         {
-            Debug.Assert(source != null, "Source stream is null");
+            Debug.Assert(source != null, "Source stream is null");//ITokenResolver resolver, MemberInfo member
 
+            ITokenResolver resolver = ctx.TokenResolver;
+            MemberInfo member = ctx.GenericContext.GetDeclaringMember();
             CustomModifier mod;            
             byte b;
             int typetok;
@@ -385,7 +389,7 @@ namespace CilTools.BytecodeAnalysis
                                                 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Array:
-                        ts = TypeSpec.ReadFromStream(source, resolver,member);
+                        ts = TypeSpec.ReadFromStream(source, ctx);
 
                         //II.23.2.13 ArrayShape
                         uint rank = MetadataReader.ReadCompressed(source);
@@ -407,13 +411,13 @@ namespace CilTools.BytecodeAnalysis
                         
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.SzArray:
-                        ts = TypeSpec.ReadFromStream(source, resolver, member);
+                        ts = TypeSpec.ReadFromStream(source, ctx);
 
                         if(ts.Type!=null) restype = ts.Type.MakeArrayType();
 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Ptr:
-                        ts = TypeSpec.ReadFromStream(source, resolver, member);
+                        ts = TypeSpec.ReadFromStream(source, ctx);
 
                         if (ts.Type != null) restype = ts.Type.MakePointerType();
 
@@ -459,7 +463,7 @@ namespace CilTools.BytecodeAnalysis
 
                         for (uint i = 0; i < genargs_count; i++)
                         {
-                            genargs[i] = TypeSpec.ReadFromStream(source, resolver, member);
+                            genargs[i] = TypeSpec.ReadFromStream(source, ctx);
                             arg_types[i] = genargs[i].Type;
                         }
 
