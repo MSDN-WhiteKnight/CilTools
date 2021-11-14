@@ -9,8 +9,14 @@ using System.Text;
 namespace CilTools.Reflection
 {
     /// <summary>
-    /// Represent a set of generic type and method parameters that defines a meaning of generic signature in some context
+    /// Represent a set of information that defines a meaning of generic signature in some context
     /// </summary>
+    /// <remarks>
+    /// A generic context is used with when reading signatures that could potentially contain generic parameters. 
+    /// A generic parameter in signature only encodes its number; getting any additional information, such as a 
+    /// parameter name, requires access to specific generic parameters or arguments being referenced in current 
+    /// context.
+    /// </remarks>
     public class GenericContext
     {
         Type declaringType;
@@ -28,6 +34,14 @@ namespace CilTools.Reflection
             this.genericMethodArguments = methodargs;
         }
 
+        /// <summary>
+        /// Creates a new generic context using the specified generic arguments
+        /// </summary>
+        /// <param name="typeargs">An array of generic type arguments (can be null)</param>
+        /// <param name="methodargs">An array of generic method arguments (can be null)</param>
+        /// <remarks>
+        /// Pass null values if the generic context is unknown or signature does not use generic parameters
+        /// </remarks>
         public static GenericContext Create(Type[] typeargs, Type[] methodargs)
         {
             Type decltype = null;
@@ -62,6 +76,14 @@ namespace CilTools.Reflection
             return new GenericContext(decltype, declmethod, typeargs, methodargs);
         }
 
+        /// <summary>
+        /// Creates a new generic context using the specified declaring members
+        /// </summary>
+        /// <param name="decltype">Declaring type (could be null)</param>
+        /// <param name="declmethod">Declaring method (could be null)</param>
+        /// <remarks>
+        /// Pass null values if the generic context is unknown or signature does not use generic parameters
+        /// </remarks>
         public static GenericContext Create(Type decltype,MethodBase declmethod)
         {
             Type[] typeargs = null;
@@ -90,18 +112,27 @@ namespace CilTools.Reflection
             return new GenericContext(decltype, declmethod, typeargs, methodargs);
         }
 
+        /// <summary>
+        /// Gets a generic type argument at the specified index
+        /// </summary>
         public Type GetTypeArgument(int i)
         {
             if (this.genericTypeArguments == null) return null;
             else return this.genericTypeArguments[i];
         }
 
+        /// <summary>
+        /// Gets a generic method argument at the specified index
+        /// </summary>        
         public Type GetMethodArgument(int i)
         {
             if (this.genericMethodArguments == null) return null;
             else return this.genericMethodArguments[i];
         }
 
+        /// <summary>
+        /// Gets the number of generic type arguments
+        /// </summary>
         public int TypeArgumentsCount
         {
             get
@@ -111,6 +142,9 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <summary>
+        /// Gets the number of generic method arguments
+        /// </summary>
         public int MethodArgumentsCount
         {
             get
@@ -120,11 +154,17 @@ namespace CilTools.Reflection
             }
         }
 
+        /// <summary>
+        /// Gets a declaring type in this generic context
+        /// </summary>
         public Type DeclaringType
         {
             get { return this.declaringType; }
         }
 
+        /// <summary>
+        /// Gets a declaring method in this generic context
+        /// </summary>
         public MethodBase DeclaringMethod
         {
             get { return this.declaringMethod; }
