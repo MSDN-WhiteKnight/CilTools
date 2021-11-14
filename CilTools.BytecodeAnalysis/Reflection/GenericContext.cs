@@ -90,14 +90,34 @@ namespace CilTools.Reflection
             return new GenericContext(decltype, declmethod, typeargs, methodargs);
         }
 
-        public Type[] GenericTypeArguments
+        public Type GetTypeArgument(int i)
         {
-            get { return this.genericTypeArguments; }
+            if (this.genericTypeArguments == null) return null;
+            else return this.genericTypeArguments[i];
         }
 
-        public Type[] GenericMethodArguments
+        public Type GetMethodArgument(int i)
         {
-            get { return this.genericMethodArguments; }
+            if (this.genericMethodArguments == null) return null;
+            else return this.genericMethodArguments[i];
+        }
+
+        public int TypeArgumentsCount
+        {
+            get
+            {
+                if (this.genericTypeArguments == null) return 0;
+                else return this.genericTypeArguments.Length;
+            }
+        }
+
+        public int MethodArgumentsCount
+        {
+            get
+            {
+                if (this.genericMethodArguments == null) return 0;
+                else return this.genericMethodArguments.Length;
+            }
         }
 
         public Type DeclaringType
