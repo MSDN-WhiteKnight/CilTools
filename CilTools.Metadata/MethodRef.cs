@@ -78,7 +78,7 @@ namespace CilTools.Metadata
 
             try
             {
-                this.sig = new Signature(sigbytes, ctx);
+                this.sig = Signature.ReadFromArray(sigbytes, ctx);
             }
             catch (NotSupportedException) { }
         }

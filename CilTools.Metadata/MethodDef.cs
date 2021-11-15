@@ -63,7 +63,7 @@ namespace CilTools.Metadata
             GenericContext gctx = GenericContext.Create(this.decltype, this);
             SignatureContext ctx = new SignatureContext(this.assembly, gctx);
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
-            this.sig = new Signature(sigbytes, ctx);
+            this.sig = Signature.ReadFromArray(sigbytes, ctx);
         }
 
         void ThrowIfDisposed()

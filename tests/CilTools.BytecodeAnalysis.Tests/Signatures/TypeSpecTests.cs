@@ -13,61 +13,6 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
     [TestClass]
     public class TypeSpecTests
     {
-        class MockTokenResolver : ITokenResolver
-        {
-            public static readonly MockTokenResolver Value = new MockTokenResolver();
-
-            public FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
-            {
-                return null;
-            }
-
-            public FieldInfo ResolveField(int metadataToken)
-            {
-                return null;
-            }
-
-            public MemberInfo ResolveMember(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
-            {
-                return null;
-            }
-
-            public MemberInfo ResolveMember(int metadataToken)
-            {
-                return null;
-            }
-
-            public MethodBase ResolveMethod(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
-            {
-                return null;
-            }
-
-            public MethodBase ResolveMethod(int metadataToken)
-            {
-                return null;
-            }
-
-            public byte[] ResolveSignature(int metadataToken)
-            {
-                return null;
-            }
-
-            public string ResolveString(int metadataToken)
-            {
-                return null;
-            }
-
-            public Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
-            {
-                return null;
-            }
-
-            public Type ResolveType(int metadataToken)
-            {
-                return null;
-            }
-        }
-
         [TestMethod]
         public void Test_ReadFromArray_Int()
         {

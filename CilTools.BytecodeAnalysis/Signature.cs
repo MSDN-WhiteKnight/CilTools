@@ -154,13 +154,18 @@ namespace CilTools.BytecodeAnalysis
             this.Initialize(src, ctx);
         }
 
-        public Signature(byte[] data, SignatureContext ctx)
+        Signature(byte[] data, SignatureContext ctx)
+        {
+            this.Initialize(data, ctx);
+        }
+
+        public static Signature ReadFromArray(byte[] data, SignatureContext ctx) 
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
             if (ctx == null) throw new ArgumentNullException("ctx");
 
-            this.Initialize(data, ctx);
+            return new Signature(data, ctx);
         }
 
         internal Signature(Stream src, SignatureContext ctx)
