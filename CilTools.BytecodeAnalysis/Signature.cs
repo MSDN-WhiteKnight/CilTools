@@ -159,6 +159,18 @@ namespace CilTools.BytecodeAnalysis
             this.Initialize(data, ctx);
         }
 
+        /// <summary>
+        /// Reads a signature from the specified byte array using the specified signature context
+        /// </summary>
+        /// <param name="data">Byte array to read data from</param>
+        /// <param name="ctx">The signature context</param>
+        /// <remarks><para>The signature could be the method signature or the standalone signature 
+        /// (ECMA-335 II.23.2.3: StandAloneMethodSig)</para>
+        /// <para>A signature context encapsulates a token resolver and a generic context. Generic context is only used 
+        /// when the signature contains generic parameters.</para>
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">Source array or signature context is null</exception>
+        /// <exception cref="ArgumentException">Source array is empty</exception>
         public static Signature ReadFromArray(byte[] data, SignatureContext ctx) 
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
