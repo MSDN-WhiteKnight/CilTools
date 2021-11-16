@@ -42,7 +42,7 @@ namespace CilTools.Reflection
         /// <remarks>
         /// Pass null values if the generic context is unknown or signature does not use generic parameters
         /// </remarks>
-        public static GenericContext Create(Type[] typeargs, Type[] methodargs)
+        public static GenericContext FromArgs(Type[] typeargs, Type[] methodargs)
         {
             Type decltype = null;
 

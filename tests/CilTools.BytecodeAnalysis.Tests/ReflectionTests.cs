@@ -67,10 +67,10 @@ namespace CilTools.BytecodeAnalysis.Tests
             GenericContext ctx = GenericContext.Create(typeof(IList<>), null);
             VerifyGenericContext_IList(ctx);
 
-            ctx = GenericContext.Create(typeof(IList<>).GetGenericArguments(), null);
+            ctx = GenericContext.FromArgs(typeof(IList<>).GetGenericArguments(), null);
             VerifyGenericContext_IList(ctx);
 
-            ctx = GenericContext.Create(new Type[] { typeof(int) }, null);
+            ctx = GenericContext.FromArgs(new Type[] { typeof(int) }, null);
             Assert.IsNull(ctx.DeclaringMethod);
             Assert.AreEqual(0, ctx.MethodArgumentsCount);
             Assert.AreEqual(1, ctx.TypeArgumentsCount);
@@ -97,10 +97,10 @@ namespace CilTools.BytecodeAnalysis.Tests
             GenericContext ctx = GenericContext.Create(null, m);
             VerifyGenericContext_Method(ctx, m);
 
-            ctx = GenericContext.Create(null, m.GetGenericArguments());
+            ctx = GenericContext.FromArgs(null, m.GetGenericArguments());
             VerifyGenericContext_Method(ctx, m);
 
-            ctx = GenericContext.Create(null, new Type[] { typeof(int) });
+            ctx = GenericContext.FromArgs(null, new Type[] { typeof(int) });
             Assert.AreEqual(1, ctx.MethodArgumentsCount);
             Assert.AreEqual(0, ctx.TypeArgumentsCount);
             Assert.IsNull(ctx.DeclaringType);

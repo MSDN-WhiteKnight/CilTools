@@ -29,7 +29,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
 
         static readonly SignatureContext EmptyContext = new SignatureContext(
             MockTokenResolver.Value,
-            GenericContext.Create((Type)null, null));
+            GenericContext.Create(null, null));
 
         [TestMethod]
         public void Test_Signature_ReadFromArray_Void()

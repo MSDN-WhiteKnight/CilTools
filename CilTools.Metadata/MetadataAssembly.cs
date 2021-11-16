@@ -220,7 +220,7 @@ namespace CilTools.Metadata
             {
                 TypeSpecification tspec = reader.GetTypeSpecification((TypeSpecificationHandle)eh);
                 byte[] bytes = this.reader.GetBlobBytes(tspec.Signature);
-                GenericContext gctx = GenericContext.Create(genericTypeArguments, genericMethodArguments);
+                GenericContext gctx = GenericContext.FromArgs(genericTypeArguments, genericMethodArguments);
                 SignatureContext ctx = new SignatureContext(this, gctx);
                 TypeSpec decoded = TypeSpec.ReadFromArray(bytes, ctx);
 
