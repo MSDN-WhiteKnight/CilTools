@@ -253,11 +253,24 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        /// <summary>
+        /// Reads <c>TypeSpec</c> object from the specified byte array using the specified signature context
+        /// </summary>
+        /// <param name="data">Byte array to read data from</param>
+        /// <param name="ctx">The signature context</param>
+        /// <remarks>
+        /// A signature context encapsulates a token resolver and a generic context. Generic context is only used 
+        /// when reading generic parameters.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">Source array or signature context is null</exception>
+        /// <exception cref="ArgumentException">Source array is empty</exception>
         public static TypeSpec ReadFromArray(byte[] data, SignatureContext ctx)
         {
             //ECMA-335 II.23.2.14 TypeSpec
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
+            if (ctx == null) throw new ArgumentNullException("ctx");
+
             MemoryStream ms = new MemoryStream(data);
 
             using (ms)
@@ -445,7 +458,7 @@ namespace CilTools.BytecodeAnalysis
 
                         if (declMethod == null) declMethod = member as MethodBase;
 
-                         restype = new GenericParamType(declMethod, (int)paramnum);
+                        restype = new GenericParamType(declMethod, (int)paramnum);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Internal:
                         //skip sizeof(IntPtr) bytes
