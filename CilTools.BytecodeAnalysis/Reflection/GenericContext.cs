@@ -25,6 +25,7 @@ namespace CilTools.Reflection
         Type[] genericMethodArguments;
 
         internal static readonly GenericContext Empty = new GenericContext(null,null,null,null);
+        static readonly Type[] s_emptyArgs = new Type[0];
 
         GenericContext(Type t, MethodBase m, Type[] typeargs, Type[] methodargs)
         {
@@ -77,6 +78,40 @@ namespace CilTools.Reflection
         }
 
         /// <summary>
+        /// Gets generic type or method arguments from the specified instance. Returns empty array on failure.
+        /// </summary>
+        internal static Type[] TryGetGenericArguments(MemberInfo member) 
+        {
+            Type[] ret=s_emptyArgs;
+
+            try
+            {
+                if (member is Type)
+                {
+                    Type t = (Type)member;
+
+                    if (t.IsGenericType)
+                    {
+                        ret = t.GetGenericArguments();
+                    }
+                }
+                else if (member is MethodBase) 
+                {
+                    MethodBase m = (MethodBase)member;
+
+                    if (m.IsGenericMethod) 
+                    {
+                        ret = m.GetGenericArguments();
+                    }
+                }
+            }
+            catch (NotImplementedException) { }
+            catch (NotSupportedException) { }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Creates a new generic context using the specified declaring members
         /// </summary>
         /// <param name="decltype">Declaring type (could be null)</param>
@@ -89,24 +124,14 @@ namespace CilTools.Reflection
             Type[] typeargs = null;
             Type[] methodargs = null;
 
-            if (decltype != null && decltype.IsGenericType)
+            if (decltype != null)
             {
-                try
-                {
-                    typeargs = decltype.GetGenericArguments();
-                }
-                catch (NotImplementedException) { }
-                catch (NotSupportedException) { }
+                typeargs = TryGetGenericArguments(decltype);
             }
 
-            if (declmethod != null && declmethod.IsGenericMethod)
+            if (declmethod != null)
             {
-                try
-                {
-                    methodargs = declmethod.GetGenericArguments();
-                }
-                catch (NotImplementedException) { }
-                catch (NotSupportedException) { }
+                methodargs = TryGetGenericArguments(declmethod);
             }
 
             return new GenericContext(decltype, declmethod, typeargs, methodargs);

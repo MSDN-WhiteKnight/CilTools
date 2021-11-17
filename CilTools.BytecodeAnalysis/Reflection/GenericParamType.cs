@@ -57,28 +57,9 @@ namespace CilTools.Reflection
             MethodBase m = declaringMember as MethodBase;
 
             //try load parameter name from declaring member
-            if (m != null && m.IsGenericMethod)
+            if (declaringMember!=null)
             {
-                try
-                {
-                    args = m.GetGenericArguments();
-                }
-                catch (NotImplementedException) { }
-                catch (NotSupportedException) { }
-            }
-            else if (declaringMember!=null && declaringMember is Type)
-            {
-                Type declaringType = (Type)declaringMember;
-
-                if (declaringType.IsGenericType)
-                {
-                    try
-                    {
-                        args = declaringType.GetGenericArguments();
-                    }
-                    catch (NotImplementedException) { }
-                    catch (NotSupportedException) { }
-                }
+                args = GenericContext.TryGetGenericArguments(declaringMember);
             }
 
             if (args != null && index<args.Length)
