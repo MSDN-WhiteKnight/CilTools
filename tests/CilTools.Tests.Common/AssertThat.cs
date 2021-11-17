@@ -3,12 +3,12 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Microsoft.VisualStudio.TestTools.UnitTesting.Logging;
 
 namespace CilTools.Tests.Common
 {
@@ -114,8 +114,8 @@ namespace CilTools.Tests.Common
 
             if (res == false) 
             {
-                Logger.LogMessage("Input string: ");
-                Logger.LogMessage(s);
+                Trace.WriteLine("Input string: ");
+                Trace.WriteLine(s);
 
                 if (String.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern.";
 
