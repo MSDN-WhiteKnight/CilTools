@@ -60,16 +60,10 @@ namespace CilTools.Metadata
             else this.decltype = null;
 
             //read signature
-            MemberInfo declaringMember = this;
-
-            if (this.decltype!=null && this.decltype.IsGenericType)
-            {
-                //method inside generic type
-                declaringMember = decltype;
-            }
-            
+            GenericContext gctx = GenericContext.Create(this.decltype, this);
+            SignatureContext ctx = new SignatureContext(this.assembly, gctx);
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
-            this.sig = new Signature(sigbytes, this.assembly, declaringMember);
+            this.sig = Signature.ReadFromArray(sigbytes, ctx);
         }
 
         void ThrowIfDisposed()

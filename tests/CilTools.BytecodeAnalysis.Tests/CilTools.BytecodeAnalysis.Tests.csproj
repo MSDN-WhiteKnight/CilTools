@@ -33,6 +33,9 @@
     <Compile Include="CilGraphNodeTests.cs" />    
     <Compile Include="CilReaderTests.cs" />    
     <Compile Include="ReflectionTests.cs" />    
+    <Compile Include="Signatures\MockTokenResolver.cs" />    
+    <Compile Include="Signatures\SignatureTests.cs" />    
+    <Compile Include="Signatures\TypeSpecTests.cs" />    
     <Compile Include="SyntaxTests.cs" />
   </ItemGroup>
   

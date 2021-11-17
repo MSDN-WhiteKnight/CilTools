@@ -49,5 +49,65 @@ namespace CilTools.BytecodeAnalysis.Tests
             Assert.AreEqual("IList`1", tParam.DeclaringType.Name);
             Assert.IsNull(tParam.DeclaringMethod);
         }
+
+        static void VerifyGenericContext_IList(GenericContext ctx)
+        {
+            Assert.IsNull(ctx.DeclaringMethod);
+            Assert.AreEqual("IList`1", ctx.DeclaringType.Name);
+            Assert.AreEqual(0, ctx.MethodArgumentsCount);
+            Assert.AreEqual(1, ctx.TypeArgumentsCount);
+            Type t = ctx.GetTypeArgument(0);
+            Assert.IsTrue(t.IsGenericParameter);
+            Assert.AreEqual("T", t.Name);
+        }
+
+        [TestMethod]
+        public void Test_GenericContext_GenericType()
+        {
+            GenericContext ctx = GenericContext.Create(typeof(IList<>), null);
+            VerifyGenericContext_IList(ctx);
+
+            ctx = GenericContext.FromArgs(typeof(IList<>).GetGenericArguments(), null);
+            VerifyGenericContext_IList(ctx);
+
+            ctx = GenericContext.FromArgs(new Type[] { typeof(int) }, null);
+            Assert.IsNull(ctx.DeclaringMethod);
+            Assert.AreEqual(0, ctx.MethodArgumentsCount);
+            Assert.AreEqual(1, ctx.TypeArgumentsCount);
+            Type t = ctx.GetTypeArgument(0);
+            Assert.IsFalse(t.IsGenericParameter);
+            Assert.AreEqual("Int32", t.Name);
+        }
+
+        static void VerifyGenericContext_Method(GenericContext ctx,MethodBase m)
+        {
+            Assert.AreEqual(1, ctx.MethodArgumentsCount);
+            Assert.AreEqual(0, ctx.TypeArgumentsCount);
+            Assert.IsNull(ctx.DeclaringType);
+            Assert.AreEqual(m.Name, ctx.DeclaringMethod.Name);
+            Type t = ctx.GetMethodArgument(0);
+            Assert.IsTrue(t.IsGenericParameter);
+            Assert.AreEqual("T", t.Name);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods),"GenerateArray",BytecodeProviders.All)]
+        public void Test_GenericContext_GenericMethod(MethodBase m)
+        {
+            GenericContext ctx = GenericContext.Create(null, m);
+            VerifyGenericContext_Method(ctx, m);
+
+            ctx = GenericContext.FromArgs(null, m.GetGenericArguments());
+            VerifyGenericContext_Method(ctx, m);
+
+            ctx = GenericContext.FromArgs(null, new Type[] { typeof(int) });
+            Assert.AreEqual(1, ctx.MethodArgumentsCount);
+            Assert.AreEqual(0, ctx.TypeArgumentsCount);
+            Assert.IsNull(ctx.DeclaringType);
+            Assert.IsNotNull(ctx.DeclaringMethod);
+            Type t = ctx.GetMethodArgument(0);
+            Assert.IsFalse(t.IsGenericParameter);
+            Assert.AreEqual("Int32", t.Name);
+        }
     }
 }

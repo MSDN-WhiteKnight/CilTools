@@ -50,7 +50,7 @@ namespace CilTools.Reflection
         /// </summary>
         public bool IsPinned { get { return this.type.IsPinned; } }
 
-        static LocalVariable[] ReadSignatureImpl(byte[] data, ITokenResolver resolver, MemberInfo member)
+        static LocalVariable[] ReadSignatureImpl(byte[] data, SignatureContext ctx)
         {
             MemoryStream ms = new MemoryStream(data);
             LocalVariable[] ret;
@@ -66,7 +66,7 @@ namespace CilTools.Reflection
 
                 for (int i = 0; i < paramcount; i++)
                 {
-                    TypeSpec t = TypeSpec.ReadFromStream(ms, resolver,member);
+                    TypeSpec t = TypeSpec.ReadFromStream(ms, ctx);
                     ret[i] = new LocalVariable(t, i);
                 }
 
@@ -87,7 +87,7 @@ namespace CilTools.Reflection
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) return new LocalVariable[0];
 
-            return ReadSignatureImpl(data, resolver,null);
+            return ReadSignatureImpl(data, new SignatureContext(resolver,GenericContext.Empty));
         }
 
         /// <summary>
@@ -106,7 +106,9 @@ namespace CilTools.Reflection
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) return new LocalVariable[0];
 
-            return ReadSignatureImpl(data, resolver, member);
+            GenericContext gctx = GenericContext.FromMember(member);
+            SignatureContext ctx = new SignatureContext(resolver, gctx);
+            return ReadSignatureImpl(data, ctx);
         }
 
         /// <summary>
@@ -123,7 +125,7 @@ namespace CilTools.Reflection
             if (data.Length == 0) return new LocalVariable[0];
 
             ModuleWrapper mwr = new ModuleWrapper(module);
-            return ReadSignatureImpl(data, mwr,null);
+            return ReadSignatureImpl(data, new SignatureContext(mwr,GenericContext.Empty));
         }
 
         /// <summary>

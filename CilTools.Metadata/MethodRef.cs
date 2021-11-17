@@ -33,15 +33,7 @@ namespace CilTools.Metadata
             this.assembly = owner;
             this.mref = m;
             this.mrefh = mh;
-
-            byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mref.Signature);
-
-            try
-            {
-                this.sig = new Signature(sigbytes, this.assembly,this);
-            }
-            catch (NotSupportedException) { }
-
+            
             //init declaring type
             EntityHandle eh = mref.Parent;
 
@@ -78,6 +70,17 @@ namespace CilTools.Metadata
                 else this.decltype = UnknownType.Value;
             }
             else this.decltype = UnknownType.Value;
+
+            //read signature
+            byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mref.Signature);
+            GenericContext gctx = GenericContext.Create(this.decltype, this);
+            SignatureContext ctx = new SignatureContext(this.assembly, gctx);
+
+            try
+            {
+                this.sig = Signature.ReadFromArray(sigbytes, ctx);
+            }
+            catch (NotSupportedException) { }
         }
 
         void LoadImpl()
