@@ -43,6 +43,11 @@ namespace CilView.SourceCode
             {
                 return new CppDecompiler(m);
             }
+            else if (ext.Equals(".vb"))
+            {
+                //VB.NET don't need decompiler because symbols point to the method signature
+                return new NullDecompiler(m);
+            }
             else
             {
                 return new CsharpDecompiler(m);
@@ -89,6 +94,16 @@ namespace CilView.SourceCode
 
             if (i <= 0) return typeName;
             else return typeName.Substring(0, i);
+        }
+
+        private class NullDecompiler : Decompiler
+        {
+            public NullDecompiler(MethodBase method) : base(method) { }
+
+            public override string GetMethodSigString()
+            {
+                return string.Empty;
+            }
         }
     }
 }

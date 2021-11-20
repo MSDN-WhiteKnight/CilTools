@@ -150,6 +150,7 @@
     <Compile Include="SourceCode\SourceInfo.cs" />
     <Compile Include="SourceCode\SymbolsException.cs" />
     <Compile Include="SourceCode\SymbolsQueryType.cs" />
+    <Compile Include="SourceCode\VbDecompiler.cs" />
     <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
       <DependentUpon>CilBrowserPage.xaml</DependentUpon>
     </Compile>
