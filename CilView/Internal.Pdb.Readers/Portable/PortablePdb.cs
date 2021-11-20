@@ -38,6 +38,18 @@ namespace Internal.Pdb.Portable
             return path;
         }
 
+        static Guid ReadDocumentHashAlgorithm(MetadataReader reader, Document doc)
+        {
+            GuidHandle gh = doc.HashAlgorithm;
+            return reader.GetGuid(gh);
+        }
+
+        static byte[] ReadDocumentHash(MetadataReader reader, Document doc)
+        {
+            BlobHandle bh = doc.Hash;
+            return reader.GetBlobBytes(bh);
+        }
+
         static bool IsPortablePdb(FileStream fs)
         {
             if (fs.Length < 4) return false; //too short to be valid metadata
@@ -120,20 +132,33 @@ namespace Internal.Pdb.Portable
 
                 MethodDebugInformation di = reader.GetMethodDebugInformation(hDebug);
                 string path = string.Empty;
+                Guid algo = Guid.Empty;
+                byte[] hash = new byte[0];
 
                 //file path if all sequence points are in the same file
-                if (!di.Document.IsNil) path = ReadDocumentPath(reader, di.Document);
+                if (!di.Document.IsNil)
+                {
+                    path = ReadDocumentPath(reader, di.Document);
+                    Document doc = reader.GetDocument(di.Document);
+                    algo = ReadDocumentHashAlgorithm(reader, doc);
+                    hash = ReadDocumentHash(reader, doc);
+                }
 
                 foreach (SequencePoint sp in di.GetSequencePoints())
                 {
                     if (sp.IsHidden) continue;
 
                     string s = path;
+                    Guid a = algo;
+                    byte[] h = hash;
 
                     if (!sp.Document.IsNil && sp.Document != di.Document)
                     {
-                        //file path if method spans over nultiple files
+                        //file path if method spans over multiple files
                         s = ReadDocumentPath(reader, di.Document);
+                        Document doc = reader.GetDocument(di.Document);
+                        a = ReadDocumentHashAlgorithm(reader, doc);
+                        h = ReadDocumentHash(reader, doc);
                     }
 
                     ret.Add(new SourceLineData()
@@ -143,7 +168,9 @@ namespace Internal.Pdb.Portable
                         LineStart = sp.StartLine,
                         LineEnd = sp.EndLine,
                         ColStart = sp.StartColumn,
-                        ColEnd = sp.EndColumn
+                        ColEnd = sp.EndColumn,
+                        Hash = h,
+                        HashAlgorithm = a
                     });
                 }
             }//end using

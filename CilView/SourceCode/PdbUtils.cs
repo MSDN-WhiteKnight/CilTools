@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Security.Cryptography;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
@@ -17,6 +18,9 @@ namespace CilView.SourceCode
 {
     class PdbUtils
     {
+        static readonly Guid GuidSHA256 = Guid.Parse("8829d00f-11b8-4213-878b-770e8597ac16");
+        static readonly Guid GuidSHA1 = Guid.Parse("ff1816ec-aa5e-4d10-87f7-6f4963833460");
+
         public static string GetCilText(MethodBase mb, uint startOffset, uint endOffset) 
         {
             StringBuilder sb = new StringBuilder(500);
@@ -80,6 +84,26 @@ namespace CilView.SourceCode
 
             return ret;
         }
+
+        static bool IsSourceValid(string file, Guid algo, byte[] hash)
+        {
+            HashAlgorithm ha=null;
+
+            if (algo.Equals(GuidSHA256))
+            {
+                ha = SHA256.Create();
+            }
+            else if (algo.Equals(GuidSHA1))
+            {
+                ha = SHA1.Create();
+            }
+
+            if (ha == null) throw new SymbolsException("Unsupported PDB hash: "+algo.ToString());
+
+            byte[] data = File.ReadAllBytes(file);
+            byte[] hashCalc = ha.ComputeHash(data);
+            return Enumerable.SequenceEqual(hashCalc, hash);
+        }
         
         static SourceInfo GetSourceFromWindowsPdb(MethodBase m,
             uint startOffset,
@@ -132,7 +156,14 @@ namespace CilView.SourceCode
                     {
                         throw new SymbolsException("Source file not found: "+coll.File.Name);
                     }
-                    
+
+                    bool isValid = IsSourceValid(coll.File.Name, coll.File.AlgorithmId, coll.File.Checksum);
+
+                    if (!isValid)
+                    {
+                        throw new SymbolsException("Source file does not match PDB hash: " + coll.File.Name);
+                    }
+
                     //найдем номера строк в файле, соответствующие началу и концу фрагмента
                     PdbSequencePoint start;
                     PdbSequencePoint end;
@@ -274,6 +305,18 @@ namespace CilView.SourceCode
                 if (string.IsNullOrEmpty(line.FilePath)) continue;
 
                 filePath = line.FilePath;
+
+                if (!File.Exists(filePath))
+                {
+                    throw new SymbolsException("Source file not found: " + filePath);
+                }
+
+                bool isValid = IsSourceValid(filePath, line.HashAlgorithm, line.Hash);
+
+                if (!isValid)
+                {
+                    throw new SymbolsException("Source file does not match PDB hash: " + filePath);
+                }
 
                 if (queryType == SymbolsQueryType.RangeExact)
                 {

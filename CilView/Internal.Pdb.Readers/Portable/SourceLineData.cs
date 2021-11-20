@@ -13,5 +13,7 @@ namespace Internal.Pdb.Portable
         public int LineEnd { get; set; }
         public int ColStart { get; set; }
         public int ColEnd { get; set; }
+        public Guid HashAlgorithm { get; set; }
+        public byte[] Hash { get; set; }
     }
 }
