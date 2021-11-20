@@ -69,12 +69,15 @@ namespace CilView.SourceCode
             StringBuilder sb = new StringBuilder(500);
             ParameterInfo[] pars = m.GetParameters();
 
-            if (m.IsPublic) sb.Append("public ");
-            else if (m.IsFamily) sb.Append("protected ");
-            else if (m.IsAssembly) sb.Append("internal ");
+            if (!Utils.IsAbstractInterfaceMethod(m))
+            {
+                if (m.IsPublic) sb.Append("public ");
+                else if (m.IsFamily) sb.Append("protected ");
+                else if (m.IsAssembly) sb.Append("internal ");
 
-            if (m.IsStatic) sb.Append("static ");
-            if (m.IsAbstract) sb.Append("abstract ");
+                if (m.IsStatic) sb.Append("static ");
+                if (m.IsAbstract) sb.Append("abstract ");
+            }
 
             string rettype = string.Empty;
 

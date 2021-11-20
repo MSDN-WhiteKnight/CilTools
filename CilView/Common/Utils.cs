@@ -137,6 +137,23 @@ namespace CilView.Common
             return StringEquals(mb.Name, ".ctor")|| StringEquals(mb.Name, ".cctor");
         }
 
+        public static bool IsAbstractInterfaceMethod(MethodBase m)
+        {
+            try
+            {
+                if (m.IsStatic) return false;
+                if(!m.IsAbstract) return false;
+
+                Type t = m.DeclaringType;
+
+                if (t == null) return false;
+
+                return t.IsInterface;
+            }
+            catch (NotImplementedException) { return false; }
+            catch (NotSupportedException) { return false; }
+        }
+
         public static int GetMethodBodySize(MethodBase mb)
         {
             if (mb.IsAbstract) return -1;
