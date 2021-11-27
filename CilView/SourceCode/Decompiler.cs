@@ -83,7 +83,7 @@ namespace CilView.SourceCode
             SourceInfo ret = new SourceInfo();
             ret.SymbolsFile = "DECOMPILED";
             ret.SourceFile = "DECOMPILED";
-            ret.SourceCode = DecompileMethodSignature(".cs", m)+";";
+            ret.SourceCode = DecompileMethodSignature(".cs", m);
             ret.Method = m;
             return ret;
         }

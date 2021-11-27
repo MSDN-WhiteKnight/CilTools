@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using CilView.Common;
 using CilView.UI.Dialogs;
 
 namespace CilView.SourceCode
@@ -90,7 +91,10 @@ namespace CilView.SourceCode
 
                     try
                     {
-                        methodstr = Decompiler.DecompileMethodSignature(ext, srcinfo.Method);
+                        if (!Utils.IsConstructor(srcinfo.Method) && !Utils.IsPropertyMethod(srcinfo.Method))
+                        {
+                            methodstr = Decompiler.DecompileMethodSignature(ext, srcinfo.Method);
+                        }
                     }
                     catch (Exception ex)
                     {

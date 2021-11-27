@@ -63,20 +63,76 @@ namespace CilView.SourceCode
             return t.Name;
         }
 
+        static void PrintModififers(TextWriter target, MethodBase m)
+        {
+            if (m.IsPublic) target.Write("public ");
+            else if (m.IsFamily) target.Write("protected ");
+            else if (m.IsAssembly) target.Write("internal ");
+
+            if (m.IsStatic) target.Write("static ");
+            if (m.IsAbstract) target.Write("abstract ");
+
+            target.Flush();
+        }
+
+        static string DecompilePropertyMethod(MethodBase m)
+        {
+            string mName = m.Name;
+
+            if (string.IsNullOrEmpty(mName)) return string.Empty;
+            if (!mName.Contains("_")) return string.Empty;
+
+            string[] arr = mName.Split('_');
+            if(arr.Length<2) return string.Empty;
+
+            string accName = arr[0];
+            string propName = arr[1];
+
+            StringBuilder sb = new StringBuilder(200);
+            StringWriter wr = new StringWriter(sb);
+            PrintModififers(wr, m);
+
+            string proptype = string.Empty;
+
+            if (m is CustomMethod)
+            {
+                CustomMethod cm = (CustomMethod)m;
+                Type t = cm.ReturnType;
+
+                if (t != null)
+                {
+                    proptype = GetTypeString(t);
+                }
+            }
+
+            wr.Write(proptype);
+            wr.Write(' ');
+            wr.Write(propName);
+            wr.Write(' ');
+            wr.Write('{');
+            wr.Write(accName);
+            wr.Write(';');
+            wr.Write('}');
+            return sb.ToString();
+        }
+
         public override string GetMethodSigString()
         {
             MethodBase m = this._method;
+
+            if (Utils.IsPropertyMethod(m))
+            {
+                string propmethod = DecompilePropertyMethod(m);
+                if (propmethod.Length > 0) return propmethod;
+            }
+
             StringBuilder sb = new StringBuilder(500);
             ParameterInfo[] pars = m.GetParameters();
-
+            StringWriter wr = new StringWriter(sb);
+            
             if (!Utils.IsAbstractInterfaceMethod(m))
             {
-                if (m.IsPublic) sb.Append("public ");
-                else if (m.IsFamily) sb.Append("protected ");
-                else if (m.IsAssembly) sb.Append("internal ");
-
-                if (m.IsStatic) sb.Append("static ");
-                if (m.IsAbstract) sb.Append("abstract ");
+                PrintModififers(wr, m);
             }
 
             string rettype = string.Empty;
@@ -137,6 +193,9 @@ namespace CilView.SourceCode
             }
 
             sb.Append(')');
+
+            if (m.IsAbstract) sb.Append(';');
+
             return sb.ToString();
         }
     }

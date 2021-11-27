@@ -137,6 +137,11 @@ namespace CilView.Common
             return StringEquals(mb.Name, ".ctor")|| StringEquals(mb.Name, ".cctor");
         }
 
+        public static bool IsPropertyMethod(MethodBase m)
+        {
+            return m.IsSpecialName && (m.Name.StartsWith("get_") || m.Name.StartsWith("set_"));
+        }
+
         public static bool IsAbstractInterfaceMethod(MethodBase m)
         {
             try
