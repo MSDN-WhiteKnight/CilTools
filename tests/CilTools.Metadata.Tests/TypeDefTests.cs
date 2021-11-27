@@ -17,6 +17,7 @@ namespace CilTools.Metadata.Tests
         public string PublicInstanceField;
         private static string PrivateStaticField;
         private string PrivateInstanceField;
+        public string PublicProperty { get; set; }
 
         public static void PublicStaticMethod() 
         {
@@ -93,6 +94,8 @@ namespace CilTools.Metadata.Tests
                 AssertThat.HasOnlyOneMatch(members,
                     (x) => x is FieldInfo && x.Name == "PrivateInstanceField");
 
+                AssertThat.HasOnlyOneMatch(members, 
+                    (x) => x is PropertyInfo && x.Name == "PublicProperty");
             }
         }
 
@@ -204,6 +207,21 @@ namespace CilTools.Metadata.Tests
                 Type t = ass.GetType(SampleTypeName);
                 Type t2 = ass.GetType(SampleTypeName);
                 Assert.AreSame(t, t2);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetProperties()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                PropertyInfo[] props = t.GetProperties(Utils.AllMembers());
+                PropertyInfo p = props[0];
+                Assert.AreEqual("PublicProperty", p.Name);
             }
         }
     }

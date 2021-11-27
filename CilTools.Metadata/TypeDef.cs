@@ -18,6 +18,7 @@ namespace CilTools.Metadata
         TypeDefinition type;
         TypeDefinitionHandle htype;
         MetadataAssembly assembly;
+        PropertyInfo[] properties;
 
         public TypeDef(TypeDefinition t, TypeDefinitionHandle ht,MetadataAssembly ass)
         {
@@ -60,6 +61,15 @@ namespace CilTools.Metadata
 
                 if (bindingAttr.HasFlag(BindingFlags.Static) && mb.IsStatic) sem_match = true;
                 else if (bindingAttr.HasFlag(BindingFlags.Instance) && !mb.IsStatic) sem_match = true;
+            }
+            else if (m is PropertyInfo)
+            {
+                //filtering is not implemented
+                if (bindingAttr != BindingFlags.Default)
+                {
+                    access_match = true;
+                    sem_match = true;
+                }
             }
             else if (m is Type)
             {
@@ -229,6 +239,20 @@ namespace CilTools.Metadata
             return ret.ToArray();
         }
 
+        PropertyInfo[] LoadProperties()
+        {
+            List<PropertyInfo> props = new List<PropertyInfo>();
+
+            foreach (PropertyDefinitionHandle hp in this.type.GetProperties())
+            {
+                PropertyDefinition pd = this.assembly.MetadataReader.GetPropertyDefinition(hp);
+                PropertyInfo p = new PropertyDef(pd, hp, this.assembly, this);
+                props.Add(p);
+            }
+
+            return props.ToArray();
+        }
+
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
             List<MemberInfo> members = new List<MemberInfo>();
@@ -251,6 +275,18 @@ namespace CilTools.Metadata
                 FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
                 m = new FieldDef(field, hfield, this.assembly, null);
                 if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+            }
+
+            //cache properties so their lookup does not slow down every GetMembers() call
+            //we can cache them all the time, because attributes filtering is not implemented anyway
+            if (this.properties == null) this.properties = this.LoadProperties();
+
+            if (bindingAttr != BindingFlags.Default)
+            {
+                for (int i = 0; i < this.properties.Length; i++)
+                {
+                    members.Add(this.properties[i]);
+                }
             }
 
             return members.ToArray();
@@ -288,13 +324,26 @@ namespace CilTools.Metadata
 
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
         {
-            throw new NotSupportedException("This type implementation does not support properties");
+            //cache properties so their lookup does not slow down every GetMembers() call
+            //we can cache them all the time, because attributes filtering is not implemented anyway
+            if (this.properties == null) this.properties = this.LoadProperties();
+
+            if (bindingAttr != BindingFlags.Default) return this.properties;
+            else return new PropertyInfo[0];
         }
 
         protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType,
             Type[] types, ParameterModifier[] modifiers)
         {
-            throw new NotSupportedException("This type implementation does not support properties");
+            PropertyInfo[] props = this.GetProperties(bindingAttr);
+
+            for (int i = 0; i < props.Length; i++)
+            {
+                PropertyInfo p = props[i];
+                if (StrEquals(p.Name, name)) return p;
+            }
+
+            return null;
         }
 
         protected override bool HasElementTypeImpl()
