@@ -9,6 +9,7 @@ using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using CilTools.BytecodeAnalysis;
+using CilTools.Internal;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata
@@ -253,41 +254,7 @@ namespace CilTools.Metadata
         {
             throw new NotImplementedException();
         }
-
-        internal static object[] ReadCustomAttributes(
-            CustomAttributeHandleCollection coll,object owner,MetadataAssembly ass
-            )
-        {
-            object[] ret = new object[coll.Count];
-            int i = 0;
-
-            foreach (CustomAttributeHandle h in coll)
-            {
-                CustomAttribute ca = ass.MetadataReader.GetCustomAttribute(h);
-                EntityHandle eh = ca.Constructor;
-                MethodBase constr = null;
-
-                if (eh.Kind == HandleKind.MethodDefinition)
-                {
-                    constr = ass.GetMethodDefinition((MethodDefinitionHandle)eh);
-                }
-                else if (eh.Kind == HandleKind.MemberReference)
-                {
-                    MemberReference mref = ass.MetadataReader.GetMemberReference((MemberReferenceHandle)eh);
-
-                    if (mref.GetKind() == MemberReferenceKind.Method)
-                        constr = new MethodRef(mref, (MemberReferenceHandle)eh, ass);
-                }
-
-                ret[i] = new MetadataCustomAttribute(
-                    owner, constr, ass.MetadataReader.GetBlobBytes(ca.Value)
-                    );
-                i++;
-            }
-
-            return ret;
-        }
-
+        
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
@@ -296,7 +263,7 @@ namespace CilTools.Metadata
             //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
 
             CustomAttributeHandleCollection coll = this.mdef.GetCustomAttributes();
-            return ReadCustomAttributes(coll, this, this.assembly);
+            return Utils.ReadCustomAttributes(coll, this, this.assembly);
         }
 
         /// <inheritdoc/>
@@ -312,7 +279,7 @@ namespace CilTools.Metadata
             {
                 this.ThrowIfDisposed();
 
-                if (TypeDef.StrEquals(this.Name, ".ctor") || TypeDef.StrEquals(this.Name, ".cctor"))
+                if (Utils.StrEquals(this.Name, ".ctor") || Utils.StrEquals(this.Name, ".cctor"))
                 {
                     return MemberTypes.Constructor;
                 }

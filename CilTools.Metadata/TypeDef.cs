@@ -9,6 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
+using CilTools.Internal;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata
@@ -340,7 +341,7 @@ namespace CilTools.Metadata
             for (int i = 0; i < props.Length; i++)
             {
                 PropertyInfo p = props[i];
-                if (StrEquals(p.Name, name)) return p;
+                if (Utils.StrEquals(p.Name, name)) return p;
             }
 
             return null;
@@ -423,7 +424,7 @@ namespace CilTools.Metadata
 
             CustomAttributeHandleCollection coll = this.type.GetCustomAttributes();
             
-            return MethodDef.ReadCustomAttributes(coll, this, this.assembly);
+            return Utils.ReadCustomAttributes(coll, this, this.assembly);
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
@@ -526,32 +527,6 @@ namespace CilTools.Metadata
             }
         }
 
-        internal static bool StrEquals(string left, string right)
-        {
-            return String.Equals(left, right, StringComparison.InvariantCulture);
-        }
-
-        internal static bool TypeEquals(Type left, Type right)
-        {
-            if (Type.ReferenceEquals(left,right)) return true;
-
-            if (left == null)
-            {
-                if (right == null) return true;
-                else return false;
-            }
-
-            if(right==null) return false;
-
-            string left_assname = String.Empty;
-            string right_assname = String.Empty;
-
-            if (left.Assembly != null) left_assname = left.Assembly.GetName().Name;
-            if (right.Assembly != null) right_assname = right.Assembly.GetName().Name;
-
-            return StrEquals(left_assname,right_assname) && StrEquals(left.FullName,right.FullName);
-        }
-
         public override bool IsAssignableFrom(Type c)
         {
             if (c.IsInterface || this.IsInterface)
@@ -565,7 +540,7 @@ namespace CilTools.Metadata
 
             while (true)
             {
-                if (TypeEquals(this, basetype)) return true;
+                if (Utils.TypeEquals(this, basetype)) return true;
 
                 if (basetype == null) break;
 

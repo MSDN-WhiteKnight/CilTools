@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using CilTools.BytecodeAnalysis;
+using CilTools.Internal;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata
@@ -96,7 +97,7 @@ namespace CilTools.Metadata
 
             CustomAttributeHandleCollection coll = this.prop.GetCustomAttributes();
 
-            return MethodDef.ReadCustomAttributes(coll, this, this.owner);
+            return Utils.ReadCustomAttributes(coll, this, this.owner);
         }
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)

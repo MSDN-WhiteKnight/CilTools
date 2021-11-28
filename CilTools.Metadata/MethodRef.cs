@@ -3,7 +3,6 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
@@ -12,8 +11,8 @@ using System.Reflection.PortableExecutable;
 using System.Reflection.Metadata.Ecma335;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
+using CilTools.Internal;
 using CilTools.Reflection;
-
 
 namespace CilTools.Metadata
 {
@@ -377,7 +376,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                if (TypeDef.StrEquals(this.Name, ".ctor") || TypeDef.StrEquals(this.Name, ".cctor"))
+                if (Utils.StrEquals(this.Name, ".ctor") || Utils.StrEquals(this.Name, ".cctor"))
                 {
                     return MemberTypes.Constructor;
                 }

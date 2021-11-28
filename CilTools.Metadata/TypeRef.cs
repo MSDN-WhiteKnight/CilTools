@@ -9,6 +9,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
+using CilTools.Internal;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata
@@ -377,7 +378,7 @@ namespace CilTools.Metadata
 
             while (true)
             {
-                if (TypeDef.TypeEquals(this, basetype)) return true;
+                if (Utils.TypeEquals(this, basetype)) return true;
 
                 if (basetype == null) break;
 

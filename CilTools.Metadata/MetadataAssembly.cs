@@ -11,6 +11,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Globalization;
 using System.Text;
 using CilTools.BytecodeAnalysis;
+using CilTools.Internal;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata
@@ -711,7 +712,7 @@ namespace CilTools.Metadata
             //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
 
             CustomAttributeHandleCollection coll = this.reader.CustomAttributes;
-            return MethodDef.ReadCustomAttributes(coll, this, this);
+            return Utils.ReadCustomAttributes(coll, this, this);
         }
 
         /// <summary>
