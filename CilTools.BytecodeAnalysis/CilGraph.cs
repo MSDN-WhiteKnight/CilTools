@@ -336,7 +336,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="output">The destination TextWriter</param>
         public void PrintAttributes(TextWriter output)
         {
-            SyntaxNode[] elems = SyntaxNode.GetAttributesSyntax(this._Method);
+            SyntaxNode[] elems = SyntaxNode.GetAttributesSyntax(this._Method, 1);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -736,7 +736,7 @@ namespace CilTools.BytecodeAnalysis
 
             try
             {
-                arr = SyntaxNode.GetAttributesSyntax(this._Method);
+                arr = SyntaxNode.GetAttributesSyntax(this._Method, 1);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
