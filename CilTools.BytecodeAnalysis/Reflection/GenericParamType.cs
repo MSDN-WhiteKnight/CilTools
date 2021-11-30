@@ -37,6 +37,23 @@ namespace CilTools.Reflection
         {
             return new GenericParamType(declaringMember, index, name);
         }
+
+        string TryLoadName()
+        {
+            //try load parameter name from declaring member
+            if (this._m == null) return null;
+                        
+            Type t = null;
+            Type[] args = GenericContext.TryGetGenericArguments(this._m);
+
+            if (args != null && this._index < args.Length)
+            {
+                t = args[this._index];
+            }
+
+            if (t != null && t.IsGenericParameter) return t.Name;
+            else return null;
+        }
         
         GenericParamType(MemberInfo declaringMember, int index, string name)
         {
@@ -49,31 +66,6 @@ namespace CilTools.Reflection
             {
                 //if name is provided, use it
                 this._name = name;
-                return;
-            }
-
-            Type[] args = null;
-            Type t = null;
-            MethodBase m = declaringMember as MethodBase;
-
-            //try load parameter name from declaring member
-            if (declaringMember!=null)
-            {
-                args = GenericContext.TryGetGenericArguments(declaringMember);
-            }
-
-            if (args != null && index<args.Length)
-            {
-                t = args[index];
-            }
-
-            if (t != null && t.IsGenericParameter)
-            {
-                this._name = t.Name;
-            }
-            else
-            {
-                this._name = "";
             }
         }
 
@@ -322,7 +314,16 @@ namespace CilTools.Reflection
         {
             get
             {
-                return this._name;
+                if (this._name != null) return this._name;
+
+                string name = this.TryLoadName();
+
+                if (name != null) 
+                {
+                    this._name = name;
+                    return name;
+                }
+                else return string.Empty;
             }
         }
 
