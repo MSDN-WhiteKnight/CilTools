@@ -2,9 +2,11 @@
  * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
+using CilTools.Syntax;
 
 namespace CilTools.Tests.Common
 {
@@ -18,6 +20,19 @@ namespace CilTools.Tests.Common
         {
             return BindingFlags.Public | BindingFlags.NonPublic |
                 BindingFlags.Static | BindingFlags.Instance;
+        }
+
+        public static string SyntaxToString(IEnumerable<SyntaxNode> nodes) 
+        {
+            StringBuilder sb = new StringBuilder();
+            StringWriter wr = new StringWriter(sb);
+
+            foreach (SyntaxNode node in nodes)
+            {
+                node.ToText(wr);
+            }
+
+            return sb.ToString();
         }
     }
 }

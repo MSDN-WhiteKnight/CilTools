@@ -3,7 +3,6 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,6 +15,7 @@ namespace CilTools.BytecodeAnalysis.Tests
     {
         public string Name { get; set; }
         public int Number { get; }
+        public string this[int i] { get { return i.ToString(); } }
     }
 
     [TestClass]
@@ -38,16 +38,8 @@ namespace CilTools.BytecodeAnalysis.Tests
         [TestMethod]        
         public void Test_Properties()
         {
-            IEnumerable<SyntaxNode> nodes=SyntaxNode.GetTypeDefSyntax(typeof(TypeWithProperties));
-            StringBuilder sb = new StringBuilder();
-            StringWriter wr = new StringWriter(sb);
-
-            foreach (SyntaxNode node in nodes) 
-            {
-                node.ToText(wr);
-            }
-
-            string s = sb.ToString();
+            IEnumerable<SyntaxNode> nodes=SyntaxNode.GetTypeDefSyntax(typeof(TypeWithProperties));            
+            string s = Utils.SyntaxToString(nodes);
                         
             AssertThat.IsMatch(s, new Text[] {
                 ".class", Text.Any,"public", Text.Any,"TypeWithProperties", Text.Any,"{", Text.Any,
@@ -65,6 +57,17 @@ namespace CilTools.BytecodeAnalysis.Tests
                 ".property", Text.Any,"instance", Text.Any,"int32", Text.Any,"Number", Text.Any,"()", Text.Any,
                 "{", Text.Any,
                 ".get", Text.Any,"instance", Text.Any,"int32", Text.Any,"get_Number", Text.Any,"()", Text.Any,                
+                "}", Text.Any,
+                "}", Text.Any
+            });
+
+            AssertThat.IsMatch(s, new Text[] {
+                ".class", Text.Any,"public", Text.Any,"TypeWithProperties", Text.Any,"{", Text.Any,
+                ".property", Text.Any,"instance", Text.Any,"string", Text.Any,"Item",Text.Any,
+                "(", Text.Any,"int32", Text.Any,")", Text.Any,
+                "{", Text.Any,
+                ".get", Text.Any,"instance", Text.Any,"string", Text.Any,"get_Item",
+                "(", Text.Any,"int32", Text.Any,")", Text.Any,
                 "}", Text.Any,
                 "}", Text.Any
             });

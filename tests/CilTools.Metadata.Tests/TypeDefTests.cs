@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using CilTools.Reflection;
+using CilTools.Syntax;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -222,6 +223,30 @@ namespace CilTools.Metadata.Tests
                 PropertyInfo[] props = t.GetProperties(Utils.AllMembers());
                 PropertyInfo p = props[0];
                 Assert.AreEqual("PublicProperty", p.Name);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetTypeDefSyntax_Property()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+                string s = Utils.SyntaxToString(nodes);
+
+                AssertThat.IsMatch(s, new Text[] {
+                    ".class", Text.Any,"public", Text.Any,"SampleType", Text.Any,"{", Text.Any,
+                    ".property", Text.Any,"instance", Text.Any,"string", Text.Any,"PublicProperty", Text.Any,"()", Text.Any,
+                    "{", Text.Any,
+                    ".get", Text.Any,"instance", Text.Any,"string", Text.Any,"get_PublicProperty", Text.Any,"()", Text.Any,
+                    ".set", Text.Any,"instance", Text.Any,"void", Text.Any,"set_PublicProperty", Text.Any,"(", Text.Any,
+                    "string", Text.Any,")", Text.Any,
+                    "}", Text.Any,
+                    "}", Text.Any});
             }
         }
     }

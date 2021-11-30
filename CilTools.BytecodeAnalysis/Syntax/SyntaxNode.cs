@@ -593,9 +593,16 @@ namespace CilTools.Syntax
 
             for (int i = 0; i < props.Length; i++)
             {
+                //ECMA-335 II.17 - Defining properties
                 List<SyntaxNode> inner = new List<SyntaxNode>(10);
                 MethodBase getter = null;
                 MethodBase setter = null;
+
+                if (props[i].IsSpecialName)
+                {
+                    inner.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
+                }
+                
                 bool isStatic = false;
 
                 if (props[i].CanRead) getter = GetPropertyMethod(props[i], "get");
@@ -617,7 +624,21 @@ namespace CilTools.Syntax
                    ));
 
                 inner.Add(new IdentifierSyntax(" ", props[i].Name, string.Empty, true, props[i]));
+
+                //index parameters
+                ParameterInfo[] pars = props[i].GetIndexParameters();
+                if (pars == null) pars = new ParameterInfo[0];
+                
                 inner.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
+
+                for (int j = 0; j < pars.Length; j++)
+                {
+                    if (j >= 1) inner.Add(new PunctuationSyntax(string.Empty, ",", " "));
+                    
+                    SyntaxNode[] partype = CilAnalysis.GetTypeNameSyntax(pars[j].ParameterType).ToArray();
+                    inner.Add(new MemberRefSyntax(partype, pars[j].ParameterType));
+                }
+                
                 inner.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
                 inner.Add(new PunctuationSyntax(" ", "{", Environment.NewLine));
 
