@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
 using CilTools.Reflection;
 
@@ -92,6 +93,26 @@ namespace CilTools.Internal
             }
 
             return ret;
+        }
+
+        public static ParameterInfo[] GetParametersFromSignature(Signature sig, MemberInfo owner)
+        {
+            ParameterInfo[] pars = new ParameterInfo[sig.ParamsCount];
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                pars[i] = new ParameterSpec(sig.GetParamType(i), i, owner);
+            }
+
+            return pars;
+        }
+
+        public static Signature DecodeSignature(MetadataAssembly owner, BlobHandle bh, Type declaringType) 
+        {
+            byte[] sig = owner.MetadataReader.GetBlobBytes(bh);
+            GenericContext gctx = GenericContext.Create(declaringType, null);
+            SignatureContext ctx = new SignatureContext(owner, gctx);
+            return Signature.ReadFromArray(sig, ctx);
         }
     }
 }

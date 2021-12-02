@@ -63,10 +63,8 @@ namespace CilTools.Metadata
             get
             {
                 this.ThrowIfDisposed();
-                byte[] sig = this.owner.MetadataReader.GetBlobBytes(prop.Signature);
-                GenericContext gctx = GenericContext.Create(this.declaringType, null);
-                SignatureContext ctx = new SignatureContext(this.owner, gctx);
-                Signature decoded = Signature.ReadFromArray(sig, ctx);
+                
+                Signature decoded = Utils.DecodeSignature(this.owner, this.prop.Signature, this.declaringType);
                 return decoded.ReturnType;
             }
         }
@@ -112,7 +110,10 @@ namespace CilTools.Metadata
 
         public override ParameterInfo[] GetIndexParameters()
         {
-            return new ParameterInfo[0];
+            this.ThrowIfDisposed();
+
+            Signature decoded = Utils.DecodeSignature(this.owner, this.prop.Signature, this.declaringType);
+            return Utils.GetParametersFromSignature(decoded,this);
         }
 
         public override MethodInfo GetSetMethod(bool nonPublic)

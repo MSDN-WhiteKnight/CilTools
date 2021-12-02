@@ -293,14 +293,7 @@ namespace CilTools.Metadata
         {
             if (this.sig == null) return new ParameterInfo[0];
 
-            ParameterInfo[] pars = new ParameterInfo[this.sig.ParamsCount];
-
-            for (int i = 0; i < pars.Length; i++)
-            {
-                pars[i] = new ParameterSpec(this.sig.GetParamType(i), i, this);
-            }
-
-            return pars;
+            return Utils.GetParametersFromSignature(this.sig, this);
         }
 
         /// <inheritdoc/>
