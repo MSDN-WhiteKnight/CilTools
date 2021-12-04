@@ -25,5 +25,14 @@ namespace CilTools.BytecodeAnalysis.Tests
         {
             CilAnalysisTestsCore.Test_GetReferencedMembers(m);
         }
+
+        [TestMethod]        
+        public void Test_EscapeString()
+        {
+            string str = "\"English - Русский - Ελληνικά - Español\r\n\t\0\a\b\x0001ąęėšų,.\"";
+            string result = CilAnalysis.EscapeString(str);
+            string expected = "\\042English - Русский - Ελληνικά - Español\\015\\n\\t\\000\\007\\010\\001ąęėšų,.\\042";
+            Assert.IsTrue(expected.Equals(result,StringComparison.Ordinal));
+        }
     }
 }

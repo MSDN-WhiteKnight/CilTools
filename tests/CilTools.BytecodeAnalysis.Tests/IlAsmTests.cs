@@ -210,7 +210,8 @@ namespace CilTools.BytecodeAnalysis.Tests
         [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", BytecodeProviders.Metadata)]
         [MethodTestData(typeof(SampleMethods), "PrintList", BytecodeProviders.Metadata)]
         [MethodTestData(typeof(SampleMethods), "AttributeTest", BytecodeProviders.Metadata)]
-        [MethodTestData(typeof(SampleMethods), "GenericsTest", BytecodeProviders.Metadata)]        
+        [MethodTestData(typeof(SampleMethods), "GenericsTest", BytecodeProviders.Metadata)]
+        [MethodTestData(typeof(SampleMethods), "TestEscaping", BytecodeProviders.Metadata)]
         public void Test_Disassembler_Roundtrip(MethodBase m)
         {
             CheckEnvironment();

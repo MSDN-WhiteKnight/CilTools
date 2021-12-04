@@ -186,6 +186,11 @@ namespace CilTools.Tests.Common
             
             return ret;
         }
+
+        public static void TestEscaping()
+        {
+            Console.WriteLine("\"English - Русский - Ελληνικά - Español\r\n\tąęėšų,.\"");
+        }
     }
 
     public class MyPoint

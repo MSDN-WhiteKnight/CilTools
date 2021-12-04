@@ -73,6 +73,20 @@ namespace CilTools.BytecodeAnalysis.Tests
                 });
         }
 
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestEscaping", BytecodeProviders.All)]
+        public void Test_CilGraph_Escaping(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,"TestEscaping", Text.Any,
+                "ldstr", Text.Any,
+                "\"\\042English - Русский - Ελληνικά - Español\\015\\n\\tąęėšų,.\\042\"", Text.Any,
+                });
+        }
+
 #if DEBUG
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "CreatePoint", BytecodeProviders.All)]

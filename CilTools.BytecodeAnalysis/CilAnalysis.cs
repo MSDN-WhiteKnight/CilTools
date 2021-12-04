@@ -307,14 +307,32 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
+        static string CharToOctal(char c)
+        {
+            if ((uint)c <= byte.MaxValue)
+            {
+                return "\\" + Convert.ToString((uint)c, 8).PadLeft(3, '0');
+            }
+            else
+            {
+                byte[] bytes = BitConverter.GetBytes(c);
+                return "\\" + Convert.ToString(bytes[0], 8).PadLeft(3, '0')+
+                    "\\" + Convert.ToString(bytes[1], 8).PadLeft(3, '0');
+            }
+        }
+
         /// <summary>
-        /// Escapes special characters in the specified string, using rules similar to what are applied to C# string literals
+        /// Escapes special characters in the specified string, preparing it to be used as CIL assembler string literal
         /// </summary>
         /// <param name="str">The string to escape</param>
         /// <returns>The escaped string</returns>
+        /// <remarks>
+        /// See ECMA-335 II.5.2 for string literal escaping rules. 
+        /// In CIL Tools 2.3 and earlier versions, this method used string escaping rules for C# string literals.
+        /// </remarks>
         public static string EscapeString(string str)
         {
-            if (String.IsNullOrEmpty(str)) return str;
+            if (string.IsNullOrEmpty(str)) return str;
 
             StringBuilder sb = new StringBuilder(str.Length * 2);
 
@@ -322,18 +340,19 @@ namespace CilTools.BytecodeAnalysis
             {
                 switch (c)
                 {
-                    case '\0': sb.Append("\\0"); break;
                     case '\n': sb.Append("\\n"); break;
-                    case '\r': sb.Append("\\r"); break;
-                    case '\a': sb.Append("\\a"); break;
-                    case '\b': sb.Append("\\b"); break;
-                    case '\f': sb.Append("\\f"); break;
                     case '\t': sb.Append("\\t"); break;
-                    case '"': sb.Append("\\\""); break;
+                    case '"': sb.Append(CharToOctal(c)); break;
 
                     default:
-                        if (Char.IsControl(c)) sb.Append("\\u" + ((ushort)c).ToString("X").PadLeft(4, '0'));
-                        else sb.Append(c);
+                        if (char.IsLetterOrDigit(c) || char.IsPunctuation(c) || c == ' ')
+                        {
+                            sb.Append(c);
+                        }
+                        else
+                        {
+                            sb.Append(CharToOctal(c));
+                        }
                         break;
                 }
             }
