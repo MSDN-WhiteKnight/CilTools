@@ -145,6 +145,7 @@
     <Compile Include="SourceCode\CppDecompiler.cs" />
     <Compile Include="SourceCode\CsharpDecompiler.cs" />
     <Compile Include="SourceCode\Decompiler.cs" />
+    <Compile Include="SourceCode\PdbCodeProvider.cs" />
     <Compile Include="SourceCode\PdbUtils.cs" />
     <Compile Include="SourceCode\SourceCodeUI.cs" />
     <Compile Include="SourceCode\SourceInfo.cs" />
