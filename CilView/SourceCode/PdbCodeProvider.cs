@@ -18,13 +18,29 @@ namespace CilView.SourceCode
     {
         public IEnumerable<SourceDocument> GetSourceCodeDocuments(MethodBase m)
         {
-            return new SourceDocument[] { GetSourceFromWindowsPdb(m) };
+            SourceDocument ret;
+
+            try
+            {
+                //try Portable PDB first
+                ret = GetSourceFromPortablePdb(m);
+            }
+            catch (BadImageFormatException)
+            {
+                ret = null;
+            }
+
+            if (ret == null)
+            {
+                //read Windows PDB if failed
+                ret = GetSourceFromWindowsPdb(m);
+            }
+            
+            return new SourceDocument[] { ret };
         }
-
-        static SourceDocument GetSourceFromWindowsPdb(MethodBase m)
+        
+        static string GetSymbolsPath(MethodBase m) 
         {
-            int token = m.MetadataToken;
-
             //построим путь к файлу символов
             string module_path = m.DeclaringType.Assembly.Location;
 
@@ -33,15 +49,96 @@ namespace CilView.SourceCode
                 throw new SymbolsException("Cannot find symbols: assembly does not have a file path");
             }
 
-            string pdb_path = Path.Combine(
-                Path.GetDirectoryName(module_path),
-                Path.GetFileNameWithoutExtension(module_path) + ".pdb"
-                );
+            string pdb_path = Path.Combine(Path.GetDirectoryName(module_path),
+                                Path.GetFileNameWithoutExtension(module_path) + ".pdb");
 
             if (!File.Exists(pdb_path))
             {
                 throw new SymbolsException("Symbols file not found: " + pdb_path);
             }
+
+            return pdb_path;
+        }
+
+        static SourceDocument GetSourceFromPortablePdb(MethodBase m)
+        {
+            //построим путь к файлу символов
+            string pdb_path = GetSymbolsPath(m);
+            
+            SourceLineData[] linedata = PortablePdb.GetSourceLineData(pdb_path, m.MetadataToken);
+
+            if (linedata == null) //not portable PDB file
+            {
+                return null;
+            }
+
+            SourceDocument ret = new SourceDocument();
+            ret.SymbolsFile = pdb_path;
+            ret.Method = m;
+
+            string filePath = string.Empty;
+            
+            for (int i = 0; i < linedata.Length; i++)
+            {
+                SourceLineData line = linedata[i];
+
+                if (string.IsNullOrEmpty(line.FilePath)) continue;
+
+                filePath = line.FilePath;
+
+                if (!File.Exists(filePath))
+                {
+                    throw new SymbolsException("Source file not found: " + filePath);
+                }
+
+                bool isValid = PdbUtils.IsSourceValid(filePath, line.HashAlgorithm, line.Hash);
+
+                if (!isValid)
+                {
+                    throw new SymbolsException("Source file does not match PDB hash: " + filePath);
+                }
+
+                SourceFragment fragment = new SourceFragment();
+                fragment.CilStart = line.CilOffset;
+                fragment.LineStart = line.LineStart;
+                fragment.LineEnd = line.LineEnd;
+                int colStart = line.ColStart;
+                int colEnd = line.ColEnd;
+
+                if (i == linedata.Length - 1)
+                {
+                    //last
+                    int bodySize = Utils.GetMethodBodySize(m);
+                    if (bodySize > 0 && bodySize >= fragment.CilStart) fragment.CilEnd = bodySize;
+                }
+                else 
+                {
+                    fragment.CilEnd = linedata[i + 1].CilOffset;
+                }
+
+                //считаем код метода из исходников
+                string s = PdbUtils.ReadSourceFromFile(filePath, (uint)fragment.LineStart, (ushort)colStart, 
+                    (uint)fragment.LineEnd, (ushort)colEnd, exact: true);
+
+                fragment.Text = s;
+                ret.AddFragment(fragment);
+            }//end for
+
+            if (string.IsNullOrEmpty(filePath))
+            {
+                throw new SymbolsException("Source path not found in symbols");
+            }
+            
+            ret.FilePath = filePath;
+            return ret;
+        }
+
+        static SourceDocument GetSourceFromWindowsPdb(MethodBase m)
+        {
+            int token = m.MetadataToken;
+
+            //построим путь к файлу символов
+            string pdb_path = GetSymbolsPath(m);                        
 
             PdbReader reader = new PdbReader(pdb_path);
             SourceDocument ret = new SourceDocument();
