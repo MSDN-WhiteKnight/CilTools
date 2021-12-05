@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
@@ -9,6 +9,7 @@ using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
 using CilTools.Reflection;
+using CilTools.SourceCode;
 using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
@@ -496,7 +497,7 @@ namespace CilTools.BytecodeAnalysis
             //instructions
             if (node != null)
             {
-                SyntaxNode[] elems = this.BodyAsSyntaxTree();
+                SyntaxNode[] elems = this.BodyAsSyntaxTree(DisassemblerParams.Default);
 
                 for (int i = 0; i < elems.Length; i++)
                 {
@@ -508,7 +509,7 @@ namespace CilTools.BytecodeAnalysis
             if (IncludeSignature) output.WriteLine("}");            
         }
 
-        SyntaxNode[] BodyAsSyntaxTree()
+        SyntaxNode[] BodyAsSyntaxTree(DisassemblerParams dpars)
         {
             CilGraphNode node = this._Root;
             if (node == null) return new SyntaxNode[] { };
@@ -519,6 +520,26 @@ namespace CilTools.BytecodeAnalysis
             CustomMethod cm = (CustomMethod)this._Method;
             List<SyntaxNode> ret = new List<SyntaxNode>(100);
 
+            //prepare for source code output
+            SourceFragment[] fragments=new SourceFragment[0];
+            SourceFragment nextFragment = null;
+            int nextFragmentIndex=0;
+            const string commentIndent= "          ";
+
+            if (dpars.IncludeSourceCode) 
+            {
+                SourceDocument[] sourceDocs = dpars.CodeProvider.GetSourceCodeDocuments(this._Method).ToArray();
+
+                if (sourceDocs.Length > 0)
+                {
+                    SourceDocument sourceDoc = sourceDocs[0];
+                    fragments = sourceDoc.Fragments.ToArray();
+                }
+
+                if (fragments.Length > 0) nextFragment = fragments[0];
+            }
+            
+            //start disassembling
             try
             {
                 trys = cm.GetExceptionBlocks();
@@ -702,6 +723,39 @@ namespace CilTools.BytecodeAnalysis
                     }
                 }
 
+                //add source code if needed
+                if (nextFragment != null && node.Instruction.ByteOffset >= nextFragment.CilStart) 
+                {
+                    string fragmentCode = nextFragment.Text;
+                    string[] fragmentCodeArr = SourceUtils.SplitSourceCodeFragment(fragmentCode);
+
+                    //source comment is indented more to align with instruction name instead of label
+                    string lead = new string(indent.ToArray()) + commentIndent;
+
+                    //insert source code as comments
+                    for (int i = 0; i < fragmentCodeArr.Length; i++)
+                    {
+                        CommentSyntax cs;
+
+                        if (i == 0) cs = new CommentSyntax(Environment.NewLine + lead, fragmentCodeArr[i]);
+                        else cs = new CommentSyntax(lead, fragmentCodeArr[i]);
+
+                        curr_node._children.Add(cs);
+                    }
+                    
+                    nextFragmentIndex++;
+
+                    if (nextFragmentIndex < fragments.Length)
+                    {
+                        nextFragment = fragments[nextFragmentIndex];
+                    }
+                    else 
+                    {
+                        nextFragment = null;//last fragment
+                    }
+                }
+                
+                //add instruction
                 curr_node._children.Add(
                     new InstructionSyntax(new String(indent.ToArray()), node){_parent = curr_node}
                     );
@@ -723,12 +777,19 @@ namespace CilTools.BytecodeAnalysis
             return root._children.ToArray();
         }
 
+        public MethodDefSyntax ToSyntaxTree()
+        {
+            return this.ToSyntaxTree(DisassemblerParams.Default);
+        }
+
         /// <summary>
         /// Gets the syntax tree for the method represented by this graph
         /// </summary>
         /// <returns>The root method definition node of the syntax tree</returns>
-        public MethodDefSyntax ToSyntaxTree()
+        public MethodDefSyntax ToSyntaxTree(DisassemblerParams pars)
         {
+            if (pars == null) pars = DisassemblerParams.Default;
+
             DirectiveSyntax sig = DirectiveSyntax.FromMethodSignature(this._Method);
 
             List<SyntaxNode> nodes = new List<SyntaxNode>(100);
@@ -762,9 +823,9 @@ namespace CilTools.BytecodeAnalysis
                 nodes.Add(arr[i]);
             }
 
-            nodes.Add( new GenericSyntax(Environment.NewLine));
+            nodes.Add(new GenericSyntax(Environment.NewLine));
 
-            arr = this.BodyAsSyntaxTree();
+            arr = this.BodyAsSyntaxTree(pars);
 
             for (int i = 0; i < arr.Length; i++)
             {
