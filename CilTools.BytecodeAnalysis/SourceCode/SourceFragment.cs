@@ -2,6 +2,7 @@
  * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.Reflection;
 
 namespace CilTools.SourceCode
 {
@@ -54,5 +55,17 @@ namespace CilTools.SourceCode
         /// Gets or sets the starting byte offset of CIL bytecode corresponding to this fragment 
         /// </summary>
         public int CilEnd { get; set; }
+
+        /// <summary>
+        /// Gets a method which source code is contained in this fragment
+        /// </summary>
+        public MethodBase Method 
+        { 
+            get 
+            {
+                if (this.owner != null) return this.owner.Method;
+                else return null;
+            }
+        }
     }
 }
