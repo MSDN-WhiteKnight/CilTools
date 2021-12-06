@@ -36,6 +36,7 @@
     <Compile Include="Signatures\MockTokenResolver.cs" />    
     <Compile Include="Signatures\SignatureTests.cs" />    
     <Compile Include="Signatures\TypeSpecTests.cs" />    
+    <Compile Include="SourceCode\SourceCodeProviderTests.cs" />    
     <Compile Include="SyntaxTests.cs" />
   </ItemGroup>
   
