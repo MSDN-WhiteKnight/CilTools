@@ -11,6 +11,9 @@ namespace CilTools.SourceCode
     {
         public static string[] SplitSourceCodeFragment(string s) 
         {
+            //ignore strings that consist of a single significant character
+            if (s.Length <= 1 || (s.Length<=3 && s.EndsWith("\r\n"))) return new string[0];
+
             //prepare source code string to be inserted into disassembly as comments
             string normalized = s.Replace("\r\n", "\n");
             string[] arr = normalized.Split('\n');
