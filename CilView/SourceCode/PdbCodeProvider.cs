@@ -14,9 +14,9 @@ using Internal.Pdb.Windows;
 
 namespace CilView.SourceCode
 {
-    class PdbCodeProvider : ICodeProvider
+    class PdbCodeProvider : SourceCodeProvider
     {
-        public IEnumerable<SourceDocument> GetSourceCodeDocuments(MethodBase m)
+        public override IEnumerable<SourceDocument> GetSourceCodeDocuments(MethodBase m)
         {
             SourceDocument ret;
 

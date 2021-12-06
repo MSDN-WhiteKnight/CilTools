@@ -10,7 +10,7 @@ namespace CilTools.Syntax
 {
     public class DisassemblerParams
     {
-        public ICodeProvider CodeProvider { get; set; }
+        public SourceCodeProvider CodeProvider { get; set; }
         public bool IncludeSourceCode { get; set; }
 
         internal static readonly DisassemblerParams Default = new DisassemblerParams();

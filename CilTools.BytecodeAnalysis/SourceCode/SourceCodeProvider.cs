@@ -9,12 +9,12 @@ namespace CilTools.SourceCode
     /// <summary>
     /// Represents an object that loads source code
     /// </summary>
-    public interface ICodeProvider
+    public abstract class SourceCodeProvider
     {
         /// <summary>
         /// Gets a collection of documents that contain the source code of the specified method
         /// </summary>
         /// <param name="m">Method which source code to get</param>
-        IEnumerable<SourceDocument> GetSourceCodeDocuments(MethodBase m);
+        public abstract IEnumerable<SourceDocument> GetSourceCodeDocuments(MethodBase m);
     }
 }
