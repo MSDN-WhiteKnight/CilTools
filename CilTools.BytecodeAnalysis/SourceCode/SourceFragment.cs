@@ -67,5 +67,10 @@ namespace CilTools.SourceCode
                 else return null;
             }
         }
+
+        /// <summary>
+        /// Gets or sets an additional implementation-defined information about this fragment
+        /// </summary>
+        public object AdditionalInfo { get; set; }
     }
 }
