@@ -777,13 +777,17 @@ namespace CilTools.BytecodeAnalysis
             return root._children.ToArray();
         }
 
+        /// <summary>
+        /// Gets the syntax tree for the method represented by this graph using default disassembler parameters
+        /// </summary>
+        /// <returns>The root method definition node of the syntax tree</returns>
         public MethodDefSyntax ToSyntaxTree()
         {
             return this.ToSyntaxTree(DisassemblerParams.Default);
         }
 
         /// <summary>
-        /// Gets the syntax tree for the method represented by this graph
+        /// Gets the syntax tree for the method represented by this graph using specified disassembler parameters
         /// </summary>
         /// <returns>The root method definition node of the syntax tree</returns>
         public MethodDefSyntax ToSyntaxTree(DisassemblerParams pars)
