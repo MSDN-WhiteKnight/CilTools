@@ -15,7 +15,7 @@ namespace CilTools.Syntax
     {
         /// <summary>
         /// Gets or sets an object used to load source code corresponding to disassembled bytecode. 
-        /// Could be null is <see cref="IncludeSourceCode"/> property is set to false.
+        /// Could be null if <see cref="IncludeSourceCode"/> property is set to false.
         /// </summary>
         public SourceCodeProvider CodeProvider { get; set; }
 
