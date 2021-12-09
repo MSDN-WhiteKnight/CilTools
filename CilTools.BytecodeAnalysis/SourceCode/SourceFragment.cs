@@ -9,22 +9,9 @@ namespace CilTools.SourceCode
     /// <summary>
     /// Contains information about the source code fragment
     /// </summary>
-    public class SourceFragment
+    public class SourceFragment : FragmentBase
     {
         SourceDocument owner;
-
-        /// <summary>
-        /// Creates a new empty fragment
-        /// </summary>
-        public SourceFragment()
-        {
-            this.Text = string.Empty;
-        }
-
-        /// <summary>
-        /// Gets or sets source code string of this fragment
-        /// </summary>
-        public string Text { get; set; }
 
         /// <summary>
         /// Gets the source document which this fragment belongs to
@@ -35,27 +22,7 @@ namespace CilTools.SourceCode
         {
             this.owner = doc;
         }
-
-        /// <summary>
-        /// Gets or sets the first line number (zero-based) of the fragment in the source file
-        /// </summary>
-        public int LineStart { get; set; }
-
-        /// <summary>
-        /// Gets or sets the last line number (zero-based) of the fragment in the source file
-        /// </summary>
-        public int LineEnd { get; set; }
-
-        /// <summary>
-        /// Gets or sets the column number (zero-based) where this fragment starts in the source file
-        /// </summary>
-        public int ColStart { get; set; }
-
-        /// <summary>
-        /// Gets or sets the column number (zero-based) where this fragment ends in the source file
-        /// </summary>
-        public int ColEnd { get; set; }
-
+        
         /// <summary>
         /// Gets or sets the starting byte offset of CIL bytecode corresponding to this fragment 
         /// </summary>
@@ -77,10 +44,5 @@ namespace CilTools.SourceCode
                 else return null;
             }
         }
-
-        /// <summary>
-        /// Gets or sets an additional implementation-defined information about this fragment
-        /// </summary>
-        public object AdditionalInfo { get; set; }
     }
 }
