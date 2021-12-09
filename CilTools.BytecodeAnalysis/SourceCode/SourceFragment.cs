@@ -47,6 +47,16 @@ namespace CilTools.SourceCode
         public int LineEnd { get; set; }
 
         /// <summary>
+        /// Gets or sets the column number (zero-based) where this fragment starts in the source file
+        /// </summary>
+        public int ColStart { get; set; }
+
+        /// <summary>
+        /// Gets or sets the column number (zero-based) where this fragment ends in the source file
+        /// </summary>
+        public int ColEnd { get; set; }
+
+        /// <summary>
         /// Gets or sets the starting byte offset of CIL bytecode corresponding to this fragment 
         /// </summary>
         public int CilStart { get; set; }

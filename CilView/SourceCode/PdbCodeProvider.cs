@@ -104,6 +104,8 @@ namespace CilView.SourceCode
                 fragment.LineEnd = line.LineEnd;
                 int colStart = line.ColStart;
                 int colEnd = line.ColEnd;
+                fragment.ColStart = colStart;
+                fragment.ColEnd = colEnd;
 
                 if (i == linedata.Length - 1)
                 {
@@ -220,6 +222,8 @@ namespace CilView.SourceCode
 
                         fragment.LineStart = lineStart;
                         fragment.LineEnd = lineEnd;
+                        fragment.ColStart = colStart;
+                        fragment.ColEnd = colEnd;
 
                         //считаем код метода из исходников
                         string s = PdbUtils.ReadSourceFromFile(coll.File.Name, (uint)lineStart, (ushort)colStart,
