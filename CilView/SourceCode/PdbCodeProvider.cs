@@ -118,7 +118,7 @@ namespace CilView.SourceCode
                     fragment.CilEnd = linedata[i + 1].CilOffset;
                 }
 
-                //считаем код метода из исходников
+                //считаем код фрагмента из исходников
                 string s = PdbUtils.ReadSourceFromFile(filePath, (uint)fragment.LineStart, (ushort)colStart, 
                     (uint)fragment.LineEnd, (ushort)colEnd, exact: true);
 
@@ -130,7 +130,23 @@ namespace CilView.SourceCode
             {
                 throw new SymbolsException("Source path not found in symbols");
             }
-            
+
+            if (linedata.Length > 0) 
+            {
+                SourceLineData start = linedata[0];
+                SourceLineData end = linedata.Last();
+                ret.LineStart = start.LineStart;
+                ret.ColStart = start.ColStart;
+                ret.LineEnd = end.LineEnd;
+                ret.ColEnd = end.ColEnd;
+
+                //считаем код метода из исходников
+                string methodSource = PdbUtils.ReadSourceFromFile(filePath, (uint)ret.LineStart, (ushort)ret.ColStart,
+                    (uint)ret.LineEnd, (ushort)ret.ColEnd, exact: false);
+
+                ret.Text = methodSource;
+            }
+
             ret.FilePath = filePath;
             return ret;
         }
@@ -186,6 +202,10 @@ namespace CilView.SourceCode
                         throw new SymbolsException("Symbols does not contain sequence points for the specified method");
                     }
 
+                    int lineStart;
+                    int lineEnd;
+                    int colStart;
+                    int colEnd;
                     PdbSequencePoint start = points_sorted[0];
                     PdbSequencePoint end = points_sorted.Last();
                     ret.FilePath = coll.File.Name;
@@ -196,10 +216,10 @@ namespace CilView.SourceCode
                         SourceFragment fragment = new SourceFragment();
 
                         //найдем номера строк в файле, соответствующие началу и концу фрагмента
-                        int lineStart = (int)sp.LineBegin;
-                        int lineEnd = (int)sp.LineEnd;
-                        int colStart = sp.ColBegin;
-                        int colEnd = sp.ColEnd;
+                        lineStart = (int)sp.LineBegin;
+                        lineEnd = (int)sp.LineEnd;
+                        colStart = sp.ColBegin;
+                        colEnd = sp.ColEnd;
                         fragment.CilStart = (int)sp.Offset;
 
                         if (i == points_sorted.Length - 1)
@@ -225,13 +245,29 @@ namespace CilView.SourceCode
                         fragment.ColStart = colStart;
                         fragment.ColEnd = colEnd;
 
-                        //считаем код метода из исходников
+                        //считаем код фрагмента из исходников
                         string s = PdbUtils.ReadSourceFromFile(coll.File.Name, (uint)lineStart, (ushort)colStart,
                             (uint)lineEnd, (ushort)colEnd, exact: true);
 
                         fragment.Text = s;
                         ret.AddFragment(fragment);
                     }//end for
+
+                    //найдем номера строк в файле, соответствующие началу и концу метода
+                    lineStart = (int)start.LineBegin;
+                    lineEnd = (int)end.LineEnd;
+                    colStart = start.ColBegin;
+                    colEnd = end.ColEnd;
+
+                    ret.LineStart = lineStart;
+                    ret.LineEnd = lineEnd;
+                    ret.ColStart = colStart;
+                    ret.ColEnd = colEnd;
+
+                    //считаем код метода из исходников
+                    string methodSource = PdbUtils.ReadSourceFromFile(coll.File.Name, (uint)lineStart, (ushort)colStart,
+                        (uint)lineEnd, (ushort)colEnd, exact: false);
+                    ret.Text = methodSource;
 
                     break;
                 }//end foreach
