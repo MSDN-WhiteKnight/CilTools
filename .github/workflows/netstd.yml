@@ -9,20 +9,20 @@ on:
 jobs:
   NetStd-CI:
 
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: '2.1.300'
+        dotnet-version: '3.1.100'
     - name: Build with dotnet
       run: dotnet build CilTools.Metadata/CilTools.Metadata.csproj -f netstandard2.0
     - name: Build tests with dotnet
-      run: dotnet build tests/CilTools.BytecodeAnalysis.Tests/CilTools.BytecodeAnalysis.Tests.csproj -f netcoreapp2.1
+      run: dotnet build tests/CilTools.BytecodeAnalysis.Tests/CilTools.BytecodeAnalysis.Tests.csproj -f netcoreapp3.1
     - name: Test
-      run: dotnet test tests/CilTools.BytecodeAnalysis.Tests/CilTools.BytecodeAnalysis.Tests.csproj -f netcoreapp2.1
+      run: dotnet test tests/CilTools.BytecodeAnalysis.Tests/CilTools.BytecodeAnalysis.Tests.csproj -f netcoreapp3.1
     - name: Archive build results
       uses: actions/upload-artifact@v1
       with:

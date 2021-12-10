@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp2.1;net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1;net45</TargetFrameworks>
     <EnableDefaultItems>false</EnableDefaultItems>
     <Authors>MSDN-WhiteKnight</Authors>
     <Company>CIL Tools</Company>
@@ -43,7 +43,7 @@
     <Compile Include="EmitTests.cs" />
   </ItemGroup>
   
-  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp2.1'">
+  <ItemGroup Condition="'$(TargetFramework)'=='netcoreapp3.1'">
     <None Include="EmitTests.cs" />
   </ItemGroup>
 
