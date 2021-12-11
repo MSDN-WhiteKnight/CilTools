@@ -33,6 +33,11 @@ namespace CilTools.SourceCode.Tests
 
                 return new SourceDocument[] { doc };
             }
+
+            public override string GetSignatureSourceCode(MethodBase m)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         [TestMethod]

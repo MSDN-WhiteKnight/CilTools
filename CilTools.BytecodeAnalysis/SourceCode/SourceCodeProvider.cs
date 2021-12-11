@@ -16,5 +16,11 @@ namespace CilTools.SourceCode
         /// </summary>
         /// <param name="m">Method which source code to get</param>
         public abstract IEnumerable<SourceDocument> GetSourceCodeDocuments(MethodBase m);
+
+        /// <summary>
+        /// Gets a string that contains the source code of the specified method's signature
+        /// </summary>
+        /// <param name="m">Method which signature to get</param>
+        public abstract string GetSignatureSourceCode(MethodBase m);
     }
 }

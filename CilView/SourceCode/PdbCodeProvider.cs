@@ -302,5 +302,10 @@ namespace CilView.SourceCode
 
             return sb.ToString();
         }
+
+        public override string GetSignatureSourceCode(MethodBase m)
+        {
+            return Decompiler.DecompileMethodSignature(".cs", m);
+        }
     }
 }
