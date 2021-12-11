@@ -35,21 +35,6 @@ namespace CilView.SourceCode
             wnd.ShowDialog();
         }
 
-        static void ShowFromProvider(MethodBase method)
-        {
-            PdbCodeProvider prov = new PdbCodeProvider();
-            var doc = System.Linq.Enumerable.First(prov.GetSourceCodeDocuments(method));
-            string s = PdbCodeProvider.PrintDocument(doc);
-
-            TextViewWindow wnd = new TextViewWindow();
-            wnd.Title = "Source code";
-            wnd.Text = s;
-            wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            wnd.TextFontFamily = new FontFamily("Courier New");
-            wnd.TextFontSize = 14.0;
-            wnd.ShowDialog();
-        }
-
         /// <summary>
         /// Creates and shows View source window to display the source code of the specified method
         /// </summary>
@@ -75,8 +60,6 @@ namespace CilView.SourceCode
                 //from PDB
                 if (wholeMethod)
                 {
-                    /*ShowFromProvider(method);
-                    return;*/
                     srcinfo = PdbUtils.GetSourceFromPdb(method,
                         0, uint.MaxValue, SymbolsQueryType.RangeExact);
                 }
