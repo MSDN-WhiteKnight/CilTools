@@ -591,7 +591,22 @@ namespace CilTools.Syntax
             if(fields.Length>0) content.Add(new GenericSyntax(Environment.NewLine));
 
             //properties
-            PropertyInfo[] props = t.GetProperties(allMembers);
+            PropertyInfo[] props;
+
+            try
+            {
+                props = t.GetProperties(allMembers);
+            }
+            catch (NotSupportedException)
+            {
+                props = new PropertyInfo[0];
+                content.Add(new CommentSyntax(" ", "NOTE: Properties are not shown." + Environment.NewLine));
+            }
+            catch (NotImplementedException)
+            {
+                props = new PropertyInfo[0];
+                content.Add(new CommentSyntax(" ", "NOTE: Properties are not shown." + Environment.NewLine));
+            }
 
             for (int i = 0; i < props.Length; i++)
             {
