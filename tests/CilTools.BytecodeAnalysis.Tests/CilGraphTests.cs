@@ -58,8 +58,15 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
+        [WorkItem(49)]
         public void Test_CilGraph_DynamicMethod()
         {
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                //Skipped on Linux (https://github.com/MSDN-WhiteKnight/CilTools/issues/49)
+                Assert.Inconclusive("Dynamic methods are not supported on non-Windows platforms");
+            }
+
             //create dynamic method
             DynamicMethod dm = new DynamicMethod(
                 "DynamicMethodTest", typeof(int), new Type[] { typeof(string) }, typeof(SampleMethods).Module
