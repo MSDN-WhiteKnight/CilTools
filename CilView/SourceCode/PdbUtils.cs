@@ -20,6 +20,7 @@ namespace CilView.SourceCode
     {
         static readonly Guid GuidSHA256 = Guid.Parse("8829d00f-11b8-4213-878b-770e8597ac16");
         static readonly Guid GuidSHA1 = Guid.Parse("ff1816ec-aa5e-4d10-87f7-6f4963833460");
+        static readonly Guid GuidMD5 = Guid.Parse("406ea660-64cf-4c82-b6f0-42d48172a799");
 
         public static string GetCilText(MethodBase mb, uint startOffset, uint endOffset) 
         {
@@ -96,6 +97,15 @@ namespace CilView.SourceCode
             else if (algo.Equals(GuidSHA1))
             {
                 ha = SHA1.Create();
+            }
+            else if (algo.Equals(GuidMD5))
+            {
+                ha = MD5.Create();
+            }
+            else if (algo.Equals(Guid.Empty))
+            {
+                //No hash - skip validation. This usually happens for C++ files.
+                return true;
             }
 
             if (ha == null) throw new SymbolsException("Unsupported PDB hash: "+algo.ToString());
