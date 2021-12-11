@@ -528,15 +528,25 @@ namespace CilTools.BytecodeAnalysis
 
             if (dpars.IncludeSourceCode) 
             {
-                SourceDocument[] sourceDocs = dpars.CodeProvider.GetSourceCodeDocuments(this._Method).ToArray();
-
-                if (sourceDocs.Length > 0)
+                try
                 {
-                    SourceDocument sourceDoc = sourceDocs[0];
-                    fragments = sourceDoc.Fragments.ToArray();
-                }
+                    SourceDocument[] sourceDocs = dpars.CodeProvider.GetSourceCodeDocuments(this._Method).ToArray();
 
-                if (fragments.Length > 0) nextFragment = fragments[0];
+                    if (sourceDocs.Length > 0)
+                    {
+                        SourceDocument sourceDoc = sourceDocs[0];
+                        fragments = sourceDoc.Fragments.ToArray();
+                    }
+
+                    if (fragments.Length > 0) nextFragment = fragments[0];
+                }
+                catch (Exception ex)
+                {
+                    Diagnostics.OnError(this, new CilErrorEventArgs(ex, "Failed to load source code"));
+                    nextFragment = new SourceFragment();
+                    nextFragment.Text = "???" + Environment.NewLine;
+                    fragments = new SourceFragment[] { nextFragment };
+                }
             }
             
             //start disassembling
