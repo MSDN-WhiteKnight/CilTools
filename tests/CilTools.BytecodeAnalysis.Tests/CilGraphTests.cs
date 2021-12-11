@@ -58,6 +58,56 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
+        public void Test_CilGraph_DynamicMethod()
+        {
+            //create dynamic method
+            DynamicMethod dm = new DynamicMethod(
+                "DynamicMethodTest", typeof(int), new Type[] { typeof(string) }, typeof(SampleMethods).Module
+                );
+            ILGenerator ilg = dm.GetILGenerator(2048);
+            ilg.DeclareLocal(typeof(string));
+
+            ilg.BeginExceptionBlock();
+            ilg.Emit(OpCodes.Ldstr, "Hello, world.");
+
+            ilg.Emit(OpCodes.Stloc, (short)0);
+            ilg.Emit(OpCodes.Ldloc, (short)0);
+            ilg.Emit(
+                OpCodes.Call,
+                typeof(Console).GetMethod("WriteLine", new Type[] { typeof(string) })
+                );
+
+            ilg.Emit(OpCodes.Ldsfld, typeof(SampleMethods).GetField("f"));
+            ilg.Emit(
+                OpCodes.Call,
+                typeof(Console).GetMethod("WriteLine", new Type[] { typeof(int) })
+                );
+
+            ilg.BeginCatchBlock(typeof(Exception));
+            ilg.Emit(
+                OpCodes.Call,
+                typeof(Console).GetMethod("WriteLine", new Type[] { typeof(object) })
+                );
+
+            ilg.BeginFinallyBlock();
+
+            ilg.Emit(OpCodes.Ldc_I4, 10);
+            ilg.Emit(OpCodes.Newarr, typeof(Guid));
+            ilg.Emit(OpCodes.Pop);
+            ilg.EndExceptionBlock();
+
+            ilg.Emit(OpCodes.Ldc_I4_0);
+            ilg.Emit(OpCodes.Ret);
+
+            var deleg = (Func<string, int>)dm.CreateDelegate(typeof(Func<string, int>));
+            int res = deleg("Hello, world!");
+
+            Console.WriteLine(Environment.Version.ToString());
+            Diagnostics.Error += (x, y) => { Console.WriteLine(y.Exception.ToString()); };
+            CilGraphTestsCore.Test_CilGraph_DynamicMethod(dm);
+        }
+
+        [TestMethod]
         [MethodTestData(typeof(SampleMethods), "FilteredExceptionsTest", BytecodeProviders.All)]
         public void Test_CilGraph_ExceptionFilters(MethodBase m)
         {
