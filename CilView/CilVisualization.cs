@@ -13,6 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
+using CilView.SourceCode;
 using CilTools.Syntax;
 using CilTools.Runtime;
 using CilView.UI.Controls;
@@ -26,6 +27,18 @@ namespace CilView
 
         //Default in Visual Studio for types
         static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
+
+        //Parameters that control how disassembled CIL is produced. They are changed from main window UI.
+        internal static readonly DisassemblerParams CurrentDisassemblerParams = InitDisassemblerParams();
+
+        static DisassemblerParams InitDisassemblerParams()
+        {
+            //default disassembler parameters
+            DisassemblerParams ret = new DisassemblerParams();
+            ret.CodeProvider = new PdbCodeProvider();
+            ret.IncludeSourceCode = false;
+            return ret;
+        }
 
         internal static string MethodToString(MethodBase m)
         {
@@ -332,7 +345,7 @@ namespace CilView
             fd.TextAlignment = TextAlignment.Left;
             fd.FontFamily = new FontFamily("Courier New");
             
-            SyntaxNode[] tree = gr.ToSyntaxTree().GetChildNodes();
+            SyntaxNode[] tree = gr.ToSyntaxTree(CurrentDisassemblerParams).GetChildNodes();
             Paragraph par = new Paragraph();
 
             VisualizeGraphContext ctx = new VisualizeGraphContext();

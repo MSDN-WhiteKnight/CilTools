@@ -23,7 +23,9 @@ namespace CilTools.Syntax
     /// Some child nodes may be exposed via specific properties as well. 
     /// The text representation for non-terminal node is a string concetanation of all its child nodes' text representations. 
     /// </para>
-    /// <para>Use <see cref="CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree"/> method to get the syntax tree for the specified method.</para>
+    /// <para>
+    /// Use <see cref="CilGraph.ToSyntaxTree(DisassemblerParams)"/> method to get the syntax tree for the specified method.
+    /// </para>
     /// </remarks>
     public abstract class SyntaxNode
     {

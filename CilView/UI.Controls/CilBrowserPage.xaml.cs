@@ -28,23 +28,15 @@ namespace CilView.UI.Controls
             this.member = m;
 
             CilGraph gr = CilGraph.Create(m);
-            StringBuilder sb = new StringBuilder(1000);
-            StringWriter wr = new StringWriter(sb);
-
-            using (wr)
-            {
-                gr.Print(wr, true, true, true, true);
-                wr.Flush();
-            }
-
+            string contentText = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams).ToString();
+            
             UIElement elem = CilVisualization.VisualizeGraph(gr, navigation, start, end);
-            string contentText = sb.ToString();
-            sb.Clear();
             this.tbMainContent.Text = contentText;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);
 
             //display method location
+            StringBuilder sb = new StringBuilder(1000);
             Type t = m.DeclaringType;
             Assembly ass = null;
             if (t != null) ass = t.Assembly;

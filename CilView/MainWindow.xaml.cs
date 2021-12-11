@@ -561,6 +561,21 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             wnd.Show();
         }
 
+        private void miIncludeDourceCode_Click(object sender, RoutedEventArgs e)
+        {
+            //toggle whether to show source code as code comments in disassembly or not
+            bool includesrc = miIncludeDourceCode.IsChecked;
+            CilVisualization.CurrentDisassemblerParams.IncludeSourceCode = includesrc;
+
+            //recreate disassembly if a method is currently shown
+            MethodBase mb = this.cilbrowser.GetCurrentMethod();
+
+            if (mb != null)
+            {
+                this.cilbrowser.NavigateToMethod(mb);
+            }
+        }
+
         void OnHelpClick()
         {
             try

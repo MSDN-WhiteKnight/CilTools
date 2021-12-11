@@ -46,7 +46,7 @@ namespace CilView.SourceCode
             return GetSourceFromPdb(match.Method,0,uint.MaxValue,SymbolsQueryType.RangeExact).SourceCode;
         }
 
-        const uint PDB_HIDDEN_SEQUENCE_POINT = 0x00feefee;
+        internal const uint PDB_HIDDEN_SEQUENCE_POINT = 0x00feefee;
 
         /// <summary>
         /// Gets the source code for the specified bytecode fragment using PDB symbols
@@ -85,7 +85,7 @@ namespace CilView.SourceCode
             return ret;
         }
 
-        static bool IsSourceValid(string file, Guid algo, byte[] hash)
+        internal static bool IsSourceValid(string file, Guid algo, byte[] hash)
         {
             HashAlgorithm ha=null;
 
@@ -434,6 +434,15 @@ namespace CilView.SourceCode
 
             ret.SourceCode = sb.ToString();
             return ret;
+        }
+
+        internal static string ReadSourceFromFile(string filePath, uint lineBegin, ushort colBegin,
+            uint lineEnd, ushort colEnd, bool exact)
+        {
+            StringBuilder sb = new StringBuilder();
+            StringWriter wr = new StringWriter(sb);
+            ReadSourceFromFile(filePath, lineBegin, colBegin, lineEnd, colEnd, exact, wr);
+            return sb.ToString();
         }
 
         static void ReadSourceFromFile(string filePath, uint lineBegin, ushort colBegin, 
