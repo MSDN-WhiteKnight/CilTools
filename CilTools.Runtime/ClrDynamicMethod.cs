@@ -1,11 +1,10 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using Microsoft.Diagnostics.Runtime;
 
@@ -14,7 +13,7 @@ namespace CilTools.Runtime
     /// <summary>
     /// Represents information about a dynamic method in the external CLR instance
     /// </summary>
-    class ClrDynamicMethod : CustomMethod
+    class ClrDynamicMethod : MethodInfo, ICustomMethod
     {
         ClrObject method;
         ClrObject ilgen;
@@ -78,7 +77,7 @@ namespace CilTools.Runtime
                     {
                         ClrAssemblyInfo ass = tokenResolver as ClrAssemblyInfo;
                         if (ass == null) ass = owner.AssemblyReader.Read(m.Type.Module);
-                        mb = new ClrMethodInfo(m, new ClrTypeInfo(m.Type, ass));
+                        mb = ClrMethodInfo.CreateMethod(m, new ClrTypeInfo(m.Type, ass));
                     }
 
                     //construct dynamic token
@@ -242,7 +241,7 @@ namespace CilTools.Runtime
             get { return UnknownType.Value; }
         }
 
-        public override ITokenResolver TokenResolver
+        public ITokenResolver TokenResolver
         {
             get 
             {
@@ -256,7 +255,7 @@ namespace CilTools.Runtime
             }
         }
 
-        public override byte[] GetBytecode()
+        public byte[] GetBytecode()
         {
             if (this._code == null)
             {
@@ -273,22 +272,22 @@ namespace CilTools.Runtime
             return this._code;
         }
 
-        public override int MaxStackSize
+        public int MaxStackSize
         {
             get { return 0; }
         }
 
-        public override bool MaxStackSizeSpecified
+        public bool MaxStackSizeSpecified
         {
             get { return false; }
         }
 
-        public override byte[] GetLocalVarSignature()
+        public byte[] GetLocalVarSignature()
         {
             throw new NotImplementedException();
         }
 
-        public override ExceptionBlock[] GetExceptionBlocks()
+        public ExceptionBlock[] GetExceptionBlocks()
         {
             if (this._blocks == null)
             {
@@ -350,6 +349,26 @@ namespace CilTools.Runtime
             return false;
         }
 
+        public override MethodInfo GetBaseDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public LocalVariable[] GetLocalVariables()
+        {
+            return new LocalVariable[0];
+        }
+
+        public MethodBase GetDefinition()
+        {
+            return null;
+        }
+
+        public PInvokeParams GetPInvokeParams()
+        {
+            return null;
+        }
+
         public override MemberTypes MemberType
         {
             get { return MemberTypes.Method; }
@@ -385,12 +404,12 @@ namespace CilTools.Runtime
             get { return UnknownType.Value; }
         }
 
-        public override bool InitLocals
+        public bool InitLocals
         {
             get { throw new NotImplementedException(); }
         }
 
-        public override bool InitLocalsSpecified
+        public bool InitLocalsSpecified
         {
             get { return false; }
         }
@@ -403,5 +422,7 @@ namespace CilTools.Runtime
                 return 0;
             }
         }
+
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
     }
 }

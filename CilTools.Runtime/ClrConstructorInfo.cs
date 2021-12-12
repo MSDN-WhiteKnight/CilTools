@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Reflection;
 using Microsoft.Diagnostics.Runtime;
@@ -12,9 +13,9 @@ using CilTools.Reflection;
 namespace CilTools.Runtime
 {
     /// <summary>
-    /// Represents information about the method in an external CLR instance
+    /// Represents information about the constructor in an external CLR instance
     /// </summary>
-    public class ClrMethodInfo : MethodInfo, ICustomMethod
+    public class ClrConstructorInfo : ConstructorInfo, ICustomMethod
     {
         ClrMethod method;
         ClrAssemblyInfo assembly;
@@ -22,10 +23,10 @@ namespace CilTools.Runtime
         ClrTypeInfo type;
 
         //backing dynamic method, if this is a method from dynamic module
-        ClrDynamicMethod dynamicMethod=null;
-        bool dynamicMethodInitialized=false;
+        ClrDynamicMethod dynamicMethod = null;
+        bool dynamicMethodInitialized = false;
 
-        internal ClrMethodInfo(ClrMethod m, ClrTypeInfo owner)
+        internal ClrConstructorInfo(ClrMethod m, ClrTypeInfo owner)
         {
             this.method = m;
             this.assembly = (ClrAssemblyInfo)owner.Assembly;
@@ -34,26 +35,15 @@ namespace CilTools.Runtime
             if (assembly != null) this.target = assembly.InnerModule.Runtime.DataTarget;
         }
 
-        internal static MethodBase CreateMethod(ClrMethod m, ClrTypeInfo owner) 
-        {
-            if (m.IsConstructor || m.IsClassConstructor) return new ClrConstructorInfo(m, owner);
-            else return new ClrMethodInfo(m, owner);
-        }
-
         /// <summary>
         /// Gets the underlying ClrMD method object
         /// </summary>
         public ClrMethod InnerMethod { get { return this.method; } }
 
-        /// <summary>
-        /// Gets the method's returned type
-        /// </summary>
-        public override Type ReturnType
+        /// <inheritdoc/>
+        public Type ReturnType
         {
-            get 
-            {
-                return UnknownType.Value;
-            }
+            get { return null; }
         }
 
         /// <inheritdoc/>
@@ -67,7 +57,7 @@ namespace CilTools.Runtime
             if (this.method.Type == null) return null;
             ClrModule module = this.method.Type.Module;
             if (module == null) return null;
-            
+
             if (this.dynamicMethodInitialized)
             {
                 return this.dynamicMethod;
@@ -108,11 +98,11 @@ namespace CilTools.Runtime
 
                 if (dm != null)
                 {
-                    il=dm.GetBytecode();
+                    il = dm.GetBytecode();
                     if (il != null) return il;
                 }
 
-                throw new CilParserException("Cannot read IL of the method "+method.Name);
+                throw new CilParserException("Cannot read IL of the method " + method.Name);
             }
             else
             {
@@ -207,6 +197,12 @@ namespace CilTools.Runtime
         }
 
         /// <inheritdoc/>
+        public override object Invoke(BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
+        {
+            throw new InvalidOperationException("Cannot invoke methods on type loaded into reflection-only context");
+        }
+
+        /// <inheritdoc/>
         public override RuntimeMethodHandle MethodHandle
         {
             get { throw new NotImplementedException(); }
@@ -235,13 +231,7 @@ namespace CilTools.Runtime
         {
             return false;
         }
-
-        /// <inheritdoc/>
-        public override MethodInfo GetBaseDefinition()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         /// <inheritdoc/>
         public LocalVariable[] GetLocalVariables()
         {
@@ -263,7 +253,7 @@ namespace CilTools.Runtime
         /// <inheritdoc/>
         public override MemberTypes MemberType
         {
-            get { return MemberTypes.Method; }
+            get { return MemberTypes.Constructor; }
         }
 
         /// <inheritdoc/>
@@ -298,8 +288,5 @@ namespace CilTools.Runtime
         {
             get { return false; }
         }
-
-        /// <inheritdoc/>
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
     }
 }

@@ -203,7 +203,7 @@ namespace CilTools.Runtime
                         if (m.Type.Name != t.Name) continue; //skip inherited methods
                     }
 
-                    ass.SetMemberByToken((int)m.MetadataToken, new ClrMethodInfo(m, ti));
+                    ass.SetMemberByToken((int)m.MetadataToken, ClrMethodInfo.CreateMethod(m, ti));
                 }
 
                 foreach (var f in t.Fields)

@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="ClrAssemblyInfo.cs" />
     <Compile Include="ClrAssemblyReader.cs" />
+    <Compile Include="ClrConstructorInfo.cs" />
     <Compile Include="ClrDynamicMethod.cs" />
     <Compile Include="ClrFieldInfo.cs" />
     <Compile Include="ClrMethodInfo.cs" />
