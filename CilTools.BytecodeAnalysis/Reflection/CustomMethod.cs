@@ -11,6 +11,11 @@ namespace CilTools.Reflection
     /// <summary>
     /// Provides a base class for <see cref="MethodInfo"/> subclasses that implement <see cref="ICustomMethod"/>.
     /// </summary>
+    /// <remarks>
+    /// In CIL Tools 2.3 and earlier, all custom methods were inheriting from this class. Starting from version 2.4, 
+    /// custom method classes could implement <see cref="ICustomMethod"/> and are not required to inherit from this 
+    /// specific class.
+    /// </remarks>
     public abstract class CustomMethod : MethodInfo, ICustomMethod
     {
         /// <summary>

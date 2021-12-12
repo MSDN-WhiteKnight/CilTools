@@ -12,7 +12,7 @@ To use CilTools.Metadata, install [CilTools.Metadata](https://www.nuget.org/pack
 
 To read assembly information, use <xref:CilTools.Metadata.AssemblyReader> class. It provides `Load` and `LoadFrom` methods that returns `Assembly` instances for a given assembly name or file path, respectively. Then you can work with these assemblies using regular reflection methods, such as `Assembly.GetTypes`. When you no longer need loaded assemblies, release them with `Dispose` method or `using` block.
 
-To enumerate methods in the given type, use `Type.GetMembers` method and filter out methods from the returned list. The returned method instances derive from <xref:CilTools.Reflection.CustomMethod>, which in turn is derived from `MethodBase` class. `Type.GetMethods` and `Type.GetConstructors` are not supported.
+To enumerate methods in the given type, use `Type.GetMembers` method and filter out methods from the returned list. The returned method instances derive from `MethodBase` class and implement `ICustomMethod` interface. `Type.GetMethods` and `Type.GetConstructors` are not supported.
 
 The following example shows how to display methods from the given assembly:
 
@@ -54,7 +54,7 @@ static void PrintMethods(string assemblyPath)
 
 ## Getting P/Invoke parameters for the unmanaged method
 
-To get P/Invoke parameters for the method imported from unmanaged library, such as a DLL name or calling convention, use the <xref:CilTools.Reflection.CustomMethod.GetPInvokeParams> method. The following example displays P/Invoke information for all unmanaged methods in the given assembly:
+To get P/Invoke parameters for the method imported from unmanaged library, such as a DLL name or calling convention, use the <xref:CilTools.Reflection.ICustomMethod.GetPInvokeParams> method. The following example displays P/Invoke information for all unmanaged methods in the given assembly:
 
 ```csharp
 using System;
@@ -82,10 +82,10 @@ static void PrintPInvokeParams(string assemblyPath)
 
             for (int i = 0; i < members.Length; i++)
             {
-                if (members[i] is CustomMethod &&
-                    ((CustomMethod)members[i]).Attributes.HasFlag(MethodAttributes.PinvokeImpl))
+                if (members[i] is ICustomMethod && members[i] is MethodBase &&
+                    ((MethodBase)members[i]).Attributes.HasFlag(MethodAttributes.PinvokeImpl))
                 {
-                    PInvokeParams pars = ((CustomMethod)members[i]).GetPInvokeParams();
+                    PInvokeParams pars = ((ICustomMethod)members[i]).GetPInvokeParams();
                     Console.WriteLine(t.Name + "." + members[i].Name);
                     Console.WriteLine("Module: "+pars.ModuleName);
                     Console.WriteLine("Calling convention: " + pars.CallingConvention.ToString());        
