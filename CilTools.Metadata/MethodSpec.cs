@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -12,12 +12,12 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class MethodSpec : CustomMethod
+    class MethodSpec : MethodInfo, ICustomMethod
     {
         MetadataAssembly assembly;
         MethodSpecificationHandle mspech;
         MethodSpecification mspec;
-        CustomMethod definition; //generic method definition which this one is instantiating
+        MethodBase definition; //generic method definition which this one is instantiating
         MethodBodyBlock mb;
         Signature sig; //signature of this instantiation (contains generic args, not regular params) 
 
@@ -31,7 +31,7 @@ namespace CilTools.Metadata
 
             if (eh.Kind == HandleKind.MethodDefinition)
             {
-                this.definition = owner.GetMethodDefinition((MethodDefinitionHandle)eh) as CustomMethod;
+                this.definition = owner.GetMethodDefinition((MethodDefinitionHandle)eh);
                 MethodDefinition mdef = owner.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
                 int rva = mdef.RelativeVirtualAddress;
 
@@ -47,7 +47,7 @@ namespace CilTools.Metadata
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = owner.MetadataReader.GetMemberReference((MemberReferenceHandle)eh);
-                this.definition = new MethodRef(mref, (MemberReferenceHandle)eh, owner);
+                this.definition = MethodRef.CreateReference(mref, (MemberReferenceHandle)eh, owner);
             }
 
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mspec.Signature);
@@ -61,64 +61,64 @@ namespace CilTools.Metadata
         {
             get
             {
-                return this.definition.ReturnType;
+                return ((ICustomMethod)this.definition).ReturnType;
             }
         }
 
         /// <inheritdoc/>
-        public override ITokenResolver TokenResolver
+        public ITokenResolver TokenResolver
         {
             get
             {
-                if (this.definition != null) return this.definition.TokenResolver;
+                if (this.definition != null) return ((ICustomMethod)this.definition).TokenResolver;
                 else return this.assembly;
             }
         }
 
         /// <inheritdoc/>
-        public override byte[] GetBytecode()
+        public byte[] GetBytecode()
         {
             if (this.mb != null) return mb.GetILBytes(); //load CIL as byte array
-            else return this.definition.GetBytecode();
+            else return ((ICustomMethod)this.definition).GetBytecode();
         }
 
         /// <inheritdoc/>
-        public override int MaxStackSize
+        public int MaxStackSize
         {
             get
             {
                 if (mb != null) return mb.MaxStack;
-                else return this.definition.MaxStackSize;
+                else return ((ICustomMethod)this.definition).MaxStackSize;
             }
         }
 
         /// <inheritdoc/>
-        public override bool MaxStackSizeSpecified
+        public bool MaxStackSizeSpecified
         {
             get
             {
                 if (mb != null) return true;
-                else return this.definition.MaxStackSizeSpecified;
+                else return ((ICustomMethod)this.definition).MaxStackSizeSpecified;
             }
         }
 
         /// <inheritdoc/>
-        public override byte[] GetLocalVarSignature()
+        public byte[] GetLocalVarSignature()
         {
             if (this.mb != null && !this.mb.LocalSignature.IsNil)
             {
                 StandaloneSignature sig = assembly.MetadataReader.GetStandaloneSignature(mb.LocalSignature);
                 return assembly.MetadataReader.GetBlobBytes(sig.Signature);
             }
-            else return this.definition.GetLocalVarSignature();
+            else return ((ICustomMethod)this.definition).GetLocalVarSignature();
         }
 
         /// <inheritdoc/>
-        public override ExceptionBlock[] GetExceptionBlocks()
+        public ExceptionBlock[] GetExceptionBlocks()
         {
             if (this.mb == null)
             {
-                return this.definition.GetExceptionBlocks();
+                return ((ICustomMethod)this.definition).GetExceptionBlocks();
             }
 
             ExceptionBlock[] ret = new ExceptionBlock[mb.ExceptionRegions.Length];
@@ -269,22 +269,22 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public override bool InitLocals
+        public bool InitLocals
         {
             get
             {
                 if (mb != null) return mb.LocalVariablesInitialized;
-                else return this.definition.InitLocals;
+                else return ((ICustomMethod)this.definition).InitLocals;
             }
         }
 
         /// <inheritdoc/>
-        public override bool InitLocalsSpecified
+        public bool InitLocalsSpecified
         {
             get
             {
                 if (mb != null) return true;
-                else return this.definition.InitLocalsSpecified;
+                else return ((ICustomMethod)this.definition).InitLocalsSpecified;
             }
         }
 
@@ -298,9 +298,28 @@ namespace CilTools.Metadata
             }
         }
 
-        public override MethodBase GetDefinition()
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
+
+        public MethodBase GetDefinition()
         {
             return this.definition;
+        }
+
+        public override MethodInfo GetBaseDefinition()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Reflection.LocalVariable[] GetLocalVariables()
+        {
+            byte[] sig = this.GetLocalVarSignature();
+
+            return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
+        }
+
+        public PInvokeParams GetPInvokeParams()
+        {
+            return null;
         }
     }
 }

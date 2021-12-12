@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Metadata;
@@ -12,9 +13,9 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
 using CilTools.Reflection;
 
-namespace CilTools.Metadata
+namespace CilTools.Metadata.Constructors
 {
-    class MethodRef : MethodInfo, ICustomMethod
+    class ConstructorRef : ConstructorInfo, ICustomMethod
     {
         MetadataAssembly assembly;
         MemberReferenceHandle mrefh;
@@ -23,14 +24,14 @@ namespace CilTools.Metadata
         MethodBase impl;
         Type decltype;
 
-        internal MethodRef(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
+        internal ConstructorRef(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
         {
             Debug.Assert(m.GetKind() == MemberReferenceKind.Method, "MemberReference passed to ExternalMethod ctor should be a method");
 
             this.assembly = owner;
             this.mref = m;
             this.mrefh = mh;
-            
+
             //init declaring type
             EntityHandle eh = mref.Parent;
 
@@ -79,21 +80,13 @@ namespace CilTools.Metadata
             }
             catch (NotSupportedException) { }
         }
-
-        internal static MethodBase CreateReference(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
-        {
-            string name = owner.MetadataReader.GetString(m.Name);
-
-            if (Utils.IsConstructorName(name)) return new Constructors.ConstructorRef(m, mh, owner);
-            else return new MethodRef(m, mh, owner);
-        }
-
+        
         void LoadImpl()
         {
             //loads actual implementation method referenced by this instance
 
             if (this.impl != null) return;//already loaded
-            if(this.assembly.AssemblyReader == null) return;
+            if (this.assembly.AssemblyReader == null) return;
 
             Type et = this.DeclaringType;
 
@@ -104,14 +97,14 @@ namespace CilTools.Metadata
             if (t == null) return;
 
             MemberInfo[] members = t.GetMember(this.Name,
-                BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static|BindingFlags.Instance
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
                 );
 
             //if there's only one method, pick it
-            if(members.Length == 1 && members[0] is MethodBase) 
+            if (members.Length == 1 && members[0] is MethodBase)
             {
                 this.impl = (MethodBase)members[0];
-                return; 
+                return;
             }
 
             //if there are multiple methods with the same name, match by signature
@@ -155,13 +148,13 @@ namespace CilTools.Metadata
                     string s1 = "";
                     string s2 = "";
                     Type pt = pars_i[j].ParameterType;
-                    if (pt!=null) s1 = pt.Name;
+                    if (pt != null) s1 = pt.Name;
                     pt = pars_match[j].ParameterType;
-                    if (pt!=null) s2 = pt.Name;
+                    if (pt != null) s2 = pt.Name;
 
                     if (!Utils.StrEquals(s1, s2))
                     {
-                        match = false; 
+                        match = false;
                         break;
                     }
                 }
@@ -173,26 +166,19 @@ namespace CilTools.Metadata
                 }
             }//end for
         }
-
-        /// <summary>
-        /// Gets the method's returned type
-        /// </summary>
-        public override Type ReturnType
+        
+        public Type ReturnType
         {
-            get
-            {
-                if (this.sig == null) return UnknownType.Value;
-                else return this.sig.ReturnType.Type;
-            }
+            get { return null; }
         }
 
         /// <inheritdoc/>
         public ITokenResolver TokenResolver
         {
-            get 
+            get
             {
                 if (this.impl != null) return ((ICustomMethod)this.impl).TokenResolver;
-                else return this.assembly; 
+                else return this.assembly;
             }
         }
 
@@ -329,6 +315,12 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
+        public override object Invoke(BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
+        {
+            throw new InvalidOperationException("Cannot invoke methods on type loaded into reflection-only context");
+        }
+
+        /// <inheritdoc/>
         public override RuntimeMethodHandle MethodHandle
         {
             get { throw new NotImplementedException(); }
@@ -337,7 +329,7 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override Type DeclaringType
         {
-            get 
+            get
             {
                 return this.decltype;
             }
@@ -348,7 +340,7 @@ namespace CilTools.Metadata
         {
             this.LoadImpl();
 
-            if (this.impl != null) return this.impl.GetCustomAttributes(attributeType,inherit);
+            if (this.impl != null) return this.impl.GetCustomAttributes(attributeType, inherit);
             else return new object[] { };
         }
 
@@ -373,7 +365,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                return MemberTypes.Method;
+                return MemberTypes.Constructor;
             }
         }
 
@@ -439,21 +431,7 @@ namespace CilTools.Metadata
                 else return false;
             }
         }
-
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
-
-        public override Type[] GetGenericArguments()
-        {
-            try
-            {
-                this.LoadImpl();
-            }
-            catch (TypeLoadException) { }
-
-            if (this.impl != null) return this.impl.GetGenericArguments();
-            else return new Type[0];
-        }
-
+        
         public Reflection.LocalVariable[] GetLocalVariables()
         {
             byte[] sig = this.GetLocalVarSignature();
@@ -469,11 +447,6 @@ namespace CilTools.Metadata
         public PInvokeParams GetPInvokeParams()
         {
             return null;
-        }
-
-        public override MethodInfo GetBaseDefinition()
-        {
-            throw new NotImplementedException();
         }
     }
 }

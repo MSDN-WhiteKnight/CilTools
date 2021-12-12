@@ -3,19 +3,19 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
-using System.Runtime.InteropServices;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
 using CilTools.Reflection;
 
-namespace CilTools.Metadata
+namespace CilTools.Metadata.Constructors
 {
-    class MethodDef : MethodInfo, ICustomMethod
-    {        
+    class ConstructorDef : ConstructorInfo, ICustomMethod
+    {
         MetadataAssembly assembly;
         MethodDefinitionHandle mdefh;
         MethodDefinition mdef;
@@ -23,8 +23,8 @@ namespace CilTools.Metadata
         Signature sig;
         Type decltype;
 
-        internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
-        {           
+        internal ConstructorDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
+        {
             this.assembly = owner;
             this.mdef = m;
             this.mdefh = mh;
@@ -53,7 +53,7 @@ namespace CilTools.Metadata
                     else throw;
                 }
             }
-            
+
             //init declaring type
             TypeDefinitionHandle ht = mdef.GetDeclaringType();
 
@@ -67,14 +67,6 @@ namespace CilTools.Metadata
             this.sig = Signature.ReadFromArray(sigbytes, ctx);
         }
 
-        internal static MethodBase CreateDefinition(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner) 
-        {
-            string name = owner.MetadataReader.GetString(m.Name);
-
-            if (Utils.IsConstructorName(name)) return new Constructors.ConstructorDef(m, mh, owner);
-            else return new MethodDef(m, mh, owner);
-        }
-
         void ThrowIfDisposed()
         {
             if (this.assembly.MetadataReader == null)
@@ -82,17 +74,10 @@ namespace CilTools.Metadata
                 throw new ObjectDisposedException("MetadataReader");
             }
         }
-
-        /// <summary>
-        /// Gets the method's returned type
-        /// </summary>
-        public override Type ReturnType
+        
+        public Type ReturnType
         {
-            get
-            {
-                if (this.sig == null) return UnknownType.Value;
-                else return this.sig.ReturnType.Type;
-            }
+            get { return null; }
         }
 
         /// <inheritdoc/>
@@ -135,7 +120,7 @@ namespace CilTools.Metadata
         {
             if (this.mb == null) return new byte[0];
             if (mb.LocalSignature.IsNil) return new byte[0];
-            
+
             StandaloneSignature sig = assembly.MetadataReader.GetStandaloneSignature(mb.LocalSignature);
             return assembly.MetadataReader.GetBlobBytes(sig.Signature);
         }
@@ -149,15 +134,15 @@ namespace CilTools.Metadata
 
             for (int i = 0; i < ret.Length; i++)
             {
-                ExceptionHandlingClauseOptions opt=(ExceptionHandlingClauseOptions)0;
-                Type t=null;
+                ExceptionHandlingClauseOptions opt = (ExceptionHandlingClauseOptions)0;
+                Type t = null;
 
                 switch (mb.ExceptionRegions[i].Kind)
                 {
-                    case ExceptionRegionKind.Catch: 
+                    case ExceptionRegionKind.Catch:
                         opt = ExceptionHandlingClauseOptions.Clause;
                         EntityHandle eh = mb.ExceptionRegions[i].CatchType;
-                        
+
                         if (eh.Kind == HandleKind.TypeDefinition)
                         {
                             t = this.assembly.GetTypeDefinition((TypeDefinitionHandle)eh);
@@ -177,7 +162,7 @@ namespace CilTools.Metadata
                 }
 
                 ret[i] = new ExceptionBlock(
-                    opt, mb.ExceptionRegions[i].TryOffset, mb.ExceptionRegions[i].TryLength,t,
+                    opt, mb.ExceptionRegions[i].TryOffset, mb.ExceptionRegions[i].TryLength, t,
                     mb.ExceptionRegions[i].HandlerOffset, mb.ExceptionRegions[i].HandlerLength,
                     mb.ExceptionRegions[i].FilterOffset);
             }
@@ -216,12 +201,12 @@ namespace CilTools.Metadata
             foreach (ParameterHandle h in hcoll)
             {
                 Parameter par = this.assembly.MetadataReader.GetParameter(h);
-                int index = par.SequenceNumber-1;
+                int index = par.SequenceNumber - 1;
                 if (index >= pars.Length) continue;
                 if (index < 0) continue;
 
                 pars[index] = new ParameterSpec(
-                    this.sig.GetParamType(index), par, this,this.assembly.MetadataReader
+                    this.sig.GetParamType(index), par, this, this.assembly.MetadataReader
                     );
             }
 
@@ -235,7 +220,13 @@ namespace CilTools.Metadata
 
         /// <inheritdoc/>
         public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters,
-            System.Globalization.CultureInfo culture)
+            CultureInfo culture)
+        {
+            throw new InvalidOperationException("Cannot invoke methods on type loaded into reflection-only context");
+        }
+
+        /// <inheritdoc/>
+        public override object Invoke(BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
         {
             throw new InvalidOperationException("Cannot invoke methods on type loaded into reflection-only context");
         }
@@ -249,7 +240,7 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override Type DeclaringType
         {
-            get 
+            get
             {
                 return this.decltype;
             }
@@ -260,7 +251,7 @@ namespace CilTools.Metadata
         {
             throw new NotImplementedException();
         }
-        
+
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(bool inherit)
         {
@@ -281,18 +272,15 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public override MemberTypes MemberType
         {
-            get 
-            {
-                return MemberTypes.Method;
-            }
+            get { return MemberTypes.Constructor; }
         }
 
         /// <inheritdoc/>
         public override string Name
         {
-            get 
+            get
             {
-                return assembly.MetadataReader.GetString(mdef.Name);                
+                return assembly.MetadataReader.GetString(mdef.Name);
             }
         }
 
@@ -314,7 +302,7 @@ namespace CilTools.Metadata
         /// <inheritdoc/>
         public bool InitLocals
         {
-            get 
+            get
             {
                 if (mb != null) return mb.LocalVariablesInitialized;
                 else return false;
@@ -349,15 +337,15 @@ namespace CilTools.Metadata
 
         public override Type[] GetGenericArguments()
         {
-            GenericParameterHandleCollection hcoll = mdef.GetGenericParameters();            
+            GenericParameterHandleCollection hcoll = mdef.GetGenericParameters();
             Type[] ret = new Type[hcoll.Count];
-            
-            for(int i = 0; i < ret.Length; i++)
+
+            for (int i = 0; i < ret.Length; i++)
             {
                 GenericParameter gp = this.assembly.MetadataReader.GetGenericParameter(hcoll[i]);
                 StringHandle sh = gp.Name;
 
-                if(!sh.IsNil) 
+                if (!sh.IsNil)
                     ret[i] = new GenericParamType(this, gp.Index, assembly.MetadataReader.GetString(sh));
                 else
                     ret[i] = new GenericParamType(this, gp.Index);
@@ -378,7 +366,7 @@ namespace CilTools.Metadata
                 {
                     ret = CallingConventions.VarArgs;
                 }
-                else if(this.sig.CallingConvention == BytecodeAnalysis.CallingConvention.Default)
+                else if (this.sig.CallingConvention == BytecodeAnalysis.CallingConvention.Default)
                 {
                     ret = CallingConventions.Standard;
                 }
@@ -392,61 +380,7 @@ namespace CilTools.Metadata
 
         public PInvokeParams GetPInvokeParams()
         {
-            if (!this.mdef.Attributes.HasFlag(MethodAttributes.PinvokeImpl)) return null;
-
-            MethodImport imp = this.mdef.GetImport();
-
-            if (imp.Module.IsNil) return null;
-            if (imp.Name.IsNil) return null;
-
-            ModuleReference mrf = this.assembly.MetadataReader.GetModuleReference(imp.Module);
-            string modulename = this.assembly.MetadataReader.GetString(mrf.Name);
-            string funcname = this.assembly.MetadataReader.GetString(imp.Name);
-            CharSet cs = (CharSet)0;
-
-            switch (imp.Attributes & MethodImportAttributes.CharSetMask)
-            {
-                case MethodImportAttributes.CharSetAnsi:cs = CharSet.Ansi;break;
-                case MethodImportAttributes.CharSetAuto: cs = CharSet.Auto; break;
-                case MethodImportAttributes.CharSetUnicode: cs = CharSet.Unicode; break;                
-            }
-
-            System.Runtime.InteropServices.CallingConvention conv=
-                (System.Runtime.InteropServices.CallingConvention)0;
-            
-            switch (imp.Attributes & MethodImportAttributes.CallingConventionMask)
-            {
-                case MethodImportAttributes.CallingConventionStdCall: 
-                    conv = System.Runtime.InteropServices.CallingConvention.StdCall; 
-                    break;
-                case MethodImportAttributes.CallingConventionWinApi:
-                    conv = System.Runtime.InteropServices.CallingConvention.Winapi;
-                    break;
-                case MethodImportAttributes.CallingConventionCDecl:
-                    conv = System.Runtime.InteropServices.CallingConvention.Cdecl;
-                    break;
-                case MethodImportAttributes.CallingConventionFastCall:
-                    conv = System.Runtime.InteropServices.CallingConvention.FastCall;
-                    break;
-                case MethodImportAttributes.CallingConventionThisCall:
-                    conv = System.Runtime.InteropServices.CallingConvention.ThisCall;
-                    break;
-            }
-
-            bool? bestfit = null;
-
-            if (imp.Attributes.HasFlag(MethodImportAttributes.BestFitMappingEnable))
-                bestfit = true;
-            else if(imp.Attributes.HasFlag(MethodImportAttributes.BestFitMappingDisable))
-                bestfit = false;
-
-            PInvokeParams ret = new PInvokeParams(
-                modulename,funcname,cs,
-                imp.Attributes.HasFlag(MethodImportAttributes.ExactSpelling),
-                imp.Attributes.HasFlag(MethodImportAttributes.SetLastError),
-                bestfit,conv);
-
-            return ret;
+            return null;
         }
 
         public Reflection.LocalVariable[] GetLocalVariables()
@@ -461,12 +395,6 @@ namespace CilTools.Metadata
             return null;
         }
 
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
-
-        public override MethodInfo GetBaseDefinition()
-        {
-            throw new NotImplementedException();
-        }
+        
     }
 }
-
