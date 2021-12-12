@@ -26,14 +26,14 @@ namespace CilTools.Metadata.Tests
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
                 Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-                CustomMethod mi = t.GetMember("ShowWindow")[0] as CustomMethod;
+                MethodBase mi = t.GetMember("ShowWindow")[0] as MethodBase;
 
                 Assert.IsTrue(
                     mi.Attributes.HasFlag(MethodAttributes.PinvokeImpl),
                     "ShowWindow should have PinvokeImpl attribute"
                     );
 
-                PInvokeParams pars = mi.GetPInvokeParams();
+                PInvokeParams pars = ((ICustomMethod)mi).GetPInvokeParams();
 
                 Assert.AreEqual("user32.dll", pars.ModuleName);
                 Assert.IsTrue(pars.SetLastError, "SetLastError should be true for ShowWindow");
@@ -165,19 +165,21 @@ namespace CilTools.Metadata.Tests
         public void Test_MethodDef_ObjectDisposedException()
         {
             AssemblyReader reader = new AssemblyReader();
-            CustomMethod m = null;
+            ICustomMethod m = null;
+            MethodBase mb = null;
 
             using (reader)
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
                 Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-                m = t.GetMember("PrintHelloWorld")[0] as CustomMethod;
+                m = t.GetMember("PrintHelloWorld")[0] as ICustomMethod;
+                mb = m as MethodBase;
             }
 
             //test access after AssemblyReader is disposed
             AssertThat.Throws<ObjectDisposedException>(() => m.GetBytecode());
-            AssertThat.Throws<ObjectDisposedException>(() => { var x = m.Attributes; });
-            AssertThat.Throws<ObjectDisposedException>(() => { var x = m.MethodImplementationFlags; });
+            AssertThat.Throws<ObjectDisposedException>(() => { var x = mb.Attributes; });
+            AssertThat.Throws<ObjectDisposedException>(() => { var x = mb.MethodImplementationFlags; });
         }
 
         [TestMethod]

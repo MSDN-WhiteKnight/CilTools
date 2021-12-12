@@ -44,7 +44,7 @@ namespace CilTools.Metadata.Tests
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
                 Type t = ass.GetType(typename);
-                CustomMethod m = t.GetMember("DivideNumbers")[0] as CustomMethod;
+                ICustomMethod m = t.GetMember("DivideNumbers")[0] as ICustomMethod;
                 ExceptionBlock[] blocks=m.GetExceptionBlocks();
                 Assert.AreEqual(2, blocks.Length);
 
