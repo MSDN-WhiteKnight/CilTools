@@ -124,7 +124,7 @@ namespace CilTools.BytecodeAnalysis
             if (m == null) throw new ArgumentNullException("m", "Source method cannot be null");
 
             List<CilInstruction> instructions;
-            List<int> labels = new List<int>();            
+            List<int> labels = new List<int>();
             m = (MethodBase)CustomMethod.PrepareMethod(m);
 
             MethodImplAttributes implattr = (MethodImplAttributes)0;
