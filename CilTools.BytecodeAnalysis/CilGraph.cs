@@ -124,8 +124,8 @@ namespace CilTools.BytecodeAnalysis
             if (m == null) throw new ArgumentNullException("m", "Source method cannot be null");
 
             List<CilInstruction> instructions;
-            List<int> labels = new List<int>();
-            m = CustomMethod.PrepareMethod(m);
+            List<int> labels = new List<int>();            
+            m = (MethodBase)CustomMethod.PrepareMethod(m);
 
             MethodImplAttributes implattr = (MethodImplAttributes)0;
 
@@ -294,7 +294,7 @@ namespace CilTools.BytecodeAnalysis
         internal CilGraph(CilGraphNode root, MethodBase mb)
         {
             this._Root = root;
-            this._Method = CustomMethod.PrepareMethod(mb);
+            this._Method = (MethodBase)CustomMethod.PrepareMethod(mb);
         }
 
         /// <summary>
@@ -364,7 +364,7 @@ namespace CilTools.BytecodeAnalysis
 
         SyntaxNode[] HeaderAsSyntax()
         {
-            CustomMethod cm = (CustomMethod)this._Method;
+            ICustomMethod cm = (ICustomMethod)this._Method;
             int maxstack = 0;
             bool has_maxstack = false;
             LocalVariable[] locals = null;
@@ -517,7 +517,7 @@ namespace CilTools.BytecodeAnalysis
             int n_iter = 0;
             IList<ExceptionBlock> trys = new List<ExceptionBlock>();
             ParameterInfo[] pars = this._Method.GetParameters();
-            CustomMethod cm = (CustomMethod)this._Method;
+            ICustomMethod cm = (ICustomMethod)this._Method;
             List<SyntaxNode> ret = new List<SyntaxNode>(100);
 
             //prepare for source code output
@@ -963,7 +963,7 @@ namespace CilTools.BytecodeAnalysis
         {
             Dictionary<uint,Label> labels=new Dictionary<uint,Label>();
             Label label;            
-            CustomMethod cm = this._Method as CustomMethod;
+            ICustomMethod cm = this._Method as ICustomMethod;
             IList<ExceptionBlock> trys= cm.GetExceptionBlocks();
             LocalVariable[] locals = cm.GetLocalVariables();
             

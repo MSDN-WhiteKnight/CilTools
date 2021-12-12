@@ -429,6 +429,14 @@ namespace CilTools.BytecodeAnalysis
                 //standard reflection implementation: return type exposed via MethodInfo
                 rt = CilAnalysis.GetTypeNameSyntax(mi.ReturnType);
             }
+            else if (m is ICustomMethod)
+            {
+                //CilTools reflection implementation: return type exposed via ICustomMethod
+                Type tReturn = ((ICustomMethod)m).ReturnType;
+
+                if (tReturn != null) rt = CilAnalysis.GetTypeNameSyntax(tReturn);
+                else rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
+            }
             else if (m is CustomMethod)
             {
                 //CilTools reflection implementation: return type exposed via CustomMethod

@@ -1,6 +1,6 @@
 ﻿/* CilTools.BytecodeAnalysis library 
-* Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
-* License: BSD 2.0 */
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -9,9 +9,9 @@ using System.Text;
 
 namespace CilTools.Reflection
 {
-    internal class MethodBaseWrapper : MethodBase, ICustomMethod
+    internal class MethodInfoWrapper : CustomMethod
     {
-        MethodBase srcmethod;
+        MethodInfo srcmethod;
         ITokenResolver resolver;
         int _stacksize;
         bool _hasstacksize;
@@ -21,10 +21,10 @@ namespace CilTools.Reflection
         bool _localsinit;
         bool _haslocalsinit;
 
-        public MethodBaseWrapper(MethodBase mb) : base()
+        public MethodInfoWrapper(MethodInfo mi) : base()
         {
-            this.srcmethod = mb;
-            this.resolver = CustomMethod.CreateResolver(mb);
+            this.srcmethod = mi;
+            this.resolver = CustomMethod.CreateResolver(mi);
 
             if (Types.IsDynamicMethod(srcmethod))
             {
@@ -225,18 +225,15 @@ namespace CilTools.Reflection
             return srcmethod.GetGenericArguments();
         }
 
-        public virtual Type ReturnType
+        public override Type ReturnType
         {
             get
             {
-                MethodInfo mi = srcmethod as MethodInfo;
-
-                if (mi != null) return mi.ReturnType;
-                else return null;
+                return srcmethod.ReturnType;
             }
         }
 
-        public virtual ITokenResolver TokenResolver
+        public override ITokenResolver TokenResolver
         {
             get
             {
@@ -244,54 +241,64 @@ namespace CilTools.Reflection
             }
         }
 
-        public virtual byte[] GetBytecode()
+        public override byte[] GetBytecode()
         {
             return this._code;
         }
 
-        public virtual byte[] GetLocalVarSignature()
+        public override byte[] GetLocalVarSignature()
         {
             return this._localssig;
         }
 
-        public virtual LocalVariable[] GetLocalVariables()
+        public override LocalVariable[] GetLocalVariables()
         {
-            return LocalVariable.FromReflection(this.srcmethod);
+            LocalVariable[] ret = null;
+
+            try
+            {
+                ret = base.GetLocalVariables();
+            }
+            catch (NotSupportedException) { }
+            catch (ArgumentOutOfRangeException) { }
+
+            if (ret != null) return ret;
+            else return LocalVariable.FromReflection(this.srcmethod);
         }
 
-        public virtual int MaxStackSize
+        public override int MaxStackSize
         {
             get { return this._stacksize; }
         }
 
-        public virtual bool MaxStackSizeSpecified
+        public override bool MaxStackSizeSpecified
         {
             get { return this._hasstacksize; }
         }
 
-        public virtual ExceptionBlock[] GetExceptionBlocks()
+        public override ExceptionBlock[] GetExceptionBlocks()
         {
             return this._blocks;
         }
 
-        public MethodBase GetDefinition()
+        public override MethodInfo GetBaseDefinition()
         {
-            return null;
+            return this.srcmethod.GetBaseDefinition();
         }
 
-        public PInvokeParams GetPInvokeParams()
-        {
-            return null;
-        }
-
-        public virtual bool InitLocals
+        public override bool InitLocals
         {
             get { return this._localsinit; }
         }
 
-        public virtual bool InitLocalsSpecified
+        public override bool InitLocalsSpecified
         {
             get { return this._haslocalsinit; }
+        }
+
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes
+        {
+            get { return this.srcmethod.ReturnTypeCustomAttributes; }
         }
     }
 }
