@@ -47,6 +47,7 @@ namespace CilTools.Metadata.Tests
 
                 Assert.AreEqual(".ctor", m.Name);
                 Assert.AreEqual(MemberTypes.Constructor, m.MemberType);
+                Assert.IsNull((m as ICustomMethod).ReturnType);
             }
         }
 
