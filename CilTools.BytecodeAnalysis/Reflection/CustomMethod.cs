@@ -9,7 +9,7 @@ using System.Text;
 namespace CilTools.Reflection
 {
     /// <summary>
-    /// Provides a custom <see cref="MethodInfo"/> implementation.
+    /// Provides a base class for <see cref="MethodInfo"/> subclasses that implement <see cref="ICustomMethod"/>.
     /// </summary>
     public abstract class CustomMethod : MethodInfo, ICustomMethod
     {
@@ -98,11 +98,13 @@ namespace CilTools.Reflection
             return null;
         }
 
+        /// <inheritdoc/>
         public override MethodInfo GetBaseDefinition()
         {
             throw new NotImplementedException("GetBaseDefinition should be implemented in derived class");
         }
 
+        /// <inheritdoc/>
         public override ICustomAttributeProvider ReturnTypeCustomAttributes
         {
             get
@@ -112,7 +114,7 @@ namespace CilTools.Reflection
         }
 
         /// <summary>
-        /// Converts MethodBase into the form suitable for processing by CilTools.BytecodeAnalysis
+        /// Converts <see cref="MethodBase"/> into the form suitable for processing by CilTools.BytecodeAnalysis
         /// </summary>
         internal static ICustomMethod PrepareMethod(MethodBase src)
         {

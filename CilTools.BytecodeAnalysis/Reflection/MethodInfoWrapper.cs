@@ -9,7 +9,7 @@ using System.Text;
 
 namespace CilTools.Reflection
 {
-    internal class MethodInfoWrapper : CustomMethod
+    internal class MethodInfoWrapper : MethodInfo, ICustomMethod
     {
         MethodInfo srcmethod;
         ITokenResolver resolver;
@@ -233,7 +233,7 @@ namespace CilTools.Reflection
             }
         }
 
-        public override ITokenResolver TokenResolver
+        public ITokenResolver TokenResolver
         {
             get
             {
@@ -241,23 +241,30 @@ namespace CilTools.Reflection
             }
         }
 
-        public override byte[] GetBytecode()
+        public byte[] GetBytecode()
         {
             return this._code;
         }
 
-        public override byte[] GetLocalVarSignature()
+        public byte[] GetLocalVarSignature()
         {
             return this._localssig;
         }
 
-        public override LocalVariable[] GetLocalVariables()
+        LocalVariable[] GetLocalVariables_Default()
+        {
+            byte[] sig = this.GetLocalVarSignature();
+
+            return LocalVariable.ReadSignature(sig, this.TokenResolver, this);
+        }
+
+        public LocalVariable[] GetLocalVariables()
         {
             LocalVariable[] ret = null;
 
             try
             {
-                ret = base.GetLocalVariables();
+                ret = this.GetLocalVariables_Default();
             }
             catch (NotSupportedException) { }
             catch (ArgumentOutOfRangeException) { }
@@ -266,17 +273,17 @@ namespace CilTools.Reflection
             else return LocalVariable.FromReflection(this.srcmethod);
         }
 
-        public override int MaxStackSize
+        public int MaxStackSize
         {
             get { return this._stacksize; }
         }
 
-        public override bool MaxStackSizeSpecified
+        public bool MaxStackSizeSpecified
         {
             get { return this._hasstacksize; }
         }
 
-        public override ExceptionBlock[] GetExceptionBlocks()
+        public ExceptionBlock[] GetExceptionBlocks()
         {
             return this._blocks;
         }
@@ -286,12 +293,12 @@ namespace CilTools.Reflection
             return this.srcmethod.GetBaseDefinition();
         }
 
-        public override bool InitLocals
+        public bool InitLocals
         {
             get { return this._localsinit; }
         }
 
-        public override bool InitLocalsSpecified
+        public bool InitLocalsSpecified
         {
             get { return this._haslocalsinit; }
         }
@@ -299,6 +306,16 @@ namespace CilTools.Reflection
         public override ICustomAttributeProvider ReturnTypeCustomAttributes
         {
             get { return this.srcmethod.ReturnTypeCustomAttributes; }
+        }
+        
+        public virtual MethodBase GetDefinition()
+        {
+            return null;
+        }
+
+        public virtual PInvokeParams GetPInvokeParams()
+        {
+            return null;
         }
     }
 }

@@ -254,9 +254,26 @@ namespace CilTools.Reflection
             return this._localssig;
         }
 
+        LocalVariable[] GetLocalVariables_Default()
+        {
+            byte[] sig = this.GetLocalVarSignature();
+
+            return LocalVariable.ReadSignature(sig, this.TokenResolver, this);
+        }
+
         public virtual LocalVariable[] GetLocalVariables()
         {
-            return LocalVariable.FromReflection(this.srcmethod);
+            LocalVariable[] ret = null;
+
+            try
+            {
+                ret = this.GetLocalVariables_Default();
+            }
+            catch (NotSupportedException) { }
+            catch (ArgumentOutOfRangeException) { }
+
+            if (ret != null) return ret;
+            else return LocalVariable.FromReflection(this.srcmethod);
         }
 
         public virtual int MaxStackSize
