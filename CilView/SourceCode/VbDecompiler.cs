@@ -73,9 +73,9 @@ namespace CilView.SourceCode
             string rettype = string.Empty;
             bool isFunc = false;
 
-            if (m is CustomMethod)
+            if (m is ICustomMethod)
             {
-                CustomMethod cm = (CustomMethod)m;
+                ICustomMethod cm = (ICustomMethod)m;
                 Type t = cm.ReturnType;
 
                 if (t != null)

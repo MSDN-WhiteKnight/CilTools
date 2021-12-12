@@ -162,11 +162,11 @@ namespace CilView.Common
         public static int GetMethodBodySize(MethodBase mb)
         {
             if (mb.IsAbstract) return -1;
-            if (!(mb is CustomMethod)) return -1;
+            if (!(mb is ICustomMethod)) return -1;
 
             try
             {
-                CustomMethod cm = (CustomMethod)mb;
+                ICustomMethod cm = (ICustomMethod)mb;
                 byte[] body = cm.GetBytecode();
                 if (body.Length > 0) return body.Length;
                 else return -1;

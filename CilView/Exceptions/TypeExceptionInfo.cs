@@ -166,7 +166,7 @@ namespace CilView.Exceptions
                 if (mb.IsConstructor) continue;
 
                 //constructor check does not work for CustomMethod
-                if(mb is CustomMethod && ((CustomMethod)mb).ReturnType==null) continue;
+                if(mb is ICustomMethod && ((ICustomMethod)mb).ReturnType==null) continue;
 
                 if (mb.Name.StartsWith("get_") || mb.Name.StartsWith("set_"))
                 {
