@@ -122,8 +122,9 @@ namespace CilTools.Reflection
 
             ICustomMethod ret;
 
-            if (src is ICustomMethod) ret = (ICustomMethod)src;            
+            if (src is ICustomMethod) ret = (ICustomMethod)src;
             else if (src is MethodInfo) ret = new MethodInfoWrapper((MethodInfo)src);
+            else if (src is ConstructorInfo) ret = new ConstructorInfoWrapper((ConstructorInfo)src);
             else ret = new MethodBaseWrapper(src);
 
             Debug.Assert(ret is ICustomMethod && ret is MethodBase,
