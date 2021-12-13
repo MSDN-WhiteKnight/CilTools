@@ -3,7 +3,6 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Metadata;
@@ -15,18 +14,15 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata.Constructors
 {
-    class ConstructorRef : ConstructorInfo, ICustomMethod
+    class ConstructorRef : MdConstructorBase, ICustomMethod
     {
-        MetadataAssembly assembly;
         MemberReferenceHandle mrefh;
-        MemberReference mref;
-        Signature sig;
+        MemberReference mref;        
         MethodBase impl;
-        Type decltype;
 
         internal ConstructorRef(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
         {
-            Debug.Assert(m.GetKind() == MemberReferenceKind.Method, "MemberReference passed to ExternalMethod ctor should be a method");
+            Debug.Assert(m.GetKind() == MemberReferenceKind.Method, "MemberReference passed to ConstructorRef ctor should be a method");
 
             this.assembly = owner;
             this.mref = m;
@@ -70,13 +66,9 @@ namespace CilTools.Metadata.Constructors
             else this.decltype = UnknownType.Value;
 
             //read signature
-            byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mref.Signature);
-            GenericContext gctx = GenericContext.Create(this.decltype, this);
-            SignatureContext ctx = new SignatureContext(this.assembly, gctx);
-
             try
             {
-                this.sig = Signature.ReadFromArray(sigbytes, ctx);
+                base.InitSignature(mref.Signature);
             }
             catch (NotSupportedException) { }
         }
@@ -167,13 +159,8 @@ namespace CilTools.Metadata.Constructors
             }//end for
         }
         
-        public Type ReturnType
-        {
-            get { return null; }
-        }
-
         /// <inheritdoc/>
-        public ITokenResolver TokenResolver
+        public override ITokenResolver TokenResolver
         {
             get
             {
@@ -183,7 +170,7 @@ namespace CilTools.Metadata.Constructors
         }
 
         /// <inheritdoc/>
-        public byte[] GetBytecode()
+        public override byte[] GetBytecode()
         {
             this.LoadImpl();
 
@@ -192,7 +179,7 @@ namespace CilTools.Metadata.Constructors
         }
 
         /// <inheritdoc/>
-        public int MaxStackSize
+        public override int MaxStackSize
         {
             get
             {
@@ -204,7 +191,7 @@ namespace CilTools.Metadata.Constructors
         }
 
         /// <inheritdoc/>
-        public bool MaxStackSizeSpecified
+        public override bool MaxStackSizeSpecified
         {
             get
             {
@@ -216,7 +203,7 @@ namespace CilTools.Metadata.Constructors
         }
 
         /// <inheritdoc/>
-        public byte[] GetLocalVarSignature()
+        public override byte[] GetLocalVarSignature()
         {
             this.LoadImpl();
 
@@ -225,7 +212,7 @@ namespace CilTools.Metadata.Constructors
         }
 
         /// <inheritdoc/>
-        public ExceptionBlock[] GetExceptionBlocks()
+        public override ExceptionBlock[] GetExceptionBlocks()
         {
             this.LoadImpl();
 
@@ -306,35 +293,7 @@ namespace CilTools.Metadata.Constructors
                 return this.GetParameters_Sig();
             }
         }
-
-        /// <inheritdoc/>
-        public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters,
-            System.Globalization.CultureInfo culture)
-        {
-            throw new InvalidOperationException("Cannot invoke methods on type loaded into reflection-only context");
-        }
-
-        /// <inheritdoc/>
-        public override object Invoke(BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
-        {
-            throw new InvalidOperationException("Cannot invoke methods on type loaded into reflection-only context");
-        }
-
-        /// <inheritdoc/>
-        public override RuntimeMethodHandle MethodHandle
-        {
-            get { throw new NotImplementedException(); }
-        }
-
-        /// <inheritdoc/>
-        public override Type DeclaringType
-        {
-            get
-            {
-                return this.decltype;
-            }
-        }
-
+                
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
@@ -361,15 +320,6 @@ namespace CilTools.Metadata.Constructors
         }
 
         /// <inheritdoc/>
-        public override MemberTypes MemberType
-        {
-            get
-            {
-                return MemberTypes.Constructor;
-            }
-        }
-
-        /// <inheritdoc/>
         public override string Name
         {
             get
@@ -377,13 +327,7 @@ namespace CilTools.Metadata.Constructors
                 return assembly.MetadataReader.GetString(mref.Name);
             }
         }
-
-        /// <inheritdoc/>
-        public override Type ReflectedType
-        {
-            get { throw new NotImplementedException(); }
-        }
-
+        
         /// <inheritdoc/>
         public override int MetadataToken
         {
@@ -394,7 +338,7 @@ namespace CilTools.Metadata.Constructors
         }
 
         /// <inheritdoc/>
-        public bool InitLocals
+        public override bool InitLocals
         {
             get
             {
@@ -406,7 +350,7 @@ namespace CilTools.Metadata.Constructors
         }
 
         /// <inheritdoc/>
-        public bool InitLocalsSpecified
+        public override bool InitLocalsSpecified
         {
             get
             {
@@ -430,23 +374,6 @@ namespace CilTools.Metadata.Constructors
                 if (this.impl != null) return this.impl.IsGenericMethod;
                 else return false;
             }
-        }
-        
-        public Reflection.LocalVariable[] GetLocalVariables()
-        {
-            byte[] sig = this.GetLocalVarSignature();
-
-            return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
-        }
-
-        public MethodBase GetDefinition()
-        {
-            return null;
-        }
-
-        public PInvokeParams GetPInvokeParams()
-        {
-            return null;
         }
     }
 }
