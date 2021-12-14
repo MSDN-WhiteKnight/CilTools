@@ -22,49 +22,16 @@ namespace CilTools.Metadata.Constructors
 
         internal ConstructorRef(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
         {
-            Debug.Assert(m.GetKind() == MemberReferenceKind.Method, "MemberReference passed to ConstructorRef ctor should be a method");
+            Debug.Assert(m.GetKind() == MemberReferenceKind.Method, 
+                "MemberReference passed to ConstructorRef ctor should be a method");
 
             this.assembly = owner;
             this.mref = m;
             this.mrefh = mh;
 
             //init declaring type
-            EntityHandle eh = mref.Parent;
-
-            if (!eh.IsNil && eh.Kind == HandleKind.TypeReference)
-            {
-                this.decltype = new TypeRef(
-                    assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh), (TypeReferenceHandle)eh, this.assembly
-                    );
-            }
-            else if (!eh.IsNil && eh.Kind == HandleKind.TypeSpecification)
-            {
-                //TypeSpec is either complex type (array etc.) or generic instantiation
-
-                TypeSpecification ts = assembly.MetadataReader.GetTypeSpecification(
-                    (TypeSpecificationHandle)eh
-                    );
-
-                TypeSpec encoded = TypeSpec.ReadFromArray(assembly.MetadataReader.GetBlobBytes(ts.Signature),
-                    this.assembly,
-                    this);
-
-                if (encoded != null) this.decltype = encoded.Type;
-                else this.decltype = UnknownType.Value;
-            }
-            else if (!eh.IsNil && eh.Kind == HandleKind.MethodDefinition)
-            {
-                MethodDefinition mdef = assembly.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                TypeDefinitionHandle tdefh = mdef.GetDeclaringType();
-
-                if (!tdefh.IsNil)
-                {
-                    this.decltype = this.assembly.GetTypeDefinition(tdefh);
-                }
-                else this.decltype = UnknownType.Value;
-            }
-            else this.decltype = UnknownType.Value;
-
+            this.decltype = MethodRef.GetRefDeclaringType(this.assembly, this, mref.Parent);
+            
             //read signature
             try
             {
@@ -84,79 +51,7 @@ namespace CilTools.Metadata.Constructors
 
             if (et == null) return;
 
-            Type t = this.assembly.AssemblyReader.LoadType(et);
-
-            if (t == null) return;
-
-            MemberInfo[] members = t.GetMember(this.Name,
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
-                );
-
-            //if there's only one method, pick it
-            if (members.Length == 1 && members[0] is MethodBase)
-            {
-                this.impl = (MethodBase)members[0];
-                return;
-            }
-
-            //if there are multiple methods with the same name, match by signature
-            ParameterInfo[] pars_match = this.GetParameters_Sig();
-            bool isstatic_match = false;
-            int genargs_match = 0;
-
-            if (this.sig != null)
-            {
-                isstatic_match = !this.sig.HasThis;
-                genargs_match = this.sig.GenericArgsCount;
-            }
-
-            bool match;
-
-            for (int i = 0; i < members.Length; i++)
-            {
-                if (!(members[i] is MethodBase)) continue;
-
-                MethodBase m = (MethodBase)members[i];
-                ParameterInfo[] pars_i = m.GetParameters();
-
-                if (m.IsStatic != isstatic_match) continue;
-
-                if (pars_i.Length != pars_match.Length) continue;
-
-                //compare generic args count
-                Type[] ga = m.GetGenericArguments();
-                int genargs = 0;
-
-                if (ga != null) genargs = ga.Length;
-                else genargs = 0;
-
-                if (genargs != genargs_match) continue;
-
-                //compare parameter types
-                match = true;
-
-                for (int j = 0; j < pars_i.Length; j++)
-                {
-                    string s1 = "";
-                    string s2 = "";
-                    Type pt = pars_i[j].ParameterType;
-                    if (pt != null) s1 = pt.Name;
-                    pt = pars_match[j].ParameterType;
-                    if (pt != null) s2 = pt.Name;
-
-                    if (!Utils.StrEquals(s1, s2))
-                    {
-                        match = false;
-                        break;
-                    }
-                }
-
-                if (match)
-                {
-                    this.impl = m;
-                    return;
-                }
-            }//end for
+            this.impl = MethodRef.ResolveMethodRef(this.assembly, et, this, this.sig);
         }
         
         /// <inheritdoc/>
