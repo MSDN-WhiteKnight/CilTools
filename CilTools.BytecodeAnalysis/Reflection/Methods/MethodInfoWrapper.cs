@@ -6,9 +6,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
-using CilTools.Reflection.Methods;
 
-namespace CilTools.Reflection
+namespace CilTools.Reflection.Methods
 {
     internal class MethodInfoWrapper : MethodInfo, ICustomMethod
     {

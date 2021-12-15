@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Reflection;
 using System.Text;
+using CilTools.Reflection.Methods;
 
 namespace CilTools.Reflection
 {
