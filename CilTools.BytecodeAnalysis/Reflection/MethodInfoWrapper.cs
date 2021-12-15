@@ -6,92 +6,19 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
+using CilTools.Reflection.Methods;
 
 namespace CilTools.Reflection
 {
     internal class MethodInfoWrapper : MethodInfo, ICustomMethod
     {
         MethodInfo srcmethod;
-        ITokenResolver resolver;
-        int _stacksize;
-        bool _hasstacksize;
-        byte[] _code;
-        byte[] _localssig;
-        ExceptionBlock[] _blocks;
-        bool _localsinit;
-        bool _haslocalsinit;
-
+        MethodBodyData mbd;
+        
         public MethodInfoWrapper(MethodInfo mi) : base()
         {
             this.srcmethod = mi;
-            this.resolver = CustomMethod.CreateResolver(mi);
-
-            if (Types.IsDynamicMethod(srcmethod))
-            {
-                FieldInfo field;
-                this._code = MethodBaseWrapper.GetDynamicMethodBytecode(srcmethod);
-                
-                FieldInfo fieldResolver = srcmethod.GetType().GetField("m_resolver",
-                    ReflectionUtils.InstanceMembers);
-                object valueResolver = fieldResolver.GetValue(srcmethod);
-
-                if (valueResolver != null)
-                {
-                    field = valueResolver.GetType().GetField("m_localSignature",
-                        ReflectionUtils.InstanceMembers
-                        );
-                    byte[] sigbytes = (byte[])field.GetValue(valueResolver);
-                    this._localssig = sigbytes;
-
-                    field = valueResolver.GetType().GetField("m_stackSize",
-                        ReflectionUtils.InstanceMembers
-                        );
-
-                    this._stacksize = (int)field.GetValue(valueResolver);
-                    this._hasstacksize = true;
-                    this._blocks = MethodBaseWrapper.GetDynamicMethodExceptions(valueResolver, this._code.Length);
-                }
-                else
-                {
-                    this._localssig = new byte[0];
-                    this._hasstacksize = false;
-                    this._haslocalsinit = false;
-                }
-            }
-            else //regular method
-            {
-                MethodBody body = srcmethod.GetMethodBody();
-
-                if (body != null)
-                {
-                    this._code = body.GetILAsByteArray();
-                    int token = body.LocalSignatureMetadataToken;
-
-                    if (token == 0) this._localssig = new byte[0];
-                    else this._localssig = this.resolver.ResolveSignature(token);
-
-                    this._stacksize = body.MaxStackSize;
-                    this._hasstacksize = true;
-
-                    this._blocks = new ExceptionBlock[body.ExceptionHandlingClauses.Count];
-
-                    for (int i = 0; i < body.ExceptionHandlingClauses.Count; i++)
-                    {
-                        this._blocks[i] = ExceptionBlock.FromReflection(body.ExceptionHandlingClauses[i]);
-                    }
-
-                    this._localsinit = body.InitLocals;
-                    this._haslocalsinit = true;
-                }
-                else
-                {
-                    this._code = new byte[0];
-                    this._localssig = new byte[0];
-                    this._blocks = new ExceptionBlock[0];
-                    this._hasstacksize = false;
-                    this._haslocalsinit = false;
-                }
-            }
+            this.mbd = new MethodBodyData(mi);
         }
 
         public override MethodAttributes Attributes { get { return srcmethod.Attributes; } }
@@ -161,18 +88,18 @@ namespace CilTools.Reflection
         {
             get
             {
-                return this.resolver;
+                return this.mbd.TokenResolver;
             }
         }
 
         public byte[] GetBytecode()
         {
-            return this._code;
+            return this.mbd.GetBytecode();
         }
 
         public byte[] GetLocalVarSignature()
         {
-            return this._localssig;
+            return this.mbd.GetLocalVarSignature();
         }
 
         LocalVariable[] GetLocalVariables_Default()
@@ -199,17 +126,17 @@ namespace CilTools.Reflection
 
         public int MaxStackSize
         {
-            get { return this._stacksize; }
+            get { return this.mbd.MaxStackSize; }
         }
 
         public bool MaxStackSizeSpecified
         {
-            get { return this._hasstacksize; }
+            get { return this.mbd.MaxStackSizeSpecified; }
         }
 
         public ExceptionBlock[] GetExceptionBlocks()
         {
-            return this._blocks;
+            return this.mbd.GetExceptionBlocks();
         }
 
         public override MethodInfo GetBaseDefinition()
@@ -219,12 +146,12 @@ namespace CilTools.Reflection
 
         public bool InitLocals
         {
-            get { return this._localsinit; }
+            get { return this.mbd.InitLocals; }
         }
 
         public bool InitLocalsSpecified
         {
-            get { return this._haslocalsinit; }
+            get { return this.mbd.InitLocalsSpecified; }
         }
 
         public override ICustomAttributeProvider ReturnTypeCustomAttributes
