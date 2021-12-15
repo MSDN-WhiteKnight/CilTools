@@ -28,104 +28,28 @@ namespace CilTools.Reflection
 
             if (Types.IsDynamicMethod(srcmethod))
             {
-                FieldInfo fieldGenerator = srcmethod.GetType().GetField("m_ilGenerator",
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                object valueGenerator = fieldGenerator.GetValue(srcmethod);
                 FieldInfo field;
-
-                if (valueGenerator != null)
-                {
-                    field = Types.ILGeneratorType.GetField("m_ILStream",
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                        );
-                    byte[] ilbytes = (byte[])field.GetValue(valueGenerator);
-
-                    field = Types.ILGeneratorType.GetField("m_length",
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                        );
-                    int len = (int)field.GetValue(valueGenerator);
-
-                    field = valueGenerator.GetType().GetField("m_methodBuilder",
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                        );
-                    MethodBase val = (MethodBase)field.GetValue(valueGenerator);
-
-                    byte[] il = new byte[len];
-                    Array.Copy(ilbytes, il, len);
-                    this._code = il;
-                }
-                else
-                {
-                    this._code = new byte[0];
-                }
-
+                this._code = GetDynamicMethodBytecode(srcmethod);
+                
                 FieldInfo fieldResolver = srcmethod.GetType().GetField("m_resolver",
-                    BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
+                    ReflectionUtils.InstanceMembers);
                 object valueResolver = fieldResolver.GetValue(srcmethod);
 
                 if (valueResolver != null)
                 {
                     field = valueResolver.GetType().GetField("m_localSignature",
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                        ReflectionUtils.InstanceMembers
                         );
                     byte[] sigbytes = (byte[])field.GetValue(valueResolver);
                     this._localssig = sigbytes;
 
                     field = valueResolver.GetType().GetField("m_stackSize",
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
+                        ReflectionUtils.InstanceMembers
                         );
+
                     this._stacksize = (int)field.GetValue(valueResolver);
                     this._hasstacksize = true;
-
-                    field = valueResolver.GetType().GetField("m_exceptions",
-                        BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic
-                        );
-                    object[] arrExceptions = (object[])field.GetValue(valueResolver);
-
-                    if (arrExceptions == null) arrExceptions = new object[0];
-
-                    List<ExceptionBlock> blocks = new List<ExceptionBlock>(arrExceptions.Length * 2);
-
-                    Type t = arrExceptions.GetType().GetElementType();
-
-                    FieldInfo fieldStartAddr = t.GetField("m_startAddr", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    FieldInfo fieldEndAddr = t.GetField("m_endAddr", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    FieldInfo fieldCatchAddr = t.GetField("m_catchAddr", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    FieldInfo fieldCatchClass = t.GetField("m_catchClass", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    FieldInfo fieldCatchEndAddr = t.GetField("m_catchEndAddr", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    FieldInfo fieldFilterAddr = t.GetField("m_filterAddr", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-                    FieldInfo fieldType = t.GetField("m_type", BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
-
-                    for (int i = 0; i < arrExceptions.Length; i++)
-                    {
-                        int startaddr = (int)fieldStartAddr.GetValue(arrExceptions[i]);
-                        int endAddr = (int)fieldEndAddr.GetValue(arrExceptions[i]);
-                        int[] catchAddr = (int[])fieldCatchAddr.GetValue(arrExceptions[i]);
-                        int[] catchEndAddr = (int[])fieldCatchEndAddr.GetValue(arrExceptions[i]);
-                        Type[] catchClass = (Type[])fieldCatchClass.GetValue(arrExceptions[i]);
-                        //int endFinally = (int)fieldEndFinally.GetValue(arrExceptions[i]);
-                        int[] filterAddr = (int[])fieldFilterAddr.GetValue(arrExceptions[i]);
-                        int[] type = (int[])fieldType.GetValue(arrExceptions[i]);
-
-                        for (int j = 0; j < type.Length; j++)
-                        {
-                            int length = endAddr - startaddr;
-                            int handler_length = catchEndAddr[j] - catchAddr[j];
-                            int filter_offset = filterAddr[j];
-
-                            if (handler_length <= 0) continue;
-
-                            if (filter_offset < 0 || filter_offset > this._code.Length) filter_offset = 0;
-
-                            blocks.Add(new ExceptionBlock(
-                                        (ExceptionHandlingClauseOptions)type[j], startaddr, length,
-                                        catchClass[j], catchAddr[j],
-                                        handler_length, filter_offset
-                                        ));
-                        }
-                    }
-
-                    this._blocks = blocks.ToArray();
+                    this._blocks = GetDynamicMethodExceptions(valueResolver, this._code.Length);
                 }
                 else
                 {
@@ -167,6 +91,92 @@ namespace CilTools.Reflection
                     this._hasstacksize = false;
                     this._haslocalsinit = false;
                 }
+            }
+        }
+
+        internal static ExceptionBlock[] GetDynamicMethodExceptions(object valueResolver, int bytecodeLength) 
+        {
+            FieldInfo field = valueResolver.GetType().GetField("m_exceptions",
+                        ReflectionUtils.InstanceMembers);
+
+            object[] arrExceptions = (object[])field.GetValue(valueResolver);
+
+            if (arrExceptions == null) arrExceptions = new object[0];
+
+            List<ExceptionBlock> blocks = new List<ExceptionBlock>(arrExceptions.Length * 2);
+
+            Type t = arrExceptions.GetType().GetElementType();
+
+            FieldInfo fieldStartAddr = t.GetField("m_startAddr", ReflectionUtils.InstanceMembers);
+            FieldInfo fieldEndAddr = t.GetField("m_endAddr", ReflectionUtils.InstanceMembers);
+            FieldInfo fieldCatchAddr = t.GetField("m_catchAddr", ReflectionUtils.InstanceMembers);
+            FieldInfo fieldCatchClass = t.GetField("m_catchClass", ReflectionUtils.InstanceMembers);
+            FieldInfo fieldCatchEndAddr = t.GetField("m_catchEndAddr", ReflectionUtils.InstanceMembers);
+            FieldInfo fieldFilterAddr = t.GetField("m_filterAddr", ReflectionUtils.InstanceMembers);
+            FieldInfo fieldType = t.GetField("m_type", ReflectionUtils.InstanceMembers);
+
+            for (int i = 0; i < arrExceptions.Length; i++)
+            {
+                int startaddr = (int)fieldStartAddr.GetValue(arrExceptions[i]);
+                int endAddr = (int)fieldEndAddr.GetValue(arrExceptions[i]);
+                int[] catchAddr = (int[])fieldCatchAddr.GetValue(arrExceptions[i]);
+                int[] catchEndAddr = (int[])fieldCatchEndAddr.GetValue(arrExceptions[i]);
+                Type[] catchClass = (Type[])fieldCatchClass.GetValue(arrExceptions[i]);
+                int[] filterAddr = (int[])fieldFilterAddr.GetValue(arrExceptions[i]);
+                int[] type = (int[])fieldType.GetValue(arrExceptions[i]);
+
+                for (int j = 0; j < type.Length; j++)
+                {
+                    int length = endAddr - startaddr;
+                    int handler_length = catchEndAddr[j] - catchAddr[j];
+                    int filter_offset = filterAddr[j];
+
+                    if (handler_length <= 0) continue;
+
+                    if (filter_offset < 0 || filter_offset > bytecodeLength) filter_offset = 0;
+
+                    blocks.Add(new ExceptionBlock(
+                                (ExceptionHandlingClauseOptions)type[j], startaddr, length,
+                                catchClass[j], catchAddr[j],
+                                handler_length, filter_offset
+                                ));
+                }
+            }
+
+            return blocks.ToArray();
+        }
+
+        internal static byte[] GetDynamicMethodBytecode(MethodBase srcmethod) 
+        {
+            FieldInfo fieldGenerator = srcmethod.GetType().GetField("m_ilGenerator",
+                    ReflectionUtils.InstanceMembers);
+            object valueGenerator = fieldGenerator.GetValue(srcmethod);
+            FieldInfo field;
+
+            if (valueGenerator != null)
+            {
+                field = Types.ILGeneratorType.GetField("m_ILStream",
+                    ReflectionUtils.InstanceMembers
+                    );
+                byte[] ilbytes = (byte[])field.GetValue(valueGenerator);
+
+                field = Types.ILGeneratorType.GetField("m_length",
+                    ReflectionUtils.InstanceMembers
+                    );
+                int len = (int)field.GetValue(valueGenerator);
+
+                field = valueGenerator.GetType().GetField("m_methodBuilder",
+                    ReflectionUtils.InstanceMembers
+                    );
+                MethodBase val = (MethodBase)field.GetValue(valueGenerator);
+
+                byte[] il = new byte[len];
+                Array.Copy(ilbytes, il, len);
+                return il;
+            }
+            else
+            {
+                return new byte[0];
             }
         }
 
