@@ -117,44 +117,7 @@ namespace CilTools.Metadata.Constructors
         {
             if (this.mb == null) return null;
 
-            ExceptionBlock[] ret = new ExceptionBlock[mb.ExceptionRegions.Length];
-
-            for (int i = 0; i < ret.Length; i++)
-            {
-                ExceptionHandlingClauseOptions opt = (ExceptionHandlingClauseOptions)0;
-                Type t = null;
-
-                switch (mb.ExceptionRegions[i].Kind)
-                {
-                    case ExceptionRegionKind.Catch:
-                        opt = ExceptionHandlingClauseOptions.Clause;
-                        EntityHandle eh = mb.ExceptionRegions[i].CatchType;
-
-                        if (eh.Kind == HandleKind.TypeDefinition)
-                        {
-                            t = this.assembly.GetTypeDefinition((TypeDefinitionHandle)eh);
-                        }
-                        else if (eh.Kind == HandleKind.TypeReference)
-                        {
-                            t = new TypeRef(
-                                assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh),
-                                (TypeReferenceHandle)eh,
-                                this.assembly);
-                        }
-
-                        break;
-                    case ExceptionRegionKind.Finally: opt = ExceptionHandlingClauseOptions.Finally; break;
-                    case ExceptionRegionKind.Filter: opt = ExceptionHandlingClauseOptions.Filter; break;
-                    case ExceptionRegionKind.Fault: opt = ExceptionHandlingClauseOptions.Fault; break;
-                }
-
-                ret[i] = new ExceptionBlock(
-                    opt, mb.ExceptionRegions[i].TryOffset, mb.ExceptionRegions[i].TryLength, t,
-                    mb.ExceptionRegions[i].HandlerOffset, mb.ExceptionRegions[i].HandlerLength,
-                    mb.ExceptionRegions[i].FilterOffset);
-            }
-
-            return ret;
+            return MethodDef.GetMethodExceptionBlocks(this.mb, this.assembly);
         }
 
         /// <inheritdoc/>
@@ -182,27 +145,7 @@ namespace CilTools.Metadata.Constructors
         {
             if (this.sig == null) return new ParameterInfo[0];
 
-            ParameterInfo[] pars = new ParameterInfo[this.sig.ParamsCount];
-            ParameterHandleCollection hcoll = this.mdef.GetParameters();
-
-            foreach (ParameterHandle h in hcoll)
-            {
-                Parameter par = this.assembly.MetadataReader.GetParameter(h);
-                int index = par.SequenceNumber - 1;
-                if (index >= pars.Length) continue;
-                if (index < 0) continue;
-
-                pars[index] = new ParameterSpec(
-                    this.sig.GetParamType(index), par, this, this.assembly.MetadataReader
-                    );
-            }
-
-            for (int i = 0; i < pars.Length; i++)
-            {
-                if (pars[i] == null) pars[i] = new ParameterSpec(this.sig.GetParamType(i), i, this);
-            }
-
-            return pars;
+            return MethodDef.GetMethodParameters(this.assembly.MetadataReader, this, this.mdef, this.sig);
         }
         
         /// <inheritdoc/>
