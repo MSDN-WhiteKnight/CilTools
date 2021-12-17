@@ -4,7 +4,21 @@
     <AssemblyName>cil</AssemblyName>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-  </PropertyGroup>  
+    <PackAsTool>true</PackAsTool>
+    <PackageId>CilTools.CommandLine</PackageId>
+    <ToolCommandName>cil</ToolCommandName>
+    <Version>1.0.0</Version>
+    <FileVersion>1.0.0.0</FileVersion>
+    <Authors>MSDN-WhiteKnight</Authors>
+    <Company>CIL Tools</Company>
+    <Product>CIL Tools</Product>
+    <Copyright>Copyright (c) 2021, MSDN.WhiteKnight</Copyright>
+    <PackageProjectUrl>https://github.com/MSDN-WhiteKnight/CilTools</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
+    <PackageTags>dotnet dotnet-core dotnet-tool command-line il cil msil disassembler inspection</PackageTags>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Command line tool to view disassembled CIL code of methods in .NET assemblies</Description>
+  </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
