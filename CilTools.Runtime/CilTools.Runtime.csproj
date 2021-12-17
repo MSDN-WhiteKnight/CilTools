@@ -58,6 +58,7 @@
     <Compile Include="DynamicResolver.cs" />
     <Compile Include="HeapScanner.cs" />
     <Compile Include="MethodId.cs" />
+    <Compile Include="Methods\ClrMethodData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnknownType.cs" />
     <Compile Include="Utils.cs" />
