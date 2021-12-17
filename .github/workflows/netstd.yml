@@ -21,6 +21,8 @@ jobs:
       run: dotnet build CilTools.Metadata/CilTools.Metadata.csproj -f netstandard2.0
     - name: Build tests with dotnet
       run: dotnet build tests/CilTools.BytecodeAnalysis.Tests/CilTools.BytecodeAnalysis.Tests.csproj -f netcoreapp3.1
+    - name: Build CommandLine with dotnet
+      run: dotnet build CilTools.CommandLine/CilTools.CommandLine.csproj
     - name: Test
       run: dotnet test tests/CilTools.BytecodeAnalysis.Tests/CilTools.BytecodeAnalysis.Tests.csproj -f netcoreapp3.1
     - name: Archive build results
