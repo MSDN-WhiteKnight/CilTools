@@ -7,10 +7,15 @@ using System.Reflection;
 namespace CilTools.Reflection
 {
     /// <summary>
-    /// Defines API providing custom information about methods. Implement this interface on your custom class inheriting from 
-    /// <see cref="MethodBase"/> if you want CilTools.BytecodeAnalysis library to process bytecode from your custom data source, 
-    /// instead of the standard reflection.
+    /// Represents an object that provides custom information about method. Implement this interface on your custom class 
+    /// inheriting from <see cref="MethodBase"/> if you want CilTools.BytecodeAnalysis library to process bytecode 
+    /// from your custom data source, instead of the standard reflection.
     /// </summary>
+    /// <remarks>
+    /// In CIL Tools 2.3 and earlier, <see cref="CustomMethod"/> was used as a base class for custom methods. 
+    /// Starting from version 2.4, <see cref="ICustomMethod"/> interface is used instead; and custom method classes could 
+    /// inherit from any class, as long as it is derived from <see cref="MethodBase"/>.
+    /// </remarks>
     public interface ICustomMethod
     {
         /// <summary>
