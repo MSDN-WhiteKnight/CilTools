@@ -56,5 +56,20 @@ namespace CilTools.Metadata.Tests
                 AssertThat.HasOnlyOneMatch(blocks, x => x.Flags == ExceptionHandlingClauseOptions.Finally);
             }
         }
+
+        [TestMethod]
+        public void Test_MethodDef_MemberType()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType(typename);
+                MemberInfo m = t.GetMember("PrintHelloWorld")[0];
+                Assert.IsTrue(m is MethodInfo);
+                Assert.AreEqual(MemberTypes.Method, m.MemberType);
+            }
+        }
     }
 }
