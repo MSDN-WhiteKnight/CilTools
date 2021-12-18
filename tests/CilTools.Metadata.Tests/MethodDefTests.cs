@@ -71,5 +71,28 @@ namespace CilTools.Metadata.Tests
                 Assert.AreEqual(MemberTypes.Method, m.MemberType);
             }
         }
+
+        [TestMethod]
+        [WorkItem(94)]
+        public void Test_MethodDef_GenericParameterByRef()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(System.Threading.Interlocked).Assembly.Location);
+                Type t = ass.GetType("System.Threading.Interlocked");
+
+                //Interlocked.CompareExchange<T>(!!T& location1,!!T value,!!T comparand)
+                MethodBase m = (MethodBase)(t.GetMember("CompareExchange").
+                    Where(x => x is MethodBase && (x as MethodBase).IsGenericMethod).
+                    First());
+
+                Type pt0 = m.GetParameters()[0].ParameterType;
+                Assert.IsTrue(pt0.IsByRef);
+                Assert.IsFalse(pt0.IsGenericParameter);
+                Assert.IsTrue(pt0.GetElementType().IsGenericParameter);
+            }
+        }
     }
 }

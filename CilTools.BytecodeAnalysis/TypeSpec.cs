@@ -728,6 +728,8 @@ namespace CilTools.BytecodeAnalysis
         {
             get
             {
+                if (this._Type.IsByRef) return false;
+
                 return this._ElementType == (byte)ElementType.Var ||
                     this._ElementType == (byte)ElementType.MVar;
             }
