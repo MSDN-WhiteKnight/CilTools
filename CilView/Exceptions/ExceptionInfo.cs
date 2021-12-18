@@ -432,9 +432,9 @@ namespace CilView.Exceptions
                             int index = Convert.ToInt32(prev.Instruction.Operand);
                             Type lt = null;
 
-                            if (m is CustomMethod)
+                            if (m is ICustomMethod)
                             {
-                                CustomMethod cm = (CustomMethod)m;
+                                ICustomMethod cm = (ICustomMethod)m;
                                 LocalVariable[] locals = cm.GetLocalVariables();
                                 if (locals.Length != 0) lt = locals[index].LocalType;
                             }

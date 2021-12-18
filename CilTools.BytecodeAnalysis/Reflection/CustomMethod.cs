@@ -1,26 +1,28 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
-using CilTools.BytecodeAnalysis;
+using CilTools.Reflection.Methods;
 
 namespace CilTools.Reflection
 {
     /// <summary>
-    /// A base class for MethodBase implementations providing custom mechanisms for extracting bytecode data. 
-    /// Inherit from this class when you want CilTools.BytecodeAnalysis to process bytecode from your custom data source, instead of 
-    /// reflection.
+    /// Provides a base class for <see cref="MethodInfo"/> subclasses that implement <see cref="ICustomMethod"/>.
     /// </summary>
-    public abstract class CustomMethod : MethodBase
+    /// <remarks>
+    /// In CIL Tools 2.3 and earlier, all custom methods were inheriting from this class. Starting from version 2.4, 
+    /// custom method classes could implement <see cref="ICustomMethod"/> and are not required to inherit from this 
+    /// specific class.
+    /// </remarks>
+    public abstract class CustomMethod : MethodInfo, ICustomMethod
     {
         /// <summary>
-        /// When overridden in the derived class, returns the type of this method's return value
+        /// Gets the return type of this method.
         /// </summary>
-        /// <remarks>Return null if the return type is not applicable (such as for constructors).</remarks>
-        public abstract Type ReturnType { get; }
+        public override Type ReturnType { get; }
 
         /// <summary>
         /// When overridden in the derived class, returns an object that can be used to convert metadata tokens 
@@ -102,15 +104,39 @@ namespace CilTools.Reflection
             return null;
         }
 
+        /// <inheritdoc/>
+        public override MethodInfo GetBaseDefinition()
+        {
+            throw new NotImplementedException("GetBaseDefinition should be implemented in derived class");
+        }
+
+        /// <inheritdoc/>
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes
+        {
+            get
+            {
+                throw new NotImplementedException("ReturnTypeCustomAttributes should be implemented in derived class");
+            }
+        }
+
         /// <summary>
-        /// Converts MethodBase into the form suitable for processing by CilTools.BytecodeAnalysis
+        /// Converts <see cref="MethodBase"/> into the form suitable for processing by CilTools.BytecodeAnalysis
         /// </summary>
-        internal static CustomMethod PrepareMethod(MethodBase src)
+        internal static ICustomMethod PrepareMethod(MethodBase src)
         {
             if (src == null) return null;
 
-            if (src is CustomMethod) return (CustomMethod)src;
-            else return new MethodBaseWrapper(src);
+            ICustomMethod ret;
+
+            if (src is ICustomMethod) ret = (ICustomMethod)src;
+            else if (src is MethodInfo) ret = new MethodInfoWrapper((MethodInfo)src);
+            else if (src is ConstructorInfo) ret = new ConstructorInfoWrapper((ConstructorInfo)src);
+            else ret = new MethodBaseWrapper(src);
+
+            Debug.Assert(ret is ICustomMethod && ret is MethodBase,
+                "PrepareMethod should return type that inherits from MethodBase and implements ICustomMethod");
+
+            return ret;
         }
 
         /// <summary>

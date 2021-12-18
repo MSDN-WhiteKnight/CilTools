@@ -162,7 +162,7 @@ namespace CilTools.BytecodeAnalysis
             this._OpCode = opc;
             this._ByteOffset = byteoffset;
             this._OrdinalNumber = ordinalnum;
-            this._Method = CustomMethod.PrepareMethod(mb);
+            this._Method = (MethodBase)CustomMethod.PrepareMethod(mb);
         }
 
         /// <summary>
@@ -243,7 +243,7 @@ namespace CilTools.BytecodeAnalysis
             
             if(ReferencesMemberToken(this.OpCode))
             {
-                return (Method as CustomMethod).TokenResolver.ResolveMember(token, t_args, m_args);
+                return (Method as ICustomMethod).TokenResolver.ResolveMember(token, t_args, m_args);
             }
             else return null;
         }
@@ -253,7 +253,7 @@ namespace CilTools.BytecodeAnalysis
             if (this.Method == null) return null;
             if (!(this.OpCode.OperandType == System.Reflection.Emit.OperandType.InlineString)) return null;
 
-            return (Method as CustomMethod).TokenResolver.ResolveString((int)Operand);
+            return (Method as ICustomMethod).TokenResolver.ResolveString((int)Operand);
         }
 
         internal Signature ResolveSignatureToken(int token)
@@ -266,7 +266,7 @@ namespace CilTools.BytecodeAnalysis
 
             try
             {
-                sig = (Method as CustomMethod).TokenResolver.ResolveSignature(token);
+                sig = (Method as ICustomMethod).TokenResolver.ResolveSignature(token);
             }
             catch (Exception ex)
             {
@@ -275,7 +275,7 @@ namespace CilTools.BytecodeAnalysis
                 return null;
             }
 
-            Signature res = new Signature(sig, (Method as CustomMethod).TokenResolver);
+            Signature res = new Signature(sig, (Method as ICustomMethod).TokenResolver);
             return res;
         }
 

@@ -18,13 +18,13 @@ namespace CilTools.Metadata.Tests
         public void Test_AssemblyReader_Method()
         {
             AssemblyReader reader = new AssemblyReader();
-            CustomMethod m = null;
+            MethodInfo m = null;
 
             using (reader)
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
                 Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
-                m = t.GetMember("PrintHelloWorld")[0] as CustomMethod;
+                m = t.GetMember("PrintHelloWorld")[0] as MethodInfo;
 
                 Assert.AreEqual("PrintHelloWorld", m.Name);
                 Assert.AreEqual(MemberTypes.Method, m.MemberType);
@@ -37,17 +37,17 @@ namespace CilTools.Metadata.Tests
         public void Test_Constructor()
         {
             AssemblyReader reader = new AssemblyReader();
-            CustomMethod m = null;
+            MethodBase m = null;
 
             using (reader)
             {
                 Assembly ass = reader.LoadFrom(typeof(TestType).Assembly.Location);
                 Type t = ass.GetType("CilTools.Tests.Common.TestType");
-                m = t.GetMember(".ctor", Utils.AllMembers())[0] as CustomMethod;
+                m = t.GetMember(".ctor", Utils.AllMembers())[0] as MethodBase;
 
                 Assert.AreEqual(".ctor", m.Name);
                 Assert.AreEqual(MemberTypes.Constructor, m.MemberType);
-                Assert.IsNull(m.ReturnType);
+                Assert.IsNull((m as ICustomMethod).ReturnType);
             }
         }
 

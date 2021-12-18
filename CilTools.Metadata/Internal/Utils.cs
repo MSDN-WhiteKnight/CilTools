@@ -22,6 +22,11 @@ namespace CilTools.Internal
             return string.Equals(left, right, StringComparison.InvariantCulture);
         }
 
+        public static bool IsConstructorName(string name) 
+        {
+            return Utils.StrEquals(name, ".ctor") || Utils.StrEquals(name, ".cctor");
+        }
+
         /// <summary>
         /// Checks two types for equality. Types are equal if they are in assemblies with the same name 
         /// and have equal full type names.
@@ -83,7 +88,7 @@ namespace CilTools.Internal
                     MemberReference mref = ass.MetadataReader.GetMemberReference((MemberReferenceHandle)eh);
 
                     if (mref.GetKind() == MemberReferenceKind.Method)
-                        constr = new MethodRef(mref, (MemberReferenceHandle)eh, ass);
+                        constr = MethodRef.CreateReference(mref, (MemberReferenceHandle)eh, ass);
                 }
 
                 ret[i] = new MetadataCustomAttribute(

@@ -169,7 +169,7 @@ namespace CilTools.BytecodeAnalysis
         {
             if (src == null) throw new ArgumentNullException("src","Source method cannot be null");
 
-            CustomMethod wrapper = CustomMethod.PrepareMethod(src);
+            ICustomMethod wrapper = CustomMethod.PrepareMethod(src);
             byte[] bytecode = wrapper.GetBytecode();
 
             if (bytecode == null) throw new CilParserException("Cannot read method bytecode: GetBytecode returned null");
@@ -177,7 +177,7 @@ namespace CilTools.BytecodeAnalysis
             if (bytecode.Length == 0) throw new CilParserException("Cannot read method bytecode: source array is empty");
 
             this.cilbytes = bytecode;
-            this.method = wrapper;
+            this.method = (MethodBase)wrapper;
             this.state = CilReaderState.Reading;
         }
 

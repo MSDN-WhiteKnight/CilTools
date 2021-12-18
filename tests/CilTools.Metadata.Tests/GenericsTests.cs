@@ -25,7 +25,7 @@ namespace CilTools.Metadata.Tests
             {
                 Assembly ass = reader.LoadFrom(typeof(IList<>).Assembly.Location);
                 Type t = ass.GetType(typename);
-                CustomMethod mi = t.GetMember("IndexOf")[0] as CustomMethod;
+                MethodBase mi = t.GetMember("IndexOf")[0] as MethodBase;
                 ParameterInfo[] pars = mi.GetParameters();
                 Type parameterType = pars[0].ParameterType;
                 Assert.IsTrue(parameterType.IsGenericParameter);
@@ -42,7 +42,7 @@ namespace CilTools.Metadata.Tests
             {
                 Assembly ass = reader.LoadFrom(typeof(IList<>).Assembly.Location);
                 Type t = ass.GetType(typename);
-                CustomMethod mi = t.GetMember("IndexOf")[0] as CustomMethod;
+                MethodBase mi = t.GetMember("IndexOf")[0] as MethodBase;
                 ParameterInfo[] pars = mi.GetParameters();
                 Type parameterType = pars[0].ParameterType;
                 Assert.IsTrue(parameterType.IsGenericParameter);

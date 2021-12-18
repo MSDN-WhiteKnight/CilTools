@@ -44,7 +44,7 @@ namespace CilTools.Metadata.Tests
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
                 Type t = ass.GetType(typename);
-                CustomMethod m = t.GetMember("DivideNumbers")[0] as CustomMethod;
+                ICustomMethod m = t.GetMember("DivideNumbers")[0] as ICustomMethod;
                 ExceptionBlock[] blocks=m.GetExceptionBlocks();
                 Assert.AreEqual(2, blocks.Length);
 
@@ -54,6 +54,21 @@ namespace CilTools.Metadata.Tests
                 Assert.AreEqual("DivideByZeroException", catchType.Name);
 
                 AssertThat.HasOnlyOneMatch(blocks, x => x.Flags == ExceptionHandlingClauseOptions.Finally);
+            }
+        }
+
+        [TestMethod]
+        public void Test_MethodDef_MemberType()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType(typename);
+                MemberInfo m = t.GetMember("PrintHelloWorld")[0];
+                Assert.IsTrue(m is MethodInfo);
+                Assert.AreEqual(MemberTypes.Method, m.MemberType);
             }
         }
     }

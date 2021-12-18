@@ -260,7 +260,7 @@ namespace CilTools.BytecodeAnalysis
 
                 try
                 {
-                    sig = (Method as CustomMethod).TokenResolver.ResolveSignature(token);
+                    sig = (Method as ICustomMethod).TokenResolver.ResolveSignature(token);
                 }
                 catch (Exception ex)
                 {
@@ -281,7 +281,7 @@ namespace CilTools.BytecodeAnalysis
 
                     try
                     {
-                        sg = new Signature(sig, (Method as CustomMethod).TokenResolver);
+                        sg = new Signature(sig, (Method as ICustomMethod).TokenResolver);
                     }
                     catch (Exception ex)
                     {

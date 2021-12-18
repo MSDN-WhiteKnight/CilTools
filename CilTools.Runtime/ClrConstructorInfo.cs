@@ -13,21 +13,15 @@ using CilTools.Runtime.Methods;
 namespace CilTools.Runtime
 {
     /// <summary>
-    /// Represents information about the method in an external CLR instance
+    /// Represents information about the constructor in an external CLR instance
     /// </summary>
-    public class ClrMethodInfo : MethodInfo, ICustomMethod
+    public class ClrConstructorInfo : ConstructorInfo, ICustomMethod
     {
         ClrMethodData md;
 
-        internal ClrMethodInfo(ClrMethod m, ClrTypeInfo owner)
+        internal ClrConstructorInfo(ClrMethod m, ClrTypeInfo owner)
         {
             this.md = new ClrMethodData(m, owner);
-        }
-
-        internal static MethodBase CreateMethod(ClrMethod m, ClrTypeInfo owner) 
-        {
-            if (m.IsConstructor || m.IsClassConstructor) return new ClrConstructorInfo(m, owner);
-            else return new ClrMethodInfo(m, owner);
         }
 
         /// <summary>
@@ -35,15 +29,10 @@ namespace CilTools.Runtime
         /// </summary>
         public ClrMethod InnerMethod { get { return this.md.InnerMethod; } }
 
-        /// <summary>
-        /// Gets the method's returned type
-        /// </summary>
-        public override Type ReturnType
+        /// <inheritdoc/>
+        public Type ReturnType
         {
-            get 
-            {
-                return UnknownType.Value;
-            }
+            get { return null; }
         }
 
         /// <inheritdoc/>
@@ -114,6 +103,12 @@ namespace CilTools.Runtime
         }
 
         /// <inheritdoc/>
+        public override object Invoke(BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)
+        {
+            throw new InvalidOperationException("Cannot invoke methods on type loaded into reflection-only context");
+        }
+
+        /// <inheritdoc/>
         public override RuntimeMethodHandle MethodHandle
         {
             get { throw new NotImplementedException(); }
@@ -142,13 +137,7 @@ namespace CilTools.Runtime
         {
             return false;
         }
-
-        /// <inheritdoc/>
-        public override MethodInfo GetBaseDefinition()
-        {
-            throw new NotImplementedException();
-        }
-
+        
         /// <inheritdoc/>
         public LocalVariable[] GetLocalVariables()
         {
@@ -170,7 +159,7 @@ namespace CilTools.Runtime
         /// <inheritdoc/>
         public override MemberTypes MemberType
         {
-            get { return MemberTypes.Method; }
+            get { return MemberTypes.Constructor; }
         }
 
         /// <inheritdoc/>
@@ -205,8 +194,5 @@ namespace CilTools.Runtime
         {
             get { return false; }
         }
-
-        /// <inheritdoc/>
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
     }
 }

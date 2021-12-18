@@ -12,7 +12,7 @@ namespace CilTools.Reflection
     /// Represents the parameters of the imported unmanaged method 
     /// </summary>
     /// <remarks>
-    /// <para>This type is used with the <see cref="CustomMethod.GetPInvokeParams"/> method.</para>
+    /// <para>This type is used with the <see cref="ICustomMethod.GetPInvokeParams"/> method.</para>
     /// <para>Imported unmanaged method is a method implemented as a Platform Invoke (P/Invoke) call. 
     /// The call to such method is marshalled into the call to corresponding native function by 
     /// Common Language Runtime. P/Invoke method is defined in .NET using <see cref="DllImportAttribute"/>. 

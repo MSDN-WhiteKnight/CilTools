@@ -300,7 +300,7 @@ namespace CilTools.Runtime
 
                 if (mb == null) 
                 {
-                    mb = new ClrMethodInfo(m, this);
+                    mb = ClrMethodInfo.CreateMethod(m, this);
                     this.assembly.SetMemberByToken((int)m.MetadataToken, mb);
                 }
 

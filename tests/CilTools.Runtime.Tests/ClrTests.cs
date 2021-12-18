@@ -215,11 +215,11 @@ namespace CilTools.Runtime.Tests
 
             //get constructor
             Type t = ass.GetType("MyDynamicType");
-            CustomMethod m = (CustomMethod)(t.GetMember(".ctor",Utils.AllMembers())[0]);
+            MethodBase m = (MethodBase)(t.GetMember(".ctor",Utils.AllMembers())[0]);
 
             Assert.AreEqual(".ctor", m.Name);
             Assert.AreEqual(MemberTypes.Constructor, m.MemberType);
-            Assert.IsNull(m.ReturnType);
+            Assert.IsNull((m as ICustomMethod).ReturnType);
         }
 
         [LongTest]

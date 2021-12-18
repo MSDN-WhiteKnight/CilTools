@@ -1,13 +1,11 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Reflection.Metadata;
-using System.Reflection.PortableExecutable;
 using System.Reflection.Metadata.Ecma335;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
@@ -16,60 +14,26 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class MethodRef : CustomMethod
+    class MethodRef : MethodInfo, ICustomMethod
     {
         MetadataAssembly assembly;
         MemberReferenceHandle mrefh;
         MemberReference mref;
         Signature sig;
-        CustomMethod impl;
+        MethodBase impl;
         Type decltype;
 
         internal MethodRef(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
         {
-            Debug.Assert(m.GetKind() == MemberReferenceKind.Method, "MemberReference passed to ExternalMethod ctor should be a method");
+            Debug.Assert(m.GetKind() == MemberReferenceKind.Method, "MemberReference passed to MethodRef ctor should be a method");
 
             this.assembly = owner;
             this.mref = m;
             this.mrefh = mh;
             
             //init declaring type
-            EntityHandle eh = mref.Parent;
-
-            if (!eh.IsNil && eh.Kind == HandleKind.TypeReference)
-            {
-                this.decltype = new TypeRef(
-                    assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh), (TypeReferenceHandle)eh, this.assembly
-                    );
-            }
-            else if (!eh.IsNil && eh.Kind == HandleKind.TypeSpecification)
-            {
-                //TypeSpec is either complex type (array etc.) or generic instantiation
-
-                TypeSpecification ts = assembly.MetadataReader.GetTypeSpecification(
-                    (TypeSpecificationHandle)eh
-                    );
-
-                TypeSpec encoded = TypeSpec.ReadFromArray(assembly.MetadataReader.GetBlobBytes(ts.Signature),
-                    this.assembly,
-                    this);
-
-                if (encoded != null) this.decltype = encoded.Type;
-                else this.decltype = UnknownType.Value;
-            }
-            else if (!eh.IsNil && eh.Kind == HandleKind.MethodDefinition)
-            {
-                MethodDefinition mdef = assembly.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                TypeDefinitionHandle tdefh = mdef.GetDeclaringType();
-
-                if (!tdefh.IsNil)
-                {
-                    this.decltype = this.assembly.GetTypeDefinition(tdefh);
-                }
-                else this.decltype = UnknownType.Value;
-            }
-            else this.decltype = UnknownType.Value;
-
+            this.decltype = GetRefDeclaringType(this.assembly, this, mref.Parent);
+            
             //read signature
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mref.Signature);
             GenericContext gctx = GenericContext.Create(this.decltype, this);
@@ -82,50 +46,92 @@ namespace CilTools.Metadata
             catch (NotSupportedException) { }
         }
 
-        void LoadImpl()
+        internal static MethodBase CreateReference(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
         {
-            //loads actual implementation method referenced by this instance
+            string name = owner.MetadataReader.GetString(m.Name);
 
-            if (this.impl != null) return;//already loaded
-            if(this.assembly.AssemblyReader == null) return;
+            if (Utils.IsConstructorName(name)) return new Constructors.ConstructorRef(m, mh, owner);
+            else return new MethodRef(m, mh, owner);
+        }
 
-            Type et = this.DeclaringType;
+        internal static Type GetRefDeclaringType(MetadataAssembly ass, MethodBase methodRef, EntityHandle eh) 
+        {
+            //get declaring type for method reference based on parent EntityHandle
 
-            if (et == null) return;
+            if (!eh.IsNil && eh.Kind == HandleKind.TypeReference)
+            {
+                return new TypeRef(
+                    ass.MetadataReader.GetTypeReference((TypeReferenceHandle)eh), (TypeReferenceHandle)eh, ass
+                    );
+            }
+            else if (!eh.IsNil && eh.Kind == HandleKind.TypeSpecification)
+            {
+                //TypeSpec is either complex type (array etc.) or generic instantiation
 
-            Type t = this.assembly.AssemblyReader.LoadType(et);
+                TypeSpecification ts = ass.MetadataReader.GetTypeSpecification(
+                    (TypeSpecificationHandle)eh
+                    );
 
-            if (t == null) return;
+                TypeSpec encoded = TypeSpec.ReadFromArray(ass.MetadataReader.GetBlobBytes(ts.Signature),
+                    ass, methodRef);
 
-            MemberInfo[] members = t.GetMember(this.Name,
-                BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static|BindingFlags.Instance
+                if (encoded != null) return encoded.Type;
+                else return UnknownType.Value;
+            }
+            else if (!eh.IsNil && eh.Kind == HandleKind.MethodDefinition)
+            {
+                MethodDefinition mdef = ass.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
+                TypeDefinitionHandle tdefh = mdef.GetDeclaringType();
+
+                if (!tdefh.IsNil) return ass.GetTypeDefinition(tdefh);
+                else return UnknownType.Value;
+            }
+            else return UnknownType.Value;
+        }
+
+        /// <summary>
+        /// Core logic that fetches method definition corresponding to specified method reference 
+        /// (shared between MethodRef amd ConstructorRef).
+        /// </summary>
+        internal static MethodBase ResolveMethodRef(MetadataAssembly ass, Type et, MethodBase methodRef, Signature sig) 
+        {
+            Type t = ass.AssemblyReader.LoadType(et);
+
+            if (t == null) return null;
+
+            MemberInfo[] members = t.GetMember(methodRef.Name,
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
                 );
 
             //if there's only one method, pick it
-            if(members.Length == 1 && members[0] is CustomMethod) 
+            if (members.Length == 1 && members[0] is MethodBase)
             {
-                this.impl = (CustomMethod)members[0];
-                return; 
+                return (MethodBase)members[0];
             }
 
             //if there are multiple methods with the same name, match by signature
-            ParameterInfo[] pars_match = this.GetParameters_Sig();
+            ParameterInfo[] pars_match;
             bool isstatic_match = false;
             int genargs_match = 0;
 
-            if (this.sig != null)
+            if (sig != null)
             {
-                isstatic_match = !this.sig.HasThis;
-                genargs_match = this.sig.GenericArgsCount;
+                pars_match = Utils.GetParametersFromSignature(sig, methodRef);
+                isstatic_match = !sig.HasThis;
+                genargs_match = sig.GenericArgsCount;
             }
-
+            else
+            {
+                pars_match = new ParameterInfo[0];
+            }
+            
             bool match;
 
             for (int i = 0; i < members.Length; i++)
             {
-                if (!(members[i] is CustomMethod)) continue;
+                if (!(members[i] is MethodBase)) continue;
 
-                CustomMethod m = (CustomMethod)members[i];
+                MethodBase m = (MethodBase)members[i];
                 ParameterInfo[] pars_i = m.GetParameters();
 
                 if (m.IsStatic != isstatic_match) continue;
@@ -149,23 +155,38 @@ namespace CilTools.Metadata
                     string s1 = "";
                     string s2 = "";
                     Type pt = pars_i[j].ParameterType;
-                    if (pt!=null) s1 = pt.Name;
+                    if (pt != null) s1 = pt.Name;
                     pt = pars_match[j].ParameterType;
-                    if (pt!=null) s2 = pt.Name;
+                    if (pt != null) s2 = pt.Name;
 
-                    if (!String.Equals(s1, s2, StringComparison.InvariantCulture))
+                    if (!Utils.StrEquals(s1, s2))
                     {
-                        match = false; 
+                        match = false;
                         break;
                     }
                 }
 
                 if (match)
                 {
-                    this.impl = m;
-                    return;
+                    return m;
                 }
             }//end for
+
+            return null;
+        }
+
+        void LoadImpl()
+        {
+            //loads actual implementation method referenced by this instance
+
+            if (this.impl != null) return;//already loaded
+            if (this.assembly.AssemblyReader == null) return;
+
+            Type et = this.DeclaringType;
+
+            if (et == null) return;
+
+            this.impl = ResolveMethodRef(this.assembly, et, this, this.sig);
         }
 
         /// <summary>
@@ -175,71 +196,69 @@ namespace CilTools.Metadata
         {
             get
             {
-                if (this.MemberType==MemberTypes.Constructor) return null;
-
                 if (this.sig == null) return UnknownType.Value;
                 else return this.sig.ReturnType.Type;
             }
         }
 
         /// <inheritdoc/>
-        public override ITokenResolver TokenResolver
+        public ITokenResolver TokenResolver
         {
             get 
             {
-                if (this.impl != null) return this.impl.TokenResolver;
+                if (this.impl != null) return ((ICustomMethod)this.impl).TokenResolver;
                 else return this.assembly; 
             }
         }
 
         /// <inheritdoc/>
-        public override byte[] GetBytecode()
+        public byte[] GetBytecode()
         {
             this.LoadImpl();
 
-            if (this.impl != null) return this.impl.GetBytecode();
+            if (this.impl != null) return ((ICustomMethod)this.impl).GetBytecode();
             else throw new CilParserException("Failed to load method implementation");
         }
 
         /// <inheritdoc/>
-        public override int MaxStackSize
+        public int MaxStackSize
         {
             get
             {
                 this.LoadImpl();
 
-                if (this.impl != null) return this.impl.MaxStackSize;
+                if (this.impl != null) return ((ICustomMethod)this.impl).MaxStackSize;
                 else return 0;
             }
         }
 
         /// <inheritdoc/>
-        public override bool MaxStackSizeSpecified
+        public bool MaxStackSizeSpecified
         {
             get
             {
                 this.LoadImpl();
 
-                if (this.impl != null) return this.impl.MaxStackSizeSpecified;
+                if (this.impl != null) return ((ICustomMethod)this.impl).MaxStackSizeSpecified;
                 else return false;
             }
         }
 
         /// <inheritdoc/>
-        public override byte[] GetLocalVarSignature()
+        public byte[] GetLocalVarSignature()
         {
             this.LoadImpl();
 
-            if (this.impl != null) return this.impl.GetLocalVarSignature();
+            if (this.impl != null) return ((ICustomMethod)this.impl).GetLocalVarSignature();
             else return new byte[] { };
         }
 
         /// <inheritdoc/>
-        public override ExceptionBlock[] GetExceptionBlocks()
+        public ExceptionBlock[] GetExceptionBlocks()
         {
             this.LoadImpl();
 
-            if (this.impl != null) return this.impl.GetExceptionBlocks();
+            if (this.impl != null) return ((ICustomMethod)this.impl).GetExceptionBlocks();
             else return new ExceptionBlock[] { };
         }
 
@@ -369,14 +388,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                if (Utils.StrEquals(this.Name, ".ctor") || Utils.StrEquals(this.Name, ".cctor"))
-                {
-                    return MemberTypes.Constructor;
-                }
-                else
-                {
-                    return MemberTypes.Method;
-                }
+                return MemberTypes.Method;
             }
         }
 
@@ -405,25 +417,25 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public override bool InitLocals
+        public bool InitLocals
         {
             get
             {
                 this.LoadImpl();
 
-                if (this.impl != null) return this.impl.InitLocals;
+                if (this.impl != null) return ((ICustomMethod)this.impl).InitLocals;
                 else return false;
             }
         }
 
         /// <inheritdoc/>
-        public override bool InitLocalsSpecified
+        public bool InitLocalsSpecified
         {
             get
             {
                 this.LoadImpl();
 
-                if (this.impl != null) return this.impl.InitLocalsSpecified;
+                if (this.impl != null) return ((ICustomMethod)this.impl).InitLocalsSpecified;
                 return false;
             }
         }
@@ -443,6 +455,8 @@ namespace CilTools.Metadata
             }
         }
 
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
+
         public override Type[] GetGenericArguments()
         {
             try
@@ -454,6 +468,27 @@ namespace CilTools.Metadata
             if (this.impl != null) return this.impl.GetGenericArguments();
             else return new Type[0];
         }
+
+        public Reflection.LocalVariable[] GetLocalVariables()
+        {
+            byte[] sig = this.GetLocalVarSignature();
+
+            return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
+        }
+
+        public MethodBase GetDefinition()
+        {
+            return null;
+        }
+
+        public PInvokeParams GetPInvokeParams()
+        {
+            return null;
+        }
+
+        public override MethodInfo GetBaseDefinition()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-

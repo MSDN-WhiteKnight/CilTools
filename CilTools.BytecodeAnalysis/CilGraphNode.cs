@@ -95,7 +95,7 @@ namespace CilTools.BytecodeAnalysis
         public ExceptionBlock[] GetExceptionBlocks()
         {
             List<ExceptionBlock> ret = new List<ExceptionBlock>(20);
-            CustomMethod m = (CustomMethod)this._Instruction.Method;
+            ICustomMethod m = (ICustomMethod)this._Instruction.Method;
             ExceptionBlock[] blocks = m.GetExceptionBlocks();
             int start = (int)this._Instruction.ByteOffset;
             int end = (int)(this._Instruction.ByteOffset + this.Instruction.TotalSize);

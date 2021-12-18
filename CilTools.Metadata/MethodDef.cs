@@ -14,7 +14,7 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class MethodDef : CustomMethod
+    class MethodDef : MethodInfo, ICustomMethod
     {        
         MetadataAssembly assembly;
         MethodDefinitionHandle mdefh;
@@ -67,6 +67,80 @@ namespace CilTools.Metadata
             this.sig = Signature.ReadFromArray(sigbytes, ctx);
         }
 
+        internal static MethodBase CreateDefinition(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner) 
+        {
+            string name = owner.MetadataReader.GetString(m.Name);
+
+            if (Utils.IsConstructorName(name)) return new Constructors.ConstructorDef(m, mh, owner);
+            else return new MethodDef(m, mh, owner);
+        }
+
+        internal static ParameterInfo[] GetMethodParameters(MetadataReader reader, 
+            MethodBase method, MethodDefinition mdef, Signature sig)
+        {
+            ParameterInfo[] pars = new ParameterInfo[sig.ParamsCount];
+            ParameterHandleCollection hcoll = mdef.GetParameters();
+
+            foreach (ParameterHandle h in hcoll)
+            {
+                Parameter par = reader.GetParameter(h);
+                int index = par.SequenceNumber - 1;
+                if (index >= pars.Length) continue;
+                if (index < 0) continue;
+
+                pars[index] = new ParameterSpec(sig.GetParamType(index), par, method, reader);
+            }
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (pars[i] == null) pars[i] = new ParameterSpec(sig.GetParamType(i), i, method);
+            }
+
+            return pars;
+        }
+
+        internal static ExceptionBlock[] GetMethodExceptionBlocks(MethodBodyBlock mb, MetadataAssembly ownerAssembly)
+        {
+            ExceptionBlock[] ret = new ExceptionBlock[mb.ExceptionRegions.Length];
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ExceptionHandlingClauseOptions opt = (ExceptionHandlingClauseOptions)0;
+                Type t = null;
+
+                switch (mb.ExceptionRegions[i].Kind)
+                {
+                    case ExceptionRegionKind.Catch:
+                        opt = ExceptionHandlingClauseOptions.Clause;
+                        EntityHandle eh = mb.ExceptionRegions[i].CatchType;
+
+                        if (eh.Kind == HandleKind.TypeDefinition)
+                        {
+                            t = ownerAssembly.GetTypeDefinition((TypeDefinitionHandle)eh);
+                        }
+                        else if (eh.Kind == HandleKind.TypeReference)
+                        {
+                            t = new TypeRef(
+                                ownerAssembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh),
+                                (TypeReferenceHandle)eh,
+                                ownerAssembly);
+                        }
+
+                        break;
+                    case ExceptionRegionKind.Finally: opt = ExceptionHandlingClauseOptions.Finally; break;
+                    case ExceptionRegionKind.Filter: opt = ExceptionHandlingClauseOptions.Filter; break;
+                    case ExceptionRegionKind.Fault: opt = ExceptionHandlingClauseOptions.Fault; break;
+                }
+
+                ret[i] = new ExceptionBlock(
+                    opt, mb.ExceptionRegions[i].TryOffset, mb.ExceptionRegions[i].TryLength, t,
+                    mb.ExceptionRegions[i].HandlerOffset, mb.ExceptionRegions[i].HandlerLength,
+                    mb.ExceptionRegions[i].FilterOffset);
+            }
+
+            return ret;
+        }
+
         void ThrowIfDisposed()
         {
             if (this.assembly.MetadataReader == null)
@@ -82,21 +156,19 @@ namespace CilTools.Metadata
         {
             get
             {
-                if (this.MemberType == MemberTypes.Constructor) return null;
-
                 if (this.sig == null) return UnknownType.Value;
                 else return this.sig.ReturnType.Type;
             }
         }
 
         /// <inheritdoc/>
-        public override ITokenResolver TokenResolver
+        public ITokenResolver TokenResolver
         {
             get { return this.assembly; }
         }
 
         /// <inheritdoc/>
-        public override byte[] GetBytecode()
+        public byte[] GetBytecode()
         {
             if (this.mb == null) return null;
 
@@ -106,7 +178,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public override int MaxStackSize
+        public int MaxStackSize
         {
             get
             {
@@ -116,7 +188,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public override bool MaxStackSizeSpecified
+        public bool MaxStackSizeSpecified
         {
             get
             {
@@ -125,7 +197,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public override byte[] GetLocalVarSignature()
+        public byte[] GetLocalVarSignature()
         {
             if (this.mb == null) return new byte[0];
             if (mb.LocalSignature.IsNil) return new byte[0];
@@ -135,48 +207,11 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public override ExceptionBlock[] GetExceptionBlocks()
+        public ExceptionBlock[] GetExceptionBlocks()
         {
             if (this.mb == null) return null;
 
-            ExceptionBlock[] ret = new ExceptionBlock[mb.ExceptionRegions.Length];
-
-            for (int i = 0; i < ret.Length; i++)
-            {
-                ExceptionHandlingClauseOptions opt=(ExceptionHandlingClauseOptions)0;
-                Type t=null;
-
-                switch (mb.ExceptionRegions[i].Kind)
-                {
-                    case ExceptionRegionKind.Catch: 
-                        opt = ExceptionHandlingClauseOptions.Clause;
-                        EntityHandle eh = mb.ExceptionRegions[i].CatchType;
-                        
-                        if (eh.Kind == HandleKind.TypeDefinition)
-                        {
-                            t = this.assembly.GetTypeDefinition((TypeDefinitionHandle)eh);
-                        }
-                        else if (eh.Kind == HandleKind.TypeReference)
-                        {
-                            t = new TypeRef(
-                                assembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh),
-                                (TypeReferenceHandle)eh,
-                                this.assembly);
-                        }
-
-                        break;
-                    case ExceptionRegionKind.Finally: opt = ExceptionHandlingClauseOptions.Finally; break;
-                    case ExceptionRegionKind.Filter: opt = ExceptionHandlingClauseOptions.Filter; break;
-                    case ExceptionRegionKind.Fault: opt = ExceptionHandlingClauseOptions.Fault; break;
-                }
-
-                ret[i] = new ExceptionBlock(
-                    opt, mb.ExceptionRegions[i].TryOffset, mb.ExceptionRegions[i].TryLength,t,
-                    mb.ExceptionRegions[i].HandlerOffset, mb.ExceptionRegions[i].HandlerLength,
-                    mb.ExceptionRegions[i].FilterOffset);
-            }
-
-            return ret;
+            return GetMethodExceptionBlocks(this.mb, this.assembly);
         }
 
         /// <inheritdoc/>
@@ -204,27 +239,7 @@ namespace CilTools.Metadata
         {
             if (this.sig == null) return new ParameterInfo[0];
 
-            ParameterInfo[] pars = new ParameterInfo[this.sig.ParamsCount];
-            ParameterHandleCollection hcoll = this.mdef.GetParameters();
-
-            foreach (ParameterHandle h in hcoll)
-            {
-                Parameter par = this.assembly.MetadataReader.GetParameter(h);
-                int index = par.SequenceNumber-1;
-                if (index >= pars.Length) continue;
-                if (index < 0) continue;
-
-                pars[index] = new ParameterSpec(
-                    this.sig.GetParamType(index), par, this,this.assembly.MetadataReader
-                    );
-            }
-
-            for (int i = 0; i < pars.Length; i++)
-            {
-                if (pars[i] == null) pars[i] = new ParameterSpec(this.sig.GetParamType(i), i, this);
-            }
-
-            return pars;
+            return GetMethodParameters(this.assembly.MetadataReader, this, this.mdef, this.sig);
         }
 
         /// <inheritdoc/>
@@ -277,16 +292,7 @@ namespace CilTools.Metadata
         {
             get 
             {
-                this.ThrowIfDisposed();
-
-                if (Utils.StrEquals(this.Name, ".ctor") || Utils.StrEquals(this.Name, ".cctor"))
-                {
-                    return MemberTypes.Constructor;
-                }
-                else
-                {
-                    return MemberTypes.Method;
-                }
+                return MemberTypes.Method;
             }
         }
 
@@ -315,7 +321,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public override bool InitLocals
+        public bool InitLocals
         {
             get 
             {
@@ -325,7 +331,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public override bool InitLocalsSpecified
+        public bool InitLocalsSpecified
         {
             get { return mb != null; }
         }
@@ -393,7 +399,7 @@ namespace CilTools.Metadata
             }
         }
 
-        public override PInvokeParams GetPInvokeParams()
+        public PInvokeParams GetPInvokeParams()
         {
             if (!this.mdef.Attributes.HasFlag(MethodAttributes.PinvokeImpl)) return null;
 
@@ -451,6 +457,24 @@ namespace CilTools.Metadata
 
             return ret;
         }
+
+        public Reflection.LocalVariable[] GetLocalVariables()
+        {
+            byte[] sig = this.GetLocalVarSignature();
+
+            return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
+        }
+
+        public MethodBase GetDefinition()
+        {
+            return null;
+        }
+
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
+
+        public override MethodInfo GetBaseDefinition()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
-

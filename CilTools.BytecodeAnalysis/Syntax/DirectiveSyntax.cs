@@ -116,7 +116,7 @@ namespace CilTools.Syntax
 
         internal static DirectiveSyntax FromMethodSignature(MethodBase m)
         {
-            CustomMethod cm = (CustomMethod)m;
+            ICustomMethod cm = (ICustomMethod)m;
             ParameterInfo[] pars = m.GetParameters();
             
             List<SyntaxNode> inner = new List<SyntaxNode>(100);
