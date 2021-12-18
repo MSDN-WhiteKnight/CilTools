@@ -260,14 +260,7 @@ namespace CilTools.Metadata.Constructors
         {
             get
             {
-                try
-                {
-                    this.LoadImpl();
-                }
-                catch (TypeLoadException) { }
-
-                if (this.impl != null) return this.impl.IsGenericMethod;
-                else return false;
+                return false; //ECMA-335 II.9.3: "constructors [...] shall not be generic"
             }
         }
     }

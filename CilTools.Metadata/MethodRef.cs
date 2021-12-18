@@ -440,13 +440,7 @@ namespace CilTools.Metadata
         {
             get
             {
-                try
-                {
-                    this.LoadImpl();
-                }
-                catch (TypeLoadException) { }
-
-                if (this.impl != null) return this.impl.IsGenericMethod;
+                if (this.sig != null) return this.sig.GenericArgsCount != 0;
                 else return false;
             }
         }
