@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace CilTools.Tests.Common
 {
@@ -190,6 +191,13 @@ namespace CilTools.Tests.Common
         public static void TestEscaping()
         {
             Console.WriteLine("\"English - Русский - Ελληνικά - Español\r\n\tąęėšų,.\"");
+        }
+
+        public static void TestMethodRefGenericParameter()
+        {
+            object loc = null;
+            Interlocked.CompareExchange<object>(ref loc, new object(), new object());
+            Console.WriteLine((loc == null).ToString());
         }
     }
 

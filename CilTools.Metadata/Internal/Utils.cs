@@ -52,6 +52,56 @@ namespace CilTools.Internal
             return StrEquals(left_assname, right_assname) && StrEquals(left.FullName, right.FullName);
         }
 
+        static bool TypeEquals_GenericParameters(Type left, Type right)
+        {
+            bool left_isMethod = (left.DeclaringMethod != null);
+            bool right_isMethod = (right.DeclaringMethod != null);
+
+            if (left_isMethod != right_isMethod) return false;
+
+            int left_pos = left.GenericParameterPosition;
+            int right_pos = right.GenericParameterPosition;
+            return left_pos == right_pos;
+        }
+
+        /// <summary>
+        /// Compares two types from signatures for equality
+        /// </summary>
+        public static bool TypeEqualsSignature(Type left, Type right)
+        {
+            if (ReferenceEquals(left, right)) return true;
+            if (left == null) return false;
+            if (right == null) return false;
+            
+            if (left.IsByRef)
+            {
+                if (!right.IsByRef) return false;
+                else return TypeEqualsSignature(left.GetElementType(), right.GetElementType());
+            }
+
+            if (right.IsByRef)
+            {
+                return false; //left is not byref at this point
+            }
+
+            //Generic parameters are special-cased so we won't hit Type.Name which might be not defined for them.
+            //This prevents issues like https://github.com/MSDN-WhiteKnight/CilTools/issues/92
+
+            if (left.IsGenericParameter)
+            {
+                if (!right.IsGenericParameter) return false;
+                else return TypeEquals_GenericParameters(left, right);
+            }
+
+            if (right.IsGenericParameter)
+            {
+                return false; //left is not generic parameter at this point
+            }
+
+            //other types are compared by metadata name
+            return StrEquals(left.Name, right.Name);
+        }
+
         /// <summary>
         /// Reads custom attributes from the specified collection and returns them as an array of 
         /// <see cref="ICustomAttribute"/> objects

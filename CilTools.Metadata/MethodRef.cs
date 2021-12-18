@@ -152,14 +152,10 @@ namespace CilTools.Metadata
 
                 for (int j = 0; j < pars_i.Length; j++)
                 {
-                    string s1 = "";
-                    string s2 = "";
-                    Type pt = pars_i[j].ParameterType;
-                    if (pt != null) s1 = pt.Name;
-                    pt = pars_match[j].ParameterType;
-                    if (pt != null) s2 = pt.Name;
-
-                    if (!Utils.StrEquals(s1, s2))
+                    Type pt1 = pars_i[j].ParameterType;
+                    Type pt2 = pars_match[j].ParameterType;
+                    
+                    if (!Utils.TypeEqualsSignature(pt1, pt2))
                     {
                         match = false;
                         break;

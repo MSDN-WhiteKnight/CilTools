@@ -66,6 +66,7 @@
     <Compile Include="CilGraphTests_Text.cs" />
     <Compile Include="GenericsTests.cs" />
     <Compile Include="MethodDefTests.cs" />
+    <Compile Include="MethodRefTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyDefTests.cs" />
     <Compile Include="ReflectionTests.cs" />
