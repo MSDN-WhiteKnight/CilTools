@@ -57,7 +57,7 @@ namespace CilTools.CommandLine
                 {
                     KeywordSyntax ks = (KeywordSyntax)node;
 
-                    if (ks.Kind == KeywordKind.Other) Console.ForegroundColor = ConsoleColor.Blue;
+                    if (ks.Kind == KeywordKind.Other) Console.ForegroundColor = ConsoleColor.Yellow;
                     else if (ks.Kind == KeywordKind.DirectiveName) Console.ForegroundColor = ConsoleColor.Magenta;
                 }
                 else if (node is IdentifierSyntax)
