@@ -25,4 +25,15 @@
     <ProjectReference Include="..\CilTools.Metadata\CilTools.Metadata.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\docs\images\IL.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="license.txt">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
 </Project>
