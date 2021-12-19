@@ -58,6 +58,26 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        public void Test_MethodRef()
+        {
+            MethodInfo mRef = GetMethodRef_Console_WriteLine() as MethodInfo;
+            Assert.AreEqual("WriteLine", mRef.Name);
+            Assert.AreEqual("System.Void", mRef.ReturnType.FullName);
+            Assert.AreEqual("System.Console", mRef.DeclaringType.FullName);
+            Assert.IsTrue(mRef.IsPublic);
+            Assert.IsTrue(mRef.IsStatic);
+            Assert.AreEqual(MemberTypes.Method, mRef.MemberType);
+            Assert.IsNull((mRef as ICustomMethod).GetDefinition());
+            Assert.IsNull((mRef as ICustomMethod).GetPInvokeParams());
+
+            ParameterInfo[] pars = mRef.GetParameters();
+            Assert.AreEqual(1, pars.Length);
+            Assert.AreEqual("System.String", pars[0].ParameterType.FullName);
+            Assert.IsFalse(pars[0].IsOptional);
+            Assert.IsFalse(pars[0].IsOut);
+        }
+
+        [TestMethod]
         public void Test_MethodRef_IsGenericMethod_Positive()
         {
             MethodBase mRef = GetMethodRef_Interlocked_CompareExchange();
@@ -107,6 +127,21 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual("location1", pars[0].Name);
             Assert.AreEqual("value", pars[1].Name);
             Assert.AreEqual("comparand", pars[2].Name);
+        }
+
+        [TestMethod]
+        public void Test_ConstructorRef()
+        {
+            MethodBase mRef = GetConstructorRef();
+            Assert.AreEqual(".ctor", mRef.Name);
+            string s = mRef.DeclaringType.FullName;
+            Assert.AreEqual("System.Collections.Generic.List`1", s);
+            Assert.IsTrue(mRef.IsPublic);
+            Assert.IsFalse(mRef.IsStatic);
+            Assert.AreEqual(MemberTypes.Constructor, mRef.MemberType);            
+
+            ParameterInfo[] pars = mRef.GetParameters();
+            Assert.AreEqual(0, pars.Length);
         }
 
         [TestMethod]
