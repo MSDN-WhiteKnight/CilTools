@@ -76,5 +76,25 @@ namespace CilTools.CommandLine.Tests
 
             CilGraphTestsCore.Assert_CilGraph_HelloWorld(s);
         }
+
+        [TestMethod]
+        public void Test_Disasm()
+        {
+            const string cmd = "disasm --output test.il CilTools.Tests.Common.dll CilTools.Tests.Common.SampleMethods PrintTenNumbers";
+            CommandResult cr = Execute(GetExePath(), cmd);
+            string s = cr.StandardOutputText;
+            Console.WriteLine(s);
+            Console.WriteLine(cr.StandardErrorText);
+            Assert.IsTrue(cr.Success);
+
+            AssertThat.IsMatch(s, new Text[] {
+                "*** CIL Tools command line ***", Text.Any, "Input file: CilTools.Tests.Common.dll" , Text.Any,
+                "Disassembling CIL...", Text.Any, "Output successfully written to test.il", Text.Any
+            });
+
+            string output = File.ReadAllText("test.il");
+            Console.WriteLine(output);
+            CilGraphTestsCore.Assert_CilGraph_Loop(output);
+        }
     }
 }
