@@ -72,6 +72,27 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        public void Test_MethodRef_GetGenericArguments()
+        {
+            MethodBase mRef = GetMethodRef_Interlocked_CompareExchange();
+            Type[] args = mRef.GetGenericArguments();
+            Assert.AreEqual(1, args.Length);
+            Assert.IsTrue(args[0].IsGenericParameter);
+            Assert.AreEqual(0, args[0].GenericParameterPosition);
+            Assert.AreEqual("T", args[0].Name);
+            Assert.AreEqual(mRef.Name, args[0].DeclaringMethod.Name);
+            Assert.IsNull(args[0].DeclaringType);
+        }
+
+        [TestMethod]
+        public void Test_MethodRef_GetGenericArguments_Empty()
+        {
+            MethodBase mRef = GetMethodRef_Console_WriteLine();
+            Type[] args = mRef.GetGenericArguments();
+            Assert.AreEqual(0, args.Length);
+        }
+
+        [TestMethod]
         [WorkItem(92)]
         public void Test_MethodRef_GenericParameterInSignature()
         {

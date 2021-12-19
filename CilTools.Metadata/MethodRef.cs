@@ -449,6 +449,11 @@ namespace CilTools.Metadata
 
         public override Type[] GetGenericArguments()
         {
+            if (this.sig != null && this.sig.GenericArgsCount == 0)
+            {
+                return Utils.EmptyTypeArray;
+            }
+
             try
             {
                 this.LoadImpl();
@@ -456,7 +461,7 @@ namespace CilTools.Metadata
             catch (TypeLoadException) { }
 
             if (this.impl != null) return this.impl.GetGenericArguments();
-            else return new Type[0];
+            else return Utils.EmptyTypeArray;
         }
 
         public Reflection.LocalVariable[] GetLocalVariables()

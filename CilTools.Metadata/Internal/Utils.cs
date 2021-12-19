@@ -14,6 +14,8 @@ namespace CilTools.Internal
 {
     internal static class Utils
     {
+        public static readonly Type[] EmptyTypeArray = new Type[0];
+
         /// <summary>
         /// Checks two string for equality independently of current culture
         /// </summary>
