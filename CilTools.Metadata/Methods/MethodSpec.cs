@@ -10,7 +10,7 @@ using System.Reflection.Metadata.Ecma335;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 
-namespace CilTools.Metadata
+namespace CilTools.Metadata.Methods
 {
     class MethodSpec : MethodInfo, ICustomMethod
     {

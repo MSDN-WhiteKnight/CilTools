@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using CilTools.Internal;
+using CilTools.Metadata.Methods;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata.Constructors

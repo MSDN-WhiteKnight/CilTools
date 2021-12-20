@@ -12,16 +12,13 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
 using CilTools.Reflection;
 
-namespace CilTools.Metadata
+namespace CilTools.Metadata.Methods
 {
-    class MethodDef : MethodInfo, ICustomMethod
-    {        
-        MetadataAssembly assembly;
+    class MethodDef : MdMethodInfoBase, ICustomMethod
+    {
         MethodDefinitionHandle mdefh;
         MethodDefinition mdef;
         MethodBodyBlock mb;
-        Signature sig;
-        Type decltype;
 
         internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
         {           
@@ -148,27 +145,15 @@ namespace CilTools.Metadata
                 throw new ObjectDisposedException("MetadataReader");
             }
         }
-
-        /// <summary>
-        /// Gets the method's returned type
-        /// </summary>
-        public override Type ReturnType
-        {
-            get
-            {
-                if (this.sig == null) return UnknownType.Value;
-                else return this.sig.ReturnType.Type;
-            }
-        }
-
+        
         /// <inheritdoc/>
-        public ITokenResolver TokenResolver
+        public override ITokenResolver TokenResolver
         {
             get { return this.assembly; }
         }
 
         /// <inheritdoc/>
-        public byte[] GetBytecode()
+        public override byte[] GetBytecode()
         {
             if (this.mb == null) return null;
 
@@ -178,7 +163,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public int MaxStackSize
+        public override int MaxStackSize
         {
             get
             {
@@ -188,7 +173,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public bool MaxStackSizeSpecified
+        public override bool MaxStackSizeSpecified
         {
             get
             {
@@ -197,7 +182,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public byte[] GetLocalVarSignature()
+        public override byte[] GetLocalVarSignature()
         {
             if (this.mb == null) return new byte[0];
             if (mb.LocalSignature.IsNil) return new byte[0];
@@ -207,7 +192,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public ExceptionBlock[] GetExceptionBlocks()
+        public override ExceptionBlock[] GetExceptionBlocks()
         {
             if (this.mb == null) return null;
 
@@ -241,29 +226,13 @@ namespace CilTools.Metadata
 
             return GetMethodParameters(this.assembly.MetadataReader, this, this.mdef, this.sig);
         }
-
-        /// <inheritdoc/>
-        public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters,
-            System.Globalization.CultureInfo culture)
-        {
-            throw new InvalidOperationException("Cannot invoke methods on type loaded into reflection-only context");
-        }
-
+        
         /// <inheritdoc/>
         public override RuntimeMethodHandle MethodHandle
         {
             get { throw new NotImplementedException(); }
         }
-
-        /// <inheritdoc/>
-        public override Type DeclaringType
-        {
-            get 
-            {
-                return this.decltype;
-            }
-        }
-
+        
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
@@ -286,16 +255,7 @@ namespace CilTools.Metadata
         {
             throw new NotImplementedException();
         }
-
-        /// <inheritdoc/>
-        public override MemberTypes MemberType
-        {
-            get 
-            {
-                return MemberTypes.Method;
-            }
-        }
-
+        
         /// <inheritdoc/>
         public override string Name
         {
@@ -303,12 +263,6 @@ namespace CilTools.Metadata
             {
                 return assembly.MetadataReader.GetString(mdef.Name);                
             }
-        }
-
-        /// <inheritdoc/>
-        public override Type ReflectedType
-        {
-            get { throw new NotImplementedException(); }
         }
 
         /// <inheritdoc/>
@@ -321,7 +275,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public bool InitLocals
+        public override bool InitLocals
         {
             get 
             {
@@ -331,7 +285,7 @@ namespace CilTools.Metadata
         }
 
         /// <inheritdoc/>
-        public bool InitLocalsSpecified
+        public override bool InitLocalsSpecified
         {
             get { return mb != null; }
         }
@@ -399,7 +353,7 @@ namespace CilTools.Metadata
             }
         }
 
-        public PInvokeParams GetPInvokeParams()
+        public override PInvokeParams GetPInvokeParams()
         {
             if (!this.mdef.Attributes.HasFlag(MethodAttributes.PinvokeImpl)) return null;
 
@@ -458,23 +412,11 @@ namespace CilTools.Metadata
             return ret;
         }
 
-        public Reflection.LocalVariable[] GetLocalVariables()
+        public override Reflection.LocalVariable[] GetLocalVariables()
         {
             byte[] sig = this.GetLocalVarSignature();
 
             return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
-        }
-
-        public MethodBase GetDefinition()
-        {
-            return null;
-        }
-
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
-
-        public override MethodInfo GetBaseDefinition()
-        {
-            throw new NotImplementedException();
         }
     }
 }

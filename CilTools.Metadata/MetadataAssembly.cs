@@ -12,6 +12,7 @@ using System.Globalization;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
+using CilTools.Metadata.Methods;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata

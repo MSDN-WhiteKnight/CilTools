@@ -8,6 +8,7 @@ using System.Reflection.Metadata;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
+using CilTools.Metadata.Methods;
 using CilTools.Reflection;
 
 namespace CilTools.Internal

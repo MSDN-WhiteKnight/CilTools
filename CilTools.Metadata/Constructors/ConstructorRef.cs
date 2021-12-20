@@ -10,6 +10,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
+using CilTools.Metadata.Methods;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata.Constructors
