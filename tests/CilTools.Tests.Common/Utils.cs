@@ -34,5 +34,17 @@ namespace CilTools.Tests.Common
 
             return sb.ToString();
         }
+
+        /// <summary>
+        /// Gets current project configuration name (Debug or Release)
+        /// </summary>
+        public static string GetConfig() 
+        {
+#if DEBUG 
+            return "Debug";
+#else
+            return "Release";
+#endif
+        }
     }
 }
