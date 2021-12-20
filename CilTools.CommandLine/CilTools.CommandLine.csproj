@@ -19,6 +19,7 @@
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Command line tool to view disassembled CIL code of methods in .NET assemblies</Description>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <PackageIcon>IL.png</PackageIcon>
   </PropertyGroup>
 
   <ItemGroup>
