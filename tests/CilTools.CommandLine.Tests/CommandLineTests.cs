@@ -41,7 +41,7 @@ namespace CilTools.CommandLine.Tests
             {
                 pr.StartInfo = psi;
                 pr.Start();
-                ret.StandardOutputText = pr.StandardOutput.ReadToEnd(); //получение вывода
+                ret.StandardOutputText = pr.StandardOutput.ReadToEnd();
                 bool exited = pr.WaitForExit(10000);
 
                 if (!exited) throw new TimeoutException("Process.WaitForExit timed out");
