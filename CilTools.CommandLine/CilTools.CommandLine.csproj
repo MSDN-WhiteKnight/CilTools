@@ -18,6 +18,7 @@
     <PackageTags>dotnet dotnet-core dotnet-tool command-line il cil msil disassembler inspection</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <Description>Command line tool to view disassembled CIL code of methods in .NET assemblies</Description>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
   </PropertyGroup>
 
   <ItemGroup>
