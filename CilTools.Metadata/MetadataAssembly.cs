@@ -278,14 +278,14 @@ namespace CilTools.Metadata
             if (eh.Kind == HandleKind.MethodDefinition)
             {
                 MethodDefinition mdef = reader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                m = MethodDef.CreateDefinition(mdef, (MethodDefinitionHandle)eh, this);
+                m = Utils.CreateMethodFromDefinition(mdef, (MethodDefinitionHandle)eh, this);
             }
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = reader.GetMemberReference((MemberReferenceHandle)eh);
 
                 if (mref.GetKind() == MemberReferenceKind.Method)
-                    m = MethodRef.CreateReference(mref, (MemberReferenceHandle)eh, this);
+                    m = Utils.CreateMethodFromReference(mref, (MemberReferenceHandle)eh, this);
                 else
                     m = null;
             }

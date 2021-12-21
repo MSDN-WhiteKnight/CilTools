@@ -29,7 +29,7 @@ namespace CilTools.Metadata.Methods
             this.mrefh = mh;
             
             //init declaring type
-            this.decltype = GetRefDeclaringType(this.assembly, this, mref.Parent);
+            this.decltype = Utils.GetRefDeclaringType(this.assembly, this, mref.Parent);
             
             //read signature
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mref.Signature);
@@ -42,132 +42,7 @@ namespace CilTools.Metadata.Methods
             }
             catch (NotSupportedException) { }
         }
-
-        internal static MethodBase CreateReference(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
-        {
-            string name = owner.MetadataReader.GetString(m.Name);
-
-            if (Utils.IsConstructorName(name)) return new Constructors.ConstructorRef(m, mh, owner);
-            else return new MethodRef(m, mh, owner);
-        }
-
-        internal static Type GetRefDeclaringType(MetadataAssembly ass, MethodBase methodRef, EntityHandle eh) 
-        {
-            //get declaring type for method reference based on parent EntityHandle
-
-            if (!eh.IsNil && eh.Kind == HandleKind.TypeReference)
-            {
-                return new TypeRef(
-                    ass.MetadataReader.GetTypeReference((TypeReferenceHandle)eh), (TypeReferenceHandle)eh, ass
-                    );
-            }
-            else if (!eh.IsNil && eh.Kind == HandleKind.TypeSpecification)
-            {
-                //TypeSpec is either complex type (array etc.) or generic instantiation
-
-                TypeSpecification ts = ass.MetadataReader.GetTypeSpecification(
-                    (TypeSpecificationHandle)eh
-                    );
-
-                TypeSpec encoded = TypeSpec.ReadFromArray(ass.MetadataReader.GetBlobBytes(ts.Signature),
-                    ass, methodRef);
-
-                if (encoded != null) return encoded.Type;
-                else return UnknownType.Value;
-            }
-            else if (!eh.IsNil && eh.Kind == HandleKind.MethodDefinition)
-            {
-                MethodDefinition mdef = ass.MetadataReader.GetMethodDefinition((MethodDefinitionHandle)eh);
-                TypeDefinitionHandle tdefh = mdef.GetDeclaringType();
-
-                if (!tdefh.IsNil) return ass.GetTypeDefinition(tdefh);
-                else return UnknownType.Value;
-            }
-            else return UnknownType.Value;
-        }
-
-        /// <summary>
-        /// Core logic that fetches method definition corresponding to specified method reference 
-        /// (shared between MethodRef amd ConstructorRef).
-        /// </summary>
-        internal static MethodBase ResolveMethodRef(MetadataAssembly ass, Type et, MethodBase methodRef, Signature sig) 
-        {
-            Type t = ass.AssemblyReader.LoadType(et);
-
-            if (t == null) return null;
-
-            MemberInfo[] members = t.GetMember(methodRef.Name,
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
-                );
-
-            //if there's only one method, pick it
-            if (members.Length == 1 && members[0] is MethodBase)
-            {
-                return (MethodBase)members[0];
-            }
-
-            //if there are multiple methods with the same name, match by signature
-            ParameterInfo[] pars_match;
-            bool isstatic_match = false;
-            int genargs_match = 0;
-
-            if (sig != null)
-            {
-                pars_match = Utils.GetParametersFromSignature(sig, methodRef);
-                isstatic_match = !sig.HasThis;
-                genargs_match = sig.GenericArgsCount;
-            }
-            else
-            {
-                pars_match = new ParameterInfo[0];
-            }
-            
-            bool match;
-
-            for (int i = 0; i < members.Length; i++)
-            {
-                if (!(members[i] is MethodBase)) continue;
-
-                MethodBase m = (MethodBase)members[i];
-                ParameterInfo[] pars_i = m.GetParameters();
-
-                if (m.IsStatic != isstatic_match) continue;
-
-                if (pars_i.Length != pars_match.Length) continue;
-
-                //compare generic args count
-                Type[] ga = m.GetGenericArguments();
-                int genargs = 0;
-
-                if (ga != null) genargs = ga.Length;
-                else genargs = 0;
-
-                if (genargs != genargs_match) continue;
-
-                //compare parameter types
-                match = true;
-
-                for (int j = 0; j < pars_i.Length; j++)
-                {
-                    Type pt1 = pars_i[j].ParameterType;
-                    Type pt2 = pars_match[j].ParameterType;
-                    
-                    if (!Utils.TypeEqualsSignature(pt1, pt2))
-                    {
-                        match = false;
-                        break;
-                    }
-                }
-
-                if (match)
-                {
-                    return m;
-                }
-            }//end for
-
-            return null;
-        }
-
+        
         void LoadImpl()
         {
             //loads actual implementation method referenced by this instance
@@ -179,7 +54,7 @@ namespace CilTools.Metadata.Methods
 
             if (et == null) return;
 
-            this.impl = ResolveMethodRef(this.assembly, et, this, this.sig);
+            this.impl = Utils.ResolveMethodRef(this.assembly, et, this, this.sig);
         }                
 
         /// <inheritdoc/>

@@ -8,7 +8,6 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using CilTools.Internal;
-using CilTools.Metadata.Methods;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata.Constructors
@@ -118,7 +117,7 @@ namespace CilTools.Metadata.Constructors
         {
             if (this.mb == null) return null;
 
-            return MethodDef.GetMethodExceptionBlocks(this.mb, this.assembly);
+            return Utils.GetMethodExceptionBlocks(this.mb, this.assembly);
         }
 
         /// <inheritdoc/>
@@ -146,7 +145,7 @@ namespace CilTools.Metadata.Constructors
         {
             if (this.sig == null) return new ParameterInfo[0];
 
-            return MethodDef.GetMethodParameters(this.assembly.MetadataReader, this, this.mdef, this.sig);
+            return Utils.GetMethodParameters(this.assembly.MetadataReader, this, this.mdef, this.sig);
         }
         
         /// <inheritdoc/>

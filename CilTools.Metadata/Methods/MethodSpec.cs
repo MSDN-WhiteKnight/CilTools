@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using CilTools.BytecodeAnalysis;
+using CilTools.Internal;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata.Methods
@@ -47,7 +48,7 @@ namespace CilTools.Metadata.Methods
             else if (eh.Kind == HandleKind.MemberReference)
             {
                 MemberReference mref = owner.MetadataReader.GetMemberReference((MemberReferenceHandle)eh);
-                this.definition = MethodRef.CreateReference(mref, (MemberReferenceHandle)eh, owner);
+                this.definition = Utils.CreateMethodFromReference(mref, (MemberReferenceHandle)eh, owner);
             }
 
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mspec.Signature);

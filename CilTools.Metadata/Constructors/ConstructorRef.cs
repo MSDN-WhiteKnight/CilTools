@@ -10,7 +10,6 @@ using System.Reflection.Metadata.Ecma335;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
-using CilTools.Metadata.Methods;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata.Constructors
@@ -31,7 +30,7 @@ namespace CilTools.Metadata.Constructors
             this.mrefh = mh;
 
             //init declaring type
-            this.decltype = MethodRef.GetRefDeclaringType(this.assembly, this, mref.Parent);
+            this.decltype = Utils.GetRefDeclaringType(this.assembly, this, mref.Parent);
             
             //read signature
             try
@@ -52,7 +51,7 @@ namespace CilTools.Metadata.Constructors
 
             if (et == null) return;
 
-            this.impl = MethodRef.ResolveMethodRef(this.assembly, et, this, this.sig);
+            this.impl = Utils.ResolveMethodRef(this.assembly, et, this, this.sig);
         }
         
         /// <inheritdoc/>

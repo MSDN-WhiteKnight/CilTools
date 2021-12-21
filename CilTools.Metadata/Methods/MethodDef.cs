@@ -63,81 +63,7 @@ namespace CilTools.Metadata.Methods
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mdef.Signature);
             this.sig = Signature.ReadFromArray(sigbytes, ctx);
         }
-
-        internal static MethodBase CreateDefinition(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner) 
-        {
-            string name = owner.MetadataReader.GetString(m.Name);
-
-            if (Utils.IsConstructorName(name)) return new Constructors.ConstructorDef(m, mh, owner);
-            else return new MethodDef(m, mh, owner);
-        }
-
-        internal static ParameterInfo[] GetMethodParameters(MetadataReader reader, 
-            MethodBase method, MethodDefinition mdef, Signature sig)
-        {
-            ParameterInfo[] pars = new ParameterInfo[sig.ParamsCount];
-            ParameterHandleCollection hcoll = mdef.GetParameters();
-
-            foreach (ParameterHandle h in hcoll)
-            {
-                Parameter par = reader.GetParameter(h);
-                int index = par.SequenceNumber - 1;
-                if (index >= pars.Length) continue;
-                if (index < 0) continue;
-
-                pars[index] = new ParameterSpec(sig.GetParamType(index), par, method, reader);
-            }
-
-            for (int i = 0; i < pars.Length; i++)
-            {
-                if (pars[i] == null) pars[i] = new ParameterSpec(sig.GetParamType(i), i, method);
-            }
-
-            return pars;
-        }
-
-        internal static ExceptionBlock[] GetMethodExceptionBlocks(MethodBodyBlock mb, MetadataAssembly ownerAssembly)
-        {
-            ExceptionBlock[] ret = new ExceptionBlock[mb.ExceptionRegions.Length];
-
-            for (int i = 0; i < ret.Length; i++)
-            {
-                ExceptionHandlingClauseOptions opt = (ExceptionHandlingClauseOptions)0;
-                Type t = null;
-
-                switch (mb.ExceptionRegions[i].Kind)
-                {
-                    case ExceptionRegionKind.Catch:
-                        opt = ExceptionHandlingClauseOptions.Clause;
-                        EntityHandle eh = mb.ExceptionRegions[i].CatchType;
-
-                        if (eh.Kind == HandleKind.TypeDefinition)
-                        {
-                            t = ownerAssembly.GetTypeDefinition((TypeDefinitionHandle)eh);
-                        }
-                        else if (eh.Kind == HandleKind.TypeReference)
-                        {
-                            t = new TypeRef(
-                                ownerAssembly.MetadataReader.GetTypeReference((TypeReferenceHandle)eh),
-                                (TypeReferenceHandle)eh,
-                                ownerAssembly);
-                        }
-
-                        break;
-                    case ExceptionRegionKind.Finally: opt = ExceptionHandlingClauseOptions.Finally; break;
-                    case ExceptionRegionKind.Filter: opt = ExceptionHandlingClauseOptions.Filter; break;
-                    case ExceptionRegionKind.Fault: opt = ExceptionHandlingClauseOptions.Fault; break;
-                }
-
-                ret[i] = new ExceptionBlock(
-                    opt, mb.ExceptionRegions[i].TryOffset, mb.ExceptionRegions[i].TryLength, t,
-                    mb.ExceptionRegions[i].HandlerOffset, mb.ExceptionRegions[i].HandlerLength,
-                    mb.ExceptionRegions[i].FilterOffset);
-            }
-
-            return ret;
-        }
-
+        
         void ThrowIfDisposed()
         {
             if (this.assembly.MetadataReader == null)
@@ -196,7 +122,7 @@ namespace CilTools.Metadata.Methods
         {
             if (this.mb == null) return null;
 
-            return GetMethodExceptionBlocks(this.mb, this.assembly);
+            return Utils.GetMethodExceptionBlocks(this.mb, this.assembly);
         }
 
         /// <inheritdoc/>
@@ -224,7 +150,7 @@ namespace CilTools.Metadata.Methods
         {
             if (this.sig == null) return new ParameterInfo[0];
 
-            return GetMethodParameters(this.assembly.MetadataReader, this, this.mdef, this.sig);
+            return Utils.GetMethodParameters(this.assembly.MetadataReader, this, this.mdef, this.sig);
         }
         
         /// <inheritdoc/>
