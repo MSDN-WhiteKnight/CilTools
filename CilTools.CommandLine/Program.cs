@@ -118,12 +118,24 @@ namespace CilTools.CommandLine
             {
                 ass = reader.LoadFrom(asspath);
                 Type t = ass.GetType(type);
+                
+                if(t==null)
+                {
+                    Console.WriteLine("Error: Type {0} not found in assembly {1}",type, asspath);
+                    return 1;
+                }
 
                 MemberInfo[] methods = t.GetMembers(
                     BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
                     );
 
                 MethodBase[] selectedMethods = methods.OfType<MethodBase>().Where((x) => { return x.Name == method; }).ToArray();
+                
+                if(selectedMethods.Length==0)
+                {
+                    Console.WriteLine("Error: Type {0} does not declare methods with the specified name",type);
+                    return 1;
+                }
 
                 for (int i = 0; i < selectedMethods.Length; i++)
                 {
