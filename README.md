@@ -11,6 +11,7 @@ CIL tools is a set of software to work with Common Intermediate Language in .NET
 - *CilTools.BytecodeAnalysis* - programmatically inspect bytecode of methods
 - *CilTools.Runtime* - load bytecode of methods in another process
 - *CilTools.Metadata* - inspect assembly via reflection without loading it into the current process
+- *CilTools.CommandLine* - cross-platform command line tool to display CIL code of methods
 - *CilView* - windows application to display CIL code of methods in the given assembly file or process
 
 ## CilTools.BytecodeAnalysis (previously CilBytecodeParser)
@@ -100,6 +101,20 @@ CilTools.Runtime loads CIL bytecode of methods in external process's CLR instanc
 
 The library that supports inspecting the contents of .NET assembly via reflection without loading it into the current process. This enables inspecting assemblies for another target framework (such as .NET Standard assemblies when your application is on .NET Framework) or when some dependencies could not be resolved. This also means assemblies can be unloaded from memory when they are no longer needed.
 
+## CilTools.CommandLine
+
+**Requirements:** .NET Core 3.1+
+
+[![Nuget](https://img.shields.io/nuget/v/CilTools.CommandLine)](https://www.nuget.org/packages/CilTools.CommandLine/)
+
+Cross-platform command line tool to view disassembled CIL code of methods in .NET assemblies. The application runs on any operating system supported by .NET Core. CilTools.CommandLine could print disassembled CIL into the console (standard output) or .il file. Syntax highlighting is supported for console output as long as the target console implementation supports setting console colors. 
+
+Install as global .NET tool:
+
+    dotnet tool install --global CilTools.CommandLine
+    
+For more information see [readme file](./CilTools.CommandLine/).
+
 ## CilView
 
 **Requirements:** .NET Framework 4.5+
@@ -112,4 +127,4 @@ A windows application to display CIL code of methods in the given assembly file 
 
 ---
 
-Copyright (c) 2020,  MSDN.WhiteKnight
+Copyright (c) 2021,  MSDN.WhiteKnight
