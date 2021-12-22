@@ -249,5 +249,76 @@ namespace CilTools.Metadata.Tests
                     "}", Text.Any});
             }
         }
+        
+        [TestMethod]
+        public void Test_GetMethods_All()
+        {
+            AssemblyReader reader = new AssemblyReader();
+            
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                MethodInfo[] members = t.GetMethods(Utils.AllMembers());
+                Assert.IsTrue(members.Length>=4);
+
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PublicStaticMethod");
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PublicInstanceMethod");
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PrivateStaticMethod");
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PrivateInstanceMethod");
+            }
+        }
+        
+        [TestMethod]
+        public void Test_GetMethods_Public()
+        {
+            AssemblyReader reader = new AssemblyReader();
+            
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                MethodInfo[] members = t.GetMethods();
+                Assert.IsTrue(members.Length>=2);
+
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PublicStaticMethod");
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PublicInstanceMethod");
+                AssertThat.HasNoMatches(members,(x) => x.Name == "PrivateStaticMethod");
+                AssertThat.HasNoMatches(members,(x) => x.Name == "PrivateInstanceMethod");
+            }
+        }
+        
+        [TestMethod]
+        public void Test_GetMethods_Static()
+        {
+            AssemblyReader reader = new AssemblyReader();
+            
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                MethodInfo[] members = t.GetMethods(BindingFlags.Static|BindingFlags.Public|BindingFlags.NonPublic);
+                Assert.IsTrue(members.Length>=2);
+
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PublicStaticMethod");
+                AssertThat.HasNoMatches(members,(x) => x.Name == "PublicInstanceMethod");
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PrivateStaticMethod");
+                AssertThat.HasNoMatches(members,(x) => x.Name == "PrivateInstanceMethod");
+            }
+        }
+        
+        [TestMethod]
+        public void Test_GetConstructors()
+        {
+            AssemblyReader reader = new AssemblyReader();
+            
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                ConstructorInfo[] members = t.GetConstructors(Utils.AllMembers());
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == ".ctor");
+            }
+        }
     }
 }
