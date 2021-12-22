@@ -168,7 +168,16 @@ namespace CilTools.Metadata
 
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            List<ConstructorInfo> members = new List<ConstructorInfo>();
+            MethodBase m;
+
+            foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
+            {
+                m = this.assembly.GetMethodDefinition(mdefh);
+                if (m is ConstructorInfo && IsMemberMatching(m, bindingAttr)) members.Add((ConstructorInfo)m);
+            }
+            
+            return members.ToArray();
         }
 
         public override Type GetElementType()
@@ -301,7 +310,16 @@ namespace CilTools.Metadata
 
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            List<MethodInfo> members = new List<MethodInfo>();
+            MethodBase m;
+
+            foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
+            {
+                m = this.assembly.GetMethodDefinition(mdefh);
+                if (m is MethodInfo && IsMemberMatching(m, bindingAttr)) members.Add((MethodInfo)m);
+            }
+            
+            return members.ToArray();
         }
 
         public override Type GetNestedType(string name, BindingFlags bindingAttr)
