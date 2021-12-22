@@ -305,7 +305,38 @@ namespace CilTools.Metadata
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,
             CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
-            throw new NotImplementedException();
+            if (name == null) throw new ArgumentNullException("name");
+
+            MethodInfo[] members = this.GetMethods(bindingAttr);
+            List<MethodInfo> matching = new List<MethodInfo>();
+
+            for (int i = 0; i < members.Length; i++)
+            {
+                MethodInfo m = members[i];
+
+                if (callConvention != CallingConventions.Any && m.CallingConvention != callConvention) continue;
+                if (!Utils.StrEquals(m.Name, name)) continue;
+
+                if (types != null && Utils.ParamsMatchSignature(m.GetParameters(), types))
+                {
+                    return m; //exact match by name and signature
+                }
+                else if (types == null) 
+                {
+                    matching.Add(m); //adding to candidates for name match
+                }
+            }
+
+            if (matching.Count == 1)
+            {
+                //if we found exactly one with the specified name, we could return it
+                return matching[0];
+            }
+            else if (matching.Count == 0)
+            {
+                return null; //not found anything
+            }
+            else throw new AmbiguousMatchException("More than one method with the specified name exist");
         }
 
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)

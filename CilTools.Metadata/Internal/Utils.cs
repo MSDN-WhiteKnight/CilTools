@@ -106,6 +106,20 @@ namespace CilTools.Internal
             return StrEquals(left.Name, right.Name);
         }
 
+        public static bool ParamsMatchSignature(ParameterInfo[] pars, Type[] sig) 
+        {
+            if (pars.Length != sig.Length) return false;
+
+            for (int i = 0; i < pars.Length; i++) 
+            {
+                Type pt = pars[i].ParameterType;
+
+                if (!TypeEqualsSignature(pt, sig[i])) return false;
+            }
+
+            return true;
+        }
+
         /// <summary>
         /// Reads custom attributes from the specified collection and returns them as an array of 
         /// <see cref="ICustomAttribute"/> objects

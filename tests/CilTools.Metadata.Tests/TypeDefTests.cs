@@ -260,12 +260,14 @@ namespace CilTools.Metadata.Tests
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
                 Type t = ass.GetType(SampleTypeName);
                 MethodInfo[] members = t.GetMethods(Utils.AllMembers());
-                Assert.IsTrue(members.Length>=4);
+                Assert.IsTrue(members.Length == 6);
 
                 AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PublicStaticMethod");
                 AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PublicInstanceMethod");
                 AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PrivateStaticMethod");
                 AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PrivateInstanceMethod");
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "get_PublicProperty");
+                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "set_PublicProperty");
             }
         }
         
@@ -317,7 +319,97 @@ namespace CilTools.Metadata.Tests
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
                 Type t = ass.GetType(SampleTypeName);
                 ConstructorInfo[] members = t.GetConstructors(Utils.AllMembers());
-                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == ".ctor");
+                Assert.AreEqual(1, members.Length);
+                Assert.AreEqual(".ctor", members[0].Name);
+                Assert.IsFalse(members[0].IsStatic);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetMethod_Public()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                const string name = "PublicStaticMethod";
+                MethodInfo m = t.GetMethod(name);
+                Assert.IsNotNull(m);
+                Assert.AreEqual(name, m.Name);
+
+                m = t.GetMethod(name, new Type[0]);
+                Assert.IsNotNull(m);
+                Assert.AreEqual(name, m.Name);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetMethod_Private()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                const string name = "PrivateStaticMethod";
+                MethodInfo m = t.GetMethod(name, BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static);
+                Assert.IsNotNull(m);
+                Assert.AreEqual(name, m.Name);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetMethod_NonExisting()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+
+                //wrong name
+                MethodInfo m = t.GetMethod("FooBarBuzz");
+                Assert.IsNull(m);
+
+                //wrong binding flags
+                m = t.GetMethod("PublicStaticMethod", BindingFlags.Instance | BindingFlags.NonPublic);
+                Assert.IsNull(m);
+
+                //wrong calling convention
+                m = t.GetMethod("PublicStaticMethod", Utils.AllMembers(), null, CallingConventions.VarArgs, new Type[0], null);
+                Assert.IsNull(m);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetMethod_Overload()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(Console).Assembly.Location);
+                Type t = ass.GetType("System.Console");
+                const string name = "Write";
+
+                //positive
+                MethodInfo m = t.GetMethod(name, new Type[] { typeof(string) });
+                Assert.IsNotNull(m);
+                Assert.AreEqual(name, m.Name);
+                ParameterInfo[] pars = m.GetParameters();
+                Assert.AreEqual(1, pars.Length);
+                Assert.AreEqual("System.String", pars[0].ParameterType.FullName);
+
+                //negative
+                m = t.GetMethod(name, new Type[] { typeof(byte), typeof(int) });
+                Assert.IsNull(m);
+
+                //ambiguous
+                AssertThat.Throws<AmbiguousMatchException>(() => t.GetMethod(name));
             }
         }
     }
