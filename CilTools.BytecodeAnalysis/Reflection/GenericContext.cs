@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Reflection
 {
@@ -66,6 +67,17 @@ namespace CilTools.Reflection
                     if (methodargs[0].IsGenericParameter)
                     {
                         declmethod = methodargs[0].DeclaringMethod;
+                    }
+                    else if (methodargs[0] is TypeSpec)
+                    {
+                        //if methodargs contain concrete types from MethodSpec, we could find out generic method 
+                        //definition from SignatureContext
+                        SignatureContext ctx = ((TypeSpec)methodargs[0]).Context;
+
+                        if (ctx != null)
+                        {
+                            declmethod = ctx.GenericDefinition;
+                        }
                     }
                 }
                 catch (NotImplementedException) { }

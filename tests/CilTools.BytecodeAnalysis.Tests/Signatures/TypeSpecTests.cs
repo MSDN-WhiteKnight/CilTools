@@ -18,7 +18,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
         {
             byte[] data = new byte[] { 0x08 };
             GenericContext gctx = GenericContext.Create((Type)null, null);
-            SignatureContext ctx = new SignatureContext(MockTokenResolver.Value, gctx);
+            SignatureContext ctx = SignatureContext.Create(MockTokenResolver.Value, gctx, null);
             TypeSpec ts = TypeSpec.ReadFromArray(data, ctx);
             Assert.AreEqual(ElementType.I4, ts.ElementType);
             Assert.IsFalse(ts.IsPinned);
@@ -37,7 +37,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
         {
             byte[] data = new byte[] { 0x13, 0x0 };
             GenericContext gctx = GenericContext.Create(typeof(IList<>), null);
-            SignatureContext ctx = new SignatureContext(MockTokenResolver.Value, gctx);
+            SignatureContext ctx = SignatureContext.Create(MockTokenResolver.Value, gctx, null);
             TypeSpec ts = TypeSpec.ReadFromArray(data, ctx);
             Assert.IsTrue(ts.IsGenericParameter);
             Assert.AreEqual("T", ts.Name);
@@ -51,7 +51,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
         {
             byte[] data = new byte[] { 0x1e, 0x0 };
             GenericContext gctx = GenericContext.Create(null, m);
-            SignatureContext ctx = new SignatureContext(MockTokenResolver.Value, gctx);
+            SignatureContext ctx = SignatureContext.Create(MockTokenResolver.Value, gctx, null);
             TypeSpec ts = TypeSpec.ReadFromArray(data, ctx);
             Assert.IsTrue(ts.IsGenericParameter);
             Assert.AreEqual("T", ts.Name);

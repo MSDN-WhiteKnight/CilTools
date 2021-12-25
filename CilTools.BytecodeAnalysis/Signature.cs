@@ -47,7 +47,7 @@ namespace CilTools.BytecodeAnalysis
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
                         
             ModuleWrapper mwr = new ModuleWrapper(module);
-            Initialize(data, new SignatureContext(mwr, GenericContext.Empty));
+            Initialize(data, SignatureContext.FromResolver(mwr));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace CilTools.BytecodeAnalysis
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
 
-            Initialize(data, new SignatureContext(resolver, GenericContext.Empty));
+            Initialize(data, SignatureContext.FromResolver(resolver));
         }
 
         /// <summary>
@@ -91,7 +91,7 @@ namespace CilTools.BytecodeAnalysis
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
 
             GenericContext gctx = GenericContext.FromMember(member);
-            SignatureContext ctx = new SignatureContext(resolver, gctx);
+            SignatureContext ctx = new SignatureContext(resolver, gctx, null);
             Initialize(data, ctx);
         }
 
@@ -114,7 +114,7 @@ namespace CilTools.BytecodeAnalysis
             if (src == null) throw new ArgumentNullException("src", "Source stream cannot be null");
 
             GenericContext gctx = GenericContext.FromMember(member);
-            SignatureContext ctx = new SignatureContext(resolver, gctx);
+            SignatureContext ctx = new SignatureContext(resolver, gctx, null);
             this.Initialize(src, ctx);
         }
 
@@ -229,7 +229,7 @@ namespace CilTools.BytecodeAnalysis
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
             MemoryStream ms = new MemoryStream(data);
             GenericContext gctx = GenericContext.FromMember(member);
-            SignatureContext ctx = new SignatureContext(resolver, gctx);
+            SignatureContext ctx = new SignatureContext(resolver, gctx, null);
 
             using (ms)
             {

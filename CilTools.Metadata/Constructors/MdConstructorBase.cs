@@ -21,7 +21,7 @@ namespace CilTools.Metadata.Constructors
         protected void InitSignature(BlobHandle hSig)
         {
             GenericContext gctx = GenericContext.Create(this.decltype, this);
-            SignatureContext ctx = new SignatureContext(this.assembly, gctx);
+            SignatureContext ctx = SignatureContext.Create(this.assembly, gctx, null);
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(hSig);
             this.sig = Signature.ReadFromArray(sigbytes, ctx);
         }

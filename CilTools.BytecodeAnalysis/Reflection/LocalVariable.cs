@@ -87,7 +87,7 @@ namespace CilTools.Reflection
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) return new LocalVariable[0];
 
-            return ReadSignatureImpl(data, new SignatureContext(resolver,GenericContext.Empty));
+            return ReadSignatureImpl(data, SignatureContext.FromResolver(resolver));
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace CilTools.Reflection
             if (data.Length == 0) return new LocalVariable[0];
 
             GenericContext gctx = GenericContext.FromMember(member);
-            SignatureContext ctx = new SignatureContext(resolver, gctx);
+            SignatureContext ctx = new SignatureContext(resolver, gctx, null);
             return ReadSignatureImpl(data, ctx);
         }
 
@@ -125,7 +125,7 @@ namespace CilTools.Reflection
             if (data.Length == 0) return new LocalVariable[0];
 
             ModuleWrapper mwr = new ModuleWrapper(module);
-            return ReadSignatureImpl(data, new SignatureContext(mwr,GenericContext.Empty));
+            return ReadSignatureImpl(data, SignatureContext.FromResolver(mwr));
         }
 
         /// <summary>

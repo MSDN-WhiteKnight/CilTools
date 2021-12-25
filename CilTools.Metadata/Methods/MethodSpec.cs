@@ -52,7 +52,9 @@ namespace CilTools.Metadata.Methods
             }
 
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mspec.Signature);
-            this.sig = new Signature(sigbytes, this.assembly,UnknownMethod.Value);
+            GenericContext gctx = GenericContext.Create(null, UnknownMethod.Value);
+            SignatureContext ctx = SignatureContext.Create(this.assembly, gctx, this.definition);
+            this.sig = Signature.ReadFromArray(sigbytes, ctx);
         }
 
         /// <summary>

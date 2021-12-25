@@ -86,7 +86,7 @@ namespace CilTools.BytecodeAnalysis
             using (ms)
             {
                 GenericContext gctx = GenericContext.FromMember(member);
-                SignatureContext ctx = new SignatureContext(resolver, gctx);
+                SignatureContext ctx = new SignatureContext(resolver, gctx, null);
                 return TypeSpec.ReadFromStream(ms, ctx);
             }
         }
@@ -119,7 +119,7 @@ namespace CilTools.BytecodeAnalysis
 
         internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver)
         {
-            return TypeSpec.ReadFromStream(source, new SignatureContext(resolver, null));
+            return TypeSpec.ReadFromStream(source, SignatureContext.FromResolver(resolver));
         }
 
         internal static TypeSpec ReadFromStream(

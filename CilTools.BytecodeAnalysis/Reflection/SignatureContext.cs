@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Text;
 
@@ -13,28 +14,20 @@ namespace CilTools.Reflection
     /// </summary>
     /// <remarks>
     /// Some ECMA-335 signature elements, such as class references or generic parameters, require additional 
-    /// data to be mapped into the concrete types. Signature context holds such data: a metadata token resolver 
-    /// and a generic context.
+    /// data to be mapped into the concrete types. Signature context holds such data, for example, a metadata token 
+    /// resolver or a generic context.
     /// </remarks>
     public class SignatureContext
     {
         ITokenResolver resolver;
         GenericContext gctx;
+        MethodBase gdef;
 
         static SignatureContext s_empty;
         
-        /// <summary>
-        /// Creates a new signature context instance
-        /// </summary>
-        /// <param name="tokenResolver">Metadata tokens resolver</param>
-        /// <param name="genericContext">Generic context</param>
-        /// <exception cref="ArgumentNullException">Token resolver is null</exception>
-        public SignatureContext(ITokenResolver tokenResolver, GenericContext genericContext)
+        internal SignatureContext(ITokenResolver tokenResolver, GenericContext genericContext, MethodBase genericDefinition)
         {
-            if (tokenResolver == null)
-            {
-                throw new ArgumentNullException("tokenResolver");
-            }
+            Debug.Assert(tokenResolver != null);
 
             if (genericContext == null)
             {
@@ -43,6 +36,7 @@ namespace CilTools.Reflection
 
             this.resolver = tokenResolver;
             this.gctx = genericContext;
+            this.gdef = genericDefinition;
         }
 
         internal static SignatureContext Empty
@@ -52,7 +46,7 @@ namespace CilTools.Reflection
                 // Empty signature context should only be used when Signature is sythesized from reflection objects.
                 // Parsed signatures should use real context with working resolver.
 
-                if (s_empty == null) s_empty = new SignatureContext(new DummyTokenResolver(), GenericContext.Empty);
+                if (s_empty == null) s_empty = FromResolver(new DummyTokenResolver());
 
                 return s_empty;
             }
@@ -72,6 +66,37 @@ namespace CilTools.Reflection
         public GenericContext GenericContext
         {
             get { return this.gctx; }
+        }
+
+        
+        public MethodBase GenericDefinition
+        {
+            get { return this.gdef; }
+        }
+
+        /// <summary>
+        /// Creates a new signature context instance
+        /// </summary>
+        /// <param name="tokenResolver">Metadata tokens resolver</param>
+        /// <param name="genericContext">Generic context</param>
+        /// <param name="genericDefinition">
+        /// Generic method definition, if the signature is for a generic method instantiation, or null otherwise
+        /// </param>
+        /// <exception cref="ArgumentNullException">Token resolver is null</exception>
+        public static SignatureContext Create(ITokenResolver tokenResolver, GenericContext genericContext,
+            MethodBase genericDefinition)
+        {
+            if (tokenResolver == null)
+            {
+                throw new ArgumentNullException("tokenResolver");
+            }
+
+            return new SignatureContext(tokenResolver, genericContext, genericDefinition);
+        }
+
+        internal static SignatureContext FromResolver(ITokenResolver resolver)
+        {
+            return new SignatureContext(resolver, GenericContext.Empty, null);
         }
 
         class DummyTokenResolver : ITokenResolver
