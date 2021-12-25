@@ -37,6 +37,11 @@ namespace CilTools.Metadata.Tests
         private void PrivateInstanceMethod() { }
     }
 
+    public class TypeWithStaticCtor
+    {
+        static TypeWithStaticCtor() { }
+    }
+
     [TestClass]
     public class TypeDefTests
     {
@@ -410,6 +415,87 @@ namespace CilTools.Metadata.Tests
 
                 //ambiguous
                 AssertThat.Throws<AmbiguousMatchException>(() => t.GetMethod(name));
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetConstructor_Parameterless()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                ConstructorInfo c = t.GetConstructor(new Type[0]);
+                Assert.IsNotNull(c);
+                Assert.AreEqual(".ctor", c.Name);
+                Assert.AreEqual(MemberTypes.Constructor, c.MemberType);
+                Assert.IsFalse(c.IsStatic);
+                Assert.AreEqual(SampleTypeName, c.DeclaringType.FullName);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetConstructor_NonExisting()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+
+                //wrong signature
+                ConstructorInfo c = t.GetConstructor(new Type[] { typeof(int) });
+                Assert.IsNull(c);
+
+                //wrong binding flags
+                c = t.GetConstructor(BindingFlags.NonPublic|BindingFlags.Static,null,new Type[0], null);
+                Assert.IsNull(c);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetConstructor_WithParams()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(string).Assembly.Location);
+                Type t = ass.GetType("System.String");
+
+                //correct
+                ConstructorInfo c = t.GetConstructor(new Type[] { typeof(char[]) });
+                Assert.IsNotNull(c);
+                Assert.AreEqual(".ctor", c.Name);
+                Assert.IsFalse(c.IsStatic);
+
+                //incorrect
+                c = t.GetConstructor(new Type[] { typeof(byte), typeof(int) });
+                Assert.IsNull(c);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetConstructor_Static()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(TypeWithStaticCtor).Assembly.Location);
+                Type t = ass.GetType(typeof(TypeWithStaticCtor).FullName);
+
+                ConstructorInfo c = t.GetConstructor(
+                    BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, null, new Type[0], null);
+
+                Assert.IsNotNull(c);
+                Assert.AreEqual(".cctor", c.Name);
+                Assert.AreEqual(MemberTypes.Constructor, c.MemberType);
+                Assert.IsTrue(c.IsSpecialName);
+                Assert.IsTrue(c.IsStatic);
             }
         }
     }

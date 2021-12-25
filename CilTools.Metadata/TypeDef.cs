@@ -160,10 +160,24 @@ namespace CilTools.Metadata
             return ret;
         }
 
-        protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder, CallingConventions callConvention,
-            Type[] types, ParameterModifier[] modifiers)
+        protected override ConstructorInfo GetConstructorImpl(BindingFlags bindingAttr, Binder binder, 
+            CallingConventions callConvention, Type[] types, ParameterModifier[] modifiers)
         {
-            throw new NotImplementedException();
+            if (types == null) throw new ArgumentNullException("types");
+
+            ConstructorInfo[] members = this.GetConstructors(bindingAttr);
+
+            for (int i = 0; i < members.Length; i++)
+            {
+                ConstructorInfo c = members[i];
+
+                if (Utils.ParamsMatchSignature(c.GetParameters(), types))
+                {
+                    return c;
+                }
+            }
+
+            return null; //not found
         }
 
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
