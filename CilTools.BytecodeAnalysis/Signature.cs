@@ -29,6 +29,7 @@ namespace CilTools.BytecodeAnalysis
         bool _GenInst;
         TypeSpec _ReturnType;
         TypeSpec[] _ParamTypes;
+        SignatureContext _ctx;
 
         /// <summary>
         /// Initializes a new Signature object representing a stand-alone method signature
@@ -150,6 +151,7 @@ namespace CilTools.BytecodeAnalysis
 
         void Initialize(Stream src, SignatureContext ctx)
         {
+            this._ctx = ctx;
             ITokenResolver resolver = ctx.TokenResolver;
             MemberInfo member = ctx.GenericContext.GetDeclaringMember();
             byte b = MetadataReader.ReadByte(src); //calling convention & method flags
@@ -274,6 +276,8 @@ namespace CilTools.BytecodeAnalysis
         /// signature does not represent the generic method.
         /// </summary>
         public int GenericArgsCount { get { return this._GenParamCount; } }
+
+        internal SignatureContext Context { get { return this._ctx; } }
 
         /// <summary>
         /// Gets the type of parameter with the specified index

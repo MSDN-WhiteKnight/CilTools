@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace CilTools.Reflection
@@ -20,6 +21,8 @@ namespace CilTools.Reflection
         ITokenResolver resolver;
         GenericContext gctx;
 
+        static SignatureContext s_empty;
+        
         /// <summary>
         /// Creates a new signature context instance
         /// </summary>
@@ -42,6 +45,19 @@ namespace CilTools.Reflection
             this.gctx = genericContext;
         }
 
+        internal static SignatureContext Empty
+        {
+            get
+            {
+                // Empty signature context should only be used when Signature is sythesized from reflection objects.
+                // Parsed signatures should use real context with working resolver.
+
+                if (s_empty == null) s_empty = new SignatureContext(new DummyTokenResolver(), GenericContext.Empty);
+
+                return s_empty;
+            }
+        }
+
         /// <summary>
         /// Gets the token resolver object
         /// </summary>
@@ -56,6 +72,59 @@ namespace CilTools.Reflection
         public GenericContext GenericContext
         {
             get { return this.gctx; }
+        }
+
+        class DummyTokenResolver : ITokenResolver
+        {
+            public FieldInfo ResolveField(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+            {
+                return null;
+            }
+
+            public FieldInfo ResolveField(int metadataToken)
+            {
+                return null;
+            }
+
+            public MemberInfo ResolveMember(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+            {
+                return null;
+            }
+
+            public MemberInfo ResolveMember(int metadataToken)
+            {
+                return null;
+            }
+
+            public MethodBase ResolveMethod(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+            {
+                return null;
+            }
+
+            public MethodBase ResolveMethod(int metadataToken)
+            {
+                return null;
+            }
+
+            public byte[] ResolveSignature(int metadataToken)
+            {
+                return null;
+            }
+
+            public string ResolveString(int metadataToken)
+            {
+                return null;
+            }
+
+            public Type ResolveType(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments)
+            {
+                return null;
+            }
+
+            public Type ResolveType(int metadataToken)
+            {
+                return null;
+            }
         }
     }
 }

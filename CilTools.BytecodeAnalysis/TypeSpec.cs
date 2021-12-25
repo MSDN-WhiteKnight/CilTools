@@ -343,7 +343,7 @@ namespace CilTools.BytecodeAnalysis
 
             if (isbyref) restype = restype.MakeByRefType();
 
-            return new TypeSpec(mods.ToArray(),type,restype,ts,paramnum,ispinned);
+            return new TypeSpec(ctx, mods.ToArray(), type, restype, ts, paramnum, ispinned);
         }
 
         internal static TypeSpec FromType(Type t, bool pinned)
@@ -397,7 +397,7 @@ namespace CilTools.BytecodeAnalysis
                 }
             }
 
-            return new TypeSpec(new CustomModifier[0], et,t, inner, genpos, pinned);
+            return new TypeSpec(SignatureContext.Empty, new CustomModifier[0], et, t, inner, genpos, pinned);
         }
 
         // *** instance members ***
@@ -407,8 +407,10 @@ namespace CilTools.BytecodeAnalysis
         Type _Type;
         uint _paramnum;
         bool _pinned;
+        SignatureContext _ctx;
 
-        internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, TypeSpec ts = null, uint parnum = 0, bool pinned = false)
+        internal TypeSpec(SignatureContext ctx,CustomModifier[] mods, byte elemtype, Type t, TypeSpec ts = null, 
+            uint parnum = 0, bool pinned = false)
         {            
             this._Modifiers = mods;
             this._ElementType = elemtype;
@@ -416,6 +418,7 @@ namespace CilTools.BytecodeAnalysis
             this._InnerSpec = ts;
             this._paramnum = parnum;
             this._pinned = pinned;
+            this._ctx = ctx;
         }
 
         /// <summary>
@@ -488,6 +491,8 @@ namespace CilTools.BytecodeAnalysis
         /// Gets the value indicating whether this TypeSpec represents pinned local variable
         /// </summary>
         public bool IsPinned { get { return this._pinned; } }
+
+        internal SignatureContext Context { get { return this._ctx; } }
 
         /// <inheritdoc/>
         public override Guid GUID => this._Type.GUID;
