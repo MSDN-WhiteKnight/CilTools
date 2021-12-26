@@ -43,7 +43,7 @@ namespace CilTools.Reflection
         {
             get
             {
-                // Empty signature context should only be used when Signature is sythesized from reflection objects.
+                // Empty signature context should only be used when Signature is synthesized from reflection objects.
                 // Parsed signatures should use real context with working resolver.
 
                 if (s_empty == null) s_empty = FromResolver(new DummyTokenResolver());
