@@ -172,7 +172,7 @@ namespace CilTools.BytecodeAnalysis
 
                 for (int i = 0; i < genparams; i++)
                 {
-                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, ctx);
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, ctx, null);
                 }
             }
             else
@@ -185,11 +185,11 @@ namespace CilTools.BytecodeAnalysis
 
                 uint paramcount = MetadataReader.ReadCompressed(src);
                 this._ParamTypes = new TypeSpec[paramcount];
-                this._ReturnType = TypeSpec.ReadFromStream(src, ctx);
+                this._ReturnType = TypeSpec.ReadFromStream(src, ctx, null);
 
                 for (int i = 0; i < paramcount; i++)
                 {
-                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, ctx);
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, ctx, null);
                 }
             }
         }
@@ -237,7 +237,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (b != 0x6) throw new InvalidDataException("Invalid field signature");
 
-                return TypeSpec.ReadFromStream(ms, ctx);
+                return TypeSpec.ReadFromStream(ms, ctx, null);
             }
         }
 

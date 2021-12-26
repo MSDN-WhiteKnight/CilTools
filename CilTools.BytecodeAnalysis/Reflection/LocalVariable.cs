@@ -66,7 +66,7 @@ namespace CilTools.Reflection
 
                 for (int i = 0; i < paramcount; i++)
                 {
-                    TypeSpec t = TypeSpec.ReadFromStream(ms, ctx);
+                    TypeSpec t = TypeSpec.ReadFromStream(ms, ctx, null);
                     ret[i] = new LocalVariable(t, i);
                 }
 

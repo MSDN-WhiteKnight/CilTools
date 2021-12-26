@@ -3,13 +3,31 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
 
 namespace CilTools.BytecodeAnalysis.Tests.Signatures
 {
+    public class SampleGenericType<U> 
+    {
+        public static U[] GenerateArray(int n) 
+        {
+            return new U[n];
+        }
+    }
+
+    public class SampleConsumingType 
+    {
+        public static string[] Foo() 
+        {
+            return SampleGenericType<string>.GenerateArray(10);
+        }
+    }
+
     [TestClass]
     public class TypeSpecTests
     {
@@ -56,6 +74,50 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
             Assert.IsTrue(ts.IsGenericParameter);
             Assert.AreEqual("T", ts.Name);
             Assert.AreEqual(m.Name, ts.DeclaringMethod.Name);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleConsumingType), "Foo", BytecodeProviders.Metadata)]
+        public void Test_GenericTypeParam_Instantiation(MethodBase m)
+        {
+            //Verify that generic type parameter operand does not lose its connection with generic 
+            //type definition when obtained from instantiation
+            CilGraph graph = CilGraph.Create(m);
+            CilGraphNode[] nodes = graph.GetNodes().ToArray();
+
+            //find called SampleGenericType<string>.GenerateArray method
+            MethodBase called = null;
+
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                if (nodes[i].Instruction.OpCode.FlowControl == FlowControl.Call)
+                {
+                    MethodBase target = nodes[i].Instruction.ReferencedMember as MethodBase;
+
+                    if (string.Equals(target.Name, "GenerateArray", StringComparison.InvariantCulture))
+                    {
+                        called = target;
+                        break;
+                    }
+                }
+            }
+
+            Assert.IsNotNull(called, "SampleConsumingType.Foo should contain a call to GenerateArray");
+
+            //inspect instructions of GenerateArray
+            graph = CilGraph.Create(called);
+            nodes = graph.GetNodes().ToArray();
+
+            //newarr !T
+            CilGraphNode node = nodes.Where((x) => x.Instruction.OpCode == OpCodes.Newarr).Single();
+            
+            //finally verify the type object we are interested in
+            Type t = node.Instruction.ReferencedType;
+            Assert.IsTrue(t.IsGenericParameter);
+            Assert.AreEqual(0, t.GenericParameterPosition);
+            Assert.IsNull(t.DeclaringMethod);
+            Assert.AreEqual(typeof(SampleGenericType<>).FullName, t.DeclaringType.FullName);
+            Assert.AreEqual("U", t.Name);
         }
     }
 }
