@@ -184,7 +184,7 @@ namespace CilTools.Internal
         {
             byte[] sig = owner.MetadataReader.GetBlobBytes(bh);
             GenericContext gctx = GenericContext.Create(declaringType, null);
-            SignatureContext ctx = new SignatureContext(owner, gctx);
+            SignatureContext ctx = SignatureContext.Create(owner, gctx, null);
             return Signature.ReadFromArray(sig, ctx);
         }
 

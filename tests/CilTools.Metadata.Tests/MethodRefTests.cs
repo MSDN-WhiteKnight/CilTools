@@ -16,11 +16,11 @@ namespace CilTools.Metadata.Tests
     [TestClass]
     public class MethodRefTests
     {
-        static readonly AssemblyReader reader = new AssemblyReader();
+        internal static readonly AssemblyReader Reader = new AssemblyReader();
 
         static MethodBase GetMethodRef_Interlocked_CompareExchange()
         {
-            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Assembly ass = Reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
             Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
             MethodBase m = t.GetMember("TestMethodRefGenericParameter")[0] as MethodBase;
 
@@ -33,7 +33,7 @@ namespace CilTools.Metadata.Tests
 
         static MethodBase GetMethodRef_Console_WriteLine()
         {
-            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Assembly ass = Reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
             Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
             MethodBase m = t.GetMember("PrintHelloWorld")[0] as MethodBase;
 
@@ -46,7 +46,7 @@ namespace CilTools.Metadata.Tests
 
         static MethodBase GetConstructorRef()
         {
-            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Assembly ass = Reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
             Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
             MethodBase m = t.GetMember("PrintList")[0] as MethodBase;
 

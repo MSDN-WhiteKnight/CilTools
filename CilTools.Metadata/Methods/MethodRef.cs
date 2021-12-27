@@ -34,7 +34,7 @@ namespace CilTools.Metadata.Methods
             //read signature
             byte[] sigbytes = assembly.MetadataReader.GetBlobBytes(mref.Signature);
             GenericContext gctx = GenericContext.Create(this.decltype, this);
-            SignatureContext ctx = new SignatureContext(this.assembly, gctx);
+            SignatureContext ctx = SignatureContext.Create(this.assembly, gctx, null);
 
             try
             {

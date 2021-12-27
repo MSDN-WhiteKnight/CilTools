@@ -27,9 +27,8 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
             Assert.AreEqual(CallingConvention.Default, sig.CallingConvention);
         }
 
-        static readonly SignatureContext EmptyContext = new SignatureContext(
-            MockTokenResolver.Value,
-            GenericContext.Create(null, null));
+        static readonly SignatureContext EmptyContext = SignatureContext.Create(
+            MockTokenResolver.Value, GenericContext.Create(null, null), null);
 
         [TestMethod]
         public void Test_Signature_ReadFromArray_Void()
@@ -68,7 +67,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
             byte[] data = new byte[] { 0x10, 0x1, 0x1, 0x1d, 0x1e, 0x0, 0x8 }; //!!0[] (int32)
 
             GenericContext gctx = GenericContext.Create(null, m);
-            SignatureContext ctx = new SignatureContext(MockTokenResolver.Value, gctx);
+            SignatureContext ctx = SignatureContext.Create(MockTokenResolver.Value, gctx, null);
             Signature sig = Signature.ReadFromArray(data, ctx);
             Assert.AreEqual(1, sig.ParamsCount);
             Assert.AreEqual("Int32", sig.GetParamType(0).Name);
@@ -106,7 +105,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
             byte[] data = new byte[] { 0x10, 0x1, 0x1, 0x1d, 0x13, 0x0, 0x8 }; //!0[] (int32)
 
             GenericContext gctx = GenericContext.Create(typeof(List<>), null);
-            SignatureContext ctx = new SignatureContext(MockTokenResolver.Value, gctx);
+            SignatureContext ctx = SignatureContext.Create(MockTokenResolver.Value, gctx, null);
             Signature sig = Signature.ReadFromArray(data, ctx);
             TypeSpec tRet = sig.ReturnType;
             TypeSpec tParam = tRet.InnerTypeSpec;

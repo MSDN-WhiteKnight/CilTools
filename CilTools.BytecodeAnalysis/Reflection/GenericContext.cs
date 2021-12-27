@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Reflection
 {
@@ -47,14 +48,23 @@ namespace CilTools.Reflection
         {
             Type decltype = null;
 
-            if (typeargs != null && typeargs.Length > 0 && typeargs[0].IsGenericParameter)
+            if (typeargs != null && typeargs.Length > 0)
             {
-                try
+                if (typeargs[0].IsGenericParameter)
                 {
-                    decltype = typeargs[0].DeclaringType;
+                    try
+                    {
+                        decltype = typeargs[0].DeclaringType;
+                    }
+                    catch (NotImplementedException) { }
+                    catch (NotSupportedException) { }
                 }
-                catch (NotImplementedException) { }
-                catch (NotSupportedException) { }
+                else if (typeargs[0] is TypeSpec) 
+                {
+                    //if typeargs contain concrete types from generic type instantiation, we could find out generic type 
+                    //definition from TypeSpec
+                    decltype = ((TypeSpec)typeargs[0]).ParentTypeDefinition;
+                }
             }
 
             MethodBase declmethod = null;
@@ -66,6 +76,17 @@ namespace CilTools.Reflection
                     if (methodargs[0].IsGenericParameter)
                     {
                         declmethod = methodargs[0].DeclaringMethod;
+                    }
+                    else if (methodargs[0] is TypeSpec)
+                    {
+                        //if methodargs contain concrete types from MethodSpec, we could find out generic method 
+                        //definition from SignatureContext
+                        SignatureContext ctx = ((TypeSpec)methodargs[0]).Context;
+
+                        if (ctx != null)
+                        {
+                            declmethod = ctx.GenericDefinition;
+                        }
                     }
                 }
                 catch (NotImplementedException) { }

@@ -43,7 +43,30 @@ namespace CilTools.BytecodeAnalysis
             {(byte)CilTools.BytecodeAnalysis.ElementType.U,typeof(UIntPtr)},
             {(byte)CilTools.BytecodeAnalysis.ElementType.Object,typeof(object)},
             {(byte)CilTools.BytecodeAnalysis.ElementType.TypedByRef,typeof(TypedReference)}
-        };    
+        };
+
+        // *** instance members ***
+        byte _ElementType;
+        CustomModifier[] _Modifiers;
+        TypeSpec _InnerSpec;
+        Type _Type;
+        uint _paramnum;
+        bool _pinned;
+        SignatureContext _ctx;
+        Type _tdef;
+
+        internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, SignatureContext ctx, Type tdef, TypeSpec ts = null,
+            uint parnum = 0, bool pinned = false)
+        {
+            this._Modifiers = mods;
+            this._ElementType = elemtype;
+            this._Type = t;
+            this._InnerSpec = ts;
+            this._paramnum = parnum;
+            this._pinned = pinned;
+            this._ctx = ctx;
+            this._tdef = tdef;
+        }
 
         static int DecodeToken(uint decompressed) //ECMA-335 II.23.2.8 TypeDefOrRefOrSpecEncoded
         {
@@ -86,8 +109,8 @@ namespace CilTools.BytecodeAnalysis
             using (ms)
             {
                 GenericContext gctx = GenericContext.FromMember(member);
-                SignatureContext ctx = new SignatureContext(resolver, gctx);
-                return TypeSpec.ReadFromStream(ms, ctx);
+                SignatureContext ctx = new SignatureContext(resolver, gctx, null);
+                return TypeSpec.ReadFromStream(ms, ctx, null);
             }
         }
 
@@ -113,30 +136,31 @@ namespace CilTools.BytecodeAnalysis
 
             using (ms)
             {
-                return TypeSpec.ReadFromStream(ms, ctx);
+                return TypeSpec.ReadFromStream(ms, ctx, null);
             }
         }
 
         internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver)
         {
-            return TypeSpec.ReadFromStream(source, new SignatureContext(resolver, null));
+            return TypeSpec.ReadFromStream(source, SignatureContext.FromResolver(resolver), null);
         }
 
         internal static TypeSpec ReadFromStream(
-            Stream source, SignatureContext ctx
+            Stream source, SignatureContext ctx, Type parentGenericDefinition
             ) //ECMA-335 II.23.2.12 Type
         {
             Debug.Assert(source != null, "Source stream is null");
 
             ITokenResolver resolver = ctx.TokenResolver;
             MemberInfo member = ctx.GenericContext.GetDeclaringMember();
-            CustomModifier mod;            
+            CustomModifier mod;
             byte b;
             int typetok;
             Type t;                       
             bool found_type;
             bool isbyref = false;
             bool ispinned = false;
+            Type tRetGenericDefinition = parentGenericDefinition;
 
             byte type = 0; //element type
             List<CustomModifier> mods = new List<CustomModifier>(5);
@@ -253,7 +277,7 @@ namespace CilTools.BytecodeAnalysis
                                                 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Array:
-                        ts = TypeSpec.ReadFromStream(source, ctx);
+                        ts = TypeSpec.ReadFromStream(source, ctx, tRetGenericDefinition);
 
                         //II.23.2.13 ArrayShape
                         uint rank = MetadataReader.ReadCompressed(source);
@@ -275,13 +299,13 @@ namespace CilTools.BytecodeAnalysis
                         
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.SzArray:
-                        ts = TypeSpec.ReadFromStream(source, ctx);
+                        ts = TypeSpec.ReadFromStream(source, ctx, tRetGenericDefinition);
 
                         if(ts.Type!=null) restype = ts.Type.MakeArrayType();
 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Ptr:
-                        ts = TypeSpec.ReadFromStream(source, ctx);
+                        ts = TypeSpec.ReadFromStream(source, ctx, tRetGenericDefinition);
 
                         if (ts.Type != null) restype = ts.Type.MakePointerType();
 
@@ -325,13 +349,14 @@ namespace CilTools.BytecodeAnalysis
                             throw new NotSupportedException("The signature contains TypeSpec that cannot be parsed");
                         }
 
+                        tRetGenericDefinition = tdef_t;
                         uint genargs_count = MetadataReader.ReadCompressed(source);
                         TypeSpec[] genargs = new TypeSpec[genargs_count];
                         Type[] arg_types = new Type[genargs_count];
 
                         for (uint i = 0; i < genargs_count; i++)
                         {
-                            genargs[i] = TypeSpec.ReadFromStream(source, ctx);
+                            genargs[i] = TypeSpec.ReadFromStream(source, ctx, tRetGenericDefinition);
                             arg_types[i] = genargs[i].Type;
                         }
 
@@ -343,7 +368,7 @@ namespace CilTools.BytecodeAnalysis
 
             if (isbyref) restype = restype.MakeByRefType();
 
-            return new TypeSpec(mods.ToArray(),type,restype,ts,paramnum,ispinned);
+            return new TypeSpec(mods.ToArray(), type, restype, ctx, tRetGenericDefinition, ts, paramnum, ispinned);
         }
 
         internal static TypeSpec FromType(Type t, bool pinned)
@@ -397,26 +422,8 @@ namespace CilTools.BytecodeAnalysis
                 }
             }
 
-            return new TypeSpec(new CustomModifier[0], et,t, inner, genpos, pinned);
-        }
-
-        // *** instance members ***
-        byte _ElementType;
-        CustomModifier[] _Modifiers;        
-        TypeSpec _InnerSpec;
-        Type _Type;
-        uint _paramnum;
-        bool _pinned;
-
-        internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, TypeSpec ts = null, uint parnum = 0, bool pinned = false)
-        {            
-            this._Modifiers = mods;
-            this._ElementType = elemtype;
-            this._Type = t;
-            this._InnerSpec = ts;
-            this._paramnum = parnum;
-            this._pinned = pinned;
-        }
+            return new TypeSpec(new CustomModifier[0], et, t, SignatureContext.Empty, null, inner, genpos, pinned);
+        }                
 
         /// <summary>
         /// Gets the element type of this type specification 
@@ -488,6 +495,13 @@ namespace CilTools.BytecodeAnalysis
         /// Gets the value indicating whether this TypeSpec represents pinned local variable
         /// </summary>
         public bool IsPinned { get { return this._pinned; } }
+
+        internal SignatureContext Context { get { return this._ctx; } }
+
+        /// <summary>
+        /// Generic type definition being instantiated, if this TypeSpec is a part of GenericInst signature element, or null otherwise
+        /// </summary>
+        internal Type ParentTypeDefinition { get { return this._tdef; } }
 
         /// <inheritdoc/>
         public override Guid GUID => this._Type.GUID;
