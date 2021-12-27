@@ -67,8 +67,10 @@ namespace CilTools.Reflection
         {
             get { return this.gctx; }
         }
-
         
+        /// <summary>
+        /// Gets a generic method definition, if the signature is for a generic method instantiation
+        /// </summary>
         public MethodBase GenericDefinition
         {
             get { return this.gdef; }
@@ -83,6 +85,10 @@ namespace CilTools.Reflection
         /// Generic method definition, if the signature is for a generic method instantiation, or null otherwise
         /// </param>
         /// <exception cref="ArgumentNullException">Token resolver is null</exception>
+        /// <remarks>
+        /// The <c>genericDefinition</c> parameter only needs to be specified when reading a signature of generic method instantiation 
+        /// (from MethodSpec metadata table), NOT for every generic method signature.
+        /// </remarks>
         public static SignatureContext Create(ITokenResolver tokenResolver, GenericContext genericContext,
             MethodBase genericDefinition)
         {
