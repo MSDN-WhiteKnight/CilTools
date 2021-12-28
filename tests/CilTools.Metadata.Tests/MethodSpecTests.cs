@@ -21,7 +21,7 @@ namespace CilTools.Metadata.Tests
     {
         static MethodBase GetMethodSpec()
         {
-            Assembly ass = MethodRefTests.Reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Assembly ass = ReaderFactory.GetReader().LoadFrom(typeof(SampleMethods).Assembly.Location);
             Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
             MethodBase mb = t.GetMember("GenericsTest")[0] as MethodBase;
 
@@ -67,6 +67,16 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual(0, t.GenericParameterPosition);
             Assert.AreEqual("GenerateArray", t.DeclaringMethod.Name);
             Assert.AreEqual("T", t.Name);
+        }
+
+        [TestMethod]
+        public void Test_MethodSpec_GetGenericArguments()
+        {
+            MethodBase m = GetMethodSpec();
+            Type[] args = m.GetGenericArguments();
+            Assert.AreEqual(1, args.Length);
+            Assert.IsFalse(args[0].IsGenericParameter);
+            Assert.AreEqual("System.Int32", args[0].FullName);
         }
     }
 }

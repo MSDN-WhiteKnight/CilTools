@@ -190,8 +190,6 @@ namespace CilTools.Metadata.Methods
             if (this.sig == null) return this.definition.GetGenericArguments();
             
             Type[] args = new Type[this.sig.ParamsCount];
-            Type[] dargs = this.definition.GetGenericArguments();
-            if (dargs == null) dargs = args;
 
             for (int i = 0; i < args.Length; i++)
             {
