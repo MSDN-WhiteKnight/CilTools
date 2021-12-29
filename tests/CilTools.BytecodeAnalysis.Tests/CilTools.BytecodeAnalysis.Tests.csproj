@@ -37,7 +37,8 @@
     <Compile Include="Signatures\SignatureTests.cs" />    
     <Compile Include="Signatures\TypeSpecTests.cs" />    
     <Compile Include="SourceCode\SourceCodeProviderTests.cs" />    
-    <Compile Include="SyntaxTests.cs" />
+    <Compile Include="SyntaxTests.cs" />    
+    <Compile Include="Syntax\TokenReaderTests.cs" />
   </ItemGroup>
   
   <ItemGroup Condition="'$(TargetFramework)'=='net45'">
