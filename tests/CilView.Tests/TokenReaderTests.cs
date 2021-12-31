@@ -5,11 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CilView.Core.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CilTools.Syntax;
-using CilTools.Tests.Common;
 
-namespace CilTools.BytecodeAnalysis.Tests.Syntax
+namespace CilView.Tests
 {
     [TestClass]
     public class TokenReaderTests

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CilTools.Syntax
+namespace CilView.Core.Syntax
 {
     internal enum TokenKind
     {

@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CilTools.Syntax
+namespace CilView.Core.Syntax
 {
     public class TokenReader
     {
@@ -17,7 +17,7 @@ namespace CilTools.Syntax
             this._source = src.ToCharArray();
         }
 
-        internal string ReadToken()
+        public string ReadToken()
         {
             if (_pos >= _source.Length) return string.Empty;
 

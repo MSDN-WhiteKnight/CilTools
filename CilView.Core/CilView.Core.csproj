@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <Version>2.3.0</Version>
+    <Authors>MSDN-WhiteKnight</Authors>
+    <Company>CIL Tools</Company>
+    <Product>CIL Tools</Product>
+    <Copyright>Copyright (c) 2021, MSDN.WhiteKnight</Copyright>
+    <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
+    <FileVersion>2.3.0.0</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Syntax\" />
+  </ItemGroup>
+
+</Project>
