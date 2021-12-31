@@ -13,6 +13,19 @@ namespace CilTools.Syntax
 {
     public static class SyntaxFactory
     {
+        static string Strip(string input, int startOffset, int endOffset)
+        {
+            int len = input.Length - endOffset;
+
+            if (startOffset < 0) startOffset = 0;
+            if (startOffset >= input.Length) startOffset = input.Length - 1;
+            if (len < 0) len = 0;
+            if (len > input.Length - startOffset) len = input.Length - startOffset;
+                        
+            if (len == 0) return string.Empty;
+            else return input.Substring(startOffset, len);
+        }
+
         public static SyntaxNode CreateFromToken(string tokenString, string leadingWhitespace, string trailingWhitespace)
         {
             if (tokenString == null) throw new ArgumentNullException("tokenString");
@@ -48,6 +61,52 @@ namespace CilTools.Syntax
                 {
                     return new GenericSyntax(leadingWhitespace + tokenString + trailingWhitespace);
                 }
+            }
+            else if (tokenString[0] == '"')
+            {
+                if (tokenString.Length < 2)
+                {
+                    throw new ArgumentException("Token string is too short to be a valid string literal", "tokenString");
+                }
+
+                if (tokenString[tokenString.Length - 1] != '"')
+                {
+                    throw new ArgumentException(
+                        "Token string is invalid: string literal does not have a closing quotation mark",
+                        "tokenString");
+                }
+                
+                return new LiteralSyntax(leadingWhitespace, Strip(tokenString,1,1), trailingWhitespace);
+            }
+            else if (tokenString[0] == '/')
+            {
+                if (tokenString.Length == 1)
+                {
+                    return new PunctuationSyntax(leadingWhitespace, tokenString, trailingWhitespace);
+                }
+                else if(tokenString[1] == '*')
+                {
+                    if (!tokenString.EndsWith("*/"))
+                    {
+                        throw new ArgumentException(
+                            "Token string is invalid: multiline comment does not have trailing */", 
+                            "tokenString");
+                    }
+
+                    return new CommentSyntax(leadingWhitespace, Strip(tokenString, 2, 2));
+                }
+                else if (tokenString[1] == '/')
+                {
+                    return new CommentSyntax(leadingWhitespace, Strip(tokenString, 2, 0) /*,trailingWhitespace*/);
+                }
+                else
+                {
+                    return new GenericSyntax(leadingWhitespace + tokenString + trailingWhitespace);
+                }
+            }
+            else if (char.IsPunctuation(tokenString[0]) || char.IsSymbol(tokenString[0]))
+            {
+                return new PunctuationSyntax(leadingWhitespace, tokenString, trailingWhitespace);
             }
             else
             {
