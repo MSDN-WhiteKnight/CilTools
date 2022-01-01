@@ -747,8 +747,8 @@ namespace CilTools.BytecodeAnalysis
                     {
                         CommentSyntax cs;
 
-                        if (i == 0) cs = new CommentSyntax(Environment.NewLine + lead, fragmentCodeArr[i]);
-                        else cs = new CommentSyntax(lead, fragmentCodeArr[i]);
+                        if (i == 0) cs = CommentSyntax.Create(Environment.NewLine + lead, fragmentCodeArr[i], null, false);
+                        else cs = CommentSyntax.Create(lead, fragmentCodeArr[i], null, false);
 
                         curr_node._children.Add(cs);
                     }
@@ -820,7 +820,7 @@ namespace CilTools.BytecodeAnalysis
             }
             catch (InvalidOperationException)
             {
-                nodes.Add(new CommentSyntax(" ", "NOTE: Custom attributes are not shown."));
+                nodes.Add(CommentSyntax.Create(" ", "NOTE: Custom attributes are not shown.", null, false));
             }
 
             arr = SyntaxNode.GetDefaultsSyntax(this._Method);

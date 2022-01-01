@@ -84,11 +84,11 @@ namespace CilTools.Syntax
                             "tokenString");
                     }
 
-                    return new CommentSyntax(leadingWhitespace, Strip(tokenString, 2, 2));
+                    return CommentSyntax.Create(leadingWhitespace, tokenString, trailingWhitespace, true);
                 }
                 else if (tokenString[1] == '/')
                 {
-                    return new CommentSyntax(leadingWhitespace, Strip(tokenString, 2, 0) /*,trailingWhitespace*/);
+                    return CommentSyntax.Create(leadingWhitespace, tokenString,trailingWhitespace, true);
                 }
                 else
                 {

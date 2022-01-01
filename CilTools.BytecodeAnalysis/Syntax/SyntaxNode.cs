@@ -175,7 +175,7 @@ namespace CilTools.Syntax
                         output.Write(s_attr);
                         output.Flush();
                         content = sb.ToString();
-                        CommentSyntax node = new CommentSyntax(strIndent, content);
+                        CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
                         ret.Add(node);
                     }
                 }
@@ -186,7 +186,7 @@ namespace CilTools.Syntax
                     output.Write(s_attr);
                     output.Flush();
                     content = sb.ToString();
-                    CommentSyntax node = new CommentSyntax(strIndent, content);
+                    CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
                     ret.Add(node);
                 }
             }//end for
@@ -491,11 +491,11 @@ namespace CilTools.Syntax
             }
             catch (InvalidOperationException)
             {
-                content.Add(new CommentSyntax(" ", "NOTE: Custom attributes are not shown."));
+                content.Add(CommentSyntax.Create(" ", "NOTE: Custom attributes are not shown.", null, false));
             }
             catch (NotImplementedException)
             {
-                content.Add(new CommentSyntax(" ", "NOTE: Custom attributes are not shown."));
+                content.Add(CommentSyntax.Create(" ", "NOTE: Custom attributes are not shown.", null, false));
             }
 
             content.Add(new GenericSyntax(Environment.NewLine));
@@ -600,12 +600,12 @@ namespace CilTools.Syntax
             catch (NotSupportedException)
             {
                 props = new PropertyInfo[0];
-                content.Add(new CommentSyntax(" ", "NOTE: Properties are not shown." + Environment.NewLine));
+                content.Add(CommentSyntax.Create(" ", "NOTE: Properties are not shown." + Environment.NewLine, null, false));
             }
             catch (NotImplementedException)
             {
                 props = new PropertyInfo[0];
-                content.Add(new CommentSyntax(" ", "NOTE: Properties are not shown." + Environment.NewLine));
+                content.Add(CommentSyntax.Create(" ", "NOTE: Properties are not shown." + Environment.NewLine, null, false));
             }
 
             for (int i = 0; i < props.Length; i++)
@@ -671,11 +671,11 @@ namespace CilTools.Syntax
                 }
                 catch (InvalidOperationException)
                 {
-                    inner.Add(new CommentSyntax("  ", "NOTE: Custom attributes are not shown."));
+                    inner.Add(CommentSyntax.Create("  ", "NOTE: Custom attributes are not shown.", null, false));
                 }
                 catch (NotImplementedException)
                 {
-                    inner.Add(new CommentSyntax("  ", "NOTE: Custom attributes are not shown."));
+                    inner.Add(CommentSyntax.Create("  ", "NOTE: Custom attributes are not shown.", null, false));
                 }
                 
                 //property methods
@@ -701,7 +701,7 @@ namespace CilTools.Syntax
             }
 
             //add comment to indicate that not all members are listed here
-            content.Add(new CommentSyntax(" ", "..."));
+            content.Add(CommentSyntax.Create(" ", "...", null, false));
             content.Add(new GenericSyntax(Environment.NewLine));
 
             BlockSyntax body = new BlockSyntax(String.Empty, SyntaxNode.EmptyArray, content.ToArray());

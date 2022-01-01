@@ -309,7 +309,7 @@ namespace CilTools.BytecodeAnalysis
                         target.Write(')');
                         target.Flush();
 
-                        yield return new CommentSyntax("", sb.ToString());
+                        yield return CommentSyntax.Create("", sb.ToString(), null, false);
                     }
                 } //end if (sig != null)
             }
