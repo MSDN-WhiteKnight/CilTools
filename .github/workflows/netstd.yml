@@ -23,10 +23,14 @@ jobs:
       run: dotnet build tests/CilTools.BytecodeAnalysis.Tests/CilTools.BytecodeAnalysis.Tests.csproj -f netcoreapp3.1
     - name: Build CommandLine with dotnet
       run: dotnet build tests/CilTools.CommandLine.Tests/CilTools.CommandLine.Tests.csproj
+    - name: Build CilView.Core with dotnet
+      run: dotnet build tests/CilView.Tests/CilView.Tests.csproj
     - name: Test
       run: dotnet test tests/CilTools.BytecodeAnalysis.Tests/CilTools.BytecodeAnalysis.Tests.csproj -f netcoreapp3.1
     - name: Test CommandLine
       run: dotnet test tests/CilTools.CommandLine.Tests/CilTools.CommandLine.Tests.csproj
+    - name: Test CilView.Core
+      run: dotnet test tests/CilView.Tests/CilView.Tests.csproj -f netcoreapp3.1
     - name: Archive build results
       uses: actions/upload-artifact@v1
       with:
