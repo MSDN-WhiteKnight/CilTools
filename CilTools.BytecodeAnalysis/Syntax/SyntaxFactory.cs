@@ -21,7 +21,7 @@ namespace CilTools.Syntax
             if (startOffset >= input.Length) startOffset = input.Length - 1;
             if (len < 0) len = 0;
             if (len > input.Length - startOffset) len = input.Length - startOffset;
-                        
+
             if (len == 0) return string.Empty;
             else return input.Substring(startOffset, len);
         }
@@ -42,7 +42,8 @@ namespace CilTools.Syntax
             {
                 if (SyntaxClassifier.IsKeyword(tokenString))
                 {
-                    return new KeywordSyntax(leadingWhitespace, tokenString, trailingWhitespace, KeywordKind.Other);
+                    return new KeywordSyntax(leadingWhitespace, tokenString, trailingWhitespace,
+                        SyntaxClassifier.ClassifyKeyword(tokenString));
                 }
                 else
                 {
@@ -66,8 +67,24 @@ namespace CilTools.Syntax
                         "Token string is invalid: string literal does not have a closing quotation mark",
                         "tokenString");
                 }
-                
+
                 return LiteralSyntax.CreateFromRawValue(leadingWhitespace, tokenString, trailingWhitespace);
+            }
+            else if (tokenString[0] == '\'')
+            {
+                if (tokenString.Length < 2)
+                {
+                    throw new ArgumentException("Token string is too short to be a valid single-quoted literal", "tokenString");
+                }
+
+                if (tokenString[tokenString.Length - 1] != '\'')
+                {
+                    throw new ArgumentException(
+                        "Token string is invalid: single-quoted literal does not have a closing quotation mark",
+                        "tokenString");
+                }
+
+                return new IdentifierSyntax(leadingWhitespace, tokenString, trailingWhitespace, false, null);
             }
             else if (tokenString[0] == '/')
             {
@@ -75,12 +92,12 @@ namespace CilTools.Syntax
                 {
                     return new PunctuationSyntax(leadingWhitespace, tokenString, trailingWhitespace);
                 }
-                else if(tokenString[1] == '*')
+                else if (tokenString[1] == '*')
                 {
-                    if (!tokenString.EndsWith("*/"))
+                    if (!tokenString.EndsWith("*/", StringComparison.Ordinal))
                     {
                         throw new ArgumentException(
-                            "Token string is invalid: multiline comment does not have trailing */", 
+                            "Token string is invalid: multiline comment does not have trailing */",
                             "tokenString");
                     }
 
@@ -88,7 +105,7 @@ namespace CilTools.Syntax
                 }
                 else if (tokenString[1] == '/')
                 {
-                    return CommentSyntax.Create(leadingWhitespace, tokenString,trailingWhitespace, true);
+                    return CommentSyntax.Create(leadingWhitespace, tokenString, trailingWhitespace, true);
                 }
                 else
                 {
