@@ -287,7 +287,7 @@ namespace CilTools.BytecodeAnalysis
                 }
                 else
                 {
-                    yield return new LiteralSyntax("",this.Operand,"");
+                    yield return LiteralSyntax.CreateFromValue("",this.Operand,"");
                 }
             }
             else if (typeof(T) == typeof(int[]) && OpCode.OperandType == System.Reflection.Emit.OperandType.InlineSwitch)
@@ -336,7 +336,7 @@ namespace CilTools.BytecodeAnalysis
             }
             else
             {
-                yield return new LiteralSyntax("", this.Operand, "");
+                yield return LiteralSyntax.CreateFromValue("", this.Operand, "");
             }
         }
     }

@@ -13,9 +13,9 @@ namespace CilTools.Syntax
 {
     public static class SyntaxFactory
     {
-        static string Strip(string input, int startOffset, int endOffset)
+        internal static string Strip(string input, int startOffset, int endOffset)
         {
-            int len = input.Length - endOffset;
+            int len = input.Length - startOffset - endOffset;
 
             if (startOffset < 0) startOffset = 0;
             if (startOffset >= input.Length) startOffset = input.Length - 1;
@@ -51,16 +51,7 @@ namespace CilTools.Syntax
             }
             else if (char.IsDigit(tokenString[0]))
             {
-                int i;
-
-                if (int.TryParse(tokenString, out i))
-                {
-                    return new LiteralSyntax(leadingWhitespace, i, trailingWhitespace);
-                }
-                else
-                {
-                    return new GenericSyntax(leadingWhitespace + tokenString + trailingWhitespace);
-                }
+                return LiteralSyntax.CreateFromRawValue(leadingWhitespace, tokenString, trailingWhitespace);
             }
             else if (tokenString[0] == '"')
             {
@@ -76,7 +67,7 @@ namespace CilTools.Syntax
                         "tokenString");
                 }
                 
-                return new LiteralSyntax(leadingWhitespace, Strip(tokenString,1,1), trailingWhitespace);
+                return LiteralSyntax.CreateFromRawValue(leadingWhitespace, tokenString, trailingWhitespace);
             }
             else if (tokenString[0] == '/')
             {

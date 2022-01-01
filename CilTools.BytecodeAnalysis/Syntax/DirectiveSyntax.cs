@@ -152,13 +152,13 @@ namespace CilTools.Syntax
 
                 if (ppars != null)
                 {
-                    inner.Add(new LiteralSyntax(String.Empty, ppars.ModuleName, " "));
+                    inner.Add(LiteralSyntax.CreateFromValue(String.Empty, ppars.ModuleName, " "));
 
                     if (!String.IsNullOrEmpty(ppars.FunctionName) &&
                         !String.Equals(ppars.FunctionName, m.Name, StringComparison.InvariantCulture))
                     {
                         inner.Add(new KeywordSyntax(String.Empty, "as", " ", KeywordKind.Other));
-                        inner.Add(new LiteralSyntax(String.Empty, ppars.FunctionName, " "));
+                        inner.Add(LiteralSyntax.CreateFromValue(string.Empty, ppars.FunctionName, " "));
                     }
 
                     if (ppars.SetLastError)

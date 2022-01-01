@@ -187,7 +187,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (stroperand != null)
                 {
-                    yield return new LiteralSyntax("", stroperand, "");
+                    yield return LiteralSyntax.CreateFromValue("", stroperand, "");
                 }
                 else
                 {
