@@ -180,6 +180,17 @@ namespace CilView
                     bool bres = BuildProject(proj, out assemblyPath);
                     if (bres == false) return;
                 }
+                else if (file.EndsWith(".il", StringComparison.OrdinalIgnoreCase) ||
+                    file.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                {
+                    //IL source file
+                    string content = File.ReadAllText(file);
+                    string title = Path.GetFileName(file);
+                    this.SetSource(null);
+                    this.cilbrowser.NavigateToSourceDocument(content, title);
+
+                    return; //no need to load assembly
+                }
                 else
                 {
                     //regular assembly
