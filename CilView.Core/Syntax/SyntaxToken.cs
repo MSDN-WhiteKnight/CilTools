@@ -41,6 +41,18 @@ namespace CilView.Core.Syntax
             }
         }
 
+        internal static bool IsEscaped(string str, int i)
+        {
+            if (i <= 0) return false;
+
+            char c1 = str[i - 1];
+
+            if (c1 != '\\') return false;
+
+            //check if the slash itself not escaped
+            return !IsEscaped(str, i - 1);
+        }
+
         public abstract TokenKind Kind { get; }
         public abstract bool HasStart(TokenReader reader);
         public abstract bool HasContinuation(string prevPart, TokenReader reader);
@@ -149,7 +161,7 @@ namespace CilView.Core.Syntax
 
             if (c == '"')
             {
-                if (prevPart[prevPart.Length - 2] == '\\') return true; //escaped
+                if (IsEscaped(prevPart, prevPart.Length - 1)) return true;
                 else return false;
             }
             else return true;
@@ -174,7 +186,7 @@ namespace CilView.Core.Syntax
 
             if (c == '\'')
             {
-                if (prevPart[prevPart.Length - 2] == '\\') return true; //escaped
+                if (IsEscaped(prevPart, prevPart.Length - 1)) return true;
                 else return false;
             }
             else return true;

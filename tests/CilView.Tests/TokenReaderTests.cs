@@ -57,6 +57,21 @@ namespace CilView.Tests
         }
 
         [TestMethod]
+        public void Test_TokenReader_Escaping()
+        {
+            //string s1="\"";string s2="\\";char c1='\'';char c2='\\';Foo();
+            string s = @"string s1=""\"""";string s2=""\\"";char c1='\'';char c2='\\';Foo();";
+            TokenReader reader = new TokenReader(s);
+            string[] tokens = reader.ReadAll().ToArray();
+
+            CollectionAssert.AreEqual(new string[] { 
+                "string", " ", "s1", "=" , @"""\""""", ";", "string", " ", "s2", "=", @"""\\""", ";",
+                "char", " ", "c1", "=", @"'\''", ";", "char", " ", "c2", "=", @"'\\'", ";", 
+                "Foo", "(", ")", ";"
+            }, tokens);
+        }
+
+        [TestMethod]
         public void Test_TokenReader_NumericLiteral()
         {
             string s = "IL_0001: ldc.i4.s 10";
