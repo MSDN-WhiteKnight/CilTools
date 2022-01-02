@@ -174,10 +174,10 @@ namespace CilView.UI.Controls
             this.text = String.Empty;
         }
 
-        public void NavigateToSourceDocument(string contentText, string title)
+        public void NavigateToSourceDocument(string contentText, string filename)
         {
-            CilBrowserPage page = new CilBrowserPage(contentText);
-            page.Title = title;
+            CilBrowserPage page = new CilBrowserPage(contentText, filename);
+            page.Title = filename;
             frameContent.Navigate(page);
             this.text = contentText;
             this.current_method = null;
