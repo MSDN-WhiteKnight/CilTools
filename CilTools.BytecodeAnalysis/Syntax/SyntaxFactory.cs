@@ -2,12 +2,8 @@
  * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using System.Reflection;
-using CilTools.BytecodeAnalysis;
-using CilTools.Reflection;
 
 namespace CilTools.Syntax
 {
@@ -58,14 +54,15 @@ namespace CilTools.Syntax
             {
                 if (tokenString.Length < 2)
                 {
-                    throw new ArgumentException("Token string is too short to be a valid string literal", "tokenString");
+                    return new InvalidSyntax(leadingWhitespace, tokenString,
+                        "Token string is too short to be a valid string literal", trailingWhitespace);
                 }
 
                 if (tokenString[tokenString.Length - 1] != '"')
                 {
-                    throw new ArgumentException(
-                        "Token string is invalid: string literal does not have a closing quotation mark",
-                        "tokenString");
+                    return new InvalidSyntax(leadingWhitespace, tokenString,
+                        "Token string is invalid: string literal does not have a closing quotation mark", 
+                        trailingWhitespace);
                 }
 
                 return LiteralSyntax.CreateFromRawValue(leadingWhitespace, tokenString, trailingWhitespace);
@@ -74,14 +71,15 @@ namespace CilTools.Syntax
             {
                 if (tokenString.Length < 2)
                 {
-                    throw new ArgumentException("Token string is too short to be a valid single-quoted literal", "tokenString");
+                    return new InvalidSyntax(leadingWhitespace, tokenString,
+                        "Token string is too short to be a valid single-quoted literal", trailingWhitespace);
                 }
 
                 if (tokenString[tokenString.Length - 1] != '\'')
                 {
-                    throw new ArgumentException(
-                        "Token string is invalid: single-quoted literal does not have a closing quotation mark",
-                        "tokenString");
+                    return new InvalidSyntax(leadingWhitespace, tokenString,
+                        "Token string is invalid: single-quoted literal does not have a closing quotation mark", 
+                        trailingWhitespace);
                 }
 
                 return new IdentifierSyntax(leadingWhitespace, tokenString, trailingWhitespace, false, null);
@@ -96,9 +94,8 @@ namespace CilTools.Syntax
                 {
                     if (!tokenString.EndsWith("*/", StringComparison.Ordinal))
                     {
-                        throw new ArgumentException(
-                            "Token string is invalid: multiline comment does not have trailing */",
-                            "tokenString");
+                        return new InvalidSyntax(leadingWhitespace, tokenString,
+                            "Token string is invalid: multiline comment does not have trailing */", trailingWhitespace);
                     }
 
                     return CommentSyntax.Create(leadingWhitespace, tokenString, trailingWhitespace, true);
@@ -109,7 +106,7 @@ namespace CilTools.Syntax
                 }
                 else
                 {
-                    return new GenericSyntax(leadingWhitespace + tokenString + trailingWhitespace);
+                    return new InvalidSyntax(leadingWhitespace, tokenString, "Unexpected token", trailingWhitespace);
                 }
             }
             else if (char.IsPunctuation(tokenString[0]) || char.IsSymbol(tokenString[0]))
@@ -118,7 +115,7 @@ namespace CilTools.Syntax
             }
             else
             {
-                return new GenericSyntax(leadingWhitespace + tokenString + trailingWhitespace);
+                return new InvalidSyntax(leadingWhitespace, tokenString, "Unexpected token", trailingWhitespace);
             }
         }
     }
