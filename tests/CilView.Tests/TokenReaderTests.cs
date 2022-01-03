@@ -105,10 +105,8 @@ namespace CilView.Tests
             }, tokens);
         }
 
-        [TestMethod]
-        public void Test_TokenReader_Lines()
-        {
-            string s = @".method public hidebysig static float64 CalcSum(float64 x, float64 y) cil managed {
+        public const string Data_MultilineString =
+            @".method public hidebysig static float64 CalcSum(float64 x, float64 y) cil managed {
  .maxstack 2
  .locals init (float64 V_0)
 
@@ -122,7 +120,10 @@ namespace CilView.Tests
           ret
 }";
 
-            s = s.Replace("\r\n", "\n");
+        [TestMethod]
+        public void Test_TokenReader_Lines()
+        {
+            string s = Data_MultilineString.Replace("\r\n", "\n");
             TokenReader reader = new TokenReader(s);
             string[] tokens = reader.ReadAll().ToArray();
 

@@ -402,16 +402,8 @@ namespace CilView
             FlowDocument fd = new FlowDocument();
             fd.TextAlignment = TextAlignment.Left;
             fd.FontFamily = new FontFamily("Courier New");
-
-            TokenReader reader = new TokenReader(text);
-            List<SyntaxNode> nodesList = new List<SyntaxNode>();
-
-            foreach (string token in reader.ReadAll())
-            {
-                nodesList.Add(SyntaxFactory.CreateFromToken(token, string.Empty, string.Empty));
-            }
-
-            SyntaxNode[] nodes = nodesList.ToArray();
+            
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(text);
             Paragraph par = new Paragraph();
             VisualizeGraphContext ctx = new VisualizeGraphContext();
 
