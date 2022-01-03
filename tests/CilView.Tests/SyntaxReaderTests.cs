@@ -141,6 +141,7 @@ namespace CilView.Tests
         {
             string s = ".method public static void 'method'()";
             SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(s);
+            Assert.AreEqual(7, nodes.Length);
 
             SyntaxNode node = nodes[0];
             Assert.IsTrue(node is KeywordSyntax);
@@ -149,6 +150,12 @@ namespace CilView.Tests
             Assert.AreEqual(string.Empty, node.LeadingWhitespace);
             Assert.AreEqual(" ", node.TrailingWhitespace);
             Assert.AreEqual(".method ", node.ToString());
+
+            node = nodes[4];
+            Assert.IsTrue(node is IdentifierSyntax);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("'method'", node.ToString());
         }
 
         [DataTestMethod]

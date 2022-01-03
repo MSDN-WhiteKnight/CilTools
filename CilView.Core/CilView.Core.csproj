@@ -15,8 +15,4 @@
     <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Syntax\" />
-  </ItemGroup>
-
 </Project>
