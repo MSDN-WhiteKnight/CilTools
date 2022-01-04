@@ -86,7 +86,7 @@ namespace CilView.SourceCode
             SymbolsQueryType queryType)
         {
             PdbCodeProvider provider = PdbCodeProvider.Instance;
-            SourceDocument doc = provider.GetSourceCodeDocuments(m).First();
+            SourceDocument doc = provider.GetSourceCodeDocuments(m).FirstOrDefault();
 
             if(doc == null) return SourceInfo.FromError(SourceInfoError.NoMatches);
 

@@ -44,6 +44,7 @@ namespace CilView.SourceCode
                 ret = GetSourceFromWindowsPdb(m);
             }
             
+            if (ret == null) return new SourceDocument[0];
             return new SourceDocument[] { ret };
         }
         
