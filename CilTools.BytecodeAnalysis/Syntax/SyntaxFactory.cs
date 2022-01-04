@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,9 @@ using System.Text;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Provides static methods that create new instances of <see cref="SyntaxNode"/> class
+    /// </summary>
     public static class SyntaxFactory
     {
         internal static string Strip(string input, int startOffset, int endOffset)
@@ -22,6 +25,23 @@ namespace CilTools.Syntax
             else return input.Substring(startOffset, len);
         }
 
+        /// <summary>
+        /// Creates a syntax node using the specified token string (for example, keyword or identifier)
+        /// </summary>
+        /// <param name="tokenString">String containing a single CIL assembler token</param>
+        /// <param name="leadingWhitespace">
+        /// String containing whitespace characters that precede the specified token in the source document
+        /// </param>
+        /// <param name="trailingWhitespace">
+        /// String containing whitespace characters that follow the specified token in the source document
+        /// </param>
+        /// <remarks>
+        /// <paramref name="tokenString"/> should be a valid token according to CIL assembler grammar. Leading and 
+        /// trailing whitespace should be strings consisting of only whitespace characters (including CR and LF), empty 
+        /// strings or null values. Otherwise, the behaviour is undefined.
+        /// </remarks>
+        /// <exception cref="ArgumentNullException">Token string is null</exception>
+        /// <exception cref="ArgumentException">Token string is empty</exception>
         public static SyntaxNode CreateFromToken(string tokenString, string leadingWhitespace, string trailingWhitespace)
         {
             if (tokenString == null) throw new ArgumentNullException("tokenString");
