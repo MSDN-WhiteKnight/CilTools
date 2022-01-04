@@ -77,6 +77,16 @@ namespace CilView.UI.Controls
             this.tbCurrLocation.Text = sb.ToString();
         }
 
+        public CilBrowserPage(string contentText, string filename)
+        {
+            InitializeComponent();           
+            
+            this.tbMainContent.Text = contentText;
+            gridContent.Children.Clear();
+            gridContent.Children.Add(CilVisualization.VisualizeSourceText(contentText));
+            this.tbCurrLocation.Text = filename;
+        }
+
         public MemberInfo Member { get { return this.member; } }
 
         public string ContentText

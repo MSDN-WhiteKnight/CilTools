@@ -187,7 +187,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (stroperand != null)
                 {
-                    yield return new LiteralSyntax("", stroperand, "");
+                    yield return LiteralSyntax.CreateFromValue("", stroperand, "");
                 }
                 else
                 {
@@ -309,7 +309,7 @@ namespace CilTools.BytecodeAnalysis
                         target.Write(')');
                         target.Flush();
 
-                        yield return new CommentSyntax("", sb.ToString());
+                        yield return CommentSyntax.Create("", sb.ToString(), null, false);
                     }
                 } //end if (sig != null)
             }

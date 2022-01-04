@@ -287,6 +287,10 @@
       <Project>{97d23c38-120e-47ea-bbce-4fae3c750bee}</Project>
       <Name>CilTools.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CilView.Core\CilView.Core.csproj">
+      <Project>{2801415a-3cbe-4d72-87f4-82c31d380675}</Project>
+      <Name>CilView.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Build\CsTemplate.xml" />

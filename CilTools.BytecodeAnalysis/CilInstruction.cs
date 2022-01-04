@@ -4,12 +4,11 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
 using CilTools.Reflection;
-using System.Diagnostics;
 using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
@@ -503,6 +502,16 @@ namespace CilTools.BytecodeAnalysis
                     throw new NotSupportedException("Unknown opcode: " + name);
                 }
                 return opcodes[name];
+            }
+        }
+
+        internal static bool IsOpCode(string name)
+        {
+            lock (opcodes_sync)
+            {
+                if (opcodes == null) LoadOpCodes(); //on first run, initialize static dictionary
+
+                return opcodes.ContainsKey(name);
             }
         }
 

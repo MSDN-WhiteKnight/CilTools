@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
@@ -489,6 +490,13 @@ namespace CilTools.Syntax
         internal static bool IsKeyword(string str) 
         {
             return keywords.Contains(str);
+        }
+
+        internal static KeywordKind ClassifyKeyword(string str)
+        {
+            if (str[0] == '.') return KeywordKind.DirectiveName;
+            else if (CilInstruction.IsOpCode(str)) return KeywordKind.InstructionName;
+            else return KeywordKind.Other;
         }
     }
 }

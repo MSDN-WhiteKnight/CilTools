@@ -13,9 +13,10 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
-using CilView.SourceCode;
 using CilTools.Syntax;
 using CilTools.Runtime;
+using CilView.Core.Syntax;
+using CilView.SourceCode;
 using CilView.UI.Controls;
 
 namespace CilView
@@ -388,6 +389,28 @@ namespace CilView
             fd.Blocks.Add(par);
             scroll.Document = fd;
             plaintext = sb.ToString();
+            return scroll;
+        }
+
+        public static UIElement VisualizeSourceText(string text)
+        {
+            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
+            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
+            scroll.VerticalAlignment = VerticalAlignment.Stretch;
+            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+
+            FlowDocument fd = new FlowDocument();
+            fd.TextAlignment = TextAlignment.Left;
+            fd.FontFamily = new FontFamily("Courier New");
+            
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(text);
+            Paragraph par = new Paragraph();
+            VisualizeGraphContext ctx = new VisualizeGraphContext();
+
+            for (int i = 0; i < nodes.Length; i++) VisualizeNode(nodes[i], par, ctx);
+
+            fd.Blocks.Add(par);
+            scroll.Document = fd;
             return scroll;
         }
     }

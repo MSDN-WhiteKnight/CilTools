@@ -174,6 +174,19 @@ namespace CilView.UI.Controls
             this.text = String.Empty;
         }
 
+        public void NavigateToSourceDocument(string contentText, string filename)
+        {
+            CilBrowserPage page = new CilBrowserPage(contentText, filename);
+            page.Title = filename;
+            frameContent.Navigate(page);
+            this.text = contentText;
+            this.current_method = null;
+            this.current_type = null;
+
+            //make sure content is visible
+            ExpandContentPane();
+        }
+
         public void Clear()
         {
             if (tlv != null) tlv.Clear();
