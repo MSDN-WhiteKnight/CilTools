@@ -13,6 +13,7 @@ using System.Windows.Input;
 using CilTools.Runtime;
 using CilView.Build;
 using CilView.Common;
+using CilView.Core;
 using CilView.Exceptions;
 using CilView.SourceCode;
 using CilView.UI.Dialogs;
@@ -180,8 +181,7 @@ namespace CilView
                     bool bres = BuildProject(proj, out assemblyPath);
                     if (bres == false) return;
                 }
-                else if (file.EndsWith(".il", StringComparison.OrdinalIgnoreCase) ||
-                    file.EndsWith(".txt", StringComparison.OrdinalIgnoreCase))
+                else if (FileUtils.HasCilSourceExtension(file))
                 {
                     //IL source file
                     string content = File.ReadAllText(file);
@@ -393,7 +393,8 @@ namespace CilView
             dlg.RestoreDirectory = true;
             dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|" +
                 "Code files (*.cs,*.vb)|*.cs;*.vb|" +
-                "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|All files|*";
+                "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|" +
+                "IL source files (*.il,*.txt)|*.il;*.txt|All files|*";
 
             if (dlg.ShowDialog(this) == true)
             {
