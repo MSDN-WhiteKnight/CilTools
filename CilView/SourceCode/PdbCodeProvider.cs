@@ -16,6 +16,14 @@ namespace CilView.SourceCode
 {
     class PdbCodeProvider : SourceCodeProvider
     {
+        const uint PDB_HIDDEN_SEQUENCE_POINT = 0x00feefee;
+
+        static readonly PdbCodeProvider s_instance = new PdbCodeProvider();
+
+        private PdbCodeProvider() { }
+
+        public static PdbCodeProvider Instance { get { return s_instance; } }
+
         public override IEnumerable<SourceDocument> GetSourceCodeDocuments(MethodBase m)
         {
             SourceDocument ret;
@@ -119,7 +127,7 @@ namespace CilView.SourceCode
                 }
 
                 //считаем код фрагмента из исходников
-                string s = PdbUtils.ReadSourceFromFile(filePath, (uint)fragment.LineStart, (ushort)colStart, 
+                string s = ReadSourceFromFile(filePath, (uint)fragment.LineStart, (ushort)colStart, 
                     (uint)fragment.LineEnd, (ushort)colEnd, exact: true);
 
                 fragment.Text = s;
@@ -141,7 +149,7 @@ namespace CilView.SourceCode
                 ret.ColEnd = end.ColEnd;
 
                 //считаем код метода из исходников
-                string methodSource = PdbUtils.ReadSourceFromFile(filePath, (uint)ret.LineStart, (ushort)ret.ColStart,
+                string methodSource = ReadSourceFromFile(filePath, (uint)ret.LineStart, (ushort)ret.ColStart,
                     (uint)ret.LineEnd, (ushort)ret.ColEnd, exact: false);
 
                 ret.Text = methodSource;
@@ -193,8 +201,8 @@ namespace CilView.SourceCode
                     }
 
                     PdbSequencePoint[] points_sorted = coll.Lines.
-                        Where((x) => x.LineBegin < PdbUtils.PDB_HIDDEN_SEQUENCE_POINT &&
-                        x.LineEnd < PdbUtils.PDB_HIDDEN_SEQUENCE_POINT).
+                        Where((x) => x.LineBegin < PDB_HIDDEN_SEQUENCE_POINT &&
+                        x.LineEnd < PDB_HIDDEN_SEQUENCE_POINT).
                         OrderBy((x) => x.Offset).ToArray();
 
                     if (points_sorted.Length == 0)
@@ -246,7 +254,7 @@ namespace CilView.SourceCode
                         fragment.ColEnd = colEnd;
 
                         //считаем код фрагмента из исходников
-                        string s = PdbUtils.ReadSourceFromFile(coll.File.Name, (uint)lineStart, (ushort)colStart,
+                        string s = ReadSourceFromFile(coll.File.Name, (uint)lineStart, (ushort)colStart,
                             (uint)lineEnd, (ushort)colEnd, exact: true);
 
                         fragment.Text = s;
@@ -265,7 +273,7 @@ namespace CilView.SourceCode
                     ret.ColEnd = colEnd;
 
                     //считаем код метода из исходников
-                    string methodSource = PdbUtils.ReadSourceFromFile(coll.File.Name, (uint)lineStart, (ushort)colStart,
+                    string methodSource = ReadSourceFromFile(coll.File.Name, (uint)lineStart, (ushort)colStart,
                         (uint)lineEnd, (ushort)colEnd, exact: false);
                     ret.Text = methodSource;
 
@@ -274,6 +282,72 @@ namespace CilView.SourceCode
             }//end using
 
             return ret;
+        }
+
+        static string ReadSourceFromFile(string filePath, uint lineBegin, ushort colBegin,
+            uint lineEnd, ushort colEnd, bool exact)
+        {
+            StringBuilder sb = new StringBuilder();
+            StringWriter wr = new StringWriter(sb);
+            ReadSourceFromFile(filePath, lineBegin, colBegin, lineEnd, colEnd, exact, wr);
+            return sb.ToString();
+        }
+
+        static void ReadSourceFromFile(string filePath, uint lineBegin, ushort colBegin,
+            uint lineEnd, ushort colEnd, bool exact, TextWriter target)
+        {
+            //считываем файл исходников
+            string[] lines = File.ReadAllLines(filePath, Encoding.UTF8);
+
+            bool reading = false;
+            int index_start;
+            int index_end;
+
+            //считаем код метода из исходников
+            for (int i = 1; i <= lines.Length; i++)
+            {
+                string line = lines[i - 1];
+                index_start = 0;
+                index_end = line.Length;
+
+                if (!reading)
+                {
+                    if (i >= lineBegin)
+                    {
+                        //первая строка
+                        reading = true;
+
+                        if (exact)
+                        {
+                            index_start = colBegin - 1;
+                            if (index_start < 0) index_start = 0;
+                        }
+                        else
+                        {
+                            index_start = 0;
+                        }
+                    }
+                }
+
+                if (reading)
+                {
+                    if (i >= lineEnd)
+                    {
+                        //последняя строка
+                        index_end = colEnd - 1;
+                        if (index_end > line.Length) index_end = line.Length;
+                        if (index_end < index_start) index_end = index_start;
+
+                        target.WriteLine(line.Substring(index_start, index_end - index_start));
+                        break;
+                    }
+
+                    //считывание текущей строки
+                    target.WriteLine(line.Substring(index_start, index_end - index_start));
+                }
+            }//end for
+
+            target.Flush();
         }
 
         public static string PrintDocument(SourceDocument doc)

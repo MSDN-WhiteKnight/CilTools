@@ -36,7 +36,7 @@ namespace CilView
         {
             //default disassembler parameters
             DisassemblerParams ret = new DisassemblerParams();
-            ret.CodeProvider = new PdbCodeProvider();
+            ret.CodeProvider = PdbCodeProvider.Instance;
             ret.IncludeSourceCode = false;
             return ret;
         }
