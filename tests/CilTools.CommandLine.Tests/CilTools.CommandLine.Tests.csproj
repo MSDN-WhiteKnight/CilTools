@@ -20,4 +20,10 @@
     <ProjectReference Include="..\CilTools.Tests.Common\CilTools.Tests.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="test.il">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

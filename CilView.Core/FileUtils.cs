@@ -14,5 +14,11 @@ namespace CilView.Core
             return file.EndsWith(".il", StringComparison.OrdinalIgnoreCase) ||                
                    file.EndsWith(".txt", StringComparison.OrdinalIgnoreCase);
         }
+
+        public static bool HasPeFileExtension(string file)
+        {
+            return file.EndsWith(".dll", StringComparison.OrdinalIgnoreCase) ||
+                   file.EndsWith(".exe", StringComparison.OrdinalIgnoreCase);
+        }
     }
 }

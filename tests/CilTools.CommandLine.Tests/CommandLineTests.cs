@@ -78,6 +78,24 @@ namespace CilTools.CommandLine.Tests
         }
 
         [TestMethod]
+        public void Test_View_SourceFile()
+        {
+            string fileContent = File.ReadAllText("test.il").Replace("\r\n", "\n");
+
+            const string cmd = "view test.il";
+            CommandResult cr = Execute(GetExePath(), cmd);
+            string s = cr.StandardOutputText.Replace("\r\n", "\n");
+            Console.WriteLine(s);
+            Console.WriteLine(cr.StandardErrorText);
+            Assert.IsTrue(cr.Success);
+
+            AssertThat.IsMatch(s, new Text[] {
+                "*** CIL Tools command line ***", Text.Any, "IL source file: test.il" , Text.Any,
+                fileContent, Text.Any
+            });
+        }
+
+        [TestMethod]
         public void Test_Disasm()
         {
             const string cmd = "disasm --output test.il CilTools.Tests.Common.dll CilTools.Tests.Common.SampleMethods PrintTenNumbers";

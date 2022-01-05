@@ -1,5 +1,5 @@
 /* CIL Tools
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
 using CilTools.Syntax;
+using CilView.Core;
+using CilView.Core.Syntax;
 
 namespace CilTools.CommandLine
 {
@@ -21,8 +23,14 @@ namespace CilTools.CommandLine
             Console.WriteLine(" Commands:");
             Console.WriteLine();
 
-            Console.WriteLine("view - Print CIL code of the method or methods with the specified name");
-            Console.WriteLine("Usage: " + exeName + " view [--nocolor] <assembly path> <type full name> <method name>");
+            Console.WriteLine("view - Print CIL code of methods or the content of CIL source files");
+            Console.WriteLine();
+            Console.WriteLine(" Usage");
+            Console.WriteLine("Print disassembled CIL code of method or methods with the specified name:");
+            Console.WriteLine("   " + exeName + " view [--nocolor] <assembly path> <type full name> <method name>");
+            Console.WriteLine("Print contents of the specified CIL source file (*.il):");
+            Console.WriteLine("   " + exeName + " view [--nocolor] <source file path>");
+            Console.WriteLine();
             Console.WriteLine("[--nocolor] - disable syntax highlighting");
             Console.WriteLine();
 
@@ -66,14 +74,14 @@ namespace CilTools.CommandLine
                 {
                     KeywordSyntax ks = (KeywordSyntax)node;
 
-                    if (ks.Kind == KeywordKind.Other) Console.ForegroundColor = ConsoleColor.Yellow;
+                    if (ks.Kind == KeywordKind.Other) Console.ForegroundColor = ConsoleColor.Cyan;
                     else if (ks.Kind == KeywordKind.DirectiveName) Console.ForegroundColor = ConsoleColor.Magenta;
                 }
                 else if (node is IdentifierSyntax)
                 {
                     IdentifierSyntax id = (IdentifierSyntax)node;
 
-                    if (id.IsMemberName) Console.ForegroundColor = ConsoleColor.Cyan;
+                    if (id.IsMemberName) Console.ForegroundColor = ConsoleColor.Yellow;
                 }
                 else if (node is LiteralSyntax)
                 {
@@ -106,6 +114,22 @@ namespace CilTools.CommandLine
             CilGraph graph = CilGraph.Create(method);
             SyntaxNode root = graph.ToSyntaxTree();
             PrintNode(root, noColor, target);
+        }
+
+        static void PrintSourceDocument(string content, bool noColor, TextWriter target)
+        {
+            if (noColor)
+            {
+                target.WriteLine(content);
+                return;
+            }
+
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(content);
+
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                PrintNode(nodes[i], noColor, target);
+            }
         }
 
         static int DisassembleMethod(string asspath, string type, string method, bool noColor, TextWriter target) 
@@ -260,7 +284,7 @@ namespace CilTools.CommandLine
         static int Main(string[] args)
         {
             Console.WriteLine("*** CIL Tools command line ***");
-            Console.WriteLine("Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight/CilTools)");
+            Console.WriteLine("Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight/CilTools)");
             Console.WriteLine();
 
             //read and validate command line arguments
@@ -277,12 +301,12 @@ namespace CilTools.CommandLine
             }
             else if (args[0] == "view")
             {
-                string asspath;
+                string filepath;
                 string type;
                 string method;
                 bool noColor = false;
 
-                if (args.Length < 4)
+                if (args.Length < 2)
                 {
                     Console.WriteLine("Error: not enough arguments for 'view' command.");
                     Console.WriteLine(GetErrorInfo());
@@ -297,16 +321,40 @@ namespace CilTools.CommandLine
                     pos++;
                 }
 
-                asspath = ReadCommandParameter(args, pos);
+                //read path for assembly or IL source file
+                filepath = ReadCommandParameter(args, pos);
                 pos++;
 
-                if (string.IsNullOrEmpty(asspath))
+                if (string.IsNullOrEmpty(filepath))
                 {
-                    Console.WriteLine("Error: Assembly path is not provided for the 'view' command.");
+                    Console.WriteLine("Error: File path is not provided for the 'view' command.");
                     Console.WriteLine(GetErrorInfo());
                     return 1;
                 }
 
+                if (FileUtils.HasCilSourceExtension(filepath) || 
+                    (args.Length < 4 && !FileUtils.HasPeFileExtension(filepath)))
+                {
+                    //view IL source file
+
+                    try
+                    {
+                        string content = File.ReadAllText(filepath);
+                        string title = Path.GetFileName(filepath);
+                        Console.WriteLine("IL source file: " + title);
+                        Console.WriteLine();
+                        PrintSourceDocument(content, noColor, Console.Out);
+                        return 0;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error:");
+                        Console.WriteLine(ex.ToString());
+                        return 1;
+                    }
+                }
+
+                //read type and method name from arguments
                 type = ReadCommandParameter(args, pos);
                 pos++;
 
@@ -327,10 +375,10 @@ namespace CilTools.CommandLine
                 }
 
                 //view command implementation
-                Console.WriteLine("Assembly: " + asspath);
+                Console.WriteLine("Assembly: " + filepath);
                 Console.WriteLine("{0}.{1}", type, method);
                 Console.WriteLine();
-                return DisassembleMethod(asspath, type, method, noColor, Console.Out);
+                return DisassembleMethod(filepath, type, method, noColor, Console.Out);
             }
             else if (args[0] == "disasm") 
             {
