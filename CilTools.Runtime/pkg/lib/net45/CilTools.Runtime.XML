@@ -245,6 +245,94 @@
             <returns>In-memory executable image data, or <c>null</c> if the operation failed</returns>
             <exception cref="T:System.ArgumentNullException">module is <c>null</c></exception>
         </member>
+        <member name="T:CilTools.Runtime.ClrConstructorInfo">
+            <summary>
+            Represents information about the constructor in an external CLR instance
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.InnerMethod">
+            <summary>
+            Gets the underlying ClrMD method object
+            </summary>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.ReturnType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.TokenResolver">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetBytecode">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.MaxStackSize">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.MaxStackSizeSpecified">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetLocalVarSignature">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetExceptionBlocks">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.Attributes">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetMethodImplementationFlags">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetParameters">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.Invoke(System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.MethodHandle">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.DeclaringType">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetCustomAttributes(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetCustomAttributes(System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.IsDefined(System.Type,System.Boolean)">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetLocalVariables">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetDefinition">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrConstructorInfo.GetPInvokeParams">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.MemberType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.Name">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.ReflectedType">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.MetadataToken">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.InitLocals">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrConstructorInfo.InitLocalsSpecified">
+            <inheritdoc/>
+        </member>
         <member name="T:CilTools.Runtime.ClrDynamicMethod">
             <summary>
             Represents information about a dynamic method in the external CLR instance
@@ -313,6 +401,18 @@
         <member name="M:CilTools.Runtime.ClrMethodInfo.IsDefined(System.Type,System.Boolean)">
             <inheritdoc/>
         </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetBaseDefinition">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetLocalVariables">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetDefinition">
+            <inheritdoc/>
+        </member>
+        <member name="M:CilTools.Runtime.ClrMethodInfo.GetPInvokeParams">
+            <inheritdoc/>
+        </member>
         <member name="P:CilTools.Runtime.ClrMethodInfo.MemberType">
             <inheritdoc/>
         </member>
@@ -329,6 +429,9 @@
             <inheritdoc/>
         </member>
         <member name="P:CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified">
+            <inheritdoc/>
+        </member>
+        <member name="P:CilTools.Runtime.ClrMethodInfo.ReturnTypeCustomAttributes">
             <inheritdoc/>
         </member>
         <member name="T:CilTools.Runtime.ClrStackFrameInfo">
@@ -576,6 +679,26 @@
             </summary>
             <remarks>This method only disposes the underlying data target if this instance was constructed with the <c>autoDispose</c> 
             parameter set to true. </remarks>
+        </member>
+        <member name="M:CilTools.Runtime.HeapScanner.RegisterAction(System.String,System.Action{Microsoft.Diagnostics.Runtime.ClrObject})">
+            <summary>
+            Registers delegate to be executed on objects of specified type
+            </summary>
+            <param name="typeName">The full name of type to register action for</param>
+            <param name="action">Delegate to register</param>
+        </member>
+        <member name="M:CilTools.Runtime.HeapScanner.ScanHeap(Microsoft.Diagnostics.Runtime.DataTarget,System.Action{Microsoft.Diagnostics.Runtime.ClrObject})">
+            <summary>
+            Executes the specified delegate for every object in data target's managed heap
+            </summary>
+            <param name="dt">Data target to scan heap</param>
+            <param name="action">Delegate that receives objects from heap</param>
+        </member>
+        <member name="M:CilTools.Runtime.HeapScanner.ScanHeap(Microsoft.Diagnostics.Runtime.DataTarget)">
+            <summary>
+            Executes registered actions for every object in data target's managed heap
+            </summary>
+            <param name="dt">Data target to scan heap</param>        
         </member>
     </members>
 </doc>

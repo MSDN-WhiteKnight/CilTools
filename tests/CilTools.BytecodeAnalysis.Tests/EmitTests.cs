@@ -210,7 +210,7 @@ namespace CilTools.BytecodeAnalysis.Tests
 
 #if !DEBUG
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "GetInterfaceCount", MethodSource.FromReflection)]
+        [MethodTestData(typeof(SampleMethods), "GetInterfaceCount", BytecodeProviders.Reflection)]
         public void Test_CilReader_VirtualCall_Emit(MethodBase mi)
         {
             //Test EmitTo: only NetFX
