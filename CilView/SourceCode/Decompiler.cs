@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -76,18 +76,7 @@ namespace CilView.SourceCode
             else if (Utils.TypeEquals(t, typeof(double))) return "double";
             else return null;
         }
-
-        public static SourceInfo GetSourceFromDecompiler(MethodBase m)
-        {
-            //stub implementation that only works for abstract methods
-            SourceInfo ret = new SourceInfo();
-            ret.SymbolsFile = "DECOMPILED";
-            ret.SourceFile = "DECOMPILED";
-            ret.SourceCode = DecompileMethodSignature(".cs", m);
-            ret.Method = m;
-            return ret;
-        }
-
+        
         protected static string GetGenericDefinitionName(string typeName)
         {
             int i = typeName.IndexOf('`');

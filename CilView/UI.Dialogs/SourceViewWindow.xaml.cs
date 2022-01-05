@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using CilTools.SourceCode;
 using CilView.Common;
 using CilView.SourceCode;
 
@@ -14,32 +15,32 @@ namespace CilView.UI.Dialogs
 {
     public partial class SourceViewWindow : Window
     {
-        SourceInfo _info;
+        SourceFragment _f;
 
-        void LoadSourceInfo(SourceInfo info)
+        void LoadSourceInfo(SourceFragment f)
         {
-            this._info = info;
+            this._f = f;
 
             StringBuilder method_str = new StringBuilder(200);
-            method_str.Append(CilVisualization.MethodToString(info.Method));
+            method_str.Append(CilVisualization.MethodToString(f.Method));
             method_str.Append(", byte offset: ");
-            method_str.Append(info.CilStart.ToString());
+            method_str.Append(f.CilStart.ToString());
             method_str.Append('-');
-            method_str.Append(info.CilEnd.ToString());
+            method_str.Append(f.CilEnd.ToString());
             tbMethod.Text = method_str.ToString();
 
             StringBuilder sb = new StringBuilder(500);
-            sb.Append(info.SourceFile);
+            sb.Append(f.Document.FilePath);
             sb.Append("; lines: ");
-            sb.Append(info.LineStart);
+            sb.Append(f.LineStart);
             sb.Append("-");
-            sb.Append(info.LineEnd);
+            sb.Append(f.LineEnd);
             tbFileName.Text = sb.ToString();
 
             try
             {
                 //get CIL for the range of the sequence point
-                tbCIL.Text=PdbUtils.GetCilText(info.Method, info.CilStart, info.CilEnd);
+                tbCIL.Text = PdbUtils.GetCilText(f.Method, (uint)f.CilStart, (uint)f.CilEnd);
             }
             catch (Exception ex)
             {
@@ -49,20 +50,20 @@ namespace CilView.UI.Dialogs
                 ErrorHandler.Current.Error(ex);
             }
 
-            tbSource.Text = info.SourceCode;
+            tbSource.Text = f.Text;
 
-            if (info.CilStart == 0) bPrevious.IsEnabled = false;
+            if (f.CilStart == 0) bPrevious.IsEnabled = false;
             else bPrevious.IsEnabled = true;
 
-            int size = Utils.GetMethodBodySize(info.Method);
-            if (info.CilEnd >= size) bNext.IsEnabled = false;
+            int size = Utils.GetMethodBodySize(f.Method);
+            if (f.CilEnd >= size) bNext.IsEnabled = false;
             else bNext.IsEnabled = true;
         }
 
-        public SourceViewWindow(SourceInfo info)
+        public SourceViewWindow(SourceFragment f)
         {
             InitializeComponent();
-            this.LoadSourceInfo(info);
+            this.LoadSourceInfo(f);
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
@@ -75,29 +76,27 @@ namespace CilView.UI.Dialogs
             if (e.LeftButton != MouseButtonState.Pressed) return;
 
             //open the source file in external editor
-            Utils.ShellExecute(this._info.SourceFile, this,
-                "Failed to open source code file");
+            Utils.ShellExecute(this._f.Document.FilePath, this, "Failed to open source code file");
         }
-
+        
         private void bPrevious_Click(object sender, RoutedEventArgs e)
         {
-            uint offset = this._info.CilStart;
+            uint offset = (uint)this._f.CilStart;
             if (offset == 0) return;
 
             offset--;
 
             try
             {
-                SourceInfo info_new = PdbUtils.GetSourceFromPdb(this._info.Method, offset, offset,
-                    SymbolsQueryType.SequencePoint);
+                SourceFragment f_new = PdbUtils.FindFragment(this._f.Document.Fragments, offset);
 
-                if (string.IsNullOrEmpty(info_new.SourceCode))
+                if (f_new == null)
                 {
                     MessageBox.Show("Failed to get the previous sequence point");
                     return;
                 }
 
-                this.LoadSourceInfo(info_new);
+                this.LoadSourceInfo(f_new);
             }
             catch (Exception ex)
             {
@@ -107,24 +106,23 @@ namespace CilView.UI.Dialogs
 
         private void bNext_Click(object sender, RoutedEventArgs e)
         {
-            int offset = (int)this._info.CilEnd;
-            int size = Utils.GetMethodBodySize(this._info.Method);
+            int offset = this._f.CilEnd;
+            int size = Utils.GetMethodBodySize(this._f.Method);
             if (offset >= size) return;
 
             offset++;
 
             try
             {
-                SourceInfo info_new = PdbUtils.GetSourceFromPdb(this._info.Method, (uint)offset, (uint)offset,
-                    SymbolsQueryType.SequencePoint);
+                SourceFragment f_new = PdbUtils.FindFragment(this._f.Document.Fragments, (uint)offset);
 
-                if (string.IsNullOrEmpty(info_new.SourceCode))
+                if (f_new == null)
                 {
                     MessageBox.Show("Failed to get the next sequence point");
                     return;
                 }
 
-                this.LoadSourceInfo(info_new);
+                this.LoadSourceInfo(f_new);
             }
             catch (Exception ex)
             {

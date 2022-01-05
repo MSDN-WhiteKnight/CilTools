@@ -1,13 +1,15 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Media;
+using CilTools.SourceCode;
 using CilView.Common;
 using CilView.UI.Dialogs;
 
@@ -17,11 +19,10 @@ namespace CilView.SourceCode
     {
         static void ShowDecompiledSource(MethodBase method)
         {
-            SourceInfo srcinfo;
-            srcinfo = Decompiler.GetSourceFromDecompiler(method);
+            //stub implementation that only works for abstract methods
+            string src = Decompiler.DecompileMethodSignature(".cs", method);
 
             //build display string
-            string src = srcinfo.SourceCode;
             StringBuilder sb = new StringBuilder(src.Length * 2);            
             sb.AppendLine(src);
 
@@ -48,65 +49,47 @@ namespace CilView.SourceCode
         {
             try
             {
-                SourceInfo srcinfo;
-
                 if (method.IsAbstract)
                 {
                     //abstract method has no sequence points in PDB, just use decompiler
                     ShowDecompiledSource(method);
                     return;
                 }
-                
+
                 //from PDB
-                if (wholeMethod)
+                PdbCodeProvider provider = PdbCodeProvider.Instance;
+                SourceDocument doc = provider.GetSourceCodeDocuments(method).FirstOrDefault();
+                
+                if (doc == null)
                 {
-                    srcinfo = PdbUtils.GetSourceFromPdb(method,
-                        0, uint.MaxValue, SymbolsQueryType.RangeExact);
-                }
-                else
-                {
-                    srcinfo = PdbUtils.GetSourceFromPdb(method,
-                        byteOffset, byteOffset, SymbolsQueryType.SequencePoint);
-                }
-
-                string src = srcinfo.SourceCode;
-
-                if (string.IsNullOrWhiteSpace(src))
-                {
-                    string str = "Failed to get source code";
-
-                    if (srcinfo.Error != SourceInfoError.Success)
-                    {
-                        str += ": "+srcinfo.Error.ToString();
-                    }
-
-                    MessageBox.Show(str, "Error");
+                    MessageBox.Show("Failed to get source code: line info not found for this method", "Error");
                     return;
                 }
-
+                
                 if (wholeMethod)
                 {
+                    string src = doc.Text;
                     string methodstr = string.Empty;
-                    string ext = Path.GetExtension(srcinfo.SourceFile);
+                    string ext = Path.GetExtension(doc.FilePath);
 
                     try
                     {
-                        if (!Utils.IsConstructor(srcinfo.Method) && !Utils.IsPropertyMethod(srcinfo.Method))
+                        if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
                         {
-                            methodstr = Decompiler.DecompileMethodSignature(ext, srcinfo.Method);
+                            methodstr = Decompiler.DecompileMethodSignature(ext, doc.Method);
                         }
                     }
                     catch (Exception ex)
                     {
                         //don't error out if we can't build good signature string
                         ErrorHandler.Current.Error(ex, "PdbUtils.GetMethodSigString", silent: true);
-                        methodstr = CilVisualization.MethodToString(srcinfo.Method);
+                        methodstr = CilVisualization.MethodToString(doc.Method);
                     }
 
                     //build display string
                     StringBuilder sb = new StringBuilder(src.Length * 2);
-                    sb.AppendFormat("({0}, ", srcinfo.SourceFile);
-                    sb.AppendFormat("lines {0}-{1})", srcinfo.LineStart, srcinfo.LineEnd);
+                    sb.AppendFormat("({0}, ", doc.FilePath);
+                    sb.AppendFormat("lines {0}-{1})", doc.LineStart, doc.LineEnd);
                     sb.AppendLine();
                     sb.AppendLine();
                     sb.AppendLine(methodstr);
@@ -131,7 +114,15 @@ namespace CilView.SourceCode
                 }
                 else
                 {
-                    SourceViewWindow srcwnd = new SourceViewWindow(srcinfo);
+                    SourceFragment f = PdbUtils.FindFragment(doc.Fragments, byteOffset);
+
+                    if (f == null)
+                    {
+                        MessageBox.Show("Failed to get source code: sequence point not found", "Error");
+                        return;
+                    }
+
+                    SourceViewWindow srcwnd = new SourceViewWindow(f);
                     srcwnd.ShowDialog();
                 }
             }

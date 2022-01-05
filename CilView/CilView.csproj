@@ -148,7 +148,6 @@
     <Compile Include="SourceCode\PdbCodeProvider.cs" />
     <Compile Include="SourceCode\PdbUtils.cs" />
     <Compile Include="SourceCode\SourceCodeUI.cs" />
-    <Compile Include="SourceCode\SourceInfo.cs" />
     <Compile Include="SourceCode\SymbolsException.cs" />
     <Compile Include="SourceCode\SymbolsQueryType.cs" />
     <Compile Include="SourceCode\VbDecompiler.cs" />

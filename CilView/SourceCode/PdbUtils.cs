@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -12,8 +12,6 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.SourceCode;
 using CilView.Common;
-using Internal.Pdb.Portable;
-using Internal.Pdb.Windows;
 
 namespace CilView.SourceCode
 {
@@ -42,13 +40,8 @@ namespace CilView.SourceCode
 
             return sb.ToString();
         }
-
-        public static string GetSourceFromPdb<T>(Predicate<T> match)
-        {
-            return GetSourceFromPdb(match.Method, 0, uint.MaxValue, SymbolsQueryType.RangeExact).SourceCode;
-        }
-
-        static SourceFragment FindFragment(IEnumerable<SourceFragment> fragments, uint offset)
+        
+        public static SourceFragment FindFragment(IEnumerable<SourceFragment> fragments, uint offset)
         {
             SourceFragment fragment = null;
 
@@ -68,59 +61,8 @@ namespace CilView.SourceCode
             if (fragment.CilStart > offset) return null;
             else return fragment;
         }
-
-        /// <summary>
-        /// Gets the source code for the specified bytecode fragment using PDB symbols
-        /// </summary>
-        /// <param name="m">Method for which to get the source code</param>
-        /// <param name="startOffset">Byte offset of the bytecode fragment's start</param>
-        /// <param name="endOffset">Byte offset of the bytecode fragment's end</param>
-        /// <param name="queryType"> Specifies how to determine the source bytecode fragment:  
-        /// <see cref="SymbolsQueryType.RangeExact"/> to return the sources for exact specified bytecode fragment; 
-        /// <see cref="SymbolsQueryType.SequencePoint"/> to get the sources 
-        /// for the sequence point in which starting offset lies.
-        /// </param>
-        public static SourceInfo GetSourceFromPdb(MethodBase m,
-            uint startOffset,
-            uint endOffset,
-            SymbolsQueryType queryType)
-        {
-            PdbCodeProvider provider = PdbCodeProvider.Instance;
-            SourceDocument doc = provider.GetSourceCodeDocuments(m).FirstOrDefault();
-
-            if(doc == null) return SourceInfo.FromError(SourceInfoError.NoMatches);
-
-            SourceInfo ret = new SourceInfo();
-            ret.Method = m;
-            ret.SourceFile = doc.FilePath;
-            ret.SymbolsFile = doc.SymbolsFile;
-
-            if (queryType == SymbolsQueryType.RangeExact && startOffset == 0 && endOffset == uint.MaxValue)
-            {
-                //whole method
-                ret.SourceCode = doc.Text;
-                ret.CilStart = 0;
-                ret.CilEnd = (uint)Utils.GetMethodBodySize(m);
-                ret.LineStart = doc.LineStart;
-                ret.LineEnd = doc.LineEnd;
-                return ret;
-            }
-
-            //single sequence point
-            SourceFragment fragment = FindFragment(doc.Fragments, startOffset);
-
-            if (fragment == null) return SourceInfo.FromError(SourceInfoError.NoMatches);
-
-            ret.SourceCode = fragment.Text;
-            ret.CilStart = (uint)fragment.CilStart;
-            ret.CilEnd = (uint)fragment.CilEnd;
-            ret.LineStart = fragment.LineStart;
-            ret.LineEnd = fragment.LineEnd;
-            
-            return ret;
-        }
-
-        internal static bool IsSourceValid(string file, Guid algo, byte[] hash)
+        
+        public static bool IsSourceValid(string file, Guid algo, byte[] hash)
         {
             HashAlgorithm ha=null;
 
