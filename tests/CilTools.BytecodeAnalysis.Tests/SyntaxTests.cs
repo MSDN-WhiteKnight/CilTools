@@ -72,5 +72,13 @@ namespace CilTools.BytecodeAnalysis.Tests
                 "}", Text.Any
             });
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_Syntax_EntryPoint_Library(MethodBase m)
+        {
+            string str = CilAnalysis.MethodToText(m);
+            Assert.IsFalse(str.Contains(".entrypoint"));
+        }
     }
 }

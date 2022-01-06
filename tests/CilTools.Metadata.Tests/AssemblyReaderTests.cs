@@ -1,13 +1,15 @@
 ﻿/* CilTools.Metadata tests
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SampleApp;
 
 namespace CilTools.Metadata.Tests
 {
@@ -63,6 +65,39 @@ namespace CilTools.Metadata.Tests
                 MethodBase m = t.GetMember("PrintHelloWorld")[0] as MethodBase;
                 MethodBase m2 = t.GetMember("PrintHelloWorld")[0] as MethodBase;
                 Assert.AreSame(m, m2);
+            }
+        }
+
+        [TestMethod]
+        public void Test_EntryPoint()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(EmitSampleProgram).Assembly.Location);
+                MethodInfo entryPoint = ass.EntryPoint;
+                Assert.AreEqual("Main", entryPoint.Name);
+
+                string str = CilAnalysis.MethodToText(entryPoint);
+                
+                AssertThat.IsMatch(str, new Text[] { 
+                    ".method", Text.Any, "Main", Text.Any, "{", Text.Any, 
+                    ".entrypoint", Text.Any, "}", Text.Any
+                });
+            }
+        }
+
+        [TestMethod]
+        public void Test_EntryPoint_Library()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                MethodInfo entryPoint = ass.EntryPoint;
+                Assert.IsNull(entryPoint);
             }
         }
     }

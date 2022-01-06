@@ -203,5 +203,17 @@ namespace CilTools.Metadata
         /// </summary>
         /// <value>This implementation always returns <c>true</c></value>
         public override bool ReflectionOnly { get { return true; } }
+
+        public override MethodInfo EntryPoint
+        {
+            get
+            {
+                //Not implemented, but hardcoded to return null to avoid exceptions on common paths.
+                //If method is used via assembly reference, it's most likely a library method, not executable's 
+                //entry point.
+
+                return null;
+            }
+        }
     }
 }

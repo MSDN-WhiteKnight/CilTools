@@ -716,6 +716,21 @@ namespace CilTools.Metadata
             return Utils.ReadCustomAttributes(coll, this, this);
         }
 
+        public override MethodInfo EntryPoint
+        {
+            get
+            {
+                if (this.peReader == null) return null;
+
+                CorHeader ch = this.peReader.PEHeaders.CorHeader;
+                int token = ch.EntryPointTokenOrRelativeVirtualAddress;
+
+                if (token == 0) return null;
+
+                return this.ResolveMethodImpl(token, null, null) as MethodInfo;
+            }
+        }
+
         /// <summary>
         /// Releases resources associated with this instance
         /// </summary>

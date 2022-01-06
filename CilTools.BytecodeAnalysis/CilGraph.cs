@@ -368,7 +368,7 @@ namespace CilTools.BytecodeAnalysis
             int maxstack = 0;
             bool has_maxstack = false;
             LocalVariable[] locals = null;
-            List<SyntaxNode> ret = new List<SyntaxNode>(2);
+            List<SyntaxNode> ret = new List<SyntaxNode>(3);
 
             try
             {
@@ -393,6 +393,14 @@ namespace CilTools.BytecodeAnalysis
             {
                 string error = "Exception occured when trying to get local variables.";
                 Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
+            }
+
+            if (ReflectionUtils.IsEntryPoint(this._Method))
+            {
+                DirectiveSyntax dir = new DirectiveSyntax(
+                    " ", "entrypoint", new SyntaxNode[] { new GenericSyntax(Environment.NewLine) }
+                    );
+                ret.Add(dir);
             }
 
             if (has_maxstack)

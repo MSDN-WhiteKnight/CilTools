@@ -245,17 +245,25 @@ namespace CilTools.Runtime
         /// Gets the public types defined in this assembly that are visible outside the assembly.
         /// </summary>
         /// <returns>An array that represents the types defined in this assembly that are visible outside the assembly.</returns>
-        /// /// <remarks>This implementation returns an empty array</remarks>
+        /// <remarks>This implementation returns an empty array</remarks>
         public override Type[] GetExportedTypes()
         {
             return new Type[] { };
         }
 
         /// <summary>
+        /// Gets an entry point method for this assembly
+        /// </summary>
+        /// <value>This implementation always returns null</value>
+        public override MethodInfo EntryPoint => null;
+
+        /// <summary>
         /// Releases unmagnaged resources associated with this assembly object
         /// </summary>
-        /// <remarks>This method only disposes the underlying data target if this instance was constructed with the <c>autoDispose</c> 
-        /// parameter set to true. </remarks>
+        /// <remarks>
+        /// This method only disposes the underlying data target if this instance was constructed with the <c>autoDispose</c> 
+        /// parameter set to true.
+        /// </remarks>
         public void Dispose()
         {
             if (this.target == null) return; //already disposed
