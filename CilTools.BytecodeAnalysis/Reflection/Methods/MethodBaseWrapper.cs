@@ -160,5 +160,7 @@ namespace CilTools.Reflection.Methods
         {
             get { return this.mbd.InitLocalsSpecified; }
         }
+
+        public override int MetadataToken => this.srcmethod.MetadataToken;
     }
 }

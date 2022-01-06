@@ -159,5 +159,7 @@ namespace CilTools.Reflection.Methods
         {
             return null;
         }
+
+        public override int MetadataToken => this.srcmethod.MetadataToken;
     }
 }

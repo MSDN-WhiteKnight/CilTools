@@ -15,6 +15,15 @@ namespace CilTools.Reflection
             get { return BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic; }
         }
 
+        static bool IsExpectedException(Exception ex)
+        {
+            //check expected exception types that can pop up due to reflection APIs being not 
+            //implemented on custom subclasses 
+
+            return ex is NotImplementedException || ex is NotSupportedException ||
+                ex is InvalidOperationException;
+        }
+
         public static bool IsEntryPoint(MethodBase m)
         {
             try
@@ -28,13 +37,10 @@ namespace CilTools.Reflection
 
                 return m.MetadataToken == entryPoint.MetadataToken;
             }
-            catch (NotImplementedException)
+            catch (Exception ex)
             {
-                return false;
-            }
-            catch (NotSupportedException)
-            {
-                return false;
+                if (IsExpectedException(ex)) return false;
+                else throw;
             }
         }
     }
