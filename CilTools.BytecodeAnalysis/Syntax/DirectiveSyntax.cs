@@ -114,7 +114,7 @@ namespace CilTools.Syntax
             }
         }
 
-        internal static DirectiveSyntax FromMethodSignature(MethodBase m)
+        internal static DirectiveSyntax FromMethodSignature(MethodBase m, string lead)
         {
             ICustomMethod cm = (ICustomMethod)m;
             ParameterInfo[] pars = m.GetParameters();
@@ -258,10 +258,10 @@ namespace CilTools.Syntax
 
             for (int i = 0; i < pars.Length; i++)
             {
-                if (i >= 1) inner.Add(new PunctuationSyntax(String.Empty, ",", " "+ Environment.NewLine));
+                if (i >= 1) inner.Add(new PunctuationSyntax(string.Empty, ",", " " + Environment.NewLine));
                 else inner.Add(new GenericSyntax(Environment.NewLine));
 
-                inner.Add(new GenericSyntax("    "));
+                inner.Add(new GenericSyntax(lead + "    "));
 
                 if (pars[i].IsOptional) inner.Add(new GenericSyntax("[opt] "));
 
@@ -275,7 +275,7 @@ namespace CilTools.Syntax
                 inner.Add(new IdentifierSyntax(" ", parname, String.Empty,false, pars[i]));
             }
 
-            if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine));
+            if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine + lead));
             inner.Add(new PunctuationSyntax(String.Empty, ")", String.Empty));
 
             //ECMA-335 II.15.4.3 - Implementation attributes of methods
@@ -336,7 +336,7 @@ namespace CilTools.Syntax
 
             inner.Add(new GenericSyntax(Environment.NewLine));
 
-            return new DirectiveSyntax("", "method", inner.ToArray());
+            return new DirectiveSyntax(lead, "method", inner.ToArray());
         }
     }
 }

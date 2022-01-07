@@ -15,7 +15,7 @@ namespace CilTools.Reflection
             get { return BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic; }
         }
 
-        static bool IsExpectedException(Exception ex)
+        public static bool IsExpectedException(Exception ex)
         {
             //check expected exception types that can pop up due to reflection APIs being not 
             //implemented on custom subclasses 

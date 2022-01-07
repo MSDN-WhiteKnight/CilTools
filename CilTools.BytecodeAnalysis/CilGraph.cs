@@ -314,7 +314,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="output">The destination TextWriter</param>
         public void PrintSignature(TextWriter output)
         {
-            DirectiveSyntax.FromMethodSignature(this._Method).ToText(output);
+            DirectiveSyntax.FromMethodSignature(this._Method, string.Empty).ToText(output);
         }
         
         /// <summary>
@@ -323,7 +323,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="output">The destination TextWriter</param>
         public void PrintDefaults(TextWriter output)
         {
-            SyntaxNode[] elems = SyntaxNode.GetDefaultsSyntax(this._Method);
+            SyntaxNode[] elems = SyntaxNode.GetDefaultsSyntax(this._Method, 0);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -354,7 +354,7 @@ namespace CilTools.BytecodeAnalysis
         /// </remarks>
         public void PrintHeader(TextWriter output)
         {
-            SyntaxNode[] elems = this.HeaderAsSyntax();
+            SyntaxNode[] elems = this.HeaderAsSyntax(0);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -362,7 +362,7 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
-        SyntaxNode[] HeaderAsSyntax()
+        SyntaxNode[] HeaderAsSyntax(int startIndent)
         {
             ICustomMethod cm = (ICustomMethod)this._Method;
             int maxstack = 0;
@@ -397,17 +397,15 @@ namespace CilTools.BytecodeAnalysis
 
             if (ReflectionUtils.IsEntryPoint(this._Method))
             {
-                DirectiveSyntax dir = new DirectiveSyntax(
-                    " ", "entrypoint", new SyntaxNode[] { new GenericSyntax(Environment.NewLine) }
-                    );
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent+1), "entrypoint", 
+                    new SyntaxNode[] { new GenericSyntax(Environment.NewLine) });
                 ret.Add(dir);
             }
 
             if (has_maxstack)
             {
-                DirectiveSyntax dir = new DirectiveSyntax(
-                    " ", "maxstack", new SyntaxNode[] { new GenericSyntax(" "+maxstack.ToString()+Environment.NewLine) }
-                    );
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 1), "maxstack", 
+                    new SyntaxNode[] { new GenericSyntax(" "+maxstack.ToString()+Environment.NewLine) });
                 ret.Add(dir);
             }
 
@@ -418,14 +416,23 @@ namespace CilTools.BytecodeAnalysis
 
                 if (cm.InitLocalsSpecified)
                 {
-                    if (cm.InitLocals) inner.Add(new KeywordSyntax(" ", "init",String.Empty,KeywordKind.Other));
+                    if (cm.InitLocals)
+                    {
+                        inner.Add(new KeywordSyntax(" ", "init", string.Empty, 
+                            KeywordKind.Other));
+                    }
                 }
 
                 inner.Add(new PunctuationSyntax(" ", "(", String.Empty));
 
                 for (int i = 0; i < locals.Length; i++)
                 {
-                    if (i >= 1) inner.Add(new PunctuationSyntax(String.Empty,",","\r\n    "));
+                    if (i >= 1)
+                    {
+                        inner.Add(new PunctuationSyntax(string.Empty, ",", 
+                            "\r\n" + SyntaxNode.GetIndentString(startIndent + 4)));
+                    }
+
                     LocalVariable local = locals[i];
                     inner.Add(local.LocalTypeSpec.ToSyntax());
                     inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), String.Empty,false,local));
@@ -433,7 +440,8 @@ namespace CilTools.BytecodeAnalysis
 
                 inner.Add(new PunctuationSyntax(String.Empty, ")", Environment.NewLine));
 
-                DirectiveSyntax dir = new DirectiveSyntax( " ", "locals", inner.ToArray());
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 1), 
+                    "locals", inner.ToArray());
 
                 ret.Add(dir);
             }
@@ -505,7 +513,7 @@ namespace CilTools.BytecodeAnalysis
             //instructions
             if (node != null)
             {
-                SyntaxNode[] elems = this.BodyAsSyntaxTree(DisassemblerParams.Default);
+                SyntaxNode[] elems = this.BodyAsSyntaxTree(DisassemblerParams.Default, 0);
 
                 for (int i = 0; i < elems.Length; i++)
                 {
@@ -517,7 +525,7 @@ namespace CilTools.BytecodeAnalysis
             if (IncludeSignature) output.WriteLine("}");            
         }
 
-        SyntaxNode[] BodyAsSyntaxTree(DisassemblerParams dpars)
+        SyntaxNode[] BodyAsSyntaxTree(DisassemblerParams dpars, int startIndent)
         {
             CilGraphNode node = this._Root;
             if (node == null) return new SyntaxNode[] { };
@@ -569,6 +577,8 @@ namespace CilTools.BytecodeAnalysis
             }
             
             Stack<char> indent = new Stack<char>();
+
+            for (int i = 0; i < startIndent; i++) indent.Push(' ');
 
             BlockSyntax root=new BlockSyntax("",SyntaxNode.EmptyArray,new SyntaxNode[0]);
             List<BlockSyntax> currentpath = new List<BlockSyntax>(20);
@@ -801,7 +811,7 @@ namespace CilTools.BytecodeAnalysis
         /// <returns>The root method definition node of the syntax tree</returns>
         public MethodDefSyntax ToSyntaxTree()
         {
-            return this.ToSyntaxTree(DisassemblerParams.Default);
+            return this.ToSyntaxTreeImpl(DisassemblerParams.Default, 0);
         }
 
         /// <summary>
@@ -810,16 +820,22 @@ namespace CilTools.BytecodeAnalysis
         /// <returns>The root method definition node of the syntax tree</returns>
         public MethodDefSyntax ToSyntaxTree(DisassemblerParams pars)
         {
+            return this.ToSyntaxTreeImpl(pars, 0);
+        }
+        
+        internal MethodDefSyntax ToSyntaxTreeImpl(DisassemblerParams pars, int startIndent)
+        {
             if (pars == null) pars = DisassemblerParams.Default;
 
-            DirectiveSyntax sig = DirectiveSyntax.FromMethodSignature(this._Method);
+            string strIndent = SyntaxNode.GetIndentString(startIndent);
+            DirectiveSyntax sig = DirectiveSyntax.FromMethodSignature(this._Method, strIndent);
 
             List<SyntaxNode> nodes = new List<SyntaxNode>(100);
             SyntaxNode[] arr;
 
             try
             {
-                arr = SyntaxNode.GetAttributesSyntax(this._Method, 1);
+                arr = SyntaxNode.GetAttributesSyntax(this._Method, startIndent + 1);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
@@ -828,17 +844,18 @@ namespace CilTools.BytecodeAnalysis
             }
             catch (InvalidOperationException)
             {
-                nodes.Add(CommentSyntax.Create(" ", "NOTE: Custom attributes are not shown.", null, false));
+                nodes.Add(CommentSyntax.Create(SyntaxNode.GetIndentString(startIndent+1), 
+                    "NOTE: Custom attributes are not shown.", null, false));
             }
 
-            arr = SyntaxNode.GetDefaultsSyntax(this._Method);
+            arr = SyntaxNode.GetDefaultsSyntax(this._Method, startIndent);
 
             for (int i = 0; i < arr.Length; i++)
             {
                 nodes.Add( arr[i]);
             }
 
-            arr = this.HeaderAsSyntax();
+            arr = this.HeaderAsSyntax(startIndent);
 
             for (int i = 0; i < arr.Length; i++)
             {
@@ -847,14 +864,14 @@ namespace CilTools.BytecodeAnalysis
 
             nodes.Add(new GenericSyntax(Environment.NewLine));
 
-            arr = this.BodyAsSyntaxTree(pars);
+            arr = this.BodyAsSyntaxTree(pars, startIndent);
 
             for (int i = 0; i < arr.Length; i++)
             {
                 nodes.Add(arr[i]);
             }
 
-            BlockSyntax body = new BlockSyntax("", SyntaxNode.EmptyArray, nodes.ToArray());
+            BlockSyntax body = new BlockSyntax(strIndent, SyntaxNode.EmptyArray, nodes.ToArray());
 
             for (int i = 0; i < body._children.Count; i++) body._children[i]._parent = body;
 
