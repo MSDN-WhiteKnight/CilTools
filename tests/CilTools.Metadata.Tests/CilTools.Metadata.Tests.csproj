@@ -61,10 +61,6 @@
       <Project>{cc09c7fc-6b32-43bd-b4da-e3c8caf8ea91}</Project>
       <Name>CilTools.Tests.Common</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EmitSampleApp\EmitSampleApp.csproj">
-      <Project>{43ac5de1-b38d-47ee-b027-64ae237d939e}</Project>
-      <Name>EmitSampleApp</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CilGraphTests_Text.cs" />

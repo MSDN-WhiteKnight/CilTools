@@ -14,6 +14,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{4A7BB35F-E42B-4A4E-8833-6B048065F45A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilTools.Metadata.Tests", "tests\CilTools.Metadata.Tests\CilTools.Metadata.Tests.csproj", "{AC5F228E-77EA-4F45-A659-9D6DC5531328}"
+	ProjectSection(ProjectDependencies) = postProject
+		{43AC5DE1-B38D-47EE-B027-64AE237D939E} = {43AC5DE1-B38D-47EE-B027-64AE237D939E}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.Metadata", "CilTools.Metadata\CilTools.Metadata.csproj", "{AF94ACBD-2263-4CB9-BC15-ABFD484CF2CF}"
 EndProject
@@ -29,9 +32,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.CommandLine", "Cil
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilTools.CommandLine.Tests", "tests\CilTools.CommandLine.Tests\CilTools.CommandLine.Tests.csproj", "{425BC497-2DB9-4E45-B36D-81F62D7E9828}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilView.Core", "CilView.Core\CilView.Core.csproj", "{2801415A-3CBE-4D72-87F4-82C31D380675}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilView.Core", "CilView.Core\CilView.Core.csproj", "{2801415A-3CBE-4D72-87F4-82C31D380675}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CilView.Tests", "tests\CilView.Tests\CilView.Tests.csproj", "{EBDCD866-74A7-42C6-8C7F-3167E696A2E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CilView.Tests", "tests\CilView.Tests\CilView.Tests.csproj", "{EBDCD866-74A7-42C6-8C7F-3167E696A2E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

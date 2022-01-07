@@ -3,13 +3,13 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SampleApp;
 
 namespace CilTools.Metadata.Tests
 {
@@ -71,11 +71,18 @@ namespace CilTools.Metadata.Tests
         [TestMethod]
         public void Test_EntryPoint()
         {
+            string dir = Path.GetDirectoryName(typeof(AssemblyReaderTests).Assembly.Location);
+            Directory.SetCurrentDirectory(dir);
+
+            string path = string.Format(
+                @"..\..\..\EmitSampleApp\bin\{0}\net45\win-x86\EmitSampleApp.exe", 
+                Utils.GetConfig());
+
             AssemblyReader reader = new AssemblyReader();
 
             using (reader)
             {
-                Assembly ass = reader.LoadFrom(typeof(EmitSampleProgram).Assembly.Location);
+                Assembly ass = reader.LoadFrom(path);
                 MethodInfo entryPoint = ass.EntryPoint;
                 Assert.AreEqual("Main", entryPoint.Name);
 
