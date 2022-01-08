@@ -230,7 +230,12 @@ namespace CilTools.Syntax
             return content;
         }
 
-        internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m)
+        internal static string GetIndentString(int c)
+        {
+            return "".PadLeft(c, ' ');
+        }
+
+        internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m, int startIndent)
         {
             ParameterInfo[] pars = m.GetParameters();
             List<SyntaxNode> ret = new List<SyntaxNode>(pars.Length);
@@ -252,7 +257,7 @@ namespace CilTools.Syntax
 
                     string content = sb.ToString();
                     DirectiveSyntax dir = new DirectiveSyntax(
-                        " ", "param", new SyntaxNode[] { new GenericSyntax(content) }
+                        GetIndentString(startIndent+1), "param", new SyntaxNode[] { new GenericSyntax(content) }
                         );
                     ret.Add(dir);
                 }
@@ -284,7 +289,36 @@ namespace CilTools.Syntax
         /// </summary>
         /// <param name="t">Type to get definition syntax</param>
         /// <returns>The collection of syntax nodes that make up type definition syntax</returns>
+        /// <exception cref="ArgumentNullException">The specified type is null</exception>
         public static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t)
+        {
+            if (t == null) throw new ArgumentNullException("t");
+
+            return GetTypeDefSyntaxImpl(t, false, DisassemblerParams.Default, 0);
+        }
+
+        /// <summary>
+        /// Gets the CIL assembler syntax for the definition of the specified type with specified disassembler parameters
+        /// </summary>
+        /// <param name="t">Type to get definition syntax</param>
+        /// <param name="full">
+        /// <c>true</c> to return full syntax (including method defnitions and nested types), <c>false</c> to return
+        /// short syntax
+        /// </param>
+        /// <param name="disassemblerParams">
+        /// Object that specifies additional options for the disassembling operation
+        /// </param>
+        /// <returns>The collection of syntax nodes that make up type definition syntax</returns>
+        /// <exception cref="ArgumentNullException">The specified type is null</exception>
+        public static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t, bool full, DisassemblerParams disassemblerParams)
+        {
+            if (t == null) throw new ArgumentNullException("t");
+            
+            return GetTypeDefSyntaxImpl(t, full, disassemblerParams, 0);
+        }
+
+        internal static IEnumerable<SyntaxNode> GetTypeDefSyntaxImpl(Type t, bool full, 
+            DisassemblerParams disassemblerParams, int startIndent)
         {
             List<SyntaxNode> content = new List<SyntaxNode>(10);
 
@@ -424,7 +458,7 @@ namespace CilTools.Syntax
             //base type
             if (!t.IsInterface && t.BaseType!=null)
             {
-                content.Add(new KeywordSyntax(String.Empty, "extends", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(GetIndentString(startIndent), "extends", " ", KeywordKind.Other));
 
                 try
                 {
@@ -456,7 +490,7 @@ namespace CilTools.Syntax
 
             if (interfaces != null && interfaces.Length > 0)
             {
-                content.Add(new KeywordSyntax(String.Empty, "implements", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(GetIndentString(startIndent), "implements", " ", KeywordKind.Other));
 
                 for (int i = 0; i < interfaces.Length; i++)
                 {
@@ -473,7 +507,7 @@ namespace CilTools.Syntax
                 content.Add(new GenericSyntax(Environment.NewLine));
             }
 
-            DirectiveSyntax header = new DirectiveSyntax( String.Empty, "class",content.ToArray());
+            DirectiveSyntax header = new DirectiveSyntax(GetIndentString(startIndent), "class", content.ToArray());
             yield return header;
             
             //body
@@ -482,20 +516,21 @@ namespace CilTools.Syntax
             //custom attributes
             try
             {
-                SyntaxNode[] arr = SyntaxNode.GetAttributesSyntax(t, 1);
+                SyntaxNode[] arr = SyntaxNode.GetAttributesSyntax(t, startIndent + 1);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
                     content.Add(arr[i]);
                 }
             }
-            catch (InvalidOperationException)
+            catch (Exception ex)
             {
-                content.Add(CommentSyntax.Create(" ", "NOTE: Custom attributes are not shown.", null, false));
-            }
-            catch (NotImplementedException)
-            {
-                content.Add(CommentSyntax.Create(" ", "NOTE: Custom attributes are not shown.", null, false));
+                if (ReflectionUtils.IsExpectedException(ex))
+                {
+                    content.Add(CommentSyntax.Create(GetIndentString(startIndent + 1),
+                        "NOTE: Custom attributes are not shown.", null, false));
+                }
+                else throw;
             }
 
             content.Add(new GenericSyntax(Environment.NewLine));
@@ -584,7 +619,7 @@ namespace CilTools.Syntax
 
                 inner.Add(new GenericSyntax(Environment.NewLine));
 
-                DirectiveSyntax field = new DirectiveSyntax(" ", "field", inner.ToArray());
+                DirectiveSyntax field = new DirectiveSyntax(GetIndentString(startIndent + 1), "field", inner.ToArray());
                 content.Add(field);
             }
 
@@ -597,15 +632,15 @@ namespace CilTools.Syntax
             {
                 props = t.GetProperties(allMembers);
             }
-            catch (NotSupportedException)
+            catch (Exception ex)
             {
-                props = new PropertyInfo[0];
-                content.Add(CommentSyntax.Create(" ", "NOTE: Properties are not shown." + Environment.NewLine, null, false));
-            }
-            catch (NotImplementedException)
-            {
-                props = new PropertyInfo[0];
-                content.Add(CommentSyntax.Create(" ", "NOTE: Properties are not shown." + Environment.NewLine, null, false));
+                if (ReflectionUtils.IsExpectedException(ex))
+                {
+                    props = new PropertyInfo[0];
+                    content.Add(CommentSyntax.Create(GetIndentString(startIndent + 1),
+                        "NOTE: Properties are not shown." + Environment.NewLine, null, false));
+                }
+                else throw;
             }
 
             for (int i = 0; i < props.Length; i++)
@@ -657,32 +692,36 @@ namespace CilTools.Syntax
                 }
                 
                 inner.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
-                inner.Add(new PunctuationSyntax(" ", "{", Environment.NewLine));
+                inner.Add(new PunctuationSyntax(GetIndentString(startIndent + 1), "{", Environment.NewLine));
 
                 //property custom attributes
                 try
                 {
-                    SyntaxNode[] arr = GetAttributesSyntax(props[i], 2);
+                    SyntaxNode[] arr = GetAttributesSyntax(props[i], startIndent + 2);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
                         inner.Add(arr[j]);
                     }
                 }
-                catch (InvalidOperationException)
+                catch (Exception ex)
                 {
-                    inner.Add(CommentSyntax.Create("  ", "NOTE: Custom attributes are not shown.", null, false));
-                }
-                catch (NotImplementedException)
-                {
-                    inner.Add(CommentSyntax.Create("  ", "NOTE: Custom attributes are not shown.", null, false));
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        inner.Add(CommentSyntax.Create(GetIndentString(startIndent + 2),
+                            "NOTE: Custom attributes are not shown.", null, false));
+                    }
+                    else throw;
                 }
                 
                 //property methods
                 if (getter != null) 
                 {
                     MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(getter, false);
-                    DirectiveSyntax dirGet = new DirectiveSyntax("  ", "get",new SyntaxNode[] { mref });
+
+                    DirectiveSyntax dirGet = new DirectiveSyntax(GetIndentString(startIndent + 2), 
+                        "get",new SyntaxNode[] { mref });
+
                     inner.Add(dirGet);
                     inner.Add(new GenericSyntax(Environment.NewLine));
                 }
@@ -690,21 +729,119 @@ namespace CilTools.Syntax
                 if (setter != null)
                 {
                     MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(setter, false);
-                    DirectiveSyntax dirSet = new DirectiveSyntax("  ", "set", new SyntaxNode[] { mref });
+
+                    DirectiveSyntax dirSet = new DirectiveSyntax(GetIndentString(startIndent + 2), 
+                        "set", new SyntaxNode[] { mref });
+
                     inner.Add(dirSet);
                     inner.Add(new GenericSyntax(Environment.NewLine));
                 }
 
-                inner.Add(new PunctuationSyntax(" ", "}", Environment.NewLine + Environment.NewLine));
-                DirectiveSyntax dirProp = new DirectiveSyntax(" ", "property", inner.ToArray());
+                inner.Add(new PunctuationSyntax(GetIndentString(startIndent + 1), "}", Environment.NewLine + Environment.NewLine));
+                DirectiveSyntax dirProp = new DirectiveSyntax(GetIndentString(startIndent + 1), "property", inner.ToArray());
                 content.Add(dirProp);
             }
 
-            //add comment to indicate that not all members are listed here
-            content.Add(CommentSyntax.Create(" ", "...", null, false));
-            content.Add(new GenericSyntax(Environment.NewLine));
+            if (full)
+            {
+                //constructors
+                ConstructorInfo[] constructors;
 
-            BlockSyntax body = new BlockSyntax(String.Empty, SyntaxNode.EmptyArray, content.ToArray());
+                try
+                {
+                    constructors = t.GetConstructors(allMembers);
+                }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        content.Add(CommentSyntax.Create(GetIndentString(startIndent + 1),
+                            "NOTE: Constructors are not shown.", null, false));
+                        constructors = new ConstructorInfo[0];
+                    }
+                    else throw;
+                }
+
+                for (int i = 0; i < constructors.Length; i++)
+                {
+                    CilGraph gr = CilGraph.Create(constructors[i]);
+                    MethodDefSyntax mds = gr.ToSyntaxTreeImpl(disassemblerParams, startIndent + 1);
+                    content.Add(mds);
+                    content.Add(new GenericSyntax(Environment.NewLine));
+                }
+
+                //methods
+                MethodInfo[] methods;
+
+                try
+                {
+                    methods = t.GetMethods(allMembers);
+                }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        content.Add(CommentSyntax.Create(GetIndentString(startIndent + 1),
+                            "NOTE: Methods are not shown.", null, false));
+                        methods = new MethodInfo[0];
+                    }
+                    else throw;
+                }
+
+                for (int i = 0; i < methods.Length; i++)
+                {
+                    CilGraph gr = CilGraph.Create(methods[i]);
+                    MethodDefSyntax mds = gr.ToSyntaxTreeImpl(disassemblerParams, startIndent + 1);
+                    content.Add(mds);
+                    content.Add(new GenericSyntax(Environment.NewLine));
+                }
+
+                //nested types
+                Type[] types = new Type[0];
+
+                if (startIndent > 20)
+                {
+                    content.Add(CommentSyntax.Create(string.Empty,
+                        "ERROR: Indentation is too deep to show nested types!", null, false));
+                }
+                else
+                {
+                    try
+                    {
+                        types = t.GetNestedTypes(allMembers);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ReflectionUtils.IsExpectedException(ex))
+                        {
+                            content.Add(CommentSyntax.Create(GetIndentString(startIndent + 1),
+                                "NOTE: Nested types are not shown.", null, false));
+                        }
+                        else throw;
+                    }
+                }
+
+                for (int i = 0; i < types.Length; i++)
+                {
+                    IEnumerable<SyntaxNode> typeNodes = GetTypeDefSyntaxImpl(types[i], 
+                        true, disassemblerParams, startIndent + 1);
+
+                    foreach (SyntaxNode node in typeNodes)
+                    {
+                        content.Add(node);
+                    }
+
+                    content.Add(new GenericSyntax(Environment.NewLine));
+                }
+            }
+            else
+            {
+                //add comment to indicate that not all members are listed here
+                content.Add(CommentSyntax.Create(GetIndentString(startIndent + 1), "...", null, false));
+                content.Add(new GenericSyntax(Environment.NewLine));
+            }
+
+            BlockSyntax body = new BlockSyntax(GetIndentString(startIndent), SyntaxNode.EmptyArray, content.ToArray());
 
             for (int i = 0; i < body._children.Count; i++) body._children[i]._parent = body;
 

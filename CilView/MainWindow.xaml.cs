@@ -14,6 +14,7 @@ using CilTools.Runtime;
 using CilView.Build;
 using CilView.Common;
 using CilView.Core;
+using CilView.Core.Syntax;
 using CilView.Exceptions;
 using CilView.SourceCode;
 using CilView.UI.Dialogs;
@@ -473,7 +474,41 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
                     using (wr)
                     {
-                        await wr.WriteAsync(txt);
+                        await SyntaxWriter.WriteContentAsync(txt, wr);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+        }
+
+        private async void miExportType_Click(object sender, RoutedEventArgs e)
+        {
+            Type t = cilbrowser.GetCurrentType();
+
+            if (t == null)
+            {
+                MessageBox.Show(this, "No content to export. Open type first to export its code", "Error");
+                return;
+            }
+
+            try
+            {
+                SaveFileDialog dlg = new SaveFileDialog();
+                dlg.RestoreDirectory = true;
+                dlg.DefaultExt = ".il";
+                dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
+                dlg.FileName = t.Name + ".il";
+
+                if (dlg.ShowDialog(this) == true)
+                {
+                    StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
+
+                    using (wr)
+                    {
+                        await SyntaxWriter.DisassembleTypeAsync(t, CilVisualization.CurrentDisassemblerParams, wr);
                     }
                 }
             }
