@@ -289,13 +289,31 @@ namespace CilTools.Syntax
         /// </summary>
         /// <param name="t">Type to get definition syntax</param>
         /// <returns>The collection of syntax nodes that make up type definition syntax</returns>
+        /// <exception cref="ArgumentNullException">The specified type is null</exception>
         public static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t)
         {
+            if (t == null) throw new ArgumentNullException("t");
+
             return GetTypeDefSyntaxImpl(t, false, DisassemblerParams.Default, 0);
         }
 
+        /// <summary>
+        /// Gets the CIL assembler syntax for the definition of the specified type with specified disassembler parameters
+        /// </summary>
+        /// <param name="t">Type to get definition syntax</param>
+        /// <param name="full">
+        /// <c>true</c> to return full syntax (including method defnitions and nested types), <c>false</c> to return
+        /// short syntax
+        /// </param>
+        /// <param name="disassemblerParams">
+        /// Object that specifies additional options for the disassembling operation
+        /// </param>
+        /// <returns>The collection of syntax nodes that make up type definition syntax</returns>
+        /// <exception cref="ArgumentNullException">The specified type is null</exception>
         public static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t, bool full, DisassemblerParams disassemblerParams)
         {
+            if (t == null) throw new ArgumentNullException("t");
+            
             return GetTypeDefSyntaxImpl(t, full, disassemblerParams, 0);
         }
 
