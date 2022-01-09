@@ -23,11 +23,11 @@ namespace CilTools.CommandLine
             Console.WriteLine(" Commands:");
             Console.WriteLine();
 
-            Console.WriteLine("view - Print CIL code of methods or the content of CIL source files");
+            Console.WriteLine("view - Print CIL code of types or methods or the content of CIL source files");
             Console.WriteLine();
             Console.WriteLine(" Usage");
-            Console.WriteLine("Print disassembled CIL code of method or methods with the specified name:");
-            Console.WriteLine("   " + exeName + " view [--nocolor] <assembly path> <type full name> <method name>");
+            Console.WriteLine("Print disassembled CIL code of the specified type or method:");
+            Console.WriteLine("   " + exeName + " view [--nocolor] <assembly path> <type full name> [<method name>]");
             Console.WriteLine("Print contents of the specified CIL source file (*.il):");
             Console.WriteLine("   " + exeName + " view [--nocolor] <source file path>");
             Console.WriteLine();
@@ -116,6 +116,16 @@ namespace CilTools.CommandLine
             PrintNode(root, noColor, target);
         }
 
+        static void PrintType(Type t, bool full, bool noColor, TextWriter target)
+        {
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, full, new DisassemblerParams());
+
+            foreach (SyntaxNode node in nodes)
+            {
+                PrintNode(node, noColor, target);
+            }
+        }
+
         static void PrintSourceDocument(string content, bool noColor, TextWriter target)
         {
             if (noColor)
@@ -167,6 +177,40 @@ namespace CilTools.CommandLine
                     target.WriteLine();
                 }
 
+                retCode = 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
+                retCode = 1;
+            }
+            finally
+            {
+                reader.Dispose();
+            }
+
+            return retCode;
+        }
+
+        static int DisassembleType(string asspath, string type, bool full, bool noColor, TextWriter target)
+        {
+            AssemblyReader reader = new AssemblyReader();
+            Assembly ass;
+            int retCode;
+
+            try
+            {
+                ass = reader.LoadFrom(asspath);
+                Type t = ass.GetType(type);
+
+                if (t == null)
+                {
+                    Console.WriteLine("Error: Type {0} not found in assembly {1}", type, asspath);
+                    return 1;
+                }
+
+                PrintType(t, full, noColor, target);
                 retCode = 0;
             }
             catch (Exception ex)
@@ -367,15 +411,16 @@ namespace CilTools.CommandLine
 
                 method = ReadCommandParameter(args, pos);
 
+                Console.WriteLine("Assembly: " + filepath);
+
                 if (string.IsNullOrEmpty(method))
                 {
-                    Console.WriteLine("Error: Method name is not provided for the 'view' command.");
-                    Console.WriteLine(GetErrorInfo());
-                    return 1;
+                    //view type
+                    Console.WriteLine();
+                    return DisassembleType(filepath, type, false, noColor, Console.Out);
                 }
 
-                //view command implementation
-                Console.WriteLine("Assembly: " + filepath);
+                //view method
                 Console.WriteLine("{0}.{1}", type, method);
                 Console.WriteLine();
                 return DisassembleMethod(filepath, type, method, noColor, Console.Out);

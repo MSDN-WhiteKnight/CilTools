@@ -55,21 +55,33 @@ namespace CilTools.Tests.Common
             });
         }
 
-        public static void Test_GetTypeDefSyntax_Short(Type t)
+        public static void SampleMethods_AssertTypeSyntax(string s)
         {
-            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
-            string s = Utils.SyntaxToString(nodes);
-
             AssertThat.IsMatch(s, new Text[] {
                 ".class", Text.Any,"public", Text.Any,"abstract", Text.Any,"CilTools.Tests.Common.SampleMethods", Text.Any,
                 "{", Text.Any,
                 ".field", Text.Any,"public", Text.Any,"static", Text.Any,"int32", Text.Any,"Foo", Text.Any,
-                ".field", Text.Any,"public", Text.Any,"static", Text.Any,"int32", Text.Any,"counter", Text.Any,
-                ".field", Text.Any,"public", Text.Any,"static", Text.Any,"int32", Text.Any,"f", Text.Any,
                 "}", Text.Any
             });
 
+            AssertThat.IsMatch(s, new Text[] {
+                ".class", Text.Any,
+                ".field", Text.Any,"public", Text.Any,"static", Text.Any,"int32", Text.Any,"counter", Text.Any
+            });
+
+            AssertThat.IsMatch(s, new Text[] {
+                ".class", Text.Any,
+                ".field", Text.Any,"public", Text.Any,"static", Text.Any,"int32", Text.Any,"f", Text.Any
+            });
+
             Assert.IsFalse(s.Contains(".method"));
+        }
+
+        public static void Test_GetTypeDefSyntax_Short(Type t)
+        {
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string s = Utils.SyntaxToString(nodes);
+            SampleMethods_AssertTypeSyntax(s);
         }
 
         public static void Test_GetTypeDefSyntax_Full(Type t)

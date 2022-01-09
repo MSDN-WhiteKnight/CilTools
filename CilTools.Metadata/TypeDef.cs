@@ -470,7 +470,11 @@ namespace CilTools.Metadata
 
         public override Type UnderlyingSystemType
         {
-            get { return null; }
+            get 
+            {
+                //workaround Type.IsSerializable NullReferenceException in .NET Core 3.1
+                return this; 
+            }
         }
 
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
