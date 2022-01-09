@@ -34,9 +34,9 @@ namespace CilTools.CommandLine
             Console.WriteLine("[--nocolor] - disable syntax highlighting");
             Console.WriteLine();
 
-            Console.WriteLine("disasm - Write CIL code of the method or methods with the specified name into file");
+            Console.WriteLine("disasm - Write disassembled CIL code of the specified type or method into the file");
             Console.WriteLine("Usage: " + exeName + 
-                " disasm [--output <output path>] <assembly path> <type full name> <method name>");
+                " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
             Console.WriteLine("[--output <output path>] - Output file path");
             Console.WriteLine();
 
@@ -249,7 +249,7 @@ namespace CilTools.CommandLine
             string method;
             string outpath=null;
 
-            if (args.Length < 4)
+            if (args.Length < 3)
             {
                 Console.WriteLine("Error: not enough arguments for 'disasm' command.");
                 Console.WriteLine(GetErrorInfo());
@@ -275,6 +275,11 @@ namespace CilTools.CommandLine
                 return 1;
             }
 
+            if (string.IsNullOrEmpty(outpath))
+            {
+                outpath = Path.GetFileNameWithoutExtension(asspath) + ".il";
+            }
+
             type = ReadCommandParameter(args, pos);
             pos++;
 
@@ -283,20 +288,6 @@ namespace CilTools.CommandLine
                 Console.WriteLine("Error: Type name is not provided for the 'disasm' command.");
                 Console.WriteLine(GetErrorInfo());
                 return 1;
-            }
-
-            method = ReadCommandParameter(args, pos);
-
-            if (string.IsNullOrEmpty(method))
-            {
-                Console.WriteLine("Error: Method name is not provided for the 'disasm' command.");
-                Console.WriteLine(GetErrorInfo());
-                return 1;
-            }
-
-            if (string.IsNullOrEmpty(outpath)) 
-            {
-                outpath = Path.GetFileNameWithoutExtension(asspath) + ".il";
             }
 
             Console.WriteLine("Input file: " + asspath);
@@ -316,7 +307,19 @@ namespace CilTools.CommandLine
             using (wr)
             {
                 Console.WriteLine("Disassembling CIL...");
-                int res = DisassembleMethod(asspath, type, method, noColor: true, wr);
+                method = ReadCommandParameter(args, pos);
+                int res;
+
+                if (string.IsNullOrEmpty(method))
+                {
+                    //disassemble type
+                    res = DisassembleType(asspath, type, full: true, noColor: true, wr);
+                }
+                else
+                {
+                    //disassemble method
+                    res = DisassembleMethod(asspath, type, method, noColor: true, wr);
+                }
 
                 if (res == 0) Console.WriteLine("Output successfully written to " + outpath);
                 else Console.WriteLine("Failed to disassemble");
