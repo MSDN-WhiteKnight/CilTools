@@ -16,13 +16,16 @@ namespace CilTools.Reflection
         MemberInfo _m;
         int _index;
         string _name;
+        GenericParameterAttributes _attrs;
+        Type[] _constrains;
 
         /// <summary>
         /// Creates a new instance of the generic parameter
         /// </summary>
         /// <param name="m">Declaring method, if this is a generic method parameter</param>
         /// <param name="index">Generic parameter index</param>
-        public GenericParamType(MethodBase m, int index):this((MemberInfo)m, index, null)
+        public GenericParamType(MethodBase m, int index):
+            this((MemberInfo)m, index, null, GenericParameterAttributes.None, new Type[0])
         {
 
         }
@@ -35,7 +38,24 @@ namespace CilTools.Reflection
         /// <param name="name">Generic parameter name, or null to fill name automatically</param>
         public static GenericParamType Create(MemberInfo declaringMember, int index, string name)
         {
-            return new GenericParamType(declaringMember, index, name);
+            return new GenericParamType(declaringMember, index, name, GenericParameterAttributes.None, new Type[0]);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the generic parameter with specified attributes and constraints
+        /// </summary>
+        /// <param name="declaringMember">Declaring generic type or method of this parameter</param>
+        /// <param name="index">Generic parameter index</param>
+        /// <param name="name">Generic parameter name, or null to fill name automatically</param>
+        /// <param name="attrs">Flags defining variance and constraint attributes of this parameter</param>
+        /// <param name="constrains">
+        /// Array of types representing base type constraints of this parameter, or empty array if there are none
+        /// </param>
+        /// <returns></returns>
+        public static GenericParamType Create(MemberInfo declaringMember, int index, string name, 
+            GenericParameterAttributes attrs, Type[] constrains)
+        {
+            return new GenericParamType(declaringMember, index, name, attrs, constrains);
         }
 
         string TryLoadName()
@@ -55,12 +75,17 @@ namespace CilTools.Reflection
             else return null;
         }
         
-        GenericParamType(MemberInfo declaringMember, int index, string name)
+        GenericParamType(MemberInfo declaringMember, int index, string name, GenericParameterAttributes attrs,
+            Type[] constrains)
         {
             if (index < 0) throw new ArgumentOutOfRangeException("index", "generic parameter index should be non-negative");
 
+            if (constrains == null) constrains = new Type[0];
+
             this._m = declaringMember;
             this._index = index;
+            this._attrs = attrs;
+            this._constrains = constrains;
 
             if (name!=null)
             {
@@ -394,6 +419,15 @@ namespace CilTools.Reflection
         public override Type MakePointerType()
         {
             return new ComplexType(this, ComplexTypeKind.Pointer, null);
+        }
+
+        /// <inheritdoc/>
+        public override GenericParameterAttributes GenericParameterAttributes => this._attrs;
+
+        /// <inheritdoc/>
+        public override Type[] GetGenericParameterConstraints()
+        {
+            return this._constrains;
         }
     }
 }

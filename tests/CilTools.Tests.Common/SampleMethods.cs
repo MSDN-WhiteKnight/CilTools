@@ -199,6 +199,21 @@ namespace CilTools.Tests.Common
             Interlocked.CompareExchange<object>(ref loc, new object(), new object());
             Console.WriteLine((loc == null).ToString());
         }
+
+        public static T Sum<T>(T x, T y) where T : struct
+        {
+            if (typeof(T) == typeof(int))
+            {
+                int res = (Convert.ToInt32(x) + Convert.ToInt32(y));
+                return (T)Convert.ChangeType(res, typeof(int));
+            }
+            else if (typeof(T) == typeof(float))
+            {
+                float res = (Convert.ToSingle(x) + Convert.ToSingle(y));
+                return (T)Convert.ChangeType(res, typeof(int));
+            }
+            else throw new NotSupportedException();
+        }
     }
 
     public class MyPoint

@@ -94,5 +94,49 @@ namespace CilTools.Metadata.Tests
                 Assert.IsTrue(pt0.GetElementType().IsGenericParameter);
             }
         }
+
+        [TestMethod]
+        [WorkItem(53)]
+        public void Test_MethodDef_GenericConstraints()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType(typename);
+                MethodBase m = t.GetMethod("Sum");
+                Type[] args = m.GetGenericArguments();
+                Type tArg = args[0];
+                Type[] constrains = tArg.GetGenericParameterConstraints();
+
+                GenericParameterAttributes expected = GenericParameterAttributes.NotNullableValueTypeConstraint |
+                    GenericParameterAttributes.DefaultConstructorConstraint;
+
+                Assert.AreEqual(expected, tArg.GenericParameterAttributes);
+                Assert.AreEqual(1, constrains.Length);
+                Assert.AreEqual("System.ValueType", constrains[0].FullName);
+            }
+        }
+
+        [TestMethod]
+        [WorkItem(53)]
+        public void Test_MethodDef_GenericConstraints_None()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType(typename);
+                MethodBase m = t.GetMethod("GenerateArray");
+                Type[] args = m.GetGenericArguments();
+                Type tArg = args[0];
+                Type[] constrains = tArg.GetGenericParameterConstraints();
+
+                Assert.AreEqual(GenericParameterAttributes.None, tArg.GenericParameterAttributes);
+                Assert.AreEqual(0, constrains.Length);
+            }
+        }
     }
 }

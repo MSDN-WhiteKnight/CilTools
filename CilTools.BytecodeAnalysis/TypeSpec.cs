@@ -924,5 +924,14 @@ namespace CilTools.BytecodeAnalysis
             else if (this._ElementType == (byte)ElementType.ValueType) return true;
             else return base.IsValueTypeImpl();
         }
+
+        /// <inheritdoc/>
+        public override GenericParameterAttributes GenericParameterAttributes => this._Type.GenericParameterAttributes;
+
+        /// <inheritdoc/>
+        public override Type[] GetGenericParameterConstraints()
+        {
+            return this._Type.GetGenericParameterConstraints();
+        }
     }
 }
