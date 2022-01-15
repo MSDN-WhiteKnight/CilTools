@@ -18,6 +18,12 @@ namespace CilTools.Metadata.Tests
         public int Number { get; }
         [My(0)] public SampleType CustomClass { get; set; }
         public string this[int i] { get { return i.ToString(); } }
+        private byte[] PrivateArrayProperty { get; set; }
+
+        public byte[] Foo()
+        {
+            return this.PrivateArrayProperty;
+        }
     }
 
     [TestClass]
@@ -135,6 +141,152 @@ namespace CilTools.Metadata.Tests
                     "}", Text.Any,
                     "}", Text.Any
                 });
+            }
+        }
+
+        [TestMethod]
+        public void Test_PropertyDef_GetGetMethod()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(TypeWithProperties).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                PropertyInfo pi = t.GetProperty("Name");
+                MethodInfo mi = pi.GetGetMethod();
+                Assert.AreEqual("get_Name", mi.Name);
+                Assert.AreEqual("System.String", mi.ReturnType.FullName);
+                Assert.AreEqual(0, mi.GetParameters().Length);
+                Assert.IsTrue(mi.IsPublic);
+
+                pi = t.GetProperty("Number");
+                mi = pi.GetGetMethod();
+                Assert.AreEqual("get_Number", mi.Name);
+                Assert.AreEqual("System.Int32", mi.ReturnType.FullName);
+                Assert.AreEqual(0, mi.GetParameters().Length);
+                Assert.IsTrue(mi.IsPublic);
+            }
+        }
+
+        [TestMethod]
+        public void Test_PropertyDef_GetSetMethod()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(TypeWithProperties).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                PropertyInfo pi = t.GetProperty("Name");
+                MethodInfo mi = pi.GetSetMethod();
+                Assert.AreEqual("set_Name", mi.Name);
+                Assert.AreEqual("System.Void", mi.ReturnType.FullName);
+                Assert.AreEqual("System.String", mi.GetParameters()[0].ParameterType.FullName);
+                Assert.IsTrue(mi.IsPublic);
+
+                pi = t.GetProperty("Number");
+                mi = pi.GetSetMethod();
+                Assert.IsNull(mi);
+            }
+        }
+
+        [TestMethod]
+        public void Test_PropertyDef_GetAccessors()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(TypeWithProperties).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                PropertyInfo pi = t.GetProperty("Name");
+                MethodInfo[] methods = pi.GetAccessors();
+                Assert.AreEqual(2, methods.Length);
+                MethodInfo mi;
+
+                mi = methods[0];
+                Assert.AreEqual("get_Name", mi.Name);
+                Assert.AreEqual("System.String", mi.ReturnType.FullName);
+                Assert.AreEqual(0, mi.GetParameters().Length);
+                Assert.IsTrue(mi.IsPublic);
+
+                mi = methods[1];
+                Assert.AreEqual("set_Name", mi.Name);
+                Assert.AreEqual("System.Void", mi.ReturnType.FullName);
+                Assert.AreEqual("System.String", mi.GetParameters()[0].ParameterType.FullName);
+                Assert.IsTrue(mi.IsPublic);
+            }
+        }
+
+        [TestMethod]
+        public void Test_PropertyDef_GetGetMethod_NonPublic()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(TypeWithProperties).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                MethodInfo mi;
+                PropertyInfo pi = t.GetProperty("PrivateArrayProperty");
+
+                mi = pi.GetGetMethod();
+                Assert.IsNull(mi);
+
+                mi = pi.GetGetMethod(true);
+                Assert.AreEqual("get_PrivateArrayProperty", mi.Name);
+                Assert.IsTrue(mi.IsPrivate);
+            }
+        }
+
+        [TestMethod]
+        public void Test_PropertyDef_GetSetMethod_NonPublic()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(TypeWithProperties).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                MethodInfo mi;
+                PropertyInfo pi = t.GetProperty("PrivateArrayProperty");
+
+                mi = pi.GetSetMethod();
+                Assert.IsNull(mi);
+
+                mi = pi.GetSetMethod(true);
+                Assert.AreEqual("set_PrivateArrayProperty", mi.Name);
+                Assert.IsTrue(mi.IsPrivate);
+            }
+        }
+
+        [TestMethod]
+        public void Test_PropertyDef_GetAccessors_NonPublic()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(TypeWithProperties).Assembly.Location);
+                Type t = ass.GetType(SampleTypeName);
+                PropertyInfo pi = t.GetProperty("PrivateArrayProperty");
+                MethodInfo[] methods;
+
+                methods = pi.GetAccessors();
+                Assert.AreEqual(0, methods.Length);
+
+                methods = pi.GetAccessors(true);
+                Assert.AreEqual(2, methods.Length);
+                MethodInfo mi;
+
+                mi = methods[0];
+                Assert.AreEqual("get_PrivateArrayProperty", mi.Name);                
+                Assert.IsTrue(mi.IsPrivate);
+
+                mi = methods[1];
+                Assert.AreEqual("set_PrivateArrayProperty", mi.Name);
+                Assert.IsTrue(mi.IsPrivate);
             }
         }
     }

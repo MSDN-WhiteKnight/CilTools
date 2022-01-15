@@ -1,8 +1,9 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Globalization;
 using System.Reflection;
 using System.Reflection.Metadata;
@@ -82,9 +83,42 @@ namespace CilTools.Metadata
 
         public override Type ReflectedType => throw new NotImplementedException();
 
+        MethodInfo GetAccessor(MethodDefinitionHandle mdh, bool nonPublic)
+        {
+            if (mdh.IsNil) return null;
+
+            MethodBase ret = this.owner.GetMethodDefinition(mdh);
+
+            if (!nonPublic && !ret.IsPublic) return null;
+            else return (MethodInfo)ret;
+        }
+
         public override MethodInfo[] GetAccessors(bool nonPublic)
         {
-            throw new NotImplementedException();
+            PropertyAccessors acs = this.prop.GetAccessors();
+            ImmutableArray<MethodDefinitionHandle> others = acs.Others;
+            List<MethodInfo> ret = new List<MethodInfo>(others.Length + 2);
+            MethodInfo method;
+
+            if (!acs.Getter.IsNil)
+            {
+                method = this.GetAccessor(acs.Getter, nonPublic);
+                if(method != null) ret.Add(method);
+            }
+
+            if (!acs.Setter.IsNil)
+            {
+                method = this.GetAccessor(acs.Setter, nonPublic);
+                if (method != null) ret.Add(method);
+            }
+
+            for (int i = 0; i < others.Length; i++)
+            {
+                method = this.GetAccessor(others[i], nonPublic);
+                if (method != null) ret.Add(method);
+            }
+
+            return ret.ToArray();
         }
 
         public override object[] GetCustomAttributes(bool inherit)
@@ -102,10 +136,12 @@ namespace CilTools.Metadata
         {
             throw new NotImplementedException();
         }
-
+        
         public override MethodInfo GetGetMethod(bool nonPublic)
         {
-            throw new NotImplementedException();
+            this.ThrowIfDisposed();
+            MethodDefinitionHandle mdh = this.prop.GetAccessors().Getter;
+            return this.GetAccessor(mdh, nonPublic);
         }
 
         public override ParameterInfo[] GetIndexParameters()
@@ -118,7 +154,9 @@ namespace CilTools.Metadata
 
         public override MethodInfo GetSetMethod(bool nonPublic)
         {
-            throw new NotImplementedException();
+            this.ThrowIfDisposed();
+            MethodDefinitionHandle mdh = this.prop.GetAccessors().Setter;
+            return this.GetAccessor(mdh, nonPublic);
         }
 
         public override object GetValue(object obj, BindingFlags invokeAttr, Binder binder, object[] index, CultureInfo culture)
