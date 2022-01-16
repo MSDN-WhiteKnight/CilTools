@@ -238,32 +238,8 @@ namespace CilTools.Metadata.Methods
 
         public override Type[] GetGenericArguments()
         {
-            GenericParameterHandleCollection hcoll = mdef.GetGenericParameters();            
-            Type[] ret = new Type[hcoll.Count];
-
-            for (int i = 0; i < ret.Length; i++)
-            {
-                GenericParameter gp = this.assembly.MetadataReader.GetGenericParameter(hcoll[i]);
-                StringHandle sh = gp.Name;
-                GenericParameterConstraintHandleCollection gpchc = gp.GetConstraints();
-                Type[] constrains = new Type[gpchc.Count];
-                string name;
-
-                if (!sh.IsNil) name = assembly.MetadataReader.GetString(sh);
-                else name = string.Empty;
-
-                for (int j = 0; j < gpchc.Count; j++)
-                {
-                    GenericParameterConstraint cons = this.assembly.MetadataReader.GetGenericParameterConstraint(gpchc[j]);
-                    Type tCons = this.assembly.ResolveType(MetadataTokens.GetToken(this.assembly.MetadataReader, cons.Type));
-                    if (tCons == null) tCons = UnknownType.Value;
-                    constrains[j] = tCons;
-                }
-
-                ret[i] = GenericParamType.Create(this, gp.Index, name, gp.Attributes, constrains);
-            }
-
-            return ret;
+            GenericParameterHandleCollection hcoll = mdef.GetGenericParameters();
+            return Utils.GetGenericParameters(this.assembly, this, hcoll);
         }
 
         public override CallingConventions CallingConvention

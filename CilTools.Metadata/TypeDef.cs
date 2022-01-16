@@ -556,20 +556,7 @@ namespace CilTools.Metadata
         public override Type[] GetGenericArguments()
         {
             GenericParameterHandleCollection hcoll = type.GetGenericParameters();
-            Type[] ret = new Type[hcoll.Count];
-
-            for (int i = 0; i < ret.Length; i++)
-            {
-                GenericParameter gp = this.assembly.MetadataReader.GetGenericParameter(hcoll[i]);
-                StringHandle sh = gp.Name;
-
-                if (!sh.IsNil)
-                    ret[i] = GenericParamType.Create(this, gp.Index, assembly.MetadataReader.GetString(sh));
-                else
-                    ret[i] = GenericParamType.Create(this, gp.Index, string.Empty);
-            }
-
-            return ret;
+            return Utils.GetGenericParameters(this.assembly, this, hcoll);
         }
 
         public override int GetHashCode()

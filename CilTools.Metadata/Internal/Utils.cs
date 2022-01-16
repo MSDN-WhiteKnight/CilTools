@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
@@ -400,6 +401,36 @@ namespace CilTools.Internal
             }//end for
 
             return null;
+        }
+
+        public static Type[] GetGenericParameters(MetadataAssembly assembly, MemberInfo declMember,
+            GenericParameterHandleCollection hcoll)
+        {
+            Type[] ret = new Type[hcoll.Count];
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                GenericParameter gp = assembly.MetadataReader.GetGenericParameter(hcoll[i]);
+                StringHandle sh = gp.Name;
+                GenericParameterConstraintHandleCollection gpchc = gp.GetConstraints();
+                Type[] constrains = new Type[gpchc.Count];
+                string name;
+
+                if (!sh.IsNil) name = assembly.MetadataReader.GetString(sh);
+                else name = string.Empty;
+
+                for (int j = 0; j < gpchc.Count; j++)
+                {
+                    GenericParameterConstraint cons = assembly.MetadataReader.GetGenericParameterConstraint(gpchc[j]);
+                    Type tCons = assembly.ResolveType(MetadataTokens.GetToken(assembly.MetadataReader, cons.Type));
+                    if (tCons == null) tCons = UnknownType.Value;
+                    constrains[j] = tCons;
+                }
+
+                ret[i] = GenericParamType.Create(declMember, gp.Index, name, gp.Attributes, constrains);
+            }
+
+            return ret;
         }
     }
 }
