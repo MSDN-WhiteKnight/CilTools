@@ -245,10 +245,14 @@ namespace CilTools.Syntax
 
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) inner.Add(new PunctuationSyntax(String.Empty, ","," "));
+                    if (i >= 1) inner.Add(new PunctuationSyntax(string.Empty, ","," "));
+                    
+                    SyntaxNode[] gpSyntax = SyntaxGenerator.GetGenericParameterSyntax(args[i]);
 
-                    if (args[i].IsGenericParameter) inner.Add(new GenericSyntax(args[i].Name));
-                    else inner.Add(new GenericSyntax(CilAnalysis.GetTypeName(args[i])));
+                    for (int j = 0; j < gpSyntax.Length; j++)
+                    {
+                        inner.Add(gpSyntax[j]);
+                    }
                 }
 
                 inner.Add(new PunctuationSyntax(String.Empty, ">", String.Empty));

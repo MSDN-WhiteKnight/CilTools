@@ -80,5 +80,19 @@ namespace CilTools.BytecodeAnalysis.Tests
             string str = CilAnalysis.MethodToText(m);
             Assert.IsFalse(str.Contains(".entrypoint"));
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "Sum", BytecodeProviders.All)]
+        public void Test_Syntax_GenericMethodParameterConstraints(MethodBase m)
+        {
+            string str = CilAnalysis.MethodToText(m);
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "public", Text.Any, "!!", Text.Any, "Sum", Text.Any,
+                "<", Text.Any, "valuetype", Text.Any, ".ctor", Text.Any, "(", Text.Any,
+                "System.ValueType", Text.Any,")", Text.Any, "T", Text.Any, ">", Text.Any,
+                "{", Text.Any, "}", Text.Any
+            });
+        }
     }
 }
