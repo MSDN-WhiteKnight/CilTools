@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.TestData;
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
@@ -83,6 +84,7 @@ namespace CilTools.BytecodeAnalysis.Tests
 
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "Sum", BytecodeProviders.All)]
+        [WorkItem(53)]
         public void Test_Syntax_GenericMethodParameterConstraints(MethodBase m)
         {
             string str = CilAnalysis.MethodToText(m);
@@ -91,6 +93,37 @@ namespace CilTools.BytecodeAnalysis.Tests
                 ".method", Text.Any, "public", Text.Any, "!!", Text.Any, "Sum", Text.Any,
                 "<", Text.Any, "valuetype", Text.Any, ".ctor", Text.Any, "(", Text.Any,
                 "System.ValueType", Text.Any,")", Text.Any, "T", Text.Any, ">", Text.Any,
+                "{", Text.Any, "}", Text.Any
+            });
+        }
+
+        [TestMethod]
+        [WorkItem(53)]
+        public void Test_GenericTypeParameterConstraints()
+        {
+            Type t = typeof(GenericConstraintsSample<>);
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string str = Utils.SyntaxToString(nodes);
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".class", Text.Any, "public", Text.Any, "GenericConstraintsSample", Text.Any, 
+                "<", Text.Any, "valuetype", Text.Any, ".ctor", Text.Any, "(", Text.Any,
+                "System.ValueType", Text.Any,")", Text.Any, "T", Text.Any, ">", Text.Any,
+                "{", Text.Any, "}", Text.Any
+            });
+        }
+
+        [TestMethod]
+        [WorkItem(53)]
+        public void Test_GenericTypeParameterFlags()
+        {
+            Type t = typeof(Action<>);
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string str = Utils.SyntaxToString(nodes);
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".class", Text.Any, "public", Text.Any, "Action", Text.Any,
+                "<", Text.Any, "-", Text.Any, "T", Text.Any, ">", Text.Any,
                 "{", Text.Any, "}", Text.Any
             });
         }

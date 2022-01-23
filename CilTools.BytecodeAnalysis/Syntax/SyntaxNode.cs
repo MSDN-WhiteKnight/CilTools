@@ -439,15 +439,14 @@ namespace CilTools.Syntax
 
                 for (int i = 0; i < targs.Length; i++)
                 {
-                    if (i >= 1) content.Add(new PunctuationSyntax(String.Empty, ",", " "));
+                    if (i >= 1) content.Add(new PunctuationSyntax(string.Empty, ",", " "));
+                    
+                    SyntaxNode[] gpSyntax = SyntaxGenerator.GetGenericParameterSyntax(targs[i]);
 
-                    if (targs[i].IsGenericParameter)
+                    for (int j = 0; j < gpSyntax.Length; j++)
                     {
-                        content.Add(
-                            new IdentifierSyntax(String.Empty, targs[i].Name, String.Empty, false, targs[i])
-                            );
+                        content.Add(gpSyntax[j]);
                     }
-                    else content.Add(new GenericSyntax(CilAnalysis.GetTypeName(targs[i])));
                 }
 
                 content.Add(new PunctuationSyntax(String.Empty, ">", String.Empty));
