@@ -18,19 +18,19 @@ jobs:
       run: nuget restore CilTools.sln -PackagesDirectory packages
     - name: Restore package references
       run: |
-        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe" -t:restore
+        & "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\msbuild.exe" -t:restore
     - name: Build with MSBuild
       run: |
-        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\MSBuild\Current\Bin\msbuild.exe"
+        & "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\MSBuild\Current\Bin\msbuild.exe"
     - name: Run
       run: |        
         & CilToolsDemo\bin\Debug\CilToolsDemo.exe
     - name: Test CilTools.BytecodeAnalysis
       run: |
-        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilTools.BytecodeAnalysis.Tests\bin\Debug\net45\CilTools.BytecodeAnalysis.Tests.dll
+        & "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilTools.BytecodeAnalysis.Tests\bin\Debug\net45\CilTools.BytecodeAnalysis.Tests.dll
     - name: Test CilTools.Metadata
       run: |
-        & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\2019\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilTools.Metadata.Tests\bin\Debug\CilTools.Metadata.Tests.dll
+        & "${env:ProgramFiles}\Microsoft Visual Studio\2022\Enterprise\Common7\IDE\Extensions\TestPlatform\vstest.console.exe" tests\CilTools.Metadata.Tests\bin\Debug\CilTools.Metadata.Tests.dll
     - name: Test CilTools.Runtime
       run: |
         Set-Location -Path tests\CilTools.Runtime.Tests\bin\Debug; .\CilTools.Runtime.Tests.exe    
