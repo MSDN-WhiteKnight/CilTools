@@ -64,28 +64,3 @@ namespace CilView.Core
         }        
     }
 }
-
-/*
-        public static void Print(string s)
-        {
-            Console.WriteLine(s);
-        }
-
-        public static void Print(int x, int y)
-        {
-            Console.WriteLine((x+y).ToString());
-        }
-
-        public static void Test()
-        {
-            AssemblyReader reader = new AssemblyReader();
-            Assembly ass = reader.LoadFrom(typeof(Program).Assembly.Location);
-            Type t = ass.GetType("ConsoleApp1.Program");
-            MethodBase miMetadata = t.GetMember("Print")[1] as MethodBase;
-            Console.WriteLine("miMetadata: "+miMetadata.Name+" "+miMetadata.GetParameters().Length.ToString());
-
-            MethodBase miRuntime = GetRuntimeMethod(miMetadata);
-            Console.WriteLine("miRuntime: " + miRuntime.ToString());
-            miRuntime.Invoke(null, new object[] { 1,2 });
-        }
-*/
