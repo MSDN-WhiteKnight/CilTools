@@ -34,6 +34,7 @@
                 <Separator/>
                 <MenuItem x:Name="miShowSource" Header="Show source code" Click="miShowSource_Click"/>
                 <MenuItem x:Name="miShowMethodSource" Header="Show source code (method)" Click="miShowMethodSource_Click"/>
+                <MenuItem x:Name="miExecute" Header="Execute" Click="miExecute_Click"/>
             </MenuItem>
             <MenuItem Header="Help" >
                 <MenuItem x:Name="miHelp" Header="Show help" Click="miHelp_Click" InputGestureText="F1"/>
