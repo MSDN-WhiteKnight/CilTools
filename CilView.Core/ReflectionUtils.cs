@@ -25,6 +25,11 @@ namespace CilView.Core
                 throw new NotSupportedException("Constructors are not supported");
             }
 
+            if (mi.IsGenericMethod)
+            {
+                throw new NotSupportedException("Generic methods are not supported");
+            }
+
             string methodName = mi.Name;
             ParameterInfo[] pars = mi.GetParameters();
             Type[] args = new Type[pars.Length];
@@ -76,7 +81,23 @@ namespace CilView.Core
             {
                 if(par.IsNull) { invokationPars.Add(null); continue; }
 
-                object parValue = Convert.ChangeType(par.Value, par.ParamType);
+                object parValue;
+
+                if (par.ParamType.Equals(typeof(IntPtr)))
+                {
+                    long x = long.Parse(par.Value);
+                    parValue = new IntPtr(x);
+                }
+                else if (par.ParamType.Equals(typeof(UIntPtr)))
+                {
+                    ulong x = ulong.Parse(par.Value);
+                    parValue = new UIntPtr(x);
+                }
+                else
+                {
+                    parValue = Convert.ChangeType(par.Value, par.ParamType);
+                }
+
                 invokationPars.Add(parValue);
             }
 
@@ -96,6 +117,9 @@ namespace CilView.Core
             sw.Stop();
             res.ReturnValue = retValue;
             res.Duration = sw.Elapsed;
+
+            if (retValue != null) res.ReturnValueType = retValue.GetType();
+            else res.ReturnValueType = ((MethodInfo)m).ReturnType;
 
             return res;
         }

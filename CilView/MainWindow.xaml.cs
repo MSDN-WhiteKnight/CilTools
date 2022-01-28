@@ -14,6 +14,7 @@ using CilTools.Runtime;
 using CilView.Build;
 using CilView.Common;
 using CilView.Core;
+using CilView.Core.Reflection;
 using CilView.Core.Syntax;
 using CilView.Exceptions;
 using CilView.SourceCode;
@@ -977,11 +978,28 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
                 return;
             }
 
-            MethodBase mbRuntime = ReflectionUtils.GetRuntimeMethod(current_method);
-            object res = mbRuntime.Invoke(null, new object[] { });
+            try
+            {
+                MethodBase mbRuntime = ReflectionUtils.GetRuntimeMethod(current_method);
+                MethodParameter[] pars = ReflectionUtils.GetMethodParameters(mbRuntime);
+                ExecuteWindow wnd = new ExecuteWindow(pars);
+                wnd.Owner = this;
+                wnd.ShowDialog();
 
-            if (res == null) MessageBox.Show("(null)");
-            else MessageBox.Show(res.ToString());
+                if (!wnd.ExecutePressed) return;
+
+                MethodExecutionResults res = ReflectionUtils.ExecuteMethod(mbRuntime, pars, TimeSpan.FromSeconds(2));
+
+                TextViewWindow resultsWindow = new TextViewWindow();
+                resultsWindow.Owner = this;
+                resultsWindow.Title = "Method execution results";
+                resultsWindow.Text = res.GetText();
+                resultsWindow.Show();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
         }
     }
 }

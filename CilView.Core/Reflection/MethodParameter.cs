@@ -12,19 +12,21 @@ namespace CilView.Core.Reflection
     {
         string val;
         private bool isNull;
+        string name;
+        Type paramType;
 
         public MethodParameter(string name, Type t, string initialValue)
         {
-            this.Name = name;
-            this.ParamType = t;
+            this.name = name;
+            this.paramType = t;
 
             if (initialValue != null) this.val = initialValue;
             else this.IsNull = true;
         }
 
-        public string Name { get; set; }
+        public string Name { get => name; }
 
-        public Type ParamType { get; set; }
+        public Type ParamType { get => paramType; }
 
         public string Value
         {
@@ -32,15 +34,15 @@ namespace CilView.Core.Reflection
 
             set
             {
-                value = val;
+                val = value;
                 OnPropertyChanged("Value");
             }
         }
 
         public bool IsNull
         {
-            get => isNull; 
-            
+            get => isNull;
+
             set
             {
                 isNull = value;

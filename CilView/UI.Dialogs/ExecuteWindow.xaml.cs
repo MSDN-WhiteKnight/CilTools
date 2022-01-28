@@ -7,18 +7,34 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using CilView.Core.Reflection;
 
 namespace CilView.UI.Dialogs
 {
     public partial class ExecuteWindow : Window
     {
-        public ExecuteWindow()
+        bool executePressed;
+
+        public ExecuteWindow(MethodParameter[] pars)
         {
             InitializeComponent();
+            this.dg.ItemsSource = pars;
+            this.dg.AutoGenerateColumns = true;
+        }
+
+        public bool ExecutePressed
+        {
+            get { return this.executePressed; }
         }
 
         private void bCancel_Click(object sender, RoutedEventArgs e)
         {
+            this.Close();
+        }
+
+        private void bExecute_Click(object sender, RoutedEventArgs e)
+        {
+            this.executePressed = true;
             this.Close();
         }
     }
