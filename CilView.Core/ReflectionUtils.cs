@@ -71,10 +71,31 @@ namespace CilView.Core
             return ret;
         }
 
+        static MethodExecutionResults ExecuteMethodImpl(object args)
+        {
+            MethodExecutionArgs mea = (MethodExecutionArgs)args;
+            MethodExecutionResults res = new MethodExecutionResults();
+            Stopwatch sw = new Stopwatch();
+            sw.Start();
+
+            try
+            {
+                res.ReturnValue = mea.m.Invoke(null, mea.pars);
+            }
+            catch (Exception ex)
+            {
+                res.ExceptionObject = ex;
+            }
+
+            sw.Stop();
+            res.Duration = sw.Elapsed;
+            return res;
+        }
+
         public static MethodExecutionResults ExecuteMethod(MethodBase m, IEnumerable<MethodParameter> parameters, 
             TimeSpan timeout)
         {
-            MethodExecutionResults res = new MethodExecutionResults();
+            MethodExecutionResults res;
             List<object> invokationPars = new List<object>();
 
             foreach (MethodParameter par in parameters)
@@ -101,24 +122,27 @@ namespace CilView.Core
                 invokationPars.Add(parValue);
             }
 
-            Stopwatch sw = new Stopwatch();
-            object retValue = null;
-            sw.Start();
+            MethodExecutionArgs mea = new MethodExecutionArgs();
+            mea.m = m;
+            mea.pars = invokationPars.ToArray();
 
-            try
+            Task<MethodExecutionResults> tExecution = new Task<MethodExecutionResults>(ExecuteMethodImpl, mea);
+            tExecution.Start();
+            bool completed = tExecution.Wait(timeout);
+
+            if (completed)
             {
-                retValue = m.Invoke(null, invokationPars.ToArray());
+                res = tExecution.Result;
+                res.IsTimedOut = false;
             }
-            catch (Exception ex)
+            else
             {
-                res.ExceptionObject = ex;
+                res = new MethodExecutionResults();
+                res.IsTimedOut = true;
+                res.Duration = timeout;
             }
 
-            sw.Stop();
-            res.ReturnValue = retValue;
-            res.Duration = sw.Elapsed;
-
-            if (retValue != null) res.ReturnValueType = retValue.GetType();
+            if (res.ReturnValue != null) res.ReturnValueType = res.ReturnValue.GetType();
             else res.ReturnValueType = ((MethodInfo)m).ReturnType;
 
             return res;
@@ -136,6 +160,12 @@ namespace CilView.Core
             }
 
             return ret;
+        }
+
+        class MethodExecutionArgs
+        {
+            public MethodBase m;
+            public object[] pars;
         }
     }
 }

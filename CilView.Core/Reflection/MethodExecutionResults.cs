@@ -23,7 +23,11 @@ namespace CilView.Core.Reflection
         {
             StringBuilder sb = new StringBuilder();
 
-            if (this.ExceptionObject != null)
+            if (this.IsTimedOut)
+            {
+                sb.AppendLine("Method execution did not completed within the specified timeout interval");
+            }
+            else if (this.ExceptionObject != null)
             {
                 sb.AppendLine("Executing method resulted in exception:");
                 sb.AppendLine(this.ExceptionObject.ToString());
@@ -47,6 +51,7 @@ namespace CilView.Core.Reflection
                 sb.AppendLine("Return value type: " + this.ReturnValueType.ToString());
             }
 
+            sb.AppendLine();
             sb.AppendLine("Duration: " + this.Duration.TotalMilliseconds.ToString() + " ms");
 
             return sb.ToString();
