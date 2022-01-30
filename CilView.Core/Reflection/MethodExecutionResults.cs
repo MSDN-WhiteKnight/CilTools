@@ -3,12 +3,15 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace CilView.Core.Reflection
 {
     public class MethodExecutionResults
     {
+        public MethodBase Method { get; set; }
+
         public object ReturnValue { get; set; }
 
         public Type ReturnValueType { get; set; }
@@ -18,6 +21,8 @@ namespace CilView.Core.Reflection
         public bool IsTimedOut { get; set; }
 
         public TimeSpan Duration { get; set; }
+
+        public object[] ParameterValues { get; set; }
 
         public string GetText()
         {
@@ -49,6 +54,31 @@ namespace CilView.Core.Reflection
                 }
 
                 sb.AppendLine("Return value type: " + this.ReturnValueType.ToString());
+            }
+
+            ParameterInfo[] pars = this.Method.GetParameters();
+            bool printedHeader = false;
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (!pars[i].ParameterType.IsByRef) continue;
+
+                if (!printedHeader)
+                {
+                    sb.AppendLine();
+                    sb.AppendLine("Output parameter values: ");
+                    printedHeader = true;
+                }
+
+                if (pars[i].IsOut) sb.Append("[out] ");
+                else sb.Append("[ref] ");
+
+                sb.Append(pars[i].Name + ": ");
+
+                if (this.ParameterValues[i] != null) sb.Append(this.ParameterValues[i].ToString());
+                else sb.Append("(null)");
+
+                sb.AppendLine();
             }
 
             sb.AppendLine();

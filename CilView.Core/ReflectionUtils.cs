@@ -88,6 +88,8 @@ namespace CilView.Core
             }
 
             sw.Stop();
+            res.Method = mea.m;
+            res.ParameterValues = mea.pars;
             res.Duration = sw.Elapsed;
             return res;
         }
@@ -114,6 +116,11 @@ namespace CilView.Core
                     ulong x = ulong.Parse(par.Value);
                     parValue = new UIntPtr(x);
                 }
+                else if (par.ParamType.IsByRef)
+                {
+                    Type tTarget = par.ParamType.GetElementType();
+                    parValue = Convert.ChangeType(par.Value, tTarget);
+                }
                 else
                 {
                     parValue = Convert.ChangeType(par.Value, par.ParamType);
@@ -138,6 +145,7 @@ namespace CilView.Core
             else
             {
                 res = new MethodExecutionResults();
+                res.Method = m;
                 res.IsTimedOut = true;
                 res.Duration = timeout;
             }
