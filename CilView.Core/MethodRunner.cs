@@ -11,7 +11,7 @@ using CilView.Core.Reflection;
 
 namespace CilView.Core
 {
-    public static class ReflectionUtils
+    public static class MethodRunner
     {
         public static MethodBase GetRuntimeMethod(MethodBase mi)
         {

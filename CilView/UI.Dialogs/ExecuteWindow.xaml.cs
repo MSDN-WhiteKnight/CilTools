@@ -29,15 +29,15 @@ namespace CilView.UI.Dialogs
         {
             try
             {
-                MethodBase mbRuntime = ReflectionUtils.GetRuntimeMethod(mb);
-                MethodParameter[] pars = ReflectionUtils.GetMethodParameters(mbRuntime);
+                MethodBase mbRuntime = MethodRunner.GetRuntimeMethod(mb);
+                MethodParameter[] pars = MethodRunner.GetMethodParameters(mbRuntime);
                 ExecuteWindow wnd = new ExecuteWindow(pars);
                 wnd.Owner = owner;
                 wnd.ShowDialog();
 
                 if (!wnd.ExecutePressed) return;
 
-                MethodExecutionResults res = ReflectionUtils.ExecuteMethod(mbRuntime, pars,
+                MethodExecutionResults res = MethodRunner.ExecuteMethod(mbRuntime, pars,
                     TimeSpan.FromMilliseconds(wnd.TimeoutMilliseconds));
 
                 TextViewWindow resultsWindow = new TextViewWindow();

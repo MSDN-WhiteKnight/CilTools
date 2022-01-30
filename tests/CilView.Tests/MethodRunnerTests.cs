@@ -13,7 +13,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace CilView.Tests
 {
     [TestClass]
-    public class GetRuntimeMethodTests
+    public class MethodRunnerTests
     {
         [TestMethod]
         public void Test_GetRuntimeMethod()
@@ -25,7 +25,7 @@ namespace CilView.Tests
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
                 Type t = ass.GetType(typeof(SampleMethods).FullName);
                 MethodBase miMetadata = t.GetMethod("PrintHelloWorld");
-                MethodBase miRuntime = ReflectionUtils.GetRuntimeMethod(miMetadata);
+                MethodBase miRuntime = MethodRunner.GetRuntimeMethod(miMetadata);
                 Assert.AreEqual(miMetadata.Name, miRuntime.Name);
                 Assert.AreEqual("PrintHelloWorld", miRuntime.Name);
                 AssertThat.DoesNotThrow(() => miRuntime.Invoke(null, new object[0]));
@@ -49,16 +49,16 @@ namespace CilView.Tests
 
             using (reader)
             {
-                Assembly ass = reader.LoadFrom(typeof(GetRuntimeMethodTests).Assembly.Location);
-                Type t = ass.GetType(typeof(GetRuntimeMethodTests).FullName);
+                Assembly ass = reader.LoadFrom(typeof(MethodRunnerTests).Assembly.Location);
+                Type t = ass.GetType(typeof(MethodRunnerTests).FullName);
                 MethodBase miMetadata = t.GetMethod("Print", new Type[] { typeof(string) });
-                MethodBase miRuntime = ReflectionUtils.GetRuntimeMethod(miMetadata);
+                MethodBase miRuntime = MethodRunner.GetRuntimeMethod(miMetadata);
                 Assert.AreEqual(miMetadata.Name, miRuntime.Name);
                 Assert.AreEqual("Print", miRuntime.Name);
                 Assert.AreEqual(1, miRuntime.GetParameters().Length);
 
                 miMetadata = t.GetMethod("Print", new Type[] { typeof(int) , typeof(int) });
-                miRuntime = ReflectionUtils.GetRuntimeMethod(miMetadata);
+                miRuntime = MethodRunner.GetRuntimeMethod(miMetadata);
                 Assert.AreEqual(miMetadata.Name, miRuntime.Name);
                 Assert.AreEqual("Print", miRuntime.Name);
                 Assert.AreEqual(2, miRuntime.GetParameters().Length);
@@ -75,7 +75,7 @@ namespace CilView.Tests
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
                 Type t = ass.GetType(typeof(SampleMethods).FullName);
                 MethodBase miMetadata = t.GetMethod("CalcSum");
-                MethodBase miRuntime = ReflectionUtils.GetRuntimeMethod(miMetadata);
+                MethodBase miRuntime = MethodRunner.GetRuntimeMethod(miMetadata);
                 Assert.AreEqual(miMetadata.Name, miRuntime.Name);
                 Assert.AreEqual("CalcSum", miRuntime.Name);
                 object res = miRuntime.Invoke(null, new object[] { 1.1, 2.3 });
