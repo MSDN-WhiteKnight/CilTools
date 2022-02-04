@@ -966,5 +966,18 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
             SourceCodeUI.ShowSource(current_method, 0, true);
         }
+
+        private void miExecute_Click(object sender, RoutedEventArgs e)
+        {
+            MethodBase current_method = this.cilbrowser.GetCurrentMethod();
+
+            if (current_method == null)
+            {
+                MessageBox.Show(this, "No method selected. Select method first to execute it.", "Error");
+                return;
+            }
+
+            ExecuteWindow.ShowExecuteMethodUI(current_method, this);
+        }
     }
 }
