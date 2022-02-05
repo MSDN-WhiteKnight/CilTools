@@ -43,5 +43,25 @@ namespace CilTools.Reflection
                 else throw;
             }
         }
+
+        public static bool IsMethodWithoutBody(MethodBase m)
+        {
+            MethodImplAttributes implattr = 0;
+
+            try { implattr = m.GetMethodImplementationFlags(); }
+            catch (NotImplementedException) { }
+
+            if (m.IsAbstract ||
+                (m.Attributes & MethodAttributes.PinvokeImpl) == MethodAttributes.PinvokeImpl ||
+                (implattr & MethodImplAttributes.InternalCall) == MethodImplAttributes.InternalCall ||
+                (implattr & MethodImplAttributes.Runtime) == MethodImplAttributes.Runtime
+                )
+            {
+                //If method is abstract, PInvoke or provided by runtime,
+                //it does not have CIL method body by design                
+                return true;
+            }
+            else return false;
+        }
     }
 }

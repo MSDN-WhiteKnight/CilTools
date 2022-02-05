@@ -21,6 +21,8 @@
                 <MenuItem x:Name="miThreads" Header="Threads" Click="miThreads_Click" />
             </MenuItem>
             <MenuItem Header="View">
+                <MenuItem Header="Include code size" x:Name="miIncludeCodeSize" 
+                          IsCheckable="True" Click="miIncludeCodeSize_Click" />
                 <MenuItem Header="Include source code" x:Name="miIncludeDourceCode" 
                           IsCheckable="True" Click="miIncludeDourceCode_Click"/>
             </MenuItem>

@@ -608,12 +608,8 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             wnd.Show();
         }
 
-        private void miIncludeDourceCode_Click(object sender, RoutedEventArgs e)
+        void UpdateDisassembly()
         {
-            //toggle whether to show source code as code comments in disassembly or not
-            bool includesrc = miIncludeDourceCode.IsChecked;
-            CilVisualization.CurrentDisassemblerParams.IncludeSourceCode = includesrc;
-
             //recreate disassembly if a method is currently shown
             MethodBase mb = this.cilbrowser.GetCurrentMethod();
 
@@ -621,6 +617,26 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             {
                 this.cilbrowser.NavigateToMethod(mb);
             }
+        }
+
+        private void miIncludeCodeSize_Click(object sender, RoutedEventArgs e)
+        {
+            //toggle whether to show bytecode size as code comments in disassembly or not
+            bool includeCodeSize = miIncludeCodeSize.IsChecked;
+            CilVisualization.CurrentDisassemblerParams.IncludeCodeSize = includeCodeSize;
+
+            //recreate disassembly if a method is currently shown
+            UpdateDisassembly();
+        }
+
+        private void miIncludeDourceCode_Click(object sender, RoutedEventArgs e)
+        {
+            //toggle whether to show source code as code comments in disassembly or not
+            bool includesrc = miIncludeDourceCode.IsChecked;
+            CilVisualization.CurrentDisassemblerParams.IncludeSourceCode = includesrc;
+
+            //recreate disassembly if a method is currently shown
+            UpdateDisassembly();
         }
 
         void OnHelpClick()
@@ -979,5 +995,7 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
             ExecuteWindow.ShowExecuteMethodUI(current_method, this);
         }
+
+        
     }
 }

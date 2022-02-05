@@ -83,6 +83,37 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_CodeSize(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            DisassemblerParams pars = new DisassemblerParams();
+            pars.IncludeCodeSize = true;
+            MethodDefSyntax syntax = graph.ToSyntaxTree(pars);
+            string str = syntax.ToString();
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,"public", Text.Any,"PrintHelloWorld", Text.Any,"{", Text.Any,
+                "// Code size: 13", Text.Any,
+                "call", Text.Any, "System.Console::WriteLine(string)", Text.Any, 
+                "}", Text.Any
+            });
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_CodeSize_Negative(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            DisassemblerParams pars = new DisassemblerParams();
+            pars.IncludeCodeSize = false;
+            MethodDefSyntax syntax = graph.ToSyntaxTree(pars);
+            string str = syntax.ToString();
+
+            Assert.IsFalse(str.Contains("// Code size: "));
+        }
+
+        [TestMethod]
         [MethodTestData(typeof(SampleMethods), "Sum", BytecodeProviders.All)]
         [WorkItem(53)]
         public void Test_Syntax_GenericMethodParameterConstraints(MethodBase m)

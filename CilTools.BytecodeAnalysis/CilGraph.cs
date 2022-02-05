@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Reflection;
@@ -354,7 +355,7 @@ namespace CilTools.BytecodeAnalysis
         /// </remarks>
         public void PrintHeader(TextWriter output)
         {
-            SyntaxNode[] elems = this.HeaderAsSyntax(0);
+            SyntaxNode[] elems = this.HeaderAsSyntax(0, DisassemblerParams.Default);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -362,13 +363,13 @@ namespace CilTools.BytecodeAnalysis
             }
         }
 
-        SyntaxNode[] HeaderAsSyntax(int startIndent)
+        SyntaxNode[] HeaderAsSyntax(int startIndent, DisassemblerParams disassemblerParams)
         {
             ICustomMethod cm = (ICustomMethod)this._Method;
             int maxstack = 0;
             bool has_maxstack = false;
             LocalVariable[] locals = null;
-            List<SyntaxNode> ret = new List<SyntaxNode>(3);
+            List<SyntaxNode> ret = new List<SyntaxNode>(4);
 
             try
             {
@@ -393,6 +394,27 @@ namespace CilTools.BytecodeAnalysis
             {
                 string error = "Exception occured when trying to get local variables.";
                 Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
+            }
+
+            //display bytecode size in bytes if specified
+            if (disassemblerParams.IncludeCodeSize && !ReflectionUtils.IsMethodWithoutBody(this._Method))
+            {
+                try
+                {
+                    byte[] bytecode = cm.GetBytecode();
+
+                    if (bytecode != null)
+                    {
+                        CommentSyntax comment = CommentSyntax.Create(SyntaxNode.GetIndentString(startIndent + 1),
+                            " Code size: " + bytecode.Length.ToString(CultureInfo.InvariantCulture), 
+                            Environment.NewLine, false);
+                        ret.Add(comment);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Diagnostics.OnError(this, new CilErrorEventArgs(ex, "Failed to get code size"));
+                }
             }
 
             if (ReflectionUtils.IsEntryPoint(this._Method))
@@ -855,7 +877,7 @@ namespace CilTools.BytecodeAnalysis
                 nodes.Add( arr[i]);
             }
 
-            arr = this.HeaderAsSyntax(startIndent);
+            arr = this.HeaderAsSyntax(startIndent, pars);
 
             for (int i = 0; i < arr.Length; i++)
             {

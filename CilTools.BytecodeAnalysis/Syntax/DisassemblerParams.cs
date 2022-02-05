@@ -29,6 +29,12 @@ namespace CilTools.Syntax
         /// </remarks>
         public bool IncludeSourceCode { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value specifying that disassembler should include method's bytecode size in its output. 
+        /// The bytecode size is added as a comment in the beginning of the method body.
+        /// </summary>
+        public bool IncludeCodeSize { get; set; }
+
         internal static readonly DisassemblerParams Default = new DisassemblerParams();
     }
 }
