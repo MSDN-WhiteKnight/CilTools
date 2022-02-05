@@ -629,10 +629,10 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             UpdateDisassembly();
         }
 
-        private void miIncludeDourceCode_Click(object sender, RoutedEventArgs e)
+        private void miIncludeSourceCode_Click(object sender, RoutedEventArgs e)
         {
             //toggle whether to show source code as code comments in disassembly or not
-            bool includesrc = miIncludeDourceCode.IsChecked;
+            bool includesrc = miIncludeSourceCode.IsChecked;
             CilVisualization.CurrentDisassemblerParams.IncludeSourceCode = includesrc;
 
             //recreate disassembly if a method is currently shown

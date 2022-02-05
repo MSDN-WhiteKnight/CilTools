@@ -23,8 +23,8 @@
             <MenuItem Header="View">
                 <MenuItem Header="Include code size" x:Name="miIncludeCodeSize" 
                           IsCheckable="True" Click="miIncludeCodeSize_Click" />
-                <MenuItem Header="Include source code" x:Name="miIncludeDourceCode" 
-                          IsCheckable="True" Click="miIncludeDourceCode_Click"/>
+                <MenuItem Header="Include source code" x:Name="miIncludeSourceCode" 
+                          IsCheckable="True" Click="miIncludeSourceCode_Click"/>
             </MenuItem>
             <MenuItem Header="Tools">
                 <MenuItem x:Name="miShowExceptions" Header="Show exceptions (method)" 
