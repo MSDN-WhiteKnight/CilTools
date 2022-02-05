@@ -29,7 +29,22 @@ namespace CilView.UI.Dialogs
         {
             try
             {
+                string errorMessage;
+
+                if (!MethodRunner.CanExecute(mb, out errorMessage))
+                {
+                    MessageBox.Show(owner, "Cannot execute method: " + errorMessage, "Error");
+                    return;
+                }
+
                 MethodBase mbRuntime = MethodRunner.GetRuntimeMethod(mb);
+
+                if (mbRuntime == null)
+                {
+                    MessageBox.Show(owner, "Cannot find runtime method", "Error");
+                    return;
+                }
+
                 MethodParameter[] pars = MethodRunner.GetMethodParameters(mbRuntime);
                 ExecuteWindow wnd = new ExecuteWindow(pars);
                 wnd.Owner = owner;
@@ -45,6 +60,11 @@ namespace CilView.UI.Dialogs
                 resultsWindow.Title = "Method execution results";
                 resultsWindow.Text = res.GetText();
                 resultsWindow.Show();
+            }
+            catch (NotSupportedException ex)
+            {
+                //don't pollute logs with expected failures
+                MessageBox.Show(owner, "Cannot execute method: " + ex.Message, "Error");
             }
             catch (Exception ex)
             {

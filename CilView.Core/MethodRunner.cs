@@ -13,23 +13,32 @@ namespace CilView.Core
 {
     public static class MethodRunner
     {
+        public static bool CanExecute(MethodBase m, out string errorMessage)
+        {
+            if (m.MemberType == MemberTypes.Constructor)
+            {
+                errorMessage = "Constructors are not supported";
+                return false;
+            }
+
+            if (!m.IsStatic)
+            {
+                errorMessage = "Instance methods are not supported";
+                return false;
+            }
+
+            if (m.IsGenericMethod)
+            {
+                errorMessage = "Generic methods are not supported";
+                return false;
+            }
+
+            errorMessage = string.Empty;
+            return true;
+        }
+
         public static MethodBase GetRuntimeMethod(MethodBase mi)
         {
-            if (!mi.IsStatic)
-            {
-                throw new NotSupportedException("Instance methods are not supported");
-            }
-
-            if (mi.IsConstructor)
-            {
-                throw new NotSupportedException("Constructors are not supported");
-            }
-
-            if (mi.IsGenericMethod)
-            {
-                throw new NotSupportedException("Generic methods are not supported");
-            }
-
             string methodName = mi.Name;
             ParameterInfo[] pars = mi.GetParameters();
             Type[] args = new Type[pars.Length];
@@ -56,7 +65,7 @@ namespace CilView.Core
 
             if (string.IsNullOrEmpty(assemblyLocation))
             {
-                throw new Exception("Assembly location not found");
+                throw new NotSupportedException("Assembly location not found");
             }
 
             if (string.Equals(typeName, "<Module>", StringComparison.Ordinal))
