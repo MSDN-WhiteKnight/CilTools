@@ -83,6 +83,7 @@ namespace CilView.SourceCode
 
             SourceDocument ret = new SourceDocument();
             ret.SymbolsFile = pdb_path;
+            ret.SymbolsFileFormat = "Portable PDB";
             ret.Method = m;
 
             string filePath = string.Empty;
@@ -170,6 +171,7 @@ namespace CilView.SourceCode
             PdbReader reader = new PdbReader(pdb_path);
             SourceDocument ret = new SourceDocument();
             ret.SymbolsFile = pdb_path;
+            ret.SymbolsFileFormat = "Windows PDB";
             ret.Method = m;
 
             using (reader)

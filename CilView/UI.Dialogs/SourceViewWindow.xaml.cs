@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -58,6 +59,14 @@ namespace CilView.UI.Dialogs
             int size = Utils.GetMethodBodySize(f.Method);
             if (f.CilEnd >= size) bNext.IsEnabled = false;
             else bNext.IsEnabled = true;
+
+            sb.Clear();
+            sb.Append("Symbols file: ");
+            sb.Append(f.Document.SymbolsFile);
+            sb.Append(" (");
+            sb.Append(f.Document.SymbolsFileFormat);
+            sb.Append(')');
+            tbSymbolsFile.Text = sb.ToString();
         }
 
         public SourceViewWindow(SourceFragment f)
@@ -123,6 +132,35 @@ namespace CilView.UI.Dialogs
                 }
 
                 this.LoadSourceInfo(f_new);
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+        }
+
+        private void tbSymbolsFile_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            try
+            {
+                string path = this._f.Document.SymbolsFile;
+
+                if (string.IsNullOrEmpty(path))
+                {
+                    MessageBox.Show(this, "Symbols path is not available", "Error");
+                    return;
+                }
+
+                string dir = Path.GetDirectoryName(path);
+
+                if (string.IsNullOrEmpty(dir))
+                {
+                    MessageBox.Show(this, "Cannot determine symbols file directory", "Error");
+                    return;
+                }
+
+                //open symbols file directory in Explorer
+                Utils.ShellExecute(dir, this, "Failed to open symbols file directory");
             }
             catch (Exception ex)
             {
