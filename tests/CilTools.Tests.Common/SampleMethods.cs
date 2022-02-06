@@ -161,6 +161,9 @@ namespace CilTools.Tests.Common
         [My(1)]
         public static void AttributeTest() { }
 
+        [return: My(999)]
+        public static void ReturnTypeAttributeTest() { }
+
         [DllImport("user32.dll",SetLastError = true)]
         public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
