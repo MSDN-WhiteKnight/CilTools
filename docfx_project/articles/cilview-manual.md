@@ -7,20 +7,20 @@
 CilView is a windows application to display CIL code of methods in .NET assemblies. The key features are:
 
 - Displaying CIL code of methods in the specified assembly file or process
+- Automatically building C#/VB sources and displaying the resulting CIL
+- Displaying contents of CIL assembler source files (*.il)
 - Syntax highlighting
 - Navigation to the referenced method's code by clicking on the method reference
-- Exporting the method's code into file
+- Exporting CIL code into file
 - Displaying process information and stack traces of managed threads (when process is opened)
 
-## Displaying code from the assembly file
+## View assembly file
 
 1\. Click **File** -> **Open** menu or press the **Open file** button. 
 
 2\. Select the managed assembly EXE or DLL file in the file open dialog. 
 
 3\. Select type from the **Type** drop-down list in the main window 
-
-You can also search type by entering the fragment of the type name to **Find** text field and pressing the "**>**" button. The search will select the matching type if it's found. Press the button again to go to the next matching type. The program will display message if when the end of list is reached.
 
 4\. Select method in the left panel.
 
@@ -30,7 +30,35 @@ All method references on the **Formatted** tab are hyperlinks to the referenced 
 
 ![CilView main window](../images/cilview.png)
 
-## Displaying code from the process
+## View the resulting CIL for C#/VB sources 
+
+This feature enables you to view disassembled CIL code corresponding to the entered code snippet. CIL View will compile the provided code in background, and open the output binary if the compilation is successful. If the build fails, it will display the build output to you.
+
+1. Click **File** -> **Open code** menu.
+
+2. Paste the input source code into the text area.
+
+3. Select the appropriate language from the combobox.
+
+4. Click **OK**.
+
+5. CIL View will open the output assembly. You can browse its contents as described above.
+
+The "Open code" window only supports a self-contained code snippet without any dependencies or special build options. If you need more complex scenarios, open an MSBuild project file (.csproj/.vbproj) instead. To do this, click **File** -> **Open** menu and select the project file in the file open dialog.
+
+CIL View can compile the provided sources in different ways, depending on your environment. First, it tries to use .NET SDK (dotnet build) if it's installed on your system. If the build fails or .NET SDK is not installed, it tries to build using the MSBuild version bundled with .NET Framework. For .NET SDK, the supported language versions depend on installed SDK version. For .NET Framework MSBuild, C# 5.0 or Visual Basic 11.0 (VS 2012) are supported.
+
+> **NOTE:** On 64-bit Windows CIL View can only use 64-bit .NET CLI (located at `C:\Program Files\dotnet\dotnet.exe`).
+
+## View the contents of CIL assembler source file
+
+1. Click **File** -> **Open** menu or press the **Open file** button. 
+
+2. Select CIL assembler source file (*.il) in the file open dialog.
+
+You cannot navigate between types or methods in the opened CIL in this case, but the syntax highlighting works. Note that opening large files can crash or freeze the application.
+
+## View assemblies in the specified process
 
 1\. Click **File** -> **Open process** menu or press the **Open process** button. 
 
@@ -51,8 +79,6 @@ You can search process by entering the process name starting fragment or ID into
 6\. Select type from the **Type** drop-down list in the main window
 
 7\. Select method in the left panel.
-
-You can also search assemblies, types and methods by entering the fragment of their names into the **Find** text field and pressing the "**>**" button. CIL View searches methods in the currently selected type, if the type is selected. In a similar way, types are searched in the currently selected assembly, if one is selected. The search results are shown in the context menu. Clicking on the menu item navigates to the corresponding object.
 
 8\. The right panel will display the CIL disassembly of the selected method.
 
@@ -98,6 +124,10 @@ To figure out exceptions that the method could potentially throw, open that meth
 To compare exceptions actually thrown by methods of the type and exceptions mentioned in their documentation, select the type and use **Analysis** -> **Compare exceptions** command. In the appearing dialog box, select the XML documentation file to compare. CIL View supports both regular ECMA XML emitted by C# compiler and monodoc XML format. The opened window will show the differences between exceptions reported by analysis and exceptions documented in ECMA XML `<exception>` tags.
 
 The exception analysis supported when opening both files and processes. However, when you hit any limitations mentioned above, the analysis accuracy decreases.
+
+## Using search
+
+You can search assemblies, types and methods by entering the fragment of their names into the **Find** text field and pressing the "**>**" button. CIL View searches methods in the currently selected type, if the type is selected. In a similar way, types are searched in the currently selected assembly, if one is selected. The search results are shown in the context menu. Clicking on the menu item navigates to the corresponding object.
 
 ## ClickOnce installation with auto-update
 
