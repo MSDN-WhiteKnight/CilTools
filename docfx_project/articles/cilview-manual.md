@@ -13,6 +13,8 @@ CilView is a windows application to display CIL code of methods in .NET assembli
 - Navigation to the referenced method's code by clicking on the method reference
 - Exporting CIL code into file
 - Displaying process information and stack traces of managed threads (when process is opened)
+- Displaying source code from which the method's CIL was compiled
+- Executing methods interactively and inspecting the results
 
 ## View assembly file
 
@@ -117,17 +119,43 @@ The stack trace will be displayed in the left panel. Some stack frames are hyper
 
 ![CilView threads window](../images/cilview3.png)
 
-## Exception analysis
-
-To figure out exceptions that the method could potentially throw, open that method and use **Analysis** -> **Show exception (methods)** menu command. In the opened window you'll see the list of exception types as well as the call stack that could trigger them. The CIL View recursively scans the analysed method and all methods called by it, and searches for exceptions that are thrown and not handled up the stack. Not that exception analysis might be inaccurate (bot false positives and false negatives, so it's only good for a quick estimate of thrown exceptions. To perform exception analysis on all methods of the current type, use **Analysis** -> **Show exception (type)**.
-
-To compare exceptions actually thrown by methods of the type and exceptions mentioned in their documentation, select the type and use **Analysis** -> **Compare exceptions** command. In the appearing dialog box, select the XML documentation file to compare. CIL View supports both regular ECMA XML emitted by C# compiler and monodoc XML format. The opened window will show the differences between exceptions reported by analysis and exceptions documented in ECMA XML `<exception>` tags.
-
-The exception analysis supported when opening both files and processes. However, when you hit any limitations mentioned above, the analysis accuracy decreases.
-
 ## Using search
 
 You can search assemblies, types and methods by entering the fragment of their names into the **Find** text field and pressing the "**>**" button. CIL View searches methods in the currently selected type, if the type is selected. In a similar way, types are searched in the currently selected assembly, if one is selected. The search results are shown in the context menu. Clicking on the menu item navigates to the corresponding object.
+
+## Disassembler options
+
+There are a couple of options that control the output of disassembler displayed in CIL View. They are enabled or disabled using checkboxes in **View** menu:
+
+- **View** -> **Include code size**. Enables outputting the method's bytecode size, in bytes, as a code comment at the start of the method body.
+
+- **View** -> **Include source code**. Enables outputting of source code fragments from which particular instructions were compiled. 
+
+CIL View can output source code if symbol files for the disassembled assembly are available and point into valid local source file locations. Supported symbol formats are Windows PDB and Portable PDB. Source code is included as code comments preceding their corresponding instructions. 
+
+## Exception analysis
+
+To figure out exceptions that the method could potentially throw, open that method and use **Tools** -> **Show exception (methods)** menu command. In the opened window you'll see the list of exception types as well as the call stack that could trigger them. The CIL View recursively scans the analysed method and all methods called by it, and searches for exceptions that are thrown and not handled up the stack. Not that exception analysis might be inaccurate (bot false positives and false negatives, so it's only good for a quick estimate of thrown exceptions. To perform exception analysis on all methods of the current type, use **Tools** -> **Show exception (type)**.
+
+To compare exceptions actually thrown by methods of the type and exceptions mentioned in their documentation, select the type and use **Tools** -> **Compare exceptions** command. In the appearing dialog box, select the XML documentation file to compare. CIL View supports both regular ECMA XML emitted by C# compiler and monodoc XML format. The opened window will show the differences between exceptions reported by analysis and exceptions documented in ECMA XML `<exception>` tags.
+
+The exception analysis is supported when opening both files and processes. However, when you hit any limitations mentioned above, the analysis accuracy decreases.
+
+## Source code viewer
+
+This feature enables you to display source code corresponding to disassembled CIL code. Source code viewer can fetch source code using symbols line data (see *Disassembler options* section above for information about symbols support) or display the decompiled code (currently only supported for abstract methods).
+
+To view the source code for individual instructions, click **Tools** -> **Show source code**. Alternatively, you could right-click the instruction of interest in formatted view. In the **View source** window you'll see the CIL code of the sequence point on the left and its corresponding source code fragment on the right. Use **<** and **>** buttons to navigate between sequence points, or the file hyperlink to open the whole source file in your default editor. 
+
+To view the source code for the whole method, **Tools** -> **Show source code (method)**. The **Source code** window will display the method's source code as well as the information about where it was fetched from.
+
+## Method execution
+
+> **WARNING:** Executing a method from unknown origin could be dangerous. Don't use this feature unless you are sure a method does not contain a malicious code! There's no isolation or security control provided for the code being executed.
+
+To execute the current method interactively, use the **Tools** -> **Execute** menu command. In the **Execute method** window, enter values for method parameters, if it has them, specify the timeout value that limits method execution time, and press **Execute**. The CIL View will load the method's assembly for execution and invoke the method using reflection, showing the results to you in a dialog box when it returns. The dialog box will show a method's return value, output parameter values (`ref`/`out`) or exception details, it the method would have thrown an exception. Note that if a method crashes or otherwise somehow corrupts the application state (the assembly is loaded into the main application domain), you might not see the mentioned output at all.
+
+Method execution feature has some limitations. It currently only supports primitive types or types convertible from `string` as method parameters. Instance methods, generic methods and constructors are not supported. Also the assembly in which the method is housed must target .NET Framework or .NET Standard and have x86 or AnyCPU processor architecture.
 
 ## ClickOnce installation with auto-update
 
@@ -190,6 +218,6 @@ Using auto-update requires stable internet connection and access to the https://
 
 ---------------------------------------------
 
-*Copyright (c) 2021,  MSDN.WhiteKnight*
+*Copyright (c) 2022,  MSDN.WhiteKnight*
 
 *This CIL View distribution contains the binary code of [ClrMD](https://github.com/microsoft/clrmd) library: Copyright (c) .NET Foundation and Contributors, MIT License.*
