@@ -16,6 +16,8 @@ CilView is a windows application to display CIL code of methods in .NET assembli
 - Displaying source code from which the method's CIL was compiled
 - Executing methods interactively and inspecting the results
 
+---------------------------------------------
+
 ## View assembly file
 
 1\. Click **File** -> **Open** menu or press the **Open file** button. 
@@ -215,6 +217,26 @@ Using auto-update requires stable internet connection and access to the https://
 - Make search in **Open process** window case-insensitive
 - Add support for displaying dynamic assembly names when inspecting process (.NET Framework only)
 - Show loaded modules in process info
+
+2.4
+
+- Add support for opening C#/VB code and MSBuild projects
+- Add **Show source** support
+- Add options to include bytecode size and source code lines (from PDB) in disassembler output
+- Add support for opening IL source files
+- Add support for .entrypoint directive
+- Add **Export type to file** menu command
+- Add support for generic constraints
+- Add support for disassembling properties
+- Add support for interactive method execution
+- Use .NET Core runtime directory when resolving dependencies for .NET Core assemblies
+- Use runtime directory of the inspected process instead of current runtime directory for assembly resolution when opening a process
+- Load assembly images from memory instead of files when opening a process
+- When an assembly contains a single type, automatically navigate to that type
+- When the type contains only one non-constructor method and no other members (like fields), automatically navigate to that single method when type is selected
+- Change member identifier color to more visible with lower brightness
+- Fix `ldtoken` syntax for methods
+- Fix string literal escaping in disassembler to use ECMA-335 rules
 
 ---------------------------------------------
 
