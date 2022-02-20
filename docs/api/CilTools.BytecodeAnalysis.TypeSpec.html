@@ -277,9 +277,6 @@
       <span class="xref">System.Type.FindMembers(System.Reflection.MemberTypes, System.Reflection.BindingFlags, System.Reflection.MemberFilter, System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Type.GetGenericParameterConstraints()</span>
-    </div>
-    <div>
       <span class="xref">System.Type.IsContextfulImpl()</span>
     </div>
     <div>
@@ -362,9 +359,6 @@
     </div>
     <div>
       <span class="xref">System.Type.Attributes</span>
-    </div>
-    <div>
-      <span class="xref">System.Type.GenericParameterAttributes</span>
     </div>
     <div>
       <span class="xref">System.Type.IsVisible</span>
@@ -707,6 +701,33 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Type.FullName</span></div>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_TypeSpec_GenericParameterAttributes_" data-uid="CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_TypeSpec_GenericParameterAttributes" data-uid="CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes">GenericParameterAttributes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override GenericParameterAttributes GenericParameterAttributes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.GenericParameterAttributes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Type.GenericParameterAttributes</span></div>
   
   
   <a id="CilTools_BytecodeAnalysis_TypeSpec_GenericParameterPosition_" data-uid="CilTools.BytecodeAnalysis.TypeSpec.GenericParameterPosition*"></a>
@@ -1661,6 +1682,33 @@ if you need the runtime type. This property will be removed in future releases.<
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Type.GetGenericArguments()</span></div>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_TypeSpec_GetGenericParameterConstraints_" data-uid="CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_TypeSpec_GetGenericParameterConstraints" data-uid="CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints">GetGenericParameterConstraints()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type[] GetGenericParameterConstraints()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Type.GetGenericParameterConstraints()</span></div>
   
   
   <a id="CilTools_BytecodeAnalysis_TypeSpec_GetGenericTypeDefinition_" data-uid="CilTools.BytecodeAnalysis.TypeSpec.GetGenericTypeDefinition*"></a>
@@ -2755,6 +2803,81 @@ does not belong to a generic method</p>
       <tr>
         <td><a class="xref" href="CilTools.BytecodeAnalysis.TypeSpec.html">TypeSpec</a></td>
         <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_TypeSpec_ReadFromArray_" data-uid="CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_TypeSpec_ReadFromArray_System_Byte___CilTools_Reflection_SignatureContext_" data-uid="CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)">ReadFromArray(Byte[], SignatureContext)</h4>
+  <div class="markdown level1 summary"><p>Reads <code>TypeSpec</code> object from the specified byte array using the specified signature context</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static TypeSpec ReadFromArray(byte[] data, SignatureContext ctx)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Byte array to read data from</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.SignatureContext.html">SignatureContext</a></td>
+        <td><span class="parametername">ctx</span></td>
+        <td><p>The signature context</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.BytecodeAnalysis.TypeSpec.html">TypeSpec</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_BytecodeAnalysis_TypeSpec_ReadFromArray_System_Byte___CilTools_Reflection_SignatureContext__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>A signature context encapsulates a token resolver and a generic context. Generic context is only used
+when reading generic parameters.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Source array or signature context is null</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Source array is empty</p>
+</td>
       </tr>
     </tbody>
   </table>

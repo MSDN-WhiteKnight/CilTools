@@ -11,6 +11,7 @@ items:
   - CilTools.Runtime.DynamicMethodsAssembly.ChildType
   - CilTools.Runtime.DynamicMethodsAssembly.CodeBase
   - CilTools.Runtime.DynamicMethodsAssembly.Dispose
+  - CilTools.Runtime.DynamicMethodsAssembly.EntryPoint
   - CilTools.Runtime.DynamicMethodsAssembly.EnumerateMethods
   - CilTools.Runtime.DynamicMethodsAssembly.ExportedTypes
   - CilTools.Runtime.DynamicMethodsAssembly.FullName
@@ -110,7 +111,6 @@ items:
   - System.Reflection.Assembly.GetManifestResourceInfo(System.String)
   - System.Reflection.Assembly.ToString
   - System.Reflection.Assembly.EscapedCodeBase
-  - System.Reflection.Assembly.EntryPoint
   - System.Reflection.Assembly.DefinedTypes
   - System.Reflection.Assembly.Evidence
   - System.Reflection.Assembly.PermissionSet
@@ -478,7 +478,7 @@ items:
   - CilTools.Runtime
   namespace: CilTools.Runtime
   summary: "\nReleases unmagnaged resources associated with this assembly object\n"
-  remarks: "This method only disposes the underlying data target if this instance was constructed with the <code>autoDispose</code> \nparameter set to true. "
+  remarks: "\nThis method only disposes the underlying data target if this instance was constructed with the <code>autoDispose</code> \nparameter set to true.\n"
   syntax:
     content: public void Dispose()
     content.vb: Public Sub Dispose
@@ -782,6 +782,41 @@ items:
     content.vb: Public Overrides ReadOnly Property ExportedTypes As IEnumerable(Of Type)
   overridden: System.Reflection.Assembly.ExportedTypes
   overload: CilTools.Runtime.DynamicMethodsAssembly.ExportedTypes*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.DynamicMethodsAssembly.EntryPoint
+  commentId: P:CilTools.Runtime.DynamicMethodsAssembly.EntryPoint
+  id: EntryPoint
+  parent: CilTools.Runtime.DynamicMethodsAssembly
+  langs:
+  - csharp
+  - vb
+  name: EntryPoint
+  nameWithType: DynamicMethodsAssembly.EntryPoint
+  fullName: CilTools.Runtime.DynamicMethodsAssembly.EntryPoint
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets an entry point method for this assembly\n"
+  syntax:
+    content: public override MethodInfo EntryPoint { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodInfo
+      description: This implementation always returns null
+    content.vb: Public Overrides ReadOnly Property EntryPoint As MethodInfo
+  overridden: System.Reflection.Assembly.EntryPoint
+  overload: CilTools.Runtime.DynamicMethodsAssembly.EntryPoint*
   modifiers.csharp:
   - public
   - override
@@ -3606,13 +3641,6 @@ references:
   name: EscapedCodeBase
   nameWithType: Assembly.EscapedCodeBase
   fullName: System.Reflection.Assembly.EscapedCodeBase
-- uid: System.Reflection.Assembly.EntryPoint
-  commentId: P:System.Reflection.Assembly.EntryPoint
-  parent: System.Reflection.Assembly
-  isExternal: true
-  name: EntryPoint
-  nameWithType: Assembly.EntryPoint
-  fullName: System.Reflection.Assembly.EntryPoint
 - uid: System.Reflection.Assembly.DefinedTypes
   commentId: P:System.Reflection.Assembly.DefinedTypes
   parent: System.Reflection.Assembly
@@ -4790,3 +4818,23 @@ references:
   - name: )
     nameWithType: )
     fullName: )
+- uid: System.Reflection.Assembly.EntryPoint
+  commentId: P:System.Reflection.Assembly.EntryPoint
+  parent: System.Reflection.Assembly
+  isExternal: true
+  name: EntryPoint
+  nameWithType: Assembly.EntryPoint
+  fullName: System.Reflection.Assembly.EntryPoint
+- uid: CilTools.Runtime.DynamicMethodsAssembly.EntryPoint*
+  commentId: Overload:CilTools.Runtime.DynamicMethodsAssembly.EntryPoint
+  isExternal: true
+  name: EntryPoint
+  nameWithType: DynamicMethodsAssembly.EntryPoint
+  fullName: CilTools.Runtime.DynamicMethodsAssembly.EntryPoint
+- uid: System.Reflection.MethodInfo
+  commentId: T:System.Reflection.MethodInfo
+  parent: System.Reflection
+  isExternal: true
+  name: MethodInfo
+  nameWithType: MethodInfo
+  fullName: System.Reflection.MethodInfo

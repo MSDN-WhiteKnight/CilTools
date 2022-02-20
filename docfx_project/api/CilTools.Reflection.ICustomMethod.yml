@@ -1,0 +1,574 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.ICustomMethod
+  commentId: T:CilTools.Reflection.ICustomMethod
+  id: ICustomMethod
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.ICustomMethod.GetBytecode
+  - CilTools.Reflection.ICustomMethod.GetDefinition
+  - CilTools.Reflection.ICustomMethod.GetExceptionBlocks
+  - CilTools.Reflection.ICustomMethod.GetLocalVariables
+  - CilTools.Reflection.ICustomMethod.GetLocalVarSignature
+  - CilTools.Reflection.ICustomMethod.GetPInvokeParams
+  - CilTools.Reflection.ICustomMethod.InitLocals
+  - CilTools.Reflection.ICustomMethod.InitLocalsSpecified
+  - CilTools.Reflection.ICustomMethod.MaxStackSize
+  - CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified
+  - CilTools.Reflection.ICustomMethod.ReturnType
+  - CilTools.Reflection.ICustomMethod.TokenResolver
+  langs:
+  - csharp
+  - vb
+  name: ICustomMethod
+  nameWithType: ICustomMethod
+  fullName: CilTools.Reflection.ICustomMethod
+  type: Interface
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents an object that provides custom information about method. Implement this interface on your custom class \ninheriting from <xref href=\"System.Reflection.MethodBase\" data-throw-if-not-resolved=\"false\"></xref> if you want CilTools.BytecodeAnalysis library to process bytecode \nfrom your custom data source, instead of the standard reflection.\n"
+  remarks: "\nIn CIL Tools 2.3 and earlier, <xref href=\"CilTools.Reflection.CustomMethod\" data-throw-if-not-resolved=\"false\"></xref> was used as a base class for custom methods. \nStarting from version 2.4, <xref href=\"CilTools.Reflection.ICustomMethod\" data-throw-if-not-resolved=\"false\"></xref> interface is used instead; and custom method classes could \ninherit from any class, as long as it is derived from <xref href=\"System.Reflection.MethodBase\" data-throw-if-not-resolved=\"false\"></xref>.\n"
+  syntax:
+    content: public interface ICustomMethod
+    content.vb: Public Interface ICustomMethod
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: CilTools.Reflection.ICustomMethod.GetBytecode
+  commentId: M:CilTools.Reflection.ICustomMethod.GetBytecode
+  id: GetBytecode
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: GetBytecode()
+  nameWithType: ICustomMethod.GetBytecode()
+  fullName: CilTools.Reflection.ICustomMethod.GetBytecode()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the CIL bytecode of the method body\n"
+  syntax:
+    content: byte[] GetBytecode()
+    return:
+      type: System.Byte[]
+      description: CIL bytecode as byte array
+    content.vb: Function GetBytecode As Byte()
+  overload: CilTools.Reflection.ICustomMethod.GetBytecode*
+- uid: CilTools.Reflection.ICustomMethod.GetLocalVarSignature
+  commentId: M:CilTools.Reflection.ICustomMethod.GetLocalVarSignature
+  id: GetLocalVarSignature
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: GetLocalVarSignature()
+  nameWithType: ICustomMethod.GetLocalVarSignature()
+  fullName: CilTools.Reflection.ICustomMethod.GetLocalVarSignature()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the local variable signature as an array of bytes\n"
+  syntax:
+    content: byte[] GetLocalVarSignature()
+    return:
+      type: System.Byte[]
+    content.vb: Function GetLocalVarSignature As Byte()
+  overload: CilTools.Reflection.ICustomMethod.GetLocalVarSignature*
+- uid: CilTools.Reflection.ICustomMethod.GetExceptionBlocks
+  commentId: M:CilTools.Reflection.ICustomMethod.GetExceptionBlocks
+  id: GetExceptionBlocks
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: GetExceptionBlocks()
+  nameWithType: ICustomMethod.GetExceptionBlocks()
+  fullName: CilTools.Reflection.ICustomMethod.GetExceptionBlocks()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the list of exception handling blocks in the method&apos;s body\n"
+  syntax:
+    content: ExceptionBlock[] GetExceptionBlocks()
+    return:
+      type: CilTools.Reflection.ExceptionBlock[]
+    content.vb: Function GetExceptionBlocks As ExceptionBlock()
+  overload: CilTools.Reflection.ICustomMethod.GetExceptionBlocks*
+- uid: CilTools.Reflection.ICustomMethod.GetLocalVariables
+  commentId: M:CilTools.Reflection.ICustomMethod.GetLocalVariables
+  id: GetLocalVariables
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: GetLocalVariables()
+  nameWithType: ICustomMethod.GetLocalVariables()
+  fullName: CilTools.Reflection.ICustomMethod.GetLocalVariables()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the array of local variable declarations of this method\n"
+  syntax:
+    content: LocalVariable[] GetLocalVariables()
+    return:
+      type: CilTools.Reflection.LocalVariable[]
+    content.vb: Function GetLocalVariables As LocalVariable()
+  overload: CilTools.Reflection.ICustomMethod.GetLocalVariables*
+- uid: CilTools.Reflection.ICustomMethod.GetDefinition
+  commentId: M:CilTools.Reflection.ICustomMethod.GetDefinition
+  id: GetDefinition
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: GetDefinition()
+  nameWithType: ICustomMethod.GetDefinition()
+  fullName: CilTools.Reflection.ICustomMethod.GetDefinition()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the method definition for the generic method. \nReturns null if this instance does not represent the generic method.\n"
+  syntax:
+    content: MethodBase GetDefinition()
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Function GetDefinition As MethodBase
+  overload: CilTools.Reflection.ICustomMethod.GetDefinition*
+- uid: CilTools.Reflection.ICustomMethod.GetPInvokeParams
+  commentId: M:CilTools.Reflection.ICustomMethod.GetPInvokeParams
+  id: GetPInvokeParams
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: GetPInvokeParams()
+  nameWithType: ICustomMethod.GetPInvokeParams()
+  fullName: CilTools.Reflection.ICustomMethod.GetPInvokeParams()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets P/Invoke parameters for the imported unmanaged method. \nReturns null if this instance does not represent an imported unmanaged method.\n"
+  syntax:
+    content: PInvokeParams GetPInvokeParams()
+    return:
+      type: CilTools.Reflection.PInvokeParams
+    content.vb: Function GetPInvokeParams As PInvokeParams
+  overload: CilTools.Reflection.ICustomMethod.GetPInvokeParams*
+- uid: CilTools.Reflection.ICustomMethod.ReturnType
+  commentId: P:CilTools.Reflection.ICustomMethod.ReturnType
+  id: ReturnType
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: ReturnType
+  nameWithType: ICustomMethod.ReturnType
+  fullName: CilTools.Reflection.ICustomMethod.ReturnType
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the type of this method&apos;s return value\n"
+  remarks: "\nReturns null if the return type is not applicable (such as for constructors).\n"
+  syntax:
+    content: Type ReturnType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: ReadOnly Property ReturnType As Type
+  overload: CilTools.Reflection.ICustomMethod.ReturnType*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: CilTools.Reflection.ICustomMethod.TokenResolver
+  commentId: P:CilTools.Reflection.ICustomMethod.TokenResolver
+  id: TokenResolver
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: TokenResolver
+  nameWithType: ICustomMethod.TokenResolver
+  fullName: CilTools.Reflection.ICustomMethod.TokenResolver
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets an object that can be used to convert metadata tokens into corresponding reflection objects\n"
+  syntax:
+    content: ITokenResolver TokenResolver { get; }
+    parameters: []
+    return:
+      type: CilTools.Reflection.ITokenResolver
+    content.vb: ReadOnly Property TokenResolver As ITokenResolver
+  overload: CilTools.Reflection.ICustomMethod.TokenResolver*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: CilTools.Reflection.ICustomMethod.MaxStackSize
+  commentId: P:CilTools.Reflection.ICustomMethod.MaxStackSize
+  id: MaxStackSize
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: MaxStackSize
+  nameWithType: ICustomMethod.MaxStackSize
+  fullName: CilTools.Reflection.ICustomMethod.MaxStackSize
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the maximum size of operand stack during method execution\n"
+  syntax:
+    content: int MaxStackSize { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: ReadOnly Property MaxStackSize As Integer
+  overload: CilTools.Reflection.ICustomMethod.MaxStackSize*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified
+  commentId: P:CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified
+  id: MaxStackSizeSpecified
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: MaxStackSizeSpecified
+  nameWithType: ICustomMethod.MaxStackSizeSpecified
+  fullName: CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value specifying whether the <xref href=\"CilTools.Reflection.ICustomMethod.MaxStackSize\" data-throw-if-not-resolved=\"false\"></xref> property value is defined\n"
+  syntax:
+    content: bool MaxStackSizeSpecified { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property MaxStackSizeSpecified As Boolean
+  overload: CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: CilTools.Reflection.ICustomMethod.InitLocals
+  commentId: P:CilTools.Reflection.ICustomMethod.InitLocals
+  id: InitLocals
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: InitLocals
+  nameWithType: ICustomMethod.InitLocals
+  fullName: CilTools.Reflection.ICustomMethod.InitLocals
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value specifying whether the local variables are initialized\n"
+  syntax:
+    content: bool InitLocals { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property InitLocals As Boolean
+  overload: CilTools.Reflection.ICustomMethod.InitLocals*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+- uid: CilTools.Reflection.ICustomMethod.InitLocalsSpecified
+  commentId: P:CilTools.Reflection.ICustomMethod.InitLocalsSpecified
+  id: InitLocalsSpecified
+  parent: CilTools.Reflection.ICustomMethod
+  langs:
+  - csharp
+  - vb
+  name: InitLocalsSpecified
+  nameWithType: ICustomMethod.InitLocalsSpecified
+  fullName: CilTools.Reflection.ICustomMethod.InitLocalsSpecified
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value specifying whether the <xref href=\"CilTools.Reflection.ICustomMethod.InitLocals\" data-throw-if-not-resolved=\"false\"></xref> property value is defined\n"
+  syntax:
+    content: bool InitLocalsSpecified { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: ReadOnly Property InitLocalsSpecified As Boolean
+  overload: CilTools.Reflection.ICustomMethod.InitLocalsSpecified*
+  modifiers.csharp:
+  - get
+  modifiers.vb:
+  - ReadOnly
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: CilTools.Reflection.ICustomMethod.GetBytecode*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.GetBytecode
+  isExternal: true
+  name: GetBytecode
+  nameWithType: ICustomMethod.GetBytecode
+  fullName: CilTools.Reflection.ICustomMethod.GetBytecode
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.Reflection.ICustomMethod.GetLocalVarSignature*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.GetLocalVarSignature
+  isExternal: true
+  name: GetLocalVarSignature
+  nameWithType: ICustomMethod.GetLocalVarSignature
+  fullName: CilTools.Reflection.ICustomMethod.GetLocalVarSignature
+- uid: CilTools.Reflection.ICustomMethod.GetExceptionBlocks*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.GetExceptionBlocks
+  isExternal: true
+  name: GetExceptionBlocks
+  nameWithType: ICustomMethod.GetExceptionBlocks
+  fullName: CilTools.Reflection.ICustomMethod.GetExceptionBlocks
+- uid: CilTools.Reflection.ExceptionBlock[]
+  isExternal: true
+  name: ExceptionBlock[]
+  nameWithType: ExceptionBlock[]
+  fullName: CilTools.Reflection.ExceptionBlock[]
+  nameWithType.vb: ExceptionBlock()
+  fullName.vb: CilTools.Reflection.ExceptionBlock()
+  name.vb: ExceptionBlock()
+  spec.csharp:
+  - uid: CilTools.Reflection.ExceptionBlock
+    name: ExceptionBlock
+    nameWithType: ExceptionBlock
+    fullName: CilTools.Reflection.ExceptionBlock
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilTools.Reflection.ExceptionBlock
+    name: ExceptionBlock
+    nameWithType: ExceptionBlock
+    fullName: CilTools.Reflection.ExceptionBlock
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.Reflection.ICustomMethod.GetLocalVariables*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.GetLocalVariables
+  isExternal: true
+  name: GetLocalVariables
+  nameWithType: ICustomMethod.GetLocalVariables
+  fullName: CilTools.Reflection.ICustomMethod.GetLocalVariables
+- uid: CilTools.Reflection.LocalVariable[]
+  isExternal: true
+  name: LocalVariable[]
+  nameWithType: LocalVariable[]
+  fullName: CilTools.Reflection.LocalVariable[]
+  nameWithType.vb: LocalVariable()
+  fullName.vb: CilTools.Reflection.LocalVariable()
+  name.vb: LocalVariable()
+  spec.csharp:
+  - uid: CilTools.Reflection.LocalVariable
+    name: LocalVariable
+    nameWithType: LocalVariable
+    fullName: CilTools.Reflection.LocalVariable
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilTools.Reflection.LocalVariable
+    name: LocalVariable
+    nameWithType: LocalVariable
+    fullName: CilTools.Reflection.LocalVariable
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.Reflection.ICustomMethod.GetDefinition*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.GetDefinition
+  isExternal: true
+  name: GetDefinition
+  nameWithType: ICustomMethod.GetDefinition
+  fullName: CilTools.Reflection.ICustomMethod.GetDefinition
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Reflection.ICustomMethod.GetPInvokeParams*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.GetPInvokeParams
+  isExternal: true
+  name: GetPInvokeParams
+  nameWithType: ICustomMethod.GetPInvokeParams
+  fullName: CilTools.Reflection.ICustomMethod.GetPInvokeParams
+- uid: CilTools.Reflection.PInvokeParams
+  commentId: T:CilTools.Reflection.PInvokeParams
+  parent: CilTools.Reflection
+  isExternal: true
+  name: PInvokeParams
+  nameWithType: PInvokeParams
+  fullName: CilTools.Reflection.PInvokeParams
+- uid: CilTools.Reflection.ICustomMethod.ReturnType*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.ReturnType
+  isExternal: true
+  name: ReturnType
+  nameWithType: ICustomMethod.ReturnType
+  fullName: CilTools.Reflection.ICustomMethod.ReturnType
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.ICustomMethod.TokenResolver*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.TokenResolver
+  isExternal: true
+  name: TokenResolver
+  nameWithType: ICustomMethod.TokenResolver
+  fullName: CilTools.Reflection.ICustomMethod.TokenResolver
+- uid: CilTools.Reflection.ITokenResolver
+  commentId: T:CilTools.Reflection.ITokenResolver
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ITokenResolver
+  nameWithType: ITokenResolver
+  fullName: CilTools.Reflection.ITokenResolver
+- uid: CilTools.Reflection.ICustomMethod.MaxStackSize*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.MaxStackSize
+  isExternal: true
+  name: MaxStackSize
+  nameWithType: ICustomMethod.MaxStackSize
+  fullName: CilTools.Reflection.ICustomMethod.MaxStackSize
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified
+  isExternal: true
+  name: MaxStackSizeSpecified
+  nameWithType: ICustomMethod.MaxStackSizeSpecified
+  fullName: CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: CilTools.Reflection.ICustomMethod.InitLocals*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.InitLocals
+  isExternal: true
+  name: InitLocals
+  nameWithType: ICustomMethod.InitLocals
+  fullName: CilTools.Reflection.ICustomMethod.InitLocals
+- uid: CilTools.Reflection.ICustomMethod.InitLocalsSpecified*
+  commentId: Overload:CilTools.Reflection.ICustomMethod.InitLocalsSpecified
+  isExternal: true
+  name: InitLocalsSpecified
+  nameWithType: ICustomMethod.InitLocalsSpecified
+  fullName: CilTools.Reflection.ICustomMethod.InitLocalsSpecified

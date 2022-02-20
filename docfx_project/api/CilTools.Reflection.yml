@@ -8,12 +8,16 @@ items:
   - CilTools.Reflection.ComplexTypeKind
   - CilTools.Reflection.CustomMethod
   - CilTools.Reflection.ExceptionBlock
+  - CilTools.Reflection.GenericContext
   - CilTools.Reflection.GenericParamType
   - CilTools.Reflection.ICustomAttribute
+  - CilTools.Reflection.ICustomMethod
   - CilTools.Reflection.ITokenResolver
   - CilTools.Reflection.ITypeInfo
   - CilTools.Reflection.LocalVariable
+  - CilTools.Reflection.MemoryImage
   - CilTools.Reflection.PInvokeParams
+  - CilTools.Reflection.SignatureContext
   langs:
   - csharp
   - vb
@@ -39,7 +43,6 @@ references:
   fullName: CilTools.Reflection.ComplexType
 - uid: CilTools.Reflection.CustomMethod
   commentId: T:CilTools.Reflection.CustomMethod
-  parent: CilTools.Reflection
   isExternal: true
   name: CustomMethod
   nameWithType: CustomMethod
@@ -51,8 +54,16 @@ references:
   name: ExceptionBlock
   nameWithType: ExceptionBlock
   fullName: CilTools.Reflection.ExceptionBlock
+- uid: CilTools.Reflection.GenericContext
+  commentId: T:CilTools.Reflection.GenericContext
+  parent: CilTools.Reflection
+  isExternal: true
+  name: GenericContext
+  nameWithType: GenericContext
+  fullName: CilTools.Reflection.GenericContext
 - uid: CilTools.Reflection.GenericParamType
   commentId: T:CilTools.Reflection.GenericParamType
+  parent: CilTools.Reflection
   isExternal: true
   name: GenericParamType
   nameWithType: GenericParamType
@@ -63,6 +74,13 @@ references:
   name: ICustomAttribute
   nameWithType: ICustomAttribute
   fullName: CilTools.Reflection.ICustomAttribute
+- uid: CilTools.Reflection.ICustomMethod
+  commentId: T:CilTools.Reflection.ICustomMethod
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ICustomMethod
+  nameWithType: ICustomMethod
+  fullName: CilTools.Reflection.ICustomMethod
 - uid: CilTools.Reflection.ITokenResolver
   commentId: T:CilTools.Reflection.ITokenResolver
   parent: CilTools.Reflection
@@ -83,6 +101,13 @@ references:
   name: LocalVariable
   nameWithType: LocalVariable
   fullName: CilTools.Reflection.LocalVariable
+- uid: CilTools.Reflection.MemoryImage
+  commentId: T:CilTools.Reflection.MemoryImage
+  parent: CilTools.Reflection
+  isExternal: true
+  name: MemoryImage
+  nameWithType: MemoryImage
+  fullName: CilTools.Reflection.MemoryImage
 - uid: CilTools.Reflection.PInvokeParams
   commentId: T:CilTools.Reflection.PInvokeParams
   parent: CilTools.Reflection
@@ -90,6 +115,13 @@ references:
   name: PInvokeParams
   nameWithType: PInvokeParams
   fullName: CilTools.Reflection.PInvokeParams
+- uid: CilTools.Reflection.SignatureContext
+  commentId: T:CilTools.Reflection.SignatureContext
+  parent: CilTools.Reflection
+  isExternal: true
+  name: SignatureContext
+  nameWithType: SignatureContext
+  fullName: CilTools.Reflection.SignatureContext
 - uid: CilTools.Reflection
   commentId: N:CilTools.Reflection
   isExternal: true

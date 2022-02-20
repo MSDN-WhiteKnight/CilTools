@@ -11,6 +11,8 @@ items:
   - CilTools.Metadata.AssemblyReader.Load(System.Reflection.AssemblyName)
   - CilTools.Metadata.AssemblyReader.Load(System.String)
   - CilTools.Metadata.AssemblyReader.LoadFrom(System.String)
+  - CilTools.Metadata.AssemblyReader.LoadImage(CilTools.Reflection.MemoryImage)
+  - CilTools.Metadata.AssemblyReader.RuntimeDirectory
   langs:
   - csharp
   - vb
@@ -88,6 +90,40 @@ items:
   - type: System.ArgumentException
     commentId: T:System.ArgumentException
     description: Path is empty string
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.LoadImage(CilTools.Reflection.MemoryImage)
+  commentId: M:CilTools.Metadata.AssemblyReader.LoadImage(CilTools.Reflection.MemoryImage)
+  id: LoadImage(CilTools.Reflection.MemoryImage)
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: LoadImage(MemoryImage)
+  nameWithType: AssemblyReader.LoadImage(MemoryImage)
+  fullName: CilTools.Metadata.AssemblyReader.LoadImage(CilTools.Reflection.MemoryImage)
+  type: Method
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nLoads the assembly from the specified memory image\n"
+  remarks: "\n<p> \nIf the assembly is read successfully and the path is set for a memory image, \nthe loaded assembly is saved to cache. Eventual attempts to read assembly \nwith the same path will fetch it from the cache instead of loading it again. \nIf the path is not set, each call to this method will load a new assembly \ninstance, potentially leading to an unbounded growth of consumed memory.\n</p>\n<p>The <code>CilTools.Runtime.ClrAssemblyReader.GetMemoryImage</code> method could be  \nused to load a memory image from a process.</p>\n"
+  syntax:
+    content: public Assembly LoadImage(MemoryImage image)
+    parameters:
+    - id: image
+      type: CilTools.Reflection.MemoryImage
+      description: The memory image to load
+    return:
+      type: System.Reflection.Assembly
+      description: "The assembly object or null if the assembly reader failed to read \nthe requested assembly."
+    content.vb: Public Function LoadImage(image As MemoryImage) As Assembly
+  overload: CilTools.Metadata.AssemblyReader.LoadImage*
   modifiers.csharp:
   - public
   modifiers.vb:
@@ -219,6 +255,39 @@ items:
   overload: CilTools.Metadata.AssemblyReader.#ctor*
   modifiers.csharp:
   - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.RuntimeDirectory
+  commentId: P:CilTools.Metadata.AssemblyReader.RuntimeDirectory
+  id: RuntimeDirectory
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: RuntimeDirectory
+  nameWithType: AssemblyReader.RuntimeDirectory
+  fullName: CilTools.Metadata.AssemblyReader.RuntimeDirectory
+  type: Property
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nGets or sets the directory to search for framework assemblies.\n"
+  remarks: "\nSettings this property ro <code>null</code> or empty string resets it to default value.\n"
+  syntax:
+    content: public string RuntimeDirectory { get; set; }
+    parameters: []
+    return:
+      type: System.String
+      description: "\nThe directory to search for framework assemblies. The default value is the current runtime directory.\n"
+    content.vb: Public Property RuntimeDirectory As String
+  overload: CilTools.Metadata.AssemblyReader.RuntimeDirectory*
+  modifiers.csharp:
+  - public
+  - get
+  - set
   modifiers.vb:
   - Public
 - uid: CilTools.Metadata.AssemblyReader.AssemblyResolve
@@ -587,6 +656,25 @@ references:
   name: System.Reflection
   nameWithType: System.Reflection
   fullName: System.Reflection
+- uid: CilTools.Metadata.AssemblyReader.LoadImage*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.LoadImage
+  isExternal: true
+  name: LoadImage
+  nameWithType: AssemblyReader.LoadImage
+  fullName: CilTools.Metadata.AssemblyReader.LoadImage
+- uid: CilTools.Reflection.MemoryImage
+  commentId: T:CilTools.Reflection.MemoryImage
+  parent: CilTools.Reflection
+  isExternal: true
+  name: MemoryImage
+  nameWithType: MemoryImage
+  fullName: CilTools.Reflection.MemoryImage
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
 - uid: CilTools.Metadata.AssemblyReader.Load*
   commentId: Overload:CilTools.Metadata.AssemblyReader.Load
   isExternal: true
@@ -643,6 +731,12 @@ references:
   name: AssemblyReader
   nameWithType: AssemblyReader.AssemblyReader
   fullName: CilTools.Metadata.AssemblyReader.AssemblyReader
+- uid: CilTools.Metadata.AssemblyReader.RuntimeDirectory*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.RuntimeDirectory
+  isExternal: true
+  name: RuntimeDirectory
+  nameWithType: AssemblyReader.RuntimeDirectory
+  fullName: CilTools.Metadata.AssemblyReader.RuntimeDirectory
 - uid: System.ResolveEventHandler
   commentId: T:System.ResolveEventHandler
   parent: System

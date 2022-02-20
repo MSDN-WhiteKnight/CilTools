@@ -1,0 +1,634 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.MemoryImage
+  commentId: T:CilTools.Reflection.MemoryImage
+  id: MemoryImage
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.MemoryImage.#ctor(System.Byte[],System.String,System.Boolean)
+  - CilTools.Reflection.MemoryImage.FilePath
+  - CilTools.Reflection.MemoryImage.GetStream
+  - CilTools.Reflection.MemoryImage.Image
+  - CilTools.Reflection.MemoryImage.IsFileLayout
+  - CilTools.Reflection.MemoryImage.Size
+  langs:
+  - csharp
+  - vb
+  name: MemoryImage
+  nameWithType: MemoryImage
+  fullName: CilTools.Reflection.MemoryImage
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents a Portable Executable (PE) image stored in memory\n"
+  remarks: "\nThis class provides the centalized mechanism for storing and passing PE images loaded into memory within the CIL Tools \nsuite. It does not implement any logic for loading and processing of images, this is provided by other APIs. \nThe <code>CilTools.Runtime.ClrAssemblyReader.GetMemoryImage</code> method loads the PE image from the address space of\nthe external .NET process.\nThe <code>CilTools.Metadata.AssemblyReader.LoadImage</code> method is used to inspect memory images.\n"
+  syntax:
+    content: public class MemoryImage
+    content.vb: Public Class MemoryImage
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Reflection.MemoryImage.#ctor(System.Byte[],System.String,System.Boolean)
+  commentId: M:CilTools.Reflection.MemoryImage.#ctor(System.Byte[],System.String,System.Boolean)
+  id: '#ctor(System.Byte[],System.String,System.Boolean)'
+  parent: CilTools.Reflection.MemoryImage
+  langs:
+  - csharp
+  - vb
+  name: MemoryImage(Byte[], String, Boolean)
+  nameWithType: MemoryImage.MemoryImage(Byte[], String, Boolean)
+  fullName: CilTools.Reflection.MemoryImage.MemoryImage(System.Byte[], System.String, System.Boolean)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nCreates a new instance of the <code>MemoryImage</code> class using the specified byte array\n"
+  remarks: "\n<p>The <code data-dev-comment-type=\"paramref\" class=\"paramref\">filepath</code> parameter is optional and used only to identify this image, for example, \nfor caching purposes. You could pass null or an empty string if you don&apos;t want to specify it.</p>\n<p>Set the <code data-dev-comment-type=\"paramref\" class=\"paramref\">isFileLayout</code> parameter to <code>true</code> if this image was loaded by \ndirectly reading raw data from a file. If the image was obtained by reading the address space of some process \nand it contains PE data modified by operating system (OS) loader, set the value of this parameter to <code>false</code>. \nThe OS loader modifies the contents of PE image when loading it for execution (for example, when the image was \npassed to the <code>LoadLibrary</code> Windows API function): it recalculates absolute addresses if the actual base address \nis different from image base this file was compiled with, extends sections with padding, etc. The \n<code data-dev-comment-type=\"paramref\" class=\"paramref\">isFileLayout</code> enables to take these modifications into account when parsing the image.\n</p>\n"
+  syntax:
+    content: public MemoryImage(byte[] image, string filepath, bool isFileLayout)
+    parameters:
+    - id: image
+      type: System.Byte[]
+      description: The byte array with PE image contents
+    - id: filepath
+      type: System.String
+      description: "\nThe path of the file where this image data was loaded from (could be an empty string)\n"
+    - id: isFileLayout
+      type: System.Boolean
+      description: "\nThe value indicating that this image is a raw PE file data, rather than an image modified \nby the OS loader.\n"
+    content.vb: Public Sub New(image As Byte(), filepath As String, isFileLayout As Boolean)
+  overload: CilTools.Reflection.MemoryImage.#ctor*
+  nameWithType.vb: MemoryImage.MemoryImage(Byte(), String, Boolean)
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CilTools.Reflection.MemoryImage.MemoryImage(System.Byte(), System.String, System.Boolean)
+  name.vb: MemoryImage(Byte(), String, Boolean)
+- uid: CilTools.Reflection.MemoryImage.GetStream
+  commentId: M:CilTools.Reflection.MemoryImage.GetStream
+  id: GetStream
+  parent: CilTools.Reflection.MemoryImage
+  langs:
+  - csharp
+  - vb
+  name: GetStream()
+  nameWithType: MemoryImage.GetStream()
+  fullName: CilTools.Reflection.MemoryImage.GetStream()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the stream that can be used to read the data of this image\n"
+  syntax:
+    content: public Stream GetStream()
+    return:
+      type: System.IO.Stream
+    content.vb: Public Function GetStream As Stream
+  overload: CilTools.Reflection.MemoryImage.GetStream*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Reflection.MemoryImage.Image
+  commentId: P:CilTools.Reflection.MemoryImage.Image
+  id: Image
+  parent: CilTools.Reflection.MemoryImage
+  langs:
+  - csharp
+  - vb
+  name: Image
+  nameWithType: MemoryImage.Image
+  fullName: CilTools.Reflection.MemoryImage.Image
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the byte array with the image data\n"
+  syntax:
+    content: public byte[] Image { get; }
+    parameters: []
+    return:
+      type: System.Byte[]
+    content.vb: Public ReadOnly Property Image As Byte()
+  overload: CilTools.Reflection.MemoryImage.Image*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.MemoryImage.FilePath
+  commentId: P:CilTools.Reflection.MemoryImage.FilePath
+  id: FilePath
+  parent: CilTools.Reflection.MemoryImage
+  langs:
+  - csharp
+  - vb
+  name: FilePath
+  nameWithType: MemoryImage.FilePath
+  fullName: CilTools.Reflection.MemoryImage.FilePath
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the path of the file where this image was loaded from (could be an empty string)\n"
+  syntax:
+    content: public string FilePath { get; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public ReadOnly Property FilePath As String
+  overload: CilTools.Reflection.MemoryImage.FilePath*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.MemoryImage.IsFileLayout
+  commentId: P:CilTools.Reflection.MemoryImage.IsFileLayout
+  id: IsFileLayout
+  parent: CilTools.Reflection.MemoryImage
+  langs:
+  - csharp
+  - vb
+  name: IsFileLayout
+  nameWithType: MemoryImage.IsFileLayout
+  fullName: CilTools.Reflection.MemoryImage.IsFileLayout
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value indicating that this image is a raw PE file data, rather than an image modified \nby the OS loader.\n"
+  syntax:
+    content: public bool IsFileLayout { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property IsFileLayout As Boolean
+  overload: CilTools.Reflection.MemoryImage.IsFileLayout*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.MemoryImage.Size
+  commentId: P:CilTools.Reflection.MemoryImage.Size
+  id: Size
+  parent: CilTools.Reflection.MemoryImage
+  langs:
+  - csharp
+  - vb
+  name: Size
+  nameWithType: MemoryImage.Size
+  fullName: CilTools.Reflection.MemoryImage.Size
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the size of this image, in bytes\n"
+  syntax:
+    content: public int Size { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Size As Integer
+  overload: CilTools.Reflection.MemoryImage.Size*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.MemoryImage.#ctor*
+  commentId: Overload:CilTools.Reflection.MemoryImage.#ctor
+  isExternal: true
+  name: MemoryImage
+  nameWithType: MemoryImage.MemoryImage
+  fullName: CilTools.Reflection.MemoryImage.MemoryImage
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: CilTools.Reflection.MemoryImage.GetStream*
+  commentId: Overload:CilTools.Reflection.MemoryImage.GetStream
+  isExternal: true
+  name: GetStream
+  nameWithType: MemoryImage.GetStream
+  fullName: CilTools.Reflection.MemoryImage.GetStream
+- uid: System.IO.Stream
+  commentId: T:System.IO.Stream
+  parent: System.IO
+  isExternal: true
+  name: Stream
+  nameWithType: Stream
+  fullName: System.IO.Stream
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+- uid: CilTools.Reflection.MemoryImage.Image*
+  commentId: Overload:CilTools.Reflection.MemoryImage.Image
+  isExternal: true
+  name: Image
+  nameWithType: MemoryImage.Image
+  fullName: CilTools.Reflection.MemoryImage.Image
+- uid: CilTools.Reflection.MemoryImage.FilePath*
+  commentId: Overload:CilTools.Reflection.MemoryImage.FilePath
+  isExternal: true
+  name: FilePath
+  nameWithType: MemoryImage.FilePath
+  fullName: CilTools.Reflection.MemoryImage.FilePath
+- uid: CilTools.Reflection.MemoryImage.IsFileLayout*
+  commentId: Overload:CilTools.Reflection.MemoryImage.IsFileLayout
+  isExternal: true
+  name: IsFileLayout
+  nameWithType: MemoryImage.IsFileLayout
+  fullName: CilTools.Reflection.MemoryImage.IsFileLayout
+- uid: CilTools.Reflection.MemoryImage.Size*
+  commentId: Overload:CilTools.Reflection.MemoryImage.Size
+  isExternal: true
+  name: Size
+  nameWithType: MemoryImage.Size
+  fullName: CilTools.Reflection.MemoryImage.Size
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32

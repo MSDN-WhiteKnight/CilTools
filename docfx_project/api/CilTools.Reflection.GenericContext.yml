@@ -1,0 +1,721 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.GenericContext
+  commentId: T:CilTools.Reflection.GenericContext
+  id: GenericContext
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.GenericContext.Create(System.Type,System.Reflection.MethodBase)
+  - CilTools.Reflection.GenericContext.DeclaringMethod
+  - CilTools.Reflection.GenericContext.DeclaringType
+  - CilTools.Reflection.GenericContext.FromArgs(System.Type[],System.Type[])
+  - CilTools.Reflection.GenericContext.GetMethodArgument(System.Int32)
+  - CilTools.Reflection.GenericContext.GetTypeArgument(System.Int32)
+  - CilTools.Reflection.GenericContext.MethodArgumentsCount
+  - CilTools.Reflection.GenericContext.TypeArgumentsCount
+  langs:
+  - csharp
+  - vb
+  name: GenericContext
+  nameWithType: GenericContext
+  fullName: CilTools.Reflection.GenericContext
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresent a set of information that defines a meaning of generic signature in some context\n"
+  remarks: "\nA generic context is used with when reading signatures that could potentially contain generic parameters. \nA generic parameter in signature only encodes its number; getting any additional information, such as a \nparameter name, requires access to specific generic parameters or arguments being referenced in current \ncontext.\n"
+  syntax:
+    content: public class GenericContext
+    content.vb: Public Class GenericContext
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Reflection.GenericContext.FromArgs(System.Type[],System.Type[])
+  commentId: M:CilTools.Reflection.GenericContext.FromArgs(System.Type[],System.Type[])
+  id: FromArgs(System.Type[],System.Type[])
+  parent: CilTools.Reflection.GenericContext
+  langs:
+  - csharp
+  - vb
+  name: FromArgs(Type[], Type[])
+  nameWithType: GenericContext.FromArgs(Type[], Type[])
+  fullName: CilTools.Reflection.GenericContext.FromArgs(System.Type[], System.Type[])
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nCreates a new generic context using the specified generic arguments\n"
+  remarks: "\nPass null values if the generic context is unknown or signature does not use generic parameters\n"
+  syntax:
+    content: public static GenericContext FromArgs(Type[] typeargs, Type[] methodargs)
+    parameters:
+    - id: typeargs
+      type: System.Type[]
+      description: An array of generic type arguments (can be null)
+    - id: methodargs
+      type: System.Type[]
+      description: An array of generic method arguments (can be null)
+    return:
+      type: CilTools.Reflection.GenericContext
+    content.vb: Public Shared Function FromArgs(typeargs As Type(), methodargs As Type()) As GenericContext
+  overload: CilTools.Reflection.GenericContext.FromArgs*
+  nameWithType.vb: GenericContext.FromArgs(Type(), Type())
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.Reflection.GenericContext.FromArgs(System.Type(), System.Type())
+  name.vb: FromArgs(Type(), Type())
+- uid: CilTools.Reflection.GenericContext.Create(System.Type,System.Reflection.MethodBase)
+  commentId: M:CilTools.Reflection.GenericContext.Create(System.Type,System.Reflection.MethodBase)
+  id: Create(System.Type,System.Reflection.MethodBase)
+  parent: CilTools.Reflection.GenericContext
+  langs:
+  - csharp
+  - vb
+  name: Create(Type, MethodBase)
+  nameWithType: GenericContext.Create(Type, MethodBase)
+  fullName: CilTools.Reflection.GenericContext.Create(System.Type, System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nCreates a new generic context using the specified declaring members\n"
+  remarks: "\nPass null values if the generic context is unknown or signature does not use generic parameters\n"
+  syntax:
+    content: public static GenericContext Create(Type decltype, MethodBase declmethod)
+    parameters:
+    - id: decltype
+      type: System.Type
+      description: Declaring type (could be null)
+    - id: declmethod
+      type: System.Reflection.MethodBase
+      description: Declaring method (could be null)
+    return:
+      type: CilTools.Reflection.GenericContext
+    content.vb: Public Shared Function Create(decltype As Type, declmethod As MethodBase) As GenericContext
+  overload: CilTools.Reflection.GenericContext.Create*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Reflection.GenericContext.GetTypeArgument(System.Int32)
+  commentId: M:CilTools.Reflection.GenericContext.GetTypeArgument(System.Int32)
+  id: GetTypeArgument(System.Int32)
+  parent: CilTools.Reflection.GenericContext
+  langs:
+  - csharp
+  - vb
+  name: GetTypeArgument(Int32)
+  nameWithType: GenericContext.GetTypeArgument(Int32)
+  fullName: CilTools.Reflection.GenericContext.GetTypeArgument(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets a generic type argument at the specified index\n"
+  syntax:
+    content: public Type GetTypeArgument(int i)
+    parameters:
+    - id: i
+      type: System.Int32
+    return:
+      type: System.Type
+    content.vb: Public Function GetTypeArgument(i As Integer) As Type
+  overload: CilTools.Reflection.GenericContext.GetTypeArgument*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Reflection.GenericContext.GetMethodArgument(System.Int32)
+  commentId: M:CilTools.Reflection.GenericContext.GetMethodArgument(System.Int32)
+  id: GetMethodArgument(System.Int32)
+  parent: CilTools.Reflection.GenericContext
+  langs:
+  - csharp
+  - vb
+  name: GetMethodArgument(Int32)
+  nameWithType: GenericContext.GetMethodArgument(Int32)
+  fullName: CilTools.Reflection.GenericContext.GetMethodArgument(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets a generic method argument at the specified index\n"
+  syntax:
+    content: public Type GetMethodArgument(int i)
+    parameters:
+    - id: i
+      type: System.Int32
+    return:
+      type: System.Type
+    content.vb: Public Function GetMethodArgument(i As Integer) As Type
+  overload: CilTools.Reflection.GenericContext.GetMethodArgument*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Reflection.GenericContext.TypeArgumentsCount
+  commentId: P:CilTools.Reflection.GenericContext.TypeArgumentsCount
+  id: TypeArgumentsCount
+  parent: CilTools.Reflection.GenericContext
+  langs:
+  - csharp
+  - vb
+  name: TypeArgumentsCount
+  nameWithType: GenericContext.TypeArgumentsCount
+  fullName: CilTools.Reflection.GenericContext.TypeArgumentsCount
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the number of generic type arguments\n"
+  syntax:
+    content: public int TypeArgumentsCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property TypeArgumentsCount As Integer
+  overload: CilTools.Reflection.GenericContext.TypeArgumentsCount*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.GenericContext.MethodArgumentsCount
+  commentId: P:CilTools.Reflection.GenericContext.MethodArgumentsCount
+  id: MethodArgumentsCount
+  parent: CilTools.Reflection.GenericContext
+  langs:
+  - csharp
+  - vb
+  name: MethodArgumentsCount
+  nameWithType: GenericContext.MethodArgumentsCount
+  fullName: CilTools.Reflection.GenericContext.MethodArgumentsCount
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the number of generic method arguments\n"
+  syntax:
+    content: public int MethodArgumentsCount { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property MethodArgumentsCount As Integer
+  overload: CilTools.Reflection.GenericContext.MethodArgumentsCount*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.GenericContext.DeclaringType
+  commentId: P:CilTools.Reflection.GenericContext.DeclaringType
+  id: DeclaringType
+  parent: CilTools.Reflection.GenericContext
+  langs:
+  - csharp
+  - vb
+  name: DeclaringType
+  nameWithType: GenericContext.DeclaringType
+  fullName: CilTools.Reflection.GenericContext.DeclaringType
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets a declaring type in this generic context\n"
+  syntax:
+    content: public Type DeclaringType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public ReadOnly Property DeclaringType As Type
+  overload: CilTools.Reflection.GenericContext.DeclaringType*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.GenericContext.DeclaringMethod
+  commentId: P:CilTools.Reflection.GenericContext.DeclaringMethod
+  id: DeclaringMethod
+  parent: CilTools.Reflection.GenericContext
+  langs:
+  - csharp
+  - vb
+  name: DeclaringMethod
+  nameWithType: GenericContext.DeclaringMethod
+  fullName: CilTools.Reflection.GenericContext.DeclaringMethod
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets a declaring method in this generic context\n"
+  syntax:
+    content: public MethodBase DeclaringMethod { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Public ReadOnly Property DeclaringMethod As MethodBase
+  overload: CilTools.Reflection.GenericContext.DeclaringMethod*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.GenericContext.FromArgs*
+  commentId: Overload:CilTools.Reflection.GenericContext.FromArgs
+  isExternal: true
+  name: FromArgs
+  nameWithType: GenericContext.FromArgs
+  fullName: CilTools.Reflection.GenericContext.FromArgs
+- uid: System.Type[]
+  isExternal: true
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.Reflection.GenericContext
+  commentId: T:CilTools.Reflection.GenericContext
+  parent: CilTools.Reflection
+  isExternal: true
+  name: GenericContext
+  nameWithType: GenericContext
+  fullName: CilTools.Reflection.GenericContext
+- uid: CilTools.Reflection.GenericContext.Create*
+  commentId: Overload:CilTools.Reflection.GenericContext.Create
+  isExternal: true
+  name: Create
+  nameWithType: GenericContext.Create
+  fullName: CilTools.Reflection.GenericContext.Create
+- uid: System.Type
+  commentId: T:System.Type
+  parent: System
+  isExternal: true
+  name: Type
+  nameWithType: Type
+  fullName: System.Type
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Reflection.GenericContext.GetTypeArgument*
+  commentId: Overload:CilTools.Reflection.GenericContext.GetTypeArgument
+  isExternal: true
+  name: GetTypeArgument
+  nameWithType: GenericContext.GetTypeArgument
+  fullName: CilTools.Reflection.GenericContext.GetTypeArgument
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.Reflection.GenericContext.GetMethodArgument*
+  commentId: Overload:CilTools.Reflection.GenericContext.GetMethodArgument
+  isExternal: true
+  name: GetMethodArgument
+  nameWithType: GenericContext.GetMethodArgument
+  fullName: CilTools.Reflection.GenericContext.GetMethodArgument
+- uid: CilTools.Reflection.GenericContext.TypeArgumentsCount*
+  commentId: Overload:CilTools.Reflection.GenericContext.TypeArgumentsCount
+  isExternal: true
+  name: TypeArgumentsCount
+  nameWithType: GenericContext.TypeArgumentsCount
+  fullName: CilTools.Reflection.GenericContext.TypeArgumentsCount
+- uid: CilTools.Reflection.GenericContext.MethodArgumentsCount*
+  commentId: Overload:CilTools.Reflection.GenericContext.MethodArgumentsCount
+  isExternal: true
+  name: MethodArgumentsCount
+  nameWithType: GenericContext.MethodArgumentsCount
+  fullName: CilTools.Reflection.GenericContext.MethodArgumentsCount
+- uid: CilTools.Reflection.GenericContext.DeclaringType*
+  commentId: Overload:CilTools.Reflection.GenericContext.DeclaringType
+  isExternal: true
+  name: DeclaringType
+  nameWithType: GenericContext.DeclaringType
+  fullName: CilTools.Reflection.GenericContext.DeclaringType
+- uid: CilTools.Reflection.GenericContext.DeclaringMethod*
+  commentId: Overload:CilTools.Reflection.GenericContext.DeclaringMethod
+  isExternal: true
+  name: DeclaringMethod
+  nameWithType: GenericContext.DeclaringMethod
+  fullName: CilTools.Reflection.GenericContext.DeclaringMethod

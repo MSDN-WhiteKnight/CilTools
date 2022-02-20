@@ -1,0 +1,700 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.SourceCode.SourceFragment
+  commentId: T:CilTools.SourceCode.SourceFragment
+  id: SourceFragment
+  parent: CilTools.SourceCode
+  children:
+  - CilTools.SourceCode.SourceFragment.#ctor
+  - CilTools.SourceCode.SourceFragment.CilEnd
+  - CilTools.SourceCode.SourceFragment.CilStart
+  - CilTools.SourceCode.SourceFragment.Document
+  - CilTools.SourceCode.SourceFragment.Method
+  langs:
+  - csharp
+  - vb
+  name: SourceFragment
+  nameWithType: SourceFragment
+  fullName: CilTools.SourceCode.SourceFragment
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  summary: "\nContains information about the source code fragment\n"
+  syntax:
+    content: 'public class SourceFragment : FragmentBase'
+    content.vb: >-
+      Public Class SourceFragment
+          Inherits FragmentBase
+  inheritance:
+  - System.Object
+  - CilTools.SourceCode.FragmentBase
+  inheritedMembers:
+  - CilTools.SourceCode.FragmentBase.SetAdditionalInfo(System.String,System.Object)
+  - CilTools.SourceCode.FragmentBase.GetAdditionalInfo(System.String)
+  - CilTools.SourceCode.FragmentBase.Text
+  - CilTools.SourceCode.FragmentBase.LineStart
+  - CilTools.SourceCode.FragmentBase.LineEnd
+  - CilTools.SourceCode.FragmentBase.ColStart
+  - CilTools.SourceCode.FragmentBase.ColEnd
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.SourceCode.SourceFragment.#ctor
+  commentId: M:CilTools.SourceCode.SourceFragment.#ctor
+  id: '#ctor'
+  parent: CilTools.SourceCode.SourceFragment
+  langs:
+  - csharp
+  - vb
+  name: SourceFragment()
+  nameWithType: SourceFragment.SourceFragment()
+  fullName: CilTools.SourceCode.SourceFragment.SourceFragment()
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  syntax:
+    content: public SourceFragment()
+    content.vb: Public Sub New
+  overload: CilTools.SourceCode.SourceFragment.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.SourceCode.SourceFragment.Document
+  commentId: P:CilTools.SourceCode.SourceFragment.Document
+  id: Document
+  parent: CilTools.SourceCode.SourceFragment
+  langs:
+  - csharp
+  - vb
+  name: Document
+  nameWithType: SourceFragment.Document
+  fullName: CilTools.SourceCode.SourceFragment.Document
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  summary: "\nGets the source document which this fragment belongs to\n"
+  syntax:
+    content: public SourceDocument Document { get; }
+    parameters: []
+    return:
+      type: CilTools.SourceCode.SourceDocument
+    content.vb: Public ReadOnly Property Document As SourceDocument
+  overload: CilTools.SourceCode.SourceFragment.Document*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.SourceCode.SourceFragment.CilStart
+  commentId: P:CilTools.SourceCode.SourceFragment.CilStart
+  id: CilStart
+  parent: CilTools.SourceCode.SourceFragment
+  langs:
+  - csharp
+  - vb
+  name: CilStart
+  nameWithType: SourceFragment.CilStart
+  fullName: CilTools.SourceCode.SourceFragment.CilStart
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  summary: "\nGets or sets the starting byte offset of CIL bytecode corresponding to this fragment \n"
+  syntax:
+    content: public int CilStart { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CilStart As Integer
+  overload: CilTools.SourceCode.SourceFragment.CilStart*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CilTools.SourceCode.SourceFragment.CilEnd
+  commentId: P:CilTools.SourceCode.SourceFragment.CilEnd
+  id: CilEnd
+  parent: CilTools.SourceCode.SourceFragment
+  langs:
+  - csharp
+  - vb
+  name: CilEnd
+  nameWithType: SourceFragment.CilEnd
+  fullName: CilTools.SourceCode.SourceFragment.CilEnd
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  summary: "\nGets or sets the starting byte offset of CIL bytecode corresponding to this fragment \n"
+  syntax:
+    content: public int CilEnd { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property CilEnd As Integer
+  overload: CilTools.SourceCode.SourceFragment.CilEnd*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CilTools.SourceCode.SourceFragment.Method
+  commentId: P:CilTools.SourceCode.SourceFragment.Method
+  id: Method
+  parent: CilTools.SourceCode.SourceFragment
+  langs:
+  - csharp
+  - vb
+  name: Method
+  nameWithType: SourceFragment.Method
+  fullName: CilTools.SourceCode.SourceFragment.Method
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  summary: "\nGets a method which source code is contained in this fragment\n"
+  syntax:
+    content: public MethodBase Method { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Public ReadOnly Property Method As MethodBase
+  overload: CilTools.SourceCode.SourceFragment.Method*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.SourceCode
+  commentId: N:CilTools.SourceCode
+  isExternal: true
+  name: CilTools.SourceCode
+  nameWithType: CilTools.SourceCode
+  fullName: CilTools.SourceCode
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: CilTools.SourceCode.FragmentBase
+  commentId: T:CilTools.SourceCode.FragmentBase
+  parent: CilTools.SourceCode
+  isExternal: true
+  name: FragmentBase
+  nameWithType: FragmentBase
+  fullName: CilTools.SourceCode.FragmentBase
+- uid: CilTools.SourceCode.FragmentBase.SetAdditionalInfo(System.String,System.Object)
+  commentId: M:CilTools.SourceCode.FragmentBase.SetAdditionalInfo(System.String,System.Object)
+  parent: CilTools.SourceCode.FragmentBase
+  isExternal: true
+  name: SetAdditionalInfo(String, Object)
+  nameWithType: FragmentBase.SetAdditionalInfo(String, Object)
+  fullName: CilTools.SourceCode.FragmentBase.SetAdditionalInfo(System.String, System.Object)
+  spec.csharp:
+  - uid: CilTools.SourceCode.FragmentBase.SetAdditionalInfo(System.String,System.Object)
+    name: SetAdditionalInfo
+    nameWithType: FragmentBase.SetAdditionalInfo
+    fullName: CilTools.SourceCode.FragmentBase.SetAdditionalInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.SourceCode.FragmentBase.SetAdditionalInfo(System.String,System.Object)
+    name: SetAdditionalInfo
+    nameWithType: FragmentBase.SetAdditionalInfo
+    fullName: CilTools.SourceCode.FragmentBase.SetAdditionalInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.SourceCode.FragmentBase.GetAdditionalInfo(System.String)
+  commentId: M:CilTools.SourceCode.FragmentBase.GetAdditionalInfo(System.String)
+  parent: CilTools.SourceCode.FragmentBase
+  isExternal: true
+  name: GetAdditionalInfo(String)
+  nameWithType: FragmentBase.GetAdditionalInfo(String)
+  fullName: CilTools.SourceCode.FragmentBase.GetAdditionalInfo(System.String)
+  spec.csharp:
+  - uid: CilTools.SourceCode.FragmentBase.GetAdditionalInfo(System.String)
+    name: GetAdditionalInfo
+    nameWithType: FragmentBase.GetAdditionalInfo
+    fullName: CilTools.SourceCode.FragmentBase.GetAdditionalInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.SourceCode.FragmentBase.GetAdditionalInfo(System.String)
+    name: GetAdditionalInfo
+    nameWithType: FragmentBase.GetAdditionalInfo
+    fullName: CilTools.SourceCode.FragmentBase.GetAdditionalInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.SourceCode.FragmentBase.Text
+  commentId: P:CilTools.SourceCode.FragmentBase.Text
+  parent: CilTools.SourceCode.FragmentBase
+  isExternal: true
+  name: Text
+  nameWithType: FragmentBase.Text
+  fullName: CilTools.SourceCode.FragmentBase.Text
+- uid: CilTools.SourceCode.FragmentBase.LineStart
+  commentId: P:CilTools.SourceCode.FragmentBase.LineStart
+  parent: CilTools.SourceCode.FragmentBase
+  isExternal: true
+  name: LineStart
+  nameWithType: FragmentBase.LineStart
+  fullName: CilTools.SourceCode.FragmentBase.LineStart
+- uid: CilTools.SourceCode.FragmentBase.LineEnd
+  commentId: P:CilTools.SourceCode.FragmentBase.LineEnd
+  parent: CilTools.SourceCode.FragmentBase
+  isExternal: true
+  name: LineEnd
+  nameWithType: FragmentBase.LineEnd
+  fullName: CilTools.SourceCode.FragmentBase.LineEnd
+- uid: CilTools.SourceCode.FragmentBase.ColStart
+  commentId: P:CilTools.SourceCode.FragmentBase.ColStart
+  parent: CilTools.SourceCode.FragmentBase
+  isExternal: true
+  name: ColStart
+  nameWithType: FragmentBase.ColStart
+  fullName: CilTools.SourceCode.FragmentBase.ColStart
+- uid: CilTools.SourceCode.FragmentBase.ColEnd
+  commentId: P:CilTools.SourceCode.FragmentBase.ColEnd
+  parent: CilTools.SourceCode.FragmentBase
+  isExternal: true
+  name: ColEnd
+  nameWithType: FragmentBase.ColEnd
+  fullName: CilTools.SourceCode.FragmentBase.ColEnd
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.SourceCode.SourceFragment.#ctor*
+  commentId: Overload:CilTools.SourceCode.SourceFragment.#ctor
+  isExternal: true
+  name: SourceFragment
+  nameWithType: SourceFragment.SourceFragment
+  fullName: CilTools.SourceCode.SourceFragment.SourceFragment
+- uid: CilTools.SourceCode.SourceFragment.Document*
+  commentId: Overload:CilTools.SourceCode.SourceFragment.Document
+  isExternal: true
+  name: Document
+  nameWithType: SourceFragment.Document
+  fullName: CilTools.SourceCode.SourceFragment.Document
+- uid: CilTools.SourceCode.SourceDocument
+  commentId: T:CilTools.SourceCode.SourceDocument
+  parent: CilTools.SourceCode
+  isExternal: true
+  name: SourceDocument
+  nameWithType: SourceDocument
+  fullName: CilTools.SourceCode.SourceDocument
+- uid: CilTools.SourceCode.SourceFragment.CilStart*
+  commentId: Overload:CilTools.SourceCode.SourceFragment.CilStart
+  isExternal: true
+  name: CilStart
+  nameWithType: SourceFragment.CilStart
+  fullName: CilTools.SourceCode.SourceFragment.CilStart
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.SourceCode.SourceFragment.CilEnd*
+  commentId: Overload:CilTools.SourceCode.SourceFragment.CilEnd
+  isExternal: true
+  name: CilEnd
+  nameWithType: SourceFragment.CilEnd
+  fullName: CilTools.SourceCode.SourceFragment.CilEnd
+- uid: CilTools.SourceCode.SourceFragment.Method*
+  commentId: Overload:CilTools.SourceCode.SourceFragment.Method
+  isExternal: true
+  name: Method
+  nameWithType: SourceFragment.Method
+  fullName: CilTools.SourceCode.SourceFragment.Method
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection

@@ -57,18 +57,26 @@
     name: CustomMethod
   - uid: CilTools.Reflection.ExceptionBlock
     name: ExceptionBlock
+  - uid: CilTools.Reflection.GenericContext
+    name: GenericContext
   - uid: CilTools.Reflection.GenericParamType
     name: GenericParamType
   - uid: CilTools.Reflection.ICustomAttribute
     name: ICustomAttribute
+  - uid: CilTools.Reflection.ICustomMethod
+    name: ICustomMethod
   - uid: CilTools.Reflection.ITokenResolver
     name: ITokenResolver
   - uid: CilTools.Reflection.ITypeInfo
     name: ITypeInfo
   - uid: CilTools.Reflection.LocalVariable
     name: LocalVariable
+  - uid: CilTools.Reflection.MemoryImage
+    name: MemoryImage
   - uid: CilTools.Reflection.PInvokeParams
     name: PInvokeParams
+  - uid: CilTools.Reflection.SignatureContext
+    name: SignatureContext
 - uid: CilTools.Runtime
   name: CilTools.Runtime
   items:
@@ -76,6 +84,8 @@
     name: ClrAssemblyInfo
   - uid: CilTools.Runtime.ClrAssemblyReader
     name: ClrAssemblyReader
+  - uid: CilTools.Runtime.ClrConstructorInfo
+    name: ClrConstructorInfo
   - uid: CilTools.Runtime.ClrMethodInfo
     name: ClrMethodInfo
   - uid: CilTools.Runtime.ClrStackFrameInfo
@@ -84,6 +94,17 @@
     name: ClrThreadInfo
   - uid: CilTools.Runtime.DynamicMethodsAssembly
     name: DynamicMethodsAssembly
+- uid: CilTools.SourceCode
+  name: CilTools.SourceCode
+  items:
+  - uid: CilTools.SourceCode.FragmentBase
+    name: FragmentBase
+  - uid: CilTools.SourceCode.SourceCodeProvider
+    name: SourceCodeProvider
+  - uid: CilTools.SourceCode.SourceDocument
+    name: SourceDocument
+  - uid: CilTools.SourceCode.SourceFragment
+    name: SourceFragment
 - uid: CilTools.Syntax
   name: CilTools.Syntax
   items:
@@ -93,6 +114,8 @@
     name: CommentSyntax
   - uid: CilTools.Syntax.DirectiveSyntax
     name: DirectiveSyntax
+  - uid: CilTools.Syntax.DisassemblerParams
+    name: DisassemblerParams
   - uid: CilTools.Syntax.IdentifierSyntax
     name: IdentifierSyntax
   - uid: CilTools.Syntax.InstructionSyntax
@@ -107,5 +130,7 @@
     name: MemberRefSyntax
   - uid: CilTools.Syntax.MethodDefSyntax
     name: MethodDefSyntax
+  - uid: CilTools.Syntax.SyntaxFactory
+    name: SyntaxFactory
   - uid: CilTools.Syntax.SyntaxNode
     name: SyntaxNode

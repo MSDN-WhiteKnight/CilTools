@@ -81,7 +81,7 @@
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">System.Reflection.MemberInfo</span></div>
     <div class="level2"><span class="xref">System.Reflection.MethodBase</span></div>
-    <div class="level3"><a class="xref" href="CilTools.Reflection.CustomMethod.html">CustomMethod</a></div>
+    <div class="level3"><span class="xref">System.Reflection.MethodInfo</span></div>
     <div class="level4"><span class="xref">ClrMethodInfo</span></div>
   </div>
   <div classs="implements">
@@ -89,17 +89,49 @@
     <div><span class="xref">System.Reflection.ICustomAttributeProvider</span></div>
     <div><span class="xref">System.Runtime.InteropServices._MemberInfo</span></div>
     <div><span class="xref">System.Runtime.InteropServices._MethodBase</span></div>
+    <div><span class="xref">System.Runtime.InteropServices._MethodInfo</span></div>
+    <div><a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
     <div>
-      <a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_GetLocalVariables">CustomMethod.GetLocalVariables()</a>
+      <span class="xref">System.Reflection.MethodInfo.Equals(System.Object)</span>
     </div>
     <div>
-      <a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_GetDefinition">CustomMethod.GetDefinition()</a>
+      <span class="xref">System.Reflection.MethodInfo.GetHashCode()</span>
     </div>
     <div>
-      <a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_GetPInvokeParams">CustomMethod.GetPInvokeParams()</a>
+      <span class="xref">System.Reflection.MethodInfo.GetGenericArguments()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.GetGenericMethodDefinition()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.MakeGenericMethod(System.Type[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.CreateDelegate(System.Type)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.CreateDelegate(System.Type, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.GetTypeInfoCount(System.UInt32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.GetTypeInfo(System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.GetIDsOfNames(System.Guid, System.IntPtr, System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.ReturnParameter</span>
     </div>
     <div>
       <span class="xref">System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)</span>
@@ -109,15 +141,6 @@
     </div>
     <div>
       <span class="xref">System.Reflection.MethodBase.GetCurrentMethod()</span>
-    </div>
-    <div>
-      <span class="xref">System.Reflection.MethodBase.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Reflection.MethodBase.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Reflection.MethodBase.GetGenericArguments()</span>
     </div>
     <div>
       <span class="xref">System.Reflection.MethodBase.Invoke(System.Object, System.Object[])</span>
@@ -286,7 +309,7 @@
   <h6><strong>Assembly</strong>: CilTools.Runtime.dll</h6>
   <h5 id="CilTools_Runtime_ClrMethodInfo_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class ClrMethodInfo : CustomMethod, ICustomAttributeProvider, _MemberInfo, _MethodBase</code></pre>
+    <pre><code class="lang-csharp hljs">public class ClrMethodInfo : MethodInfo, ICustomAttributeProvider, _MemberInfo, _MethodBase, _MethodInfo, ICustomMethod</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -348,12 +371,12 @@
   
   <a id="CilTools_Runtime_ClrMethodInfo_InitLocals_" data-uid="CilTools.Runtime.ClrMethodInfo.InitLocals*"></a>
   <h4 id="CilTools_Runtime_ClrMethodInfo_InitLocals" data-uid="CilTools.Runtime.ClrMethodInfo.InitLocals">InitLocals</h4>
-  <div class="markdown level1 summary"><p>When overridden in the derived class, specifies whether the local variables are initialized</p>
+  <div class="markdown level1 summary"><p>Gets the value specifying whether the local variables are initialized</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool InitLocals { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool InitLocals { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -370,18 +393,16 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_InitLocals">CustomMethod.InitLocals</a></div>
   
   
   <a id="CilTools_Runtime_ClrMethodInfo_InitLocalsSpecified_" data-uid="CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified*"></a>
   <h4 id="CilTools_Runtime_ClrMethodInfo_InitLocalsSpecified" data-uid="CilTools.Runtime.ClrMethodInfo.InitLocalsSpecified">InitLocalsSpecified</h4>
-  <div class="markdown level1 summary"><p>When overridden in the derived class, specifies whether the <code>InitLocals</code> property value is defined</p>
+  <div class="markdown level1 summary"><p>Gets the value specifying whether the <a class="xref" href="CilTools.Reflection.ICustomMethod.html#CilTools_Reflection_ICustomMethod_InitLocals">InitLocals</a> property value is defined</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool InitLocalsSpecified { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool InitLocalsSpecified { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -398,8 +419,6 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_InitLocalsSpecified">CustomMethod.InitLocalsSpecified</a></div>
   
   
   <a id="CilTools_Runtime_ClrMethodInfo_InnerMethod_" data-uid="CilTools.Runtime.ClrMethodInfo.InnerMethod*"></a>
@@ -430,12 +449,12 @@
   
   <a id="CilTools_Runtime_ClrMethodInfo_MaxStackSize_" data-uid="CilTools.Runtime.ClrMethodInfo.MaxStackSize*"></a>
   <h4 id="CilTools_Runtime_ClrMethodInfo_MaxStackSize" data-uid="CilTools.Runtime.ClrMethodInfo.MaxStackSize">MaxStackSize</h4>
-  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the maximum size of operand stack during method execution</p>
+  <div class="markdown level1 summary"><p>Gets the maximum size of operand stack during method execution</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override int MaxStackSize { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public int MaxStackSize { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -452,18 +471,16 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_MaxStackSize">CustomMethod.MaxStackSize</a></div>
   
   
   <a id="CilTools_Runtime_ClrMethodInfo_MaxStackSizeSpecified_" data-uid="CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified*"></a>
   <h4 id="CilTools_Runtime_ClrMethodInfo_MaxStackSizeSpecified" data-uid="CilTools.Runtime.ClrMethodInfo.MaxStackSizeSpecified">MaxStackSizeSpecified</h4>
-  <div class="markdown level1 summary"><p>When overridden in the derived class, specifies whether the MaxStackSize property value is defined</p>
+  <div class="markdown level1 summary"><p>Gets the value specifying whether the <a class="xref" href="CilTools.Reflection.ICustomMethod.html#CilTools_Reflection_ICustomMethod_MaxStackSize">MaxStackSize</a> property value is defined</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override bool MaxStackSizeSpecified { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool MaxStackSizeSpecified { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -480,8 +497,6 @@
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_MaxStackSizeSpecified">CustomMethod.MaxStackSizeSpecified</a></div>
   
   
   <a id="CilTools_Runtime_ClrMethodInfo_MemberType_" data-uid="CilTools.Runtime.ClrMethodInfo.MemberType*"></a>
@@ -508,7 +523,7 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.Reflection.MemberInfo.MemberType</span></div>
+  <div><span class="xref">System.Reflection.MethodInfo.MemberType</span></div>
   
   
   <a id="CilTools_Runtime_ClrMethodInfo_MetadataToken_" data-uid="CilTools.Runtime.ClrMethodInfo.MetadataToken*"></a>
@@ -644,18 +659,44 @@
     </tbody>
   </table>
   <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_ReturnType">CustomMethod.ReturnType</a></div>
+  <div><span class="xref">System.Reflection.MethodInfo.ReturnType</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrMethodInfo_ReturnTypeCustomAttributes_" data-uid="CilTools.Runtime.ClrMethodInfo.ReturnTypeCustomAttributes*"></a>
+  <h4 id="CilTools_Runtime_ClrMethodInfo_ReturnTypeCustomAttributes" data-uid="CilTools.Runtime.ClrMethodInfo.ReturnTypeCustomAttributes">ReturnTypeCustomAttributes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override ICustomAttributeProvider ReturnTypeCustomAttributes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.ICustomAttributeProvider</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodInfo.ReturnTypeCustomAttributes</span></div>
   
   
   <a id="CilTools_Runtime_ClrMethodInfo_TokenResolver_" data-uid="CilTools.Runtime.ClrMethodInfo.TokenResolver*"></a>
   <h4 id="CilTools_Runtime_ClrMethodInfo_TokenResolver" data-uid="CilTools.Runtime.ClrMethodInfo.TokenResolver">TokenResolver</h4>
-  <div class="markdown level1 summary"><p>When overridden in the derived class, returns an object that can be used to convert metadata tokens
-into corresponding reflection objects</p>
+  <div class="markdown level1 summary"><p>Gets an object that can be used to convert metadata tokens into corresponding reflection objects</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override ITokenResolver TokenResolver { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public ITokenResolver TokenResolver { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -672,20 +713,45 @@ into corresponding reflection objects</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_TokenResolver">CustomMethod.TokenResolver</a></div>
   <h3 id="methods">Methods
   </h3>
   
   
+  <a id="CilTools_Runtime_ClrMethodInfo_GetBaseDefinition_" data-uid="CilTools.Runtime.ClrMethodInfo.GetBaseDefinition*"></a>
+  <h4 id="CilTools_Runtime_ClrMethodInfo_GetBaseDefinition" data-uid="CilTools.Runtime.ClrMethodInfo.GetBaseDefinition">GetBaseDefinition()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override MethodInfo GetBaseDefinition()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodInfo.GetBaseDefinition()</span></div>
+  
+  
   <a id="CilTools_Runtime_ClrMethodInfo_GetBytecode_" data-uid="CilTools.Runtime.ClrMethodInfo.GetBytecode*"></a>
   <h4 id="CilTools_Runtime_ClrMethodInfo_GetBytecode" data-uid="CilTools.Runtime.ClrMethodInfo.GetBytecode">GetBytecode()</h4>
-  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the CIL bytecode of the method body</p>
+  <div class="markdown level1 summary"><p>Gets the CIL bytecode of the method body</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override byte[] GetBytecode()</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] GetBytecode()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -703,8 +769,6 @@ into corresponding reflection objects</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_GetBytecode">CustomMethod.GetBytecode()</a></div>
   
   
   <a id="CilTools_Runtime_ClrMethodInfo_GetCustomAttributes_" data-uid="CilTools.Runtime.ClrMethodInfo.GetCustomAttributes*"></a>
@@ -800,14 +864,41 @@ into corresponding reflection objects</p>
   <div><span class="xref">System.Reflection.MemberInfo.GetCustomAttributes(System.Type, System.Boolean)</span></div>
   
   
-  <a id="CilTools_Runtime_ClrMethodInfo_GetExceptionBlocks_" data-uid="CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks*"></a>
-  <h4 id="CilTools_Runtime_ClrMethodInfo_GetExceptionBlocks" data-uid="CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks">GetExceptionBlocks()</h4>
-  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the list of exception handling blocks in the method's body</p>
+  <a id="CilTools_Runtime_ClrMethodInfo_GetDefinition_" data-uid="CilTools.Runtime.ClrMethodInfo.GetDefinition*"></a>
+  <h4 id="CilTools_Runtime_ClrMethodInfo_GetDefinition" data-uid="CilTools.Runtime.ClrMethodInfo.GetDefinition">GetDefinition()</h4>
+  <div class="markdown level1 summary"><p>Gets the method definition for the generic method.
+Returns null if this instance does not represent the generic method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override ExceptionBlock[] GetExceptionBlocks()</code></pre>
+    <pre><code class="lang-csharp hljs">public MethodBase GetDefinition()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrMethodInfo_GetExceptionBlocks_" data-uid="CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks*"></a>
+  <h4 id="CilTools_Runtime_ClrMethodInfo_GetExceptionBlocks" data-uid="CilTools.Runtime.ClrMethodInfo.GetExceptionBlocks">GetExceptionBlocks()</h4>
+  <div class="markdown level1 summary"><p>Gets the list of exception handling blocks in the method's body</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ExceptionBlock[] GetExceptionBlocks()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -824,18 +915,42 @@ into corresponding reflection objects</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_GetExceptionBlocks">CustomMethod.GetExceptionBlocks()</a></div>
   
   
-  <a id="CilTools_Runtime_ClrMethodInfo_GetLocalVarSignature_" data-uid="CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature*"></a>
-  <h4 id="CilTools_Runtime_ClrMethodInfo_GetLocalVarSignature" data-uid="CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature">GetLocalVarSignature()</h4>
-  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the local variable signature as an array of bytes</p>
+  <a id="CilTools_Runtime_ClrMethodInfo_GetLocalVariables_" data-uid="CilTools.Runtime.ClrMethodInfo.GetLocalVariables*"></a>
+  <h4 id="CilTools_Runtime_ClrMethodInfo_GetLocalVariables" data-uid="CilTools.Runtime.ClrMethodInfo.GetLocalVariables">GetLocalVariables()</h4>
+  <div class="markdown level1 summary"><p>Gets the array of local variable declarations of this method</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override byte[] GetLocalVarSignature()</code></pre>
+    <pre><code class="lang-csharp hljs">public LocalVariable[] GetLocalVariables()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.LocalVariable.html">LocalVariable</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrMethodInfo_GetLocalVarSignature_" data-uid="CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature*"></a>
+  <h4 id="CilTools_Runtime_ClrMethodInfo_GetLocalVarSignature" data-uid="CilTools.Runtime.ClrMethodInfo.GetLocalVarSignature">GetLocalVarSignature()</h4>
+  <div class="markdown level1 summary"><p>Gets the local variable signature as an array of bytes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] GetLocalVarSignature()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -852,8 +967,6 @@ into corresponding reflection objects</p>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><a class="xref" href="CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_GetLocalVarSignature">CustomMethod.GetLocalVarSignature()</a></div>
   
   
   <a id="CilTools_Runtime_ClrMethodInfo_GetMethodImplementationFlags_" data-uid="CilTools.Runtime.ClrMethodInfo.GetMethodImplementationFlags*"></a>
@@ -908,6 +1021,33 @@ into corresponding reflection objects</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Reflection.MethodBase.GetParameters()</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrMethodInfo_GetPInvokeParams_" data-uid="CilTools.Runtime.ClrMethodInfo.GetPInvokeParams*"></a>
+  <h4 id="CilTools_Runtime_ClrMethodInfo_GetPInvokeParams" data-uid="CilTools.Runtime.ClrMethodInfo.GetPInvokeParams">GetPInvokeParams()</h4>
+  <div class="markdown level1 summary"><p>Gets P/Invoke parameters for the imported unmanaged method.
+Returns null if this instance does not represent an imported unmanaged method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PInvokeParams GetPInvokeParams()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.PInvokeParams.html">PInvokeParams</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="CilTools_Runtime_ClrMethodInfo_Invoke_" data-uid="CilTools.Runtime.ClrMethodInfo.Invoke*"></a>
@@ -1030,6 +1170,12 @@ into corresponding reflection objects</p>
   </div>
   <div>
       <span class="xref">System.Runtime.InteropServices._MethodBase</span>
+  </div>
+  <div>
+      <span class="xref">System.Runtime.InteropServices._MethodInfo</span>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

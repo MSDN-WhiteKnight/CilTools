@@ -9,6 +9,7 @@ items:
   - CilTools.Syntax.SyntaxNode.EnumerateChildNodes
   - CilTools.Syntax.SyntaxNode.GetChildNodes
   - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+  - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
   - CilTools.Syntax.SyntaxNode.LeadingWhitespace
   - CilTools.Syntax.SyntaxNode.Parent
   - CilTools.Syntax.SyntaxNode.ToString
@@ -28,7 +29,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
   summary: "\nRepresents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent concrete language constructs derive from this class. \n"
-  remarks: "\n<p>\nThe <code>SyntaxNode</code> class instance contains all information required to produce the source code of the corresponding language construct, including whitespaces. \nThe <xref href=\"CilTools.Syntax.SyntaxNode.EnumerateChildNodes\" data-throw-if-not-resolved=\"false\"></xref> method returns all child nodes of this node, or an empty collection if it is a leaf (terminal node). \nSome child nodes may be exposed via specific properties as well. \nThe text representation for non-terminal node is a string concetanation of all its child nodes&apos; text representations. \n</p>\n<p>Use <xref href=\"CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree\" data-throw-if-not-resolved=\"false\"></xref> method to get the syntax tree for the specified method.</p>\n"
+  remarks: "\n<p>\nThe <code>SyntaxNode</code> class instance contains all information required to produce the source code of the corresponding language construct, including whitespaces. \nThe <xref href=\"CilTools.Syntax.SyntaxNode.EnumerateChildNodes\" data-throw-if-not-resolved=\"false\"></xref> method returns all child nodes of this node, or an empty collection if it is a leaf (terminal node). \nSome child nodes may be exposed via specific properties as well. \nThe text representation for non-terminal node is a string concetanation of all its child nodes&apos; text representations. \n</p>\n<p>\nUse <xref href=\"CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree(CilTools.Syntax.DisassemblerParams)\" data-throw-if-not-resolved=\"false\"></xref> method to get the syntax tree for the specified method.\n</p>\n"
   syntax:
     content: public abstract class SyntaxNode
     content.vb: Public MustInherit Class SyntaxNode
@@ -211,6 +212,55 @@ items:
       description: The collection of syntax nodes that make up type definition syntax
     content.vb: Public Shared Function GetTypeDefSyntax(t As Type) As IEnumerable(Of SyntaxNode)
   overload: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: The specified type is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
+  commentId: M:CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
+  id: GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
+  parent: CilTools.Syntax.SyntaxNode
+  langs:
+  - csharp
+  - vb
+  name: GetTypeDefSyntax(Type, Boolean, DisassemblerParams)
+  nameWithType: SyntaxNode.GetTypeDefSyntax(Type, Boolean, DisassemblerParams)
+  fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type, System.Boolean, CilTools.Syntax.DisassemblerParams)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nGets the CIL assembler syntax for the definition of the specified type with specified disassembler parameters\n"
+  syntax:
+    content: public static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t, bool full, DisassemblerParams disassemblerParams)
+    parameters:
+    - id: t
+      type: System.Type
+      description: Type to get definition syntax
+    - id: full
+      type: System.Boolean
+      description: "\n<code>true</code> to return full syntax (including method defnitions and nested types), <code>false</code> to return\nshort syntax\n"
+    - id: disassemblerParams
+      type: CilTools.Syntax.DisassemblerParams
+      description: "\nObject that specifies additional options for the disassembling operation\n"
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+      description: The collection of syntax nodes that make up type definition syntax
+    content.vb: Public Shared Function GetTypeDefSyntax(t As Type, full As Boolean, disassemblerParams As DisassemblerParams) As IEnumerable(Of SyntaxNode)
+  overload: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: The specified type is null
   modifiers.csharp:
   - public
   - static
@@ -801,6 +851,9 @@ references:
   name: GetTypeDefSyntax
   nameWithType: SyntaxNode.GetTypeDefSyntax
   fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
 - uid: System.Type
   commentId: T:System.Type
   parent: System
@@ -808,6 +861,20 @@ references:
   name: Type
   nameWithType: Type
   fullName: System.Type
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: CilTools.Syntax.DisassemblerParams
+  commentId: T:CilTools.Syntax.DisassemblerParams
+  parent: CilTools.Syntax
+  isExternal: true
+  name: DisassemblerParams
+  nameWithType: DisassemblerParams
+  fullName: CilTools.Syntax.DisassemblerParams
 - uid: CilTools.Syntax.SyntaxNode.#ctor*
   commentId: Overload:CilTools.Syntax.SyntaxNode.#ctor
   isExternal: true

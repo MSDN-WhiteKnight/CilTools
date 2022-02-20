@@ -82,15 +82,22 @@
 for example, an array or pointer type.</p>
 </section>
       <h4><a class="xref" href="CilTools.Reflection.CustomMethod.html">CustomMethod</a></h4>
-      <section><p>A base class for MethodBase implementations providing custom mechanisms for extracting bytecode data.
-Inherit from this class when you want CilTools.BytecodeAnalysis to process bytecode from your custom data source, instead of
-reflection.</p>
+      <section><p>Provides a base class for <span class="xref">System.Reflection.MethodInfo</span> subclasses that implement <a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a>.</p>
+</section>
+      <h4><a class="xref" href="CilTools.Reflection.GenericContext.html">GenericContext</a></h4>
+      <section><p>Represent a set of information that defines a meaning of generic signature in some context</p>
 </section>
       <h4><a class="xref" href="CilTools.Reflection.GenericParamType.html">GenericParamType</a></h4>
       <section><p>Represents the generic parameter</p>
 </section>
+      <h4><a class="xref" href="CilTools.Reflection.MemoryImage.html">MemoryImage</a></h4>
+      <section><p>Represents a Portable Executable (PE) image stored in memory</p>
+</section>
       <h4><a class="xref" href="CilTools.Reflection.PInvokeParams.html">PInvokeParams</a></h4>
       <section><p>Represents the parameters of the imported unmanaged method</p>
+</section>
+      <h4><a class="xref" href="CilTools.Reflection.SignatureContext.html">SignatureContext</a></h4>
+      <section><p>Encapsulates data that identifies the meaning of the signature in some context</p>
 </section>
     <h3 id="structs">Structs
   </h3>
@@ -104,6 +111,11 @@ reflection.</p>
   </h3>
       <h4><a class="xref" href="CilTools.Reflection.ICustomAttribute.html">ICustomAttribute</a></h4>
       <section><p>Represents the custom attribute data</p>
+</section>
+      <h4><a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a></h4>
+      <section><p>Represents an object that provides custom information about method. Implement this interface on your custom class
+inheriting from <span class="xref">System.Reflection.MethodBase</span> if you want CilTools.BytecodeAnalysis library to process bytecode
+from your custom data source, instead of the standard reflection.</p>
 </section>
       <h4><a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a></h4>
       <section><p>Represents an object that can be used to convert metadata tokens into corresponding high-level reflection objects</p>

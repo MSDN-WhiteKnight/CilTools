@@ -400,6 +400,73 @@ containing the CLR instance</p>
   </table>
   
   
+  <a id="CilTools_Runtime_ClrAssemblyReader_GetMemoryImage_" data-uid="CilTools.Runtime.ClrAssemblyReader.GetMemoryImage*"></a>
+  <h4 id="CilTools_Runtime_ClrAssemblyReader_GetMemoryImage_Microsoft_Diagnostics_Runtime_ClrModule_" data-uid="CilTools.Runtime.ClrAssemblyReader.GetMemoryImage(Microsoft.Diagnostics.Runtime.ClrModule)">GetMemoryImage(ClrModule)</h4>
+  <div class="markdown level1 summary"><p>Gets the executable image data for the specified module</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static MemoryImage GetMemoryImage(ClrModule module)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Microsoft.Diagnostics.Runtime.ClrModule</span></td>
+        <td><span class="parametername">module</span></td>
+        <td><p>The ClMD module object</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.MemoryImage.html">MemoryImage</a></td>
+        <td><p>In-memory executable image data, or <code>null</code> if the operation failed</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Runtime_ClrAssemblyReader_GetMemoryImage_Microsoft_Diagnostics_Runtime_ClrModule__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>This method gets the executable image data loaded into the target process. This enables you
+to inspect that image with PE reader libraries without the extra cost of reading the image from
+file. The method can fail if the memory pages where the image is stored are inaccessible.
+It also does not work for memory-only dynamic modules that don't have the backing PE image.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>module is <code>null</code></p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="CilTools_Runtime_ClrAssemblyReader_Read_" data-uid="CilTools.Runtime.ClrAssemblyReader.Read*"></a>
   <h4 id="CilTools_Runtime_ClrAssemblyReader_Read_Microsoft_Diagnostics_Runtime_ClrModule_" data-uid="CilTools.Runtime.ClrAssemblyReader.Read(Microsoft.Diagnostics.Runtime.ClrModule)">Read(ClrModule)</h4>
   <div class="markdown level1 summary"><p>Gets the assembly information object for the specified ClrMD module object</p>

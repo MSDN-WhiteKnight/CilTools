@@ -149,7 +149,8 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
-  summary: "\nEscapes special characters in the specified string, using rules similar to what are applied to C# string literals\n"
+  summary: "\nEscapes special characters in the specified string, preparing it to be used as CIL assembler string literal\n"
+  remarks: "\nSee ECMA-335 II.5.2 for string literal escaping rules. \nIn CIL Tools 2.3 and earlier versions, this method used string escaping rules for C# string literals.\n"
   syntax:
     content: public static string EscapeString(string str)
     parameters:

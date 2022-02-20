@@ -77,14 +77,14 @@
 <h2 id="example">Example</h2>
 <p>The example below shows how to inspect function pointer types on the example of the <code>bsearch</code> function from the WPF's <em>PresentationCore.dll</em> library. WPF is one of the most famous C++/CLI consumers, and this <em>PresentationCore.dll</em> is a module partially written in C++/CLI to help with DirectWrite interop. The <code>bsearch</code> function that was statically embedded into this module is a standard C library function which performs binary search using the supplied comparer callback. Its signature looks as follows in CIL:</p>
 <pre><code>.method  assembly static void* bsearch(
-                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* key, 
-                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* base, 
-                uint32 num, 
-                uint32 width, 
-                method int32 *( void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*, 
-                                void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*
-                              ) compare
-                ) cil managed
+    void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* key, 
+    void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)* base, 
+    uint32 num, 
+    uint32 width, 
+    method int32 *( void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*, 
+        void modopt([mscorlib]System.Runtime.CompilerServices.IsConst)*
+        ) compare
+    ) cil managed
 </code></pre>
 <p>You can see that the fifth parameter is a function pointer type. Here's the example how to read infomation about this function's params, including the function pointer signature, and print it into the console:</p>
 <pre><code class="lang-csharp">using System;

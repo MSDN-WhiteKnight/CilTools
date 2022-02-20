@@ -124,7 +124,9 @@ The <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_Syntax
 Some child nodes may be exposed via specific properties as well. 
 The text representation for non-terminal node is a string concetanation of all its child nodes&apos; text representations. 
 </p>
-<p>Use <a class="xref" href="CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_ToSyntaxTree">ToSyntaxTree()</a> method to get the syntax tree for the specified method.</p>
+<p>
+Use <a class="xref" href="CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_ToSyntaxTree_CilTools_Syntax_DisassemblerParams_">ToSyntaxTree(DisassemblerParams)</a> method to get the syntax tree for the specified method.
+</p>
 </div>
   <h3 id="constructors">Constructors
   </h3>
@@ -323,6 +325,96 @@ content, both syntactically meaningful and indentation-only, is stored within on
       <tr>
         <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>&gt;</td>
         <td><p>The collection of syntax nodes that make up type definition syntax</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>The specified type is null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode_GetTypeDefSyntax_" data-uid="CilTools.Syntax.SyntaxNode.GetTypeDefSyntax*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_GetTypeDefSyntax_System_Type_System_Boolean_CilTools_Syntax_DisassemblerParams_" data-uid="CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)">GetTypeDefSyntax(Type, Boolean, DisassemblerParams)</h4>
+  <div class="markdown level1 summary"><p>Gets the CIL assembler syntax for the definition of the specified type with specified disassembler parameters</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static IEnumerable&lt;SyntaxNode&gt; GetTypeDefSyntax(Type t, bool full, DisassemblerParams disassemblerParams)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">t</span></td>
+        <td><p>Type to get definition syntax</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">full</span></td>
+        <td><p><code>true</code> to return full syntax (including method defnitions and nested types), <code>false</code> to return
+short syntax</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.DisassemblerParams.html">DisassemblerParams</a></td>
+        <td><span class="parametername">disassemblerParams</span></td>
+        <td><p>Object that specifies additional options for the disassembling operation</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>&gt;</td>
+        <td><p>The collection of syntax nodes that make up type definition syntax</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>The specified type is null</p>
 </td>
       </tr>
     </tbody>

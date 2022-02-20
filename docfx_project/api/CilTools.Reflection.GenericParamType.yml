@@ -10,8 +10,12 @@ items:
   - CilTools.Reflection.GenericParamType.Assembly
   - CilTools.Reflection.GenericParamType.AssemblyQualifiedName
   - CilTools.Reflection.GenericParamType.BaseType
+  - CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo,System.Int32,System.String)
+  - CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo,System.Int32,System.String,System.Reflection.GenericParameterAttributes,System.Type[])
   - CilTools.Reflection.GenericParamType.DeclaringMethod
+  - CilTools.Reflection.GenericParamType.DeclaringType
   - CilTools.Reflection.GenericParamType.FullName
+  - CilTools.Reflection.GenericParamType.GenericParameterAttributes
   - CilTools.Reflection.GenericParamType.GenericParameterPosition
   - CilTools.Reflection.GenericParamType.GetArrayRank
   - CilTools.Reflection.GenericParamType.GetAttributeFlagsImpl
@@ -24,6 +28,7 @@ items:
   - CilTools.Reflection.GenericParamType.GetEvents(System.Reflection.BindingFlags)
   - CilTools.Reflection.GenericParamType.GetField(System.String,System.Reflection.BindingFlags)
   - CilTools.Reflection.GenericParamType.GetFields(System.Reflection.BindingFlags)
+  - CilTools.Reflection.GenericParamType.GetGenericParameterConstraints
   - CilTools.Reflection.GenericParamType.GetInterface(System.String,System.Boolean)
   - CilTools.Reflection.GenericParamType.GetInterfaces
   - CilTools.Reflection.GenericParamType.GetMember(System.String,System.Reflection.BindingFlags)
@@ -142,7 +147,6 @@ items:
   - System.Type.GetMembers
   - System.Type.GetDefaultMembers
   - System.Type.FindMembers(System.Reflection.MemberTypes,System.Reflection.BindingFlags,System.Reflection.MemberFilter,System.Object)
-  - System.Type.GetGenericParameterConstraints
   - System.Type.IsValueTypeImpl
   - System.Type.MakeGenericType(System.Type[])
   - System.Type.IsContextfulImpl
@@ -170,7 +174,6 @@ items:
   - System.Type.System#Runtime#InteropServices#_Type#GetIDsOfNames(System.Guid@,System.IntPtr,System.UInt32,System.UInt32,System.IntPtr)
   - System.Type.System#Runtime#InteropServices#_Type#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
   - System.Type.MemberType
-  - System.Type.DeclaringType
   - System.Type.ReflectedType
   - System.Type.StructLayoutAttribute
   - System.Type.DefaultBinder
@@ -178,7 +181,6 @@ items:
   - System.Type.TypeInitializer
   - System.Type.IsNested
   - System.Type.Attributes
-  - System.Type.GenericParameterAttributes
   - System.Type.IsVisible
   - System.Type.IsNotPublic
   - System.Type.IsPublic
@@ -272,6 +274,95 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo,System.Int32,System.String)
+  commentId: M:CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo,System.Int32,System.String)
+  id: Create(System.Reflection.MemberInfo,System.Int32,System.String)
+  parent: CilTools.Reflection.GenericParamType
+  langs:
+  - csharp
+  - vb
+  name: Create(MemberInfo, Int32, String)
+  nameWithType: GenericParamType.Create(MemberInfo, Int32, String)
+  fullName: CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo, System.Int32, System.String)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nCreates a new instance of the generic parameter\n"
+  syntax:
+    content: public static GenericParamType Create(MemberInfo declaringMember, int index, string name)
+    parameters:
+    - id: declaringMember
+      type: System.Reflection.MemberInfo
+      description: Declaring generic type or method of this parameter
+    - id: index
+      type: System.Int32
+      description: Generic parameter index
+    - id: name
+      type: System.String
+      description: Generic parameter name, or null to fill name automatically
+    return:
+      type: CilTools.Reflection.GenericParamType
+    content.vb: Public Shared Function Create(declaringMember As MemberInfo, index As Integer, name As String) As GenericParamType
+  overload: CilTools.Reflection.GenericParamType.Create*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo,System.Int32,System.String,System.Reflection.GenericParameterAttributes,System.Type[])
+  commentId: M:CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo,System.Int32,System.String,System.Reflection.GenericParameterAttributes,System.Type[])
+  id: Create(System.Reflection.MemberInfo,System.Int32,System.String,System.Reflection.GenericParameterAttributes,System.Type[])
+  parent: CilTools.Reflection.GenericParamType
+  langs:
+  - csharp
+  - vb
+  name: Create(MemberInfo, Int32, String, GenericParameterAttributes, Type[])
+  nameWithType: GenericParamType.Create(MemberInfo, Int32, String, GenericParameterAttributes, Type[])
+  fullName: CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo, System.Int32, System.String, System.Reflection.GenericParameterAttributes, System.Type[])
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nCreates a new instance of the generic parameter with specified attributes and constraints\n"
+  syntax:
+    content: public static GenericParamType Create(MemberInfo declaringMember, int index, string name, GenericParameterAttributes attrs, Type[] constrains)
+    parameters:
+    - id: declaringMember
+      type: System.Reflection.MemberInfo
+      description: Declaring generic type or method of this parameter
+    - id: index
+      type: System.Int32
+      description: Generic parameter index
+    - id: name
+      type: System.String
+      description: Generic parameter name, or null to fill name automatically
+    - id: attrs
+      type: System.Reflection.GenericParameterAttributes
+      description: Flags defining variance and constraint attributes of this parameter
+    - id: constrains
+      type: System.Type[]
+      description: "\nArray of types representing base type constraints of this parameter, or empty array if there are none\n"
+    return:
+      type: CilTools.Reflection.GenericParamType
+    content.vb: Public Shared Function Create(declaringMember As MemberInfo, index As Integer, name As String, attrs As GenericParameterAttributes, constrains As Type()) As GenericParamType
+  overload: CilTools.Reflection.GenericParamType.Create*
+  nameWithType.vb: GenericParamType.Create(MemberInfo, Int32, String, GenericParameterAttributes, Type())
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo, System.Int32, System.String, System.Reflection.GenericParameterAttributes, System.Type())
+  name.vb: Create(MemberInfo, Int32, String, GenericParameterAttributes, Type())
 - uid: CilTools.Reflection.GenericParamType.#ctor(System.Reflection.MethodBase,System.Int32,System.String)
   commentId: M:CilTools.Reflection.GenericParamType.#ctor(System.Reflection.MethodBase,System.Int32,System.String)
   id: '#ctor(System.Reflection.MethodBase,System.Int32,System.String)'
@@ -1393,6 +1484,36 @@ items:
   modifiers.vb:
   - Public
   - Overrides
+- uid: CilTools.Reflection.GenericParamType.GetGenericParameterConstraints
+  commentId: M:CilTools.Reflection.GenericParamType.GetGenericParameterConstraints
+  id: GetGenericParameterConstraints
+  parent: CilTools.Reflection.GenericParamType
+  langs:
+  - csharp
+  - vb
+  name: GetGenericParameterConstraints()
+  nameWithType: GenericParamType.GetGenericParameterConstraints()
+  fullName: CilTools.Reflection.GenericParamType.GetGenericParameterConstraints()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  syntax:
+    content: public override Type[] GetGenericParameterConstraints()
+    return:
+      type: System.Type[]
+    content.vb: Public Overrides Function GetGenericParameterConstraints As Type()
+  overridden: System.Type.GetGenericParameterConstraints
+  overload: CilTools.Reflection.GenericParamType.GetGenericParameterConstraints*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
 - uid: CilTools.Reflection.GenericParamType.Assembly
   commentId: P:CilTools.Reflection.GenericParamType.Assembly
   id: Assembly
@@ -1814,6 +1935,72 @@ items:
     content.vb: Public Overrides ReadOnly Property DeclaringMethod As MethodBase
   overridden: System.Type.DeclaringMethod
   overload: CilTools.Reflection.GenericParamType.DeclaringMethod*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Reflection.GenericParamType.DeclaringType
+  commentId: P:CilTools.Reflection.GenericParamType.DeclaringType
+  id: DeclaringType
+  parent: CilTools.Reflection.GenericParamType
+  langs:
+  - csharp
+  - vb
+  name: DeclaringType
+  nameWithType: GenericParamType.DeclaringType
+  fullName: CilTools.Reflection.GenericParamType.DeclaringType
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  syntax:
+    content: public override Type DeclaringType { get; }
+    parameters: []
+    return:
+      type: System.Type
+    content.vb: Public Overrides ReadOnly Property DeclaringType As Type
+  overridden: System.Type.DeclaringType
+  overload: CilTools.Reflection.GenericParamType.DeclaringType*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Reflection.GenericParamType.GenericParameterAttributes
+  commentId: P:CilTools.Reflection.GenericParamType.GenericParameterAttributes
+  id: GenericParameterAttributes
+  parent: CilTools.Reflection.GenericParamType
+  langs:
+  - csharp
+  - vb
+  name: GenericParameterAttributes
+  nameWithType: GenericParamType.GenericParameterAttributes
+  fullName: CilTools.Reflection.GenericParamType.GenericParameterAttributes
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  syntax:
+    content: public override GenericParameterAttributes GenericParameterAttributes { get; }
+    parameters: []
+    return:
+      type: System.Reflection.GenericParameterAttributes
+    content.vb: Public Overrides ReadOnly Property GenericParameterAttributes As GenericParameterAttributes
+  overridden: System.Type.GenericParameterAttributes
+  overload: CilTools.Reflection.GenericParamType.GenericParameterAttributes*
   modifiers.csharp:
   - public
   - override
@@ -5656,37 +5843,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Type.GetGenericParameterConstraints
-  commentId: M:System.Type.GetGenericParameterConstraints
-  parent: System.Type
-  isExternal: true
-  name: GetGenericParameterConstraints()
-  nameWithType: Type.GetGenericParameterConstraints()
-  fullName: System.Type.GetGenericParameterConstraints()
-  spec.csharp:
-  - uid: System.Type.GetGenericParameterConstraints
-    name: GetGenericParameterConstraints
-    nameWithType: Type.GetGenericParameterConstraints
-    fullName: System.Type.GetGenericParameterConstraints
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Type.GetGenericParameterConstraints
-    name: GetGenericParameterConstraints
-    nameWithType: Type.GetGenericParameterConstraints
-    fullName: System.Type.GetGenericParameterConstraints
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: System.Type.IsValueTypeImpl
   commentId: M:System.Type.IsValueTypeImpl
   parent: System.Type
@@ -6884,13 +7040,6 @@ references:
   name: MemberType
   nameWithType: Type.MemberType
   fullName: System.Type.MemberType
-- uid: System.Type.DeclaringType
-  commentId: P:System.Type.DeclaringType
-  parent: System.Type
-  isExternal: true
-  name: DeclaringType
-  nameWithType: Type.DeclaringType
-  fullName: System.Type.DeclaringType
 - uid: System.Type.ReflectedType
   commentId: P:System.Type.ReflectedType
   parent: System.Type
@@ -6940,13 +7089,6 @@ references:
   name: Attributes
   nameWithType: Type.Attributes
   fullName: System.Type.Attributes
-- uid: System.Type.GenericParameterAttributes
-  commentId: P:System.Type.GenericParameterAttributes
-  parent: System.Type
-  isExternal: true
-  name: GenericParameterAttributes
-  nameWithType: Type.GenericParameterAttributes
-  fullName: System.Type.GenericParameterAttributes
 - uid: System.Type.IsVisible
   commentId: P:System.Type.IsVisible
   parent: System.Type
@@ -8113,6 +8255,12 @@ references:
   name: Int32
   nameWithType: Int32
   fullName: System.Int32
+- uid: CilTools.Reflection.GenericParamType.Create*
+  commentId: Overload:CilTools.Reflection.GenericParamType.Create
+  isExternal: true
+  name: Create
+  nameWithType: GenericParamType.Create
+  fullName: CilTools.Reflection.GenericParamType.Create
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -8120,6 +8268,46 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
+- uid: CilTools.Reflection.GenericParamType
+  commentId: T:CilTools.Reflection.GenericParamType
+  parent: CilTools.Reflection
+  isExternal: true
+  name: GenericParamType
+  nameWithType: GenericParamType
+  fullName: CilTools.Reflection.GenericParamType
+- uid: System.Reflection.GenericParameterAttributes
+  commentId: T:System.Reflection.GenericParameterAttributes
+  parent: System.Reflection
+  isExternal: true
+  name: GenericParameterAttributes
+  nameWithType: GenericParameterAttributes
+  fullName: System.Reflection.GenericParameterAttributes
+- uid: System.Type[]
+  isExternal: true
+  name: Type[]
+  nameWithType: Type[]
+  fullName: System.Type[]
+  nameWithType.vb: Type()
+  fullName.vb: System.Type()
+  name.vb: Type()
+  spec.csharp:
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
 - uid: System.Type.GetAttributeFlagsImpl
   commentId: M:System.Type.GetAttributeFlagsImpl
   parent: System.Type
@@ -8311,32 +8499,6 @@ references:
   name: CallingConventions
   nameWithType: CallingConventions
   fullName: System.Reflection.CallingConventions
-- uid: System.Type[]
-  isExternal: true
-  name: Type[]
-  nameWithType: Type[]
-  fullName: System.Type[]
-  nameWithType.vb: Type()
-  fullName.vb: System.Type()
-  name.vb: Type()
-  spec.csharp:
-  - uid: System.Type
-    name: Type
-    nameWithType: Type
-    fullName: System.Type
-    isExternal: true
-  - name: '[]'
-    nameWithType: '[]'
-    fullName: '[]'
-  spec.vb:
-  - uid: System.Type
-    name: Type
-    nameWithType: Type
-    fullName: System.Type
-    isExternal: true
-  - name: ()
-    nameWithType: ()
-    fullName: ()
 - uid: System.Reflection.ParameterModifier[]
   isExternal: true
   name: ParameterModifier[]
@@ -10345,6 +10507,43 @@ references:
   name: MakePointerType
   nameWithType: GenericParamType.MakePointerType
   fullName: CilTools.Reflection.GenericParamType.MakePointerType
+- uid: System.Type.GetGenericParameterConstraints
+  commentId: M:System.Type.GetGenericParameterConstraints
+  parent: System.Type
+  isExternal: true
+  name: GetGenericParameterConstraints()
+  nameWithType: Type.GetGenericParameterConstraints()
+  fullName: System.Type.GetGenericParameterConstraints()
+  spec.csharp:
+  - uid: System.Type.GetGenericParameterConstraints
+    name: GetGenericParameterConstraints
+    nameWithType: Type.GetGenericParameterConstraints
+    fullName: System.Type.GetGenericParameterConstraints
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Type.GetGenericParameterConstraints
+    name: GetGenericParameterConstraints
+    nameWithType: Type.GetGenericParameterConstraints
+    fullName: System.Type.GetGenericParameterConstraints
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Reflection.GenericParamType.GetGenericParameterConstraints*
+  commentId: Overload:CilTools.Reflection.GenericParamType.GetGenericParameterConstraints
+  isExternal: true
+  name: GetGenericParameterConstraints
+  nameWithType: GenericParamType.GetGenericParameterConstraints
+  fullName: CilTools.Reflection.GenericParamType.GetGenericParameterConstraints
 - uid: System.Type.Assembly
   commentId: P:System.Type.Assembly
   parent: System.Type
@@ -10535,3 +10734,29 @@ references:
   name: DeclaringMethod
   nameWithType: GenericParamType.DeclaringMethod
   fullName: CilTools.Reflection.GenericParamType.DeclaringMethod
+- uid: System.Type.DeclaringType
+  commentId: P:System.Type.DeclaringType
+  parent: System.Type
+  isExternal: true
+  name: DeclaringType
+  nameWithType: Type.DeclaringType
+  fullName: System.Type.DeclaringType
+- uid: CilTools.Reflection.GenericParamType.DeclaringType*
+  commentId: Overload:CilTools.Reflection.GenericParamType.DeclaringType
+  isExternal: true
+  name: DeclaringType
+  nameWithType: GenericParamType.DeclaringType
+  fullName: CilTools.Reflection.GenericParamType.DeclaringType
+- uid: System.Type.GenericParameterAttributes
+  commentId: P:System.Type.GenericParameterAttributes
+  parent: System.Type
+  isExternal: true
+  name: GenericParameterAttributes
+  nameWithType: Type.GenericParameterAttributes
+  fullName: System.Type.GenericParameterAttributes
+- uid: CilTools.Reflection.GenericParamType.GenericParameterAttributes*
+  commentId: Overload:CilTools.Reflection.GenericParamType.GenericParameterAttributes
+  isExternal: true
+  name: GenericParameterAttributes
+  nameWithType: GenericParamType.GenericParameterAttributes
+  fullName: CilTools.Reflection.GenericParamType.GenericParameterAttributes

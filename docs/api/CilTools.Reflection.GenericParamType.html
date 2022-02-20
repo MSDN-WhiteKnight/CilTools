@@ -273,9 +273,6 @@
       <span class="xref">System.Type.FindMembers(System.Reflection.MemberTypes, System.Reflection.BindingFlags, System.Reflection.MemberFilter, System.Object)</span>
     </div>
     <div>
-      <span class="xref">System.Type.GetGenericParameterConstraints()</span>
-    </div>
-    <div>
       <span class="xref">System.Type.IsValueTypeImpl()</span>
     </div>
     <div>
@@ -357,9 +354,6 @@
       <span class="xref">System.Type.MemberType</span>
     </div>
     <div>
-      <span class="xref">System.Type.DeclaringType</span>
-    </div>
-    <div>
       <span class="xref">System.Type.ReflectedType</span>
     </div>
     <div>
@@ -379,9 +373,6 @@
     </div>
     <div>
       <span class="xref">System.Type.Attributes</span>
-    </div>
-    <div>
-      <span class="xref">System.Type.GenericParameterAttributes</span>
     </div>
     <div>
       <span class="xref">System.Type.IsVisible</span>
@@ -730,6 +721,33 @@
   <div><span class="xref">System.Type.DeclaringMethod</span></div>
   
   
+  <a id="CilTools_Reflection_GenericParamType_DeclaringType_" data-uid="CilTools.Reflection.GenericParamType.DeclaringType*"></a>
+  <h4 id="CilTools_Reflection_GenericParamType_DeclaringType" data-uid="CilTools.Reflection.GenericParamType.DeclaringType">DeclaringType</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type DeclaringType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Type.DeclaringType</span></div>
+  
+  
   <a id="CilTools_Reflection_GenericParamType_FullName_" data-uid="CilTools.Reflection.GenericParamType.FullName*"></a>
   <h4 id="CilTools_Reflection_GenericParamType_FullName" data-uid="CilTools.Reflection.GenericParamType.FullName">FullName</h4>
   <div class="markdown level1 summary"></div>
@@ -755,6 +773,33 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Type.FullName</span></div>
+  
+  
+  <a id="CilTools_Reflection_GenericParamType_GenericParameterAttributes_" data-uid="CilTools.Reflection.GenericParamType.GenericParameterAttributes*"></a>
+  <h4 id="CilTools_Reflection_GenericParamType_GenericParameterAttributes" data-uid="CilTools.Reflection.GenericParamType.GenericParameterAttributes">GenericParameterAttributes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override GenericParameterAttributes GenericParameterAttributes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.GenericParameterAttributes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Type.GenericParameterAttributes</span></div>
   
   
   <a id="CilTools_Reflection_GenericParamType_GenericParameterPosition_" data-uid="CilTools.Reflection.GenericParamType.GenericParameterPosition*"></a>
@@ -973,6 +1018,130 @@
   <div><span class="xref">System.Type.UnderlyingSystemType</span></div>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="CilTools_Reflection_GenericParamType_Create_" data-uid="CilTools.Reflection.GenericParamType.Create*"></a>
+  <h4 id="CilTools_Reflection_GenericParamType_Create_System_Reflection_MemberInfo_System_Int32_System_String_" data-uid="CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo,System.Int32,System.String)">Create(MemberInfo, Int32, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the generic parameter</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static GenericParamType Create(MemberInfo declaringMember, int index, string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td><span class="parametername">declaringMember</span></td>
+        <td><p>Declaring generic type or method of this parameter</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>Generic parameter index</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Generic parameter name, or null to fill name automatically</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.GenericParamType.html">GenericParamType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_GenericParamType_Create_" data-uid="CilTools.Reflection.GenericParamType.Create*"></a>
+  <h4 id="CilTools_Reflection_GenericParamType_Create_System_Reflection_MemberInfo_System_Int32_System_String_System_Reflection_GenericParameterAttributes_System_Type___" data-uid="CilTools.Reflection.GenericParamType.Create(System.Reflection.MemberInfo,System.Int32,System.String,System.Reflection.GenericParameterAttributes,System.Type[])">Create(MemberInfo, Int32, String, GenericParameterAttributes, Type[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new instance of the generic parameter with specified attributes and constraints</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static GenericParamType Create(MemberInfo declaringMember, int index, string name, GenericParameterAttributes attrs, Type[] constrains)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MemberInfo</span></td>
+        <td><span class="parametername">declaringMember</span></td>
+        <td><p>Declaring generic type or method of this parameter</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td><p>Generic parameter index</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td><p>Generic parameter name, or null to fill name automatically</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.GenericParameterAttributes</span></td>
+        <td><span class="parametername">attrs</span></td>
+        <td><p>Flags defining variance and constraint attributes of this parameter</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">constrains</span></td>
+        <td><p>Array of types representing base type constraints of this parameter, or empty array if there are none</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.GenericParamType.html">GenericParamType</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   
   
   <a id="CilTools_Reflection_GenericParamType_GetArrayRank_" data-uid="CilTools.Reflection.GenericParamType.GetArrayRank*"></a>
@@ -1441,6 +1610,33 @@
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Type.GetFields(System.Reflection.BindingFlags)</span></div>
+  
+  
+  <a id="CilTools_Reflection_GenericParamType_GetGenericParameterConstraints_" data-uid="CilTools.Reflection.GenericParamType.GetGenericParameterConstraints*"></a>
+  <h4 id="CilTools_Reflection_GenericParamType_GetGenericParameterConstraints" data-uid="CilTools.Reflection.GenericParamType.GetGenericParameterConstraints">GetGenericParameterConstraints()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type[] GetGenericParameterConstraints()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Type.GetGenericParameterConstraints()</span></div>
   
   
   <a id="CilTools_Reflection_GenericParamType_GetInterface_" data-uid="CilTools.Reflection.GenericParamType.GetInterface*"></a>

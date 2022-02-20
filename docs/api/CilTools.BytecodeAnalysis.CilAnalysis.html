@@ -117,7 +117,7 @@
   
   <a id="CilTools_BytecodeAnalysis_CilAnalysis_EscapeString_" data-uid="CilTools.BytecodeAnalysis.CilAnalysis.EscapeString*"></a>
   <h4 id="CilTools_BytecodeAnalysis_CilAnalysis_EscapeString_System_String_" data-uid="CilTools.BytecodeAnalysis.CilAnalysis.EscapeString(System.String)">EscapeString(String)</h4>
-  <div class="markdown level1 summary"><p>Escapes special characters in the specified string, using rules similar to what are applied to C# string literals</p>
+  <div class="markdown level1 summary"><p>Escapes special characters in the specified string, preparing it to be used as CIL assembler string literal</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -158,6 +158,10 @@
       </tr>
     </tbody>
   </table>
+  <h5 id="CilTools_BytecodeAnalysis_CilAnalysis_EscapeString_System_String__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>See ECMA-335 II.5.2 for string literal escaping rules.
+In CIL Tools 2.3 and earlier versions, this method used string escaping rules for C# string literals.</p>
+</div>
   
   
   <a id="CilTools_BytecodeAnalysis_CilAnalysis_GetReferencedMembers_" data-uid="CilTools.BytecodeAnalysis.CilAnalysis.GetReferencedMembers*"></a>

@@ -12,6 +12,7 @@ items:
   - CilTools.BytecodeAnalysis.TypeSpec.DeclaringType
   - CilTools.BytecodeAnalysis.TypeSpec.ElementType
   - CilTools.BytecodeAnalysis.TypeSpec.FullName
+  - CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes
   - CilTools.BytecodeAnalysis.TypeSpec.GenericParameterPosition
   - CilTools.BytecodeAnalysis.TypeSpec.GetArrayRank
   - CilTools.BytecodeAnalysis.TypeSpec.GetAttributeFlagsImpl
@@ -25,6 +26,7 @@ items:
   - CilTools.BytecodeAnalysis.TypeSpec.GetField(System.String,System.Reflection.BindingFlags)
   - CilTools.BytecodeAnalysis.TypeSpec.GetFields(System.Reflection.BindingFlags)
   - CilTools.BytecodeAnalysis.TypeSpec.GetGenericArguments
+  - CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints
   - CilTools.BytecodeAnalysis.TypeSpec.GetGenericTypeDefinition
   - CilTools.BytecodeAnalysis.TypeSpec.GetInterface(System.String,System.Boolean)
   - CilTools.BytecodeAnalysis.TypeSpec.GetInterfaces
@@ -65,6 +67,7 @@ items:
   - CilTools.BytecodeAnalysis.TypeSpec.Name
   - CilTools.BytecodeAnalysis.TypeSpec.Namespace
   - CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  - CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)
   - CilTools.BytecodeAnalysis.TypeSpec.TargetSignature
   - CilTools.BytecodeAnalysis.TypeSpec.ToString
   - CilTools.BytecodeAnalysis.TypeSpec.Type
@@ -161,7 +164,6 @@ items:
   - System.Type.GetMembers
   - System.Type.GetDefaultMembers
   - System.Type.FindMembers(System.Reflection.MemberTypes,System.Reflection.BindingFlags,System.Reflection.MemberFilter,System.Object)
-  - System.Type.GetGenericParameterConstraints
   - System.Type.IsContextfulImpl
   - System.Type.IsMarshalByRefImpl
   - System.Type.GetEnumNames
@@ -190,7 +192,6 @@ items:
   - System.Type.TypeInitializer
   - System.Type.IsNested
   - System.Type.Attributes
-  - System.Type.GenericParameterAttributes
   - System.Type.IsVisible
   - System.Type.IsNotPublic
   - System.Type.IsPublic
@@ -292,6 +293,54 @@ items:
   - Shared
   fullName.vb: CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte(), CilTools.Reflection.ITokenResolver, System.Reflection.MemberInfo)
   name.vb: ReadFromArray(Byte(), ITokenResolver, MemberInfo)
+- uid: CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)
+  id: ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: ReadFromArray(Byte[], SignatureContext)
+  nameWithType: TypeSpec.ReadFromArray(Byte[], SignatureContext)
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte[], CilTools.Reflection.SignatureContext)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReads <code>TypeSpec</code> object from the specified byte array using the specified signature context\n"
+  remarks: "\nA signature context encapsulates a token resolver and a generic context. Generic context is only used \nwhen reading generic parameters.\n"
+  syntax:
+    content: public static TypeSpec ReadFromArray(byte[] data, SignatureContext ctx)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: Byte array to read data from
+    - id: ctx
+      type: CilTools.Reflection.SignatureContext
+      description: The signature context
+    return:
+      type: CilTools.BytecodeAnalysis.TypeSpec
+    content.vb: Public Shared Function ReadFromArray(data As Byte(), ctx As SignatureContext) As TypeSpec
+  overload: CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source array or signature context is null
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Source array is empty
+  nameWithType.vb: TypeSpec.ReadFromArray(Byte(), SignatureContext)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte(), CilTools.Reflection.SignatureContext)
+  name.vb: ReadFromArray(Byte(), SignatureContext)
 - uid: CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)
   commentId: M:CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)
   id: GetModifier(System.Int32)
@@ -1598,6 +1647,36 @@ items:
   modifiers.vb:
   - Protected
   - Overrides
+- uid: CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints
+  id: GetGenericParameterConstraints
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: GetGenericParameterConstraints()
+  nameWithType: TypeSpec.GetGenericParameterConstraints()
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  syntax:
+    content: public override Type[] GetGenericParameterConstraints()
+    return:
+      type: System.Type[]
+    content.vb: Public Overrides Function GetGenericParameterConstraints As Type()
+  overridden: System.Type.GetGenericParameterConstraints
+  overload: CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
 - uid: CilTools.BytecodeAnalysis.TypeSpec.ElementType
   commentId: P:CilTools.BytecodeAnalysis.TypeSpec.ElementType
   id: ElementType
@@ -2380,6 +2459,39 @@ items:
   - get
   modifiers.vb:
   - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes
+  id: GenericParameterAttributes
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: GenericParameterAttributes
+  nameWithType: TypeSpec.GenericParameterAttributes
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  syntax:
+    content: public override GenericParameterAttributes GenericParameterAttributes { get; }
+    parameters: []
+    return:
+      type: System.Reflection.GenericParameterAttributes
+    content.vb: Public Overrides ReadOnly Property GenericParameterAttributes As GenericParameterAttributes
+  overridden: System.Type.GenericParameterAttributes
+  overload: CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
   - ReadOnly
 references:
 - uid: CilTools.BytecodeAnalysis
@@ -6279,37 +6391,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Type.GetGenericParameterConstraints
-  commentId: M:System.Type.GetGenericParameterConstraints
-  parent: System.Type
-  isExternal: true
-  name: GetGenericParameterConstraints()
-  nameWithType: Type.GetGenericParameterConstraints()
-  fullName: System.Type.GetGenericParameterConstraints()
-  spec.csharp:
-  - uid: System.Type.GetGenericParameterConstraints
-    name: GetGenericParameterConstraints
-    nameWithType: Type.GetGenericParameterConstraints
-    fullName: System.Type.GetGenericParameterConstraints
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Type.GetGenericParameterConstraints
-    name: GetGenericParameterConstraints
-    nameWithType: Type.GetGenericParameterConstraints
-    fullName: System.Type.GetGenericParameterConstraints
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: System.Type.IsContextfulImpl
   commentId: M:System.Type.IsContextfulImpl
   parent: System.Type
@@ -7341,13 +7422,6 @@ references:
   name: Attributes
   nameWithType: Type.Attributes
   fullName: System.Type.Attributes
-- uid: System.Type.GenericParameterAttributes
-  commentId: P:System.Type.GenericParameterAttributes
-  parent: System.Type
-  isExternal: true
-  name: GenericParameterAttributes
-  nameWithType: Type.GenericParameterAttributes
-  fullName: System.Type.GenericParameterAttributes
 - uid: System.Type.IsVisible
   commentId: P:System.Type.IsVisible
   parent: System.Type
@@ -8532,6 +8606,19 @@ references:
   name: TypeSpec
   nameWithType: TypeSpec
   fullName: CilTools.BytecodeAnalysis.TypeSpec
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+- uid: CilTools.Reflection.SignatureContext
+  commentId: T:CilTools.Reflection.SignatureContext
+  parent: CilTools.Reflection
+  isExternal: true
+  name: SignatureContext
+  nameWithType: SignatureContext
+  fullName: CilTools.Reflection.SignatureContext
 - uid: CilTools.BytecodeAnalysis.TypeSpec.GetModifier*
   commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.GetModifier
   isExternal: true
@@ -11007,6 +11094,43 @@ references:
   name: IsValueTypeImpl
   nameWithType: TypeSpec.IsValueTypeImpl
   fullName: CilTools.BytecodeAnalysis.TypeSpec.IsValueTypeImpl
+- uid: System.Type.GetGenericParameterConstraints
+  commentId: M:System.Type.GetGenericParameterConstraints
+  parent: System.Type
+  isExternal: true
+  name: GetGenericParameterConstraints()
+  nameWithType: Type.GetGenericParameterConstraints()
+  fullName: System.Type.GetGenericParameterConstraints()
+  spec.csharp:
+  - uid: System.Type.GetGenericParameterConstraints
+    name: GetGenericParameterConstraints
+    nameWithType: Type.GetGenericParameterConstraints
+    fullName: System.Type.GetGenericParameterConstraints
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Type.GetGenericParameterConstraints
+    name: GetGenericParameterConstraints
+    nameWithType: Type.GetGenericParameterConstraints
+    fullName: System.Type.GetGenericParameterConstraints
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints
+  isExternal: true
+  name: GetGenericParameterConstraints
+  nameWithType: TypeSpec.GetGenericParameterConstraints
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.GetGenericParameterConstraints
 - uid: CilTools.BytecodeAnalysis.TypeSpec.ElementType*
   commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.ElementType
   isExternal: true
@@ -11415,3 +11539,23 @@ references:
   name: IsFunctionPointer
   nameWithType: ITypeInfo.IsFunctionPointer
   fullName: CilTools.Reflection.ITypeInfo.IsFunctionPointer
+- uid: System.Type.GenericParameterAttributes
+  commentId: P:System.Type.GenericParameterAttributes
+  parent: System.Type
+  isExternal: true
+  name: GenericParameterAttributes
+  nameWithType: Type.GenericParameterAttributes
+  fullName: System.Type.GenericParameterAttributes
+- uid: CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes
+  isExternal: true
+  name: GenericParameterAttributes
+  nameWithType: TypeSpec.GenericParameterAttributes
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes
+- uid: System.Reflection.GenericParameterAttributes
+  commentId: T:System.Reflection.GenericParameterAttributes
+  parent: System.Reflection
+  isExternal: true
+  name: GenericParameterAttributes
+  nameWithType: GenericParameterAttributes
+  fullName: System.Reflection.GenericParameterAttributes

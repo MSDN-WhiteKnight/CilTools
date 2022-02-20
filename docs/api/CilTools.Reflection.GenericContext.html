@@ -1,0 +1,455 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class GenericContext
+   | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class GenericContext
+   | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.Reflection.GenericContext">
+  
+  
+  <h1 id="CilTools_Reflection_GenericContext" data-uid="CilTools.Reflection.GenericContext" class="text-break">Class GenericContext
+  </h1>
+  <div class="markdown level0 summary"><p>Represent a set of information that defines a meaning of generic signature in some context</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">GenericContext</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Reflection.html">CilTools.Reflection</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
+  <h5 id="CilTools_Reflection_GenericContext_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class GenericContext</code></pre>
+  </div>
+  <h5 id="CilTools_Reflection_GenericContext_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>A generic context is used with when reading signatures that could potentially contain generic parameters.
+A generic parameter in signature only encodes its number; getting any additional information, such as a
+parameter name, requires access to specific generic parameters or arguments being referenced in current
+context.</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_Reflection_GenericContext_DeclaringMethod_" data-uid="CilTools.Reflection.GenericContext.DeclaringMethod*"></a>
+  <h4 id="CilTools_Reflection_GenericContext_DeclaringMethod" data-uid="CilTools.Reflection.GenericContext.DeclaringMethod">DeclaringMethod</h4>
+  <div class="markdown level1 summary"><p>Gets a declaring method in this generic context</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MethodBase DeclaringMethod { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_GenericContext_DeclaringType_" data-uid="CilTools.Reflection.GenericContext.DeclaringType*"></a>
+  <h4 id="CilTools_Reflection_GenericContext_DeclaringType" data-uid="CilTools.Reflection.GenericContext.DeclaringType">DeclaringType</h4>
+  <div class="markdown level1 summary"><p>Gets a declaring type in this generic context</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type DeclaringType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_GenericContext_MethodArgumentsCount_" data-uid="CilTools.Reflection.GenericContext.MethodArgumentsCount*"></a>
+  <h4 id="CilTools_Reflection_GenericContext_MethodArgumentsCount" data-uid="CilTools.Reflection.GenericContext.MethodArgumentsCount">MethodArgumentsCount</h4>
+  <div class="markdown level1 summary"><p>Gets the number of generic method arguments</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MethodArgumentsCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_GenericContext_TypeArgumentsCount_" data-uid="CilTools.Reflection.GenericContext.TypeArgumentsCount*"></a>
+  <h4 id="CilTools_Reflection_GenericContext_TypeArgumentsCount" data-uid="CilTools.Reflection.GenericContext.TypeArgumentsCount">TypeArgumentsCount</h4>
+  <div class="markdown level1 summary"><p>Gets the number of generic type arguments</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int TypeArgumentsCount { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="CilTools_Reflection_GenericContext_Create_" data-uid="CilTools.Reflection.GenericContext.Create*"></a>
+  <h4 id="CilTools_Reflection_GenericContext_Create_System_Type_System_Reflection_MethodBase_" data-uid="CilTools.Reflection.GenericContext.Create(System.Type,System.Reflection.MethodBase)">Create(Type, MethodBase)</h4>
+  <div class="markdown level1 summary"><p>Creates a new generic context using the specified declaring members</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static GenericContext Create(Type decltype, MethodBase declmethod)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">decltype</span></td>
+        <td><p>Declaring type (could be null)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td><span class="parametername">declmethod</span></td>
+        <td><p>Declaring method (could be null)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.GenericContext.html">GenericContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Reflection_GenericContext_Create_System_Type_System_Reflection_MethodBase__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Pass null values if the generic context is unknown or signature does not use generic parameters</p>
+</div>
+  
+  
+  <a id="CilTools_Reflection_GenericContext_FromArgs_" data-uid="CilTools.Reflection.GenericContext.FromArgs*"></a>
+  <h4 id="CilTools_Reflection_GenericContext_FromArgs_System_Type___System_Type___" data-uid="CilTools.Reflection.GenericContext.FromArgs(System.Type[],System.Type[])">FromArgs(Type[], Type[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new generic context using the specified generic arguments</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static GenericContext FromArgs(Type[] typeargs, Type[] methodargs)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">typeargs</span></td>
+        <td><p>An array of generic type arguments (can be null)</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Type</span>[]</td>
+        <td><span class="parametername">methodargs</span></td>
+        <td><p>An array of generic method arguments (can be null)</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.GenericContext.html">GenericContext</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Reflection_GenericContext_FromArgs_System_Type___System_Type____remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Pass null values if the generic context is unknown or signature does not use generic parameters</p>
+</div>
+  
+  
+  <a id="CilTools_Reflection_GenericContext_GetMethodArgument_" data-uid="CilTools.Reflection.GenericContext.GetMethodArgument*"></a>
+  <h4 id="CilTools_Reflection_GenericContext_GetMethodArgument_System_Int32_" data-uid="CilTools.Reflection.GenericContext.GetMethodArgument(System.Int32)">GetMethodArgument(Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets a generic method argument at the specified index</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type GetMethodArgument(int i)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">i</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_GenericContext_GetTypeArgument_" data-uid="CilTools.Reflection.GenericContext.GetTypeArgument*"></a>
+  <h4 id="CilTools_Reflection_GenericContext_GetTypeArgument_System_Int32_" data-uid="CilTools.Reflection.GenericContext.GetTypeArgument(System.Int32)">GetTypeArgument(Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets a generic type argument at the specified index</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type GetTypeArgument(int i)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">i</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

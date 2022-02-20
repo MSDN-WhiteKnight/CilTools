@@ -7,6 +7,7 @@ items:
   - CilTools.Syntax.BlockSyntax
   - CilTools.Syntax.CommentSyntax
   - CilTools.Syntax.DirectiveSyntax
+  - CilTools.Syntax.DisassemblerParams
   - CilTools.Syntax.IdentifierSyntax
   - CilTools.Syntax.InstructionSyntax
   - CilTools.Syntax.KeywordKind
@@ -14,6 +15,7 @@ items:
   - CilTools.Syntax.LiteralSyntax
   - CilTools.Syntax.MemberRefSyntax
   - CilTools.Syntax.MethodDefSyntax
+  - CilTools.Syntax.SyntaxFactory
   - CilTools.Syntax.SyntaxNode
   langs:
   - csharp
@@ -45,6 +47,13 @@ references:
   name: DirectiveSyntax
   nameWithType: DirectiveSyntax
   fullName: CilTools.Syntax.DirectiveSyntax
+- uid: CilTools.Syntax.DisassemblerParams
+  commentId: T:CilTools.Syntax.DisassemblerParams
+  parent: CilTools.Syntax
+  isExternal: true
+  name: DisassemblerParams
+  nameWithType: DisassemblerParams
+  fullName: CilTools.Syntax.DisassemblerParams
 - uid: CilTools.Syntax.IdentifierSyntax
   commentId: T:CilTools.Syntax.IdentifierSyntax
   isExternal: true
@@ -89,6 +98,12 @@ references:
   name: MethodDefSyntax
   nameWithType: MethodDefSyntax
   fullName: CilTools.Syntax.MethodDefSyntax
+- uid: CilTools.Syntax.SyntaxFactory
+  commentId: T:CilTools.Syntax.SyntaxFactory
+  isExternal: true
+  name: SyntaxFactory
+  nameWithType: SyntaxFactory
+  fullName: CilTools.Syntax.SyntaxFactory
 - uid: CilTools.Syntax.SyntaxNode
   commentId: T:CilTools.Syntax.SyntaxNode
   parent: CilTools.Syntax

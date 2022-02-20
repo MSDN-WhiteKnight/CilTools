@@ -20,7 +20,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
-  summary: "\nRepresents the comment in the CIL assembler code. The comment does not impact code semantics in any way, but may provide extra information.\n"
+  summary: "\nRepresents the comment in the CIL assembler code. \nThe comment does not impact code semantics in any way, but may provide extra information.\n"
   syntax:
     content: 'public class CommentSyntax : SyntaxNode'
     content.vb: >-
@@ -33,6 +33,7 @@ items:
   - CilTools.Syntax.SyntaxNode.ToString
   - CilTools.Syntax.SyntaxNode.GetChildNodes
   - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
+  - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
   - CilTools.Syntax.SyntaxNode.LeadingWhitespace
   - CilTools.Syntax.SyntaxNode.TrailingWhitespace
   - CilTools.Syntax.SyntaxNode.Parent
@@ -232,6 +233,79 @@ references:
     name: Type
     nameWithType: Type
     fullName: System.Type
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
+  commentId: M:CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: GetTypeDefSyntax(Type, Boolean, DisassemblerParams)
+  nameWithType: SyntaxNode.GetTypeDefSyntax(Type, Boolean, DisassemblerParams)
+  fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type, System.Boolean, CilTools.Syntax.DisassemblerParams)
+  spec.csharp:
+  - uid: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
+    name: GetTypeDefSyntax
+    nameWithType: SyntaxNode.GetTypeDefSyntax
+    fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Syntax.DisassemblerParams
+    name: DisassemblerParams
+    nameWithType: DisassemblerParams
+    fullName: CilTools.Syntax.DisassemblerParams
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
+    name: GetTypeDefSyntax
+    nameWithType: SyntaxNode.GetTypeDefSyntax
+    fullName: CilTools.Syntax.SyntaxNode.GetTypeDefSyntax
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Type
+    name: Type
+    nameWithType: Type
+    fullName: System.Type
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Boolean
+    name: Boolean
+    nameWithType: Boolean
+    fullName: System.Boolean
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Syntax.DisassemblerParams
+    name: DisassemblerParams
+    nameWithType: DisassemblerParams
+    fullName: CilTools.Syntax.DisassemblerParams
     isExternal: true
   - name: )
     nameWithType: )
