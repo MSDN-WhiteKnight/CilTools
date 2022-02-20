@@ -82,6 +82,12 @@ namespace CilTools.BytecodeAnalysis.Tests
             Assert.IsFalse(str.Contains(".entrypoint"));
         }
 
+        static int PrintHelloWorld_GetCodeSize()
+        {
+            if (Utils.GetConfig() == "Release") return 11;
+            else return 13;
+        }
+
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
         public void Test_CodeSize(MethodBase mi)
@@ -94,7 +100,7 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             AssertThat.IsMatch(str, new Text[] {
                 ".method", Text.Any,"public", Text.Any,"PrintHelloWorld", Text.Any,"{", Text.Any,
-                "// Code size: 13", Text.Any,
+                "// Code size: " + PrintHelloWorld_GetCodeSize().ToString(), Text.Any,
                 "call", Text.Any, "System.Console::WriteLine(string)", Text.Any, 
                 "}", Text.Any
             });
