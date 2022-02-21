@@ -18,10 +18,10 @@ jobs:
       with:
         dotnet-version: '3.1.100'
     - name: Build with dotnet
-      run: scripts\netstd\build.ps1
+      run: .\scripts\netstd\build.ps1
       shell: pwsh
     - name: Test
-      run: scripts\netstd\test.ps1
+      run: .\scripts\netstd\test.ps1
       shell: pwsh
     - name: Archive build results
       uses: actions/upload-artifact@v1
