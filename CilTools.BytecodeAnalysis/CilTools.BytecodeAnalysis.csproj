@@ -3,10 +3,11 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net35</TargetFrameworks>
     <Version>2.4.0</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>MSDN-WhiteKnight</Authors>
     <Company>CIL Tools</Company>
     <Product>CIL Tools</Product>
-    <Copyright>Copyright (c) 2021, MSDN.WhiteKnight</Copyright>
+    <Copyright>Copyright (c) 2022, MSDN.WhiteKnight</Copyright>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/MSDN-WhiteKnight/CilTools</PackageProjectUrl>
     <PackageIcon>IL.png</PackageIcon>
@@ -16,23 +17,7 @@
     <FileVersion>2.4.0.0</FileVersion>
     <Description>CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.</Description>
   </PropertyGroup>
-  
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\CilTools.BytecodeAnalysis.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\CilTools.BytecodeAnalysis.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net35|AnyCPU'">
-    <DocumentationFile>bin\Debug\net35\CilTools.BytecodeAnalysis.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net35|AnyCPU'">
-    <DocumentationFile>bin\Release\net35\CilTools.BytecodeAnalysis.xml</DocumentationFile>
-  </PropertyGroup>
-  
+      
   <ItemGroup>
     <None Include="..\docs\images\IL.png">
       <Pack>True</Pack>
