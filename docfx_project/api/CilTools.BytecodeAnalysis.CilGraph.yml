@@ -19,6 +19,7 @@ items:
   - CilTools.BytecodeAnalysis.CilGraph.Root
   - CilTools.BytecodeAnalysis.CilGraph.ToString
   - CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree
+  - CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree(CilTools.Syntax.DisassemblerParams)
   - CilTools.BytecodeAnalysis.CilGraph.ToText
   langs:
   - csharp
@@ -273,13 +274,45 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
-  summary: "\nGets the syntax tree for the method represented by this graph\n"
+  summary: "\nGets the syntax tree for the method represented by this graph using default disassembler parameters\n"
   syntax:
     content: public MethodDefSyntax ToSyntaxTree()
     return:
       type: CilTools.Syntax.MethodDefSyntax
       description: The root method definition node of the syntax tree
     content.vb: Public Function ToSyntaxTree As MethodDefSyntax
+  overload: CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree(CilTools.Syntax.DisassemblerParams)
+  commentId: M:CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree(CilTools.Syntax.DisassemblerParams)
+  id: ToSyntaxTree(CilTools.Syntax.DisassemblerParams)
+  parent: CilTools.BytecodeAnalysis.CilGraph
+  langs:
+  - csharp
+  - vb
+  name: ToSyntaxTree(DisassemblerParams)
+  nameWithType: CilGraph.ToSyntaxTree(DisassemblerParams)
+  fullName: CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree(CilTools.Syntax.DisassemblerParams)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the syntax tree for the method represented by this graph using specified disassembler parameters\n"
+  syntax:
+    content: public MethodDefSyntax ToSyntaxTree(DisassemblerParams pars)
+    parameters:
+    - id: pars
+      type: CilTools.Syntax.DisassemblerParams
+    return:
+      type: CilTools.Syntax.MethodDefSyntax
+      description: The root method definition node of the syntax tree
+    content.vb: Public Function ToSyntaxTree(pars As DisassemblerParams) As MethodDefSyntax
   overload: CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree*
   modifiers.csharp:
   - public
@@ -904,6 +937,13 @@ references:
   name: CilTools.Syntax
   nameWithType: CilTools.Syntax
   fullName: CilTools.Syntax
+- uid: CilTools.Syntax.DisassemblerParams
+  commentId: T:CilTools.Syntax.DisassemblerParams
+  parent: CilTools.Syntax
+  isExternal: true
+  name: DisassemblerParams
+  nameWithType: DisassemblerParams
+  fullName: CilTools.Syntax.DisassemblerParams
 - uid: CilTools.BytecodeAnalysis.CilGraph.ToText*
   commentId: Overload:CilTools.BytecodeAnalysis.CilGraph.ToText
   isExternal: true

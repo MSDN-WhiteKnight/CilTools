@@ -1,0 +1,543 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.SignatureContext
+  commentId: T:CilTools.Reflection.SignatureContext
+  id: SignatureContext
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.SignatureContext.Create(CilTools.Reflection.ITokenResolver,CilTools.Reflection.GenericContext,System.Reflection.MethodBase)
+  - CilTools.Reflection.SignatureContext.GenericContext
+  - CilTools.Reflection.SignatureContext.GenericDefinition
+  - CilTools.Reflection.SignatureContext.TokenResolver
+  langs:
+  - csharp
+  - vb
+  name: SignatureContext
+  nameWithType: SignatureContext
+  fullName: CilTools.Reflection.SignatureContext
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nEncapsulates data that identifies the meaning of the signature in some context\n"
+  remarks: "\nSome ECMA-335 signature elements, such as class references or generic parameters, require additional \ndata to be mapped into the concrete types. Signature context holds such data, for example, a metadata token \nresolver or a generic context.\n"
+  syntax:
+    content: public class SignatureContext
+    content.vb: Public Class SignatureContext
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Reflection.SignatureContext.Create(CilTools.Reflection.ITokenResolver,CilTools.Reflection.GenericContext,System.Reflection.MethodBase)
+  commentId: M:CilTools.Reflection.SignatureContext.Create(CilTools.Reflection.ITokenResolver,CilTools.Reflection.GenericContext,System.Reflection.MethodBase)
+  id: Create(CilTools.Reflection.ITokenResolver,CilTools.Reflection.GenericContext,System.Reflection.MethodBase)
+  parent: CilTools.Reflection.SignatureContext
+  langs:
+  - csharp
+  - vb
+  name: Create(ITokenResolver, GenericContext, MethodBase)
+  nameWithType: SignatureContext.Create(ITokenResolver, GenericContext, MethodBase)
+  fullName: CilTools.Reflection.SignatureContext.Create(CilTools.Reflection.ITokenResolver, CilTools.Reflection.GenericContext, System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nCreates a new signature context instance\n"
+  remarks: "\nThe <code>genericDefinition</code> parameter only needs to be specified when reading a signature of generic method instantiation \n(from MethodSpec metadata table), NOT for every generic method signature.\n"
+  syntax:
+    content: public static SignatureContext Create(ITokenResolver tokenResolver, GenericContext genericContext, MethodBase genericDefinition)
+    parameters:
+    - id: tokenResolver
+      type: CilTools.Reflection.ITokenResolver
+      description: Metadata tokens resolver
+    - id: genericContext
+      type: CilTools.Reflection.GenericContext
+      description: Generic context
+    - id: genericDefinition
+      type: System.Reflection.MethodBase
+      description: "\nGeneric method definition, if the signature is for a generic method instantiation, or null otherwise\n"
+    return:
+      type: CilTools.Reflection.SignatureContext
+    content.vb: Public Shared Function Create(tokenResolver As ITokenResolver, genericContext As GenericContext, genericDefinition As MethodBase) As SignatureContext
+  overload: CilTools.Reflection.SignatureContext.Create*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Token resolver is null
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Reflection.SignatureContext.TokenResolver
+  commentId: P:CilTools.Reflection.SignatureContext.TokenResolver
+  id: TokenResolver
+  parent: CilTools.Reflection.SignatureContext
+  langs:
+  - csharp
+  - vb
+  name: TokenResolver
+  nameWithType: SignatureContext.TokenResolver
+  fullName: CilTools.Reflection.SignatureContext.TokenResolver
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the token resolver object\n"
+  syntax:
+    content: public ITokenResolver TokenResolver { get; }
+    parameters: []
+    return:
+      type: CilTools.Reflection.ITokenResolver
+    content.vb: Public ReadOnly Property TokenResolver As ITokenResolver
+  overload: CilTools.Reflection.SignatureContext.TokenResolver*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.SignatureContext.GenericContext
+  commentId: P:CilTools.Reflection.SignatureContext.GenericContext
+  id: GenericContext
+  parent: CilTools.Reflection.SignatureContext
+  langs:
+  - csharp
+  - vb
+  name: GenericContext
+  nameWithType: SignatureContext.GenericContext
+  fullName: CilTools.Reflection.SignatureContext.GenericContext
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets a generic context object\n"
+  syntax:
+    content: public GenericContext GenericContext { get; }
+    parameters: []
+    return:
+      type: CilTools.Reflection.GenericContext
+    content.vb: Public ReadOnly Property GenericContext As GenericContext
+  overload: CilTools.Reflection.SignatureContext.GenericContext*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.SignatureContext.GenericDefinition
+  commentId: P:CilTools.Reflection.SignatureContext.GenericDefinition
+  id: GenericDefinition
+  parent: CilTools.Reflection.SignatureContext
+  langs:
+  - csharp
+  - vb
+  name: GenericDefinition
+  nameWithType: SignatureContext.GenericDefinition
+  fullName: CilTools.Reflection.SignatureContext.GenericDefinition
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets a generic method definition, if the signature is for a generic method instantiation\n"
+  syntax:
+    content: public MethodBase GenericDefinition { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Public ReadOnly Property GenericDefinition As MethodBase
+  overload: CilTools.Reflection.SignatureContext.GenericDefinition*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.SignatureContext.Create*
+  commentId: Overload:CilTools.Reflection.SignatureContext.Create
+  isExternal: true
+  name: Create
+  nameWithType: SignatureContext.Create
+  fullName: CilTools.Reflection.SignatureContext.Create
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: CilTools.Reflection.ITokenResolver
+  commentId: T:CilTools.Reflection.ITokenResolver
+  parent: CilTools.Reflection
+  isExternal: true
+  name: ITokenResolver
+  nameWithType: ITokenResolver
+  fullName: CilTools.Reflection.ITokenResolver
+- uid: CilTools.Reflection.GenericContext
+  commentId: T:CilTools.Reflection.GenericContext
+  parent: CilTools.Reflection
+  isExternal: true
+  name: GenericContext
+  nameWithType: GenericContext
+  fullName: CilTools.Reflection.GenericContext
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: CilTools.Reflection.SignatureContext
+  commentId: T:CilTools.Reflection.SignatureContext
+  parent: CilTools.Reflection
+  isExternal: true
+  name: SignatureContext
+  nameWithType: SignatureContext
+  fullName: CilTools.Reflection.SignatureContext
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: CilTools.Reflection.SignatureContext.TokenResolver*
+  commentId: Overload:CilTools.Reflection.SignatureContext.TokenResolver
+  isExternal: true
+  name: TokenResolver
+  nameWithType: SignatureContext.TokenResolver
+  fullName: CilTools.Reflection.SignatureContext.TokenResolver
+- uid: CilTools.Reflection.SignatureContext.GenericContext*
+  commentId: Overload:CilTools.Reflection.SignatureContext.GenericContext
+  isExternal: true
+  name: GenericContext
+  nameWithType: SignatureContext.GenericContext
+  fullName: CilTools.Reflection.SignatureContext.GenericContext
+- uid: CilTools.Reflection.SignatureContext.GenericDefinition*
+  commentId: Overload:CilTools.Reflection.SignatureContext.GenericDefinition
+  isExternal: true
+  name: GenericDefinition
+  nameWithType: SignatureContext.GenericDefinition
+  fullName: CilTools.Reflection.SignatureContext.GenericDefinition

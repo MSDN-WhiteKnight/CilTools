@@ -809,6 +809,83 @@ an exception will be thrown.</p>
   </table>
   
   
+  <a id="CilTools_BytecodeAnalysis_Signature_ReadFromArray_" data-uid="CilTools.BytecodeAnalysis.Signature.ReadFromArray*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_Signature_ReadFromArray_System_Byte___CilTools_Reflection_SignatureContext_" data-uid="CilTools.BytecodeAnalysis.Signature.ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)">ReadFromArray(Byte[], SignatureContext)</h4>
+  <div class="markdown level1 summary"><p>Reads a signature from the specified byte array using the specified signature context</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static Signature ReadFromArray(byte[] data, SignatureContext ctx)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">data</span></td>
+        <td><p>Byte array to read data from</p>
+</td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.SignatureContext.html">SignatureContext</a></td>
+        <td><span class="parametername">ctx</span></td>
+        <td><p>The signature context</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.BytecodeAnalysis.Signature.html">Signature</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_BytecodeAnalysis_Signature_ReadFromArray_System_Byte___CilTools_Reflection_SignatureContext__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>The signature could be the method signature or the standalone signature 
+            (ECMA-335 II.23.2.3: StandAloneMethodSig)</p>
+<p>A signature context encapsulates a token resolver and a generic context. Generic context is only used 
+when the signature contains generic parameters.</p>
+</div>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p>Source array or signature context is null</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p>Source array is empty</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="CilTools_BytecodeAnalysis_Signature_ToString_" data-uid="CilTools.BytecodeAnalysis.Signature.ToString*"></a>
   <h4 id="CilTools_BytecodeAnalysis_Signature_ToString" data-uid="CilTools.BytecodeAnalysis.Signature.ToString">ToString()</h4>
   <div class="markdown level1 summary"><p>Gets the textual representation of this signature as CIL code</p>

@@ -186,7 +186,11 @@ namespace CilView.Common
         {
             try
             {
-                Process.Start(filepath);
+                ProcessStartInfo psi = new ProcessStartInfo();
+                psi.FileName = filepath;
+                psi.UseShellExecute = true;
+                Process pr = Process.Start(psi);
+                if (pr != null) pr.Dispose();
             }
             catch (Exception ex)
             {

@@ -138,5 +138,46 @@ namespace CilTools.Metadata.Tests
                 Assert.AreEqual(0, constrains.Length);
             }
         }
+
+        [TestMethod]
+        [WorkItem(54)]
+        public void Test_ReturnTypeCustomAttributes()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType(typename);
+                MethodInfo m = t.GetMethod("ReturnTypeAttributeTest");
+                ICustomAttributeProvider provider = m.ReturnTypeCustomAttributes;
+                object[] attrs = provider.GetCustomAttributes(false);
+
+                Assert.AreEqual(1, attrs.Length);
+                ICustomAttribute ica = (ICustomAttribute)attrs[0];
+                Assert.AreEqual("MyAttribute", ica.Constructor.DeclaringType.Name);
+                byte[] data = ica.Data;
+                byte[] expectedData = new byte[] { 0x01, 0, 0xe7, 0x03, 0, 0, 0, 0 };
+                CollectionAssert.AreEqual(expectedData, data);
+            }
+        }
+
+        [TestMethod]
+        [WorkItem(54)]
+        public void Test_ReturnTypeCustomAttributes_Negative()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType(typename);
+                MethodInfo m = t.GetMethod("PrintHelloWorld");
+                ICustomAttributeProvider provider = m.ReturnTypeCustomAttributes;
+                object[] attrs = provider.GetCustomAttributes(false);
+
+                Assert.AreEqual(0, attrs.Length);
+            }
+        }
     }
 }

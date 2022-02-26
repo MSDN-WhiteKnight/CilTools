@@ -21,6 +21,7 @@ namespace CilTools.SourceCode
         {
             this.FilePath = string.Empty;
             this.SymbolsFile = string.Empty;
+            this.SymbolsFile = string.Empty;
             this.fragments = new List<SourceFragment>();
         }
 
@@ -34,6 +35,11 @@ namespace CilTools.SourceCode
         /// is loaded
         /// </summary>
         public string SymbolsFile { get; set; }
+
+        /// <summary>
+        /// Gets or sets a format of the symbols file specified by <see cref="SymbolsFile"/> property
+        /// </summary>
+        public string SymbolsFileFormat { get; set; }
 
         /// <summary>
         /// Gets or sets a method which source code is contained in this document

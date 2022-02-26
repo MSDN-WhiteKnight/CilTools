@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using CilTools.Reflection;
+using CilTools.Runtime.Methods;
 using Microsoft.Diagnostics.Runtime;
 
 namespace CilTools.Runtime
@@ -423,6 +424,6 @@ namespace CilTools.Runtime
             }
         }
 
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes => AttributesCollection.Empty;
     }
 }

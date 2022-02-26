@@ -75,7 +75,7 @@
 <p>To use CilTools.BytecodeAnalysis, install <a href="https://www.nuget.org/packages/CilTools.BytecodeAnalysis/">CilTools.BytecodeAnalysis</a> NuGet package. You can also build the library from sources or download released binaries in <a href="https://github.com/MSDN-WhiteKnight/CilTools">CIL Tools repository</a>. The minimum target framework is .NET Framework 3.5 or .NET Standard 2.0.</p>
 <h2 id="working-with-instructions">Working with instructions</h2>
 <p>To get the collection of instructions that make up the method body, use <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilReader.html#CilTools_BytecodeAnalysis_CilReader_GetInstructions_System_Reflection_MethodBase_">GetInstructions(MethodBase)</a>. You can also use extension method <code>GetInstructions</code> for <code>MethodBase</code> class. To print the CIL assembler representation of the instruction, call its <code>ToString</code> method. The following example shows how to display all instructions in the method.</p>
-<pre><code>using System;
+<pre><code class="lang-csharp">using System;
 using System.Collections.Generic;
 using CilTools.BytecodeAnalysis;
 using CilTools.BytecodeAnalysis.Extensions;
@@ -132,7 +132,7 @@ ret
 <h2 id="working-with-cil-graph">Working with CIL graph</h2>
 <p>Use the <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_Create_System_Reflection_MethodBase_">Create(MethodBase)</a> method to get a a graph that represents a flow of control between method's instructions. Working with CIL graph enables you to process branching or exception blocks, which is not possible when working with individual instructions. CIL graph consists of nodes that represents instuctions, with edges representing control flow between them. Use <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_GetNodes">GetNodes()</a> method to get the collection of nodes. You can also disassemble method using the <code>ToText</code> method on <code>CilGraph</code> class, or using the <a class="xref" href="../api/CilTools.BytecodeAnalysis.CilAnalysis.html#CilTools_BytecodeAnalysis_CilAnalysis_MethodToText_System_Reflection_MethodBase_">MethodToText(MethodBase)</a> static helper, when you need to output method's CIL code as text.</p>
 <p>The following example shows how to construct the CIL graph for the specified method and print its disassembled CIL:</p>
-<pre><code>using System;
+<pre><code class="lang-csharp">using System;
 using CilTools.BytecodeAnalysis;
 using CilTools.BytecodeAnalysis.Extensions;
 

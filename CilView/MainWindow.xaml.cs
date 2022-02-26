@@ -608,12 +608,8 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             wnd.Show();
         }
 
-        private void miIncludeDourceCode_Click(object sender, RoutedEventArgs e)
+        void UpdateDisassembly()
         {
-            //toggle whether to show source code as code comments in disassembly or not
-            bool includesrc = miIncludeDourceCode.IsChecked;
-            CilVisualization.CurrentDisassemblerParams.IncludeSourceCode = includesrc;
-
             //recreate disassembly if a method is currently shown
             MethodBase mb = this.cilbrowser.GetCurrentMethod();
 
@@ -621,6 +617,26 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             {
                 this.cilbrowser.NavigateToMethod(mb);
             }
+        }
+
+        private void miIncludeCodeSize_Click(object sender, RoutedEventArgs e)
+        {
+            //toggle whether to show bytecode size as code comments in disassembly or not
+            bool includeCodeSize = miIncludeCodeSize.IsChecked;
+            CilVisualization.CurrentDisassemblerParams.IncludeCodeSize = includeCodeSize;
+
+            //recreate disassembly if a method is currently shown
+            UpdateDisassembly();
+        }
+
+        private void miIncludeSourceCode_Click(object sender, RoutedEventArgs e)
+        {
+            //toggle whether to show source code as code comments in disassembly or not
+            bool includesrc = miIncludeSourceCode.IsChecked;
+            CilVisualization.CurrentDisassemblerParams.IncludeSourceCode = includesrc;
+
+            //recreate disassembly if a method is currently shown
+            UpdateDisassembly();
         }
 
         void OnHelpClick()
@@ -966,5 +982,20 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
             SourceCodeUI.ShowSource(current_method, 0, true);
         }
+
+        private void miExecute_Click(object sender, RoutedEventArgs e)
+        {
+            MethodBase current_method = this.cilbrowser.GetCurrentMethod();
+
+            if (current_method == null)
+            {
+                MessageBox.Show(this, "No method selected. Select method first to execute it.", "Error");
+                return;
+            }
+
+            ExecuteWindow.ShowExecuteMethodUI(current_method, this);
+        }
+
+        
     }
 }

@@ -75,21 +75,52 @@
 <p>CilView is a windows application to display CIL code of methods in .NET assemblies. The key features are:</p>
 <ul>
 <li>Displaying CIL code of methods in the specified assembly file or process</li>
+<li>Automatically building C#/VB sources and displaying the resulting CIL</li>
+<li>Displaying contents of CIL assembler source files (*.il)</li>
 <li>Syntax highlighting</li>
 <li>Navigation to the referenced method's code by clicking on the method reference</li>
-<li>Exporting the method's code into file</li>
+<li>Exporting CIL code into file</li>
 <li>Displaying process information and stack traces of managed threads (when process is opened)</li>
+<li>Displaying source code from which the method's CIL was compiled</li>
+<li>Executing methods interactively and inspecting the results</li>
 </ul>
-<h2 id="displaying-code-from-the-assembly-file">Displaying code from the assembly file</h2>
+<hr>
+<h2 id="view-assembly-file">View assembly file</h2>
 <p>1. Click <strong>File</strong> -&gt; <strong>Open</strong> menu or press the <strong>Open file</strong> button.</p>
 <p>2. Select the managed assembly EXE or DLL file in the file open dialog.</p>
 <p>3. Select type from the <strong>Type</strong> drop-down list in the main window</p>
-<p>You can also search type by entering the fragment of the type name to <strong>Find</strong> text field and pressing the &quot;<strong>&gt;</strong>&quot; button. The search will select the matching type if it's found. Press the button again to go to the next matching type. The program will display message if when the end of list is reached.</p>
 <p>4. Select method in the left panel.</p>
 <p>5. The right panel will display the CIL disassembly of the selected method.</p>
 <p>All method references on the <strong>Formatted</strong> tab are hyperlinks to the referenced methods. Clicking one them will open the referenced method's code in the right panel, even if the method is from another assembly, as long as that assembly could be loaded.</p>
 <p><img src="../images/cilview.png" alt="CilView main window"></p>
-<h2 id="displaying-code-from-the-process">Displaying code from the process</h2>
+<h2 id="view-the-resulting-cil-for-cvb-sources">View the resulting CIL for C#/VB sources</h2>
+<p>This feature enables you to view disassembled CIL code corresponding to the entered code snippet. CIL View will compile the provided code in background, and open the output binary if the compilation is successful. If the build fails, it will display the build output to you.</p>
+<ol>
+<li><p>Click <strong>File</strong> -&gt; <strong>Open code</strong> menu.</p>
+</li>
+<li><p>Paste the input source code into the text area.</p>
+</li>
+<li><p>Select the appropriate language from the combobox.</p>
+</li>
+<li><p>Click <strong>OK</strong>.</p>
+</li>
+<li><p>CIL View will open the output assembly. You can browse its contents as described above.</p>
+</li>
+</ol>
+<p>The &quot;Open code&quot; window only supports a self-contained code snippet without any dependencies or special build options. If you need more complex scenarios, open an MSBuild project file (.csproj/.vbproj) instead. To do this, click <strong>File</strong> -&gt; <strong>Open</strong> menu and select the project file in the file open dialog.</p>
+<p>CIL View can compile the provided sources in different ways, depending on your environment. First, it tries to use .NET SDK (dotnet build) if it's installed on your system. If the build fails or .NET SDK is not installed, it tries to build using the MSBuild version bundled with .NET Framework. For .NET SDK, the supported language versions depend on installed SDK version. For .NET Framework MSBuild, C# 5.0 or Visual Basic 11.0 (VS 2012) are supported.</p>
+<blockquote>
+<p><strong>NOTE:</strong> On 64-bit Windows CIL View can only use 64-bit .NET CLI (located at <code>C:\Program Files\dotnet\dotnet.exe</code>).</p>
+</blockquote>
+<h2 id="view-the-contents-of-cil-assembler-source-file">View the contents of CIL assembler source file</h2>
+<ol>
+<li><p>Click <strong>File</strong> -&gt; <strong>Open</strong> menu or press the <strong>Open file</strong> button.</p>
+</li>
+<li><p>Select CIL assembler source file (*.il) in the file open dialog.</p>
+</li>
+</ol>
+<p>You cannot navigate between types or methods in the opened CIL in this case, but the syntax highlighting works. Note that opening large files can crash or freeze the application.</p>
+<h2 id="view-assemblies-in-the-specified-process">View assemblies in the specified process</h2>
 <p>1. Click <strong>File</strong> -&gt; <strong>Open process</strong> menu or press the <strong>Open process</strong> button.</p>
 <p><img src="../images/cilview2.png" alt="CilView attaching to process"></p>
 <p>2. Select the process from the list in the appearing <strong>Attach to process</strong> dialog.</p>
@@ -102,7 +133,6 @@
 <p>5. Select assembly from the <strong>Assembly</strong> drop-down list in the main window</p>
 <p>6. Select type from the <strong>Type</strong> drop-down list in the main window</p>
 <p>7. Select method in the left panel.</p>
-<p>You can also search assemblies, types and methods by entering the fragment of their names into the <strong>Find</strong> text field and pressing the &quot;<strong>&gt;</strong>&quot; button. CIL View searches methods in the currently selected type, if the type is selected. In a similar way, types are searched in the currently selected assembly, if one is selected. The search results are shown in the context menu. Clicking on the menu item navigates to the corresponding object.</p>
 <p>8. The right panel will display the CIL disassembly of the selected method.</p>
 <p>You can also view the code of dynamic methods generated at runtime in the target process by selecting the <code>&lt;...DynamicMethods&gt;</code> entry in the assembly drop-down list (it is displayed at the end of the list). Starting from version 2.2, methods from dynamic assemblies are not included under dynamic methods and instead can be opened under the corresponding dynamic assembly.</p>
 <h2 id="limitations-when-displaying-code-from-the-process">Limitations when displaying code from the process</h2>
@@ -134,10 +164,31 @@
 <p>To examine managed threads when process is opened, click <strong>Process</strong> -&gt; <strong>Threads</strong> menu. The Threads window displays a drop-down list of managed threads. Each list item contains native thread ID, thread type for special threads (GC, Finalizer, Thread pool), COM apartment type (STA or MTA), and the topmost stack frame info. Select thread from the list to view the full stack trace.</p>
 <p>The stack trace will be displayed in the left panel. Some stack frames are hyperlinks, and clicking on them will open the corresponding method in the right panel. The instructions belonging to the approximate currently executed code fragment are highlighted in red. This feature only works reliably when attaching in active mode.</p>
 <p><img src="../images/cilview3.png" alt="CilView threads window"></p>
+<h2 id="using-search">Using search</h2>
+<p>You can search assemblies, types and methods by entering the fragment of their names into the <strong>Find</strong> text field and pressing the &quot;<strong>&gt;</strong>&quot; button. CIL View searches methods in the currently selected type, if the type is selected. In a similar way, types are searched in the currently selected assembly, if one is selected. The search results are shown in the context menu. Clicking on the menu item navigates to the corresponding object.</p>
+<h2 id="disassembler-options">Disassembler options</h2>
+<p>There are a couple of options that control the output of disassembler displayed in CIL View. They are enabled or disabled using checkboxes in <strong>View</strong> menu:</p>
+<ul>
+<li><p><strong>View</strong> -&gt; <strong>Include code size</strong>. Enables outputting the method's bytecode size, in bytes, as a code comment at the start of the method body.</p>
+</li>
+<li><p><strong>View</strong> -&gt; <strong>Include source code</strong>. Enables outputting of source code fragments from which particular instructions were compiled.</p>
+</li>
+</ul>
+<p>CIL View can output source code if symbol files for the disassembled assembly are available and point into valid local source file locations. Supported symbol formats are Windows PDB and Portable PDB. Source code is included as code comments preceding their corresponding instructions.</p>
 <h2 id="exception-analysis">Exception analysis</h2>
-<p>To figure out exceptions that the method could potentially throw, open that method and use <strong>Analysis</strong> -&gt; <strong>Show exception (methods)</strong> menu command. In the opened window you'll see the list of exception types as well as the call stack that could trigger them. The CIL View recursively scans the analysed method and all methods called by it, and searches for exceptions that are thrown and not handled up the stack. Not that exception analysis might be inaccurate (bot false positives and false negatives, so it's only good for a quick estimate of thrown exceptions. To perform exception analysis on all methods of the current type, use <strong>Analysis</strong> -&gt; <strong>Show exception (type)</strong>.</p>
-<p>To compare exceptions actually thrown by methods of the type and exceptions mentioned in their documentation, select the type and use <strong>Analysis</strong> -&gt; <strong>Compare exceptions</strong> command. In the appearing dialog box, select the XML documentation file to compare. CIL View supports both regular ECMA XML emitted by C# compiler and monodoc XML format. The opened window will show the differences between exceptions reported by analysis and exceptions documented in ECMA XML <code>&lt;exception&gt;</code> tags.</p>
-<p>The exception analysis supported when opening both files and processes. However, when you hit any limitations mentioned above, the analysis accuracy decreases.</p>
+<p>To figure out exceptions that the method could potentially throw, open that method and use <strong>Tools</strong> -&gt; <strong>Show exception (methods)</strong> menu command. In the opened window you'll see the list of exception types as well as the call stack that could trigger them. The CIL View recursively scans the analysed method and all methods called by it, and searches for exceptions that are thrown and not handled up the stack. Not that exception analysis might be inaccurate (bot false positives and false negatives, so it's only good for a quick estimate of thrown exceptions. To perform exception analysis on all methods of the current type, use <strong>Tools</strong> -&gt; <strong>Show exception (type)</strong>.</p>
+<p>To compare exceptions actually thrown by methods of the type and exceptions mentioned in their documentation, select the type and use <strong>Tools</strong> -&gt; <strong>Compare exceptions</strong> command. In the appearing dialog box, select the XML documentation file to compare. CIL View supports both regular ECMA XML emitted by C# compiler and monodoc XML format. The opened window will show the differences between exceptions reported by analysis and exceptions documented in ECMA XML <code>&lt;exception&gt;</code> tags.</p>
+<p>The exception analysis is supported when opening both files and processes. However, when you hit any limitations mentioned above, the analysis accuracy decreases.</p>
+<h2 id="source-code-viewer">Source code viewer</h2>
+<p>This feature enables you to display source code corresponding to disassembled CIL code. Source code viewer can fetch source code using symbols line data (see <em>Disassembler options</em> section above for information about symbols support) or display the decompiled code (currently only supported for abstract methods).</p>
+<p>To view the source code for individual instructions, click <strong>Tools</strong> -&gt; <strong>Show source code</strong>. Alternatively, you could right-click the instruction of interest in formatted view. In the <strong>View source</strong> window you'll see the CIL code of the sequence point on the left and its corresponding source code fragment on the right. Use <strong>&lt;</strong> and <strong>&gt;</strong> buttons to navigate between sequence points, or the file hyperlink to open the whole source file in your default editor.</p>
+<p>To view the source code for the whole method, <strong>Tools</strong> -&gt; <strong>Show source code (method)</strong>. The <strong>Source code</strong> window will display the method's source code as well as the information about where it was fetched from.</p>
+<h2 id="method-execution">Method execution</h2>
+<blockquote>
+<p><strong>WARNING:</strong> Executing a method from unknown origin could be dangerous. Don't use this feature unless you are sure a method does not contain a malicious code! There's no isolation or security control provided for the code being executed.</p>
+</blockquote>
+<p>To execute the current method interactively, use the <strong>Tools</strong> -&gt; <strong>Execute</strong> menu command. In the <strong>Execute method</strong> window, enter values for method parameters, if it has them, specify the timeout value that limits method execution time, and press <strong>Execute</strong>. The CIL View will load the method's assembly for execution and invoke the method using reflection, showing the results to you in a dialog box when it returns. The dialog box will show a method's return value, output parameter values (<code>ref</code>/<code>out</code>) or exception details, it the method would have thrown an exception. Note that if a method crashes or otherwise somehow corrupts the application state (the assembly is loaded into the main application domain), you might not see the mentioned output at all.</p>
+<p>Method execution feature has some limitations. It currently only supports primitive types or types convertible from <code>string</code> as method parameters. Instance methods, generic methods and constructors are not supported. Also the assembly in which the method is housed must target .NET Framework or .NET Standard and have x86 or AnyCPU processor architecture.</p>
 <h2 id="clickonce-installation-with-auto-update">ClickOnce installation with auto-update</h2>
 <p>You can install CIL View via ClickOnce if you want to download updates automatically. The ClickOnce download URL: <a href="https://msdn-whiteknight.github.io/CilTools/update/">https://msdn-whiteknight.github.io/CilTools/update/</a></p>
 <p>Using auto-update requires stable internet connection and access to the <a href="https://msdn-whiteknight.github.io/">https://msdn-whiteknight.github.io/</a> website. If you are using old Windows or .NET Framework versions, you might be unable to connect due to TLS protocol version or ciphersuite mismatch.</p>
@@ -193,8 +244,28 @@
 <li>Add support for displaying dynamic assembly names when inspecting process (.NET Framework only)</li>
 <li>Show loaded modules in process info</li>
 </ul>
+<p>2.4</p>
+<ul>
+<li>Add support for opening C#/VB code and MSBuild projects</li>
+<li>Add <strong>Show source</strong> support</li>
+<li>Add options to include bytecode size and source code lines (from PDB) in disassembler output</li>
+<li>Add support for opening IL source files</li>
+<li>Add support for .entrypoint directive</li>
+<li>Add <strong>Export type to file</strong> menu command</li>
+<li>Add support for generic constraints</li>
+<li>Add support for disassembling properties</li>
+<li>Add support for interactive method execution</li>
+<li>Use .NET Core runtime directory when resolving dependencies for .NET Core assemblies</li>
+<li>Use runtime directory of the inspected process instead of current runtime directory for assembly resolution when opening a process</li>
+<li>Load assembly images from memory instead of files when opening a process</li>
+<li>When an assembly contains a single type, automatically navigate to that type</li>
+<li>When the type contains only one non-constructor method and no other members (like fields), automatically navigate to that single method when type is selected</li>
+<li>Change member identifier color to more visible with lower brightness</li>
+<li>Fix <code>ldtoken</code> syntax for methods</li>
+<li>Fix string literal escaping in disassembler to use ECMA-335 rules</li>
+</ul>
 <hr>
-<p><em>Copyright (c) 2021,  MSDN.WhiteKnight</em></p>
+<p><em>Copyright (c) 2022,  MSDN.WhiteKnight</em></p>
 <p><em>This CIL View distribution contains the binary code of <a href="https://github.com/microsoft/clrmd">ClrMD</a> library: Copyright (c) .NET Foundation and Contributors, MIT License.</em></p>
 </article>
           </div>

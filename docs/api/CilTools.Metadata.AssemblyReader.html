@@ -137,6 +137,38 @@ longer need the instance of the <code>AssemblyReader</code>; there&apos;s no fin
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public AssemblyReader()</code></pre>
   </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_Metadata_AssemblyReader_RuntimeDirectory_" data-uid="CilTools.Metadata.AssemblyReader.RuntimeDirectory*"></a>
+  <h4 id="CilTools_Metadata_AssemblyReader_RuntimeDirectory" data-uid="CilTools.Metadata.AssemblyReader.RuntimeDirectory">RuntimeDirectory</h4>
+  <div class="markdown level1 summary"><p>Gets or sets the directory to search for framework assemblies.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public string RuntimeDirectory { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><p>The directory to search for framework assemblies. The default value is the current runtime directory.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Metadata_AssemblyReader_RuntimeDirectory_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Settings this property ro <code>null</code> or empty string resets it to default value.</p>
+</div>
   <h3 id="methods">Methods
   </h3>
   
@@ -350,6 +382,63 @@ with the same path will fetch it from the cache instead of loading from file aga
       </tr>
     </tbody>
   </table>
+  
+  
+  <a id="CilTools_Metadata_AssemblyReader_LoadImage_" data-uid="CilTools.Metadata.AssemblyReader.LoadImage*"></a>
+  <h4 id="CilTools_Metadata_AssemblyReader_LoadImage_CilTools_Reflection_MemoryImage_" data-uid="CilTools.Metadata.AssemblyReader.LoadImage(CilTools.Reflection.MemoryImage)">LoadImage(MemoryImage)</h4>
+  <div class="markdown level1 summary"><p>Loads the assembly from the specified memory image</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Assembly LoadImage(MemoryImage image)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.MemoryImage.html">MemoryImage</a></td>
+        <td><span class="parametername">image</span></td>
+        <td><p>The memory image to load</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.Assembly</span></td>
+        <td><p>The assembly object or null if the assembly reader failed to read
+the requested assembly.</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Metadata_AssemblyReader_LoadImage_CilTools_Reflection_MemoryImage__remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p> 
+If the assembly is read successfully and the path is set for a memory image, 
+the loaded assembly is saved to cache. Eventual attempts to read assembly 
+with the same path will fetch it from the cache instead of loading it again. 
+If the path is not set, each call to this method will load a new assembly 
+instance, potentially leading to an unbounded growth of consumed memory.
+</p>
+<p>The <code>CilTools.Runtime.ClrAssemblyReader.GetMemoryImage</code> method could be  
+used to load a memory image from a process.</p>
+</div>
   <h3 id="events">Events
   </h3>
   

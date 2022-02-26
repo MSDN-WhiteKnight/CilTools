@@ -1,0 +1,449 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Interface ICustomMethod
+   | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Interface ICustomMethod
+   | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.Reflection.ICustomMethod">
+  
+  
+  <h1 id="CilTools_Reflection_ICustomMethod" data-uid="CilTools.Reflection.ICustomMethod" class="text-break">Interface ICustomMethod
+  </h1>
+  <div class="markdown level0 summary"><p>Represents an object that provides custom information about method. Implement this interface on your custom class
+inheriting from <span class="xref">System.Reflection.MethodBase</span> if you want CilTools.BytecodeAnalysis library to process bytecode
+from your custom data source, instead of the standard reflection.</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Reflection.html">CilTools.Reflection</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
+  <h5 id="CilTools_Reflection_ICustomMethod_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public interface ICustomMethod</code></pre>
+  </div>
+  <h5 id="CilTools_Reflection_ICustomMethod_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>In CIL Tools 2.3 and earlier, <a class="xref" href="CilTools.Reflection.CustomMethod.html">CustomMethod</a> was used as a base class for custom methods.
+Starting from version 2.4, <a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a> interface is used instead; and custom method classes could
+inherit from any class, as long as it is derived from <span class="xref">System.Reflection.MethodBase</span>.</p>
+</div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_InitLocals_" data-uid="CilTools.Reflection.ICustomMethod.InitLocals*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_InitLocals" data-uid="CilTools.Reflection.ICustomMethod.InitLocals">InitLocals</h4>
+  <div class="markdown level1 summary"><p>Gets the value specifying whether the local variables are initialized</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool InitLocals { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_InitLocalsSpecified_" data-uid="CilTools.Reflection.ICustomMethod.InitLocalsSpecified*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_InitLocalsSpecified" data-uid="CilTools.Reflection.ICustomMethod.InitLocalsSpecified">InitLocalsSpecified</h4>
+  <div class="markdown level1 summary"><p>Gets the value specifying whether the <a class="xref" href="CilTools.Reflection.ICustomMethod.html#CilTools_Reflection_ICustomMethod_InitLocals">InitLocals</a> property value is defined</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool InitLocalsSpecified { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_MaxStackSize_" data-uid="CilTools.Reflection.ICustomMethod.MaxStackSize*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_MaxStackSize" data-uid="CilTools.Reflection.ICustomMethod.MaxStackSize">MaxStackSize</h4>
+  <div class="markdown level1 summary"><p>Gets the maximum size of operand stack during method execution</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">int MaxStackSize { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_MaxStackSizeSpecified_" data-uid="CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_MaxStackSizeSpecified" data-uid="CilTools.Reflection.ICustomMethod.MaxStackSizeSpecified">MaxStackSizeSpecified</h4>
+  <div class="markdown level1 summary"><p>Gets the value specifying whether the <a class="xref" href="CilTools.Reflection.ICustomMethod.html#CilTools_Reflection_ICustomMethod_MaxStackSize">MaxStackSize</a> property value is defined</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">bool MaxStackSizeSpecified { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_ReturnType_" data-uid="CilTools.Reflection.ICustomMethod.ReturnType*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_ReturnType" data-uid="CilTools.Reflection.ICustomMethod.ReturnType">ReturnType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of this method's return value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">Type ReturnType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Reflection_ICustomMethod_ReturnType_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Returns null if the return type is not applicable (such as for constructors).</p>
+</div>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_TokenResolver_" data-uid="CilTools.Reflection.ICustomMethod.TokenResolver*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_TokenResolver" data-uid="CilTools.Reflection.ICustomMethod.TokenResolver">TokenResolver</h4>
+  <div class="markdown level1 summary"><p>Gets an object that can be used to convert metadata tokens into corresponding reflection objects</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ITokenResolver TokenResolver { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_GetBytecode_" data-uid="CilTools.Reflection.ICustomMethod.GetBytecode*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_GetBytecode" data-uid="CilTools.Reflection.ICustomMethod.GetBytecode">GetBytecode()</h4>
+  <div class="markdown level1 summary"><p>Gets the CIL bytecode of the method body</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">byte[] GetBytecode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>CIL bytecode as byte array</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_GetDefinition_" data-uid="CilTools.Reflection.ICustomMethod.GetDefinition*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_GetDefinition" data-uid="CilTools.Reflection.ICustomMethod.GetDefinition">GetDefinition()</h4>
+  <div class="markdown level1 summary"><p>Gets the method definition for the generic method.
+Returns null if this instance does not represent the generic method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">MethodBase GetDefinition()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_GetExceptionBlocks_" data-uid="CilTools.Reflection.ICustomMethod.GetExceptionBlocks*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_GetExceptionBlocks" data-uid="CilTools.Reflection.ICustomMethod.GetExceptionBlocks">GetExceptionBlocks()</h4>
+  <div class="markdown level1 summary"><p>Gets the list of exception handling blocks in the method's body</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">ExceptionBlock[] GetExceptionBlocks()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ExceptionBlock.html">ExceptionBlock</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_GetLocalVariables_" data-uid="CilTools.Reflection.ICustomMethod.GetLocalVariables*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_GetLocalVariables" data-uid="CilTools.Reflection.ICustomMethod.GetLocalVariables">GetLocalVariables()</h4>
+  <div class="markdown level1 summary"><p>Gets the array of local variable declarations of this method</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">LocalVariable[] GetLocalVariables()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.LocalVariable.html">LocalVariable</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_GetLocalVarSignature_" data-uid="CilTools.Reflection.ICustomMethod.GetLocalVarSignature*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_GetLocalVarSignature" data-uid="CilTools.Reflection.ICustomMethod.GetLocalVarSignature">GetLocalVarSignature()</h4>
+  <div class="markdown level1 summary"><p>Gets the local variable signature as an array of bytes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">byte[] GetLocalVarSignature()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_ICustomMethod_GetPInvokeParams_" data-uid="CilTools.Reflection.ICustomMethod.GetPInvokeParams*"></a>
+  <h4 id="CilTools_Reflection_ICustomMethod_GetPInvokeParams" data-uid="CilTools.Reflection.ICustomMethod.GetPInvokeParams">GetPInvokeParams()</h4>
+  <div class="markdown level1 summary"><p>Gets P/Invoke parameters for the imported unmanaged method.
+Returns null if this instance does not represent an imported unmanaged method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">PInvokeParams GetPInvokeParams()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.PInvokeParams.html">PInvokeParams</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

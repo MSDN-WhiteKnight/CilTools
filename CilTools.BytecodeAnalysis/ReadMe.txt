@@ -1,5 +1,5 @@
 ﻿*** CilTools.BytecodeAnalysis library ***
-Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
 License: BSD 2.0
 
 CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
@@ -169,8 +169,19 @@ v2.0
 - Implement IsAssignableFrom on TypeSpec
 - Fix exception on TypeSpec.IsValueType
 
-v2.3
+2.3
 - Escape IL assembler keywords when used as identifiers
 - Make ITypeInfo interface public to enable inspecting function pointer types with CilTools.Metadata
 - Change TypeSpec.IsFunctionPointer from method to property (breaking change)
 - Fix bug that prevented CilReader.GetInstructions from correctly enumerating instuctions more than once for the same iterator instance
+
+2.4
+- Add support for including bytecode size and source code lines in disassembler output
+- Add support for .entrypoint directive
+- Add support for generic constraints
+- Add support for properties in disassembler
+- Add ICustomMethod interface as a base for custom method implementations to replace CustomMethod base class. This means that custom method implementations can now be derived from MethodInfo or ConstructorInfo.
+- Improve generics support. Generic context is now passed correctly to generic parameter types is more cases; this enables getting generic parameter names and their declaring methods/types.
+- Fix TypeSpec.IsGenericParameter for byrefs 
+- Fix ldtoken syntax for methods
+- Fix string literal escaping in disassembler to use ECMA-335 rules

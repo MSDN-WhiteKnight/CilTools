@@ -331,5 +331,27 @@ namespace CilTools.Metadata.Methods
 
             return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
         }
+
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes
+        {
+            get
+            {
+                ParameterHandleCollection phc = this.mdef.GetParameters();
+
+                foreach (ParameterHandle ph in phc)
+                {
+                    Parameter p = this.assembly.MetadataReader.GetParameter(ph);
+
+                    if (p.Attributes.HasFlag(ParameterAttributes.Retval) || p.SequenceNumber == 0)
+                    {
+                        CustomAttributeHandleCollection coll = p.GetCustomAttributes();
+                        object[] attrs = Utils.ReadCustomAttributes(coll, this.ReturnType, this.assembly);
+                        return new AttributesCollection(attrs);
+                    }
+                }
+
+                return AttributesCollection.Empty;
+            }
+        }
     }
 }

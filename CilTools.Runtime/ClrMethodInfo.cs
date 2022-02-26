@@ -207,6 +207,6 @@ namespace CilTools.Runtime
         }
 
         /// <inheritdoc/>
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes => AttributesCollection.Empty;
     }
 }

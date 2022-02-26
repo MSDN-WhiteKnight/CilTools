@@ -1,0 +1,54 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.SourceCode
+  commentId: N:CilTools.SourceCode
+  id: CilTools.SourceCode
+  children:
+  - CilTools.SourceCode.FragmentBase
+  - CilTools.SourceCode.SourceCodeProvider
+  - CilTools.SourceCode.SourceDocument
+  - CilTools.SourceCode.SourceFragment
+  langs:
+  - csharp
+  - vb
+  name: CilTools.SourceCode
+  nameWithType: CilTools.SourceCode
+  fullName: CilTools.SourceCode
+  type: Namespace
+  assemblies:
+  - CilTools.BytecodeAnalysis
+references:
+- uid: CilTools.SourceCode.FragmentBase
+  commentId: T:CilTools.SourceCode.FragmentBase
+  parent: CilTools.SourceCode
+  isExternal: true
+  name: FragmentBase
+  nameWithType: FragmentBase
+  fullName: CilTools.SourceCode.FragmentBase
+- uid: CilTools.SourceCode.SourceCodeProvider
+  commentId: T:CilTools.SourceCode.SourceCodeProvider
+  parent: CilTools.SourceCode
+  isExternal: true
+  name: SourceCodeProvider
+  nameWithType: SourceCodeProvider
+  fullName: CilTools.SourceCode.SourceCodeProvider
+- uid: CilTools.SourceCode.SourceDocument
+  commentId: T:CilTools.SourceCode.SourceDocument
+  parent: CilTools.SourceCode
+  isExternal: true
+  name: SourceDocument
+  nameWithType: SourceDocument
+  fullName: CilTools.SourceCode.SourceDocument
+- uid: CilTools.SourceCode.SourceFragment
+  commentId: T:CilTools.SourceCode.SourceFragment
+  parent: CilTools.SourceCode
+  isExternal: true
+  name: SourceFragment
+  nameWithType: SourceFragment
+  fullName: CilTools.SourceCode.SourceFragment
+- uid: CilTools.SourceCode
+  commentId: N:CilTools.SourceCode
+  isExternal: true
+  name: CilTools.SourceCode
+  nameWithType: CilTools.SourceCode
+  fullName: CilTools.SourceCode

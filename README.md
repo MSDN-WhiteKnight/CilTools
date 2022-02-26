@@ -24,7 +24,7 @@ CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL)
 
 *Usage*
 
-Add reference to CilTools.BytecodeAnalysis.dll, import CilTools.BytecodeAnalysis namespace. Use CilReader.GetInstructions to get the collection of instructions from method, CilGraph.Create to get a a graph that represents a flow of control between method's instructions, or CilAnalysis.MethodToText when you need to output method's CIL code as text. CilTools.BytecodeAnalysis.Extensions namespace provides an alternative syntax via extenstion methods.
+Add reference to CilTools.BytecodeAnalysis.dll, import CilTools.BytecodeAnalysis namespace. Use CilReader.GetInstructions to get the collection of instructions from method, CilGraph.Create to get a graph that represents a flow of control between method's instructions, or CilAnalysis.MethodToText when you need to output method's CIL code as text. CilTools.BytecodeAnalysis.Extensions namespace provides an alternative syntax via extension methods.
 
 *Example*
 
@@ -127,4 +127,4 @@ A windows application to display CIL code of methods in the given assembly file 
 
 ---
 
-Copyright (c) 2021,  MSDN.WhiteKnight
+Copyright (c) 2022,  MSDN.WhiteKnight

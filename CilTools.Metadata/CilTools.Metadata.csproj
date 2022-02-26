@@ -2,37 +2,22 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Version>2.3.1</Version>
+    <Version>2.4.0</Version>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Authors>MSDN-WhiteKnight</Authors>
     <Company>CIL Tools</Company>
     <Product>CIL Tools</Product>
-    <Copyright>Copyright (c) 2021, MSDN.WhiteKnight</Copyright>
+    <Copyright>Copyright (c) 2022, MSDN.WhiteKnight</Copyright>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/MSDN-WhiteKnight/CilTools</PackageProjectUrl>
     <PackageIcon>IL.png</PackageIcon>
     <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
     <PackageTags>dotnet cil msil metadata reflection</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <FileVersion>2.3.1.0</FileVersion>
+    <FileVersion>2.4.0.0</FileVersion>
     <Description>The library that supports inspecting the contents of .NET assembly via reflection without loading it into the current process</Description>
   </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <DocumentationFile>bin\Debug\netstandard2.0\CilTools.Metadata.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard2.0\CilTools.Metadata.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
-    <DocumentationFile>bin\Debug\net45\CilTools.Metadata.xml</DocumentationFile>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net45|AnyCPU'">
-    <DocumentationFile>bin\Release\net45\CilTools.Metadata.xml</DocumentationFile>
-  </PropertyGroup>
-
+  
   <ItemGroup>
     <PackageReference Include="System.Collections.Immutable" Version="1.7.0" />
     <PackageReference Include="System.Reflection.Metadata" Version="1.8.0" />

@@ -7,8 +7,8 @@
     <PackAsTool>true</PackAsTool>
     <PackageId>CilTools.CommandLine</PackageId>
     <ToolCommandName>cil</ToolCommandName>
-    <Version>1.1.0</Version>
-    <FileVersion>1.1.0.0</FileVersion>
+    <Version>2.4.0</Version>
+    <FileVersion>2.4.0.0</FileVersion>
     <Authors>MSDN-WhiteKnight</Authors>
     <Company>CIL Tools</Company>
     <Product>CIL Tools</Product>

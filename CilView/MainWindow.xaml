@@ -21,8 +21,10 @@
                 <MenuItem x:Name="miThreads" Header="Threads" Click="miThreads_Click" />
             </MenuItem>
             <MenuItem Header="View">
-                <MenuItem Header="Include source code" x:Name="miIncludeDourceCode" 
-                          IsCheckable="True" Click="miIncludeDourceCode_Click"/>
+                <MenuItem Header="Include code size" x:Name="miIncludeCodeSize" 
+                          IsCheckable="True" Click="miIncludeCodeSize_Click" />
+                <MenuItem Header="Include source code" x:Name="miIncludeSourceCode" 
+                          IsCheckable="True" Click="miIncludeSourceCode_Click"/>
             </MenuItem>
             <MenuItem Header="Tools">
                 <MenuItem x:Name="miShowExceptions" Header="Show exceptions (method)" 
@@ -34,6 +36,7 @@
                 <Separator/>
                 <MenuItem x:Name="miShowSource" Header="Show source code" Click="miShowSource_Click"/>
                 <MenuItem x:Name="miShowMethodSource" Header="Show source code (method)" Click="miShowMethodSource_Click"/>
+                <MenuItem x:Name="miExecute" Header="Execute" Click="miExecute_Click"/>
             </MenuItem>
             <MenuItem Header="Help" >
                 <MenuItem x:Name="miHelp" Header="Show help" Click="miHelp_Click" InputGestureText="F1"/>

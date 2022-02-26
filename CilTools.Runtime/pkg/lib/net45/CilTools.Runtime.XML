@@ -671,14 +671,22 @@
             Gets the public types defined in this assembly that are visible outside the assembly.
             </summary>
             <returns>An array that represents the types defined in this assembly that are visible outside the assembly.</returns>
-            /// <remarks>This implementation returns an empty array</remarks>
+            <remarks>This implementation returns an empty array</remarks>
+        </member>
+        <member name="P:CilTools.Runtime.DynamicMethodsAssembly.EntryPoint">
+            <summary>
+            Gets an entry point method for this assembly
+            </summary>
+            <value>This implementation always returns null</value>
         </member>
         <member name="M:CilTools.Runtime.DynamicMethodsAssembly.Dispose">
             <summary>
             Releases unmagnaged resources associated with this assembly object
             </summary>
-            <remarks>This method only disposes the underlying data target if this instance was constructed with the <c>autoDispose</c> 
-            parameter set to true. </remarks>
+            <remarks>
+            This method only disposes the underlying data target if this instance was constructed with the <c>autoDispose</c> 
+            parameter set to true.
+            </remarks>
         </member>
         <member name="M:CilTools.Runtime.HeapScanner.RegisterAction(System.String,System.Action{Microsoft.Diagnostics.Runtime.ClrObject})">
             <summary>

@@ -31,6 +31,13 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
 references:
+- uid: CilTools.BytecodeAnalysis.CallingConvention
+  commentId: T:CilTools.BytecodeAnalysis.CallingConvention
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: CallingConvention
+  nameWithType: CallingConvention
+  fullName: CilTools.BytecodeAnalysis.CallingConvention
 - uid: CilTools.BytecodeAnalysis.CilAnalysis
   commentId: T:CilTools.BytecodeAnalysis.CilAnalysis
   isExternal: true
@@ -115,20 +122,6 @@ references:
   name: Diagnostics
   nameWithType: Diagnostics
   fullName: CilTools.BytecodeAnalysis.Diagnostics
-- uid: CilTools.BytecodeAnalysis.CallingConvention
-  commentId: T:CilTools.BytecodeAnalysis.CallingConvention
-  parent: CilTools.BytecodeAnalysis
-  isExternal: true
-  name: CallingConvention
-  nameWithType: CallingConvention
-  fullName: CilTools.BytecodeAnalysis.CallingConvention
-- uid: CilTools.BytecodeAnalysis.Signature
-  commentId: T:CilTools.BytecodeAnalysis.Signature
-  parent: CilTools.BytecodeAnalysis
-  isExternal: true
-  name: Signature
-  nameWithType: Signature
-  fullName: CilTools.BytecodeAnalysis.Signature
 - uid: CilTools.BytecodeAnalysis.ElementType
   commentId: T:CilTools.BytecodeAnalysis.ElementType
   parent: CilTools.BytecodeAnalysis
@@ -136,6 +129,13 @@ references:
   name: ElementType
   nameWithType: ElementType
   fullName: CilTools.BytecodeAnalysis.ElementType
+- uid: CilTools.BytecodeAnalysis.Signature
+  commentId: T:CilTools.BytecodeAnalysis.Signature
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: Signature
+  nameWithType: Signature
+  fullName: CilTools.BytecodeAnalysis.Signature
 - uid: CilTools.BytecodeAnalysis.TypeSpec
   commentId: T:CilTools.BytecodeAnalysis.TypeSpec
   parent: CilTools.BytecodeAnalysis

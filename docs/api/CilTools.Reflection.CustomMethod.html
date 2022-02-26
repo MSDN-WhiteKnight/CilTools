@@ -73,9 +73,7 @@
   
   <h1 id="CilTools_Reflection_CustomMethod" data-uid="CilTools.Reflection.CustomMethod" class="text-break">Class CustomMethod
   </h1>
-  <div class="markdown level0 summary"><p>A base class for MethodBase implementations providing custom mechanisms for extracting bytecode data.
-Inherit from this class when you want CilTools.BytecodeAnalysis to process bytecode from your custom data source, instead of
-reflection.</p>
+  <div class="markdown level0 summary"><p>Provides a base class for <span class="xref">System.Reflection.MethodInfo</span> subclasses that implement <a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a>.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -83,17 +81,61 @@ reflection.</p>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">System.Reflection.MemberInfo</span></div>
     <div class="level2"><span class="xref">System.Reflection.MethodBase</span></div>
-    <div class="level3"><span class="xref">CustomMethod</span></div>
-      <div class="level4"><a class="xref" href="CilTools.Runtime.ClrMethodInfo.html">ClrMethodInfo</a></div>
+    <div class="level3"><span class="xref">System.Reflection.MethodInfo</span></div>
+    <div class="level4"><span class="xref">CustomMethod</span></div>
   </div>
   <div classs="implements">
     <h5>Implements</h5>
     <div><span class="xref">System.Reflection.ICustomAttributeProvider</span></div>
     <div><span class="xref">System.Runtime.InteropServices._MemberInfo</span></div>
     <div><span class="xref">System.Runtime.InteropServices._MethodBase</span></div>
+    <div><span class="xref">System.Runtime.InteropServices._MethodInfo</span></div>
+    <div><a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.GetGenericArguments()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.GetGenericMethodDefinition()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.MakeGenericMethod(System.Type[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.CreateDelegate(System.Type)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.CreateDelegate(System.Type, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.GetTypeInfoCount(System.UInt32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.GetTypeInfo(System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.GetIDsOfNames(System.Guid, System.IntPtr, System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.System.Runtime.InteropServices._MethodInfo.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.MemberType</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodInfo.ReturnParameter</span>
+    </div>
     <div>
       <span class="xref">System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)</span>
     </div>
@@ -104,12 +146,6 @@ reflection.</p>
       <span class="xref">System.Reflection.MethodBase.GetCurrentMethod()</span>
     </div>
     <div>
-      <span class="xref">System.Reflection.MethodBase.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Reflection.MethodBase.GetHashCode()</span>
-    </div>
-    <div>
       <span class="xref">System.Reflection.MethodBase.GetParameters()</span>
     </div>
     <div>
@@ -117,9 +153,6 @@ reflection.</p>
     </div>
     <div>
       <span class="xref">System.Reflection.MethodBase.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)</span>
-    </div>
-    <div>
-      <span class="xref">System.Reflection.MethodBase.GetGenericArguments()</span>
     </div>
     <div>
       <span class="xref">System.Reflection.MethodBase.Invoke(System.Object, System.Object[])</span>
@@ -278,9 +311,6 @@ reflection.</p>
       <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)</span>
     </div>
     <div>
-      <span class="xref">System.Reflection.MemberInfo.MemberType</span>
-    </div>
-    <div>
       <span class="xref">System.Reflection.MemberInfo.Name</span>
     </div>
     <div>
@@ -318,8 +348,13 @@ reflection.</p>
   <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
   <h5 id="CilTools_Reflection_CustomMethod_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract class CustomMethod : MethodBase, ICustomAttributeProvider, _MemberInfo, _MethodBase</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class CustomMethod : MethodInfo, ICustomAttributeProvider, _MemberInfo, _MethodBase, _MethodInfo, ICustomMethod</code></pre>
   </div>
+  <h5 id="CilTools_Reflection_CustomMethod_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>In CIL Tools 2.3 and earlier, all custom methods were inheriting from this class. Starting from version 2.4,
+custom method classes could implement <a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a> and are not required to inherit from this
+specific class.</p>
+</div>
   <h3 id="constructors">Constructors
   </h3>
   
@@ -442,12 +477,12 @@ reflection.</p>
   
   <a id="CilTools_Reflection_CustomMethod_ReturnType_" data-uid="CilTools.Reflection.CustomMethod.ReturnType*"></a>
   <h4 id="CilTools_Reflection_CustomMethod_ReturnType" data-uid="CilTools.Reflection.CustomMethod.ReturnType">ReturnType</h4>
-  <div class="markdown level1 summary"><p>When overridden in the derived class, returns the type of this method's return value</p>
+  <div class="markdown level1 summary"><p>Gets the return type of this method.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public abstract Type ReturnType { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public override Type ReturnType { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -464,9 +499,35 @@ reflection.</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="CilTools_Reflection_CustomMethod_ReturnType_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Return null if the return type is not applicable (such as for constructors).</p>
-</div>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodInfo.ReturnType</span></div>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_ReturnTypeCustomAttributes_" data-uid="CilTools.Reflection.CustomMethod.ReturnTypeCustomAttributes*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_ReturnTypeCustomAttributes" data-uid="CilTools.Reflection.CustomMethod.ReturnTypeCustomAttributes">ReturnTypeCustomAttributes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override ICustomAttributeProvider ReturnTypeCustomAttributes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.ICustomAttributeProvider</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodInfo.ReturnTypeCustomAttributes</span></div>
   
   
   <a id="CilTools_Reflection_CustomMethod_TokenResolver_" data-uid="CilTools.Reflection.CustomMethod.TokenResolver*"></a>
@@ -496,6 +557,33 @@ into corresponding reflection objects</p>
   </table>
   <h3 id="methods">Methods
   </h3>
+  
+  
+  <a id="CilTools_Reflection_CustomMethod_GetBaseDefinition_" data-uid="CilTools.Reflection.CustomMethod.GetBaseDefinition*"></a>
+  <h4 id="CilTools_Reflection_CustomMethod_GetBaseDefinition" data-uid="CilTools.Reflection.CustomMethod.GetBaseDefinition">GetBaseDefinition()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override MethodInfo GetBaseDefinition()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodInfo</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodInfo.GetBaseDefinition()</span></div>
   
   
   <a id="CilTools_Reflection_CustomMethod_GetBytecode_" data-uid="CilTools.Reflection.CustomMethod.GetBytecode*"></a>
@@ -673,6 +761,12 @@ method. Returns null if this instance does not represent an imported unmanaged m
   </div>
   <div>
       <span class="xref">System.Runtime.InteropServices._MethodBase</span>
+  </div>
+  <div>
+      <span class="xref">System.Runtime.InteropServices._MethodInfo</span>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

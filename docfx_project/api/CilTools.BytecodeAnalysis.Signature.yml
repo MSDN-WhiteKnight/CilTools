@@ -19,6 +19,7 @@ items:
   - CilTools.BytecodeAnalysis.Signature.ParamsCount
   - CilTools.BytecodeAnalysis.Signature.ParamTypes
   - CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
+  - CilTools.BytecodeAnalysis.Signature.ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)
   - CilTools.BytecodeAnalysis.Signature.ReturnType
   - CilTools.BytecodeAnalysis.Signature.ToString
   langs:
@@ -264,6 +265,54 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilTools.BytecodeAnalysis.Signature.ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)
+  commentId: M:CilTools.BytecodeAnalysis.Signature.ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)
+  id: ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)
+  parent: CilTools.BytecodeAnalysis.Signature
+  langs:
+  - csharp
+  - vb
+  name: ReadFromArray(Byte[], SignatureContext)
+  nameWithType: Signature.ReadFromArray(Byte[], SignatureContext)
+  fullName: CilTools.BytecodeAnalysis.Signature.ReadFromArray(System.Byte[], CilTools.Reflection.SignatureContext)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nReads a signature from the specified byte array using the specified signature context\n"
+  remarks: "<p>The signature could be the method signature or the standalone signature \n            (ECMA-335 II.23.2.3: StandAloneMethodSig)</p>\n<p>A signature context encapsulates a token resolver and a generic context. Generic context is only used \nwhen the signature contains generic parameters.</p>\n"
+  syntax:
+    content: public static Signature ReadFromArray(byte[] data, SignatureContext ctx)
+    parameters:
+    - id: data
+      type: System.Byte[]
+      description: Byte array to read data from
+    - id: ctx
+      type: CilTools.Reflection.SignatureContext
+      description: The signature context
+    return:
+      type: CilTools.BytecodeAnalysis.Signature
+    content.vb: Public Shared Function ReadFromArray(data As Byte(), ctx As SignatureContext) As Signature
+  overload: CilTools.BytecodeAnalysis.Signature.ReadFromArray*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Source array or signature context is null
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: Source array is empty
+  nameWithType.vb: Signature.ReadFromArray(Byte(), SignatureContext)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.BytecodeAnalysis.Signature.ReadFromArray(System.Byte(), CilTools.Reflection.SignatureContext)
+  name.vb: ReadFromArray(Byte(), SignatureContext)
 - uid: CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   commentId: M:CilTools.BytecodeAnalysis.Signature.ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   id: ReadFieldSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
@@ -1027,6 +1076,26 @@ references:
   name: System.IO
   nameWithType: System.IO
   fullName: System.IO
+- uid: CilTools.BytecodeAnalysis.Signature.ReadFromArray*
+  commentId: Overload:CilTools.BytecodeAnalysis.Signature.ReadFromArray
+  isExternal: true
+  name: ReadFromArray
+  nameWithType: Signature.ReadFromArray
+  fullName: CilTools.BytecodeAnalysis.Signature.ReadFromArray
+- uid: CilTools.Reflection.SignatureContext
+  commentId: T:CilTools.Reflection.SignatureContext
+  parent: CilTools.Reflection
+  isExternal: true
+  name: SignatureContext
+  nameWithType: SignatureContext
+  fullName: CilTools.Reflection.SignatureContext
+- uid: CilTools.BytecodeAnalysis.Signature
+  commentId: T:CilTools.BytecodeAnalysis.Signature
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: Signature
+  nameWithType: Signature
+  fullName: CilTools.BytecodeAnalysis.Signature
 - uid: CilTools.BytecodeAnalysis.Signature.ReadFieldSignature*
   commentId: Overload:CilTools.BytecodeAnalysis.Signature.ReadFieldSignature
   isExternal: true

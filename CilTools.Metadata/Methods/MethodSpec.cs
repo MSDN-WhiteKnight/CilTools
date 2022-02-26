@@ -299,7 +299,17 @@ namespace CilTools.Metadata.Methods
             }
         }
 
-        public override ICustomAttributeProvider ReturnTypeCustomAttributes => throw new NotImplementedException();
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes
+        {
+            get
+            {
+                if (this.definition is MethodInfo)
+                {
+                    return ((MethodInfo)this.definition).ReturnTypeCustomAttributes;
+                }
+                else return AttributesCollection.Empty;
+            }
+        }
 
         public MethodBase GetDefinition()
         {

@@ -1,0 +1,564 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.SourceCode.SourceCodeProvider
+  commentId: T:CilTools.SourceCode.SourceCodeProvider
+  id: SourceCodeProvider
+  parent: CilTools.SourceCode
+  children:
+  - CilTools.SourceCode.SourceCodeProvider.#ctor
+  - CilTools.SourceCode.SourceCodeProvider.GetSignatureSourceCode(System.Reflection.MethodBase)
+  - CilTools.SourceCode.SourceCodeProvider.GetSourceCodeDocuments(System.Reflection.MethodBase)
+  langs:
+  - csharp
+  - vb
+  name: SourceCodeProvider
+  nameWithType: SourceCodeProvider
+  fullName: CilTools.SourceCode.SourceCodeProvider
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  summary: "\nRepresents an object that loads source code\n"
+  syntax:
+    content: public abstract class SourceCodeProvider
+    content.vb: Public MustInherit Class SourceCodeProvider
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - abstract
+  - class
+  modifiers.vb:
+  - Public
+  - MustInherit
+  - Class
+- uid: CilTools.SourceCode.SourceCodeProvider.GetSourceCodeDocuments(System.Reflection.MethodBase)
+  commentId: M:CilTools.SourceCode.SourceCodeProvider.GetSourceCodeDocuments(System.Reflection.MethodBase)
+  id: GetSourceCodeDocuments(System.Reflection.MethodBase)
+  parent: CilTools.SourceCode.SourceCodeProvider
+  langs:
+  - csharp
+  - vb
+  name: GetSourceCodeDocuments(MethodBase)
+  nameWithType: SourceCodeProvider.GetSourceCodeDocuments(MethodBase)
+  fullName: CilTools.SourceCode.SourceCodeProvider.GetSourceCodeDocuments(System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  summary: "\nGets a collection of documents that contain the source code of the specified method\n"
+  syntax:
+    content: public abstract IEnumerable<SourceDocument> GetSourceCodeDocuments(MethodBase m)
+    parameters:
+    - id: m
+      type: System.Reflection.MethodBase
+      description: Method which source code to get
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.SourceCode.SourceDocument}
+    content.vb: Public MustOverride Function GetSourceCodeDocuments(m As MethodBase) As IEnumerable(Of SourceDocument)
+  overload: CilTools.SourceCode.SourceCodeProvider.GetSourceCodeDocuments*
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+- uid: CilTools.SourceCode.SourceCodeProvider.GetSignatureSourceCode(System.Reflection.MethodBase)
+  commentId: M:CilTools.SourceCode.SourceCodeProvider.GetSignatureSourceCode(System.Reflection.MethodBase)
+  id: GetSignatureSourceCode(System.Reflection.MethodBase)
+  parent: CilTools.SourceCode.SourceCodeProvider
+  langs:
+  - csharp
+  - vb
+  name: GetSignatureSourceCode(MethodBase)
+  nameWithType: SourceCodeProvider.GetSignatureSourceCode(MethodBase)
+  fullName: CilTools.SourceCode.SourceCodeProvider.GetSignatureSourceCode(System.Reflection.MethodBase)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  summary: "\nGets a string that contains the source code of the specified method&apos;s signature\n"
+  syntax:
+    content: public abstract string GetSignatureSourceCode(MethodBase m)
+    parameters:
+    - id: m
+      type: System.Reflection.MethodBase
+      description: Method which signature to get
+    return:
+      type: System.String
+    content.vb: Public MustOverride Function GetSignatureSourceCode(m As MethodBase) As String
+  overload: CilTools.SourceCode.SourceCodeProvider.GetSignatureSourceCode*
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
+- uid: CilTools.SourceCode.SourceCodeProvider.#ctor
+  commentId: M:CilTools.SourceCode.SourceCodeProvider.#ctor
+  id: '#ctor'
+  parent: CilTools.SourceCode.SourceCodeProvider
+  langs:
+  - csharp
+  - vb
+  name: SourceCodeProvider()
+  nameWithType: SourceCodeProvider.SourceCodeProvider()
+  fullName: CilTools.SourceCode.SourceCodeProvider.SourceCodeProvider()
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  syntax:
+    content: protected SourceCodeProvider()
+    content.vb: Protected Sub New
+  overload: CilTools.SourceCode.SourceCodeProvider.#ctor*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+references:
+- uid: CilTools.SourceCode
+  commentId: N:CilTools.SourceCode
+  isExternal: true
+  name: CilTools.SourceCode
+  nameWithType: CilTools.SourceCode
+  fullName: CilTools.SourceCode
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.SourceCode.SourceCodeProvider.GetSourceCodeDocuments*
+  commentId: Overload:CilTools.SourceCode.SourceCodeProvider.GetSourceCodeDocuments
+  isExternal: true
+  name: GetSourceCodeDocuments
+  nameWithType: SourceCodeProvider.GetSourceCodeDocuments
+  fullName: CilTools.SourceCode.SourceCodeProvider.GetSourceCodeDocuments
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: System.Collections.Generic.IEnumerable{CilTools.SourceCode.SourceDocument}
+  commentId: T:System.Collections.Generic.IEnumerable{CilTools.SourceCode.SourceDocument}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<SourceDocument>
+  nameWithType: IEnumerable<SourceDocument>
+  fullName: System.Collections.Generic.IEnumerable<CilTools.SourceCode.SourceDocument>
+  nameWithType.vb: IEnumerable(Of SourceDocument)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilTools.SourceCode.SourceDocument)
+  name.vb: IEnumerable(Of SourceDocument)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.SourceCode.SourceDocument
+    name: SourceDocument
+    nameWithType: SourceDocument
+    fullName: CilTools.SourceCode.SourceDocument
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.SourceCode.SourceDocument
+    name: SourceDocument
+    nameWithType: SourceDocument
+    fullName: CilTools.SourceCode.SourceDocument
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilTools.SourceCode.SourceCodeProvider.GetSignatureSourceCode*
+  commentId: Overload:CilTools.SourceCode.SourceCodeProvider.GetSignatureSourceCode
+  isExternal: true
+  name: GetSignatureSourceCode
+  nameWithType: SourceCodeProvider.GetSignatureSourceCode
+  fullName: CilTools.SourceCode.SourceCodeProvider.GetSignatureSourceCode
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.SourceCode.SourceCodeProvider.#ctor*
+  commentId: Overload:CilTools.SourceCode.SourceCodeProvider.#ctor
+  isExternal: true
+  name: SourceCodeProvider
+  nameWithType: SourceCodeProvider.SourceCodeProvider
+  fullName: CilTools.SourceCode.SourceCodeProvider.SourceCodeProvider

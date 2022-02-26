@@ -12,6 +12,7 @@ items:
   - CilTools.Runtime.ClrAssemblyReader.EnumerateModuleMethods(System.Diagnostics.Process,System.String)
   - CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods
   - CilTools.Runtime.ClrAssemblyReader.GetDynamicMethods(System.Diagnostics.Process)
+  - CilTools.Runtime.ClrAssemblyReader.GetMemoryImage(Microsoft.Diagnostics.Runtime.ClrModule)
   - CilTools.Runtime.ClrAssemblyReader.Read(Microsoft.Diagnostics.Runtime.ClrModule)
   - CilTools.Runtime.ClrAssemblyReader.Read(System.String)
   - CilTools.Runtime.ClrAssemblyReader.SourceRuntime
@@ -336,6 +337,46 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilTools.Runtime.ClrAssemblyReader.GetMemoryImage(Microsoft.Diagnostics.Runtime.ClrModule)
+  commentId: M:CilTools.Runtime.ClrAssemblyReader.GetMemoryImage(Microsoft.Diagnostics.Runtime.ClrModule)
+  id: GetMemoryImage(Microsoft.Diagnostics.Runtime.ClrModule)
+  parent: CilTools.Runtime.ClrAssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: GetMemoryImage(ClrModule)
+  nameWithType: ClrAssemblyReader.GetMemoryImage(ClrModule)
+  fullName: CilTools.Runtime.ClrAssemblyReader.GetMemoryImage(Microsoft.Diagnostics.Runtime.ClrModule)
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets the executable image data for the specified module\n"
+  remarks: "\nThis method gets the executable image data loaded into the target process. This enables you \nto inspect that image with PE reader libraries without the extra cost of reading the image from\nfile. The method can fail if the memory pages where the image is stored are inaccessible. \nIt also does not work for memory-only dynamic modules that don&apos;t have the backing PE image.\n"
+  syntax:
+    content: public static MemoryImage GetMemoryImage(ClrModule module)
+    parameters:
+    - id: module
+      type: Microsoft.Diagnostics.Runtime.ClrModule
+      description: The ClMD module object
+    return:
+      type: CilTools.Reflection.MemoryImage
+      description: In-memory executable image data, or <code>null</code> if the operation failed
+    content.vb: Public Shared Function GetMemoryImage(module As ClrModule) As MemoryImage
+  overload: CilTools.Runtime.ClrAssemblyReader.GetMemoryImage*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: module is <code>null</code>
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
 - uid: CilTools.Runtime.ClrAssemblyReader.SourceRuntime
   commentId: P:CilTools.Runtime.ClrAssemblyReader.SourceRuntime
   id: SourceRuntime
@@ -849,6 +890,25 @@ references:
   name: ClearPreloadedAssemblies
   nameWithType: ClrAssemblyReader.ClearPreloadedAssemblies
   fullName: CilTools.Runtime.ClrAssemblyReader.ClearPreloadedAssemblies
+- uid: CilTools.Runtime.ClrAssemblyReader.GetMemoryImage*
+  commentId: Overload:CilTools.Runtime.ClrAssemblyReader.GetMemoryImage
+  isExternal: true
+  name: GetMemoryImage
+  nameWithType: ClrAssemblyReader.GetMemoryImage
+  fullName: CilTools.Runtime.ClrAssemblyReader.GetMemoryImage
+- uid: CilTools.Reflection.MemoryImage
+  commentId: T:CilTools.Reflection.MemoryImage
+  parent: CilTools.Reflection
+  isExternal: true
+  name: MemoryImage
+  nameWithType: MemoryImage
+  fullName: CilTools.Reflection.MemoryImage
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
 - uid: CilTools.Runtime.ClrAssemblyReader.SourceRuntime*
   commentId: Overload:CilTools.Runtime.ClrAssemblyReader.SourceRuntime
   isExternal: true

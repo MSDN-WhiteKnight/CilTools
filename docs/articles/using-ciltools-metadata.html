@@ -74,8 +74,8 @@
 <h2 id="prerequisites">Prerequisites</h2>
 <p>To use CilTools.Metadata, install <a href="https://www.nuget.org/packages/CilTools.Metadata/">CilTools.Metadata</a> NuGet package. You can also build the library from sources or download released binaries in <a href="https://github.com/MSDN-WhiteKnight/CilTools">CIL Tools repository</a>. The minimum target framework is .NET Framework 4.5 or .NET Standard 2.0.</p>
 <h2 id="enumerating-methods-in-an-assembly">Enumerating methods in an assembly</h2>
-<p>To read assembly information, use <a class="xref" href="../api/CilTools.Metadata.AssemblyReader.html">AssemblyReader</a> class. It provides <code>Load</code> and <code>LoadFrom</code> methods that returns <code>Assembly</code> instances for a given assembly name or file path, respectively. Then you can work with that assemblies using regular reflection methods, such as <code>Assembly.GetTypes</code>. When you no longer need loaded assemblies, release them with <code>Dispose</code> method or <code>using</code> block.</p>
-<p>To enumerate methods in the given type, use <code>Type.GetMembers</code> method and filter out methods from the returned list. The returned method instances derive from <a class="xref" href="../api/CilTools.Reflection.CustomMethod.html">CustomMethod</a>, which in turn is derived from <code>MethodBase</code> class. <code>Type.GetMethods</code> and <code>Type.GetConstructors</code> are not supported.</p>
+<p>To read assembly information, use <a class="xref" href="../api/CilTools.Metadata.AssemblyReader.html">AssemblyReader</a> class. It provides <code>Load</code> and <code>LoadFrom</code> methods that returns <code>Assembly</code> instances for a given assembly name or file path, respectively. Then you can work with these assemblies using regular reflection methods, such as <code>Assembly.GetTypes</code>. When you no longer need loaded assemblies, release them with <code>Dispose</code> method or <code>using</code> block.</p>
+<p>To enumerate methods in the given type, use <code>Type.GetMembers</code> method and filter out methods from the returned list. The returned method instances derive from <code>MethodBase</code> class and implement <code>ICustomMethod</code> interface. <code>Type.GetMethods</code> and <code>Type.GetConstructors</code> are not supported.</p>
 <p>The following example shows how to display methods from the given assembly:</p>
 <pre><code class="lang-csharp">using System;
 using System.Reflection;
@@ -112,7 +112,7 @@ static void PrintMethods(string assemblyPath)
 
 </code></pre>
 <h2 id="getting-pinvoke-parameters-for-the-unmanaged-method">Getting P/Invoke parameters for the unmanaged method</h2>
-<p>To get P/Invoke parameters for the method imported from unmanaged library, such as a DLL name or calling convention, use the <a class="xref" href="../api/CilTools.Reflection.CustomMethod.html#CilTools_Reflection_CustomMethod_GetPInvokeParams">GetPInvokeParams()</a> method. The following example displays P/Invoke information for all unmanaged methods in the given assembly:</p>
+<p>To get P/Invoke parameters for the method imported from unmanaged library, such as a DLL name or calling convention, use the <a class="xref" href="../api/CilTools.Reflection.ICustomMethod.html#CilTools_Reflection_ICustomMethod_GetPInvokeParams">GetPInvokeParams()</a> method. The following example displays P/Invoke information for all unmanaged methods in the given assembly:</p>
 <pre><code class="lang-csharp">using System;
 using System.Reflection;
 using CilTools.Metadata;
@@ -138,10 +138,10 @@ static void PrintPInvokeParams(string assemblyPath)
 
             for (int i = 0; i &lt; members.Length; i++)
             {
-                if (members[i] is CustomMethod &amp;&amp;
-                    ((CustomMethod)members[i]).Attributes.HasFlag(MethodAttributes.PinvokeImpl))
+                if (members[i] is ICustomMethod &amp;&amp; members[i] is MethodBase &amp;&amp;
+                    ((MethodBase)members[i]).Attributes.HasFlag(MethodAttributes.PinvokeImpl))
                 {
-                    PInvokeParams pars = ((CustomMethod)members[i]).GetPInvokeParams();
+                    PInvokeParams pars = ((ICustomMethod)members[i]).GetPInvokeParams();
                     Console.WriteLine(t.Name + &quot;.&quot; + members[i].Name);
                     Console.WriteLine(&quot;Module: &quot;+pars.ModuleName);
                     Console.WriteLine(&quot;Calling convention: &quot; + pars.CallingConvention.ToString());        

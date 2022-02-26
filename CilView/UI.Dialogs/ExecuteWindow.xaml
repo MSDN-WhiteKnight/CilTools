@@ -1,0 +1,28 @@
+﻿<Window x:Class="CilView.UI.Dialogs.ExecuteWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CilView.UI.Dialogs"
+        mc:Ignorable="d"
+        Title="Execute method" Height="450" Width="800" WindowStartupLocation="CenterOwner">
+    <Grid>
+        <TextBlock HorizontalAlignment="Left" Margin="20,20,0,0" TextWrapping="Wrap" VerticalAlignment="Top">
+            <TextBlock.Foreground>Red</TextBlock.Foreground>
+            <TextBlock.FontFamily>Arial</TextBlock.FontFamily>
+            <TextBlock.FontSize>14</TextBlock.FontSize>
+            <TextBlock.Text>
+                WARNING: Executing a method could be dangerous. Don't execute a method unless you are sure it does not contain malicious code!
+            </TextBlock.Text>
+        </TextBlock>
+        <Label Content="Parameters:" HorizontalAlignment="Left" Margin="30,60,0,0" VerticalAlignment="Top"/>
+        <DataGrid x:Name="dg" HorizontalAlignment="Stretch" Margin="20,90,20,130" VerticalAlignment="Stretch"/>
+        <Label Content="Timeout, ms: " HorizontalAlignment="Left" Margin="30,0,0,80" VerticalAlignment="Bottom"/>
+        <TextBox x:Name="tbTimeout" HorizontalAlignment="Left" Height="23" Margin="140,0,0,80" TextWrapping="NoWrap" 
+                 Text="2000" VerticalAlignment="Bottom" Width="130"/>
+        <Button x:Name="bExecute" Content="Execute" HorizontalAlignment="Left" Height="35" Margin="45,0,0,20" 
+                VerticalAlignment="Bottom" Width="140" Click="bExecute_Click"/>
+        <Button x:Name="bCancel" Content="Cancel" HorizontalAlignment="Left" Height="35" Margin="245,0,0,20" 
+                VerticalAlignment="Bottom" Width="140" Click="bCancel_Click"/>
+    </Grid>
+</Window>

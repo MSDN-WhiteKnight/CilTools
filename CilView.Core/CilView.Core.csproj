@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Version>2.3.0</Version>
+    <Version>2.4.0</Version>
     <Authors>MSDN-WhiteKnight</Authors>
     <Company>CIL Tools</Company>
     <Product>CIL Tools</Product>
-    <Copyright>Copyright (c) 2021, MSDN.WhiteKnight</Copyright>
+    <Copyright>Copyright (c) 2022, MSDN.WhiteKnight</Copyright>
     <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
-    <FileVersion>2.3.0.0</FileVersion>
+    <FileVersion>2.4.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

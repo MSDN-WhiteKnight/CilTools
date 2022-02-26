@@ -1,0 +1,1246 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class ClrConstructorInfo
+   | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class ClrConstructorInfo
+   | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.Runtime.ClrConstructorInfo">
+  
+  
+  <h1 id="CilTools_Runtime_ClrConstructorInfo" data-uid="CilTools.Runtime.ClrConstructorInfo" class="text-break">Class ClrConstructorInfo
+  </h1>
+  <div class="markdown level0 summary"><p>Represents information about the constructor in an external CLR instance</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><span class="xref">System.Reflection.MemberInfo</span></div>
+    <div class="level2"><span class="xref">System.Reflection.MethodBase</span></div>
+    <div class="level3"><span class="xref">System.Reflection.ConstructorInfo</span></div>
+    <div class="level4"><span class="xref">ClrConstructorInfo</span></div>
+  </div>
+  <div classs="implements">
+    <h5>Implements</h5>
+    <div><span class="xref">System.Reflection.ICustomAttributeProvider</span></div>
+    <div><span class="xref">System.Runtime.InteropServices._MemberInfo</span></div>
+    <div><span class="xref">System.Runtime.InteropServices._MethodBase</span></div>
+    <div><span class="xref">System.Runtime.InteropServices._ConstructorInfo</span></div>
+    <div><a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.ConstructorName</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.TypeConstructorName</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.Invoke(System.Object[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.System.Runtime.InteropServices._ConstructorInfo.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.System.Runtime.InteropServices._ConstructorInfo.Invoke_2(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.System.Runtime.InteropServices._ConstructorInfo.Invoke_3(System.Object, System.Object[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.System.Runtime.InteropServices._ConstructorInfo.Invoke_4(System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.System.Runtime.InteropServices._ConstructorInfo.Invoke_5(System.Object[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.System.Runtime.InteropServices._ConstructorInfo.GetTypeInfoCount(System.UInt32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.System.Runtime.InteropServices._ConstructorInfo.GetTypeInfo(System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.System.Runtime.InteropServices._ConstructorInfo.GetIDsOfNames(System.Guid, System.IntPtr, System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.ConstructorInfo.System.Runtime.InteropServices._ConstructorInfo.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetMethodFromHandle(System.RuntimeMethodHandle, System.RuntimeTypeHandle)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetCurrentMethod()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetGenericArguments()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.Invoke(System.Object, System.Object[])</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.GetMethodBody()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfoCount(System.UInt32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetTypeInfo(System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.GetIDsOfNames(System.Guid, System.IntPtr, System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.MethodImplementationFlags</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.CallingConvention</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsGenericMethodDefinition</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.ContainsGenericParameters</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsGenericMethod</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsSecurityCritical</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsSecuritySafeCritical</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsSecurityTransparent</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsPublic</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsPrivate</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsFamily</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsFamilyAndAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsFamilyOrAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsStatic</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsFinal</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsVirtual</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsHideBySig</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsAbstract</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsSpecialName</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.IsConstructor</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsPublic</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsPrivate</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFamily</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFamilyAndAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFamilyOrAssembly</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsStatic</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsFinal</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsVirtual</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsHideBySig</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsAbstract</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsSpecialName</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MethodBase.System.Runtime.InteropServices._MethodBase.IsConstructor</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.GetCustomAttributesData()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfoCount(System.UInt32)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetTypeInfo(System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.GetIDsOfNames(System.Guid, System.IntPtr, System.UInt32, System.UInt32, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.System.Runtime.InteropServices._MemberInfo.Invoke(System.UInt32, System.Guid, System.UInt32, System.Int16, System.IntPtr, System.IntPtr, System.IntPtr, System.IntPtr)</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.CustomAttributes</span>
+    </div>
+    <div>
+      <span class="xref">System.Reflection.MemberInfo.Module</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Runtime.html">CilTools.Runtime</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.Runtime.dll</h6>
+  <h5 id="CilTools_Runtime_ClrConstructorInfo_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class ClrConstructorInfo : ConstructorInfo, ICustomAttributeProvider, _MemberInfo, _MethodBase, _ConstructorInfo, ICustomMethod</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_Attributes_" data-uid="CilTools.Runtime.ClrConstructorInfo.Attributes*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_Attributes" data-uid="CilTools.Runtime.ClrConstructorInfo.Attributes">Attributes</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override MethodAttributes Attributes { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodAttributes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodBase.Attributes</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_DeclaringType_" data-uid="CilTools.Runtime.ClrConstructorInfo.DeclaringType*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_DeclaringType" data-uid="CilTools.Runtime.ClrConstructorInfo.DeclaringType">DeclaringType</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type DeclaringType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MemberInfo.DeclaringType</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_InitLocals_" data-uid="CilTools.Runtime.ClrConstructorInfo.InitLocals*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_InitLocals" data-uid="CilTools.Runtime.ClrConstructorInfo.InitLocals">InitLocals</h4>
+  <div class="markdown level1 summary"><p>Gets the value specifying whether the local variables are initialized</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool InitLocals { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_InitLocalsSpecified_" data-uid="CilTools.Runtime.ClrConstructorInfo.InitLocalsSpecified*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_InitLocalsSpecified" data-uid="CilTools.Runtime.ClrConstructorInfo.InitLocalsSpecified">InitLocalsSpecified</h4>
+  <div class="markdown level1 summary"><p>Gets the value specifying whether the <a class="xref" href="CilTools.Reflection.ICustomMethod.html#CilTools_Reflection_ICustomMethod_InitLocals">InitLocals</a> property value is defined</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool InitLocalsSpecified { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_InnerMethod_" data-uid="CilTools.Runtime.ClrConstructorInfo.InnerMethod*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_InnerMethod" data-uid="CilTools.Runtime.ClrConstructorInfo.InnerMethod">InnerMethod</h4>
+  <div class="markdown level1 summary"><p>Gets the underlying ClrMD method object</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ClrMethod InnerMethod { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">Microsoft.Diagnostics.Runtime.ClrMethod</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_MaxStackSize_" data-uid="CilTools.Runtime.ClrConstructorInfo.MaxStackSize*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_MaxStackSize" data-uid="CilTools.Runtime.ClrConstructorInfo.MaxStackSize">MaxStackSize</h4>
+  <div class="markdown level1 summary"><p>Gets the maximum size of operand stack during method execution</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int MaxStackSize { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_MaxStackSizeSpecified_" data-uid="CilTools.Runtime.ClrConstructorInfo.MaxStackSizeSpecified*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_MaxStackSizeSpecified" data-uid="CilTools.Runtime.ClrConstructorInfo.MaxStackSizeSpecified">MaxStackSizeSpecified</h4>
+  <div class="markdown level1 summary"><p>Gets the value specifying whether the <a class="xref" href="CilTools.Reflection.ICustomMethod.html#CilTools_Reflection_ICustomMethod_MaxStackSize">MaxStackSize</a> property value is defined</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool MaxStackSizeSpecified { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_MemberType_" data-uid="CilTools.Runtime.ClrConstructorInfo.MemberType*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_MemberType" data-uid="CilTools.Runtime.ClrConstructorInfo.MemberType">MemberType</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override MemberTypes MemberType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MemberTypes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.ConstructorInfo.MemberType</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_MetadataToken_" data-uid="CilTools.Runtime.ClrConstructorInfo.MetadataToken*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_MetadataToken" data-uid="CilTools.Runtime.ClrConstructorInfo.MetadataToken">MetadataToken</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override int MetadataToken { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MemberInfo.MetadataToken</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_MethodHandle_" data-uid="CilTools.Runtime.ClrConstructorInfo.MethodHandle*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_MethodHandle" data-uid="CilTools.Runtime.ClrConstructorInfo.MethodHandle">MethodHandle</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override RuntimeMethodHandle MethodHandle { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.RuntimeMethodHandle</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodBase.MethodHandle</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_Name_" data-uid="CilTools.Runtime.ClrConstructorInfo.Name*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_Name" data-uid="CilTools.Runtime.ClrConstructorInfo.Name">Name</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override string Name { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MemberInfo.Name</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_ReflectedType_" data-uid="CilTools.Runtime.ClrConstructorInfo.ReflectedType*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_ReflectedType" data-uid="CilTools.Runtime.ClrConstructorInfo.ReflectedType">ReflectedType</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Type ReflectedType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MemberInfo.ReflectedType</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_ReturnType_" data-uid="CilTools.Runtime.ClrConstructorInfo.ReturnType*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_ReturnType" data-uid="CilTools.Runtime.ClrConstructorInfo.ReturnType">ReturnType</h4>
+  <div class="markdown level1 summary"><p>Gets the type of this method's return value</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public Type ReturnType { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Runtime_ClrConstructorInfo_ReturnType_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>Returns null if the return type is not applicable (such as for constructors).</p>
+</div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_TokenResolver_" data-uid="CilTools.Runtime.ClrConstructorInfo.TokenResolver*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_TokenResolver" data-uid="CilTools.Runtime.ClrConstructorInfo.TokenResolver">TokenResolver</h4>
+  <div class="markdown level1 summary"><p>Gets an object that can be used to convert metadata tokens into corresponding reflection objects</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ITokenResolver TokenResolver { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ITokenResolver.html">ITokenResolver</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetBytecode_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetBytecode*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetBytecode" data-uid="CilTools.Runtime.ClrConstructorInfo.GetBytecode">GetBytecode()</h4>
+  <div class="markdown level1 summary"><p>Gets the CIL bytecode of the method body</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] GetBytecode()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><p>CIL bytecode as byte array</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetCustomAttributes_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetCustomAttributes*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetCustomAttributes_System_Boolean_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetCustomAttributes(System.Boolean)">GetCustomAttributes(Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override object[] GetCustomAttributes(bool inherit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">inherit</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MemberInfo.GetCustomAttributes(System.Boolean)</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetCustomAttributes_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetCustomAttributes*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetCustomAttributes_System_Type_System_Boolean_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetCustomAttributes(System.Type,System.Boolean)">GetCustomAttributes(Type, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override object[] GetCustomAttributes(Type attributeType, bool inherit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">attributeType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">inherit</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MemberInfo.GetCustomAttributes(System.Type, System.Boolean)</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetDefinition_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetDefinition*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetDefinition" data-uid="CilTools.Runtime.ClrConstructorInfo.GetDefinition">GetDefinition()</h4>
+  <div class="markdown level1 summary"><p>Gets the method definition for the generic method.
+Returns null if this instance does not represent the generic method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public MethodBase GetDefinition()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodBase</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetExceptionBlocks_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetExceptionBlocks*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetExceptionBlocks" data-uid="CilTools.Runtime.ClrConstructorInfo.GetExceptionBlocks">GetExceptionBlocks()</h4>
+  <div class="markdown level1 summary"><p>Gets the list of exception handling blocks in the method's body</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public ExceptionBlock[] GetExceptionBlocks()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.ExceptionBlock.html">ExceptionBlock</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetLocalVariables_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetLocalVariables*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetLocalVariables" data-uid="CilTools.Runtime.ClrConstructorInfo.GetLocalVariables">GetLocalVariables()</h4>
+  <div class="markdown level1 summary"><p>Gets the array of local variable declarations of this method</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public LocalVariable[] GetLocalVariables()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.LocalVariable.html">LocalVariable</a>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetLocalVarSignature_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetLocalVarSignature*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetLocalVarSignature" data-uid="CilTools.Runtime.ClrConstructorInfo.GetLocalVarSignature">GetLocalVarSignature()</h4>
+  <div class="markdown level1 summary"><p>Gets the local variable signature as an array of bytes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public byte[] GetLocalVarSignature()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetMethodImplementationFlags_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetMethodImplementationFlags*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetMethodImplementationFlags" data-uid="CilTools.Runtime.ClrConstructorInfo.GetMethodImplementationFlags">GetMethodImplementationFlags()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override MethodImplAttributes GetMethodImplementationFlags()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.MethodImplAttributes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodBase.GetMethodImplementationFlags()</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetParameters_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetParameters*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetParameters" data-uid="CilTools.Runtime.ClrConstructorInfo.GetParameters">GetParameters()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override ParameterInfo[] GetParameters()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.ParameterInfo</span>[]</td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodBase.GetParameters()</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_GetPInvokeParams_" data-uid="CilTools.Runtime.ClrConstructorInfo.GetPInvokeParams*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_GetPInvokeParams" data-uid="CilTools.Runtime.ClrConstructorInfo.GetPInvokeParams">GetPInvokeParams()</h4>
+  <div class="markdown level1 summary"><p>Gets P/Invoke parameters for the imported unmanaged method.
+Returns null if this instance does not represent an imported unmanaged method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public PInvokeParams GetPInvokeParams()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.PInvokeParams.html">PInvokeParams</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_Invoke_" data-uid="CilTools.Runtime.ClrConstructorInfo.Invoke*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_Invoke_System_Object_System_Reflection_BindingFlags_System_Reflection_Binder_System_Object___System_Globalization_CultureInfo_" data-uid="CilTools.Runtime.ClrConstructorInfo.Invoke(System.Object,System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)">Invoke(Object, BindingFlags, Binder, Object[], CultureInfo)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override object Invoke(object obj, BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">obj</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.BindingFlags</span></td>
+        <td><span class="parametername">invokeAttr</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.Binder</span></td>
+        <td><span class="parametername">binder</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Globalization.CultureInfo</span></td>
+        <td><span class="parametername">culture</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MethodBase.Invoke(System.Object, System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_Invoke_" data-uid="CilTools.Runtime.ClrConstructorInfo.Invoke*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_Invoke_System_Reflection_BindingFlags_System_Reflection_Binder_System_Object___System_Globalization_CultureInfo_" data-uid="CilTools.Runtime.ClrConstructorInfo.Invoke(System.Reflection.BindingFlags,System.Reflection.Binder,System.Object[],System.Globalization.CultureInfo)">Invoke(BindingFlags, Binder, Object[], CultureInfo)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override object Invoke(BindingFlags invokeAttr, Binder binder, object[] parameters, CultureInfo culture)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.BindingFlags</span></td>
+        <td><span class="parametername">invokeAttr</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Reflection.Binder</span></td>
+        <td><span class="parametername">binder</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span>[]</td>
+        <td><span class="parametername">parameters</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Globalization.CultureInfo</span></td>
+        <td><span class="parametername">culture</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.ConstructorInfo.Invoke(System.Reflection.BindingFlags, System.Reflection.Binder, System.Object[], System.Globalization.CultureInfo)</span></div>
+  
+  
+  <a id="CilTools_Runtime_ClrConstructorInfo_IsDefined_" data-uid="CilTools.Runtime.ClrConstructorInfo.IsDefined*"></a>
+  <h4 id="CilTools_Runtime_ClrConstructorInfo_IsDefined_System_Type_System_Boolean_" data-uid="CilTools.Runtime.ClrConstructorInfo.IsDefined(System.Type,System.Boolean)">IsDefined(Type, Boolean)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override bool IsDefined(Type attributeType, bool inherit)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Type</span></td>
+        <td><span class="parametername">attributeType</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td><span class="parametername">inherit</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.MemberInfo.IsDefined(System.Type, System.Boolean)</span></div>
+  <h3 id="implements">Implements</h3>
+  <div>
+      <span class="xref">System.Reflection.ICustomAttributeProvider</span>
+  </div>
+  <div>
+      <span class="xref">System.Runtime.InteropServices._MemberInfo</span>
+  </div>
+  <div>
+      <span class="xref">System.Runtime.InteropServices._MethodBase</span>
+  </div>
+  <div>
+      <span class="xref">System.Runtime.InteropServices._ConstructorInfo</span>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.Reflection.ICustomMethod.html">ICustomMethod</a>
+  </div>
+  <h3 id="extensionmethods">Extension Methods</h3>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetCilGraph_System_Reflection_MethodBase_">CilExtensions.GetCilGraph(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetCilText_System_Reflection_MethodBase_">CilExtensions.GetCilText(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetInstructions_System_Reflection_MethodBase_">CilExtensions.GetInstructions(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetReferencedMethods_System_Reflection_MethodBase_">CilExtensions.GetReferencedMethods(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetReferencedMembers_System_Reflection_MethodBase_">CilExtensions.GetReferencedMembers(MethodBase)</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.BytecodeAnalysis.Extensions.CilExtensions.html#CilTools_BytecodeAnalysis_Extensions_CilExtensions_GetReferencedMembers_System_Reflection_MethodBase_CilTools_BytecodeAnalysis_MemberCriteria_">CilExtensions.GetReferencedMembers(MethodBase, MemberCriteria)</a>
+  </div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

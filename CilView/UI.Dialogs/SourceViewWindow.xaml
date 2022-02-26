@@ -38,8 +38,10 @@
         <Button x:Name="bNext" Content="&gt;" HorizontalAlignment="Left" Margin="70,10,20,12" 
                 VerticalAlignment="Bottom" Width="40" Height="30" 
                 ToolTip="Next sequence point" Click="bNext_Click" />
+        <TextBlock x:Name="tbSymbolsFile" HorizontalAlignment="Stretch" Margin="125,20,140,0" TextWrapping="Wrap" 
+                   Text="Symbols" Height="45" VerticalAlignment="Bottom" Foreground="Blue" Cursor="Hand"
+                   ToolTip="Open symbols file directory in Explorer" MouseDown="tbSymbolsFile_MouseDown"/>
         <Button x:Name="bClose" Content="Close" HorizontalAlignment="Right" Margin="20,10,20,12" VerticalAlignment="Bottom" 
                 Width="100" Height="30" Click="bClose_Click"/>
-
     </Grid>
 </Window>

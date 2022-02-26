@@ -25,6 +25,8 @@ namespace CilView.SourceCode
             //build display string
             StringBuilder sb = new StringBuilder(src.Length * 2);            
             sb.AppendLine(src);
+            sb.AppendLine();
+            sb.AppendLine("Source code from: Decompiler");
 
             //show source code
             TextViewWindow wnd = new TextViewWindow();
@@ -102,6 +104,11 @@ namespace CilView.SourceCode
                     }
 
                     sb.AppendLine();
+                    sb.Append("Symbols file: ");
+                    sb.Append(doc.SymbolsFile);
+                    sb.Append(" (");
+                    sb.Append(doc.SymbolsFileFormat);
+                    sb.Append(')');
 
                     //show source code
                     TextViewWindow wnd = new TextViewWindow();

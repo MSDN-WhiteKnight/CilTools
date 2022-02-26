@@ -6,6 +6,7 @@ items:
   children:
   - CilTools.Runtime.ClrAssemblyInfo
   - CilTools.Runtime.ClrAssemblyReader
+  - CilTools.Runtime.ClrConstructorInfo
   - CilTools.Runtime.ClrMethodInfo
   - CilTools.Runtime.ClrStackFrameInfo
   - CilTools.Runtime.ClrThreadInfo
@@ -34,6 +35,12 @@ references:
   name: ClrAssemblyReader
   nameWithType: ClrAssemblyReader
   fullName: CilTools.Runtime.ClrAssemblyReader
+- uid: CilTools.Runtime.ClrConstructorInfo
+  commentId: T:CilTools.Runtime.ClrConstructorInfo
+  isExternal: true
+  name: ClrConstructorInfo
+  nameWithType: ClrConstructorInfo
+  fullName: CilTools.Runtime.ClrConstructorInfo
 - uid: CilTools.Runtime.ClrMethodInfo
   commentId: T:CilTools.Runtime.ClrMethodInfo
   isExternal: true
