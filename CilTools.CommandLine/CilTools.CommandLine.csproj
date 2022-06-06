@@ -4,6 +4,7 @@
     <AssemblyName>cil</AssemblyName>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RollForward>Major</RollForward>
     <PackAsTool>true</PackAsTool>
     <PackageId>CilTools.CommandLine</PackageId>
     <ToolCommandName>cil</ToolCommandName>
