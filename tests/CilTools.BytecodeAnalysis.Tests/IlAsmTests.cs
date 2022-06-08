@@ -1,4 +1,4 @@
-﻿/* CilTools.BytecodeAnalysis library tests
+/* CilTools.BytecodeAnalysis library tests
  * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
@@ -16,9 +16,56 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
+    public enum TestCondition
+    {
+        Never = 0, Always = 1, WindowsOnly = 2
+    }
+
+    public class ConditionalTestAttribute : TestMethodAttribute
+    {
+        TestCondition cond;
+        string mes;
+
+        public ConditionalTestAttribute(TestCondition condition, string message)
+        {
+            this.cond = condition;
+            this.mes = message;
+        }
+
+        static bool ShouldRun(TestCondition cond)
+        {
+            switch (cond)
+            {
+                case TestCondition.Never: return false;
+                case TestCondition.Always: return true;
+                case TestCondition.WindowsOnly:
+                    if (Environment.OSVersion.Platform == PlatformID.Win32NT) return true;
+                    else return false;
+                default: Assert.Fail("Unknown test condition");
+                    return false;
+            }
+        }
+        
+        public override TestResult[] Execute(ITestMethod testMethod)
+        {
+            if (ShouldRun(this.cond))
+            {
+                TestResult[] rets = base.Execute(testMethod);
+                return rets;
+            }
+
+            TestResult res = new TestResult();
+            res.Outcome = UnitTestOutcome.Inconclusive;
+            res.TestFailureException = new AssertInconclusiveException(this.mes);
+            return new TestResult[] { res };
+        }
+    }
+    
     [TestClass]
     public class IlAsmTests
     {
+        const string ConditionMessage = "IlAsm is not available on non-Windows platforms";
+        
         static void CheckEnvironment()
         {
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
@@ -88,11 +135,9 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
         public void Test_IndirectCall_IlAsm()
         {
-            CheckEnvironment();
-
             const string code = @"
 .method public static void IndirectCallTest(string x) cil managed 
 { 
@@ -113,11 +158,9 @@ namespace CilTools.BytecodeAnalysis.Tests
             IndirectCall_VerifyMethod(mb);
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
         public void Test_FaultExceptionBlock()
         {
-            CheckEnvironment();
-
             const string code = @"
 .method  public hidebysig static int32 FaultTest(
     int32 x, int32 y
@@ -205,7 +248,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
         [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.Metadata)]
         [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", BytecodeProviders.Metadata)]
         [MethodTestData(typeof(SampleMethods), "PrintList", BytecodeProviders.Metadata)]
@@ -214,8 +257,6 @@ namespace CilTools.BytecodeAnalysis.Tests
         [MethodTestData(typeof(SampleMethods), "TestEscaping", BytecodeProviders.Metadata)]
         public void Test_Disassembler_Roundtrip(MethodBase m)
         {
-            CheckEnvironment();
-
             CilGraph graph = CilGraph.Create(m);
             string code = graph.ToText();
 
