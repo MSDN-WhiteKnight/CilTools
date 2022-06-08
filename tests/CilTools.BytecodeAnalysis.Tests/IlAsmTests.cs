@@ -15,52 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 // * Tests that use IlAsm to produce test data or verify disassembler output *
 
 namespace CilTools.BytecodeAnalysis.Tests
-{
-    public enum TestCondition
-    {
-        Never = 0, Always = 1, WindowsOnly = 2
-    }
-
-    public class ConditionalTestAttribute : TestMethodAttribute
-    {
-        TestCondition cond;
-        string mes;
-
-        public ConditionalTestAttribute(TestCondition condition, string message)
-        {
-            this.cond = condition;
-            this.mes = message;
-        }
-
-        static bool ShouldRun(TestCondition cond)
-        {
-            switch (cond)
-            {
-                case TestCondition.Never: return false;
-                case TestCondition.Always: return true;
-                case TestCondition.WindowsOnly:
-                    if (Environment.OSVersion.Platform == PlatformID.Win32NT) return true;
-                    else return false;
-                default: Assert.Fail("Unknown test condition");
-                    return false;
-            }
-        }
-        
-        public override TestResult[] Execute(ITestMethod testMethod)
-        {
-            if (ShouldRun(this.cond))
-            {
-                TestResult[] rets = base.Execute(testMethod);
-                return rets;
-            }
-
-            TestResult res = new TestResult();
-            res.Outcome = UnitTestOutcome.Inconclusive;
-            res.TestFailureException = new AssertInconclusiveException(this.mes);
-            return new TestResult[] { res };
-        }
-    }
-    
+{    
     [TestClass]
     public class IlAsmTests
     {
