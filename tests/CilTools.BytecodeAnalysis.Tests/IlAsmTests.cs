@@ -1,5 +1,5 @@
 /* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -66,14 +66,6 @@ namespace CilTools.BytecodeAnalysis.Tests
     {
         const string ConditionMessage = "IlAsm is not available on non-Windows platforms";
         
-        static void CheckEnvironment()
-        {
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
-            {
-                Assert.Inconclusive("IlAsm is not available on non-Windows platforms");
-            }
-        }
-
         /// <summary>
         /// Shared test logic for indirect call tests
         /// </summary>
