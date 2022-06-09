@@ -8,7 +8,7 @@ namespace CilTools.Tests.Common
 {
     public enum TestCondition
     {
-        Never = 0, Always = 1, WindowsOnly = 2
+        Never = 0, Always = 1, WindowsOnly = 2, DebugBuildOnly = 3
     }
 
     public class ConditionalTestAttribute : TestMethodAttribute
@@ -31,6 +31,12 @@ namespace CilTools.Tests.Common
                 case TestCondition.WindowsOnly:
                     if (Environment.OSVersion.Platform == PlatformID.Win32NT) return true;
                     else return false;
+                case TestCondition.DebugBuildOnly:
+#if DEBUG
+                    return true;
+#else
+                    return false;
+#endif
                 default:
                     Assert.Fail("Unknown test condition");
                     return false;
