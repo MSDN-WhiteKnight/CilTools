@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 // * Tests that use IlAsm to produce test data or verify disassembler output *
 
 namespace CilTools.BytecodeAnalysis.Tests
-{    
+{
     [TestClass]
     public class IlAsmTests
     {
