@@ -1,5 +1,5 @@
-﻿/* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+/* CilTools.BytecodeAnalysis library tests
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Linq;
@@ -178,14 +178,11 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-#if DEBUG
-        [TestMethod]
+        [ConditionalTest(TestCondition.DebugBuildOnly, "Skipped in release build")]
         [MethodTestData(typeof(SampleMethods), "PointerTest", BytecodeProviders.All)]
         public void Test_CilGraph_Pointer(MethodBase mi)
         {
             CilGraphTestsCore.Test_CilGraph_Pointer(mi);
         }
-#endif
-
     }
 }
