@@ -8,13 +8,19 @@ namespace CilTools.Tests.Common
 {
     public enum TestCondition
     {
-        Never = 0, Always = 1, WindowsOnly = 2, DebugBuildOnly = 3
+        Never = 0, Always = 1, WindowsOnly = 2, DebugBuildOnly = 3, ReleaseBuildOnly = 4
     }
 
     public class ConditionalTestAttribute : TestMethodAttribute
     {
         TestCondition cond;
         string mes;
+
+#if DEBUG
+        const bool IS_DEBUG_BUILD = true;
+#else
+        const bool IS_DEBUG_BUILD = false;
+#endif
 
         public ConditionalTestAttribute(TestCondition condition, string message)
         {
@@ -32,11 +38,9 @@ namespace CilTools.Tests.Common
                     if (Environment.OSVersion.Platform == PlatformID.Win32NT) return true;
                     else return false;
                 case TestCondition.DebugBuildOnly:
-#if DEBUG
-                    return true;
-#else
-                    return false;
-#endif
+                    return IS_DEBUG_BUILD;
+                case TestCondition.ReleaseBuildOnly:
+                    return !IS_DEBUG_BUILD;
                 default:
                     Assert.Fail("Unknown test condition");
                     return false;

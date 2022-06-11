@@ -178,7 +178,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-        [ConditionalTest(TestCondition.DebugBuildOnly, "Skipped in release build")]
+        [ConditionalTest(TestCondition.DebugBuildOnly, "Codegen is different in release build")]
         [MethodTestData(typeof(SampleMethods), "PointerTest", BytecodeProviders.All)]
         public void Test_CilGraph_Pointer(MethodBase mi)
         {

@@ -87,13 +87,11 @@ namespace CilTools.BytecodeAnalysis.Tests
                 });
         }
 
-#if DEBUG
-        [TestMethod]
+        [ConditionalTest(TestCondition.DebugBuildOnly, "Codegen is different in release build")]
         [MethodTestData(typeof(SampleMethods), "CreatePoint", BytecodeProviders.All)]
         public void Test_CilGraph_Locals(MethodBase mi)
         {
             CilGraphTestsCore_Text.Test_CilGraph_Locals(mi);
         }
-#endif
     }
 }
