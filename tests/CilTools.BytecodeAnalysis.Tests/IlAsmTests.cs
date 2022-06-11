@@ -1,5 +1,5 @@
-﻿/* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+/* CilTools.BytecodeAnalysis library tests
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -19,14 +19,8 @@ namespace CilTools.BytecodeAnalysis.Tests
     [TestClass]
     public class IlAsmTests
     {
-        static void CheckEnvironment()
-        {
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
-            {
-                Assert.Inconclusive("IlAsm is not available on non-Windows platforms");
-            }
-        }
-
+        const string ConditionMessage = "IlAsm is not available on non-Windows platforms";
+        
         /// <summary>
         /// Shared test logic for indirect call tests
         /// </summary>
@@ -88,11 +82,9 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
         public void Test_IndirectCall_IlAsm()
         {
-            CheckEnvironment();
-
             const string code = @"
 .method public static void IndirectCallTest(string x) cil managed 
 { 
@@ -113,11 +105,9 @@ namespace CilTools.BytecodeAnalysis.Tests
             IndirectCall_VerifyMethod(mb);
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
         public void Test_FaultExceptionBlock()
         {
-            CheckEnvironment();
-
             const string code = @"
 .method  public hidebysig static int32 FaultTest(
     int32 x, int32 y
@@ -205,7 +195,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
         [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.Metadata)]
         [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", BytecodeProviders.Metadata)]
         [MethodTestData(typeof(SampleMethods), "PrintList", BytecodeProviders.Metadata)]
@@ -214,8 +204,6 @@ namespace CilTools.BytecodeAnalysis.Tests
         [MethodTestData(typeof(SampleMethods), "TestEscaping", BytecodeProviders.Metadata)]
         public void Test_Disassembler_Roundtrip(MethodBase m)
         {
-            CheckEnvironment();
-
             CilGraph graph = CilGraph.Create(m);
             string code = graph.ToText();
 

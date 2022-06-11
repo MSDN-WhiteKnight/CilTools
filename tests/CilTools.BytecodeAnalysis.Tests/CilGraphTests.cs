@@ -1,5 +1,5 @@
-﻿/* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+/* CilTools.BytecodeAnalysis library tests
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Linq;
@@ -57,15 +57,11 @@ namespace CilTools.BytecodeAnalysis.Tests
             CilGraphTestsCore.Test_CilGraph_Constrained(mi);
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, "Dynamic methods are not supported on non-Windows platforms")]
         [WorkItem(49)]
         public void Test_CilGraph_DynamicMethod()
         {
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
-            {
-                //Skipped on Linux (https://github.com/MSDN-WhiteKnight/CilTools/issues/49)
-                Assert.Inconclusive("Dynamic methods are not supported on non-Windows platforms");
-            }
+            //Skipped on Linux (https://github.com/MSDN-WhiteKnight/CilTools/issues/49)
 
             //create dynamic method
             DynamicMethod dm = new DynamicMethod(
@@ -182,14 +178,11 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-#if DEBUG
-        [TestMethod]
+        [ConditionalTest(TestCondition.DebugBuildOnly, "Codegen is different in release build")]
         [MethodTestData(typeof(SampleMethods), "PointerTest", BytecodeProviders.All)]
         public void Test_CilGraph_Pointer(MethodBase mi)
         {
             CilGraphTestsCore.Test_CilGraph_Pointer(mi);
         }
-#endif
-
     }
 }
