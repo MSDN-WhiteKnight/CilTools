@@ -46,5 +46,39 @@ namespace CilTools.Tests.Common
             return "Release";
 #endif
         }
+
+        public static void GenerateFakeIL(int repeats, TextWriter target)
+        {
+            string[] words = {
+                "Test","Foo","Bar","Buzz","Frobby","Bobby","Hello","Alice","Bob","Lee","Miroslav","Nicolas","Peter"
+            };
+
+            Random rnd = new Random();
+
+            for (int i = 0; i < repeats; i++)
+            {
+                int nWord = rnd.Next(words.Length);
+                int nNumber = rnd.Next();
+
+                string name = words[nWord] + nNumber.ToString();
+                string str = ".method public static void " + name + "() cil managed { } ";
+                target.Write(str);
+
+                nWord = rnd.Next(words.Length);
+                nNumber = rnd.Next();
+                str = "//" + words[nWord] + nNumber.ToString();
+                target.WriteLine(str);
+            }
+
+            target.Flush();
+        }
+
+        public static string GenerateFakeIL(int repeats)
+        {
+            StringBuilder sb = new StringBuilder(5000);
+            StringWriter wr = new StringWriter(sb);
+            GenerateFakeIL(repeats, wr);
+            return sb.ToString();
+        }
     }
 }

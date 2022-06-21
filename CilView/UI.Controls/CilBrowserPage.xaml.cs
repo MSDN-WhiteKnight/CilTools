@@ -83,7 +83,19 @@ namespace CilView.UI.Controls
             
             this.tbMainContent.Text = contentText;
             gridContent.Children.Clear();
-            gridContent.Children.Add(CilVisualization.VisualizeSourceText(contentText));
+            
+            if (contentText.Length < 1024*1024)
+            {
+                gridContent.Children.Add(CilVisualization.VisualizeSourceText(contentText));
+            }
+            else
+            {
+                TextBlock txt = new TextBlock();
+                txt.Text = "[Error: Formatted view is not supported for files larger then 1 MB]";
+                txt.Padding = new Thickness(5);
+                gridContent.Children.Add(txt);
+            }
+            
             this.tbCurrLocation.Text = filename;
         }
 

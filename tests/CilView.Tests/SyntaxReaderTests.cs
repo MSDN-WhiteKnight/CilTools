@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using CilTools.Syntax;
+using CilTools.Tests.Common;
 using CilView.Core.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -180,6 +181,28 @@ namespace CilView.Tests
             wr.Flush();
             string processed = sb.ToString();
             Assert.AreEqual(src, processed);
+        }
+        
+        [TestMethod]
+        public void Test_SyntaxReader_LargeText()
+        {
+            // Generate random large source
+            string src = Utils.GenerateFakeIL(15000);
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(src);
+            
+            // Just verify that it does not crash and produce reasonable results
+            bool found = false;
+            
+            for (int i=0; i<nodes.Length; i++)
+            {
+                if(nodes[i] is KeywordSyntax && (nodes[i] as KeywordSyntax).Content == "static")
+                {
+                    found = true;
+                    break;
+                }
+            }
+            
+            Assert.IsTrue(found);
         }
     }
 }
