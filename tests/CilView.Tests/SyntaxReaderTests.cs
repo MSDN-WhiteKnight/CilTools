@@ -11,6 +11,43 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilView.Tests
 {
+    public static class FakeILGenerator
+    {
+        static string[] words = {
+            "Test","Foo","Bar","Buzz","Frobby","Bobby","Hello","Alice","Bob","Lee","Miroslav","Nicolas","Peter"
+        };
+
+        public static void Generate(int repeats, TextWriter target)
+        {
+            Random rnd = new Random();
+
+            for (int i = 0; i < repeats; i++)
+            {
+                int nWord = rnd.Next(words.Length);
+                int nNumber = rnd.Next();
+
+                string name = words[nWord] + nNumber.ToString();
+                string str = ".method public static void " + name + "() cil managed { } ";
+                target.Write(str);
+
+                nWord = rnd.Next(words.Length);
+                nNumber = rnd.Next();
+                str = "//" + words[nWord] + nNumber.ToString();
+                target.WriteLine(str);
+            }
+
+            target.Flush();
+        }
+
+        public static string Generate(int repeats)
+        {
+            StringBuilder sb = new StringBuilder(5000);
+            StringWriter wr = new StringWriter(sb);
+            Generate(repeats, wr);
+            return sb.ToString();
+        }
+    }
+    
     [TestClass]
     public class SyntaxReaderTests
     {
@@ -180,6 +217,28 @@ namespace CilView.Tests
             wr.Flush();
             string processed = sb.ToString();
             Assert.AreEqual(src, processed);
+        }
+        
+        [TestMethod]
+        public void Test_SyntaxReader_LargeText()
+        {
+            // Generate random large source
+            string src = FakeILGenerator.Generate(15000);
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(src);
+            
+            // Just verify that it does not crash and produce reasonable results
+            bool found = false;
+            
+            for (int i=0; i<nodes.Length; i++)
+            {
+                if(nodes[i] is KeywordSyntax && (nodes[i] as KeywordSyntax).Content == "static")
+                {
+                    found = true;
+                    break;
+                }
+            }
+            
+            Assert.IsTrue(found);
         }
     }
 }
