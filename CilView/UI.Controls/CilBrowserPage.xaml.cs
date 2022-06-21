@@ -91,7 +91,7 @@ namespace CilView.UI.Controls
             else
             {
                 TextBlock txt = new TextBlock();
-                txt2.Text = "[Error: Formatted view is not supported for files larger then 1 MB]";
+                txt.Text = "[Error: Formatted view is not supported for files larger then 1 MB]";
                 gridContent.Children.Add(txt);
             }
             
