@@ -47,12 +47,12 @@ namespace CilTools.Tests.Common
 #endif
         }
 
-        static string[] words = {
-            "Test","Foo","Bar","Buzz","Frobby","Bobby","Hello","Alice","Bob","Lee","Miroslav","Nicolas","Peter"
-        };
-
         public static void GenerateFakeIL(int repeats, TextWriter target)
         {
+            string[] words = {
+                "Test","Foo","Bar","Buzz","Frobby","Bobby","Hello","Alice","Bob","Lee","Miroslav","Nicolas","Peter"
+            };
+
             Random rnd = new Random();
 
             for (int i = 0; i < repeats; i++)
