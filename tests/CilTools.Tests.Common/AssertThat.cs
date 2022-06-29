@@ -185,5 +185,45 @@ namespace CilTools.Tests.Common
                     ex.ToString());
             }
         }
+
+        public static void AreLexicallyEqual(string expected, string actual)
+        {
+            if (string.Equals(expected, actual, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            if (expected == null || actual == null)
+            {
+                Assert.AreEqual(expected, actual);
+            }
+
+            //normalize strings to replace all whitespace sequences with a single whitespace
+            char[] splitter = new char[] { ' ', '\t', '\r', '\n' };
+            string[] arr1 = expected.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb1 = new StringBuilder(expected.Length);
+
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                sb1.Append(arr1[i]);
+
+                if (i < arr1.Length - 1) sb1.Append(' ');
+            }
+
+            string[] arr2 = actual.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb2 = new StringBuilder(actual.Length);
+
+            for (int i = 0; i < arr2.Length; i++)
+            {
+                sb2.Append(arr2[i]);
+
+                if (i < arr2.Length - 1) sb2.Append(' ');
+            }
+
+            //compare resulting strings
+            string s1 = sb1.ToString();
+            string s2 = sb2.ToString();
+            Assert.AreEqual(s1, s2, "Strings are not lexically equal");
+        }
     }
 }
