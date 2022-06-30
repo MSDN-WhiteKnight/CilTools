@@ -223,7 +223,30 @@ namespace CilTools.Tests.Common
             //compare resulting strings
             string s1 = sb1.ToString();
             string s2 = sb2.ToString();
-            Assert.AreEqual(s1, s2, "Strings are not lexically equal");
+
+            if (!string.Equals(s1, s2, StringComparison.Ordinal))
+            {
+                string diffDescr = string.Empty;
+
+                try
+                {
+                    StringDiff diff = StringDiff.GetDiff(s1, s2);
+                    Debug.WriteLine("AssertThat.AreLexicallyEqual diff:");
+                    Debug.WriteLine(diff.Visualize());
+                    diffDescr = diff.ToString();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetDiff:");
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                string mes = string.Format(
+                    "AssertThat.AreLexicallyEqual failed. Expected: <{0}>. Actual: <{1}>. {2}",
+                    s1, s2, diffDescr);
+
+                Fail(mes);
+            }
         }
     }
 }
