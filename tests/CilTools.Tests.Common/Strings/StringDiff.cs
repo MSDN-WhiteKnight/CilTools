@@ -28,9 +28,21 @@ namespace CilTools.Tests.Common
     {
         List<DiffElement> items = new List<DiffElement>();
 
-        IEnumerable<DiffElement> Items
+        public IEnumerable<DiffElement> Items
         {
             get { return items.ToArray(); }
+        }
+
+        public string Visualize()
+        {
+            StringBuilder sb = new StringBuilder(1000);
+
+            for (int i = 0; i < this.items.Count; i++)
+            {
+                sb.Append(this.items[i].Visualize());
+            }
+
+            return sb.ToString();
         }
 
         static bool CollectionContainsSubsequence<T>(IList<T> coll, IList<T> subsequence)
@@ -262,6 +274,11 @@ namespace CilTools.Tests.Common
 
         public static string GetLongestCommonSubsequence(string left, string right)
         {
+            if (string.Equals(left, right, StringComparison.Ordinal))
+            {
+                return left;
+            }
+
             StringBuilder sb;
 
             if (left.Contains("\n") || right.Contains("\n"))
@@ -312,13 +329,7 @@ namespace CilTools.Tests.Common
 
             string[] strings1 = left.Split(new char[] { ' ' });
             string[] strings2 = right.Split(new char[] { ' ' });
-
-            if (strings1.Length <= 4 || strings2.Length <= 4)
-            {
-                //we don't have efficient solution for now, so just ignore this case
-                return string.Empty;
-            }
-
+                        
             //for other cases, diff by words
             IList<string> lcs = GetCollectionsLongestCommonSubsequence(strings1, strings2);
 
@@ -359,9 +370,8 @@ namespace CilTools.Tests.Common
                     iOriginal++;
                 }
             }
-            ;
 
-            if (iOriginal < original.Length - 1)
+            if (iOriginal < original.Length)
             {
                 string remainder = original.Substring(iOriginal);
                 ret.items.Add(new DiffElement(DiffKind.Deletion, remainder));
@@ -370,10 +380,138 @@ namespace CilTools.Tests.Common
             return ret;
         }
 
+        static StringDiff GetAdditions(string changed, string lcs)
+        {
+            int iChanged = 0;
+            int iLCS = 0;
+            StringDiff ret = new StringDiff();
+
+            while (true)
+            {
+                if (iChanged >= changed.Length) break;
+                if (iLCS >= lcs.Length) break;
+
+                char c2 = changed[iChanged];
+                char c = lcs[iLCS];
+
+                if (c == c2)
+                {
+                    ret.items.Add(new DiffElement(DiffKind.Same, c.ToString()));
+                    iChanged++;
+                    iLCS++;
+                }
+                else
+                {
+                    ret.items.Add(new DiffElement(DiffKind.Addition, c2.ToString()));
+                    iChanged++;
+                }
+            }
+
+            if (iChanged < changed.Length)
+            {
+                string remainder = changed.Substring(iChanged);
+                ret.items.Add(new DiffElement(DiffKind.Addition, remainder));
+            }
+
+            return ret;
+        }
+
+        static StringDiff Merge(StringDiff left, StringDiff right)
+        {
+            StringDiff ret = new StringDiff();
+
+            int iLeft = 0;
+            int iRight = 0;
+            DiffElement[] arrLeft = left.items.ToArray();
+            DiffElement[] arrRight = right.items.ToArray();
+
+            while (true)
+            {
+                if (iLeft >= arrLeft.Length) break;
+                if (iRight >= arrRight.Length) break;
+
+                DiffElement d1 = arrLeft[iLeft];
+                DiffElement d2 = arrRight[iRight];
+
+                if (d1.Kind == DiffKind.Same && d2.Kind == DiffKind.Same
+                    && string.Equals(d1.Value, d2.Value, StringComparison.Ordinal))
+                {
+                    ret.items.Add(d1);
+                    iLeft++;
+                    iRight++;
+                }
+                else if (d1.Kind != DiffKind.Same)
+                {
+                    ret.items.Add(d1);
+                    iLeft++;
+                }
+                else
+                {
+                    ret.items.Add(d2);
+                    iRight++;
+                }
+            }
+
+            if (iLeft < arrLeft.Length)
+            {
+                for (int i = iLeft; i < arrLeft.Length; i++)
+                {
+                    ret.items.Add(arrLeft[i]);
+                }
+            }
+
+            if (iRight < arrRight.Length)
+            {
+                for (int i = iRight; i < arrRight.Length; i++)
+                {
+                    ret.items.Add(arrRight[i]);
+                }
+            }
+
+            return ret;
+        }
+
+        static StringDiff Compact(StringDiff input)
+        {
+            StringDiff output = new StringDiff();
+            StringBuilder currElement = new StringBuilder(500);
+            DiffKind currKind = DiffKind.Unknown;
+
+            for (int i = 0; i < input.items.Count; i++)
+            {
+                if (input.items[i].Kind == currKind)
+                {
+                    //append to current element
+                    currElement.Append(input.items[i].Value);
+                }
+                else if (currKind == DiffKind.Unknown)
+                {
+                    //first element
+                    currKind = input.items[i].Kind;
+                    currElement.Append(input.items[i].Value);
+                }
+                else
+                {
+                    //start new element kind
+                    output.items.Add(new DiffElement(currKind, currElement.ToString()));
+                    currElement.Clear();
+                    currKind = input.items[i].Kind;
+                    currElement.Append(input.items[i].Value);
+                }
+            }
+
+            if(currElement.Length>0) output.items.Add(new DiffElement(currKind, currElement.ToString()));
+
+            return output;
+        }
+
         public static StringDiff GetDiff(string original, string changed)
         {
             string lcs = GetLongestCommonSubsequence(original, changed);
-            return GetDeletions(original, lcs);
+            StringDiff d1 = GetDeletions(original, lcs);
+            StringDiff d2 = GetAdditions(changed, lcs);
+            StringDiff ret = Compact(Merge(d1, d2));
+            return ret;
         }
     }
 }
