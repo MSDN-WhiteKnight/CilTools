@@ -80,5 +80,11 @@ namespace CilTools.Tests.Common
             GenerateFakeIL(repeats, wr);
             return sb.ToString();
         }
+
+        public static string GetStringCapped(string input, int maxCount)
+        {
+            if (input.Length < maxCount) return input;
+            else return input.Substring(0, maxCount - 4) + "...";
+        }
     }
 }

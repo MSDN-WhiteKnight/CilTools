@@ -7,30 +7,6 @@ using System.Text;
 
 namespace CilTools.Tests.Common
 {
-    public enum DiffKind
-    {
-        Unknown = 0, Addition = 1, Deletion, Same
-    }
-
-    public class DiffElement
-    {
-        public DiffElement(DiffKind kind, string val)
-        {
-            this.Kind = kind;
-            this.Value = val;
-        }
-
-        public DiffKind Kind { get; set; }
-        public string Value { get; set; }
-        
-        public string Visualize()
-        {
-            if (this.Kind == DiffKind.Addition) return " +[" + this.Value + "] ";
-            else if (this.Kind == DiffKind.Deletion) return " -[" + this.Value + "] ";
-            else return this.Value;
-        }
-    }
-
     public class StringDiff
     {
         List<DiffElement> items = new List<DiffElement>();
@@ -49,6 +25,55 @@ namespace CilTools.Tests.Common
                 sb.Append(this.items[i].Visualize());
             }
 
+            return sb.ToString();
+        }
+
+        public override string ToString()
+        {
+            if(this.items == null) return base.ToString();
+
+            StringBuilder sb = new StringBuilder(200);
+            int start = int.MaxValue;
+            bool startFound = false;
+            string firstChange = string.Empty;
+            int cchAccumulated = 0;
+            int cchAdditions = 0;
+            int cchDeletions = 0;
+            
+            for (int i = 0; i < this.items.Count; i++)
+            {
+                if (!startFound)
+                {
+                    if (this.items[i].Kind == DiffKind.Addition || this.items[i].Kind == DiffKind.Deletion)
+                    {
+                        start = cchAccumulated;
+                        startFound = true;
+                        firstChange = Utils.GetStringCapped(this.items[i].Value, 12);
+                    }
+                }
+
+                if (this.items[i].Kind == DiffKind.Addition)
+                {
+                    cchAdditions += this.items[i].Value.Length;
+                }
+                else if (this.items[i].Kind == DiffKind.Deletion)
+                {
+                    cchDeletions += this.items[i].Value.Length;
+                }
+                else
+                {
+                    cchAccumulated += this.items[i].Value.Length;
+                }
+            }
+
+            sb.Append("Strings differ starting from character ");
+            sb.Append(start);
+            sb.Append(" [");
+            sb.Append(firstChange);
+            sb.Append("]. Additions: ");
+            sb.Append(cchAdditions);
+            sb.Append("; Deletions: ");
+            sb.Append(cchDeletions);
             return sb.ToString();
         }
 
@@ -152,11 +177,16 @@ namespace CilTools.Tests.Common
             return ret;
         }
 
-        static IList<T> GetCollectionsLongestCommonSubsequence<T>(IList<T> left, IList<T> right)
+        static IList<T> GetCollectionsLongestCommonSubsequence<T>(IList<T> left, IList<T> right, int depth)
         {
             if (left.Count == 0 || right.Count == 0)
             {
                 return new T[0];
+            }
+
+            if (depth > 5000)
+            {
+                throw new Exception("Recursion is too deep in GetCollectionsLongestCommonSubsequence");
             }
 
             IList<T> prefix = GetCommonPrefix(left, right);
@@ -166,7 +196,7 @@ namespace CilTools.Tests.Common
                 //have common prefix
                 IList<T> new_left = GetSubCollection(left, prefix.Count, left.Count - prefix.Count);
                 IList<T> new_right = GetSubCollection(right, prefix.Count, right.Count - prefix.Count);
-                IList<T> inner_subs = GetCollectionsLongestCommonSubsequence(new_left, new_right);
+                IList<T> inner_subs = GetCollectionsLongestCommonSubsequence(new_left, new_right, depth + 1);
 
                 List<T> list = new List<T>(prefix);
                 for (int i = 0; i < inner_subs.Count; i++) list.Add(inner_subs[i]);
@@ -176,13 +206,13 @@ namespace CilTools.Tests.Common
             if (!right.Contains(left[0]))
             {
                 IList<T> new_left = GetSubCollection(left, 1, left.Count - 1);
-                return GetCollectionsLongestCommonSubsequence(new_left, right);
+                return GetCollectionsLongestCommonSubsequence(new_left, right, depth + 1);
             }
 
             if (!left.Contains(right[0]))
             {
                 IList<T> new_right = GetSubCollection(right, 1, right.Count - 1);
-                return GetCollectionsLongestCommonSubsequence(left, new_right);
+                return GetCollectionsLongestCommonSubsequence(left, new_right, depth + 1);
             }
 
             if (CollectionContainsSubsequence(right, left))
@@ -208,7 +238,8 @@ namespace CilTools.Tests.Common
             {
                 List<T> list = new List<T>(GetCollectionsLongestCommonSubsequence(
                     GetSubCollection(left, 0, left.Count - 1),
-                    GetSubCollection(right, 0, right.Count - 1)));
+                    GetSubCollection(right, 0, right.Count - 1),
+                    depth + 1));
                 list.Add(x);
                 return list;
             }
@@ -216,7 +247,8 @@ namespace CilTools.Tests.Common
             {
                 IList<T> lcs1 = GetCollectionsLongestCommonSubsequence(
                     left,
-                    GetSubCollection(right, 0, right.Count - 1));
+                    GetSubCollection(right, 0, right.Count - 1), 
+                    depth + 1);
 
                 if (lcs1.Count > right.Count)
                 {
@@ -225,7 +257,8 @@ namespace CilTools.Tests.Common
 
                 IList<T> lcs2 = GetCollectionsLongestCommonSubsequence(
                     GetSubCollection(left, 0, left.Count - 1),
-                    right);
+                    right, 
+                    depth + 1);
 
                 if (lcs1.Count > lcs2.Count)
                 {
@@ -271,7 +304,7 @@ namespace CilTools.Tests.Common
 
         static string GetLongestCommonSubsequenceImpl(string left, string right)
         {
-            IList<char> lcs = GetCollectionsLongestCommonSubsequence(left.ToCharArray(), right.ToCharArray());
+            IList<char> lcs = GetCollectionsLongestCommonSubsequence(left.ToCharArray(), right.ToCharArray(), 0);
             char[] chars = new char[lcs.Count];
 
             for (int i = 0; i < lcs.Count; i++) chars[i] = lcs[i];
@@ -279,7 +312,7 @@ namespace CilTools.Tests.Common
             return new string(chars);
         }
 
-        public static string GetLongestCommonSubsequence(string left, string right)
+        static string GetLongestCommonSubsequence(string left, string right)
         {
             if (string.Equals(left, right, StringComparison.Ordinal))
             {
@@ -338,7 +371,7 @@ namespace CilTools.Tests.Common
             string[] strings2 = right.Split(new char[] { ' ' });
                         
             //for other cases, diff by words
-            IList<string> lcs = GetCollectionsLongestCommonSubsequence(strings1, strings2);
+            IList<string> lcs = GetCollectionsLongestCommonSubsequence(strings1, strings2, 0);
 
             sb = new StringBuilder(left.Length);
 
@@ -514,6 +547,11 @@ namespace CilTools.Tests.Common
 
         public static StringDiff GetDiff(string original, string changed)
         {
+            if (original.Length > 2000 || changed.Length > 2000)
+            {
+                throw new ArgumentException("String is too large to diff!");
+            }
+
             string lcs = GetLongestCommonSubsequence(original, changed);
             StringDiff d1 = GetDeletions(original, lcs);
             StringDiff d2 = GetAdditions(changed, lcs);
