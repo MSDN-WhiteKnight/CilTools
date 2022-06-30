@@ -55,6 +55,10 @@ namespace CilTools.Tests.Common
 
         public static void Test_CilGraph_Locals(MethodBase mi)
         {
+            const string expected = @".maxstack 2
+.locals init (class [CilTools.Tests.Common]CilTools.Tests.Common.MyPoint V_0,
+    class [CilTools.Tests.Common]CilTools.Tests.Common.MyPoint V_1)";
+
             CilGraph graph = CilGraph.Create(mi);
 
             StringBuilder sb = new StringBuilder(100);
@@ -63,11 +67,7 @@ namespace CilTools.Tests.Common
             wr.Flush();
             string str = sb.ToString();
 
-            AssertThat.IsMatch(str, new Text[] { 
-                Text.Any, ".locals",Text.Any, "(",
-                Text.Any, "MyPoint",Text.Any, ")",
-                Text.Any 
-            });
+            AssertThat.AreLexicallyEqual(expected, str);
         }
 
         public static void Test_CilGraph_ImplRuntime(MethodBase mi)
