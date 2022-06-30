@@ -22,6 +22,13 @@ namespace CilTools.Tests.Common
 
         public DiffKind Kind { get; set; }
         public string Value { get; set; }
+        
+        public string Visualize()
+        {
+            if (this.Kind == DiffKind.Addition) return " +[" + this.Value + "] ";
+            else if (this.Kind == DiffKind.Deletion) return " -[" + this.Value + "] ";
+            else return this.Value;
+        }
     }
 
     public class StringDiff
