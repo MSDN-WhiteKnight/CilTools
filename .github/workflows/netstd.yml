@@ -29,3 +29,9 @@ jobs:
       with:
           name: Output
           path: CilTools.Metadata/bin/Debug/
+    - name: Archive test results
+      if: always()
+      uses: actions/upload-artifact@v1
+      with:
+          name: Test results
+          path: tests/CilTools.BytecodeAnalysis.Tests/bin/Debug/
