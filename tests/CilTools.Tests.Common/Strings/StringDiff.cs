@@ -367,8 +367,8 @@ namespace CilTools.Tests.Common
                 return sb.ToString();
             }
 
-            string[] strings1 = left.Split(new char[] { ' ' });
-            string[] strings2 = right.Split(new char[] { ' ' });
+            string[] strings1 = left.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            string[] strings2 = right.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         
             //for other cases, diff by words
             IList<string> lcs = GetCollectionsLongestCommonSubsequence(strings1, strings2, 0);
