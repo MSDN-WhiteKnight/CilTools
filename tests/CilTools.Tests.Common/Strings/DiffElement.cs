@@ -113,13 +113,13 @@ namespace CilTools.Tests.Common
             for (int i = 0; i < lines.Length; i++)
             {
                 wr.WriteLine();
-                wr.Write("<span style=\"color:" + color + "\">");
+                wr.Write("<br/><span style=\"color:" + color + "\">");
                 wr.Write(prefix);
                 wr.Write(WebUtility.HtmlEncode(lines[i]));
                 wr.Write("</span>");
             }
 
-            wr.WriteLine();
+            wr.WriteLine("<br/>");
             wr.Flush();
         }
     }
