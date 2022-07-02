@@ -267,7 +267,7 @@ namespace CilTools.Tests.Common
 
                 string mes = string.Format(
                     "AssertThat.AreLexicallyEqual failed. Expected: \n{0}\nActual: \n{1}\n{2}",
-                    s1, s2, diffDescr);
+                    expected, actual, diffDescr);
 
                 Fail(mes);
             }
