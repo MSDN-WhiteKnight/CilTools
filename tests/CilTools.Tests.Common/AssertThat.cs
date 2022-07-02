@@ -117,7 +117,21 @@ namespace CilTools.Tests.Common
                 Trace.WriteLine("Input string: ");
                 Trace.WriteLine(s);
 
-                if (String.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern.";
+                try
+                {
+                    string baseline = Text.GetMinMatchingText(match).Trim();
+                    StringDiff diff = StringDiff.GetDiff(baseline, s.Trim());
+                    Debug.WriteLine("Diff:");
+                    Debug.WriteLine(diff.ToString());
+                    Debug.WriteLine(diff.Visualize());
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error when trying to diff");
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                if (string.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern.";
 
                 Fail("AssertThat.IsMatch failed. " + message);
             }
@@ -242,7 +256,7 @@ namespace CilTools.Tests.Common
                 }
 
                 string mes = string.Format(
-                    "AssertThat.AreLexicallyEqual failed. Expected: <{0}>. Actual: <{1}>. {2}",
+                    "AssertThat.AreLexicallyEqual failed. Expected: \n{0}\nActual: \n{1}\n{2}",
                     s1, s2, diffDescr);
 
                 Fail(mes);

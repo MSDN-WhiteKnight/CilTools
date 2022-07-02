@@ -24,6 +24,11 @@ namespace CilTools.Tests.Common
         /// </summary>
         public abstract string GetString();
 
+        /// <summary>
+        /// Gets unescaped string that matches this text element
+        /// </summary>
+        public abstract string GetRawString();
+
         public override string ToString()
         {
             return GetString();
@@ -61,6 +66,21 @@ namespace CilTools.Tests.Common
             return Regex.IsMatch(s, pattern);
         }
 
+        /// <summary>
+        /// Gets the minimal string that matches the specified sequence of text elements
+        /// </summary>
+        public static string GetMinMatchingText(Text[] items)
+        {
+            StringBuilder sb = new StringBuilder(1000);
+
+            for (int i = 0; i < items.Length; i++)
+            {
+                sb.Append(items[i].GetRawString());
+            }
+
+            return sb.ToString();
+        }
+
         public static implicit operator Text(string s) => new Literal(s);
     }
 
@@ -70,15 +90,22 @@ namespace CilTools.Tests.Common
     public class Literal : Text
     {
         string val;
+        string raw;
 
         public Literal(string v)
         {
+            this.raw = v;
             this.val = Regex.Escape(v);
         }
 
         public override string GetString()
         {
             return this.val;
+        }
+
+        public override string GetRawString()
+        {
+            return this.raw;
         }
     }
 
@@ -107,6 +134,11 @@ namespace CilTools.Tests.Common
         {
             return "[\\s\\S]*";
         }
+
+        public override string GetRawString()
+        {
+            return " ";
+        }
     }
 
     public class AtLeastOneWhitespaceText : Text
@@ -130,6 +162,11 @@ namespace CilTools.Tests.Common
         public override string GetString()
         {
             return "\\s+";
+        }
+
+        public override string GetRawString()
+        {
+            return " ";
         }
     }
 }
