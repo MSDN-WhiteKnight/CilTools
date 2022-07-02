@@ -1,11 +1,9 @@
 ﻿/* CIL Tools
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Reflection.Emit;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,20 +14,12 @@ namespace CilTools.Tests.Common
     {
         public static void Test_CilGraph_ToString(MethodBase mi)
         {
+            //Test that CilGraph.ToString returns signature
+            const string expected = ".method public hidebysig static void PrintHelloWorld() cil managed";
+
             CilGraph graph = CilGraph.Create(mi);
-
-            //Test that ToString returns signature
             string str = graph.ToString();
-            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "public" });
-            AssertThat.IsMatch(str, new Text[] { ".method", Text.Any, "static" });
-
-            AssertThat.IsMatch(str, new Text[] { 
-                ".method", Text.Any, "void", Text.Any, 
-                "PrintHelloWorld", Text.Any, 
-                "cil", Text.Any, "managed", Text.Any
-            });
-
-            Assert.IsFalse(str.Contains("call"), "The result of CilGraph.ToString should not contain instructions");
+            AssertThat.AreLexicallyEqual(expected, str);
         }
     
         public static void Test_CilGraph_EmptyString(MethodBase mi)
@@ -65,6 +55,10 @@ namespace CilTools.Tests.Common
 
         public static void Test_CilGraph_Locals(MethodBase mi)
         {
+            const string expected = @".maxstack 2
+.locals init (class [CilTools.Tests.Common]CilTools.Tests.Common.MyPoint V_0,
+    class [CilTools.Tests.Common]CilTools.Tests.Common.MyPoint V_1)";
+
             CilGraph graph = CilGraph.Create(mi);
 
             StringBuilder sb = new StringBuilder(100);
@@ -73,11 +67,7 @@ namespace CilTools.Tests.Common
             wr.Flush();
             string str = sb.ToString();
 
-            AssertThat.IsMatch(str, new Text[] { 
-                Text.Any, ".locals",Text.Any, "(",
-                Text.Any, "MyPoint",Text.Any, ")",
-                Text.Any 
-            });
+            AssertThat.AreLexicallyEqual(expected, str);
         }
 
         public static void Test_CilGraph_ImplRuntime(MethodBase mi)

@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using CilTools.BytecodeAnalysis;
@@ -117,7 +118,21 @@ namespace CilTools.Tests.Common
                 Trace.WriteLine("Input string: ");
                 Trace.WriteLine(s);
 
-                if (String.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern.";
+                try
+                {
+                    string baseline = Text.GetMinMatchingText(match).Trim();
+                    StringDiff diff = StringDiff.GetDiff(baseline, s.Trim());
+                    Debug.WriteLine("Diff:");
+                    Debug.WriteLine(diff.ToString());
+                    Debug.WriteLine(diff.Visualize());
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error when trying to diff");
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                if (string.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern.";
 
                 Fail("AssertThat.IsMatch failed. " + message);
             }
@@ -183,6 +198,82 @@ namespace CilTools.Tests.Common
                 Assert.Fail(
                     "The callback expected not to throw, but actually throws " + 
                     ex.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Asserts that two specified strings consist of the same lexical element sequences 
+        /// (that is, they are equal after all adjacent whitespace character sequences are replaced with a single whitespace).
+        /// </summary>
+        public static void AreLexicallyEqual(string expected, string actual)
+        {
+            if (string.Equals(expected, actual, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            if (expected == null || actual == null)
+            {
+                Assert.AreEqual(expected, actual);
+            }
+
+            //normalize strings to replace all whitespace sequences with a single whitespace
+            char[] splitter = new char[] { ' ', '\t', '\r', '\n' };
+            string[] arr1 = expected.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb1 = new StringBuilder(expected.Length);
+
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                sb1.Append(arr1[i]);
+
+                if (i < arr1.Length - 1) sb1.Append(' ');
+            }
+
+            string[] arr2 = actual.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb2 = new StringBuilder(actual.Length);
+
+            for (int i = 0; i < arr2.Length; i++)
+            {
+                sb2.Append(arr2[i]);
+
+                if (i < arr2.Length - 1) sb2.Append(' ');
+            }
+
+            //compare resulting strings
+            string s1 = sb1.ToString();
+            string s2 = sb2.ToString();
+
+            if (!string.Equals(s1, s2, StringComparison.Ordinal))
+            {
+                string diffDescr = string.Empty;
+
+                try
+                {
+                    StringDiff diff = StringDiff.GetDiff(s1, s2);
+                    Debug.WriteLine("AssertThat.AreLexicallyEqual diff:");
+                    Debug.WriteLine(diff.Visualize());
+                    diffDescr = diff.ToString();
+
+                    string path = Utils.GetRandomFilePath("diff", 5, "html");
+                    FileStream fs = File.Open(path, FileMode.CreateNew, FileAccess.Write);
+                    StreamWriter wr = new StreamWriter(fs);
+
+                    using (wr)
+                    {
+                        diff.VisualizeHTML(wr, "AssertThat.AreLexicallyEqual");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetDiff:");
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                string mes = string.Format(
+                    "AssertThat.AreLexicallyEqual failed. Expected: \n{0}\nActual: \n{1}\n{2}",
+                    expected, actual, diffDescr);
+
+                Fail(mes);
             }
         }
     }
