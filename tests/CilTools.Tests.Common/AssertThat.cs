@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using CilTools.BytecodeAnalysis;
@@ -248,6 +249,15 @@ namespace CilTools.Tests.Common
                     Debug.WriteLine("AssertThat.AreLexicallyEqual diff:");
                     Debug.WriteLine(diff.Visualize());
                     diffDescr = diff.ToString();
+
+                    string path = Utils.GetRandomFilePath("diff", 5, "html");
+                    FileStream fs = File.Open(path, FileMode.CreateNew, FileAccess.Write);
+                    StreamWriter wr = new StreamWriter(fs);
+
+                    using (wr)
+                    {
+                        diff.VisualizeHTML(wr, "AssertThat.AreLexicallyEqual");
+                    }
                 }
                 catch (Exception ex)
                 {

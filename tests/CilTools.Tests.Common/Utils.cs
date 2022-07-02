@@ -86,5 +86,40 @@ namespace CilTools.Tests.Common
             if (input.Length < maxCount) return input;
             else return input.Substring(0, maxCount - 4) + "...";
         }
+
+        public static string GetProgramDir()
+        {
+            return Path.GetDirectoryName(typeof(Utils).Assembly.Location);
+        }
+
+        static readonly Random rng = new Random();
+
+        public static string GetRandomFilePath(string start, int n, string ext)
+        {
+            StringBuilder sb = new StringBuilder(n);
+            sb.Append(start);
+            sb.Append(DateTime.Now.ToString("yyyyMMdd_hhmmss"));
+            sb.Append('_');
+            int nLetters = 'Z' - 'A';
+            int nDigits = 10;
+
+            for (int i = 0; i < n; i++)
+            {
+                int x = rng.Next(nLetters + nDigits);
+
+                if (x <= 9)
+                {
+                    sb.Append(x.ToString());
+                }
+                else
+                {
+                    sb.Append((char)('A' + (x - 9)));
+                }
+            }
+            
+            sb.Append('.');
+            sb.Append(ext);
+            return Path.Combine(GetProgramDir(), sb.ToString());
+        }
     }
 }
