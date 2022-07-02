@@ -15,7 +15,7 @@ namespace CilTools.Tests.Common
         public static void Test_CilGraph_ToString(MethodBase mi)
         {
             //Test that CilGraph.ToString returns signature
-            const string expected = ".method public hidebysig static void PrintHelloWorld() cil managed";
+            const string expected = ".method public hidebysig static void PrintHelloWorl() cil managed";
 
             CilGraph graph = CilGraph.Create(mi);
             string str = graph.ToString();
