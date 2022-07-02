@@ -201,6 +201,10 @@ namespace CilTools.Tests.Common
             }
         }
 
+        /// <summary>
+        /// Asserts that two specified strings consist of the same lexical element sequences 
+        /// (that is, they are equal after all adjacent whitespace character sequences are replaced with a single whitespace).
+        /// </summary>
         public static void AreLexicallyEqual(string expected, string actual)
         {
             if (string.Equals(expected, actual, StringComparison.Ordinal))

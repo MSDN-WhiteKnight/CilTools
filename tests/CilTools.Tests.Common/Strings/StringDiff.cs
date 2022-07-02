@@ -9,15 +9,26 @@ using System.Text;
 
 namespace CilTools.Tests.Common
 {
+    /// <summary>
+    /// Represents the diff between two strings. Diff is a collection of elementary 
+    /// text changes (additions or deletions) that are needed to produce a modified string from the original one.
+    /// </summary>
     public class StringDiff
     {
         List<DiffElement> items = new List<DiffElement>();
 
+        /// <summary>
+        /// Gets the collection of elements this diff consists of. Diff element could be an addition, a deletion 
+        /// or a text fragment that is the same between two strings.
+        /// </summary>
         public IEnumerable<DiffElement> Items
         {
             get { return items.ToArray(); }
         }
 
+        /// <summary>
+        /// Gets the text representation of this diff
+        /// </summary>
         public string Visualize()
         {
             StringBuilder sb = new StringBuilder(1000);
@@ -30,6 +41,9 @@ namespace CilTools.Tests.Common
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Writes the HTML representation of this diff into the specified <c>TextWriter</c>
+        /// </summary>
         public void VisualizeHTML(TextWriter wr, string title)
         {
             wr.Write("<html><head><title>");
