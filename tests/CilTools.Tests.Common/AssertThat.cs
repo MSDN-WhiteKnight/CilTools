@@ -276,5 +276,23 @@ namespace CilTools.Tests.Common
                 Fail(mes);
             }
         }
+
+        /// <summary>
+        /// Assert that two IL strings are equal, ignoring differences in whitespaces and BCL assembly names
+        /// </summary>
+        public static void CilEquals(string expected, string actual)
+        {
+            // Normalize IL to account for variations in BCL assembly names
+            string s1 = expected.Replace("[System.Private.CoreLib]", "[mscorlib]");
+            s1 = s1.Replace("[netstandard]", "[mscorlib]");
+            s1 = s1.Replace("[System.Console]", "[mscorlib]");
+
+            string s2 = actual.Replace("[System.Private.CoreLib]", "[mscorlib]");
+            s2 = s2.Replace("[netstandard]", "[mscorlib]");
+            s2 = s2.Replace("[System.Console]", "[mscorlib]");
+
+            // Assert on the normalized strings
+            AreLexicallyEqual(s1, s2);
+        }
     }
 }

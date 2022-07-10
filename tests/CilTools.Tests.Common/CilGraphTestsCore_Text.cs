@@ -37,8 +37,6 @@ namespace CilTools.Tests.Common
         public static void Test_CilGraph_OptionalParams(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
-
-            //Test correct empty string output
             string str = graph.ToText();
             
             AssertThat.IsMatch(str, new Text[] { 

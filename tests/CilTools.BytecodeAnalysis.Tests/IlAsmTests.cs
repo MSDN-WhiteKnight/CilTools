@@ -214,5 +214,63 @@ namespace CilTools.BytecodeAnalysis.Tests
             //verify method executes and does not crash
             mAssembled.Invoke(null, new object[0]);
         }
+
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
+        public void Test_Disassembler_EmptyString()
+        {
+            const string code = @".method public hidebysig static bool TestEmptyString(
+    string str
+) cil managed {
+ .maxstack 2
+ .locals init (bool V_0)
+
+          nop 
+          ldarg.0 
+          ldstr        """"
+          call         bool [mscorlib]System.String::op_Equality(string, string)
+          stloc.0 
+          br.s         IL_0001
+ IL_0001: ldloc.0 
+          ret 
+}";
+            //compile method from CIL
+            MethodBase mb = IlAsm.BuildFunction(code, "TestEmptyString");
+
+            //Test correct empty string disassembler output
+            CilGraph graph = CilGraph.Create(mb);
+            string str = graph.ToText();
+
+            AssertThat.CilEquals(code, str);
+        }
+
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
+        public void Test_Disassembler_OptionalParams()
+        {
+            const string code = @".method public hidebysig static void TestOptionalParams(
+    [opt] string str, 
+    [opt] int32 x
+) cil managed {
+ .param [1] = """"
+ .param [2] = int32(0)
+ .maxstack 8
+
+          nop 
+          ldarg.0 
+          ldarga.s     x
+          call         instance string [mscorlib]System.Int32::ToString()
+          call         string [mscorlib]System.String::Concat(string, string)
+          call         void [mscorlib]System.Console::WriteLine(string)
+          nop 
+          ret 
+}";
+            //compile method from CIL
+            MethodBase mb = IlAsm.BuildFunction(code, "TestOptionalParams");
+
+            //Test correct optional params disassembler output
+            CilGraph graph = CilGraph.Create(mb);
+            string str = graph.ToText();
+
+            AssertThat.CilEquals(code, str);
+        }
     }
 }
