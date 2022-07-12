@@ -2,19 +2,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Version>2.4.0</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Authors>MSDN-WhiteKnight</Authors>
-    <Company>CIL Tools</Company>
-    <Product>CIL Tools</Product>
-    <Copyright>Copyright (c) 2022, MSDN.WhiteKnight</Copyright>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/MSDN-WhiteKnight/CilTools</PackageProjectUrl>
     <PackageIcon>IL.png</PackageIcon>
-    <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
     <PackageTags>dotnet cil msil metadata reflection</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <FileVersion>2.4.0.0</FileVersion>
     <Description>The library that supports inspecting the contents of .NET assembly via reflection without loading it into the current process</Description>
   </PropertyGroup>
   

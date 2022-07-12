@@ -3,10 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFrameworks>netcoreapp3.1;net45</TargetFrameworks>
-    <Authors>MSDN-WhiteKnight</Authors>
-    <Company>CIL Tools</Company>
-    <Product>CIL Tools</Product>
-    <Copyright>Copyright (c) 2021, MSDN.WhiteKnight</Copyright>
   </PropertyGroup>
   
   <PropertyGroup>
