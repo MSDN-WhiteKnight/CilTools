@@ -215,10 +215,17 @@ namespace CilTools.BytecodeAnalysis.Tests
             mAssembled.Invoke(null, new object[0]);
         }
 
-        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
-        public void Test_Disassembler_EmptyString()
-        {
-            const string code = @".method public hidebysig static bool TestEmptyString(
+        const string IL_HelloWorld = @".method public hidebysig static void HelloWorld() cil managed {
+ .maxstack 8
+
+          nop 
+          ldstr     ""Hello, World""
+          call      void [mscorlib]System.Console::WriteLine(string)
+          nop
+          ret
+}";
+
+        const string IL_TestEmptyString = @".method public hidebysig static bool TestEmptyString(
     string str
 ) cil managed {
  .maxstack 2
@@ -233,20 +240,8 @@ namespace CilTools.BytecodeAnalysis.Tests
  IL_0001: ldloc.0 
           ret 
 }";
-            //compile method from CIL
-            MethodBase mb = IlAsm.BuildFunction(code, "TestEmptyString");
 
-            //Test correct empty string disassembler output
-            CilGraph graph = CilGraph.Create(mb);
-            string str = graph.ToText();
-
-            AssertThat.CilEquals(code, str);
-        }
-
-        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
-        public void Test_Disassembler_OptionalParams()
-        {
-            const string code = @".method public hidebysig static void TestOptionalParams(
+        const string IL_TestOptionalParams = @".method public hidebysig static void TestOptionalParams(
     [opt] string str, 
     [opt] int32 x
 ) cil managed {
@@ -263,14 +258,20 @@ namespace CilTools.BytecodeAnalysis.Tests
           nop 
           ret 
 }";
-            //compile method from CIL
-            MethodBase mb = IlAsm.BuildFunction(code, "TestOptionalParams");
 
-            //Test correct optional params disassembler output
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
+        [DataRow(IL_HelloWorld, "HelloWorld")]
+        [DataRow(IL_TestEmptyString, "TestEmptyString")]
+        [DataRow(IL_TestOptionalParams, "TestOptionalParams")]
+        public void Test_Disassembler_RoundtripIL(string code, string name)
+        {
+            //Compile method from CIL
+            MethodBase mb = IlAsm.BuildFunction(code, name);
+
+            //Test disassembler output
             CilGraph graph = CilGraph.Create(mb);
-            string str = graph.ToText();
-
-            AssertThat.CilEquals(code, str);
+            string disassembled = graph.ToText();
+            AssertThat.CilEquals(code, disassembled);
         }
     }
 }
