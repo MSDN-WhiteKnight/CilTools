@@ -1,5 +1,5 @@
 ﻿/* CIL Tools
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -26,14 +26,46 @@ namespace CilTools.BytecodeAnalysis.Tests
         [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
         public void Test_ToSyntaxTree(MethodBase mi)
         {
-            SyntaxTestsCore.Test_ToSyntaxTree(mi);
+            CilGraph graph = CilGraph.Create(mi);
+            MethodDefSyntax mds = graph.ToSyntaxTree();
+            AssertThat.IsSyntaxTreeCorrect(mds);
+            Assert.AreEqual("method", mds.Signature.Name);
+
+            AssertThat.HasOnlyOneMatch(
+                mds.Signature.EnumerateChildNodes(),
+                (x) => { return x is KeywordSyntax && (x as KeywordSyntax).Content == "public"; },
+                "Method signature should contain 'public' keyword"
+                );
+
+            AssertThat.HasOnlyOneMatch(
+                mds.Signature.EnumerateChildNodes(),
+                (x) => {
+                    return x is IdentifierSyntax && (x as IdentifierSyntax).Content == "PrintHelloWorld";
+                },
+                "Method signature should contain mathod name identifier"
+                );
+
+            AssertThat.HasOnlyOneMatch(
+                mds.Body.Content,
+                (x) => {
+                    return x is InstructionSyntax && (x as InstructionSyntax).Operation == "ldstr";
+                },
+                "Method body should contain 'ldstr' instruction"
+                );
         }
 
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "method", BytecodeProviders.All)]
         public void Test_KeywordAsIdentifier(MethodBase mi)
         {
-            SyntaxTestsCore.Test_KeywordAsIdentifier(mi);
+            string str = CilAnalysis.MethodToText(mi);
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "public", Text.Any,
+                "void", Text.Any,
+                "'method'", Text.Any,
+                "cil", Text.Any, "managed", Text.Any,
+            });
         }
 
         [TestMethod]        
