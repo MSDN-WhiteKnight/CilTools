@@ -215,7 +215,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             mAssembled.Invoke(null, new object[0]);
         }
 
-        const string IL_HelloWorld = @".method public hidebysig static void HelloWorld() cil managed {
+        const string IL_HelloWorld = @".metod public hidebysig static void HelloWorld() cil managed {
  .maxstack 8
 
           nop 
