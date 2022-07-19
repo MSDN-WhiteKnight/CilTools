@@ -260,9 +260,9 @@ namespace CilTools.BytecodeAnalysis.Tests
 }";
 
         [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
-        [DataRow(IL_HelloWorld, "HelloWorld")]
-        [DataRow(IL_TestEmptyString, "TestEmptyString")]
-        [DataRow(IL_TestOptionalParams, "TestOptionalParams")]
+        [DataRow(IL_HelloWorld, "HelloWorld", DisplayName = "HelloWorld")]
+        [DataRow(IL_TestEmptyString, "TestEmptyString", DisplayName = "TestEmptyString")]
+        [DataRow(IL_TestOptionalParams, "TestOptionalParams", DisplayName = "TestOptionalParams")]
         public void Test_Disassembler_RoundtripIL(string code, string name)
         {
             //Compile method from CIL
