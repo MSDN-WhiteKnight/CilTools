@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.BytecodeAnalysis.Tests

@@ -9,6 +9,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.TestData;
+using CilTools.Tests.Common.TextUtils;
 
 namespace CilTools.BytecodeAnalysis.Tests
 {

@@ -8,6 +8,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.BytecodeAnalysis.Tests;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.SourceCode.Tests

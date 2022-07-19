@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.CommandLine.Tests

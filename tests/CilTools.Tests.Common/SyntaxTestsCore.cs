@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Tests.Common

@@ -12,6 +12,7 @@ using System.Threading;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

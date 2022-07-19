@@ -4,7 +4,7 @@
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CilTools.Tests.Common
+namespace CilTools.Tests.Common.Attributes
 {
     public enum TestCondition
     {

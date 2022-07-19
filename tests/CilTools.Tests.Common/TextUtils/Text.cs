@@ -1,12 +1,12 @@
 ﻿/* CIL Tools
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Text;
 
-namespace CilTools.Tests.Common
+namespace CilTools.Tests.Common.TextUtils
 {
     /// <summary>
     /// Represents an element of the strings sequence. The element could be either a literal 

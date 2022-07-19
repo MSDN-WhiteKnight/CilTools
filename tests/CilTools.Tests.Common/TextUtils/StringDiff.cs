@@ -7,7 +7,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace CilTools.Tests.Common
+namespace CilTools.Tests.Common.TextUtils
 {
     /// <summary>
     /// Represents the diff between two strings. Diff is a collection of elementary 

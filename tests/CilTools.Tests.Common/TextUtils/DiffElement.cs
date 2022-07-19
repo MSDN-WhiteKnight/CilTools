@@ -6,7 +6,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 
-namespace CilTools.Tests.Common
+namespace CilTools.Tests.Common.TextUtils
 {
     public enum DiffKind
     {

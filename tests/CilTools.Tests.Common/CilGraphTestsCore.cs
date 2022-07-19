@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CilTools.Tests.Common.TextUtils;
 
 namespace CilTools.Tests.Common
 {

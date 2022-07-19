@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using CilTools.BytecodeAnalysis;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.BytecodeAnalysis.Tests
