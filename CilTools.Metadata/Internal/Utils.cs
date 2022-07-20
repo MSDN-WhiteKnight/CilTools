@@ -214,10 +214,12 @@ namespace CilTools.Internal
         /// <summary>
         /// Creates an array of parameters for the specified method definition
         /// </summary>
-        public static ParameterInfo[] GetMethodParameters(MetadataReader reader, MethodBase method, MethodDefinition mdef, Signature sig)
+        public static ParameterInfo[] GetMethodParameters(MetadataAssembly ass, MethodBase method, 
+            MethodDefinition mdef, Signature sig)
         {
             ParameterInfo[] pars = new ParameterInfo[sig.ParamsCount];
             ParameterHandleCollection hcoll = mdef.GetParameters();
+            MetadataReader reader = ass.MetadataReader;
 
             foreach (ParameterHandle h in hcoll)
             {
@@ -226,7 +228,7 @@ namespace CilTools.Internal
                 if (index >= pars.Length) continue;
                 if (index < 0) continue;
 
-                pars[index] = new ParameterSpec(sig.GetParamType(index), par, method, reader);
+                pars[index] = new ParameterSpec(sig.GetParamType(index), par, method, ass);
             }
 
             for (int i = 0; i < pars.Length; i++)

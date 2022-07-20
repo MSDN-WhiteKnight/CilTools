@@ -68,6 +68,7 @@
     <Compile Include="MethodDefTests.cs" />
     <Compile Include="MethodRefTests.cs" />
     <Compile Include="MethodSpecTests.cs" />
+    <Compile Include="ParameterSpecTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyDefTests.cs" />
     <Compile Include="ReaderFactory.cs" />
