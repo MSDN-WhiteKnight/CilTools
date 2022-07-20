@@ -130,7 +130,7 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets the assembly reader that owns this instance
+        /// Gets an object used to read .NET metadata of this assembly
         /// </summary>
         public MetadataReader MetadataReader { get { return this.reader; } }
 
@@ -140,7 +140,7 @@ namespace CilTools.Metadata
         public PEReader PEReader { get { return this.peReader; } }
 
         /// <summary>
-        /// Gets an object used to read .NET metadata of this assembly
+        /// Gets the assembly reader that owns this instance
         /// </summary>
         public AssemblyReader AssemblyReader { get { return this.assreader; } }
 
