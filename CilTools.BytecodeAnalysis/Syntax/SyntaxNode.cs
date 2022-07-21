@@ -235,11 +235,131 @@ namespace CilTools.Syntax
             return "".PadLeft(c, ' ');
         }
 
+        internal static void GetAttributeSyntax(object attr, int indent, List<SyntaxNode> ret)
+        {
+            string content;
+            StringBuilder sb;
+            string strIndent = "".PadLeft(indent, ' ');
+
+            //from metadata
+            if (attr is ICustomAttribute)
+            {
+                ICustomAttribute ca = (ICustomAttribute)attr;
+
+                List<SyntaxNode> children = new List<SyntaxNode>();
+                MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor, false);
+                children.Add(mref);
+                children.Add(new PunctuationSyntax(" ", "=", " "));
+                children.Add(new PunctuationSyntax("", "(", " "));
+                sb = new StringBuilder(ca.Data.Length * 3);
+
+                for (int j = 0; j < ca.Data.Length; j++)
+                {
+                    sb.Append(ca.Data[j].ToString("X2", CultureInfo.InvariantCulture));
+                    sb.Append(' ');
+                }
+
+                children.Add(new GenericSyntax(sb.ToString()));
+                children.Add(new PunctuationSyntax("", ")", Environment.NewLine));
+
+                DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
+                ret.Add(dir);
+                return;
+            }
+
+            //from reflection
+            Type t = attr.GetType();
+            ConstructorInfo[] constr = t.GetConstructors();
+            string s_attr;
+            sb = new StringBuilder(100);
+            StringWriter output = new StringWriter(sb);
+
+            if (constr.Length == 1)
+            {
+                int parcount = constr[0].GetParameters().Length;
+
+                if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
+                    t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
+                    Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
+                    )
+                {
+                    //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
+                    List<SyntaxNode> children = new List<SyntaxNode>();
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0], false);
+                    children.Add(mref);
+                    children.Add(new PunctuationSyntax(" ", "=", " "));
+                    children.Add(new PunctuationSyntax("", "(", " "));
+                    children.Add(new GenericSyntax("01 00 00 00"));
+                    children.Add(new PunctuationSyntax(" ", ")", Environment.NewLine));
+
+                    DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
+                    ret.Add(dir);
+                }
+                else
+                {
+                    s_attr = CilAnalysis.MethodToString(constr[0]);
+                    output.Write(".custom ");
+                    output.Write(s_attr);
+                    output.Flush();
+                    content = sb.ToString();
+                    CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
+                    ret.Add(node);
+                }
+            }
+            else
+            {
+                output.Write(".custom ");
+                s_attr = CilAnalysis.GetTypeSpecString(t);
+                output.Write(s_attr);
+                output.Flush();
+                content = sb.ToString();
+                CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
+                ret.Add(node);
+            }
+        }
+
         internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m, int startIndent)
         {
             ParameterInfo[] pars = m.GetParameters();
             List<SyntaxNode> ret = new List<SyntaxNode>(pars.Length);
+            
+            // Return type custom attributes
+            ICustomAttributeProvider provider = null;
 
+            if (m is MethodInfo)
+            {
+                try { provider = ((MethodInfo)m).ReturnTypeCustomAttributes; }
+                catch (Exception ex)
+                {
+                    if (ex is NotImplementedException || ex is InvalidOperationException)
+                    {
+                        CommentSyntax commentSyntax = CommentSyntax.Create(GetIndentString(startIndent + 1),
+                            "NOTE: Return type custom attributes are not shown.", null, false);
+                        ret.Add(commentSyntax);
+                    }
+                    else throw;
+                }
+            }
+
+            if (provider != null)
+            {
+                object[] attrs = provider.GetCustomAttributes(false);
+
+                if (attrs.Length > 0)
+                {
+                    DirectiveSyntax dir = new DirectiveSyntax(GetIndentString(startIndent + 1), "param",
+                        new SyntaxNode[] { new GenericSyntax("[0]" + Environment.NewLine) });
+                    ret.Add(dir);
+
+                    for (int i = 0; i < attrs.Length; i++)
+                    {
+                        GetAttributeSyntax(attrs[i], startIndent + 1, ret);
+                        ret.Add(new GenericSyntax(Environment.NewLine));
+                    }
+                }
+            }
+
+            // Parameters
             for (int i = 0; i < pars.Length; i++)
             {
                 if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
