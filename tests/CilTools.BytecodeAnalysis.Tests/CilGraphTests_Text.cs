@@ -200,5 +200,21 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             AssertThat.AreLexicallyEqual(expected, str);
         }
+        
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "ReturnTypeAttributeTest", BytecodeProviders.All)]
+        public void Test_CilGraph_ReturnTypeCustomAttributes(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            StringBuilder sb = new StringBuilder(100);
+            StringWriter wr = new StringWriter(sb);
+            graph.PrintDefaults(wr);
+            wr.Flush();
+            string str = sb.ToString();
+
+            AssertThat.IsMatch(str, new Text[] { Text.Any, ".param", Text.Any, "[0]", Text.Any, ".custom", Text.Any,
+                "instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)", Text.Any
+            });
+        }
     }
 }
