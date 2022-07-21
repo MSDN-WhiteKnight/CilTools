@@ -200,21 +200,45 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             AssertThat.AreLexicallyEqual(expected, str);
         }
-        
-        [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "ReturnTypeAttributeTest", BytecodeProviders.All)]
-        public void Test_CilGraph_ReturnTypeCustomAttributes(MethodBase mi)
+
+        static string GetDefaultsString(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
             StringBuilder sb = new StringBuilder(100);
             StringWriter wr = new StringWriter(sb);
             graph.PrintDefaults(wr);
             wr.Flush();
-            string str = sb.ToString();
+            return sb.ToString();
+        }
+        
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "ReturnTypeAttributeTest", BytecodeProviders.All)]
+        public void Test_CilGraph_ReturnTypeCustomAttributes(MethodBase mi)
+        {
+            string il = GetDefaultsString(mi);
 
-            AssertThat.IsMatch(str, new Text[] { Text.Any, ".param", Text.Any, "[0]", Text.Any, ".custom", Text.Any,
+            AssertThat.IsMatch(il, new Text[] { Text.Any, ".param", Text.Any, "[0]", Text.Any, ".custom", Text.Any,
                 "instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)", Text.Any
             });
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "ReturnTypeAttributeTest", BytecodeProviders.Metadata)]
+        public void Test_CilGraph_ReturnTypeCustomAttributes2(MethodBase mi)
+        {
+            const string expected = @".param [0] 
+.custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 E7 03 00 00 00 00 )";
+
+            string il = GetDefaultsString(mi);
+            AssertThat.CilEquals(expected, il);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_CilGraph_ReturnTypeCustomAttributes_Negative(MethodBase mi)
+        {
+            string il = GetDefaultsString(mi);
+            AssertThat.CilEquals(string.Empty, il);
         }
     }
 }
