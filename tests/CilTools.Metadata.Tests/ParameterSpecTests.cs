@@ -94,5 +94,41 @@ namespace CilTools.Metadata.Tests
                 Assert.AreEqual(0, attrs.Length);
             }
         }
+
+        [TestMethod]
+        public void Test_HasDefaultValue()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType(typeof(SampleMethods).FullName);
+                MethodInfo m = t.GetMethod("CalcSum");
+                ParameterInfo[] pars = m.GetParameters();
+                Assert.IsFalse(pars[0].HasDefaultValue);
+                Assert.IsFalse(pars[1].HasDefaultValue);
+            }
+        }
+
+        [TestMethod]
+        public void Test_DefaultValue()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType(typeof(SampleMethods).FullName);
+                MethodInfo m = t.GetMethod("TestOptionalParams");
+                ParameterInfo[] pars = m.GetParameters();
+                Assert.IsTrue(pars[0].HasDefaultValue);
+                Assert.AreEqual(string.Empty, pars[0].DefaultValue);
+                Assert.AreEqual(string.Empty, pars[0].RawDefaultValue);
+                Assert.IsTrue(pars[1].HasDefaultValue);
+                Assert.AreEqual(0, pars[1].DefaultValue);
+                Assert.AreEqual(0, pars[1].RawDefaultValue);
+            }
+        }
     }
 }

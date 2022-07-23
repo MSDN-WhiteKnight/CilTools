@@ -92,6 +92,14 @@ namespace CilTools.Metadata
             }
         }
 
+        public override bool HasDefaultValue
+        {
+            get
+            {
+                return this.defval != DBNull.Value;
+            }
+        }
+
         public override object DefaultValue
         {
             get
