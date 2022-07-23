@@ -240,5 +240,35 @@ namespace CilTools.BytecodeAnalysis.Tests
             string il = GetDefaultsString(mi);
             AssertThat.CilEquals(string.Empty, il);
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "ParameterAttributesTest", BytecodeProviders.All)]
+        public void Test_CilGraph_ParameterCustomAttributes(MethodBase mi)
+        {
+            string il = GetDefaultsString(mi);
+
+            AssertThat.IsMatch(il, new Text[] { Text.Any, ".param", Text.Any, "[1]", Text.Any, ".custom", Text.Any,
+                "instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)", Text.Any
+            });
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "ParameterAttributesTest", BytecodeProviders.Metadata)]
+        public void Test_CilGraph_ParameterCustomAttributes2(MethodBase mi)
+        {
+            const string expected = @".param [1]
+.custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 7B 00 00 00 00 00 )";
+
+            string il = GetDefaultsString(mi);
+            AssertThat.CilEquals(expected, il);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "CalcSum", BytecodeProviders.All)]
+        public void Test_CilGraph_ParameterCustomAttributes_Negative(MethodBase mi)
+        {
+            string il = GetDefaultsString(mi);
+            AssertThat.CilEquals(string.Empty, il);
+        }
     }
 }

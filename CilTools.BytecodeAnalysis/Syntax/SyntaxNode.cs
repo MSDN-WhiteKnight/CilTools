@@ -246,6 +246,13 @@ namespace CilTools.Syntax
             {
                 ICustomAttribute ca = (ICustomAttribute)attr;
 
+                if (string.Equals(ca.Constructor.DeclaringType.FullName,
+                    "System.Runtime.InteropServices.OptionalAttribute", StringComparison.Ordinal))
+                {
+                    //OptionalAttribute translated to [opt]
+                    return;
+                }
+
                 List<SyntaxNode> children = new List<SyntaxNode>();
                 MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor, false);
                 children.Add(mref);
@@ -269,6 +276,14 @@ namespace CilTools.Syntax
 
             //from reflection
             Type t = attr.GetType();
+
+            if (string.Equals(t.FullName, "System.Runtime.InteropServices.OptionalAttribute", 
+                StringComparison.Ordinal))
+            {
+                //OptionalAttribute translated to [opt]
+                return;
+            }
+
             ConstructorInfo[] constr = t.GetConstructors();
             string s_attr;
             sb = new StringBuilder(100);
@@ -334,7 +349,7 @@ namespace CilTools.Syntax
                     if (ex is NotImplementedException || ex is InvalidOperationException)
                     {
                         CommentSyntax commentSyntax = CommentSyntax.Create(GetIndentString(startIndent + 1),
-                            "NOTE: Return type custom attributes are not shown.", null, false);
+                            "NOTE: Return type and parameters custom attributes are not shown.", null, false);
                         ret.Add(commentSyntax);
                     }
                     else throw;
@@ -354,7 +369,6 @@ namespace CilTools.Syntax
                     for (int i = 0; i < attrs.Length; i++)
                     {
                         GetAttributeSyntax(attrs[i], startIndent + 1, ret);
-                        ret.Add(new GenericSyntax(Environment.NewLine));
                     }
                 }
             }
@@ -362,24 +376,55 @@ namespace CilTools.Syntax
             // Parameters
             for (int i = 0; i < pars.Length; i++)
             {
-                if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                object[] attrs = new object[0];
+
+                try
+                {
+                    attrs = pars[i].GetCustomAttributes(false);
+                }
+                catch (Exception ex)
+                {
+                    if (ex is InvalidOperationException || ex is NotImplementedException)
+                    {
+                        Diagnostics.OnError(m, 
+                            new CilErrorEventArgs(ex, "Failed to get parameter custom attributes"));
+                    }
+                    else throw;
+                }
+
+                if ((pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value) || attrs.Length > 0)
                 {
                     StringBuilder sb = new StringBuilder(100);
                     StringWriter output = new StringWriter(sb);
                     output.Write(' ');
                     output.Write('[');
                     output.Write((i + 1).ToString());
-                    output.Write("] = ");
+                    output.Write(']');
 
-                    string valstr = GetConstantValueString(pars[i].ParameterType, pars[i].RawDefaultValue);
-                    output.WriteLine(valstr);
+                    if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                    {
+                        output.Write(" = ");
+
+                        string valstr = GetConstantValueString(pars[i].ParameterType, pars[i].RawDefaultValue);
+                        output.WriteLine(valstr);
+                    }
+                    else
+                    {
+                        output.WriteLine();
+                    }
+
                     output.Flush();
 
                     string content = sb.ToString();
-                    DirectiveSyntax dir = new DirectiveSyntax(
-                        GetIndentString(startIndent+1), "param", new SyntaxNode[] { new GenericSyntax(content) }
-                        );
+                    DirectiveSyntax dir = new DirectiveSyntax( GetIndentString(startIndent+1), "param", 
+                        new SyntaxNode[] { new GenericSyntax(content) });
                     ret.Add(dir);
+
+                    // Parameter custom attributes
+                    for (int j = 0; j < attrs.Length; j++)
+                    {
+                        GetAttributeSyntax(attrs[j], startIndent + 1, ret);
+                    }
                 }
             }//end for
 
