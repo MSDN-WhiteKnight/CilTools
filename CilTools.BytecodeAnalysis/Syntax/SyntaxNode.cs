@@ -1,13 +1,13 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Reflection;
-using System.Globalization;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 
@@ -108,88 +108,11 @@ namespace CilTools.Syntax
         {
             object[] attrs = m.GetCustomAttributes(false);
             List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
-            string content;
-            StringBuilder sb;
-            string strIndent = "".PadLeft(indent,' ');
-
+            
             for (int i = 0; i < attrs.Length; i++)
             {
-                //from metadata
-                if (attrs[i] is ICustomAttribute)
-                {
-                    ICustomAttribute ca = (ICustomAttribute)attrs[i];
-
-                    List<SyntaxNode> children = new List<SyntaxNode>();
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor,false);
-                    children.Add(mref);
-                    children.Add(new PunctuationSyntax(" ", "=", " "));
-                    children.Add(new PunctuationSyntax("", "(", " "));
-                    sb = new StringBuilder(ca.Data.Length*3);
-
-                    for (int j = 0; j < ca.Data.Length; j++)
-                    {
-                        sb.Append(ca.Data[j].ToString("X2", CultureInfo.InvariantCulture));
-                        sb.Append(' ');
-                    }
-
-                    children.Add(new GenericSyntax(sb.ToString()));
-                    children.Add(new PunctuationSyntax("", ")", Environment.NewLine));
-
-                    DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
-                    ret.Add(dir);
-                    continue;
-                }
-
-                //from reflection
-                Type t = attrs[i].GetType();
-                ConstructorInfo[] constr = t.GetConstructors();
-                string s_attr;
-                sb = new StringBuilder(100);
-                StringWriter output = new StringWriter(sb);
-
-                if (constr.Length == 1)
-                {
-                    int parcount = constr[0].GetParameters().Length;
-
-                    if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
-                        t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
-                        Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
-                        )
-                    {
-                        //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
-                        List<SyntaxNode> children = new List<SyntaxNode>();
-                        MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0], false);
-                        children.Add(mref);
-                        children.Add(new PunctuationSyntax(" ", "=", " "));
-                        children.Add(new PunctuationSyntax("", "(", " "));
-                        children.Add(new GenericSyntax("01 00 00 00"));
-                        children.Add(new PunctuationSyntax(" ", ")", Environment.NewLine));
-                        
-                        DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
-                        ret.Add(dir);
-                    }
-                    else
-                    {
-                        s_attr = CilAnalysis.MethodToString(constr[0]);
-                        output.Write(".custom ");
-                        output.Write(s_attr);
-                        output.Flush();
-                        content = sb.ToString();
-                        CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
-                        ret.Add(node);
-                    }
-                }
-                else
-                {
-                    output.Write(".custom ");
-                    s_attr = CilAnalysis.GetTypeSpecString(t);
-                    output.Write(s_attr);
-                    output.Flush();
-                    content = sb.ToString();
-                    CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
-                    ret.Add(node);
-                }
-            }//end for
+                GetAttributeSyntax(attrs[i], indent, ret);
+            }
 
             return ret.ToArray();
         }
@@ -220,7 +143,7 @@ namespace CilTools.Syntax
                 {
                     output.Write(CilAnalysis.GetTypeName(t));
                     output.Write('(');
-                    output.Write(Convert.ToString(constant, System.Globalization.CultureInfo.InvariantCulture));
+                    output.Write(Convert.ToString(constant, CultureInfo.InvariantCulture));
                     output.Write(')');
                 }
             }
@@ -346,7 +269,7 @@ namespace CilTools.Syntax
                 try { provider = ((MethodInfo)m).ReturnTypeCustomAttributes; }
                 catch (Exception ex)
                 {
-                    if (ex is NotImplementedException || ex is InvalidOperationException)
+                    if (ReflectionUtils.IsExpectedException(ex))
                     {
                         CommentSyntax commentSyntax = CommentSyntax.Create(GetIndentString(startIndent + 1),
                             "NOTE: Return type and parameters custom attributes are not shown.", null, false);
@@ -384,7 +307,7 @@ namespace CilTools.Syntax
                 }
                 catch (Exception ex)
                 {
-                    if (ex is InvalidOperationException || ex is NotImplementedException)
+                    if (ReflectionUtils.IsExpectedException(ex))
                     {
                         Diagnostics.OnError(m, 
                             new CilErrorEventArgs(ex, "Failed to get parameter custom attributes"));
