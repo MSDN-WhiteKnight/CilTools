@@ -120,6 +120,21 @@ namespace CilTools.Internal
 
             return true;
         }
+        
+        public static BindingFlags AllMembers()
+        {
+            return BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
+        }
+
+        public static Type[] GetParameterTypesArray(MethodBase mb)
+        {
+            ParameterInfo[] pars = mb.GetParameters();
+            List<Type> ret = new List<Type>(pars.Length);
+
+            for (int i = 0; i < pars.Length; i++) ret.Add(pars[i].ParameterType);
+
+            return ret.ToArray();
+        }
 
         /// <summary>
         /// Reads custom attributes from the specified collection and returns them as an array of 

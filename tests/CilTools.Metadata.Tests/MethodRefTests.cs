@@ -128,6 +128,16 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        public void Test_MethodRef_GetBaseDefinition()
+        {
+            MethodInfo mRef = GetMethodRef_Console_WriteLine() as MethodInfo;
+            MethodInfo baseDef = mRef.GetBaseDefinition();
+            Assert.AreEqual("WriteLine", baseDef.Name);
+            Assert.AreEqual("System.Console", baseDef.DeclaringType.FullName);
+            Assert.AreSame(mRef, baseDef);
+        }
+
+        [TestMethod]
         public void Test_ConstructorRef()
         {
             MethodBase mRef = GetConstructorRef();

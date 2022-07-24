@@ -5,6 +5,7 @@ using System;
 using System.Globalization;
 using System.Reflection;
 using CilTools.BytecodeAnalysis;
+using CilTools.Internal;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata.Methods
@@ -84,7 +85,38 @@ namespace CilTools.Metadata.Methods
 
         public override MethodInfo GetBaseDefinition()
         {
-            throw new NotImplementedException();
+            //newslot hides base definition even if one exists
+            if (this.Attributes.HasFlag(MethodAttributes.NewSlot)) return this;
+
+            //non-virtual can't have base definition
+            if (!this.IsVirtual) return this;
+
+            Type t = this.decltype;
+
+            if (t == null) return this;
+
+            MethodInfo baseDefinition = this;
+            int n = 0;
+
+            while (true)
+            {
+                t = t.BaseType;
+
+                if (t == null) break;
+
+                MethodInfo m = t.GetMethod(this.Name, Utils.AllMembers(), null, this.CallingConvention, 
+                    Utils.GetParameterTypesArray(this), null);
+
+                if (m != null)
+                {
+                    baseDefinition = m;
+                    if (baseDefinition.Attributes.HasFlag(MethodAttributes.NewSlot)) break;
+                }
+
+                if (n > 1000) break; //prevent infinite recursion
+            }
+
+            return baseDefinition;
         }
     }
 }

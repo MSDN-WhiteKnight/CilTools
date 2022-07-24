@@ -78,5 +78,15 @@ namespace CilTools.Metadata.Tests
             Assert.IsFalse(args[0].IsGenericParameter);
             Assert.AreEqual("System.Int32", args[0].FullName);
         }
+
+        [TestMethod]
+        public void Test_MethodSpec_GetBaseDefinition()
+        {
+            MethodInfo m = (MethodInfo)GetMethodSpec();
+            MethodBase baseDef = m.GetBaseDefinition();
+            Assert.IsNotNull(baseDef);
+            Assert.AreEqual(m.Name, baseDef.Name);
+            Assert.AreEqual(m.DeclaringType.FullName, baseDef.DeclaringType.FullName);
+        }
     }
 }
