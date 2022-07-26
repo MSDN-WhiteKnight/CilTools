@@ -10,8 +10,6 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
 using CilTools.Syntax;
-using CilView.Core;
-using CilView.Core.Syntax;
 
 namespace CilTools.CommandLine
 {
@@ -92,8 +90,8 @@ namespace CilTools.CommandLine
                 PrintNode(node, noColor, target);
             }
         }
-        
-        public static int DisassembleMethod(string asspath, string type, string method, bool noColor, TextWriter target) 
+
+        public static int DisassembleMethod(string asspath, string type, string method, bool noColor, TextWriter target)
         {
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
@@ -103,10 +101,10 @@ namespace CilTools.CommandLine
             {
                 ass = reader.LoadFrom(asspath);
                 Type t = ass.GetType(type);
-                
-                if(t==null)
+
+                if (t == null)
                 {
-                    Console.WriteLine("Error: Type {0} not found in assembly {1}",type, asspath);
+                    Console.WriteLine("Error: Type {0} not found in assembly {1}", type, asspath);
                     return 1;
                 }
 
@@ -115,10 +113,10 @@ namespace CilTools.CommandLine
                     );
 
                 MethodBase[] selectedMethods = methods.OfType<MethodBase>().Where((x) => { return x.Name == method; }).ToArray();
-                
-                if(selectedMethods.Length==0)
+
+                if (selectedMethods.Length == 0)
                 {
-                    Console.WriteLine("Error: Type {0} does not declare methods with the specified name",type);
+                    Console.WriteLine("Error: Type {0} does not declare methods with the specified name", type);
                     return 1;
                 }
 

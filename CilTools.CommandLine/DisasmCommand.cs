@@ -5,31 +5,39 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using CilView.Core;
-using CilView.Core.Syntax;
 
 namespace CilTools.CommandLine
 {
     class DisasmCommand : Command
     {
-        public override string Name {get{return "disasm";}}
-        
-        public override string Description {get{return "Write disassembled CIL code of the specified type or method into the file";}}
-        
-        public override string UsageDocumentation {get{
-            string exeName = typeof(Program).Assembly.GetName().Name;
-            StringBuilder sb=new StringBuilder(1000);
-            sb.AppendLine(exeName + " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
-            sb.AppendLine("[--output <output path>] - Output file path");
-            return sb.ToString();
-        }}
-        
+        public override string Name 
+        { 
+            get { return "disasm"; } 
+        }
+
+        public override string Description 
+        { 
+            get { return "Write disassembled CIL code of the specified type or method into the file"; } 
+        }
+
+        public override string UsageDocumentation
+        {
+            get
+            {
+                string exeName = typeof(Program).Assembly.GetName().Name;
+                StringBuilder sb = new StringBuilder(1000);
+                sb.AppendLine(exeName + " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
+                sb.AppendLine("[--output <output path>] - Output file path");
+                return sb.ToString();
+            }
+        }
+
         public override int Execute(string[] args)
         {
             string asspath;
             string type;
             string method;
-            string outpath=null;
+            string outpath = null;
 
             if (args.Length < 3)
             {
@@ -79,7 +87,7 @@ namespace CilTools.CommandLine
             {
                 wr = new StreamWriter(outpath, append: false, Encoding.UTF8);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
                 Console.WriteLine("Error: Cannot open output path " + outpath);
                 Console.WriteLine(ex.ToString());
