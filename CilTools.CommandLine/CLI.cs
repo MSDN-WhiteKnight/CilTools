@@ -3,13 +3,14 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 
 namespace CilTools.CommandLine
 {
     static class CLI
     {
+        public const string Copyright = "Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight/CilTools)";
+
         public static string GetErrorInfo()
         {
             string exeName = typeof(Program).Assembly.GetName().Name;
