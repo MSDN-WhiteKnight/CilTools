@@ -10,29 +10,23 @@ namespace CilTools.CommandLine
 {
     class Program
     {
+        static Dictionary<string,Command> commands;
+        
         static void PrintHelp()
         {
-            string exeName = typeof(Program).Assembly.GetName().Name;
             Console.WriteLine(" Commands:");
             Console.WriteLine();
-
-            Console.WriteLine("view - Print CIL code of types or methods or the content of CIL source files");
-            Console.WriteLine();
-            Console.WriteLine(" Usage");
-            Console.WriteLine("Print disassembled CIL code of the specified type or method:");
-            Console.WriteLine("   " + exeName + " view [--nocolor] <assembly path> <type full name> [<method name>]");
-            Console.WriteLine("Print contents of the specified CIL source file (*.il):");
-            Console.WriteLine("   " + exeName + " view [--nocolor] <source file path>");
-            Console.WriteLine();
-            Console.WriteLine("[--nocolor] - disable syntax highlighting");
-            Console.WriteLine();
-
-            Console.WriteLine("disasm - Write disassembled CIL code of the specified type or method into the file");
-            Console.WriteLine("Usage: " + exeName + 
-                " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
-            Console.WriteLine("[--output <output path>] - Output file path");
-            Console.WriteLine();
-
+            
+            foreach(string key in commands.Keys)
+            {
+                Console.Write(key);
+                Console.Write(" - ");
+                Console.WriteLine(commands[key].Description);
+                Console.WriteLine();
+                Console.WriteLine(" Usage");
+                Console.WriteLine(commands[key].UsageDocumentation);
+            }
+            
             Console.WriteLine("help - Print available commands");
             Console.WriteLine();
         }
@@ -42,6 +36,11 @@ namespace CilTools.CommandLine
             Console.WriteLine("*** CIL Tools command line ***");
             Console.WriteLine("Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight/CilTools)");
             Console.WriteLine();
+            
+            //commands list
+            commands = new Dictionary<string,Command>(2);
+            commands["view"] = new ViewCommand();
+            commands["disasm"] = new DisasmCommand();
 
             //read and process command line arguments
 
@@ -55,13 +54,9 @@ namespace CilTools.CommandLine
                 PrintHelp();
                 return 0;
             }
-            else if (args[0] == "view")
+            else if (commands.ContainsKey(args[0]))
             {
-                return new ViewCommand().Execute(args);
-            }
-            else if (args[0] == "disasm") 
-            {
-                return new DisasmCommand().Execute(args);
+                return commands[args[0]].Execute(args);
             }
             else
             {

@@ -19,10 +19,8 @@ namespace CilTools.CommandLine
         public override string UsageDocumentation {get{
             string exeName = typeof(Program).Assembly.GetName().Name;
             StringBuilder sb=new StringBuilder(1000);
-            sb.AppendLine("Usage: " + exeName + 
-                " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
+            sb.AppendLine(exeName + " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
             sb.AppendLine("[--output <output path>] - Output file path");
-            sb.AppendLine();
             return sb.ToString();
         }}
         

@@ -25,8 +25,7 @@ namespace CilTools.CommandLine
             sb.AppendLine("Print contents of the specified CIL source file (*.il):");
             sb.AppendLine("   " + exeName + " view [--nocolor] <source file path>");
             sb.AppendLine();
-            sb.AppendLine("[--nocolor] - disable syntax highlighting");
-            sb.AppendLine();
+            sb.AppendLine("[--nocolor] - disable syntax highlighting");            
             return sb.ToString();
         }}
         
