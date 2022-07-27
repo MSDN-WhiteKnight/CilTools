@@ -15,7 +15,7 @@ namespace CilTools.CommandLine
         
         public abstract string Description {get;}
         
-        public abstract string UsageDocumentation {get;}
+        public abstract IEnumerable<TextParagraph> UsageDocumentation {get;}
 
         public virtual bool IsHidden
         {

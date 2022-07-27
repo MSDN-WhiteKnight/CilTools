@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CilTools.CommandLine
@@ -19,9 +20,9 @@ namespace CilTools.CommandLine
             get { return "Print available commands"; }
         }
 
-        public override string UsageDocumentation
+        public override IEnumerable<TextParagraph> UsageDocumentation
         {
-            get { return string.Empty; }
+            get { return new TextParagraph[0]; }
         }
 
         public override int Execute(string[] args)
@@ -39,11 +40,16 @@ namespace CilTools.CommandLine
                 Console.Write(" - ");
                 Console.WriteLine(cmd.Description);
                 Console.WriteLine();
+                TextParagraph[] usage = cmd.UsageDocumentation.ToArray();
 
-                if (cmd.UsageDocumentation.Length > 0)
+                if (usage.Length > 0)
                 {
                     Console.WriteLine(" Usage");
-                    Console.WriteLine(cmd.UsageDocumentation);
+                    for(int i=0;i<usage.Length;i++)
+                    {
+                        Console.WriteLine(usage[i].GetText());
+                    }
+                    Console.WriteLine();
                 }
             }
             

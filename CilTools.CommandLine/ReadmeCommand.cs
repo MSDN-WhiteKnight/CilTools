@@ -4,6 +4,7 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CilTools.CommandLine
@@ -20,9 +21,9 @@ namespace CilTools.CommandLine
             get { return "Generate readme"; }
         }
 
-        public override string UsageDocumentation
+        public override IEnumerable<TextParagraph> UsageDocumentation
         {
-            get { return string.Empty; }
+            get { return new TextParagraph[0]; }
         }
 
         public override bool IsHidden => true;
@@ -61,12 +62,19 @@ namespace CilTools.CommandLine
                     wr.Write("** - ");
                     wr.WriteLine(cmd.Description);
                     wr.WriteLine();
+                    TextParagraph[] usage = cmd.UsageDocumentation.ToArray();
 
-                    if (cmd.UsageDocumentation.Length > 0)
+                    if (usage.Length > 0)
                     {
                         wr.WriteLine("*Usage*");
                         wr.WriteLine();
-                        wr.WriteLine(EscapeForMarkdown(cmd.UsageDocumentation));
+                        
+                        for(int i=0;i<usage.Length;i++)
+                        {
+                            string md = usage[i].GetMarkdown();
+                            wr.WriteLine(md);
+                            if(md.Length>0) wr.WriteLine();
+                        }
                     }
                 }
 

@@ -20,15 +20,16 @@ namespace CilTools.CommandLine
             get { return "Write disassembled CIL code of the specified type or method into the file"; } 
         }
 
-        public override string UsageDocumentation
+        public override IEnumerable<TextParagraph> UsageDocumentation
         {
             get
             {
                 string exeName = typeof(Program).Assembly.GetName().Name;
-                StringBuilder sb = new StringBuilder(1000);
-                sb.AppendLine(exeName + " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
-                sb.AppendLine("[--output <output path>] - Output file path");
-                return sb.ToString();
+                
+                yield return TextParagraph.FromFragment(
+                    new TextFragment("    " + exeName + " disasm [--output <output path>] <assembly path> <type full name> [<method name>]", true));
+                yield return TextParagraph.FromFragment(
+                    new TextFragment("[--output <output path>] - Output file path", false));
             }
         }
 

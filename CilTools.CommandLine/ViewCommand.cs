@@ -23,19 +23,24 @@ namespace CilTools.CommandLine
             get { return "Print CIL code of types or methods or the content of CIL source files"; } 
         }
 
-        public override string UsageDocumentation
+        public override IEnumerable<TextParagraph> UsageDocumentation
         {
             get
             {
                 string exeName = typeof(Program).Assembly.GetName().Name;
-                StringBuilder sb = new StringBuilder(1000);
-                sb.AppendLine("Print disassembled CIL code of the specified type or method:");
-                sb.AppendLine("   " + exeName + " view [--nocolor] <assembly path> <type full name> [<method name>]");
-                sb.AppendLine("Print contents of the specified CIL source file (*.il):");
-                sb.AppendLine("   " + exeName + " view [--nocolor] <source file path>");
-                sb.AppendLine();
-                sb.AppendLine("[--nocolor] - disable syntax highlighting");
-                return sb.ToString();
+                
+                yield return TextParagraph.FromFragment(
+                    new TextFragment("Print disassembled CIL code of the specified type or method:", false));
+                yield return TextParagraph.FromFragment(
+                    new TextFragment("    " + exeName + " view [--nocolor] <assembly path> <type full name> [<method name>]", true));
+                yield return TextParagraph.FromFragment(
+                    new TextFragment("Print contents of the specified CIL source file (*.il):", false));
+                yield return TextParagraph.FromFragment(
+                    new TextFragment("    " + exeName + " view [--nocolor] <source file path>", true));
+                yield return TextParagraph.FromFragment(
+                    new TextFragment(string.Empty, false));
+                yield return TextParagraph.FromFragment(
+                    new TextFragment("[--nocolor] - Disable syntax highlighting", false));
             }
         }
 
