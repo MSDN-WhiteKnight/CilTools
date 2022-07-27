@@ -14,62 +14,72 @@ namespace CilTools.CommandLine
             this.Text = text;
             this.IsCode = isCode;
         }
-        
-        public string Text {get; set;}
-        
-        public bool IsCode {get; set;}
+
+        public string Text { get; set; }
+
+        public bool IsCode { get; set; }
     }
-    
-    class TextParagraph 
+
+    class TextParagraph
     {
         List<TextFragment> fragments = new List<TextFragment>();
-        
+
         public static TextParagraph FromCollection(IEnumerable<TextFragment> coll)
         {
             TextParagraph par = new TextParagraph();
-            
-            foreach(TextFragment fragment in coll)
+
+            foreach (TextFragment fragment in coll)
             {
                 par.Add(fragment);
             }
-            
+
             return par;
         }
-        
+
         public static TextParagraph FromFragment(TextFragment fragment)
         {
             TextParagraph par = new TextParagraph();
             par.Add(fragment);
             return par;
         }
-        
+
+        public static TextParagraph Text(string text)
+        {
+            return FromFragment(new TextFragment(text, false));
+        }
+
+        public static TextParagraph Code(string text)
+        {
+            return FromFragment(new TextFragment(text, true));
+        }
+
         public void Add(TextFragment fragment)
         {
             this.fragments.Add(fragment);
         }
-        
+
         public void Clear()
         {
             this.fragments.Clear();
         }
-        
+
         public IEnumerable<TextFragment> Fragments
         {
-            get {return this.fragments.ToArray();}
+            get { return this.fragments.ToArray(); }
         }
-        
+
         public string GetText()
         {
-            StringBuilder sb=new StringBuilder();
-            
-            for(int i=0;i<this.fragments.Count;i++)
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < this.fragments.Count; i++)
             {
                 sb.Append(this.fragments[i].Text);
             }
-            
+
             return sb.ToString();
         }
-        
+
         static string EscapeForMarkdown(string str)
         {
             string ret = str;
@@ -77,23 +87,23 @@ namespace CilTools.CommandLine
             ret = ret.Replace(">", "\\>");
             return ret;
         }
-        
+
         public string GetMarkdown()
         {
-            StringBuilder sb=new StringBuilder();
-            
-            for(int i=0;i<this.fragments.Count;i++)
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < this.fragments.Count; i++)
             {
-                if(this.fragments[i].IsCode)
+                if (this.fragments[i].IsCode)
                 {
                     sb.Append(this.fragments[i].Text);
                 }
-                else 
+                else
                 {
                     sb.Append(EscapeForMarkdown(this.fragments[i].Text));
                 }
             }
-            
+
             return sb.ToString();
         }
     }

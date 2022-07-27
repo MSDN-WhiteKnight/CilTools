@@ -28,19 +28,14 @@ namespace CilTools.CommandLine
             get
             {
                 string exeName = typeof(Program).Assembly.GetName().Name;
-                
-                yield return TextParagraph.FromFragment(
-                    new TextFragment("Print disassembled CIL code of the specified type or method:", false));
-                yield return TextParagraph.FromFragment(
-                    new TextFragment("    " + exeName + " view [--nocolor] <assembly path> <type full name> [<method name>]", true));
-                yield return TextParagraph.FromFragment(
-                    new TextFragment("Print contents of the specified CIL source file (*.il):", false));
-                yield return TextParagraph.FromFragment(
-                    new TextFragment("    " + exeName + " view [--nocolor] <source file path>", true));
-                yield return TextParagraph.FromFragment(
-                    new TextFragment(string.Empty, false));
-                yield return TextParagraph.FromFragment(
-                    new TextFragment("[--nocolor] - Disable syntax highlighting", false));
+
+                yield return TextParagraph.Text("Print disassembled CIL code of the specified type or method:");
+                yield return TextParagraph.Code("    " + exeName +
+                    " view [--nocolor] <assembly path> <type full name> [<method name>]");
+                yield return TextParagraph.Text("Print contents of the specified CIL source file (*.il):");
+                yield return TextParagraph.Code("    " + exeName + " view [--nocolor] <source file path>");
+                yield return TextParagraph.Text(string.Empty);
+                yield return TextParagraph.Text("[--nocolor] - Disable syntax highlighting");
             }
         }
 

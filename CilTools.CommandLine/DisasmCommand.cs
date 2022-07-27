@@ -25,11 +25,10 @@ namespace CilTools.CommandLine
             get
             {
                 string exeName = typeof(Program).Assembly.GetName().Name;
-                
-                yield return TextParagraph.FromFragment(
-                    new TextFragment("    " + exeName + " disasm [--output <output path>] <assembly path> <type full name> [<method name>]", true));
-                yield return TextParagraph.FromFragment(
-                    new TextFragment("[--output <output path>] - Output file path", false));
+
+                yield return TextParagraph.Code("    " + exeName +
+                    " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
+                yield return TextParagraph.Text("[--output <output path>] - Output file path");
             }
         }
 
