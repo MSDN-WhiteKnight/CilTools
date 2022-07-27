@@ -28,21 +28,15 @@ namespace CilTools.CommandLine
 
         public override bool IsHidden => true;
 
-        static string EscapeForMarkdown(string str)
-        {
-            string ret = str.Replace("\r\n", "\r\n\r\n");
-            ret = ret.Replace("<", "\\<");
-            ret = ret.Replace(">", "\\>");
-            return ret;
-        }
-
         public override int Execute(string[] args)
         {
-            FileStream fs = new FileStream("readme.md", FileMode.OpenOrCreate, FileAccess.Write, FileShare.Read);
-            StreamWriter wr = new StreamWriter(fs, Encoding.UTF8);
+            FileStream fs = null;
+            StreamWriter wr = null;
 
-            using (wr)
+            try
             {
+                fs = new FileStream("readme.md", FileMode.Create, FileAccess.Write, FileShare.Read);
+                wr = new StreamWriter(fs, Encoding.UTF8);
                 wr.WriteLine("# CIL Tools command line");
                 wr.WriteLine();
                 wr.WriteLine("Command line tool to view disassembled CIL code of methods in .NET assemblies.");
@@ -68,12 +62,12 @@ namespace CilTools.CommandLine
                     {
                         wr.WriteLine("*Usage*");
                         wr.WriteLine();
-                        
-                        for(int i=0;i<usage.Length;i++)
+
+                        for (int i = 0; i < usage.Length; i++)
                         {
                             string md = usage[i].GetMarkdown();
                             wr.WriteLine(md);
-                            if(md.Length>0) wr.WriteLine();
+                            if (md.Length > 0) wr.WriteLine();
                         }
                     }
                 }
@@ -81,9 +75,19 @@ namespace CilTools.CommandLine
                 wr.WriteLine("---");
                 wr.WriteLine();
                 wr.WriteLine(CLI.Copyright);
-                wr.WriteLine();
+                Console.WriteLine("Generated readme.md");
 
                 return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return 1;
+            }
+            finally
+            {
+                if (wr != null) wr.Dispose();
+                if (fs != null) fs.Dispose();
             }
         }
     }
