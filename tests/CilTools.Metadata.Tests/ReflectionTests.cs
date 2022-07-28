@@ -12,6 +12,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -82,6 +83,11 @@ namespace CilTools.Metadata.Tests
         [TestMethod]
         public void Test_ExternalType()
         {
+            if(typeof(object).Assembly.GetName().Name == "System.Private.CoreLib")
+            {
+                throw new AssertInconclusiveException("Skipped on .NET Core due to bugs");
+            }
+            
             AssemblyReader reader = new AssemblyReader();
 
             using (reader)
@@ -263,16 +269,15 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, "References .NET Framework")]
         public void Test_FunctionPointers()
         {
             AssemblyReader reader = new AssemblyReader();
 
             using (reader)
             {
-                string path = Path.Combine(
-                    System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory(),
-                    "WPF\\PresentationCore.dll"
-                    );
+                string windir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+                string path = Path.Combine(windir,"Microsoft.NET\\Framework\\v4.0.30319\\WPF\\PresentationCore.dll");
 
                 Assembly ass = reader.LoadFrom(path);
                 Type mt = ass.GetType("<Module>");
