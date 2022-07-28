@@ -268,7 +268,6 @@ namespace CilTools.Metadata.Tests
             AssertThat.DoesNotThrow(() => t.GetHashCode());
         }
 
-        [TestMethod]
         [ConditionalTest(TestCondition.WindowsOnly, "References .NET Framework")]
         public void Test_FunctionPointers()
         {
