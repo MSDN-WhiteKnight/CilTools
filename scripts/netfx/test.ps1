@@ -1,7 +1,7 @@
 # This script should be executed from Visual Studio Developer command prompt (or with vstest.console on %PATH%)
 
 $toTest = "tests\CilTools.BytecodeAnalysis.Tests\bin\Debug\net45\CilTools.BytecodeAnalysis.Tests.dll",
-          "tests\CilTools.Metadata.Tests\bin\Debug\CilTools.Metadata.Tests.dll"
+          "tests\CilTools.Metadata.Tests\bin\Debug\net45\CilTools.Metadata.Tests.dll"
 
 $exitCode = 0           
            

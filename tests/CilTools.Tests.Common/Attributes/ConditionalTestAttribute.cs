@@ -2,13 +2,14 @@
  * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Tests.Common.Attributes
 {
     public enum TestCondition
     {
-        Never = 0, Always = 1, WindowsOnly = 2, DebugBuildOnly = 3, ReleaseBuildOnly = 4
+        Never = 0, Always = 1, WindowsOnly = 2, DebugBuildOnly = 3, ReleaseBuildOnly = 4, NetFrameworkOnly = 5
     }
 
     public class ConditionalTestAttribute : TestMethodAttribute
@@ -41,6 +42,9 @@ namespace CilTools.Tests.Common.Attributes
                     return IS_DEBUG_BUILD;
                 case TestCondition.ReleaseBuildOnly:
                     return !IS_DEBUG_BUILD;
+                case TestCondition.NetFrameworkOnly:
+                    AssemblyName an = typeof(object).Assembly.GetName();
+                    return an.Name.Equals("mscorlib", StringComparison.Ordinal);
                 default:
                     Assert.Fail("Unknown test condition");
                     return false;

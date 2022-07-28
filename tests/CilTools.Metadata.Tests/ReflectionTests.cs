@@ -12,6 +12,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -91,11 +92,12 @@ namespace CilTools.Metadata.Tests
                 MethodBase mi = t.GetMember("GetInterfaceCount")[0] as MethodBase;
                 Type paramtype = mi.GetParameters()[0].ParameterType;
 
+                Assert.AreEqual("Type", paramtype.Name);
+                Assert.AreEqual("System.Type", paramtype.FullName);
+                Assert.IsTrue(paramtype.IsClass);
                 Assert.IsTrue(paramtype.Attributes.HasFlag(TypeAttributes.Public));
                 Assert.AreEqual("MemberInfo", paramtype.BaseType.Name);
-
                 Assert.IsTrue(paramtype.IsAssignableFrom(paramtype));
-                Assert.IsTrue(paramtype.IsAssignableFrom(typeof(Type)));
             }
         }
 
@@ -262,17 +264,15 @@ namespace CilTools.Metadata.Tests
             AssertThat.DoesNotThrow(() => t.GetHashCode());
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, "References .NET Framework")]
         public void Test_FunctionPointers()
         {
             AssemblyReader reader = new AssemblyReader();
 
             using (reader)
             {
-                string path = Path.Combine(
-                    System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory(),
-                    "WPF\\PresentationCore.dll"
-                    );
+                string windir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+                string path = Path.Combine(windir,"Microsoft.NET\\Framework\\v4.0.30319\\WPF\\PresentationCore.dll");
 
                 Assembly ass = reader.LoadFrom(path);
                 Type mt = ass.GetType("<Module>");

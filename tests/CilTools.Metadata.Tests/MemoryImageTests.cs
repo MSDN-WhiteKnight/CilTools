@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Metadata.Tests
@@ -67,7 +68,7 @@ namespace CilTools.Metadata.Tests
             return ret;
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, "Uses Windows API")]
         public void Test_MemoryImage_Load()
         {
             //find corelib module

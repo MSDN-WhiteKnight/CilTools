@@ -47,6 +47,25 @@ namespace CilTools.Tests.Common
 #endif
         }
 
+        public static string GetSampleAppPath()
+        {
+            AssemblyName an = typeof(object).Assembly.GetName();
+            string fmt;
+
+            if (an.Name.Equals("System.Private.CoreLib", StringComparison.Ordinal))
+            {
+                //.NET Core
+                fmt = @"..\..\..\..\EmitSampleApp\bin\{0}\netcoreapp3.1\win-x86\EmitSampleApp.dll";
+            }
+            else
+            {
+                //.NET Framework
+                fmt = @"..\..\..\..\EmitSampleApp\bin\{0}\net45\win-x86\EmitSampleApp.exe";
+            }
+
+            return string.Format(fmt, GetConfig());
+        }
+
         public static void GenerateFakeIL(int repeats, TextWriter target)
         {
             string[] words = {
