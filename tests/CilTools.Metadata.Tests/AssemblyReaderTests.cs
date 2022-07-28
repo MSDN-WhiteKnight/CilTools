@@ -81,7 +81,7 @@ namespace CilTools.Metadata.Tests
             Directory.SetCurrentDirectory(dir);
 
             string path = string.Format(
-                @"..\..\..\EmitSampleApp\bin\{0}\net45\win-x86\EmitSampleApp.exe", 
+                @"..\..\..\..\EmitSampleApp\bin\{0}\net45\win-x86\EmitSampleApp.exe", 
                 Utils.GetConfig());
 
             AssemblyReader reader = new AssemblyReader();
