@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Metadata.Tests
@@ -267,14 +268,12 @@ namespace CilTools.Metadata.Tests
 
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.NetFrameworkOnly, "TypeRef.GetMethodImpl is not implemented")]
+        [WorkItem(127)]
         public void Test_GetBaseDefinition_FromObject()
         {
-            if(typeof(object).Assembly.GetName().Name == "System.Private.CoreLib")
-            {
-                throw new AssertInconclusiveException("Skipped on .NET Core due to bugs");
-            }
-            
+            //https://github.com/MSDN-WhiteKnight/CilTools/issues/127
+
             AssemblyReader reader = ReaderFactory.GetReader();
 
             Assembly ass = reader.LoadFrom(typeof(MethodDefTests_DerivedClass).Assembly.Location);
