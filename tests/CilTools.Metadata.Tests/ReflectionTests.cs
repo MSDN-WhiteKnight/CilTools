@@ -83,11 +83,6 @@ namespace CilTools.Metadata.Tests
         [TestMethod]
         public void Test_ExternalType()
         {
-            if(typeof(object).Assembly.GetName().Name == "System.Private.CoreLib")
-            {
-                throw new AssertInconclusiveException("Skipped on .NET Core due to bugs");
-            }
-            
             AssemblyReader reader = new AssemblyReader();
 
             using (reader)
@@ -97,11 +92,12 @@ namespace CilTools.Metadata.Tests
                 MethodBase mi = t.GetMember("GetInterfaceCount")[0] as MethodBase;
                 Type paramtype = mi.GetParameters()[0].ParameterType;
 
+                Assert.AreEqual("Type", paramtype.Name);
+                Assert.AreEqual("System.Type", paramtype.FullName);
+                Assert.IsTrue(paramtype.IsClass);
                 Assert.IsTrue(paramtype.Attributes.HasFlag(TypeAttributes.Public));
                 Assert.AreEqual("MemberInfo", paramtype.BaseType.Name);
-
                 Assert.IsTrue(paramtype.IsAssignableFrom(paramtype));
-                Assert.IsTrue(paramtype.IsAssignableFrom(typeof(Type)));
             }
         }
 

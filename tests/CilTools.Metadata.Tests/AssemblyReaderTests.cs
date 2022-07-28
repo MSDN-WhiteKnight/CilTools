@@ -9,6 +9,7 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -69,20 +70,13 @@ namespace CilTools.Metadata.Tests
             }
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, "EmitSampleApp is only built on Windows")]
         public void Test_EntryPoint()
         {
-            if(typeof(object).Assembly.GetName().Name == "System.Private.CoreLib")
-            {
-                throw new AssertInconclusiveException("Skipped on .NET Core due to bugs");
-            }
-            
             string dir = Path.GetDirectoryName(typeof(AssemblyReaderTests).Assembly.Location);
             Directory.SetCurrentDirectory(dir);
 
-            string path = string.Format(
-                @"..\..\..\..\EmitSampleApp\bin\{0}\net45\win-x86\EmitSampleApp.exe", 
-                Utils.GetConfig());
+            string path = Utils.GetSampleAppPath(); //EmitSampleApp
 
             AssemblyReader reader = new AssemblyReader();
 
