@@ -524,5 +524,26 @@ namespace CilTools.Metadata.Tests
                 SyntaxTestsCore.Test_GetTypeDefSyntax_Full(t);
             }
         }
+
+        [TestMethod]
+        public void Test_GetInterfaces_External()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(List<>).Assembly.Location);
+            Type tList = ass.GetType(typeof(List<>).FullName);
+            Type[] ifTypes = tList.GetInterfaces();
+
+            AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "IEnumerable");
+            AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "IList");
+            AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "ICollection");
+            AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "IEnumerable`1");
+            AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "IList`1");
+            AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "ICollection`1");
+
+            for (int i = 0; i < ifTypes.Length; i++)
+            {
+                Assert.IsTrue(ifTypes[i].IsInterface);
+            }
+        }
     }
 }
