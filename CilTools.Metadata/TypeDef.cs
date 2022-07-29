@@ -245,7 +245,16 @@ namespace CilTools.Metadata
 
         public override Type[] GetInterfaces()
         {
-            throw new NotImplementedException();
+            InterfaceImplementationHandleCollection coll = this.type.GetInterfaceImplementations();
+            List<Type> ret = new List<Type>(coll.Count);
+
+            foreach (InterfaceImplementationHandle h in coll)
+            {
+                InterfaceImplementation ii = this.assembly.MetadataReader.GetInterfaceImplementation(h);
+                ret.Add(this.assembly.GetTypeByHandle(ii.Interface));
+            }
+
+            return ret.ToArray();
         }
 
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
@@ -603,7 +612,7 @@ namespace CilTools.Metadata
 
             return false;
         }
-
+        
         public override string ToString()
         {
             //check if disposed
