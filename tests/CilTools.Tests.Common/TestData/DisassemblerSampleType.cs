@@ -16,4 +16,6 @@ namespace CilTools.Tests.Common
             Console.WriteLine("Hello, World");
         }
     }
+
+    public class DerivedSampleType : DisassemblerSampleType { }
 }

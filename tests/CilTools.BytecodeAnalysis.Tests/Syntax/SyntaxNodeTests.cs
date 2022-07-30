@@ -7,6 +7,7 @@ using System.Text;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.TestData;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.BytecodeAnalysis.Tests.Syntax
@@ -27,9 +28,44 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         }
 
         [TestMethod]
+        [WorkItem(129)]
         public void Test_GetTypeDefSyntax_Interfaces()
         {
             SyntaxTestsCore.Test_GetTypeDefSyntax_Interfaces(typeof(InterfacesSampleType));
+        }
+
+        [TestMethod]
+        [WorkItem(129)]
+        public void Test_GetTypeDefSyntax_BaseType_Object()
+        {
+            Type t = typeof(DisassemblerSampleType);
+            string corelib = typeof(object).Assembly.GetName().Name;
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+            Assert.IsTrue(s.Contains("extends ["+ corelib + "]System.Object"));
+        }
+
+        [TestMethod]
+        [WorkItem(129)]
+        public void Test_GetTypeDefSyntax_BaseType()
+        {
+            const string expected = @"
+.class public auto ansi beforefieldinit CilTools.Tests.Common.DerivedSampleType
+extends [CilTools.Tests.Common]CilTools.Tests.Common.DisassemblerSampleType { 
+    //...
+}";
+            Type t = typeof(DerivedSampleType);
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.CilEquals(expected, s);
+        }
+
+        public void Test_GetTypeDefSyntax_Interface()
+        {
+            Type t = typeof(ITest);
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+            Assert.IsFalse(s.Contains("extends"));
         }
     }
 }

@@ -549,7 +549,7 @@ namespace CilTools.Syntax
 
                 try
                 {
-                    content.Add(new MemberRefSyntax(CilAnalysis.GetTypeFullNameSyntax(t.BaseType).ToArray(), t.BaseType));
+                    content.Add(new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax(t.BaseType).ToArray(), t.BaseType));
                 }
                 catch (TypeLoadException ex) 
                 {
@@ -587,7 +587,7 @@ namespace CilTools.Syntax
                     }
 
                     content.Add(
-                        new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(interfaces[i]).ToArray(), interfaces[i])
+                        new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax(interfaces[i]).ToArray(), interfaces[i])
                         );
                 }
 
