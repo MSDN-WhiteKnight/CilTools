@@ -3,8 +3,6 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using CilTools.BytecodeAnalysis;
-using CilTools.Syntax;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -32,44 +30,6 @@ namespace CilTools.Tests.Common
             });
 
             Assert.IsFalse(s.Contains(".method"));
-        }
-
-        public static void Test_GetTypeDefSyntax_Short(Type t)
-        {
-            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
-            string s = Utils.SyntaxToString(nodes);
-            SampleMethods_AssertTypeSyntax(s);
-        }
-
-        public static void Test_GetTypeDefSyntax_Full(Type t)
-        {
-            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, true, new DisassemblerParams());
-            string s = Utils.SyntaxToString(nodes);
-
-            AssertThat.IsMatch(s, new Text[] {
-                ".class", Text.Any,"public", Text.Any,"CilTools.Tests.Common.DisassemblerSampleType", Text.Any,
-                "{", Text.Any,
-                ".field", Text.Any,"public", Text.Any,"static", Text.Any,"int32", Text.Any,"x", Text.Any,
-                ".method", Text.Any,"static", Text.Any,"Test()", Text.Any,"cil", Text.Any,"managed", Text.Any,
-                "{", Text.Any,".maxstack", Text.Any,"8", Text.Any,"ldstr", Text.Any,"\"Hello, World\"", Text.Any,
-                "call", Text.Any, "System.Console::WriteLine", Text.Any,"ret", Text.Any,"}", Text.Any,
-                "}", Text.Any
-            });
-        }
-
-        public static void Test_GetTypeDefSyntax_Interfaces(Type t)
-        {
-            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
-            string s = Utils.SyntaxToString(nodes);
-
-            const string expected = @"
-.class public auto ansi beforefieldinit CilTools.Tests.Common.TestData.InterfacesSampleType
-    extends [mscorlib]System.Object
-    implements [CilTools.Tests.Common]CilTools.Tests.Common.TestData.ITest,
-               [mscorlib]System.IComparable { 
-//... }";
-
-            AssertThat.CilEquals(expected, s);
         }
     }
 }

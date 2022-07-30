@@ -501,41 +501,6 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
-        public void Test_GetTypeDefSyntax_Short()
-        {
-            AssemblyReader reader = new AssemblyReader();
-
-            using (reader)
-            {
-                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-                Type t = ass.GetType(typeof(SampleMethods).FullName);
-                SyntaxTestsCore.Test_GetTypeDefSyntax_Short(t);
-            }
-        }
-
-        [TestMethod]
-        public void Test_GetTypeDefSyntax_Full()
-        {
-            AssemblyReader reader = new AssemblyReader();
-
-            using (reader)
-            {
-                Assembly ass = reader.LoadFrom(typeof(DisassemblerSampleType).Assembly.Location);
-                Type t = ass.GetType(typeof(DisassemblerSampleType).FullName);
-                SyntaxTestsCore.Test_GetTypeDefSyntax_Full(t);
-            }
-        }
-
-        [TestMethod]
-        public void Test_GetTypeDefSyntax_Interfaces()
-        {
-            AssemblyReader reader = ReaderFactory.GetReader();
-            Assembly ass = reader.LoadFrom(typeof(InterfacesSampleType).Assembly.Location);
-            Type t = ass.GetType(typeof(InterfacesSampleType).FullName);
-            SyntaxTestsCore.Test_GetTypeDefSyntax_Interfaces(t);
-        }
-
-        [TestMethod]
         public void Test_GetInterfaces()
         {
             AssemblyReader reader = ReaderFactory.GetReader();

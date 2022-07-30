@@ -8,6 +8,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TestData;
 using CilTools.Tests.Common.TextUtils;
 
@@ -69,10 +70,11 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-        [TestMethod]        
-        public void Test_Properties()
+        [TestMethod]
+        [TypeTestData(typeof(TypeWithProperties), BytecodeProviders.All)]
+        public void Test_Properties(Type t)
         {
-            IEnumerable<SyntaxNode> nodes=SyntaxNode.GetTypeDefSyntax(typeof(TypeWithProperties));            
+            IEnumerable<SyntaxNode> nodes=SyntaxNode.GetTypeDefSyntax(t);            
             string s = Utils.SyntaxToString(nodes);
                         
             AssertThat.IsMatch(s, new Text[] {
@@ -169,9 +171,9 @@ namespace CilTools.BytecodeAnalysis.Tests
 
         [TestMethod]
         [WorkItem(53)]
-        public void Test_GenericTypeParameterConstraints()
+        [TypeTestData(typeof(GenericConstraintsSample<>), BytecodeProviders.All)]
+        public void Test_GenericTypeParameterConstraints(Type t)
         {
-            Type t = typeof(GenericConstraintsSample<>);
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
             string str = Utils.SyntaxToString(nodes);
 
@@ -185,9 +187,9 @@ namespace CilTools.BytecodeAnalysis.Tests
 
         [TestMethod]
         [WorkItem(53)]
-        public void Test_GenericTypeParameterFlags()
+        [TypeTestData(typeof(Action<>), BytecodeProviders.All)]
+        public void Test_GenericTypeParameterFlags(Type t)
         {
-            Type t = typeof(Action<>);
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
             string str = Utils.SyntaxToString(nodes);
 
