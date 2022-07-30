@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.TestData;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -526,6 +527,43 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        public void Test_GetTypeDefSyntax_Interfaces()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(InterfacesSampleType).Assembly.Location);
+            Type t = ass.GetType(typeof(InterfacesSampleType).FullName);
+            SyntaxTestsCore.Test_GetTypeDefSyntax_Interfaces(t);
+        }
+
+        [TestMethod]
+        public void Test_GetInterfaces()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(InterfacesSampleType).Assembly.Location);
+            Type t = ass.GetType(typeof(InterfacesSampleType).FullName);
+            Type[] ifTypes = t.GetInterfaces();
+
+            Assert.AreEqual(2, ifTypes.Length);
+            AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.FullName == typeof(ITest).FullName);
+            AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.FullName == typeof(IComparable).FullName);
+            AssertThat.AllMatch(ifTypes, (x) => x.IsInterface);
+            AssertThat.AllMatch(ifTypes, (x) => !x.IsClass);
+            AssertThat.AllMatch(ifTypes, (x) => !x.IsValueType);
+            AssertThat.AllMatch(ifTypes, (x) => x.BaseType == null);
+        }
+
+        [TestMethod]
+        public void Test_GetInterfaces_Negative()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+            Type t = ass.GetType(typeof(SampleType).FullName);
+            Type[] ifTypes = t.GetInterfaces();
+
+            Assert.AreEqual(0, ifTypes.Length);
+        }
+
+        [TestMethod]
         public void Test_GetInterfaces_External()
         {
             AssemblyReader reader = ReaderFactory.GetReader();
@@ -539,11 +577,7 @@ namespace CilTools.Metadata.Tests
             AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "IEnumerable`1");
             AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "IList`1");
             AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "ICollection`1");
-
-            for (int i = 0; i < ifTypes.Length; i++)
-            {
-                Assert.IsTrue(ifTypes[i].IsInterface);
-            }
+            AssertThat.AllMatch(ifTypes, (x) => x.IsInterface);
         }
     }
 }

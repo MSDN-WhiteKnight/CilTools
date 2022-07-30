@@ -56,5 +56,21 @@ namespace CilTools.Tests.Common
                 "}", Text.Any
             });
         }
+
+        public static void Test_GetTypeDefSyntax_Interfaces(Type t)
+        {
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+
+            // Update after https://github.com/MSDN-WhiteKnight/CilTools/issues/129 is fixed
+            const string expected = @"
+.class public auto ansi beforefieldinit CilTools.Tests.Common.TestData.InterfacesSampleType
+    extends class [mscorlib]System.Object
+    implements class [CilTools.Tests.Common]CilTools.Tests.Common.TestData.ITest,
+               class [mscorlib]System.IComparable { 
+//... }";
+
+            AssertThat.CilEquals(expected, s);
+        }
     }
 }
