@@ -84,6 +84,19 @@ namespace CilTools.Tests.Common
             }
         }
 
+        public static void AllMatch<T>(IEnumerable<T> collection, Func<T, bool> condition, string message = "")
+        {
+            if (string.IsNullOrEmpty(message))
+            {
+                message = "Some items in collection does not match the condition";
+            }
+
+            foreach (T item in collection)
+            {
+                Assert.IsTrue(condition(item), message);
+            }
+        }
+
         public static void IsCorrect(CilGraph graph)
         {
             CilGraphNode[] nodes = graph.GetNodes().ToArray();

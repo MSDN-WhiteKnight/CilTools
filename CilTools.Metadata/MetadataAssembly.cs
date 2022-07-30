@@ -519,6 +519,13 @@ namespace CilTools.Metadata
             return this.ResolveTypeImpl(token, null, null);
         }
 
+        internal Type GetTypeByHandle(EntityHandle ht)
+        {
+            int token = this.MetadataReader.GetToken(ht);
+
+            return this.ResolveTypeImpl(token, null, null);
+        }
+
         internal MethodBase GetMethodDefinition(MethodDefinitionHandle hm)
         {
             int token = this.MetadataReader.GetToken(hm);
