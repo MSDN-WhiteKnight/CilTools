@@ -257,6 +257,91 @@ namespace CilTools.Metadata
             return ret.ToArray();
         }
 
+        static bool ContainsMethod(List<MethodInfo> coll, MethodInfo match)
+        {
+            for (int i = 0; i < coll.Count; i++)
+            {
+                if (coll[i].MetadataToken == match.MetadataToken)
+                {
+                    //all methods are in the same module, so only need to compare
+                    //by metadata token
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override InterfaceMapping GetInterfaceMap(Type interfaceType)
+        {
+            if (interfaceType == null)
+            {
+                throw new ArgumentNullException(nameof(interfaceType));
+            }
+
+            if (!interfaceType.IsInterface)
+            {
+                throw new ArgumentException("Type is not an interface");
+            }
+
+            MethodImplementationHandleCollection coll = this.type.GetMethodImplementations();
+            List<MethodInfo> bodys = new List<MethodInfo>();
+            List<MethodInfo> decls = new List<MethodInfo>();
+
+            //explicitly implemented
+            foreach (MethodImplementationHandle h in coll)
+            {
+                if (h.IsNil) continue;
+
+                MethodImplementation impl = this.assembly.MetadataReader.GetMethodImplementation(h);
+                MethodInfo decl = this.assembly.GetMethodByHandle(impl.MethodDeclaration);
+                Debug.Assert(decl != null);
+
+                if (!Utils.TypeEquals(decl.DeclaringType, interfaceType)) continue;
+
+                MethodInfo body = this.assembly.GetMethodByHandle(impl.MethodBody);
+                Debug.Assert(body != null);
+                bodys.Add(body);
+                decls.Add(decl);
+            }
+
+            //implicitly implemented
+            MethodInfo[] ifMethods = interfaceType.GetMethods();
+
+            for (int i = 0; i < ifMethods.Length; i++)
+            {
+                //interface method
+                MethodInfo ifMethod = ifMethods[i];
+
+                //check if already picked up
+                if (ContainsMethod(decls, ifMethod)) continue;
+
+                //find method with the same name and signature on current type
+                Type[] sig = Utils.GetParameterTypesArray(ifMethod);
+                MethodInfo mi = this.GetMethod(ifMethod.Name, Utils.AllMembers(), null, sig, null);
+
+                if (mi != null)
+                {
+                    bodys.Add(mi);
+                    decls.Add(ifMethod);
+                }
+            }
+
+            if (decls.Count == 0)
+            {
+                throw new ArgumentException("Type does not implement the specified interface");
+            }
+
+            Debug.Assert(decls.Count == bodys.Count);
+
+            InterfaceMapping map = new InterfaceMapping();
+            map.InterfaceMethods = decls.ToArray();
+            map.TargetMethods = bodys.ToArray();
+            map.InterfaceType = interfaceType;
+            map.TargetType = this;
+            return map;
+        }
+
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
         {
             MemberInfo[] members = this.GetMembers(bindingAttr);

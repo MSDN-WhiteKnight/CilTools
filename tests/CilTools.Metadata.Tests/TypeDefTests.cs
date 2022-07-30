@@ -2,6 +2,7 @@
  * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -543,6 +544,80 @@ namespace CilTools.Metadata.Tests
             AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "IList`1");
             AssertThat.HasOnlyOneMatch(ifTypes, (x) => x.Name == "ICollection`1");
             AssertThat.AllMatch(ifTypes, (x) => x.IsInterface);
+        }
+
+        void VerifyInterfaceMap(InterfaceMapping map, Type tInterface, Type tTarget)
+        {
+            Assert.AreSame(tTarget, map.TargetType);
+            Assert.AreSame(tInterface, map.InterfaceType);
+            Assert.AreEqual(map.TargetMethods.Length, map.InterfaceMethods.Length);
+
+            for (int i = 0; i < map.TargetMethods.Length; i++)
+            {
+                Assert.AreEqual(tTarget.FullName, map.TargetMethods[i].DeclaringType.FullName);
+                Assert.AreEqual(tInterface.FullName, map.InterfaceMethods[i].DeclaringType.FullName);
+                Assert.IsTrue(map.InterfaceMethods[i].DeclaringType.IsInterface);
+            }
+        }
+
+        [TestMethod]
+        public void Test_GetInterfaceMap()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(InterfacesSampleType).Assembly.Location);
+            Type t = ass.GetType(typeof(InterfacesSampleType).FullName);
+            Type tInterface = typeof(ITest);
+            InterfaceMapping map = t.GetInterfaceMap(tInterface);
+                        
+            Assert.AreEqual(2, map.InterfaceMethods.Length);
+            Assert.AreEqual(2, map.TargetMethods.Length);
+            VerifyInterfaceMap(map, tInterface, t);
+
+            Assert.AreEqual("Foo", map.InterfaceMethods[0].Name);
+            Assert.AreEqual("Bar", map.InterfaceMethods[1].Name);
+        }
+
+        [TestMethod]
+        public void Test_GetInterfaceMap_ExternalInterface()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(InterfacesSampleType).Assembly.Location);
+            Type t = ass.GetType(typeof(InterfacesSampleType).FullName);
+            Type tInterface = typeof(IComparable);
+            InterfaceMapping map = t.GetInterfaceMap(tInterface);
+
+            Assert.AreEqual(1, map.InterfaceMethods.Length);
+            Assert.AreEqual(1, map.TargetMethods.Length);
+            VerifyInterfaceMap(map, tInterface, t);
+
+            Assert.AreEqual("CompareTo", map.InterfaceMethods[0].Name);
+            Assert.AreEqual(typeof(IComparable).FullName, map.InterfaceMethods[0].DeclaringType.FullName);
+            Assert.AreEqual(typeof(InterfacesSampleType).FullName, map.TargetMethods[0].DeclaringType.FullName);
+        }
+
+        [TestMethod]
+        public void Test_GetInterfaceMap_ExternalClass()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(string).Assembly.Location);
+            Type t = ass.GetType(typeof(string).FullName);
+            Type tInterface = typeof(IEnumerable);
+            InterfaceMapping map = t.GetInterfaceMap(tInterface);
+
+            Assert.IsTrue(map.InterfaceMethods.Length > 0);
+            VerifyInterfaceMap(map, tInterface, t);
+        }
+
+        [TestMethod]
+        public void Test_GetInterfaceMap_Exceptions()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(InterfacesSampleType).Assembly.Location);
+            Type t = ass.GetType(typeof(InterfacesSampleType).FullName);
+
+            AssertThat.Throws<ArgumentNullException>(() => t.GetInterfaceMap(null));
+            AssertThat.Throws<ArgumentException>(() => t.GetInterfaceMap(typeof(SampleMethods)));
+            AssertThat.Throws<ArgumentException>(() => t.GetInterfaceMap(typeof(IEnumerable)));
         }
     }
 }

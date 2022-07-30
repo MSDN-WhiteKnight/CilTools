@@ -19,6 +19,6 @@ namespace CilTools.Tests.Common.TestData
 
         public int CompareTo(object obj) { return 0; }
 
-        public int Foo() { throw new NotImplementedException(); }
+        int ITest.Foo() { throw new NotImplementedException(); }
     }
 }
