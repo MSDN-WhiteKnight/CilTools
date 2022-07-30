@@ -612,7 +612,7 @@ namespace CilTools.Metadata
 
             return false;
         }
-        
+
         public override string ToString()
         {
             //check if disposed
