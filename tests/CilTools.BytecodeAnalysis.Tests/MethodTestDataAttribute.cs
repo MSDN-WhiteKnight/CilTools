@@ -54,7 +54,7 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             if (this._prov.HasFlag(BytecodeProviders.Reflection))
             {
-                m = this._type.GetMethod(this._method);
+                m = this._type.GetMethod(this._method, Utils.AllMembers());
                 yield return new object[] { m };
             }
 
@@ -64,7 +64,7 @@ namespace CilTools.BytecodeAnalysis.Tests
                 {
                     Assembly ass = s_reader.LoadFrom(this._type.Assembly.Location);
                     Type t = ass.GetType(this._type.FullName);
-                    m = t.GetMember(this._method)[0] as MethodBase;
+                    m = t.GetMember(this._method, Utils.AllMembers())[0] as MethodBase;
                     yield return new object[] { m };
                 }
             }

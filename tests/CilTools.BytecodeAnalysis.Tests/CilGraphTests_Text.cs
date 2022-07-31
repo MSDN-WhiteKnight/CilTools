@@ -2,11 +2,13 @@
  * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.Attributes;
+using CilTools.Tests.Common.TestData;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -210,7 +212,17 @@ namespace CilTools.BytecodeAnalysis.Tests
             wr.Flush();
             return sb.ToString();
         }
-        
+
+        static string GetHeaderString(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            StringBuilder sb = new StringBuilder(100);
+            StringWriter wr = new StringWriter(sb);
+            graph.PrintHeader(wr);
+            wr.Flush();
+            return sb.ToString();
+        }
+
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "ReturnTypeAttributeTest", BytecodeProviders.All)]
         public void Test_CilGraph_ReturnTypeCustomAttributes(MethodBase mi)
@@ -269,6 +281,37 @@ namespace CilTools.BytecodeAnalysis.Tests
         {
             string il = GetDefaultsString(mi);
             AssertThat.CilEquals(string.Empty, il);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(InterfacesSampleType), "CilTools.Tests.Common.TestData.ITest.Foo", BytecodeProviders.All)]
+        public void Test_CilGraph_Override(MethodBase mi)
+        {
+            const string expected = @".override [CilTools.Tests.Common]CilTools.Tests.Common.TestData.ITest::Foo
+ .maxstack 8";
+
+            string il = GetHeaderString(mi);
+            AssertThat.CilEquals(expected, il);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(InterfacesSampleType), "Bar", BytecodeProviders.All)]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_CilGraph_Override_Negative(MethodBase mi)
+        {
+            string il = GetHeaderString(mi);
+            Assert.IsFalse(il.Contains(".override"));
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(List<>), "System.Collections.Generic.ICollection<T>.get_IsReadOnly", BytecodeProviders.All)]
+        public void Test_CilGraph_Override_GenericInterface(MethodBase mi)
+        {
+            string il = GetHeaderString(mi);
+            AssertThat.IsMatch(il, new Text[] {
+                ".override", Text.Any, "method instance bool class", Text.Any, 
+                "System.Collections.Generic.ICollection`1<!", Text.Any, ">::get_IsReadOnly"
+            });
         }
     }
 }
