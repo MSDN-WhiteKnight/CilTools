@@ -359,7 +359,7 @@ namespace CilTools.BytecodeAnalysis
             int maxstack = 0;
             bool has_maxstack = false;
             LocalVariable[] locals = null;
-            List<SyntaxNode> ret = new List<SyntaxNode>(4);
+            List<SyntaxNode> ret = new List<SyntaxNode>(5);
 
             try
             {
@@ -384,6 +384,39 @@ namespace CilTools.BytecodeAnalysis
             {
                 string error = "Exception occured when trying to get local variables.";
                 Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
+            }
+
+            //.override (ECMA-335 II.10.3.2)
+            MethodInfo mOverridden = ReflectionUtils.GetExplicitlyImplementedMethod(this._Method);
+
+            if (mOverridden != null)
+            {
+                List<SyntaxNode> list = new List<SyntaxNode>();
+                
+                if (mOverridden.DeclaringType.IsGenericType)
+                {
+                    //long form - prefixed with method as inline token form
+                    MemberRefSyntax mrs = CilAnalysis.GetMethodRefSyntax(mOverridden, true);
+                    list.Add(mrs);
+                    list.Add(new GenericSyntax(Environment.NewLine));
+                }
+                else
+                {
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntax(mOverridden.DeclaringType);
+
+                    foreach (SyntaxNode node in nodes)
+                    {
+                        list.Add(node);
+                    }
+
+                    list.Add(new PunctuationSyntax(string.Empty, "::", string.Empty));
+                    list.Add(new IdentifierSyntax(string.Empty, mOverridden.Name, Environment.NewLine,
+                        true, mOverridden));
+                }
+                
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 1),
+                    "override", list.ToArray());
+                ret.Add(dir);
             }
 
             //display bytecode size in bytes if specified

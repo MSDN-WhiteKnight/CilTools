@@ -190,7 +190,10 @@ namespace CilTools.Metadata
 
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetMethods(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         public override Type GetNestedType(string name, BindingFlags bindingAttr)
