@@ -387,7 +387,16 @@ namespace CilTools.BytecodeAnalysis
             }
 
             //.override (ECMA-335 II.10.3.2)
-            MethodInfo mOverridden = ReflectionUtils.GetExplicitlyImplementedMethod(this._Method);
+            MethodInfo mOverridden = null;
+            try
+            {
+                mOverridden = ReflectionUtils.GetExplicitlyImplementedMethod(this._Method);
+            }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to get interface mappings.";
+                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
+            }
 
             if (mOverridden != null)
             {
