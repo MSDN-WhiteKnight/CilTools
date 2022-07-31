@@ -9,13 +9,11 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
 using CilTools.BytecodeAnalysis;
-using CilTools.Reflection;
 using CilTools.SourceCode;
-using CilView.Common;
 
 namespace CilView.SourceCode
 {
-    class PdbUtils
+    public class PdbUtils
     {
         static readonly Guid GuidSHA256 = Guid.Parse("8829d00f-11b8-4213-878b-770e8597ac16");
         static readonly Guid GuidSHA1 = Guid.Parse("ff1816ec-aa5e-4d10-87f7-6f4963833460");

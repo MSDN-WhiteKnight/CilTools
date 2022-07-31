@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -14,7 +14,7 @@ using Internal.Pdb.Windows;
 
 namespace CilView.SourceCode
 {
-    class PdbCodeProvider : SourceCodeProvider
+    public class PdbCodeProvider : SourceCodeProvider
     {
         const uint PDB_HIDDEN_SEQUENCE_POINT = 0x00feefee;
 

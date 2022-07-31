@@ -14,7 +14,7 @@ namespace CilView.SourceCode
     /// languages. This is needed to support "Show source (method)" feature, as PDB seuence points only point to 
     /// method body source lines.
     /// </summary>
-    abstract class Decompiler
+    public abstract class Decompiler
     {
         protected MethodBase _method;
 
