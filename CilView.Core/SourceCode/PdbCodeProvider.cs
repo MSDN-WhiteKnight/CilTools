@@ -87,6 +87,7 @@ namespace CilView.SourceCode
             ret.Method = m;
 
             string filePath = string.Empty;
+            string sourceLinkStr = string.Empty;
             
             for (int i = 0; i < linedata.Length; i++)
             {
@@ -95,17 +96,10 @@ namespace CilView.SourceCode
                 if (string.IsNullOrEmpty(line.FilePath)) continue;
 
                 filePath = line.FilePath;
-
-                if (!File.Exists(filePath))
+                
+                if (!string.IsNullOrEmpty(line.SourceLinkData))
                 {
-                    throw new SymbolsException("Source file not found: " + filePath);
-                }
-
-                bool isValid = PdbUtils.IsSourceValid(filePath, line.HashAlgorithm, line.Hash);
-
-                if (!isValid)
-                {
-                    throw new SymbolsException("Source file does not match PDB hash: " + filePath);
+                    sourceLinkStr = line.SourceLinkData;
                 }
 
                 SourceFragment fragment = new SourceFragment();
@@ -128,11 +122,33 @@ namespace CilView.SourceCode
                     fragment.CilEnd = linedata[i + 1].CilOffset;
                 }
 
-                //считаем код фрагмента из исходников
-                string s = ReadSourceFromFile(filePath, (uint)fragment.LineStart, (ushort)colStart, 
-                    (uint)fragment.LineEnd, (ushort)colEnd, exact: true);
+                if (File.Exists(filePath))
+                {
+                    bool isValid = PdbUtils.IsSourceValid(filePath, line.HashAlgorithm, line.Hash);
 
-                fragment.Text = s;
+                    if (!isValid)
+                    {
+                        throw new SymbolsException("Source file does not match PDB hash: " + filePath);
+                    }
+
+                    //считаем код фрагмента из исходников
+                    string s = ReadSourceFromFile(filePath, (uint)fragment.LineStart, (ushort)colStart,
+                        (uint)fragment.LineEnd, (ushort)colEnd, exact: true);
+
+                    fragment.Text = s;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(line.SourceLinkData))
+                    {
+                        throw new SymbolsException("Source file not found: " + filePath);
+                    }
+                    else
+                    {
+                        fragment.Text = string.Empty;
+                    }
+                }
+
                 ret.AddFragment(fragment);
             }//end for
 
@@ -150,14 +166,31 @@ namespace CilView.SourceCode
                 ret.LineEnd = end.LineEnd;
                 ret.ColEnd = end.ColEnd;
 
-                //считаем код метода из исходников
-                string methodSource = ReadSourceFromFile(filePath, (uint)ret.LineStart, (ushort)ret.ColStart,
+                if (File.Exists(filePath))
+                {
+                    //считаем код метода из исходников
+                    string methodSource = ReadSourceFromFile(filePath, (uint)ret.LineStart, (ushort)ret.ColStart,
                     (uint)ret.LineEnd, (ushort)ret.ColEnd, exact: false);
 
-                ret.Text = methodSource;
+                    ret.Text = methodSource;
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(sourceLinkStr))
+                    {
+                        throw new SymbolsException("Source file not found: " + filePath);
+                    }
+                    else
+                    {
+                        ret.Text = string.Empty;
+                    }
+                }
             }
 
             ret.FilePath = filePath;
+
+            if (!string.IsNullOrEmpty(sourceLinkStr)) ret.SetAdditionalInfo("SourceLink", sourceLinkStr);
+
             return ret;
         }
 

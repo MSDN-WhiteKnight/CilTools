@@ -67,6 +67,24 @@ namespace CilView.SourceCode
                     MessageBox.Show("Failed to get source code: line info not found for this method", "Error");
                     return;
                 }
+
+                if (string.IsNullOrEmpty(doc.Text))
+                {
+                    string sourceLinkStr = doc.GetAdditionalInfo("SourceLink") as string;
+
+                    if (sourceLinkStr == null)
+                    {
+                        MessageBox.Show("Failed to get source code", "Error");
+                        return;
+                    }
+                    else
+                    {
+                        MessageBox.Show(
+                            "The source code is located on the remote server: " + Environment.NewLine + sourceLinkStr,
+                            "Information");
+                        return;
+                    }
+                }
                 
                 if (wholeMethod)
                 {

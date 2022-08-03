@@ -12,6 +12,8 @@ namespace Internal.Pdb.Portable
 {
     static class PortablePdb
     {
+        static readonly Guid GuidSourceLink = new Guid("CC110556-A091-4D38-9FEC-25AB9A351A6A");
+
         static string ReadDocumentPath(MetadataReader reader, DocumentHandle dh)
         {
             Document doc = reader.GetDocument(dh);
@@ -124,10 +126,25 @@ namespace Internal.Pdb.Portable
             {
                 //stream is disposed by MetadataReaderProvider
                 MetadataReader reader = provider.GetMetadataReader();
+                string sourceLinkStr = string.Empty;
 
                 if (rowNumber > reader.MethodDebugInformation.Count)
                 {
                     throw new ArgumentOutOfRangeException("methodToken");
+                }
+
+                //read Source Link info
+                foreach (CustomDebugInformationHandle cdih in reader.CustomDebugInformation)
+                {
+                    CustomDebugInformation cdi = reader.GetCustomDebugInformation(cdih);
+                    Guid cdiKind = reader.GetGuid(cdi.Kind);
+                    
+                    if (cdiKind.Equals(GuidSourceLink))
+                    {
+                        byte[] data = reader.GetBlobBytes(cdi.Value);
+                        sourceLinkStr = Encoding.UTF8.GetString(data);
+                        break;
+                    }
                 }
 
                 MethodDebugInformation di = reader.GetMethodDebugInformation(hDebug);
@@ -170,7 +187,8 @@ namespace Internal.Pdb.Portable
                         ColStart = sp.StartColumn,
                         ColEnd = sp.EndColumn,
                         Hash = h,
-                        HashAlgorithm = a
+                        HashAlgorithm = a,
+                        SourceLinkData = sourceLinkStr
                     });
                 }
             }//end using

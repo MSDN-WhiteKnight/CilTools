@@ -119,6 +119,7 @@
     <Compile Include="FileSystem\RuntimeDir.cs" />
     <Compile Include="SearchResult.cs" />
     <Compile Include="SourceCode\SourceCodeUI.cs" />
+    <Compile Include="SourceCode\SourceLinkEntry.cs" />
     <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
       <DependentUpon>CilBrowserPage.xaml</DependentUpon>
     </Compile>
