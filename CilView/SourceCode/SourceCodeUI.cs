@@ -17,6 +17,37 @@ namespace CilView.SourceCode
 {
     static class SourceCodeUI
     {
+        static HashSet<string> s_allowedRemoteServers = new HashSet<string>();
+
+        static string GetHost(string url)
+        {
+            try
+            {
+                Uri uri = new Uri(url);
+                return uri.Host.ToLower();
+            }
+            catch (UriFormatException)
+            {
+                return string.Empty;
+            }
+        }
+
+        static bool IsRemoteNavigationAllowed(string url)
+        {
+            string server = GetHost(url);
+
+            if (string.IsNullOrEmpty(server)) return false;
+
+            return s_allowedRemoteServers.Contains(server);
+        }
+
+        static void AllowRemoteNavigation(string url)
+        {
+            string server = GetHost(url);
+
+            if (!string.IsNullOrEmpty(server)) s_allowedRemoteServers.Add(server);
+        }
+
         static void ShowDecompiledSource(MethodBase method)
         {
             //stub implementation that only works for abstract methods
@@ -67,7 +98,62 @@ namespace CilView.SourceCode
                     MessageBox.Show("Failed to get source code: line info not found for this method", "Error");
                     return;
                 }
+
+                if (string.IsNullOrEmpty(doc.Text))
+                {
+                    //Local sources not available
+                    string sourceLinkStr = doc.GetAdditionalInfo("SourceLink") as string;
+
+                    if (string.IsNullOrEmpty(sourceLinkStr))
+                    {
+                        MessageBox.Show("Failed to get source code: Source file " + doc.FilePath +
+                            " is not found or empty", "Error");
+                        return;
+                    }
+
+                    //Source Link
+                    SourceLinkMap map = SourceLinkMap.Read(sourceLinkStr);
+                    string serverPath = map.GetServerPath(doc.FilePath);
+
+                    if (string.IsNullOrEmpty(serverPath))
+                    {
+                        MessageBox.Show("Failed to map file path " + doc.FilePath +
+                            "into a source link server path", "Error");
+                        return;
+                    }
+
+                    bool shouldNavigate = false;
+
+                    if (IsRemoteNavigationAllowed(serverPath))
+                    {
+                        shouldNavigate = true;
+                    }
+                    else
+                    {
+                        string msg = string.Format(
+                            "The source code is located on the remote server:\r\n{0}\r\n\r\n" +
+                            "Would you like to allow navigation to files on this server?",
+                            serverPath);
+
+                        MessageBoxResult res = MessageBox.Show(msg, "Source Link information",
+                            MessageBoxButton.YesNo);
+
+                        if (res == MessageBoxResult.Yes)
+                        {
+                            shouldNavigate = true;
+                            AllowRemoteNavigation(serverPath);
+                        }
+                    }
+
+                    if (shouldNavigate)
+                    {
+                        Utils.ShellExecute(serverPath, null, "Failed to open source code URL");
+                    }
+
+                    return;
+                }
                 
+                //Local sources
                 if (wholeMethod)
                 {
                     string src = doc.Text;

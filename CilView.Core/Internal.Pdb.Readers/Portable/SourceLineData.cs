@@ -15,5 +15,6 @@ namespace Internal.Pdb.Portable
         public int ColEnd { get; set; }
         public Guid HashAlgorithm { get; set; }
         public byte[] Hash { get; set; }
+        public string SourceLinkData { get; set; }
     }
 }

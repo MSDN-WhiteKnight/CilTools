@@ -24,6 +24,7 @@ $fileList = "CilTools.BytecodeAnalysis.dll",
             "Microsoft.Diagnostics.Runtime.pdb",
             "System.Reflection.Metadata.dll",
             "System.Collections.Immutable.dll",
+            "Newtonsoft.Json.dll",
             "license.txt",
             "ReadMe.txt"
 
