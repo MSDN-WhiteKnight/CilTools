@@ -19,7 +19,7 @@ namespace CilView.SourceCode
                 //wildcard
                 string matchPrefix = this.SymbolsPath.Substring(0, this.SymbolsPath.Length - 1);
 
-                if (symbolsPath.StartsWith(matchPrefix, StringComparison.Ordinal))
+                if (symbolsPath.StartsWith(matchPrefix, StringComparison.OrdinalIgnoreCase))
                 {
                     if(matchPrefix.Length >= symbolsPath.Length) return string.Empty;
 
