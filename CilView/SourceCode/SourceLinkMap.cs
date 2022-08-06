@@ -8,6 +8,11 @@ using Newtonsoft.Json.Linq;
 
 namespace CilView.SourceCode
 {
+    /// <summary>
+    /// Represents information that helps locating source code on remote server.
+    /// Source link specification: 
+    /// https://github.com/dotnet/designs/blob/main/accepted/2020/diagnostics/source-link.md#source-link-json-schema
+    /// </summary>
     public class SourceLinkMap
     {
         SourceLinkEntry[] entries;
@@ -19,6 +24,9 @@ namespace CilView.SourceCode
             this.entries = e;
         }
         
+        /// <summary>
+        /// Converts local path stored in symbols into the source link server URL
+        /// </summary>
         public string GetServerPath(string symbolsPath)
         {
             for (int i = 0; i < this.entries.Length; i++)
@@ -45,6 +53,19 @@ namespace CilView.SourceCode
                 SourceLinkEntry entry = new SourceLinkEntry();
                 entry.SymbolsPath = prop.Name;
                 entry.ServerPath = docs[prop.Name].Value<string>();
+
+                //validate early, so path mapping won't blow up with cryptic exceptions on incorrect data
+
+                if (entry.ServerPath == null)
+                {
+                    throw new Exception("Invalid source link data: server path is null");
+                }
+
+                if (entry.ServerPath.Length <= 1)
+                {
+                    throw new Exception("Invalid source link data: server path is too short");
+                }
+
                 ret.Add(entry);
             }
 
