@@ -11,7 +11,7 @@ namespace CilView.Core.Syntax
 {
     public static class SyntaxReader
     {
-        static bool IsWhitespace(string str)
+        internal static bool IsWhitespace(string str)
         {
             for (int i = 0; i < str.Length; i++)
             {

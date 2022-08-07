@@ -3,7 +3,9 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using CilView.Core.Syntax;
 
 namespace CilView.SourceCode
 {
@@ -41,6 +43,64 @@ namespace CilView.SourceCode
             this._content = content;
             this._lead = leadingWhitespace;
             this._trail = trailingWhitespace;
+        }
+        
+        static SourceToken CreateFromString(string tokenString, string leadingWhitespace, 
+            string trailingWhitespace, TokenClassifier classifier)
+        {
+            if (leadingWhitespace == null) leadingWhitespace = string.Empty;
+            if (trailingWhitespace == null) trailingWhitespace = string.Empty;
+
+            SourceTokenKind kind = classifier.GetKind(tokenString);
+
+            return new SourceToken(tokenString, kind, leadingWhitespace, trailingWhitespace);
+        }
+
+        public static SourceToken[] ParseTokens(string src, TokenClassifier classifier)
+        {
+            List<SourceToken> ret = new List<SourceToken>();
+            TokenReader reader = new TokenReader(src);
+            string[] tokens = reader.ReadAll().ToArray();
+
+            if (tokens.Length == 0) return new SourceToken[0];
+
+            string leadingWhitespace;
+            int i = 0;
+
+            if (SyntaxReader.IsWhitespace(tokens[0]))
+            {
+                leadingWhitespace = tokens[0];
+                i = 1;
+            }
+            else
+            {
+                leadingWhitespace = string.Empty;
+            }
+
+            while (true)
+            {
+                if (i >= tokens.Length) break;
+
+                if (i + 1 >= tokens.Length)
+                {
+                    ret.Add(CreateFromString(tokens[i], leadingWhitespace, string.Empty, classifier));
+                    break;
+                }
+                else if (SyntaxReader.IsWhitespace(tokens[i + 1]))
+                {
+                    ret.Add(CreateFromString(tokens[i], leadingWhitespace, tokens[i + 1], classifier));
+                    i += 2;
+                }
+                else
+                {
+                    ret.Add(CreateFromString(tokens[i], leadingWhitespace, string.Empty, classifier));
+                    i++;
+                }
+
+                leadingWhitespace = string.Empty;
+            }
+
+            return ret.ToArray();
         }
 
         public SourceTokenKind Kind
