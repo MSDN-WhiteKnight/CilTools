@@ -57,7 +57,7 @@ namespace CilView.SourceCode
             return t.Name;
         }
 
-        public override string GetMethodSigString()
+        string GetMethodSigString()
         {
             MethodBase m = this._method;
             StringBuilder sb = new StringBuilder(500);
@@ -141,6 +141,11 @@ namespace CilView.SourceCode
             }
             
             return sb.ToString();
+        }
+
+        public override IEnumerable<SourceToken> GetMethodSigTokens()
+        {
+            yield return new SourceToken(this.GetMethodSigString(), SourceTokenKind.Unknown);
         }
     }
 }

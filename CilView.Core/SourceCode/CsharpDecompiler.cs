@@ -1,12 +1,10 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Reflection;
 using System.Text;
-using CilTools.Reflection;
 using CilView.Common;
 
 namespace CilView.SourceCode
@@ -16,6 +14,57 @@ namespace CilView.SourceCode
         public CsharpDecompiler(MethodBase method) : base(method)
         {
 
+        }
+
+        static void GetTypeTokens(Type t, List<SourceToken> target)
+        {
+            if (t == null) return;
+
+            if (t.IsArray && t.GetArrayRank() == 1)
+            {
+                GetTypeTokens(t.GetElementType(), target);
+                target.Add(new SourceToken("[]", SourceTokenKind.Punctuation));
+                return;
+            }
+
+            if (t.IsGenericType)
+            {
+                StringBuilder sb = new StringBuilder(100);
+                sb.Append(GetGenericDefinitionName(t.Name));
+                sb.Append('<');
+                Type[] args = t.GetGenericArguments();
+
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) sb.Append(", ");
+
+                    sb.Append(GetTypeString(args[i]));
+                }
+
+                sb.Append('>');
+                target.Add(new SourceToken(sb.ToString(), SourceTokenKind.Unknown));
+                return;
+            }
+
+            //process built-in types
+            SourceToken tok = ProcessCommonTypes(t);
+
+            if (tok != null)
+            {
+                target.Add(tok);
+                return;
+            }
+
+            if (Utils.TypeEquals(t, typeof(string)))      target.Add(new SourceToken("string", SourceTokenKind.Keyword));
+            else if (Utils.TypeEquals(t, typeof(uint)))   target.Add(new SourceToken("uint", SourceTokenKind.Keyword));
+            else if (Utils.TypeEquals(t, typeof(ushort))) target.Add(new SourceToken("ushort", SourceTokenKind.Keyword));
+            else if (Utils.TypeEquals(t, typeof(long)))   target.Add(new SourceToken("long", SourceTokenKind.Keyword));
+            else if (Utils.TypeEquals(t, typeof(ulong)))  target.Add(new SourceToken("ulong", SourceTokenKind.Keyword));
+            else if (Utils.TypeEquals(t, typeof(byte)))   target.Add(new SourceToken("byte", SourceTokenKind.Keyword));
+            else if (Utils.TypeEquals(t, typeof(sbyte)))  target.Add(new SourceToken("sbyte", SourceTokenKind.Keyword));
+            else if (Utils.TypeEquals(t, typeof(char)))   target.Add(new SourceToken("char", SourceTokenKind.Keyword));
+            else if (Utils.TypeEquals(t, typeof(object))) target.Add(new SourceToken("object", SourceTokenKind.Keyword));
+            else target.Add(new SourceToken(t.Name, SourceTokenKind.TypeName));
         }
 
         static string GetTypeString(Type t)
@@ -46,9 +95,9 @@ namespace CilView.SourceCode
             }
 
             //process built-in types
-            string s = ProcessCommonTypes(t);
+            SourceToken tok = ProcessCommonTypes(t);
 
-            if (s != null) return s;
+            if (tok != null) return tok.Content;
 
             if (Utils.TypeEquals(t, typeof(string)))      return "string";
             else if (Utils.TypeEquals(t, typeof(uint)))   return "uint";
@@ -62,105 +111,86 @@ namespace CilView.SourceCode
 
             return t.Name;
         }
-
-        static void PrintModififers(TextWriter target, MethodBase m)
+        
+        static void GetModifiers(MethodBase m, List<SourceToken> target)
         {
-            if (m.IsPublic) target.Write("public ");
-            else if (m.IsFamily) target.Write("protected ");
-            else if (m.IsAssembly) target.Write("internal ");
+            if (m.IsPublic) target.Add(new SourceToken("public", SourceTokenKind.Keyword, "", " "));
+            else if (m.IsFamily) target.Add(new SourceToken("protected", SourceTokenKind.Keyword, "", " "));
+            else if (m.IsAssembly) target.Add(new SourceToken("internal", SourceTokenKind.Keyword, "", " "));
 
-            if (m.IsStatic) target.Write("static ");
-            if (m.IsAbstract) target.Write("abstract ");
-
-            target.Flush();
+            if (m.IsStatic) target.Add(new SourceToken("static", SourceTokenKind.Keyword, "", " "));
+            if (m.IsAbstract) target.Add(new SourceToken("abstract", SourceTokenKind.Keyword, "", " "));
         }
-
-        static string DecompilePropertyMethod(MethodBase m)
+        
+        static void DecompilePropertyMethod(MethodBase m, List<SourceToken> target)
         {
             string mName = m.Name;
 
-            if (string.IsNullOrEmpty(mName)) return string.Empty;
-            if (!mName.Contains("_")) return string.Empty;
+            if (string.IsNullOrEmpty(mName)) return;
+            if (!mName.Contains("_")) return;
 
             string[] arr = mName.Split('_');
-            if(arr.Length<2) return string.Empty;
+            if (arr.Length < 2) return;
 
             string accName = arr[0];
             string propName = arr[1];
+            
+            GetModifiers(m, target);
+            
+            Type t = GetReturnType(m);
 
-            StringBuilder sb = new StringBuilder(200);
-            StringWriter wr = new StringWriter(sb);
-            PrintModififers(wr, m);
-
-            string proptype = string.Empty;
-
-            if (m is ICustomMethod)
+            if (t != null)
             {
-                ICustomMethod cm = (ICustomMethod)m;
-                Type t = cm.ReturnType;
-
-                if (t != null)
-                {
-                    proptype = GetTypeString(t);
-                }
+                GetTypeTokens(t, target);
+                target.Add(new SourceToken(" ", SourceTokenKind.Unknown));
             }
-
-            wr.Write(proptype);
-            wr.Write(' ');
-            wr.Write(propName);
-            wr.Write(' ');
-            wr.Write('{');
-            wr.Write(accName);
-            wr.Write(';');
-            wr.Write('}');
-            return sb.ToString();
+            
+            target.Add(new SourceToken(propName, SourceTokenKind.OtherName, "", " "));
+            target.Add(new SourceToken("{", SourceTokenKind.Punctuation, "", ""));
+            target.Add(new SourceToken(accName, SourceTokenKind.FunctionName, "", ""));
+            target.Add(new SourceToken(";", SourceTokenKind.Punctuation, "", ""));
+            target.Add(new SourceToken("}", SourceTokenKind.Punctuation, "", ""));
         }
-
-        public override string GetMethodSigString()
+        
+        public override IEnumerable<SourceToken> GetMethodSigTokens()
         {
             MethodBase m = this._method;
 
             if (Utils.IsPropertyMethod(m))
             {
-                string propmethod = DecompilePropertyMethod(m);
-                if (propmethod.Length > 0) return propmethod;
+                List<SourceToken> propmethod = new List<SourceToken>();
+                DecompilePropertyMethod(m, propmethod);
+                if (propmethod.Count > 0) return propmethod;
             }
-
-            StringBuilder sb = new StringBuilder(500);
-            ParameterInfo[] pars = m.GetParameters();
-            StringWriter wr = new StringWriter(sb);
             
+            ParameterInfo[] pars = m.GetParameters();
+            List<SourceToken> ret = new List<SourceToken>();
+
             if (!Utils.IsAbstractInterfaceMethod(m))
             {
-                PrintModififers(wr, m);
+                GetModifiers(m, ret);
             }
 
-            string rettype = string.Empty;
+            Type t = GetReturnType(m);
 
-            if (m is ICustomMethod)
+            if (t != null)
             {
-                ICustomMethod cm = (ICustomMethod)m;
-                Type t = cm.ReturnType;
-
-                if (t != null)
+                if (Utils.StringEquals(t.FullName, "System.Void"))
                 {
-                    if (Utils.StringEquals(t.FullName, "System.Void"))
-                    {
-                        rettype = "void";
-                    }
-                    else
-                    {
-                        rettype = GetTypeString(t);
-                    }
+                    ret.Add(new SourceToken("void", SourceTokenKind.Keyword, "", " "));
+                }
+                else
+                {
+                    GetTypeTokens(t, ret);
+                    ret.Add(new SourceToken(" ", SourceTokenKind.Unknown));
                 }
             }
 
-            sb.Append(rettype);
-            sb.Append(' ');
-            sb.Append(m.Name);
-
+            ret.Add(new SourceToken(m.Name, SourceTokenKind.FunctionName));
+            
             if (m.IsGenericMethod)
             {
+                StringBuilder sb = new StringBuilder(100);
                 sb.Append('<');
 
                 Type[] args = m.GetGenericArguments();
@@ -172,15 +202,20 @@ namespace CilView.SourceCode
                 }
 
                 sb.Append('>');
+                ret.Add(new SourceToken(sb.ToString(), SourceTokenKind.Unknown));
             }
 
-            sb.Append('(');
-
+            ret.Add(new SourceToken("(", SourceTokenKind.Punctuation));
+            
             for (int i = 0; i < pars.Length; i++)
             {
-                if (i >= 1) sb.Append(", ");
-                sb.Append(GetTypeString(pars[i].ParameterType));
-                sb.Append(' ');
+                if (i >= 1)
+                {
+                    ret.Add(new SourceToken(",", SourceTokenKind.Punctuation, "", " "));
+                }
+
+                GetTypeTokens(pars[i].ParameterType, ret);
+                ret.Add(new SourceToken(" ", SourceTokenKind.Unknown));
 
                 string parname = pars[i].Name;
 
@@ -189,14 +224,14 @@ namespace CilView.SourceCode
                     parname = "par" + (i + 1).ToString();
                 }
 
-                sb.Append(parname);
+                ret.Add(new SourceToken(parname, SourceTokenKind.OtherName));
             }
 
-            sb.Append(')');
+            ret.Add(new SourceToken(")", SourceTokenKind.Punctuation));
 
-            if (m.IsAbstract) sb.Append(';');
+            if (m.IsAbstract) ret.Add(new SourceToken(";", SourceTokenKind.Punctuation));
 
-            return sb.ToString();
+            return ret;
         }
     }
 }

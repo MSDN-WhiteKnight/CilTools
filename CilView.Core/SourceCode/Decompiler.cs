@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using CilTools.Reflection;
 using CilView.Common;
 
 namespace CilView.SourceCode
@@ -24,9 +25,9 @@ namespace CilView.SourceCode
         }
 
         /// <summary>
-        /// Returns a string that contains decompiled method signature code in target language
+        /// Returns a collection of tokens that represents decompiled method signature code in target language
         /// </summary>
-        public abstract string GetMethodSigString();
+        public abstract IEnumerable<SourceToken> GetMethodSigTokens();
 
         public static bool IsCppExtension(string ext)
         {
@@ -63,17 +64,22 @@ namespace CilView.SourceCode
         public static string DecompileMethodSignature(string ext, MethodBase m)
         {
             Decompiler d = Create(ext, m);
-            return d.GetMethodSigString();
+            IEnumerable<SourceToken> tokens = d.GetMethodSigTokens();
+            StringBuilder sb = new StringBuilder(500);
+
+            foreach (SourceToken tok in tokens) sb.Append(tok.ToString());
+
+            return sb.ToString();
         }
 
-        protected static string ProcessCommonTypes(Type t)
+        protected static SourceToken ProcessCommonTypes(Type t)
         {
             //built-in types common between C# and C++/CLI
-            if (Utils.TypeEquals(t, typeof(bool)))        return "bool";
-            else if (Utils.TypeEquals(t, typeof(int)))    return "int";
-            else if (Utils.TypeEquals(t, typeof(short)))  return "short";
-            else if (Utils.TypeEquals(t, typeof(float)))  return "float";
-            else if (Utils.TypeEquals(t, typeof(double))) return "double";
+            if (Utils.TypeEquals(t, typeof(bool)))        return new SourceToken("bool", SourceTokenKind.Keyword);
+            else if (Utils.TypeEquals(t, typeof(int)))    return new SourceToken("int", SourceTokenKind.Keyword);
+            else if (Utils.TypeEquals(t, typeof(short)))  return new SourceToken("short", SourceTokenKind.Keyword);
+            else if (Utils.TypeEquals(t, typeof(float)))  return new SourceToken("float", SourceTokenKind.Keyword);
+            else if (Utils.TypeEquals(t, typeof(double))) return new SourceToken("double", SourceTokenKind.Keyword);
             else return null;
         }
         
@@ -85,13 +91,28 @@ namespace CilView.SourceCode
             else return typeName.Substring(0, i);
         }
 
+        protected static Type GetReturnType(MethodBase m)
+        {
+            if (m is ICustomMethod)
+            {
+                ICustomMethod cm = (ICustomMethod)m;
+                return cm.ReturnType;
+            }
+            else if (m is MethodInfo)
+            {
+                MethodInfo mi = (MethodInfo)m;
+                return mi.ReturnType;
+            }
+            else return null;
+        }
+
         private class NullDecompiler : Decompiler
         {
             public NullDecompiler(MethodBase method) : base(method) { }
-
-            public override string GetMethodSigString()
+            
+            public override IEnumerable<SourceToken> GetMethodSigTokens()
             {
-                return string.Empty;
+                return new SourceToken[0];
             }
         }
     }
