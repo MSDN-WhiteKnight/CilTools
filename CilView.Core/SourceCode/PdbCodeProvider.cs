@@ -415,7 +415,7 @@ namespace CilView.SourceCode
 
         public override string GetSignatureSourceCode(MethodBase m)
         {
-            return Decompiler.DecompileMethodSignature(".cs", m);
+            return Decompiler.GetMethodSignatureString(".cs", m);
         }
     }
 }

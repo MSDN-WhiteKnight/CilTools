@@ -147,7 +147,7 @@ namespace CilView.SourceCode
             
             target.Add(new SourceToken(propName, SourceTokenKind.OtherName, "", " "));
             target.Add(new SourceToken("{", SourceTokenKind.Punctuation, "", ""));
-            target.Add(new SourceToken(accName, SourceTokenKind.FunctionName, "", ""));
+            target.Add(new SourceToken(accName, SourceTokenKind.Keyword, "", ""));
             target.Add(new SourceToken(";", SourceTokenKind.Punctuation, "", ""));
             target.Add(new SourceToken("}", SourceTokenKind.Punctuation, "", ""));
         }

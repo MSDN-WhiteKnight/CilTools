@@ -51,21 +51,11 @@ namespace CilView.SourceCode
         static void ShowDecompiledSource(MethodBase method)
         {
             //stub implementation that only works for abstract methods
-            string src = Decompiler.DecompileMethodSignature(".cs", method);
-
-            //build display string
-            StringBuilder sb = new StringBuilder(src.Length * 2);            
-            sb.AppendLine(src);
-            sb.AppendLine();
-            sb.AppendLine("Source code from: Decompiler");
-
-            //show source code
-            TextViewWindow wnd = new TextViewWindow();
+            IEnumerable<SourceToken> tokens = Decompiler.DecompileMethodSignature(".cs", method);
+            DocumentViewWindow wnd = new DocumentViewWindow();
             wnd.Title = "Source code";
-            wnd.Text = sb.ToString();
+            wnd.Document = SourceVisualization.VisualizeTokens(tokens, "Source code from: Decompiler");
             wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            wnd.TextFontFamily = new FontFamily("Courier New");
-            wnd.TextFontSize = 14.0;
             wnd.ShowDialog();
         }
 
@@ -164,7 +154,7 @@ namespace CilView.SourceCode
                     {
                         if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
                         {
-                            methodstr = Decompiler.DecompileMethodSignature(ext, doc.Method);
+                            methodstr = Decompiler.GetMethodSignatureString(ext, doc.Method);
                         }
                     }
                     catch (Exception ex)
