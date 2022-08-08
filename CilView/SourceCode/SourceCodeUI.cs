@@ -54,7 +54,65 @@ namespace CilView.SourceCode
             IEnumerable<SourceToken> tokens = Decompiler.DecompileMethodSignature(".cs", method);
             DocumentViewWindow wnd = new DocumentViewWindow();
             wnd.Title = "Source code";
-            wnd.Document = SourceVisualization.VisualizeTokens(tokens, "Source code from: Decompiler");
+            wnd.Document = SourceVisualization.VisualizeTokens(tokens, string.Empty, "Source code from: Decompiler");
+            wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            wnd.ShowDialog();
+        }
+
+        static void ShowSourceWholeMethod(SourceDocument doc)
+        {
+            string src = doc.Text;
+            string methodstr = string.Empty;
+            string ext = Path.GetExtension(doc.FilePath);
+            StringBuilder sb;
+
+            try
+            {
+                if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
+                {
+                    methodstr = Decompiler.GetMethodSignatureString(ext, doc.Method);
+                }
+            }
+            catch (Exception ex)
+            {
+                //don't error out if we can't build good signature string
+                ErrorHandler.Current.Error(ex, "PdbUtils.GetMethodSigString", silent: true);
+                methodstr = CilVisualization.MethodToString(doc.Method);
+            }
+
+            //header
+            sb = new StringBuilder();
+            sb.AppendFormat("({0}, ", doc.FilePath);
+            sb.AppendFormat("lines {0}-{1})", doc.LineStart, doc.LineEnd);
+            string header = sb.ToString();
+
+            //body
+            sb = new StringBuilder(src.Length * 2);
+            sb.AppendLine(methodstr);
+            sb.Append(PdbUtils.Deindent(src));
+
+            if (Decompiler.IsCppExtension(ext))
+            {
+                //C++ PDB sequence points don't include the trailing brace for some reason
+                sb.AppendLine();
+                sb.Append('}');
+            }
+
+            SourceToken[] tokens = SourceToken.ParseTokens(sb.ToString(), TokenClassifier.Create(ext));
+
+            //caption
+            sb = new StringBuilder();
+            sb.Append("Symbols file: ");
+            sb.Append(doc.SymbolsFile);
+            sb.Append(" (");
+            sb.Append(doc.SymbolsFileFormat);
+            sb.Append(')');
+            string caption = sb.ToString();
+
+            //show source code
+            DocumentViewWindow wnd = new DocumentViewWindow();
+            wnd.Title = "Source code";
+            wnd.Document = SourceVisualization.VisualizeTokens(tokens, header, caption);
             wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             wnd.ShowDialog();
         }
@@ -146,54 +204,7 @@ namespace CilView.SourceCode
                 //Local sources
                 if (wholeMethod)
                 {
-                    string src = doc.Text;
-                    string methodstr = string.Empty;
-                    string ext = Path.GetExtension(doc.FilePath);
-
-                    try
-                    {
-                        if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
-                        {
-                            methodstr = Decompiler.GetMethodSignatureString(ext, doc.Method);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //don't error out if we can't build good signature string
-                        ErrorHandler.Current.Error(ex, "PdbUtils.GetMethodSigString", silent: true);
-                        methodstr = CilVisualization.MethodToString(doc.Method);
-                    }
-
-                    //build display string
-                    StringBuilder sb = new StringBuilder(src.Length * 2);
-                    sb.AppendFormat("({0}, ", doc.FilePath);
-                    sb.AppendFormat("lines {0}-{1})", doc.LineStart, doc.LineEnd);
-                    sb.AppendLine();
-                    sb.AppendLine();
-                    sb.AppendLine(methodstr);
-                    sb.AppendLine(PdbUtils.Deindent(src));
-
-                    if (Decompiler.IsCppExtension(ext))
-                    {
-                        //C++ PDB sequence points don't include the trailing brace for some reason
-                        sb.AppendLine("}");
-                    }
-
-                    sb.AppendLine();
-                    sb.Append("Symbols file: ");
-                    sb.Append(doc.SymbolsFile);
-                    sb.Append(" (");
-                    sb.Append(doc.SymbolsFileFormat);
-                    sb.Append(')');
-
-                    //show source code
-                    TextViewWindow wnd = new TextViewWindow();
-                    wnd.Title = "Source code";
-                    wnd.Text = sb.ToString();
-                    wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    wnd.TextFontFamily = new FontFamily("Courier New");
-                    wnd.TextFontSize = 14.0;
-                    wnd.ShowDialog();
+                    ShowSourceWholeMethod(doc);
                 }
                 else
                 {

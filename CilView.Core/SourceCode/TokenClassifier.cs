@@ -11,6 +11,22 @@ namespace CilView.SourceCode
     {
         public abstract SourceTokenKind GetKind(string token);
 
+        public static TokenClassifier Create(string ext)
+        {
+            if (ext == null) ext = string.Empty;
+
+            ext = ext.Trim();
+
+            if (Decompiler.IsCppExtension(ext))
+            {
+                return new CppClassifier();
+            }
+            else
+            {
+                return new CsharpClassifier();
+            }
+        }
+
         protected static SourceTokenKind GetKindCommon(string token)
         {
             //common logic for C-like languages

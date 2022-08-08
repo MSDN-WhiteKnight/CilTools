@@ -33,13 +33,24 @@ namespace CilView.SourceCode
             target.Inlines.Add(r);
         }
 
-        public static FlowDocument VisualizeTokens(IEnumerable<SourceToken> tokens, string caption)
+        public static FlowDocument VisualizeTokens(IEnumerable<SourceToken> tokens, string header, string caption)
         {
             FlowDocument fd = new FlowDocument();
             fd.TextAlignment = TextAlignment.Left;
             fd.FontFamily = new FontFamily("Courier New");
-            
-            Paragraph par = new Paragraph();
+            Paragraph par;
+
+            if (!string.IsNullOrEmpty(header))
+            {
+                par = new Paragraph();
+                Run r = new Run(header);
+                r.FontFamily = SystemFonts.MessageFontFamily;
+                r.FontStyle = FontStyles.Italic;
+                par.Inlines.Add(r);
+                fd.Blocks.Add(par);
+            }
+
+            par = new Paragraph();
 
             foreach (SourceToken token in tokens)
             {
