@@ -136,5 +136,36 @@ namespace CilView.Tests.SourceCode
             Assert.AreEqual(string.Empty, tokens[10].TrailingWhitespace);
             Assert.AreEqual("// Comment", tokens[10].ToString());
         }
+
+        [TestMethod]
+        [DataRow("public static class Foo { } /*Fizz Buzz*/")]
+        [DataRow("int x=1; float y=2.3; // Comment")]
+        [DataRow("int i=1*2/0.5; /*число*/ string s1 = \"Hello, world\";/*string2*/ char c='\\'';")]
+        [DataRow(@"string s1=""\"""";string s2=""\\"";char c1='\'';char c2='\\';Foo();")]
+        [DataRow("Bar(\"//Comment\");")]
+        public void Test_ParseTokens_Roundtrip(string src)
+        {
+            //c#
+            SourceToken[] tokens = SourceToken.ParseTokens(src, new CsharpClassifier());
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                sb.Append(tokens[i].ToString());
+            }
+
+            Assert.AreEqual(src, sb.ToString(), "Parsed C# source does not match input string");
+
+            //c++
+            tokens = SourceToken.ParseTokens(src, new CppClassifier());
+            sb = new StringBuilder();
+
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                sb.Append(tokens[i].ToString());
+            }
+
+            Assert.AreEqual(src, sb.ToString(), "Parsed C++ source does not match input string");
+        }
     }
 }
