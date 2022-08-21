@@ -18,7 +18,7 @@ namespace CilView.Tests.SourceCode
     {
         [TestMethod]
         [DataRow(".cs", "public static void PrintHelloWorld()")]
-        [DataRow(".cpp", "public: static void PrintHelloWorld() {")]
+        [DataRow(".cpp", "public: static void PrintHelloWorld(){")]
         [DataRow(".txt", "public static void PrintHelloWorld()")]
         public void Test_Decompiler_HelloWorld(string lang, string expected)
         {
@@ -29,7 +29,7 @@ namespace CilView.Tests.SourceCode
 
         [TestMethod]
         [DataRow(".cs", "public static double CalcSum(double x, double y)")]
-        [DataRow(".cpp", "public: static double CalcSum(double x, double y) {")]
+        [DataRow(".cpp", "public: static double CalcSum(double x, double y){")]
         public void Test_Decompiler_CalcSum(string lang, string expected)
         {
             MethodBase mb = typeof(SampleMethods).GetMethod("CalcSum");
@@ -39,7 +39,7 @@ namespace CilView.Tests.SourceCode
 
         [TestMethod]
         [DataRow(".cs", "public static T[] GenerateArray<T>(int len)")]
-        [DataRow(".cpp", "public: generic <typename T>\nstatic array <T ^> ^ GenerateArray(int len) {")]
+        [DataRow(".cpp", "public: generic <typename T>\nstatic array <T ^> ^ GenerateArray(int len){")]
         public void Test_Decompiler_Generic(string lang, string expected)
         {
             MethodBase mb = typeof(SampleMethods).GetMethod("GenerateArray");
@@ -49,7 +49,7 @@ namespace CilView.Tests.SourceCode
 
         [TestMethod]
         [DataRow(".cs", "public float X {get;}")]
-        [DataRow(".cpp", "public: float get_X() {")]
+        [DataRow(".cpp", "public: float get_X(){")]
         public void Test_Decompiler_Property(string lang, string expected)
         {
             MethodBase mb = typeof(MyPoint).GetMethod("get_X");
@@ -59,7 +59,7 @@ namespace CilView.Tests.SourceCode
 
         [TestMethod]
         [DataRow(".cs", "void Bar(string s, object o);")]
-        [DataRow(".cpp", "public: void Bar(String ^ s, Object ^ o) {")]
+        [DataRow(".cpp", "public: void Bar(String ^ s, Object ^ o){")]
         public void Test_Decompiler_InterfaceMethod(string lang, string expected)
         {
             MethodBase mb = typeof(ITest).GetMethod("Bar");
@@ -69,7 +69,7 @@ namespace CilView.Tests.SourceCode
 
         [TestMethod]
         [DataRow(".cs", "public void Bar(string s, object o)")]
-        [DataRow(".cpp", "public: void Bar(String ^ s, Object ^ o) {")]
+        [DataRow(".cpp", "public: void Bar(String ^ s, Object ^ o){")]
         public void Test_Decompiler_InstanceMethod(string lang, string expected)
         {
             MethodBase mb = typeof(InterfacesSampleType).GetMethod("Bar");
