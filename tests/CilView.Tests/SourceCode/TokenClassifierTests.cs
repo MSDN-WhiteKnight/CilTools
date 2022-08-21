@@ -54,9 +54,32 @@ namespace CilView.Tests.SourceCode
         }
 
         [TestMethod]
+        [DataRow("class", SourceTokenKind.Keyword)]
+        [DataRow("Foo", SourceTokenKind.OtherName)]
+        [DataRow("1", SourceTokenKind.NumericLiteral)]
+        [DataRow("5.6", SourceTokenKind.NumericLiteral)]
+        [DataRow(";", SourceTokenKind.Punctuation)]
+        [DataRow("/", SourceTokenKind.Punctuation)]
+        [DataRow("\"String literal\"", SourceTokenKind.StringLiteral)]
+        [DataRow("'Comment", SourceTokenKind.Comment)]
+        [DataRow("array", SourceTokenKind.OtherName)]
+        [DataRow("_var", SourceTokenKind.OtherName)]
+        [DataRow("\"//Comment\"", SourceTokenKind.StringLiteral)]
+        [DataRow("If", SourceTokenKind.Keyword)]
+        [DataRow("FOR", SourceTokenKind.Keyword)]
+        [DataRow("#If", SourceTokenKind.Keyword)]
+        public void Test_VbClassifier(string token, SourceTokenKind expected)
+        {
+            VbClassifier classifier = new VbClassifier();
+            SourceTokenKind actual = classifier.GetKind(token);
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
         public void Test_TokenClassifier_Create()
         {
             Assert.IsTrue(TokenClassifier.Create(".cs") is CsharpClassifier);
+            Assert.IsTrue(TokenClassifier.Create(".vb") is VbClassifier);
             Assert.IsTrue(TokenClassifier.Create(".cpp") is CppClassifier);
             Assert.IsTrue(TokenClassifier.Create(".text") is CsharpClassifier);
         }

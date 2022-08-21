@@ -21,6 +21,10 @@ namespace CilView.SourceCode
             {
                 return new CppClassifier();
             }
+            else if (ext.Equals(".vb", StringComparison.OrdinalIgnoreCase))
+            {
+                return new VbClassifier();
+            }
             else
             {
                 return new CsharpClassifier();
