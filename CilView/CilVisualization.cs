@@ -27,7 +27,7 @@ namespace CilView
         //static readonly SolidColorBrush HyperlinkBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x66, 0xCC));
 
         //Default in Visual Studio for types
-        static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
+        internal static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
 
         //Parameters that control how disassembled CIL is produced. They are changed from main window UI.
         internal static readonly DisassemblerParams CurrentDisassemblerParams = InitDisassemblerParams();

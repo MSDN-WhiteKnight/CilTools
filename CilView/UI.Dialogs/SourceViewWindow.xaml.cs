@@ -51,7 +51,10 @@ namespace CilView.UI.Dialogs
                 ErrorHandler.Current.Error(ex);
             }
 
-            tbSource.Text = f.Text;
+            //source text
+            string ext = Path.GetExtension(f.Document.FilePath);
+            SourceToken[] tokens = SourceToken.ParseTokens(f.Text, TokenClassifier.Create(ext));
+            fdSource.Document = SourceVisualization.VisualizeTokens(tokens, string.Empty, string.Empty);
 
             if (f.CilStart == 0) bPrevious.IsEnabled = false;
             else bPrevious.IsEnabled = true;

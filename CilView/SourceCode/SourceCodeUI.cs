@@ -51,21 +51,74 @@ namespace CilView.SourceCode
         static void ShowDecompiledSource(MethodBase method)
         {
             //stub implementation that only works for abstract methods
-            string src = Decompiler.DecompileMethodSignature(".cs", method);
+            IEnumerable<SourceToken> tokens = Decompiler.DecompileMethodSignature(".cs", method);
+            DocumentViewWindow wnd = new DocumentViewWindow();
+            wnd.Title = "Source code";
+            wnd.Document = SourceVisualization.VisualizeTokens(tokens, string.Empty, "Source code from: Decompiler");
+            wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            wnd.ShowDialog();
+        }
 
-            //build display string
-            StringBuilder sb = new StringBuilder(src.Length * 2);            
-            sb.AppendLine(src);
-            sb.AppendLine();
-            sb.AppendLine("Source code from: Decompiler");
+        static void ShowSourceWholeMethod(SourceDocument doc)
+        {
+            string src = doc.Text;
+            string ext = Path.GetExtension(doc.FilePath);
+            StringBuilder sb;
+            SourceToken[] sigTokens = new SourceToken[0];
+
+            try
+            {
+                if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
+                {                    
+                    sigTokens = Decompiler.DecompileMethodSignature(ext, doc.Method).ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                //don't error out if we can't build good signature string
+                ErrorHandler.Current.Error(ex, "PdbUtils.GetMethodSigString", silent: true);
+                string methodstr = CilVisualization.MethodToString(doc.Method);
+                sigTokens = new SourceToken[] { new SourceToken(methodstr, SourceTokenKind.Unknown) };
+            }
+
+            //header
+            sb = new StringBuilder();
+            sb.AppendFormat("({0}, ", doc.FilePath);
+            sb.AppendFormat("lines {0}-{1})", doc.LineStart, doc.LineEnd);
+            string header = sb.ToString();
+
+            //body
+            sb = new StringBuilder(src.Length + 2);
+            string srcDeindented = PdbUtils.Deindent(src);
+            sb.Append(srcDeindented);
+
+            if (Decompiler.IsCppExtension(ext))
+            {
+                //C++ PDB sequence points don't include the trailing brace for some reason
+                if(!srcDeindented.EndsWith(Environment.NewLine, StringComparison.Ordinal)) sb.AppendLine();
+                sb.Append('}');
+            }
+
+            SourceToken[] bodyTokens = SourceToken.ParseTokens(sb.ToString(), TokenClassifier.Create(ext));
+            List<SourceToken> tokens = new List<SourceToken>(sigTokens.Length + bodyTokens.Length + 1);
+            tokens.AddRange(sigTokens);
+            tokens.Add(new SourceToken(Environment.NewLine, SourceTokenKind.Unknown));
+            tokens.AddRange(bodyTokens);
+
+            //caption
+            sb = new StringBuilder();
+            sb.Append("Symbols file: ");
+            sb.Append(doc.SymbolsFile);
+            sb.Append(" (");
+            sb.Append(doc.SymbolsFileFormat);
+            sb.Append(')');
+            string caption = sb.ToString();
 
             //show source code
-            TextViewWindow wnd = new TextViewWindow();
+            DocumentViewWindow wnd = new DocumentViewWindow();
             wnd.Title = "Source code";
-            wnd.Text = sb.ToString();
+            wnd.Document = SourceVisualization.VisualizeTokens(tokens, header, caption);
             wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            wnd.TextFontFamily = new FontFamily("Courier New");
-            wnd.TextFontSize = 14.0;
             wnd.ShowDialog();
         }
 
@@ -156,54 +209,7 @@ namespace CilView.SourceCode
                 //Local sources
                 if (wholeMethod)
                 {
-                    string src = doc.Text;
-                    string methodstr = string.Empty;
-                    string ext = Path.GetExtension(doc.FilePath);
-
-                    try
-                    {
-                        if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
-                        {
-                            methodstr = Decompiler.DecompileMethodSignature(ext, doc.Method);
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        //don't error out if we can't build good signature string
-                        ErrorHandler.Current.Error(ex, "PdbUtils.GetMethodSigString", silent: true);
-                        methodstr = CilVisualization.MethodToString(doc.Method);
-                    }
-
-                    //build display string
-                    StringBuilder sb = new StringBuilder(src.Length * 2);
-                    sb.AppendFormat("({0}, ", doc.FilePath);
-                    sb.AppendFormat("lines {0}-{1})", doc.LineStart, doc.LineEnd);
-                    sb.AppendLine();
-                    sb.AppendLine();
-                    sb.AppendLine(methodstr);
-                    sb.AppendLine(PdbUtils.Deindent(src));
-
-                    if (Decompiler.IsCppExtension(ext))
-                    {
-                        //C++ PDB sequence points don't include the trailing brace for some reason
-                        sb.AppendLine("}");
-                    }
-
-                    sb.AppendLine();
-                    sb.Append("Symbols file: ");
-                    sb.Append(doc.SymbolsFile);
-                    sb.Append(" (");
-                    sb.Append(doc.SymbolsFileFormat);
-                    sb.Append(')');
-
-                    //show source code
-                    TextViewWindow wnd = new TextViewWindow();
-                    wnd.Title = "Source code";
-                    wnd.Text = sb.ToString();
-                    wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    wnd.TextFontFamily = new FontFamily("Courier New");
-                    wnd.TextFontSize = 14.0;
-                    wnd.ShowDialog();
+                    ShowSourceWholeMethod(doc);
                 }
                 else
                 {

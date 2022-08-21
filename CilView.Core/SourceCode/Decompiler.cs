@@ -61,7 +61,7 @@ namespace CilView.SourceCode
         /// </summary>
         /// <param name="ext">Code file extension (with dot), or empty string</param>
         /// <param name="m">Method to get the decompiled signature</param>
-        public static string DecompileMethodSignature(string ext, MethodBase m)
+        public static string GetMethodSignatureString(string ext, MethodBase m)
         {
             Decompiler d = Create(ext, m);
             IEnumerable<SourceToken> tokens = d.GetMethodSigTokens();
@@ -70,6 +70,18 @@ namespace CilView.SourceCode
             foreach (SourceToken tok in tokens) sb.Append(tok.ToString());
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Returns a collection of tokens that represents a decompiled signature of the specified method in a language 
+        /// identified by a file extension
+        /// </summary>
+        /// <param name="ext">Code file extension (with dot), or empty string</param>
+        /// <param name="m">Method to get the decompiled signature</param>
+        public static IEnumerable<SourceToken> DecompileMethodSignature(string ext, MethodBase m)
+        {
+            Decompiler d = Create(ext, m);
+            return d.GetMethodSigTokens();
         }
 
         protected static SourceToken ProcessCommonTypes(Type t)

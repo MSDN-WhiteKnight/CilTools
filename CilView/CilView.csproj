@@ -124,6 +124,7 @@
     <Compile Include="SourceCode\SourceCodeUI.cs" />
     <Compile Include="SourceCode\SourceLinkEntry.cs" />
     <Compile Include="SourceCode\SourceLinkMap.cs" />
+    <Compile Include="SourceCode\SourceVisualization.cs" />
     <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
       <DependentUpon>CilBrowserPage.xaml</DependentUpon>
     </Compile>
@@ -134,6 +135,9 @@
     <Compile Include="OperationBase.cs" />
     <Compile Include="UI.Controls\CilBrowser.xaml.cs">
       <DependentUpon>CilBrowser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI.Dialogs\DocumentViewWindow.xaml.cs">
+      <DependentUpon>DocumentViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI.Dialogs\ExecuteWindow.xaml.cs">
       <DependentUpon>ExecuteWindow.xaml</DependentUpon>
@@ -182,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI.Controls\CilBrowserPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI.Dialogs\DocumentViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
