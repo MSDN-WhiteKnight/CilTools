@@ -62,22 +62,23 @@ namespace CilView.SourceCode
         static void ShowSourceWholeMethod(SourceDocument doc)
         {
             string src = doc.Text;
-            string methodstr = string.Empty;
             string ext = Path.GetExtension(doc.FilePath);
             StringBuilder sb;
+            SourceToken[] sigTokens = new SourceToken[0];
 
             try
             {
                 if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
-                {
-                    methodstr = Decompiler.GetMethodSignatureString(ext, doc.Method);
+                {                    
+                    sigTokens = Decompiler.DecompileMethodSignature(ext, doc.Method).ToArray();
                 }
             }
             catch (Exception ex)
             {
                 //don't error out if we can't build good signature string
                 ErrorHandler.Current.Error(ex, "PdbUtils.GetMethodSigString", silent: true);
-                methodstr = CilVisualization.MethodToString(doc.Method);
+                string methodstr = CilVisualization.MethodToString(doc.Method);
+                sigTokens = new SourceToken[] { new SourceToken(methodstr, SourceTokenKind.Unknown) };
             }
 
             //header
@@ -87,18 +88,22 @@ namespace CilView.SourceCode
             string header = sb.ToString();
 
             //body
-            sb = new StringBuilder(src.Length * 2);
-            sb.AppendLine(methodstr);
-            sb.Append(PdbUtils.Deindent(src));
+            sb = new StringBuilder(src.Length + 2);
+            string srcDeindented = PdbUtils.Deindent(src);
+            sb.Append(srcDeindented);
 
             if (Decompiler.IsCppExtension(ext))
             {
                 //C++ PDB sequence points don't include the trailing brace for some reason
-                sb.AppendLine();
+                if(!srcDeindented.EndsWith(Environment.NewLine, StringComparison.Ordinal)) sb.AppendLine();
                 sb.Append('}');
             }
 
-            SourceToken[] tokens = SourceToken.ParseTokens(sb.ToString(), TokenClassifier.Create(ext));
+            SourceToken[] bodyTokens = SourceToken.ParseTokens(sb.ToString(), TokenClassifier.Create(ext));
+            List<SourceToken> tokens = new List<SourceToken>(sigTokens.Length + bodyTokens.Length + 1);
+            tokens.AddRange(sigTokens);
+            tokens.Add(new SourceToken(Environment.NewLine, SourceTokenKind.Unknown));
+            tokens.AddRange(bodyTokens);
 
             //caption
             sb = new StringBuilder();

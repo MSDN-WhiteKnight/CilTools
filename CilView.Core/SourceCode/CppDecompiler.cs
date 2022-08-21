@@ -227,7 +227,7 @@ namespace CilView.SourceCode
                 ret.Add(new SourceToken(parname, SourceTokenKind.OtherName));
             }
 
-            ret.Add(new SourceToken(")", SourceTokenKind.Punctuation, "", " "));
+            ret.Add(new SourceToken(")", SourceTokenKind.Punctuation, "", ""));
 
             //due to K&R braces in C++ the opening brace is effectively a part of signature
             ret.Add(new SourceToken("{", SourceTokenKind.Punctuation));
