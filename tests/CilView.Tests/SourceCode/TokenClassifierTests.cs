@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Tests.Common;
 using CilView.SourceCode;
+using CilView.Core.Syntax;
 
 namespace CilView.Tests.SourceCode
 {
@@ -14,64 +15,64 @@ namespace CilView.Tests.SourceCode
     public class TokenClassifierTests
     {
         [TestMethod]
-        [DataRow("class", SourceTokenKind.Keyword)]
-        [DataRow("Foo", SourceTokenKind.OtherName)]
-        [DataRow("1", SourceTokenKind.NumericLiteral)]
-        [DataRow("5.6", SourceTokenKind.NumericLiteral)]
-        [DataRow(";", SourceTokenKind.Punctuation)]
-        [DataRow("/", SourceTokenKind.Punctuation)]
-        [DataRow("\"String literal\"", SourceTokenKind.StringLiteral)]
-        [DataRow("//Comment", SourceTokenKind.Comment)]
-        [DataRow("/*Another comment*/", SourceTokenKind.Comment)]
-        [DataRow("array", SourceTokenKind.OtherName)]
-        [DataRow("_var", SourceTokenKind.OtherName)]
-        [DataRow("\"//Comment\"", SourceTokenKind.StringLiteral)]
-        public void Test_CsharpClassifier(string token, SourceTokenKind expected)
+        [DataRow("class", TokenKind.Keyword)]
+        [DataRow("Foo", TokenKind.Name)]
+        [DataRow("1", TokenKind.NumericLiteral)]
+        [DataRow("5.6", TokenKind.NumericLiteral)]
+        [DataRow(";", TokenKind.Punctuation)]
+        [DataRow("/", TokenKind.Punctuation)]
+        [DataRow("\"String literal\"", TokenKind.DoubleQuotLiteral)]
+        [DataRow("//Comment", TokenKind.Comment)]
+        [DataRow("/*Another comment*/", TokenKind.MultilineComment)]
+        [DataRow("array", TokenKind.Name)]
+        [DataRow("_var", TokenKind.Name)]
+        [DataRow("\"//Comment\"", TokenKind.DoubleQuotLiteral)]
+        public void Test_CsharpClassifier(string token, TokenKind expected)
         {
             CsharpClassifier classifier = new CsharpClassifier();
-            SourceTokenKind actual = classifier.GetKind(token);
+            TokenKind actual = classifier.GetKind(token);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        [DataRow("class", SourceTokenKind.Keyword)]
-        [DataRow("Foo", SourceTokenKind.OtherName)]
-        [DataRow("1", SourceTokenKind.NumericLiteral)]
-        [DataRow("5.6", SourceTokenKind.NumericLiteral)]
-        [DataRow(";", SourceTokenKind.Punctuation)]
-        [DataRow("/", SourceTokenKind.Punctuation)]
-        [DataRow("\"String literal\"", SourceTokenKind.StringLiteral)]
-        [DataRow("//Comment", SourceTokenKind.Comment)]
-        [DataRow("/*Another comment*/", SourceTokenKind.Comment)]
-        [DataRow("array", SourceTokenKind.Keyword)]
-        [DataRow("_var", SourceTokenKind.OtherName)]
-        [DataRow("\"//Comment\"", SourceTokenKind.StringLiteral)]
-        public void Test_CppClassifier(string token, SourceTokenKind expected)
+        [DataRow("class", TokenKind.Keyword)]
+        [DataRow("Foo", TokenKind.Name)]
+        [DataRow("1", TokenKind.NumericLiteral)]
+        [DataRow("5.6", TokenKind.NumericLiteral)]
+        [DataRow(";", TokenKind.Punctuation)]
+        [DataRow("/", TokenKind.Punctuation)]
+        [DataRow("\"String literal\"", TokenKind.DoubleQuotLiteral)]
+        [DataRow("//Comment", TokenKind.Comment)]
+        [DataRow("/*Another comment*/", TokenKind.MultilineComment)]
+        [DataRow("array", TokenKind.Keyword)]
+        [DataRow("_var", TokenKind.Name)]
+        [DataRow("\"//Comment\"", TokenKind.DoubleQuotLiteral)]
+        public void Test_CppClassifier(string token, TokenKind expected)
         {
             CppClassifier classifier = new CppClassifier();
-            SourceTokenKind actual = classifier.GetKind(token);
+            TokenKind actual = classifier.GetKind(token);
             Assert.AreEqual(expected, actual);
         }
 
         [TestMethod]
-        [DataRow("class", SourceTokenKind.Keyword)]
-        [DataRow("Foo", SourceTokenKind.OtherName)]
-        [DataRow("1", SourceTokenKind.NumericLiteral)]
-        [DataRow("5.6", SourceTokenKind.NumericLiteral)]
-        [DataRow(";", SourceTokenKind.Punctuation)]
-        [DataRow("/", SourceTokenKind.Punctuation)]
-        [DataRow("\"String literal\"", SourceTokenKind.StringLiteral)]
-        [DataRow("'Comment", SourceTokenKind.Comment)]
-        [DataRow("array", SourceTokenKind.OtherName)]
-        [DataRow("_var", SourceTokenKind.OtherName)]
-        [DataRow("\"//Comment\"", SourceTokenKind.StringLiteral)]
-        [DataRow("If", SourceTokenKind.Keyword)]
-        [DataRow("FOR", SourceTokenKind.Keyword)]
-        [DataRow("#If", SourceTokenKind.Keyword)]
-        public void Test_VbClassifier(string token, SourceTokenKind expected)
+        [DataRow("class", TokenKind.Keyword)]
+        [DataRow("Foo", TokenKind.Name)]
+        [DataRow("1", TokenKind.NumericLiteral)]
+        [DataRow("5.6", TokenKind.NumericLiteral)]
+        [DataRow(";", TokenKind.Punctuation)]
+        [DataRow("/", TokenKind.Punctuation)]
+        [DataRow("\"String literal\"", TokenKind.DoubleQuotLiteral)]
+        [DataRow("'Comment", TokenKind.Comment)]
+        [DataRow("array", TokenKind.Name)]
+        [DataRow("_var", TokenKind.Name)]
+        [DataRow("\"//Comment\"", TokenKind.DoubleQuotLiteral)]
+        [DataRow("If", TokenKind.Keyword)]
+        [DataRow("FOR", TokenKind.Keyword)]
+        [DataRow("#If", TokenKind.Keyword)]
+        public void Test_VbClassifier(string token, TokenKind expected)
         {
             VbClassifier classifier = new VbClassifier();
-            SourceTokenKind actual = classifier.GetKind(token);
+            TokenKind actual = classifier.GetKind(token);
             Assert.AreEqual(expected, actual);
         }
 

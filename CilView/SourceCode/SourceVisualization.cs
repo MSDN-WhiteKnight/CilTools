@@ -3,12 +3,11 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using CilView.Core.Syntax;
 
 namespace CilView.SourceCode
 {
@@ -17,16 +16,16 @@ namespace CilView.SourceCode
         static void VisualizeToken(SourceToken token, Paragraph target)
         {
             Run r;
-            StringBuilder sb = new StringBuilder(500);
-            StringWriter wr = new StringWriter(sb);
             r = new Run();
 
             switch (token.Kind)
             {
-                case SourceTokenKind.Keyword: r.Foreground = Brushes.Blue;break;
-                case SourceTokenKind.TypeName: r.Foreground = CilVisualization.IdentifierBrush; break;
-                case SourceTokenKind.StringLiteral: r.Foreground = Brushes.Red;break;
-                case SourceTokenKind.Comment: r.Foreground = Brushes.Green; break;
+                case TokenKind.Keyword: r.Foreground = Brushes.Blue;break;
+                case TokenKind.TypeName: r.Foreground = CilVisualization.IdentifierBrush; break;
+                case TokenKind.DoubleQuotLiteral: r.Foreground = Brushes.Red;break;
+                case TokenKind.SingleQuotLiteral: r.Foreground = Brushes.Red; break;
+                case TokenKind.Comment: r.Foreground = Brushes.Green; break;
+                case TokenKind.MultilineComment: r.Foreground = Brushes.Green; break;
             }
 
             r.Text = token.ToString();

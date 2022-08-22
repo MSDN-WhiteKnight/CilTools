@@ -4,12 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CilView.Core.Syntax;
 
 namespace CilView.SourceCode
 {
     public abstract class TokenClassifier
     {
-        public abstract SourceTokenKind GetKind(string token);
+        public abstract TokenKind GetKind(string token);
 
         public static TokenClassifier Create(string ext)
         {
@@ -31,70 +32,70 @@ namespace CilView.SourceCode
             }
         }
 
-        protected static SourceTokenKind GetKindCommon(string token)
+        protected static TokenKind GetKindCommon(string token)
         {
             //common logic for C-like languages
-            if (token.Length == 0) return SourceTokenKind.Unknown;
+            if (token.Length == 0) return TokenKind.Unknown;
 
             if (char.IsDigit(token[0]))
             {
-                return SourceTokenKind.NumericLiteral;
+                return TokenKind.NumericLiteral;
             }
             else if (token[0] == '"')
             {
                 if (token.Length < 2 || token[token.Length - 1] != '"')
                 {
-                    return SourceTokenKind.Unknown;
+                    return TokenKind.Unknown;
                 }
                 else
                 {
-                    return SourceTokenKind.StringLiteral;
+                    return TokenKind.DoubleQuotLiteral;
                 }
             }
             else if (token[0] == '\'')
             {
                 if (token.Length < 2 || token[token.Length - 1] != '\'')
                 {
-                    return SourceTokenKind.Unknown;
+                    return TokenKind.Unknown;
                 }
                 else
                 {
-                    return SourceTokenKind.StringLiteral;
+                    return TokenKind.SingleQuotLiteral;
                 }
             }
             else if (token[0] == '/')
             {
                 if (token.Length == 1)
                 {
-                    return SourceTokenKind.Punctuation;
+                    return TokenKind.Punctuation;
                 }
                 else if (token[1] == '*')
                 {
                     if (!token.EndsWith("*/", StringComparison.Ordinal))
                     {
-                        return SourceTokenKind.Unknown;
+                        return TokenKind.Unknown;
                     }
                     else
                     {
-                        return SourceTokenKind.Comment;
+                        return TokenKind.MultilineComment;
                     }
                 }
                 else if (token[1] == '/')
                 {
-                    return SourceTokenKind.Comment;
+                    return TokenKind.Comment;
                 }
                 else
                 {
-                    return SourceTokenKind.Unknown;
+                    return TokenKind.Unknown;
                 }
             }
             else if (char.IsPunctuation(token[0]) || char.IsSymbol(token[0]))
             {
-                return SourceTokenKind.Punctuation;
+                return TokenKind.Punctuation;
             }
             else
             {
-                return SourceTokenKind.Unknown;
+                return TokenKind.Unknown;
             }
         }
     }

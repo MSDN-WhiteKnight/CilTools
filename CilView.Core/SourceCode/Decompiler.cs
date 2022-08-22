@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using CilTools.Reflection;
 using CilView.Common;
+using CilView.Core.Syntax;
 
 namespace CilView.SourceCode
 {
@@ -87,11 +88,11 @@ namespace CilView.SourceCode
         protected static SourceToken ProcessCommonTypes(Type t)
         {
             //built-in types common between C# and C++/CLI
-            if (Utils.TypeEquals(t, typeof(bool)))        return new SourceToken("bool", SourceTokenKind.Keyword);
-            else if (Utils.TypeEquals(t, typeof(int)))    return new SourceToken("int", SourceTokenKind.Keyword);
-            else if (Utils.TypeEquals(t, typeof(short)))  return new SourceToken("short", SourceTokenKind.Keyword);
-            else if (Utils.TypeEquals(t, typeof(float)))  return new SourceToken("float", SourceTokenKind.Keyword);
-            else if (Utils.TypeEquals(t, typeof(double))) return new SourceToken("double", SourceTokenKind.Keyword);
+            if (Utils.TypeEquals(t, typeof(bool)))        return new SourceToken("bool", TokenKind.Keyword);
+            else if (Utils.TypeEquals(t, typeof(int)))    return new SourceToken("int", TokenKind.Keyword);
+            else if (Utils.TypeEquals(t, typeof(short)))  return new SourceToken("short", TokenKind.Keyword);
+            else if (Utils.TypeEquals(t, typeof(float)))  return new SourceToken("float", TokenKind.Keyword);
+            else if (Utils.TypeEquals(t, typeof(double))) return new SourceToken("double", TokenKind.Keyword);
             else return null;
         }
         

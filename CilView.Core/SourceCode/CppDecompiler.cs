@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using CilView.Common;
+using CilView.Core.Syntax;
 
 namespace CilView.SourceCode
 {
@@ -22,11 +23,11 @@ namespace CilView.SourceCode
 
             if (t.IsArray && t.GetArrayRank() == 1)
             {
-                target.Add(new SourceToken("array", SourceTokenKind.Keyword, "", " "));
-                target.Add(new SourceToken("<", SourceTokenKind.Punctuation));
+                target.Add(new SourceToken("array", TokenKind.Keyword, "", " "));
+                target.Add(new SourceToken("<", TokenKind.Punctuation));
                 GetTypeTokens(t.GetElementType(), target);
-                target.Add(new SourceToken(">", SourceTokenKind.Punctuation, "", " "));
-                target.Add(new SourceToken("^", SourceTokenKind.Punctuation));
+                target.Add(new SourceToken(">", TokenKind.Punctuation, "", " "));
+                target.Add(new SourceToken("^", TokenKind.Punctuation));
                 return;
             }
 
@@ -45,15 +46,15 @@ namespace CilView.SourceCode
                 }
 
                 sb.Append("> ^");
-                target.Add(new SourceToken(sb.ToString(), SourceTokenKind.Unknown));
+                target.Add(new SourceToken(sb.ToString(), TokenKind.Unknown));
                 return;
             }
 
             //reference types are represented by handles in C++/CLI
             if (t.IsClass || t.IsInterface)
             {
-                target.Add(new SourceToken(t.Name, SourceTokenKind.TypeName, "", " "));
-                target.Add(new SourceToken("^", SourceTokenKind.Punctuation));
+                target.Add(new SourceToken(t.Name, TokenKind.TypeName, "", " "));
+                target.Add(new SourceToken("^", TokenKind.Punctuation));
                 return;
             }
 
@@ -68,27 +69,27 @@ namespace CilView.SourceCode
 
             if (Utils.TypeEquals(t, typeof(uint)))
             {
-                target.Add(new SourceToken("unsigned int", SourceTokenKind.Keyword));
+                target.Add(new SourceToken("unsigned int", TokenKind.Keyword));
             }
             else if (Utils.TypeEquals(t, typeof(ushort)))
             {
-                target.Add(new SourceToken("unsigned short", SourceTokenKind.Keyword));
+                target.Add(new SourceToken("unsigned short", TokenKind.Keyword));
             }
             else if (Utils.TypeEquals(t, typeof(byte)))
             {
-                target.Add(new SourceToken("unsigned char", SourceTokenKind.Keyword));
+                target.Add(new SourceToken("unsigned char", TokenKind.Keyword));
             }
             else if (Utils.TypeEquals(t, typeof(sbyte)))
             {
-                target.Add(new SourceToken("signed char", SourceTokenKind.Keyword));
+                target.Add(new SourceToken("signed char", TokenKind.Keyword));
             }
             else if (Utils.TypeEquals(t, typeof(char)))
             {
-                target.Add(new SourceToken("wchar_t", SourceTokenKind.Keyword));
+                target.Add(new SourceToken("wchar_t", TokenKind.Keyword));
             }
             else
             {
-                target.Add(new SourceToken(t.Name, SourceTokenKind.TypeName));
+                target.Add(new SourceToken(t.Name, TokenKind.TypeName));
             }
         }
 
@@ -154,18 +155,18 @@ namespace CilView.SourceCode
             {
                 if (m.IsPublic)
                 {
-                    ret.Add(new SourceToken("public", SourceTokenKind.Keyword));
-                    ret.Add(new SourceToken(":", SourceTokenKind.Punctuation, "", " "));
+                    ret.Add(new SourceToken("public", TokenKind.Keyword));
+                    ret.Add(new SourceToken(":", TokenKind.Punctuation, "", " "));
                 }
                 else if (m.IsFamily)
                 {
-                    ret.Add(new SourceToken("protected", SourceTokenKind.Keyword));
-                    ret.Add(new SourceToken(":", SourceTokenKind.Punctuation, "", " "));
+                    ret.Add(new SourceToken("protected", TokenKind.Keyword));
+                    ret.Add(new SourceToken(":", TokenKind.Punctuation, "", " "));
                 }
                 else if (m.IsAssembly)
                 {
-                    ret.Add(new SourceToken("internal", SourceTokenKind.Keyword));
-                    ret.Add(new SourceToken(":", SourceTokenKind.Punctuation, "", " "));
+                    ret.Add(new SourceToken("internal", TokenKind.Keyword));
+                    ret.Add(new SourceToken(":", TokenKind.Punctuation, "", " "));
                 }
             }
 
@@ -185,12 +186,12 @@ namespace CilView.SourceCode
 
                 sb.Append('>');
                 sb.AppendLine();
-                ret.Add(new SourceToken(sb.ToString(), SourceTokenKind.Unknown));
+                ret.Add(new SourceToken(sb.ToString(), TokenKind.Unknown));
             }
 
             if (!isGlobalFunc)
             {
-                if (m.IsStatic) ret.Add(new SourceToken("static", SourceTokenKind.Keyword, "", " "));
+                if (m.IsStatic) ret.Add(new SourceToken("static", TokenKind.Keyword, "", " "));
             }
 
             Type t = GetReturnType(m);
@@ -199,23 +200,23 @@ namespace CilView.SourceCode
             {
                 if (Utils.StringEquals(t.FullName, "System.Void"))
                 {
-                    ret.Add(new SourceToken("void", SourceTokenKind.Keyword, "", " "));
+                    ret.Add(new SourceToken("void", TokenKind.Keyword, "", " "));
                 }
                 else
                 {
                     GetTypeTokens(t, ret);
-                    ret.Add(new SourceToken(" ", SourceTokenKind.Unknown));
+                    ret.Add(new SourceToken(" ", TokenKind.Unknown));
                 }
             }
 
-            ret.Add(new SourceToken(m.Name, SourceTokenKind.FunctionName));
-            ret.Add(new SourceToken("(", SourceTokenKind.Punctuation));
+            ret.Add(new SourceToken(m.Name, TokenKind.FunctionName));
+            ret.Add(new SourceToken("(", TokenKind.Punctuation));
             
             for (int i = 0; i < pars.Length; i++)
             {
-                if (i >= 1) ret.Add(new SourceToken(",", SourceTokenKind.Punctuation, "", " "));
+                if (i >= 1) ret.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
                 GetTypeTokens(pars[i].ParameterType, ret);
-                ret.Add(new SourceToken(" ", SourceTokenKind.Unknown));
+                ret.Add(new SourceToken(" ", TokenKind.Unknown));
                 
                 string parname = pars[i].Name;
 
@@ -224,13 +225,13 @@ namespace CilView.SourceCode
                     parname = "par" + (i + 1).ToString();
                 }
 
-                ret.Add(new SourceToken(parname, SourceTokenKind.OtherName));
+                ret.Add(new SourceToken(parname, TokenKind.Name));
             }
 
-            ret.Add(new SourceToken(")", SourceTokenKind.Punctuation, "", ""));
+            ret.Add(new SourceToken(")", TokenKind.Punctuation, "", ""));
 
             //due to K&R braces in C++ the opening brace is effectively a part of signature
-            ret.Add(new SourceToken("{", SourceTokenKind.Punctuation));
+            ret.Add(new SourceToken("{", TokenKind.Punctuation));
 
             return ret;
         }

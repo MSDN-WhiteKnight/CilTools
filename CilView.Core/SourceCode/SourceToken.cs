@@ -11,25 +11,16 @@ using CilView.Core.Syntax;
 
 namespace CilView.SourceCode
 {
-    public enum SourceTokenKind
-    {
-        Unknown = 0,
-        Keyword = 1,
-        Punctuation,
-        NumericLiteral,
-        StringLiteral,
-        Comment,
-        TypeName,
-        FunctionName,
-        OtherName
-    }
-
+    /// <summary>
+    /// Represents a smallest lexical unit of a source text 
+    /// (used for syntax highlighting in CIL View "Show source" feature)
+    /// </summary>
     public class SourceToken : SyntaxNode
     {
-        SourceTokenKind _kind;
+        TokenKind _kind;
         string _content;
         
-        public SourceToken(string content, SourceTokenKind kind)
+        public SourceToken(string content, TokenKind kind)
         {
             this._kind = kind;
             this._content = content;
@@ -37,7 +28,7 @@ namespace CilView.SourceCode
             this._trail = string.Empty;
         }
 
-        public SourceToken(string content, SourceTokenKind kind, string leadingWhitespace, string trailingWhitespace)
+        public SourceToken(string content, TokenKind kind, string leadingWhitespace, string trailingWhitespace)
         {
             this._kind = kind;
             this._content = content;
@@ -51,7 +42,7 @@ namespace CilView.SourceCode
             if (leadingWhitespace == null) leadingWhitespace = string.Empty;
             if (trailingWhitespace == null) trailingWhitespace = string.Empty;
 
-            SourceTokenKind kind = classifier.GetKind(tokenString);
+            TokenKind kind = classifier.GetKind(tokenString);
 
             return new SourceToken(tokenString, kind, leadingWhitespace, trailingWhitespace);
         }
@@ -103,7 +94,7 @@ namespace CilView.SourceCode
             return ret.ToArray();
         }
 
-        public SourceTokenKind Kind
+        public TokenKind Kind
         {
             get { return this._kind; }
         }

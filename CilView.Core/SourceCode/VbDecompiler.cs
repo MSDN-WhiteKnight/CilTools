@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using CilTools.Reflection;
 using CilView.Common;
+using CilView.Core.Syntax;
 
 namespace CilView.SourceCode
 {
@@ -145,7 +146,7 @@ namespace CilView.SourceCode
 
         public override IEnumerable<SourceToken> GetMethodSigTokens()
         {
-            yield return new SourceToken(this.GetMethodSigString(), SourceTokenKind.Unknown);
+            yield return new SourceToken(this.GetMethodSigString(), TokenKind.Unknown);
         }
     }
 }

@@ -7,19 +7,6 @@ using System.Text;
 
 namespace CilView.Core.Syntax
 {
-    public enum TokenKind
-    {
-        Unknown = 0, 
-        Name = 1, 
-        Punctuation, 
-        SingleQuotLiteral, 
-        DoubleQuotLiteral, 
-        NumericLiteral, 
-        Comment,
-        MultilineComment,
-        Whitespace
-    }
-
     /// <summary>
     /// A base class for classes that define logic for reading specific kinds of tokens from a string
     /// </summary>

@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CilView.Core.Syntax;
 
 namespace CilView.SourceCode
 {
@@ -34,51 +35,51 @@ namespace CilView.SourceCode
             return keywords.Contains(token);
         }
 
-        static SourceTokenKind GetKindImpl(string token)
+        static TokenKind GetKindImpl(string token)
         {
-            if (token.Length == 0) return SourceTokenKind.Unknown;
+            if (token.Length == 0) return TokenKind.Unknown;
 
             if (char.IsDigit(token[0]))
             {
-                return SourceTokenKind.NumericLiteral;
+                return TokenKind.NumericLiteral;
             }
             else if (token[0] == '_')
             {
-                return SourceTokenKind.OtherName;
+                return TokenKind.Name;
             }
             else if (token[0] == '"')
             {
                 if (token.Length < 2 || token[token.Length - 1] != '"')
                 {
-                    return SourceTokenKind.Unknown;
+                    return TokenKind.Unknown;
                 }
                 else
                 {
-                    return SourceTokenKind.StringLiteral;
+                    return TokenKind.DoubleQuotLiteral;
                 }
             }
             else if (token[0] == '\'')
             {
-                return SourceTokenKind.Comment;
+                return TokenKind.Comment;
             }
             else if (char.IsPunctuation(token[0]) || char.IsSymbol(token[0]))
             {
-                return SourceTokenKind.Punctuation;
+                return TokenKind.Punctuation;
             }
             else
             {
-                return SourceTokenKind.Unknown;
+                return TokenKind.Unknown;
             }
         }
 
-        public override SourceTokenKind GetKind(string token)
+        public override TokenKind GetKind(string token)
         {
-            if (token.Length == 0) return SourceTokenKind.Unknown;
+            if (token.Length == 0) return TokenKind.Unknown;
 
             if (char.IsLetter(token[0]) || token[0] == '#')
             {
-                if (IsKeyword(token)) return SourceTokenKind.Keyword;
-                else return SourceTokenKind.OtherName;
+                if (IsKeyword(token)) return TokenKind.Keyword;
+                else return TokenKind.Name;
             }
             else return GetKindImpl(token);
         }

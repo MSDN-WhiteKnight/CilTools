@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Media;
 using CilTools.SourceCode;
 using CilView.Common;
+using CilView.Core.Syntax;
 using CilView.UI.Dialogs;
 
 namespace CilView.SourceCode
@@ -78,7 +79,7 @@ namespace CilView.SourceCode
                 //don't error out if we can't build good signature string
                 ErrorHandler.Current.Error(ex, "PdbUtils.GetMethodSigString", silent: true);
                 string methodstr = CilVisualization.MethodToString(doc.Method);
-                sigTokens = new SourceToken[] { new SourceToken(methodstr, SourceTokenKind.Unknown) };
+                sigTokens = new SourceToken[] { new SourceToken(methodstr, TokenKind.Unknown) };
             }
 
             //header
@@ -102,7 +103,7 @@ namespace CilView.SourceCode
             SourceToken[] bodyTokens = SourceToken.ParseTokens(sb.ToString(), TokenClassifier.Create(ext));
             List<SourceToken> tokens = new List<SourceToken>(sigTokens.Length + bodyTokens.Length + 1);
             tokens.AddRange(sigTokens);
-            tokens.Add(new SourceToken(Environment.NewLine, SourceTokenKind.Unknown));
+            tokens.Add(new SourceToken(Environment.NewLine, TokenKind.Unknown));
             tokens.AddRange(bodyTokens);
 
             //caption
