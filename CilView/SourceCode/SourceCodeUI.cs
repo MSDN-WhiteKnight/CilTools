@@ -8,7 +8,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
-using System.Windows.Media;
 using CilTools.SourceCode;
 using CilView.Common;
 using CilView.Core.Syntax;
@@ -100,7 +99,9 @@ namespace CilView.SourceCode
                 sb.Append('}');
             }
 
-            SourceToken[] bodyTokens = SourceToken.ParseTokens(sb.ToString(), TokenClassifier.Create(ext));
+            SourceToken[] bodyTokens = TokenParser.ParseTokens(sb.ToString(), TokenParser.GetDefinitions(ext), 
+                TokenClassifier.Create(ext));
+
             List<SourceToken> tokens = new List<SourceToken>(sigTokens.Length + bodyTokens.Length + 1);
             tokens.AddRange(sigTokens);
             tokens.Add(new SourceToken(Environment.NewLine, TokenKind.Unknown));

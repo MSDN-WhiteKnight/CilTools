@@ -18,7 +18,8 @@ namespace CilView.Tests.SourceCode
         public void Test_ParseTokens_Class()
         {
             string src = "public static class Foo { } /*Fizz Buzz*/";
-            SourceToken[] tokens = SourceToken.ParseTokens(src, new CsharpClassifier());
+            SourceToken[] tokens = TokenParser.ParseTokens(src, TokenParser.GetDefinitions(".cs"), new CsharpClassifier());
+
             Assert.AreEqual(7, tokens.Length);
 
             Assert.AreEqual(TokenKind.Keyword, tokens[0].Kind);
@@ -68,7 +69,7 @@ namespace CilView.Tests.SourceCode
         public void Test_ParseTokens_NumericLiteral()
         {
             string src = "int x=1; float y=2.3; // Comment";
-            SourceToken[] tokens = SourceToken.ParseTokens(src, new CsharpClassifier());
+            SourceToken[] tokens = TokenParser.ParseTokens(src, TokenParser.GetDefinitions(".cs"), new CsharpClassifier());
             Assert.AreEqual(11, tokens.Length);
 
             Assert.AreEqual(TokenKind.Keyword, tokens[0].Kind);
@@ -139,15 +140,70 @@ namespace CilView.Tests.SourceCode
         }
 
         [TestMethod]
+        public void Test_ParseTokens_DottedIdentifiers()
+        {
+            string src = "Foo.Bar";
+            SourceToken[] tokens = TokenParser.ParseTokens(src, TokenParser.GetDefinitions(".cs"), new CsharpClassifier());
+
+            Assert.AreEqual(3, tokens.Length);
+
+            Assert.AreEqual(TokenKind.Name, tokens[0].Kind);
+            Assert.AreEqual("Foo", tokens[0].Content);
+            Assert.AreEqual(string.Empty, tokens[0].LeadingWhitespace);
+            Assert.AreEqual(string.Empty, tokens[0].TrailingWhitespace);
+            Assert.AreEqual("Foo", tokens[0].ToString());
+
+            Assert.AreEqual(TokenKind.Punctuation, tokens[1].Kind);
+            Assert.AreEqual(".", tokens[1].Content);
+            Assert.AreEqual(string.Empty, tokens[1].LeadingWhitespace);
+            Assert.AreEqual(string.Empty, tokens[1].TrailingWhitespace);
+            Assert.AreEqual(".", tokens[1].ToString());
+
+            Assert.AreEqual(TokenKind.Name, tokens[2].Kind);
+            Assert.AreEqual("Bar", tokens[2].Content);
+            Assert.AreEqual(string.Empty, tokens[2].LeadingWhitespace);
+            Assert.AreEqual(string.Empty, tokens[2].TrailingWhitespace);
+            Assert.AreEqual("Bar", tokens[2].ToString());
+        }
+
+        [TestMethod]
+        public void Test_ParseTokens_VbComment()
+        {
+            string src = "Foo'Comment\nBar";
+            SourceToken[] tokens = TokenParser.ParseTokens(src, TokenParser.GetDefinitions(".vb"), new VbClassifier());
+
+            Assert.AreEqual(3, tokens.Length);
+
+            Assert.AreEqual(TokenKind.Name, tokens[0].Kind);
+            Assert.AreEqual("Foo", tokens[0].Content);
+            Assert.AreEqual(string.Empty, tokens[0].LeadingWhitespace);
+            Assert.AreEqual(string.Empty, tokens[0].TrailingWhitespace);
+            Assert.AreEqual("Foo", tokens[0].ToString());
+
+            Assert.AreEqual(TokenKind.Comment, tokens[1].Kind);
+            Assert.AreEqual("'Comment", tokens[1].Content);
+            Assert.AreEqual(string.Empty, tokens[1].LeadingWhitespace);
+            Assert.AreEqual("\n", tokens[1].TrailingWhitespace);
+            Assert.AreEqual("'Comment\n", tokens[1].ToString());
+
+            Assert.AreEqual(TokenKind.Name, tokens[2].Kind);
+            Assert.AreEqual("Bar", tokens[2].Content);
+            Assert.AreEqual(string.Empty, tokens[2].LeadingWhitespace);
+            Assert.AreEqual(string.Empty, tokens[2].TrailingWhitespace);
+            Assert.AreEqual("Bar", tokens[2].ToString());
+        }
+
+        [TestMethod]
         [DataRow("public static class Foo { } /*Fizz Buzz*/")]
         [DataRow("int x=1; float y=2.3; // Comment")]
         [DataRow("int i=1*2/0.5; /*число*/ string s1 = \"Hello, world\";/*string2*/ char c='\\'';")]
         [DataRow(@"string s1=""\"""";string s2=""\\"";char c1='\'';char c2='\\';Foo();")]
         [DataRow("Bar(\"//Comment\");")]
+        [DataRow("Foo.Bar")]
         public void Test_ParseTokens_Roundtrip(string src)
         {
             //c#
-            SourceToken[] tokens = SourceToken.ParseTokens(src, new CsharpClassifier());
+            SourceToken[] tokens = TokenParser.ParseTokens(src, TokenParser.GetDefinitions(".cs"), new CsharpClassifier());
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < tokens.Length; i++)
@@ -158,7 +214,7 @@ namespace CilView.Tests.SourceCode
             Assert.AreEqual(src, sb.ToString(), "Parsed C# source does not match input string");
 
             //c++
-            tokens = SourceToken.ParseTokens(src, new CppClassifier());
+            tokens = TokenParser.ParseTokens(src, TokenParser.GetDefinitions(".cpp"), new CppClassifier());
             sb = new StringBuilder();
 
             for (int i = 0; i < tokens.Length; i++)
