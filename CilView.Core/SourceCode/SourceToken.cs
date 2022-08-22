@@ -59,7 +59,7 @@ namespace CilView.SourceCode
         public static SourceToken[] ParseTokens(string src, TokenClassifier classifier)
         {
             List<SourceToken> ret = new List<SourceToken>();
-            TokenReader reader = new TokenReader(src);
+            TokenReader reader = new TokenReader(src, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
 
             if (tokens.Length == 0) return new SourceToken[0];

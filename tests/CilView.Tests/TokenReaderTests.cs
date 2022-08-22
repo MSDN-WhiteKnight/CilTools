@@ -17,7 +17,7 @@ namespace CilView.Tests
         public void Test_TokenReader_ReadAll()
         {
             string s = "int i=1*2/0.5; /*число*/ string s1 = \"Hello, world\";/*string2*/ char c='\\'';";
-            TokenReader reader = new TokenReader(s);
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
 
             CollectionAssert.AreEqual(new string[] {
@@ -30,7 +30,7 @@ namespace CilView.Tests
         public void Test_TokenReader_Call()
         {
             string s = "call       void [mscorlib]System.Console::WriteLine(string)";
-            TokenReader reader = new TokenReader(s);
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
 
             CollectionAssert.AreEqual(new string[] {
@@ -42,7 +42,7 @@ namespace CilView.Tests
         public void Test_TokenReader_DottedName()
         {
             string s = "ldc.i4.1";
-            TokenReader reader = new TokenReader(s);
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
             CollectionAssert.AreEqual(new string[] {"ldc.i4.1"}, tokens);
         }
@@ -51,7 +51,7 @@ namespace CilView.Tests
         public void Test_TokenReader_StringLiteral()
         {
             string s = "ldstr \"Hello, World\"";
-            TokenReader reader = new TokenReader(s);
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
             CollectionAssert.AreEqual(new string[] { "ldstr"," ", "\"Hello, World\""}, tokens);
         }
@@ -61,7 +61,7 @@ namespace CilView.Tests
         {
             //string s1="\"";string s2="\\";char c1='\'';char c2='\\';Foo();
             string s = @"string s1=""\"""";string s2=""\\"";char c1='\'';char c2='\\';Foo();";
-            TokenReader reader = new TokenReader(s);
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
 
             CollectionAssert.AreEqual(new string[] { 
@@ -75,7 +75,7 @@ namespace CilView.Tests
         public void Test_TokenReader_NumericLiteral()
         {
             string s = "IL_0001: ldc.i4.s 10";
-            TokenReader reader = new TokenReader(s);
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
             CollectionAssert.AreEqual(new string[] { "IL_0001", ":", " ", "ldc.i4.s", " ", "10" }, tokens);
         }
@@ -84,7 +84,7 @@ namespace CilView.Tests
         public void Test_TokenReader_SingleQuotLiteral()
         {
             string s = ".method public hidebysig static void 'method'() cil managed";
-            TokenReader reader = new TokenReader(s);
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
 
             CollectionAssert.AreEqual(new string[] {
@@ -97,7 +97,7 @@ namespace CilView.Tests
         public void Test_TokenReader_Comment()
         {
             string s = "ldc.i4.1 //load integer value onto the stack\r\nadd";
-            TokenReader reader = new TokenReader(s);
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
 
             CollectionAssert.AreEqual(new string[] { 
@@ -124,7 +124,7 @@ namespace CilView.Tests
         public void Test_TokenReader_Lines()
         {
             string s = Data_MultilineString.Replace("\r\n", "\n");
-            TokenReader reader = new TokenReader(s);
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
 
             string[] expected = new string[] {

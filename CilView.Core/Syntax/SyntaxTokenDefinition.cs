@@ -7,7 +7,7 @@ using System.Text;
 
 namespace CilView.Core.Syntax
 {
-    internal enum TokenKind
+    public enum TokenKind
     {
         Unknown = 0, 
         Name = 1, 
@@ -23,24 +23,24 @@ namespace CilView.Core.Syntax
     /// <summary>
     /// A base class for classes that define logic for reading specific kinds of tokens from a string
     /// </summary>
-    internal abstract class SyntaxTokenDefinition
+    public abstract class SyntaxTokenDefinition
     {
-        static SyntaxTokenDefinition[] tokens = null;
+        static SyntaxTokenDefinition[] ilasmTokens = null;
 
-        public static SyntaxTokenDefinition[] AllTokens
+        public static SyntaxTokenDefinition[] IlasmTokens
         {
             get
             {
-                if (tokens == null)
+                if (ilasmTokens == null)
                 {
-                    tokens = new SyntaxTokenDefinition[] {
+                    ilasmTokens = new SyntaxTokenDefinition[] {
                         new NameToken(), new PunctuationToken(), new WhitespaceToken(), new NumericLiteralToken(),
                         new DoubleQuotLiteralToken(), new SingleQuotLiteralToken(), new CommentToken(),
                         new MultilineCommentToken()
                     };
                 }
 
-                return tokens;
+                return ilasmTokens;
             }
         }
 
