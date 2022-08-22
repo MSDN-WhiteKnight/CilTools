@@ -3,8 +3,10 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
+using CilTools.Syntax;
 using CilView.Core.Syntax;
 
 namespace CilView.SourceCode
@@ -22,13 +24,11 @@ namespace CilView.SourceCode
         OtherName
     }
 
-    public class SourceToken
+    public class SourceToken : SyntaxNode
     {
         SourceTokenKind _kind;
         string _content;
-        string _lead;
-        string _trail;
-
+        
         public SourceToken(string content, SourceTokenKind kind)
         {
             this._kind = kind;
@@ -112,20 +112,17 @@ namespace CilView.SourceCode
         {
             get { return this._content; }
         }
-
-        public string LeadingWhitespace
+                
+        public override void ToText(TextWriter target)
         {
-            get { return this._lead; }
+            target.Write(this._lead);
+            target.Write(this._content);
+            target.Write(this._trail);
         }
 
-        public string TrailingWhitespace
+        public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
-            get { return this._trail; }
-        }
-
-        public override string ToString()
-        {
-            return this._lead + this._content + this._trail;
+            return new SyntaxNode[0];
         }
     }
 }

@@ -29,8 +29,16 @@ namespace CilTools.Syntax
     /// </remarks>
     public abstract class SyntaxNode
     {
-        internal string _lead=String.Empty;
-        internal string _trail = String.Empty;
+        /// <summary>
+        /// Whitespace content at the beginning of this node's code
+        /// </summary>
+        protected string _lead = string.Empty;
+
+        /// <summary>
+        /// Whitespace content at the end of this node's code
+        /// </summary>
+        protected string _trail = string.Empty;
+
         internal SyntaxNode _parent;
 
         internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
