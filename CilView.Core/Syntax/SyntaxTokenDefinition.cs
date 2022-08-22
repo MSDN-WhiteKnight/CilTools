@@ -20,17 +20,20 @@ namespace CilView.Core.Syntax
         Whitespace
     }
 
-    internal abstract class SyntaxToken
+    /// <summary>
+    /// A base class for classes that define logic for reading specific kinds of tokens from a string
+    /// </summary>
+    internal abstract class SyntaxTokenDefinition
     {
-        static SyntaxToken[] tokens = null;
+        static SyntaxTokenDefinition[] tokens = null;
 
-        public static SyntaxToken[] AllTokens
+        public static SyntaxTokenDefinition[] AllTokens
         {
             get
             {
                 if (tokens == null)
                 {
-                    tokens = new SyntaxToken[] {
+                    tokens = new SyntaxTokenDefinition[] {
                         new NameToken(), new PunctuationToken(), new WhitespaceToken(), new NumericLiteralToken(),
                         new DoubleQuotLiteralToken(), new SingleQuotLiteralToken(), new CommentToken(),
                         new MultilineCommentToken()
@@ -58,7 +61,7 @@ namespace CilView.Core.Syntax
         public abstract bool HasContinuation(string prevPart, TokenReader reader);
     }
 
-    internal class NameToken : SyntaxToken
+    internal class NameToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.Name;
 
@@ -76,7 +79,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class PunctuationToken : SyntaxToken
+    internal class PunctuationToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.Punctuation;
 
@@ -108,7 +111,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class WhitespaceToken : SyntaxToken
+    internal class WhitespaceToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.Whitespace;
 
@@ -125,7 +128,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class NumericLiteralToken : SyntaxToken
+    internal class NumericLiteralToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.NumericLiteral;
 
@@ -143,7 +146,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class DoubleQuotLiteralToken : SyntaxToken
+    internal class DoubleQuotLiteralToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.DoubleQuotLiteral;
 
@@ -168,7 +171,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class SingleQuotLiteralToken : SyntaxToken
+    internal class SingleQuotLiteralToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.SingleQuotLiteral;
 
@@ -193,7 +196,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class MultilineCommentToken : SyntaxToken
+    internal class MultilineCommentToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.MultilineComment;
 
@@ -216,7 +219,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class CommentToken : SyntaxToken
+    internal class CommentToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.MultilineComment;
 

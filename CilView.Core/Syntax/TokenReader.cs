@@ -22,8 +22,8 @@ namespace CilView.Core.Syntax
             if (_pos >= _source.Length) return string.Empty;
 
             StringBuilder sb = new StringBuilder();
-            SyntaxToken currentToken = null;
-            SyntaxToken[] tokens = SyntaxToken.AllTokens;
+            SyntaxTokenDefinition currentToken = null;
+            SyntaxTokenDefinition[] tokens = SyntaxTokenDefinition.AllTokens;
 
             for (int i = 0; i < tokens.Length; i++)
             {
