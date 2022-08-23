@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using CilView.Core.Syntax;
 
-namespace CilView.SourceCode
+namespace CilView.SourceCode.VisualBasic
 {
     public class VbClassifier : TokenClassifier
     {
