@@ -79,6 +79,33 @@ namespace CilView.Tests.SourceCode
         }
 
         [TestMethod]        
+        public void Test_Decompiler_ByRef()
+        {
+            MethodBase mb = typeof(SampleMethods).GetMethod("DivideNumbers");
+            string s = Decompiler.GetMethodSignatureString(".cs", mb);
+            string expected = "public static bool DivideNumbers(int x, int y, ref int result)";
+            Assert.AreEqual(expected, s);
+        }
+
+        [TestMethod]
+        public void Test_Decompiler_Pointer()
+        {
+            MethodBase mb = typeof(Pointer).GetMethod("Box");
+            string s = Decompiler.GetMethodSignatureString(".cs", mb);
+            string expected = "public static object Box(void* ptr, Type type)";
+            Assert.AreEqual(expected, s);
+        }
+
+        [TestMethod]
+        public void Test_Decompiler_GenericType()
+        {
+            MethodBase mb = typeof(IEnumerable<>).GetMethod("GetEnumerator");
+            string s = Decompiler.GetMethodSignatureString(".cs", mb);
+            string expected = "IEnumerator<T> GetEnumerator();";
+            Assert.AreEqual(expected, s);
+        }
+
+        [TestMethod]        
         public void Test_DecompileMethodSignature_Csharp()
         {
             MethodBase mb = typeof(SampleMethods).GetMethod("CalcSum");

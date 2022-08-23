@@ -28,22 +28,50 @@ namespace CilView.SourceCode
                 return;
             }
 
+            if (t.IsByRef)
+            {
+                target.Add(new SourceToken("ref", TokenKind.Keyword, "", " "));
+                GetTypeTokens(t.GetElementType(), target);
+                return;
+            }
+
+            if (t.IsPointer)
+            {
+                Type elementType = t.GetElementType();
+
+                if (Utils.StringEquals(elementType.FullName, "System.Void"))
+                {
+                    target.Add(new SourceToken("void", TokenKind.Keyword));
+                }
+                else
+                {
+                    GetTypeTokens(elementType, target);
+                }
+
+                target.Add(new SourceToken("*", TokenKind.Punctuation));
+                return;
+            }
+
+            if (t.IsGenericParameter)
+            {
+                target.Add(new SourceToken(t.Name, TokenKind.Name));
+                return;
+            }
+
             if (t.IsGenericType)
             {
-                StringBuilder sb = new StringBuilder(100);
-                sb.Append(GetGenericDefinitionName(t.Name));
-                sb.Append('<');
+                target.Add(new SourceToken(GetGenericDefinitionName(t.Name), TokenKind.TypeName));
+                target.Add(new SourceToken("<", TokenKind.Punctuation));
                 Type[] args = t.GetGenericArguments();
 
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) sb.Append(", ");
+                    if (i >= 1) target.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
 
-                    sb.Append(GetTypeString(args[i]));
+                    GetTypeTokens(args[i], target);
                 }
 
-                sb.Append('>');
-                target.Add(new SourceToken(sb.ToString(), TokenKind.Unknown));
+                target.Add(new SourceToken(">", TokenKind.Punctuation));
                 return;
             }
 
@@ -66,51 +94,6 @@ namespace CilView.SourceCode
             else if (Utils.TypeEquals(t, typeof(char)))   target.Add(new SourceToken("char", TokenKind.Keyword));
             else if (Utils.TypeEquals(t, typeof(object))) target.Add(new SourceToken("object", TokenKind.Keyword));
             else target.Add(new SourceToken(t.Name, TokenKind.TypeName));
-        }
-
-        static string GetTypeString(Type t)
-        {
-            if (t == null) return string.Empty;
-
-            if (t.IsArray && t.GetArrayRank() == 1)
-            {
-                return GetTypeString(t.GetElementType()) + "[]";
-            }
-
-            if (t.IsGenericType)
-            {
-                StringBuilder sb = new StringBuilder(100);
-                sb.Append(GetGenericDefinitionName(t.Name));
-                sb.Append('<');
-                Type[] args = t.GetGenericArguments();
-
-                for (int i = 0; i < args.Length; i++)
-                {
-                    if (i >= 1) sb.Append(", ");
-
-                    sb.Append(GetTypeString(args[i]));
-                }
-
-                sb.Append('>');
-                return sb.ToString();
-            }
-
-            //process built-in types
-            SourceToken tok = ProcessCommonTypes(t);
-
-            if (tok != null) return tok.Content;
-
-            if (Utils.TypeEquals(t, typeof(string)))      return "string";
-            else if (Utils.TypeEquals(t, typeof(uint)))   return "uint";
-            else if (Utils.TypeEquals(t, typeof(ushort))) return "ushort";
-            else if (Utils.TypeEquals(t, typeof(long)))   return "long";
-            else if (Utils.TypeEquals(t, typeof(ulong)))  return "ulong";
-            else if (Utils.TypeEquals(t, typeof(byte)))   return "byte";
-            else if (Utils.TypeEquals(t, typeof(sbyte)))  return "sbyte";
-            else if (Utils.TypeEquals(t, typeof(char)))   return "char";
-            else if (Utils.TypeEquals(t, typeof(object))) return "object";
-
-            return t.Name;
         }
         
         static void GetModifiers(MethodBase m, List<SourceToken> target)
@@ -191,19 +174,17 @@ namespace CilView.SourceCode
             
             if (m.IsGenericMethod)
             {
-                StringBuilder sb = new StringBuilder(100);
-                sb.Append('<');
-
+                ret.Add(new SourceToken("<", TokenKind.Punctuation));
                 Type[] args = m.GetGenericArguments();
+
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) sb.Append(", ");
+                    if (i >= 1) ret.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
 
-                    sb.Append(args[i].Name);
+                    ret.Add(new SourceToken(args[i].Name, TokenKind.Name));
                 }
 
-                sb.Append('>');
-                ret.Add(new SourceToken(sb.ToString(), TokenKind.Unknown));
+                ret.Add(new SourceToken(">", TokenKind.Punctuation));
             }
 
             ret.Add(new SourceToken("(", TokenKind.Punctuation));
