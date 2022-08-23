@@ -9,7 +9,9 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
+using CilView.Core;
 using CilView.SourceCode;
+using CilView.UI.Dialogs;
 
 namespace CilView.UI.Controls
 {
@@ -38,6 +40,10 @@ namespace CilView.UI.Controls
             mi = new MenuItem();
             mi.Header = "Show source (method)";
             mi.Click += Mi_ShowSource_Method_Click;
+            menu.Items.Add(mi);
+            mi = new MenuItem();
+            mi.Header = "Instruction information";
+            mi.Click += Mi_InstructionInfo_Click; ;
             menu.Items.Add(mi);
             menu.Items.Add(new Separator());
 
@@ -83,6 +89,37 @@ namespace CilView.UI.Controls
 
             //show source code of method
             SourceCodeUI.ShowSource(instr.Method, 0, true);
+        }
+
+        private static void Mi_InstructionInfo_Click(object sender, RoutedEventArgs e)
+        {
+            if (s_instructionMenuTarget == null) return;
+
+            //get instruction that user right-clicked on
+            InstructionSyntax syntax = s_instructionMenuTarget.Tag as InstructionSyntax;
+            if (syntax == null) return;
+            if (syntax.Instruction == null) return;
+
+            CilInstruction instr = syntax.Instruction;
+            
+            try
+            {
+                //build info text
+                string info = InstructionInfo.GetInstructionInfo(instr);
+
+                //show info
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Title = "Instruction information";
+                wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+                wnd.FontSize = 14.0;
+                wnd.Height = 450;
+                wnd.Text = info;
+                wnd.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
         }
 
         static FlowDocumentScrollViewer GetViewer()
