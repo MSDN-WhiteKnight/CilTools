@@ -31,22 +31,50 @@ namespace CilView.SourceCode
                 return;
             }
 
+            if (t.IsPointer)
+            {
+                Type elementType = t.GetElementType();
+
+                if (Utils.StringEquals(elementType.FullName, "System.Void"))
+                {
+                    target.Add(new SourceToken("void", TokenKind.Keyword));
+                }
+                else
+                {
+                    GetTypeTokens(elementType, target);
+                }
+
+                target.Add(new SourceToken("*", TokenKind.Punctuation));
+                return;
+            }
+
+            if (t.IsGenericParameter)
+            {
+                target.Add(new SourceToken(t.Name, TokenKind.Name));
+                return;
+            }
+
             if (t.IsGenericType)
             {
-                StringBuilder sb = new StringBuilder(100);
-                sb.Append(GetGenericDefinitionName(t.Name));
-                sb.Append('<');
+                target.Add(new SourceToken(GetGenericDefinitionName(t.Name), TokenKind.TypeName));
+                target.Add(new SourceToken("<", TokenKind.Punctuation));
                 Type[] args = t.GetGenericArguments();
 
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) sb.Append(", ");
+                    if (i >= 1) target.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
 
-                    sb.Append(GetTypeString(args[i]));
+                    GetTypeTokens(args[i], target);
                 }
 
-                sb.Append("> ^");
-                target.Add(new SourceToken(sb.ToString(), TokenKind.Unknown));
+                target.Add(new SourceToken(">", TokenKind.Punctuation));
+
+                if (t.IsClass || t.IsInterface)
+                {
+                    target.Add(new SourceToken("^", TokenKind.Punctuation, " ", ""));
+                    return;
+                }
+
                 return;
             }
 
@@ -92,54 +120,6 @@ namespace CilView.SourceCode
                 target.Add(new SourceToken(t.Name, TokenKind.TypeName));
             }
         }
-
-        static string GetTypeString(Type t)
-        {
-            if (t == null) return string.Empty;
-
-            if (t.IsArray && t.GetArrayRank() == 1)
-            {
-                StringBuilder sb = new StringBuilder(100);
-                sb.Append("array <");
-                sb.Append(GetTypeString(t.GetElementType()));
-                sb.Append("> ^");
-                return sb.ToString();
-            }
-
-            if (t.IsGenericType)
-            {
-                StringBuilder sb = new StringBuilder(100);
-                sb.Append(GetGenericDefinitionName(t.Name));
-                sb.Append('<');
-                Type[] args = t.GetGenericArguments();
-
-                for (int i = 0; i < args.Length; i++)
-                {
-                    if (i >= 1) sb.Append(", ");
-
-                    sb.Append(GetTypeString(args[i]));
-                }
-
-                sb.Append("> ^");
-                return sb.ToString();
-            }
-
-            //reference types are represented by handles in C++/CLI
-            if (t.IsClass || t.IsInterface) return t.Name + " ^";
-
-            //process built-in types
-            SourceToken tok = ProcessCommonTypes(t);
-
-            if (tok != null) return tok.Content;
-
-            if (Utils.TypeEquals(t, typeof(uint)))        return "unsigned int";
-            else if (Utils.TypeEquals(t, typeof(ushort))) return "unsigned short";
-            else if (Utils.TypeEquals(t, typeof(byte)))   return "unsigned char";
-            else if (Utils.TypeEquals(t, typeof(sbyte)))  return "signed char";
-            else if (Utils.TypeEquals(t, typeof(char)))   return "wchar_t";
-
-            return t.Name;
-        }
         
         public override IEnumerable<SourceToken> GetMethodSigTokens()
         {
@@ -172,21 +152,19 @@ namespace CilView.SourceCode
 
             if (m.IsGenericMethod)
             {
-                StringBuilder sb = new StringBuilder(100);
-                sb.Append("generic <");
-
+                ret.Add(new SourceToken("generic", TokenKind.Keyword, "", " "));
+                ret.Add(new SourceToken("<", TokenKind.Punctuation));
                 Type[] args = m.GetGenericArguments();
+
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) sb.Append(", ");
+                    if (i >= 1) ret.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
 
-                    sb.Append("typename ");
-                    sb.Append(args[i].Name);
+                    ret.Add(new SourceToken("typename", TokenKind.Keyword, "", " "));
+                    ret.Add(new SourceToken(args[i].Name, TokenKind.Name));
                 }
 
-                sb.Append('>');
-                sb.AppendLine();
-                ret.Add(new SourceToken(sb.ToString(), TokenKind.Unknown));
+                ret.Add(new SourceToken(">", TokenKind.Punctuation, "", Environment.NewLine));
             }
 
             if (!isGlobalFunc)

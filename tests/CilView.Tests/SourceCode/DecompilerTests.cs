@@ -40,7 +40,7 @@ namespace CilView.Tests.SourceCode
 
         [TestMethod]
         [DataRow(".cs", "public static T[] GenerateArray<T>(int len)")]
-        [DataRow(".cpp", "public: generic <typename T>\nstatic array <T ^> ^ GenerateArray(int len){")]
+        [DataRow(".cpp", "public: generic <typename T>\nstatic array <T> ^ GenerateArray(int len){")]
         public void Test_Decompiler_Generic(string lang, string expected)
         {
             MethodBase mb = typeof(SampleMethods).GetMethod("GenerateArray");
@@ -86,22 +86,24 @@ namespace CilView.Tests.SourceCode
             string expected = "public static bool DivideNumbers(int x, int y, ref int result)";
             Assert.AreEqual(expected, s);
         }
-
+        
         [TestMethod]
-        public void Test_Decompiler_Pointer()
+        [DataRow(".cs", "public static object Box(void* ptr, Type type)")]
+        [DataRow(".cpp", "public: static Object ^ Box(void* ptr, Type ^ type){")]
+        public void Test_Decompiler_Pointer(string lang, string expected)
         {
             MethodBase mb = typeof(Pointer).GetMethod("Box");
-            string s = Decompiler.GetMethodSignatureString(".cs", mb);
-            string expected = "public static object Box(void* ptr, Type type)";
+            string s = Decompiler.GetMethodSignatureString(lang, mb);
             Assert.AreEqual(expected, s);
         }
 
         [TestMethod]
-        public void Test_Decompiler_GenericType()
+        [DataRow(".cs", "IEnumerator<T> GetEnumerator();")]
+        [DataRow(".cpp", "public: IEnumerator<T> ^ GetEnumerator(){")]
+        public void Test_Decompiler_GenericType(string lang, string expected)
         {
             MethodBase mb = typeof(IEnumerable<>).GetMethod("GetEnumerator");
-            string s = Decompiler.GetMethodSignatureString(".cs", mb);
-            string expected = "IEnumerator<T> GetEnumerator();";
+            string s = Decompiler.GetMethodSignatureString(lang, mb);
             Assert.AreEqual(expected, s);
         }
 
