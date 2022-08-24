@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
@@ -448,6 +449,30 @@ namespace CilTools.Internal
             }
 
             return ret;
+        }
+
+        public static string FlagsEnumToString<T>(int val)
+        {
+            Debug.Assert(typeof(T).IsEnum);
+
+            StringBuilder sb = new StringBuilder(1000);
+            string[] names = Enum.GetNames(typeof(T));
+            Array vals = Enum.GetValues(typeof(T));
+            
+            for (int i = 0; i < names.Length; i++)
+            {
+                int x = Convert.ToInt32(vals.GetValue(i));
+
+                if (x == 0)
+                {
+                    if (val == 0) return names[i];
+                    else continue;
+                }
+
+                if ((val & x) != 0) sb.Append(names[i]+"; ");
+            }
+
+            return sb.ToString();
         }
     }
 }

@@ -772,30 +772,38 @@ namespace CilTools.Metadata
             if (this.peReader.PEHeaders.IsExe) sb.AppendLine("EXE");
             else sb.AppendLine("DLL");
 
+            //PE Header
             PEHeader peh = this.peReader.PEHeaders.PEHeader;
             sb.AppendLine("Subsystem: " + peh.Subsystem.ToString());
             sb.AppendLine("Image base: 0x" + peh.ImageBase.ToString("X"));
             sb.AppendLine("File alignment: " + peh.FileAlignment.ToString());
             sb.AppendLine("Section alignment: " + peh.SectionAlignment.ToString());
-            sb.AppendLine("Image size, KB: " + Math.Round(peh.SizeOfImage / 1024.0f, 2).ToString());
-            sb.Append("OS Version: ");
+            sb.AppendLine("Loaded image size: " + Math.Round(peh.SizeOfImage / 1024.0f, 2).ToString() + " KB");
+
+            sb.Append("OS version: ");
             sb.Append(peh.MajorOperatingSystemVersion.ToString());
             sb.AppendLine("." + peh.MinorOperatingSystemVersion.ToString());
+
+            sb.Append("Linker version: ");
+            sb.Append(peh.MajorLinkerVersion.ToString());
+            sb.AppendLine("." + peh.MinorLinkerVersion.ToString());
+
+            //COFF Header
             CoffHeader ch = this.peReader.PEHeaders.CoffHeader;
             sb.AppendLine("Machine type: " + ch.Machine.ToString());
 
+            int x = (int)ch.Characteristics;
+            string characterstics = Utils.FlagsEnumToString<Characteristics>(x);
+            sb.Append("Characteristics: 0x" + x.ToString("X"));
+            sb.AppendLine(" (" + characterstics + ")");
+
+            //Cor Header
             CorFlags flags = this.peReader.PEHeaders.CorHeader.Flags;
-            sb.Append("CorFlags: 0x"+((uint)flags).ToString("X")+" (");
-
-            if (flags.HasFlag(CorFlags.ILLibrary)) sb.Append("ILLibrary; ");
-            if (flags.HasFlag(CorFlags.ILOnly)) sb.Append("ILOnly; ");
-            if (flags.HasFlag(CorFlags.NativeEntryPoint)) sb.Append("NativeEntryPoint; ");
-            if (flags.HasFlag(CorFlags.Prefers32Bit)) sb.Append("Prefers32Bit; ");
-            if (flags.HasFlag(CorFlags.Requires32Bit)) sb.Append("Requires32Bit; ");
-            if (flags.HasFlag(CorFlags.StrongNameSigned)) sb.Append("StrongNameSigned; ");
-            if (flags.HasFlag(CorFlags.TrackDebugData)) sb.Append("TrackDebugData; ");
-
+            string flagsStr = Utils.FlagsEnumToString<CorFlags>((int)flags);
+            sb.Append("CorFlags: 0x" + ((uint)flags).ToString("X") + " (");
+            sb.Append(flagsStr);            
             sb.AppendLine(")");
+
             return sb.ToString();
         }
     }
