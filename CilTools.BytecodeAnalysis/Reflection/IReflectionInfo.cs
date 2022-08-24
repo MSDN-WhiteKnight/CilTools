@@ -2,7 +2,6 @@
  * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.Collections.Generic;
 
 namespace CilTools.Reflection
 {
@@ -11,17 +10,14 @@ namespace CilTools.Reflection
     /// </summary>
     public interface IReflectionInfo
     {
-        object GetReflectionProperty(string propertyName);
-
+        /// <summary>
+        /// Gets the value of the reflection property with the specified Id
+        /// </summary>
+        /// <param name="id">Property Id to get</param>
+        /// <returns>
+        /// The property value, or null if property is not supported
+        /// </returns>
         object GetReflectionProperty(int id);
-
-        IEnumerable<string> EnumReflectionProperties();
-
-        IEnumerable<int> EnumReflectionPropertyIds();
-
-        bool HasReflectionProperty(string propertyName);
-
-        bool HasReflectionProperty(int id);
     }
 
     /// <summary>
@@ -30,8 +26,22 @@ namespace CilTools.Reflection
     public static class ReflectionInfoProperties
     {
         /// <summary>
-        /// Represents the interface method implemented by explicit interface implementation
+        /// Represents the string containing information about object
         /// </summary>
-        public const int ExplicitlyImplementedMethod = 100;
+        public const int InfoText = 1;
+
+        /// <summary>
+        /// Gets the value of the reflection property with the specified Id from the specified object
+        /// </summary>
+        /// <param name="obj">Reflection object to get property</param>
+        /// <param name="id">Property Id</param>
+        /// <returns>The property value, or null if property is not supported</returns>
+        public static object GetProperty(object obj, int id)
+        {
+            IReflectionInfo info = obj as IReflectionInfo;
+
+            if (info == null) return null;
+            else return info.GetReflectionProperty(id);
+        }
     }
 }

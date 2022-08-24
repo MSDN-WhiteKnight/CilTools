@@ -14,20 +14,18 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata.Methods
 {
-    class MethodDef : MdMethodInfoBase, ICustomMethod, IReflectionInfo
+    class MethodDef : MdMethodInfoBase, ICustomMethod
     {
         MethodDefinitionHandle mdefh;
         MethodDefinition mdef;
         MethodBodyBlock mb;
-        ReflectionInfoContainer reflectionInfo;
 
         internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
         {           
             this.assembly = owner;
             this.mdef = m;
             this.mdefh = mh;
-            this.reflectionInfo = null;
-
+            
             int rva = mdef.RelativeVirtualAddress;
 
             if (rva == 0)
@@ -355,90 +353,5 @@ namespace CilTools.Metadata.Methods
                 return AttributesCollection.Empty;
             }
         }
-
-        ReflectionInfoContainer GetReflectionInfo()
-        {
-            if (this.reflectionInfo == null)
-            {
-                this.reflectionInfo = new ReflectionInfoContainer();
-                this.reflectionInfo.Add(ReflectionInfoProperties.ExplicitlyImplementedMethod,
-                    "ExplicitlyImplementedMethod",
-                    this.GetExplicitlyImplementedMethod());
-            }
-
-            return this.reflectionInfo;
-        }
-
-        MethodInfo GetExplicitlyImplementedMethod()
-        {
-            TypeDefinitionHandle th = this.mdef.GetDeclaringType();
-
-            if (th.IsNil) return null;
-
-            //try to find explicit interface implementations
-            TypeDefinition tdef = this.assembly.MetadataReader.GetTypeDefinition(th);
-            MethodImplementationHandleCollection impls = tdef.GetMethodImplementations();
-
-            foreach (MethodImplementationHandle mih in impls)
-            {
-                MethodImplementation impl = this.assembly.MetadataReader.GetMethodImplementation(mih);
-
-                //only interested in impls of current method
-                if (impl.MethodBody != this.mdefh) continue;
-
-                //find declaration this impl refers to
-                EntityHandle eh = impl.MethodDeclaration;
-                MethodBase mb = null;
-
-                if (eh.Kind == HandleKind.MethodDefinition)
-                {
-                    mb = this.assembly.GetMethodDefinition((MethodDefinitionHandle)eh);
-                }
-                else if (eh.Kind == HandleKind.MemberReference)
-                {
-                    int token = this.assembly.MetadataReader.GetToken(eh);
-                    mb = this.assembly.ResolveMember(token) as MethodBase;
-                }
-
-                if (mb == null) continue;
-
-                if (mb is MethodInfo) return (MethodInfo)mb; //found declaration
-            }
-
-            //not found explicit implementation
-            return null;
-        }
-
-        // IReflectionInfo implementations
-        public object GetReflectionProperty(string propertyName)
-        {
-            return this.GetReflectionInfo().GetReflectionProperty(propertyName);
-        }
-
-        public object GetReflectionProperty(int id)
-        {
-            return this.GetReflectionInfo().GetReflectionProperty(id);
-        }
-
-        public IEnumerable<string> EnumReflectionProperties()
-        {
-            return this.GetReflectionInfo().EnumReflectionProperties();
-        }
-
-        public IEnumerable<int> EnumReflectionPropertyIds()
-        {
-            return this.GetReflectionInfo().EnumReflectionPropertyIds();
-        }
-
-        public bool HasReflectionProperty(string propertyName)
-        {
-            return this.GetReflectionInfo().HasReflectionProperty(propertyName);
-        }
-
-        public bool HasReflectionProperty(int id)
-        {
-            return this.GetReflectionInfo().HasReflectionProperty(id);
-        }
-        //----
     }
 }
