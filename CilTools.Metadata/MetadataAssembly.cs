@@ -26,7 +26,7 @@ namespace CilTools.Metadata
     /// when the instance is owned by the <see cref="CilTools.Metadata.AssemblyReader"/> and the owning 
     /// reader was disposed.
     /// </remarks>
-    internal sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
+    internal sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable, IReflectionInfo
     {
         static MetadataAssembly unknown = new MetadataAssembly((string)null,null);
 
@@ -746,6 +746,43 @@ namespace CilTools.Metadata
                 this.reader = null;
                 this.peReader = null;
             }
+        }
+
+        public object GetReflectionProperty(int id)
+        {
+            if (id != ReflectionInfoProperties.InfoText) return null;
+
+            StringBuilder sb = new StringBuilder(1000);
+            sb.Append("Type: ");
+
+            if (this.peReader.PEHeaders.IsExe) sb.AppendLine("EXE");
+            else sb.AppendLine("DLL");
+
+            PEHeader peh = this.peReader.PEHeaders.PEHeader;
+            sb.AppendLine("Subsystem: " + peh.Subsystem.ToString());
+            sb.AppendLine("Image base: 0x" + peh.ImageBase.ToString("X"));
+            sb.AppendLine("File alignment: " + peh.FileAlignment.ToString());
+            sb.AppendLine("Section alignment: " + peh.SectionAlignment.ToString());
+            sb.AppendLine("Image size, KB: " + Math.Round(peh.SizeOfImage / 1024.0f, 2).ToString());
+            sb.Append("OS Version: ");
+            sb.Append(peh.MajorOperatingSystemVersion.ToString());
+            sb.AppendLine("." + peh.MinorOperatingSystemVersion.ToString());
+            CoffHeader ch = this.peReader.PEHeaders.CoffHeader;
+            sb.AppendLine("Machine type: " + ch.Machine.ToString());
+
+            CorFlags flags = this.peReader.PEHeaders.CorHeader.Flags;
+            sb.Append("CorFlags: 0x"+((uint)flags).ToString("X")+" (");
+
+            if (flags.HasFlag(CorFlags.ILLibrary)) sb.Append("ILLibrary; ");
+            if (flags.HasFlag(CorFlags.ILOnly)) sb.Append("ILOnly; ");
+            if (flags.HasFlag(CorFlags.NativeEntryPoint)) sb.Append("NativeEntryPoint; ");
+            if (flags.HasFlag(CorFlags.Prefers32Bit)) sb.Append("Prefers32Bit; ");
+            if (flags.HasFlag(CorFlags.Requires32Bit)) sb.Append("Requires32Bit; ");
+            if (flags.HasFlag(CorFlags.StrongNameSigned)) sb.Append("StrongNameSigned; ");
+            if (flags.HasFlag(CorFlags.TrackDebugData)) sb.Append("TrackDebugData; ");
+
+            sb.AppendLine(")");
+            return sb.ToString();
         }
     }
 }

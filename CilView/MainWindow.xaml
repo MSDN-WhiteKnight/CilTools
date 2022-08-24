@@ -14,6 +14,7 @@
                 <MenuItem x:Name="miExportMethod" Header="Export to file" Click="miExportMethod_Click"/>
                 <MenuItem x:Name="miExportType" Header="Export type to file" Click="miExportType_Click"/>
                 <Separator/>
+                <MenuItem x:Name="miFileProperties" Header="Properties" Click="miFileProperties_Click"/>
                 <MenuItem x:Name="miExit" Header="Exit" Click="miExit_Click"/>
             </MenuItem>
             <MenuItem Header="Process" IsEnabled="{Binding HasProcessInfo, FallbackValue=False}">

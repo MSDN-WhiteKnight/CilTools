@@ -1,24 +1,25 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Win32;
 using CilTools.Runtime;
 using CilView.Build;
 using CilView.Common;
 using CilView.Core;
+using CilView.Core.Reflection;
 using CilView.Core.Syntax;
 using CilView.Exceptions;
 using CilView.SourceCode;
 using CilView.UI.Dialogs;
-using Microsoft.Win32;
 
 namespace CilView
 {
@@ -996,6 +997,28 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             ExecuteWindow.ShowExecuteMethodUI(current_method, this);
         }
 
-        
+        private void miFileProperties_Click(object sender, RoutedEventArgs e)
+        {
+            Assembly ass = cbAssembly.SelectedItem as Assembly;
+
+            if (ass == null)
+            {
+                MessageBox.Show(this, "Assembly file is not loaded", "Error");
+                return;
+            }
+
+            try
+            {
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Title = "Assembly file properties";
+                wnd.Text = AssemblyInfoProvider.GetAssemblyInfo(ass);
+                wnd.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+        }
     }
 }
