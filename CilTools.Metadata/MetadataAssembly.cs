@@ -726,7 +726,7 @@ namespace CilTools.Metadata
             //so we will create special ICustomAttribute objects that CilTools.BytecodeAnalysis recognizes
             //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
 
-            CustomAttributeHandleCollection coll = this.reader.CustomAttributes;
+            CustomAttributeHandleCollection coll = this.reader.GetAssemblyDefinition().GetCustomAttributes();
             return Utils.ReadCustomAttributes(coll, this, this);
         }
 
