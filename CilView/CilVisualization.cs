@@ -221,9 +221,12 @@ namespace CilView
                     if (instr != null)
                     {
                         //attach context menu to instruction opcode
-                        r.ContextMenu = InstructionMenu.GetInstructionMenu();
-                        r.ContextMenuOpening += InstructionMenu.R_ContextMenuOpening;
-                        r.Tag = par;
+                        if (ctx.ContextMenuEnabled)
+                        {
+                            r.ContextMenu = InstructionMenu.GetInstructionMenu();
+                            r.ContextMenuOpening += InstructionMenu.R_ContextMenuOpening;
+                            r.Tag = par;
+                        }
                     }
                 }
 
@@ -267,7 +270,7 @@ namespace CilView
                 r = new Run();
                 MethodBase m = id.TargetMember as MethodBase;
 
-                if (m != null && !(node.Parent is DirectiveSyntax))
+                if (m != null && !(node.Parent is DirectiveSyntax) && ctx.navigation != null)
                 {
                     //if target is method and we are not in directive (method sig), 
                     //enable navigation functionality
@@ -280,7 +283,7 @@ namespace CilView
                     Hyperlink lnk = new Hyperlink(r);
                     lnk.TextDecorations = new TextDecorationCollection(); //remove underline
                     lnk.Tag = m;
-                    if (ctx.navigation != null) lnk.Click += ctx.navigation;
+                    lnk.Click += ctx.navigation;
                     target.Inlines.Add(lnk);
                 }
                 else
@@ -330,6 +333,7 @@ namespace CilView
             public RoutedEventHandler navigation;
             public int highlight_start=-1;
             public int highlight_end = Int32.MaxValue;
+            public bool ContextMenuEnabled = true;
             public bool ScrollCallbackApplied = false;
         }
 
@@ -359,6 +363,21 @@ namespace CilView
             fd.Blocks.Add(par);
             scroll.Document = fd;
             return scroll;
+        }
+
+        public static FlowDocument VisualizeNodes(IEnumerable<SyntaxNode> nodes)
+        {
+            FlowDocument fd = new FlowDocument();
+            fd.TextAlignment = TextAlignment.Left;
+            fd.FontFamily = new FontFamily("Courier New");
+            Paragraph par = new Paragraph();
+            VisualizeGraphContext ctx = new VisualizeGraphContext();
+            ctx.ContextMenuEnabled = false;
+
+            foreach (SyntaxNode node in nodes) VisualizeNode(node, par, ctx);
+
+            fd.Blocks.Add(par);
+            return fd;
         }
 
         public static UIElement VisualizeType(Type t, RoutedEventHandler navigation,out string plaintext)

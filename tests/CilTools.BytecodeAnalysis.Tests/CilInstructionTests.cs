@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using CilTools.BytecodeAnalysis;
+using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -60,6 +60,62 @@ namespace CilTools.BytecodeAnalysis.Tests
                     });
                 }
             );
+        }
+
+        [TestMethod]
+        public void Test_CilInstruction_ToSyntax()
+        {
+            CilInstruction instr = CilInstruction.Create(OpCodes.Ldc_I4, 1, sizeof(int));
+            SyntaxNode[] syntax = instr.ToSyntax().ToArray();
+
+            Assert.AreEqual(2, syntax.Length);
+
+            Assert.IsTrue(syntax[0] is KeywordSyntax);
+            Assert.AreEqual("ldc.i4",((KeywordSyntax)syntax[0]).Content);
+            Assert.AreEqual(KeywordKind.InstructionName, ((KeywordSyntax)syntax[0]).Kind);
+            Assert.AreEqual(string.Empty, syntax[0].LeadingWhitespace);
+            Assert.AreEqual("     ", syntax[0].TrailingWhitespace);
+
+            Assert.IsTrue(syntax[1] is LiteralSyntax);
+            Assert.AreEqual(1, (int)((LiteralSyntax)syntax[1]).Value);
+            Assert.AreEqual(string.Empty, syntax[1].LeadingWhitespace);
+            Assert.AreEqual(string.Empty, syntax[1].TrailingWhitespace);
+        }
+
+        [TestMethod]
+        public void Test_CilInstruction_ToSyntax_Simple()
+        {
+            CilInstruction instr = CilInstruction.Create(OpCodes.Nop);
+            SyntaxNode[] syntax = instr.ToSyntax().ToArray();
+
+            Assert.AreEqual(1, syntax.Length);
+
+            Assert.IsTrue(syntax[0] is KeywordSyntax);
+            Assert.AreEqual("nop", ((KeywordSyntax)syntax[0]).Content);
+            Assert.AreEqual(KeywordKind.InstructionName, ((KeywordSyntax)syntax[0]).Kind);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
+        public void Test_CilInstruction_ToSyntax_Call(MethodBase mi)
+        {
+            CilInstruction[] instructions = CilReader.GetInstructions(mi).ToArray();
+            CilInstruction instr = instructions.Where(x => x.OpCode == OpCodes.Call).Single();
+            SyntaxNode[] syntax = instr.ToSyntax().ToArray();
+
+            Assert.AreEqual(2, syntax.Length);
+
+            Assert.IsTrue(syntax[0] is KeywordSyntax);
+            Assert.AreEqual("call", ((KeywordSyntax)syntax[0]).Content);
+            Assert.AreEqual(KeywordKind.InstructionName, ((KeywordSyntax)syntax[0]).Kind);
+            Assert.AreEqual(string.Empty, syntax[0].LeadingWhitespace);
+            Assert.AreEqual("       ", syntax[0].TrailingWhitespace);
+
+            Assert.IsTrue(syntax[1] is MemberRefSyntax);
+            Assert.AreEqual("WriteLine", ((MemberRefSyntax)syntax[1]).Member.Name);
+            Assert.IsTrue(((MemberRefSyntax)syntax[1]).Member is MethodBase);
+            Assert.AreEqual(string.Empty, syntax[1].LeadingWhitespace);
+            Assert.AreEqual(string.Empty, syntax[1].TrailingWhitespace);
         }
     }
 }

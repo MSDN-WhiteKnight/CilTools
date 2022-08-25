@@ -10,6 +10,7 @@ using System.Security.Cryptography;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.SourceCode;
+using CilTools.Syntax;
 
 namespace CilView.SourceCode
 {
@@ -38,7 +39,45 @@ namespace CilView.SourceCode
 
             return sb.ToString();
         }
-        
+
+        class LineBreakSyntax : SyntaxNode
+        {
+            internal static readonly LineBreakSyntax Value = new LineBreakSyntax();
+
+            public override IEnumerable<SyntaxNode> EnumerateChildNodes()
+            {
+                return new SyntaxNode[0];
+            }
+
+            public override void ToText(TextWriter target)
+            {
+                target.WriteLine();
+            }
+        }
+
+        public static IEnumerable<SyntaxNode> GetCilSyntax(MethodBase mb, uint startOffset, uint endOffset)
+        {
+            foreach (CilInstruction instr in CilReader.GetInstructions(mb))
+            {
+                if (instr.ByteOffset >= startOffset &&
+                    instr.ByteOffset + instr.TotalSize <= endOffset)
+                {
+                    IEnumerable<SyntaxNode> syntax = instr.ToSyntax();
+
+                    foreach (SyntaxNode node in syntax)
+                    {
+                        yield return node;
+                    }
+
+                    yield return LineBreakSyntax.Value;
+                }
+                else if (instr.ByteOffset > endOffset)
+                {
+                    break;
+                }
+            }
+        }
+
         public static SourceFragment FindFragment(IEnumerable<SourceFragment> fragments, uint offset)
         {
             SourceFragment fragment = null;

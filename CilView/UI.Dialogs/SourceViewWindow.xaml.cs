@@ -7,8 +7,10 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using CilTools.SourceCode;
+using CilTools.Syntax;
 using CilView.Common;
 using CilView.SourceCode;
 
@@ -41,13 +43,20 @@ namespace CilView.UI.Dialogs
             try
             {
                 //get CIL for the range of the sequence point
-                tbCIL.Text = PdbUtils.GetCilText(f.Method, (uint)f.CilStart, (uint)f.CilEnd);
+                IEnumerable<SyntaxNode> nodes = PdbUtils.GetCilSyntax(f.Method, (uint)f.CilStart, (uint)f.CilEnd);
+                fdCIL.Document = CilVisualization.VisualizeNodes(nodes);
             }
             catch (Exception ex)
             {
                 //don't stop the rest of method to work if this errors out
                 //showing source can still be useful
-                tbCIL.Text = "[error!]";
+                FlowDocument errorDocument = new FlowDocument();
+                errorDocument.TextAlignment = TextAlignment.Left;
+                Paragraph par = new Paragraph();
+                par.Inlines.Add(new Run("[error!]"));
+                errorDocument.Blocks.Add(par);
+                fdCIL.Document = errorDocument;
+
                 ErrorHandler.Current.Error(ex);
             }
 
