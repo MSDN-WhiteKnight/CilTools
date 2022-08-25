@@ -61,66 +61,9 @@ namespace CilView.SourceCode
 
         static void ShowSourceWholeMethod(SourceDocument doc)
         {
-            string src = doc.Text;
-            string ext = Path.GetExtension(doc.FilePath);
-            StringBuilder sb;
-            SourceToken[] sigTokens = new SourceToken[0];
-
-            try
-            {
-                if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
-                {                    
-                    sigTokens = Decompiler.DecompileMethodSignature(ext, doc.Method).ToArray();
-                }
-            }
-            catch (Exception ex)
-            {
-                //don't error out if we can't build good signature string
-                ErrorHandler.Current.Error(ex, "PdbUtils.GetMethodSigString", silent: true);
-                string methodstr = CilVisualization.MethodToString(doc.Method);
-                sigTokens = new SourceToken[] { new SourceToken(methodstr, TokenKind.Unknown) };
-            }
-
-            //header
-            sb = new StringBuilder();
-            sb.AppendFormat("({0}, ", doc.FilePath);
-            sb.AppendFormat("lines {0}-{1})", doc.LineStart, doc.LineEnd);
-            string header = sb.ToString();
-
-            //body
-            sb = new StringBuilder(src.Length + 2);
-            string srcDeindented = PdbUtils.Deindent(src);
-            sb.Append(srcDeindented);
-
-            if (Decompiler.IsCppExtension(ext))
-            {
-                //C++ PDB sequence points don't include the trailing brace for some reason
-                if(!srcDeindented.EndsWith(Environment.NewLine, StringComparison.Ordinal)) sb.AppendLine();
-                sb.Append('}');
-            }
-
-            SourceToken[] bodyTokens = TokenParser.ParseTokens(sb.ToString(), TokenParser.GetDefinitions(ext), 
-                TokenClassifier.Create(ext));
-
-            List<SourceToken> tokens = new List<SourceToken>(sigTokens.Length + bodyTokens.Length + 1);
-            tokens.AddRange(sigTokens);
-            tokens.Add(new SourceToken(Environment.NewLine, TokenKind.Unknown));
-            tokens.AddRange(bodyTokens);
-
-            //caption
-            sb = new StringBuilder();
-            sb.Append("Symbols file: ");
-            sb.Append(doc.SymbolsFile);
-            sb.Append(" (");
-            sb.Append(doc.SymbolsFileFormat);
-            sb.Append(')');
-            string caption = sb.ToString();
-
-            //show source code
-            DocumentViewWindow wnd = new DocumentViewWindow();
-            wnd.Title = "Source code";
-            wnd.Document = SourceVisualization.VisualizeTokens(tokens, header, caption);
+            MethodSourceViewWindow wnd = new MethodSourceViewWindow();
             wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            wnd.LoadDocument(doc);
             wnd.ShowDialog();
         }
 
