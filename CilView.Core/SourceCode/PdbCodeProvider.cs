@@ -189,7 +189,7 @@ namespace CilView.SourceCode
 
             ret.FilePath = filePath;
 
-            if (!string.IsNullOrEmpty(sourceLinkStr)) ret.SetAdditionalInfo("SourceLink", sourceLinkStr);
+            if (!string.IsNullOrEmpty(sourceLinkStr)) ret.SourceLinkMap = sourceLinkStr;
 
             return ret;
         }

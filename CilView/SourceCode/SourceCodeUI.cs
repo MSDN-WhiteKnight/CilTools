@@ -157,7 +157,7 @@ namespace CilView.SourceCode
                 if (string.IsNullOrEmpty(doc.Text))
                 {
                     //Local sources not available
-                    string sourceLinkStr = doc.GetAdditionalInfo("SourceLink") as string;
+                    string sourceLinkStr = doc.SourceLinkMap;
 
                     if (string.IsNullOrEmpty(sourceLinkStr))
                     {

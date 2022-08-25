@@ -22,6 +22,7 @@ namespace CilTools.SourceCode
             this.FilePath = string.Empty;
             this.SymbolsFile = string.Empty;
             this.SymbolsFile = string.Empty;
+            this.SourceLinkMap = string.Empty;
             this.fragments = new List<SourceFragment>();
         }
 
@@ -69,5 +70,12 @@ namespace CilTools.SourceCode
                 }
             }
         }
+
+        /// <summary>
+        /// Gets or sets the Source Link URL map if the source code of this document is located on the remote 
+        /// server. Otherwise, the value of this property is an empty string. Source Link specification: 
+        /// <see href="https://github.com/dotnet/designs/blob/main/accepted/2020/diagnostics/source-link.md#source-link-json-schema"/>
+        /// </summary>
+        public string SourceLinkMap { get; set; }
     }
 }
