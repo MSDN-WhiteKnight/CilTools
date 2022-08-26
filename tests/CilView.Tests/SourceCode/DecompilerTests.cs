@@ -129,7 +129,7 @@ namespace CilView.Tests.SourceCode
                 MethodBase mb = t.GetMethod("ShowWindow");
                 string s = Decompiler.GetMethodSignatureString(".cs", mb).Replace("\r\n", "\n");
                 string expected = "[DllImport(\"user32.dll\", SetLastError = true)]\n" +
-                    "public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow)";
+                    "public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);";
                 Assert.AreEqual(expected, s);
             }
         }
@@ -141,7 +141,7 @@ namespace CilView.Tests.SourceCode
             string s = Decompiler.GetMethodSignatureString(".cs", mb).Replace("\r\n", "\n");
             string expected = "[MethodImplAttribute(MethodImplOptions.InternalCall)]\nextern bool " +
                 "BindToMethodInfo(object target, IRuntimeMethodInfo method, RuntimeType methodType, "+
-                "DelegateBindingFlags flags)";
+                "DelegateBindingFlags flags);";
             Assert.AreEqual(expected, s);
         }
 
