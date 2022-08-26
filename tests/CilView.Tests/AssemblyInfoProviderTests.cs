@@ -24,6 +24,11 @@ namespace CilView.Tests
             Assert.IsTrue(info.Contains("Name: CilTools.Tests.Common"));
             Assert.IsTrue(info.Contains("Version: "+ typeof(SampleMethods).Assembly.GetName().Version.ToString()));
             Assert.IsTrue(info.Contains("Location: " + typeof(SampleMethods).Assembly.Location));
+
+            AssemblyName anCilTools = typeof(AssemblyInfoProvider).Assembly.GetName();
+            Assert.IsTrue(info.Contains("Referenced assemblies"));
+            Assert.IsTrue(info.Contains("CilTools.BytecodeAnalysis, Version: " + anCilTools.Version.ToString()));
+            Assert.IsTrue(info.Contains("CilTools.Metadata, Version: " + anCilTools.Version.ToString()));
         }
 
         [TestMethod]
@@ -43,6 +48,11 @@ namespace CilView.Tests
                 Assert.IsTrue(info.Contains("Type: DLL"));
                 Assert.IsTrue(info.Contains("Subsystem: WindowsCui"));
                 Assert.IsTrue(info.Contains("CorFlags: 0x1 (ILOnly; )"));
+
+                AssemblyName anCilTools = typeof(AssemblyInfoProvider).Assembly.GetName();
+                Assert.IsTrue(info.Contains("Referenced assemblies"));
+                Assert.IsTrue(info.Contains("CilTools.BytecodeAnalysis, Version: " + anCilTools.Version.ToString()));
+                Assert.IsTrue(info.Contains("CilTools.Metadata, Version: " + anCilTools.Version.ToString()));
 
                 Assert.IsTrue(info.Contains("Assembly custom attributes"));
                 Assert.IsTrue(info.Contains("TargetFrameworkAttribute"));

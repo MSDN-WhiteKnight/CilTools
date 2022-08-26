@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -47,6 +48,33 @@ namespace CilTools.Metadata.Tests
             AssertThat.IsMatch(info, new Text[] {
                 Text.Any, "CorFlags: ", Text.Any, "StrongNameSigned;", Text.Any 
             });
+        }
+
+        [TestMethod]
+        public void Test_GetReferencedAssemblies()
+        {
+            AssemblyName anBytecodeAnalysis = typeof(ICustomMethod).Assembly.GetName();
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            AssemblyName[] refs = ass.GetReferencedAssemblies();
+
+            AssertThat.HasOnlyOneMatch(refs, 
+                x => x.Name == "CilTools.BytecodeAnalysis" && x.Version == anBytecodeAnalysis.Version);
+
+            AssertThat.HasOnlyOneMatch(refs,
+                x => x.Name == "CilTools.Metadata" && x.Version == anBytecodeAnalysis.Version);
+        }
+
+        [ConditionalTest(TestCondition.NetFrameworkOnly, "Depends on corlib name")]
+        public void Test_GetReferencedAssemblies_CorLib()
+        {
+            AssemblyName anCorelib = typeof(object).Assembly.GetName();
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            AssemblyName[] refs = ass.GetReferencedAssemblies();
+
+            AssertThat.HasOnlyOneMatch(refs, x => x.Name == "mscorlib" && x.Version == anCorelib.Version &&
+                x.GetPublicKeyToken().SequenceEqual(anCorelib.GetPublicKeyToken()));
         }
     }
 }

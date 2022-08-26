@@ -258,6 +258,16 @@ namespace CilTools.Runtime
         public override MethodInfo EntryPoint => null;
 
         /// <summary>
+        /// Gets an array of assembly names for assemblies referenced by this assembly
+        /// </summary>
+        /// <returns>This implementation always returns an empty array</returns>
+        public override AssemblyName[] GetReferencedAssemblies()
+        {
+            //this is useless, but we override to prevent NotImplementedException popping up
+            return new AssemblyName[0];
+        }
+
+        /// <summary>
         /// Releases unmagnaged resources associated with this assembly object
         /// </summary>
         /// <remarks>

@@ -1,14 +1,15 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Reflection.Metadata.Ecma335;
-using System.Globalization;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
@@ -83,7 +84,7 @@ namespace CilTools.Metadata
             n.CodeBase = path;
             this.asn = n;
             this.fromMemory = false;
-            System.Diagnostics.Debug.WriteLine("Loaded from file: "+n.Name);
+            Debug.WriteLine("Loaded from file: "+n.Name);
         }
 
         internal MetadataAssembly(MemoryImage image, AssemblyReader ar)
@@ -120,7 +121,7 @@ namespace CilTools.Metadata
             n.CodeBase = image.FilePath;
             this.asn = n;
             this.fromMemory = true;
-            System.Diagnostics.Debug.WriteLine("Loaded from memory: " + n.Name);
+            Debug.WriteLine("Loaded from memory: " + n.Name);
         }
 
         MemberInfo CacheGetValue(int token)
@@ -743,6 +744,70 @@ namespace CilTools.Metadata
 
                 return this.ResolveMethodImpl(token, null, null) as MethodInfo;
             }
+        }
+
+        public override AssemblyName[] GetReferencedAssemblies()
+        {
+            if (this.reader == null) return new AssemblyName[0];
+
+            List<AssemblyName> ret = new List<AssemblyName>(this.reader.AssemblyReferences.Count);
+
+            foreach (AssemblyReferenceHandle h in this.reader.AssemblyReferences)
+            {
+                AssemblyReference ar = this.reader.GetAssemblyReference(h);
+                AssemblyName an = new AssemblyName();
+                an.Name = this.reader.GetString(ar.Name);
+                an.Version = ar.Version;
+
+                try
+                {
+                    if (!ar.Culture.IsNil) an.CultureInfo = new CultureInfo(this.reader.GetString(ar.Culture));
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Failed to get AssemblyReference culture");
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                if (ar.Flags.HasFlag(AssemblyFlags.PublicKey))
+                {
+                    BlobHandle key = ar.PublicKeyOrToken;
+
+                    if (!key.IsNil)
+                    {
+                        an.SetPublicKey(reader.GetBlobBytes(key));
+                        an.Flags |= AssemblyNameFlags.PublicKey;
+                    }
+                }
+                else
+                {
+                    BlobHandle tok = ar.PublicKeyOrToken;
+
+                    if (!tok.IsNil)
+                    {
+                        an.SetPublicKeyToken(reader.GetBlobBytes(tok));
+                    }
+                }
+
+                if (!ar.Flags.HasFlag(AssemblyFlags.DisableJitCompileOptimizer))
+                {
+                    an.Flags |= AssemblyNameFlags.EnableJITcompileOptimizer;
+                }
+
+                if (ar.Flags.HasFlag(AssemblyFlags.EnableJitCompileTracking))
+                {
+                    an.Flags |= AssemblyNameFlags.EnableJITcompileTracking;
+                }
+
+                if (ar.Flags.HasFlag(AssemblyFlags.Retargetable))
+                {
+                    an.Flags |= AssemblyNameFlags.Retargetable;
+                }
+
+                ret.Add(an);
+            }
+
+            return ret.ToArray();
         }
 
         /// <summary>

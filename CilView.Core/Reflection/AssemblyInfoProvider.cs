@@ -109,6 +109,57 @@ namespace CilView.Core.Reflection
                 wr.WriteLine(peinfo);
             }
 
+            // References
+            try
+            {
+                AssemblyName[] refs = ass.GetReferencedAssemblies();
+
+                wr.WriteLine("    Referenced assemblies");
+                wr.WriteLine();
+
+                for (int i = 0; i < refs.Length; i++)
+                {
+                    wr.Write(refs[i].Name);
+
+                    if (refs[i].Version != null) wr.Write(", Version: " + refs[i].Version.ToString());
+
+                    if (!string.IsNullOrEmpty(refs[i].CultureName))
+                    {
+                        wr.Write(", Culture: " + refs[i].CultureName);
+                    }
+
+                    if (refs[i].Flags.HasFlag(AssemblyNameFlags.PublicKey))
+                    {
+                        byte[] key = refs[i].GetPublicKey();
+
+                        if (key != null && key.Length > 0)
+                        {
+                            wr.Write(", PublicKey: ");
+                            ArrayBytesToText(key, wr);
+                        }
+                    }
+                    else
+                    {
+                        byte[] tok = refs[i].GetPublicKeyToken();
+
+                        if (tok != null && tok.Length > 0)
+                        {
+                            wr.Write(", PublicKeyToken: ");
+                            ArrayBytesToText(tok, wr);
+                        }
+                    }
+
+                    wr.WriteLine();
+                }
+            }
+            catch (Exception ex)
+            {
+                wr.WriteLine("Failed to get referenced assemblies");
+                wr.WriteLine(ex.ToString());
+            }
+
+            wr.WriteLine();
+
             // Assembly custom attributes
             try
             {
