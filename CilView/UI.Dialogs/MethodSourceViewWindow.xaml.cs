@@ -108,31 +108,9 @@ namespace CilView.UI.Dialogs
 
         private void tbSymbolsFile_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            try
-            {
-                string path = this._doc.SymbolsFile;
+            if (e.LeftButton != MouseButtonState.Pressed) return;
 
-                if (string.IsNullOrEmpty(path))
-                {
-                    MessageBox.Show(this, "Symbols path is not available", "Error");
-                    return;
-                }
-
-                string dir = Path.GetDirectoryName(path);
-
-                if (string.IsNullOrEmpty(dir))
-                {
-                    MessageBox.Show(this, "Cannot determine symbols file directory", "Error");
-                    return;
-                }
-
-                //open symbols file directory in Explorer
-                WpfUtils.ShellExecute(dir, this, "Failed to open symbols file directory");
-            }
-            catch (Exception ex)
-            {
-                ErrorHandler.Current.Error(ex);
-            }
+            SourceCodeUI.OpenSymbolsDir(this._doc.SymbolsFile, this);
         }
     }
 }

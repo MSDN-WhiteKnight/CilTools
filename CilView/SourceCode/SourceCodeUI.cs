@@ -183,5 +183,32 @@ namespace CilView.SourceCode
                 }
             }//end try
         }
+
+        public static void OpenSymbolsDir(string path, Window wnd)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    MessageBox.Show(wnd, "Symbols path is not available", "Error");
+                    return;
+                }
+
+                string dir = Path.GetDirectoryName(path);
+
+                if (string.IsNullOrEmpty(dir))
+                {
+                    MessageBox.Show(wnd, "Cannot determine symbols file directory", "Error");
+                    return;
+                }
+
+                //open symbols file directory in Explorer
+                WpfUtils.ShellExecute(dir, wnd, "Failed to open symbols file directory");
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+        }
     }
 }
