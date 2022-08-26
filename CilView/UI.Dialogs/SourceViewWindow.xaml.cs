@@ -100,7 +100,7 @@ namespace CilView.UI.Dialogs
             if (e.LeftButton != MouseButtonState.Pressed) return;
 
             //open the source file in external editor
-            Utils.ShellExecute(this._f.Document.FilePath, this, "Failed to open source code file");
+            WpfUtils.ShellExecute(this._f.Document.FilePath, this, "Failed to open source code file");
         }
         
         private void bPrevious_Click(object sender, RoutedEventArgs e)
@@ -175,7 +175,7 @@ namespace CilView.UI.Dialogs
                 }
 
                 //open symbols file directory in Explorer
-                Utils.ShellExecute(dir, this, "Failed to open symbols file directory");
+                WpfUtils.ShellExecute(dir, this, "Failed to open symbols file directory");
             }
             catch (Exception ex)
             {

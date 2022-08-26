@@ -145,7 +145,7 @@ namespace CilView.SourceCode
 
                     if (shouldNavigate)
                     {
-                        Utils.ShellExecute(serverPath, null, "Failed to open source code URL");
+                        WpfUtils.ShellExecute(serverPath, null, "Failed to open source code URL");
                     }
 
                     return;

@@ -691,14 +691,14 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
         {
             const string url = "https://github.com/MSDN-WhiteKnight/CilTools";
             string mes = string.Format("Failed to open URL. Navigate to {0} manually in browser to access source code", url);
-            Utils.ShellExecute(url,this,mes);
+            WpfUtils.ShellExecute(url,this,mes);
         }
 
         private void miFeedback_Click(object sender, RoutedEventArgs e)
         {
             const string url = "https://github.com/MSDN-WhiteKnight/CilTools/issues/new";
             string mes = string.Format("Failed to open URL. Navigate to {0} manually in browser to provide feedback", url);
-            Utils.ShellExecute(url,this,mes);
+            WpfUtils.ShellExecute(url,this,mes);
         }
 
         void OnSearchClick()

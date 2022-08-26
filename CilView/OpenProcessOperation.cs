@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Text;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.Diagnostics.Runtime;
+using CilView.Common;
 
 namespace CilView
 {
@@ -26,7 +27,7 @@ namespace CilView
 
         public override void DoEvents()
         {
-            Common.Utils.DoWpfEvents();
+            WpfUtils.DoWpfEvents();
         }
 
         public override Task Start()

@@ -10,7 +10,7 @@ using CilTools.Reflection;
 
 namespace CilView.Common
 {
-    internal static class Utils
+    public static class Utils
     {
         public static bool StringEquals(string left, string right)
         {
