@@ -107,6 +107,15 @@ namespace CilView.Tests.SourceCode
             Assert.AreEqual(expected, s);
         }
 
+        [TestMethod]
+        public void Test_Decompiler_OptionalParameters()
+        {
+            MethodBase mb = typeof(SampleMethods).GetMethod("TestOptionalParams");
+            string s = Decompiler.GetMethodSignatureString(".cs", mb);
+            string expected = "public static void TestOptionalParams(string str = \"\", int x = 0)";
+            Assert.AreEqual(expected, s);
+        }
+
         [TestMethod]        
         public void Test_DecompileMethodSignature_Csharp()
         {

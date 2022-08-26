@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using CilView.Common;
@@ -135,7 +136,67 @@ namespace CilView.SourceCode
             target.Add(new SourceToken(";", TokenKind.Punctuation, "", ""));
             target.Add(new SourceToken("}", TokenKind.Punctuation, "", ""));
         }
-        
+
+        static string EscapeString(string str)
+        {
+            if (string.IsNullOrEmpty(str)) return str;
+
+            StringBuilder sb = new StringBuilder(str.Length * 2);
+
+            foreach (char c in str)
+            {
+                switch (c)
+                {
+                    case '\0': sb.Append("\\0"); break;
+                    case '\n': sb.Append("\\n"); break;
+                    case '\r': sb.Append("\\r"); break;
+                    case '\a': sb.Append("\\a"); break;
+                    case '\b': sb.Append("\\b"); break;
+                    case '\f': sb.Append("\\f"); break;
+                    case '\t': sb.Append("\\t"); break;
+                    case '"': sb.Append("\\\""); break;
+                    case '\\': sb.Append("\\"); break;
+
+                    default:
+                        if (char.IsControl(c)) sb.Append("\\u" + ((ushort)c).ToString("X").PadLeft(4, '0'));
+                        else sb.Append(c);
+                        break;
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        static void GetConstantValueTokens(object constant, List<SourceToken> target)
+        {
+            if (constant != null)
+            {
+                if (Utils.StringEquals(constant.GetType().FullName, "System.String"))
+                {
+                    target.Add(new SourceToken("\"" + EscapeString(constant.ToString()) + "\"",
+                        TokenKind.DoubleQuotLiteral));
+                }
+                else if (Utils.StringEquals(constant.GetType().FullName, "System.Char"))
+                {
+                    target.Add(new SourceToken("'" + constant.ToString() + "'",
+                        TokenKind.SingleQuotLiteral));
+                }
+                else if (Utils.StringEquals(constant.GetType().FullName, "System.Boolean"))
+                {
+                    target.Add(new SourceToken(constant.ToString().ToLower(), TokenKind.Keyword));
+                }
+                else //most of the types...
+                {
+                    target.Add(new SourceToken(Convert.ToString(constant, CultureInfo.InvariantCulture),
+                        TokenKind.NumericLiteral));
+                }
+            }
+            else
+            {
+                target.Add(new SourceToken("null", TokenKind.Keyword));
+            }
+        }
+
         public override IEnumerable<SourceToken> GetMethodSigTokens()
         {
             MethodBase m = this._method;
@@ -207,6 +268,13 @@ namespace CilView.SourceCode
                 }
 
                 ret.Add(new SourceToken(parname, TokenKind.Name));
+
+                //default value for optional parameters
+                if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                {
+                    ret.Add(new SourceToken("=", TokenKind.Punctuation, " ", " "));
+                    GetConstantValueTokens(pars[i].RawDefaultValue, ret);
+                }
             }
 
             ret.Add(new SourceToken(")", TokenKind.Punctuation));
