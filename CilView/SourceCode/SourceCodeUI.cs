@@ -50,7 +50,7 @@ namespace CilView.SourceCode
 
         static void ShowDecompiledSource(MethodBase method)
         {
-            //stub implementation that only works for abstract methods
+            //stub implementation that only works for methods without body
             IEnumerable<SourceToken> tokens = Decompiler.DecompileMethodSignature(".cs", method);
             DocumentViewWindow wnd = new DocumentViewWindow();
             wnd.Title = "Source code";
@@ -80,9 +80,9 @@ namespace CilView.SourceCode
         {
             try
             {
-                if (method.IsAbstract)
+                if (Utils.IsMethodWithoutBody(method))
                 {
-                    //abstract method has no sequence points in PDB, just use decompiler
+                    //method without IL body has no sequence points in PDB, just use decompiler
                     ShowDecompiledSource(method);
                     return;
                 }

@@ -5,7 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
+using CilTools.Reflection;
 using CilView.Common;
 using CilView.Core.Syntax;
 
@@ -105,6 +107,12 @@ namespace CilView.SourceCode
 
             if (m.IsStatic) target.Add(new SourceToken("static", TokenKind.Keyword, "", " "));
             if (m.IsAbstract) target.Add(new SourceToken("abstract", TokenKind.Keyword, "", " "));
+
+            if (m.Attributes.HasFlag(MethodAttributes.PinvokeImpl) ||
+                m.MethodImplementationFlags.HasFlag(MethodImplAttributes.InternalCall))
+            {
+                target.Add(new SourceToken("extern", TokenKind.Keyword, "", " "));
+            }
         }
         
         static void DecompilePropertyMethod(MethodBase m, List<SourceToken> target)
@@ -207,15 +215,102 @@ namespace CilView.SourceCode
                 DecompilePropertyMethod(m, propmethod);
                 if (propmethod.Count > 0) return propmethod;
             }
-            
-            ParameterInfo[] pars = m.GetParameters();
+
             List<SourceToken> ret = new List<SourceToken>();
 
+            //attributes
+            if (m.MethodImplementationFlags.HasFlag(MethodImplAttributes.InternalCall))
+            {
+                ret.Add(new SourceToken("[", TokenKind.Punctuation));
+                ret.Add(new SourceToken("MethodImplAttribute", TokenKind.TypeName));
+                ret.Add(new SourceToken("(", TokenKind.Punctuation));
+                ret.Add(new SourceToken("MethodImplOptions", TokenKind.TypeName));
+                ret.Add(new SourceToken(".", TokenKind.Punctuation));
+                ret.Add(new SourceToken("InternalCall", TokenKind.Name));
+                ret.Add(new SourceToken(")", TokenKind.Punctuation));
+                ret.Add(new SourceToken("]", TokenKind.Punctuation, "", Environment.NewLine));
+            }
+
+            if (m.Attributes.HasFlag(MethodAttributes.PinvokeImpl))
+            {
+                ret.Add(new SourceToken("[", TokenKind.Punctuation));
+                ret.Add(new SourceToken("DllImport", TokenKind.TypeName));
+                ret.Add(new SourceToken("(", TokenKind.Punctuation));
+
+                PInvokeParams pp = null;
+
+                if (m is ICustomMethod)
+                {
+                    ICustomMethod cm = (ICustomMethod)m;
+                    pp = cm.GetPInvokeParams();
+                }
+
+                if (pp != null)
+                {
+                    ret.Add(new SourceToken("\"" + pp.ModuleName + "\"", TokenKind.DoubleQuotLiteral));
+
+                    if (pp.CallingConvention != CallingConvention.Winapi)
+                    {
+                        ret.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
+                        ret.Add(new SourceToken("CallingConvention", TokenKind.Name, "", " "));
+                        ret.Add(new SourceToken("=", TokenKind.Punctuation, "", " "));
+                        ret.Add(new SourceToken(pp.CallingConvention.ToString(), TokenKind.Name, "", ""));
+                    }
+
+                    if (pp.CharSet != CharSet.Ansi && (int)pp.CharSet != 0)
+                    {
+                        ret.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
+                        ret.Add(new SourceToken("CharSet", TokenKind.Name, "", " "));
+                        ret.Add(new SourceToken("=", TokenKind.Punctuation, "", " "));
+                        ret.Add(new SourceToken(pp.CharSet.ToString(), TokenKind.Name, "", ""));
+                    }
+
+                    if (pp.SetLastError)
+                    {
+                        ret.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
+                        ret.Add(new SourceToken("SetLastError", TokenKind.Name, "", " "));
+                        ret.Add(new SourceToken("=", TokenKind.Punctuation, "", " "));
+                        ret.Add(new SourceToken("true", TokenKind.Keyword, "", ""));
+                    }
+
+                    if (pp.BestFitMapping.HasValue)
+                    {
+                        ret.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
+                        ret.Add(new SourceToken("BestFitMapping", TokenKind.Name, "", " "));
+                        ret.Add(new SourceToken("=", TokenKind.Punctuation, "", " "));
+
+                        if (pp.BestFitMapping.Value)
+                        {
+                            ret.Add(new SourceToken("true", TokenKind.Keyword, "", ""));
+                        }
+                        else
+                        {
+                            ret.Add(new SourceToken("false", TokenKind.Keyword, "", ""));
+                        }
+                    }
+
+                    if (pp.ExactSpelling)
+                    {
+                        ret.Add(new SourceToken(",", TokenKind.Punctuation, "", " "));
+                        ret.Add(new SourceToken("ExactSpelling", TokenKind.Name, "", " "));
+                        ret.Add(new SourceToken("=", TokenKind.Punctuation, "", " "));
+                        ret.Add(new SourceToken("true", TokenKind.Keyword, "", ""));
+                    }
+                }
+
+                ret.Add(new SourceToken(")", TokenKind.Punctuation));
+                ret.Add(new SourceToken("]", TokenKind.Punctuation, "", Environment.NewLine));
+            }
+            
+            ParameterInfo[] pars = m.GetParameters();
+            
+            // access modifiers
             if (!Utils.IsAbstractInterfaceMethod(m))
             {
                 GetModifiers(m, ret);
             }
 
+            // return type
             Type t = GetReturnType(m);
 
             if (t != null)
@@ -248,6 +343,7 @@ namespace CilView.SourceCode
                 ret.Add(new SourceToken(">", TokenKind.Punctuation));
             }
 
+            // parameters
             ret.Add(new SourceToken("(", TokenKind.Punctuation));
             
             for (int i = 0; i < pars.Length; i++)
@@ -279,7 +375,7 @@ namespace CilView.SourceCode
 
             ret.Add(new SourceToken(")", TokenKind.Punctuation));
 
-            if (m.IsAbstract) ret.Add(new SourceToken(";", TokenKind.Punctuation));
+            if (Utils.IsMethodWithoutBody(m)) ret.Add(new SourceToken(";", TokenKind.Punctuation));
 
             return ret;
         }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CilTools.Metadata;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.TestData;
 using CilView.SourceCode;
@@ -113,6 +114,34 @@ namespace CilView.Tests.SourceCode
             MethodBase mb = typeof(SampleMethods).GetMethod("TestOptionalParams");
             string s = Decompiler.GetMethodSignatureString(".cs", mb);
             string expected = "public static void TestOptionalParams(string str = \"\", int x = 0)";
+            Assert.AreEqual(expected, s);
+        }
+
+        [TestMethod]
+        public void Test_Decompiler_PInvoke()
+        {
+            AssemblyReader reader = new AssemblyReader();
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                Type t = ass.GetType(typeof(SampleMethods).FullName);
+                MethodBase mb = t.GetMethod("ShowWindow");
+                string s = Decompiler.GetMethodSignatureString(".cs", mb).Replace("\r\n", "\n");
+                string expected = "[DllImport(\"user32.dll\", SetLastError = true)]\n" +
+                    "public static extern bool ShowWindow(IntPtr hWnd, int nCmdShow)";
+                Assert.AreEqual(expected, s);
+            }
+        }
+
+        [TestMethod]
+        public void Test_Decompiler_InternalCall()
+        {
+            MethodBase mb = typeof(Delegate).GetMethod("BindToMethodInfo", Utils.AllMembers());
+            string s = Decompiler.GetMethodSignatureString(".cs", mb).Replace("\r\n", "\n");
+            string expected = "[MethodImplAttribute(MethodImplOptions.InternalCall)]\nextern bool " +
+                "BindToMethodInfo(object target, IRuntimeMethodInfo method, RuntimeType methodType, "+
+                "DelegateBindingFlags flags)";
             Assert.AreEqual(expected, s);
         }
 
