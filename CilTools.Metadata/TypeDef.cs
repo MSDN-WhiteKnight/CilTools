@@ -63,7 +63,7 @@ namespace CilTools.Metadata
                 if (bindingAttr.HasFlag(BindingFlags.Static) && mb.IsStatic) sem_match = true;
                 else if (bindingAttr.HasFlag(BindingFlags.Instance) && !mb.IsStatic) sem_match = true;
             }
-            else if (m is PropertyInfo)
+            else if (m is PropertyInfo || m is EventInfo)
             {
                 //filtering is not implemented
                 if (bindingAttr != BindingFlags.Default)
@@ -201,12 +201,31 @@ namespace CilTools.Metadata
 
         public override EventInfo GetEvent(string name, BindingFlags bindingAttr)
         {
-            throw new NotSupportedException("This type implementation does not support events");
+            EventInfo[] events = this.GetEvents(bindingAttr);
+
+            for (int i = 0; i < events.Length; i++)
+            {
+                EventInfo m = events[i];
+
+                if (string.Equals(m.Name, name, StringComparison.InvariantCulture)) return m;
+            }
+
+            return null;
         }
 
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
-            throw new NotSupportedException("This type implementation does not support events");
+            List<EventInfo> members = new List<EventInfo>();
+            EventInfo m;
+
+            foreach (EventDefinitionHandle he in this.type.GetEvents())
+            {
+                EventDefinition e = this.assembly.MetadataReader.GetEventDefinition(he);
+                m = new EventDef(e, he, this.assembly, this);
+                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+            }
+
+            return members.ToArray();
         }
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
@@ -405,6 +424,14 @@ namespace CilTools.Metadata
                 {
                     members.Add(this.properties[i]);
                 }
+            }
+
+            //events
+            EventInfo[] events = this.GetEvents(bindingAttr);
+
+            for (int i = 0; i < events.Length; i++)
+            {
+                members.Add(events[i]);
             }
 
             return members.ToArray();

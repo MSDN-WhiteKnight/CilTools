@@ -619,5 +619,61 @@ namespace CilTools.Metadata.Tests
             AssertThat.Throws<ArgumentException>(() => t.GetInterfaceMap(typeof(SampleMethods)));
             AssertThat.Throws<ArgumentException>(() => t.GetInterfaceMap(typeof(IEnumerable)));
         }
+
+        [TestMethod]
+        public void Test_GetEvents()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(EventsSample).Assembly.Location);
+            Type t = ass.GetType(typeof(EventsSample).FullName);
+
+            //positive
+            EventInfo[] events = t.GetEvents(Utils.AllMembers());
+
+            Assert.AreEqual(3, events.Length);
+            Assert.AreEqual("A", events[0].Name);
+            Assert.AreEqual("B", events[1].Name);
+            Assert.AreEqual("C", events[2].Name);
+
+            //negative
+            ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+            t = ass.GetType(typeof(SampleType).FullName);
+            events = t.GetEvents();
+            Assert.AreEqual(0, events.Length);
+        }
+
+        [TestMethod]
+        public void Test_GetEvent()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(EventsSample).Assembly.Location);
+            Type t = ass.GetType(typeof(EventsSample).FullName);
+
+            //public
+            EventInfo e = t.GetEvent("A");
+            Assert.AreEqual("A", e.Name);
+
+            //non-public
+            e = t.GetEvent("C", Utils.AllMembers());
+            Assert.AreEqual("C", e.Name);
+
+            //negative
+            e = t.GetEvent("MyEvent");
+            Assert.IsNull(e);
+        }
+
+        [TestMethod]
+        public void Test_GetMembers_Event()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(EventsSample).Assembly.Location);
+            Type t = ass.GetType(typeof(EventsSample).FullName);
+            
+            MemberInfo[] members = t.GetMembers(Utils.AllMembers());
+
+            AssertThat.HasOnlyOneMatch(members, x => x is EventInfo && x.Name == "A");
+            AssertThat.HasOnlyOneMatch(members, x => x is EventInfo && x.Name == "B");
+            AssertThat.HasOnlyOneMatch(members, x => x is EventInfo && x.Name == "C");
+        }
     }
 }
