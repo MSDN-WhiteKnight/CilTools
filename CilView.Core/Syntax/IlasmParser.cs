@@ -3,7 +3,6 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Text;
 using CilTools.Syntax;
 using CilView.Common;
@@ -16,12 +15,12 @@ namespace CilView.Core.Syntax
         /// Transforms tokens sequence into an initial syntax tree shape, where every block ({...}) is 
         /// represented as a subnode
         /// </summary>
-        public static SyntaxNode TokensToInitialTree(IEnumerable<SyntaxNode> tokens)
+        public static DocumentSyntax TokensToInitialTree(IEnumerable<SyntaxNode> tokens)
         {
-            SyntaxSequence root=new SyntaxSequence();
-            List<SyntaxSequence> currentPath = new List<SyntaxSequence>(10);
-            SyntaxSequence currNode = root;
-            SyntaxSequence newNode;
+            DocumentSyntax root=new DocumentSyntax("(All text)");
+            List<DocumentSyntax> currentPath = new List<DocumentSyntax>(10);
+            DocumentSyntax currNode = root;
+            DocumentSyntax newNode;
             
             foreach (SyntaxNode token in tokens)
             {
@@ -45,7 +44,7 @@ namespace CilView.Core.Syntax
                     }
                     else if (Utils.StringEquals(((PunctuationSyntax)token).Content, "{"))
                     {
-                        newNode = new SyntaxSequence();
+                        newNode = new DocumentSyntax(string.Empty);
                         newNode.Add(token);
                         currentPath.Add(newNode);
                         currNode = newNode;
@@ -64,39 +63,49 @@ namespace CilView.Core.Syntax
             return root;
         }
 
-        class SyntaxSequence : SyntaxNode
+        /// <summary>
+        /// Transforms the syntax tree so every top level directive (.assembly, .class) with its content 
+        /// is represented as subnode (second stage of parsing).
+        /// </summary>
+        public static DocumentSyntax ParseTopLevelDirectives(DocumentSyntax tree)
         {
-            List<SyntaxNode> _children;
+            DocumentSyntax ret = new DocumentSyntax(tree.Name);
+            SyntaxNode[] nodes = tree.GetChildNodes();
+            bool inDir = false;
+            DocumentSyntax currNode = ret;
 
-            public SyntaxSequence(IEnumerable<SyntaxNode> children)
+            for (int i = 0; i < nodes.Length; i++)
             {
-                this._children = new List<SyntaxNode>(children);
-            }
-
-            public SyntaxSequence()
-            {
-                this._children = new List<SyntaxNode>(100);
-            }
-
-            public void Add(SyntaxNode node)
-            {
-                this._children.Add(node);
-            }
-
-            public override IEnumerable<SyntaxNode> EnumerateChildNodes()
-            {
-                return this._children.ToArray();
-            }
-
-            public override void ToText(TextWriter target)
-            {
-                for (int i = 0; i < _children.Count; i++)
+                if (nodes[i] is KeywordSyntax && ((KeywordSyntax)nodes[i]).Kind == KeywordKind.DirectiveName)
                 {
-                    _children[i].ToText(target);
+                    if (inDir)
+                    {
+                        //end of directive
+                        ret.Add(currNode); //add previous directive
+                        currNode = new DocumentSyntax(((KeywordSyntax)nodes[i]).Content);
+                        currNode.Add(nodes[i]);
+                    }
+                    else
+                    {
+                        //start of first directive
+                        currNode = new DocumentSyntax(((KeywordSyntax)nodes[i]).Content);
+                        currNode.Add(nodes[i]);
+                        inDir = true;
+                    }
                 }
-
-                target.Flush();
+                else
+                {
+                    currNode.Add(nodes[i]);
+                }
             }
+
+            if (inDir)
+            {
+                //end of last directive
+                ret.Add(currNode);
+            }
+
+            return ret;
         }
     }
 }

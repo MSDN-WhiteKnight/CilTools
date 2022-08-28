@@ -29,14 +29,146 @@ namespace CilView.Tests
                 SyntaxFactory.CreateFromToken("}", string.Empty, " "),
             };
 
-            SyntaxNode tree = IlasmParser.TokensToInitialTree(tokens);
+            DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
+            Assert.AreEqual("(All text)", tree.Name);
 
             SyntaxNode[] items = tree.GetChildNodes();
             Assert.AreEqual(4, items.Length);
             Assert.AreEqual(".class ", items[0].ToString());
             Assert.AreEqual("private ", items[1].ToString());
             Assert.AreEqual("Foo ", items[2].ToString());
-            Assert.AreEqual("{ .field private int32 Bar } ", items[3].ToString());            
+            Assert.AreEqual("{ .field private int32 Bar } ", items[3].ToString());
+        }
+
+        [TestMethod]
+        public void Test_TokensToInitialTree()
+        {
+            SyntaxNode[] tokens = new SyntaxNode[] {
+                SyntaxFactory.CreateFromToken(".class", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("public", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("C", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("{", string.Empty, "\n"),
+                SyntaxFactory.CreateFromToken(".method", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("public", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("void", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("Foo", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("(", string.Empty, " "),
+                SyntaxFactory.CreateFromToken(")", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("cil", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("managed", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("}", string.Empty, "\n"),
+                SyntaxFactory.CreateFromToken(".method", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("public", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("void", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("Bar", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("(", string.Empty, " "),
+                SyntaxFactory.CreateFromToken(")", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("cil", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("managed", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("}", string.Empty, "\n"),
+                SyntaxFactory.CreateFromToken("}", string.Empty, string.Empty)
+            };
+
+            DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
+            Assert.AreEqual("(All text)", tree.Name);
+
+            SyntaxNode[] items = tree.GetChildNodes();
+            
+            Assert.AreEqual(4, items.Length);
+            Assert.AreEqual(".class ", items[0].ToString());
+            Assert.AreEqual("public ", items[1].ToString());
+            Assert.AreEqual("C ", items[2].ToString());
+
+            const string expected = "{\n"+
+                ".method public void Foo ( ) cil managed { }\n" +
+                ".method public void Bar ( ) cil managed { }\n" + 
+                "}";
+
+            Assert.AreEqual(expected, items[3].ToString());
+
+            SyntaxNode[] blockItems = items[3].GetChildNodes();
+            Assert.AreEqual(20, blockItems.Length);
+            Assert.AreEqual("{ }\n", blockItems[9].ToString());
+            Assert.AreEqual("{ }\n", blockItems[18].ToString());
+        }
+
+        [TestMethod]
+        [DataRow(".class public Foo { } .class public Bar { }")]
+        [DataRow(".class public A { .method static void B (int32 x) cil managed { nop } }")]
+        [DataRow(TokenReaderTests.Data_MultilineString, DisplayName = "Test_TokensToInitialTree_Roundtrip(Data_MultilineString)")]
+        public void Test_TokensToInitialTree_Roundtrip(string il)
+        {
+            SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
+            SyntaxNode tree = IlasmParser.TokensToInitialTree(tokens);
+            Assert.AreEqual(il, tree.ToString());
+        }
+
+        [TestMethod]
+        public void Test_ParseTopLevelDirectives()
+        {
+            SyntaxNode[] tokens = new SyntaxNode[] {
+                SyntaxFactory.CreateFromToken("/* Foo and Bar */", string.Empty, " "),
+                SyntaxFactory.CreateFromToken(".class", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("Foo", string.Empty, " "),
+                new DocumentSyntax(new SyntaxNode[]{
+                    SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken(".field", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("int32", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("X", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+                }, string.Empty),                
+                SyntaxFactory.CreateFromToken(".class", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("Bar", string.Empty, " "),
+                new DocumentSyntax(new SyntaxNode[]{
+                    SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken(".field", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("string", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("Y", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+                }, string.Empty),
+            };
+
+            DocumentSyntax initialTree = new DocumentSyntax(tokens, "(All text)");
+            DocumentSyntax tree = IlasmParser.ParseTopLevelDirectives(initialTree);
+            SyntaxNode[] items = tree.GetChildNodes();
+
+            Assert.AreEqual(3, items.Length);
+            Assert.AreEqual("/* Foo and Bar */ ", items[0].ToString());
+            Assert.AreEqual(".class private Foo { .field private int32 X } ", items[1].ToString());
+            Assert.AreEqual(".class private Bar { .field private string Y } ", items[2].ToString());
+            Assert.AreEqual("(All text)", tree.Name);
+        }
+
+        [TestMethod]
+        [DataRow(".class public Foo { } .class public Bar { }")]
+        [DataRow(".class public A { .method static void B (int32 x) cil managed { nop } }")]
+        [DataRow(TokenReaderTests.Data_MultilineString, DisplayName = "Test_TokensToInitialTree_Roundtrip(Data_MultilineString)")]
+        public void Test_IlAsmParser_Roundtrip(string il)
+        {
+            SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
+            DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
+            tree = IlasmParser.ParseTopLevelDirectives(tree);
+            Assert.AreEqual(il, tree.ToString());
+        }
+
+        [TestMethod]        
+        public void Test_IlAsmParser_FromDisassembler()
+        {
+            Type t = typeof(SampleMethods);
+            IEnumerable<SyntaxNode> tdef = SyntaxNode.GetTypeDefSyntax(t, true, new DisassemblerParams());
+            string il = Utils.SyntaxToString(tdef);
+
+            SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
+            DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
+            tree = IlasmParser.ParseTopLevelDirectives(tree);
+            Assert.AreEqual(1, tree.GetChildNodes().Length);
+            Assert.AreEqual(il, tree.ToString());
         }
     }
 }
