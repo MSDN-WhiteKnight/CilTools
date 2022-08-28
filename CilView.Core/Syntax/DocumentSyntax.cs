@@ -17,11 +17,15 @@ namespace CilView.Core.Syntax
     {
         List<SyntaxNode> _children;
         string _name;
+        bool _isInvalid = false;
+        string _parserDiagnostics = string.Empty;
 
-        public DocumentSyntax(IEnumerable<SyntaxNode> children, string name)
+        public DocumentSyntax(IEnumerable<SyntaxNode> children, string name, bool isInvalid, string parserDiagnostics)
         {
             this._children = new List<SyntaxNode>(children);
             this._name = name;
+            this._isInvalid = isInvalid;
+            this._parserDiagnostics = parserDiagnostics;
         }
 
         public DocumentSyntax(IEnumerable<SyntaxNode> children)
@@ -44,6 +48,16 @@ namespace CilView.Core.Syntax
         public string Name
         {
             get { return this._name; }
+        }
+
+        public bool IsInvalid
+        {
+            get { return this._isInvalid; }
+        }
+
+        public string ParserDiagnostics
+        {
+            get { return this._parserDiagnostics; }
         }
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()

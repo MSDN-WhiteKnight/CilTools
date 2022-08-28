@@ -106,6 +106,21 @@ namespace CilView.Tests
         }
 
         [TestMethod]
+        public void Test_TokensToInitialTree_Invalid()
+        {
+            SyntaxNode[] tokens = new SyntaxNode[] {
+                SyntaxFactory.CreateFromToken(".class", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("Foo", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+            };
+
+            DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
+            Assert.IsTrue(tree.IsInvalid);
+            Assert.AreEqual("Unexpected closing brace", tree.ParserDiagnostics);
+        }
+
+        [TestMethod]
         public void Test_ParseTopLevelDirectives()
         {
             SyntaxNode[] tokens = new SyntaxNode[] {
@@ -120,7 +135,7 @@ namespace CilView.Tests
                     SyntaxFactory.CreateFromToken("int32", string.Empty, " "),
                     SyntaxFactory.CreateFromToken("X", string.Empty, " "),
                     SyntaxFactory.CreateFromToken("}", string.Empty, " ")
-                }, string.Empty),                
+                }, string.Empty, false, string.Empty),                
                 SyntaxFactory.CreateFromToken(".class", string.Empty, " "),
                 SyntaxFactory.CreateFromToken("private", string.Empty, " "),
                 SyntaxFactory.CreateFromToken("Bar", string.Empty, " "),
@@ -131,10 +146,10 @@ namespace CilView.Tests
                     SyntaxFactory.CreateFromToken("string", string.Empty, " "),
                     SyntaxFactory.CreateFromToken("Y", string.Empty, " "),
                     SyntaxFactory.CreateFromToken("}", string.Empty, " ")
-                }, string.Empty),
+                }, string.Empty, false, string.Empty),
             };
 
-            DocumentSyntax initialTree = new DocumentSyntax(tokens, "(All text)");
+            DocumentSyntax initialTree = new DocumentSyntax(tokens, "(All text)", false, string.Empty);
             DocumentSyntax tree = IlasmParser.ParseTopLevelDirectives(initialTree);
             SyntaxNode[] items = tree.GetChildNodes();
 

@@ -30,7 +30,8 @@ namespace CilView.Core.Syntax
                     {
                         if (currentPath.Count == 0)
                         {
-                            throw new Exception("Unexpected closing brace");
+                            //invalid syntax!
+                            return new DocumentSyntax(tokens, "(All text)", true, "Unexpected closing brace");
                         }
 
                         newNode = currentPath[currentPath.Count - 1];
