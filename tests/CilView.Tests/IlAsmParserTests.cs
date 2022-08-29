@@ -7,6 +7,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilView.Core.Documents;
 using CilView.Core.Syntax;
 
 namespace CilView.Tests
@@ -184,6 +185,43 @@ namespace CilView.Tests
             tree = IlasmParser.ParseTopLevelDirectives(tree);
             Assert.AreEqual(1, tree.GetChildNodes().Length);
             Assert.AreEqual(il, tree.ToString());
+        }
+
+        [TestMethod]
+        public void Test_TreeToAssembly()
+        {
+            SyntaxNode[] tokens = new SyntaxNode[] {
+                SyntaxFactory.CreateFromToken("/* Foo and Bar */", string.Empty, " "),
+                new DocumentSyntax(new SyntaxNode[]{                    
+                    SyntaxFactory.CreateFromToken(".class", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("Foo", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+                }, ".class", false, string.Empty),
+                new DocumentSyntax(new SyntaxNode[]{
+                    SyntaxFactory.CreateFromToken(".class", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("Bar", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+                }, ".class", false, string.Empty)
+            };
+
+            DocumentSyntax tree = new DocumentSyntax(tokens, "(All text)", false, string.Empty);
+            DocumentAssembly ass = IlasmParser.TreeToAssembly(tree);
+
+            Assert.AreEqual("IlasmSourceAssembly", ass.GetName().Name);
+            Assert.AreEqual(tree.ToString(), ass.GetDocumentText());
+            Assert.IsTrue(ass.ReflectionOnly);
+            Assert.IsFalse(ass.IsDynamic);
+            Assert.AreEqual(string.Empty, ass.Location);
+            Assert.AreEqual(string.Empty, ass.CodeBase);
+
+            Type[] types = ass.GetTypes();
+            Assert.AreEqual(2, types.Length);
+            Assert.AreEqual(".class private Foo { } ", ((DocumentType)types[0]).GetDocumentText());
+            Assert.AreEqual(".class private Bar { } ", ((DocumentType)types[1]).GetDocumentText());
         }
     }
 }

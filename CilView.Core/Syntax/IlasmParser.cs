@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using CilTools.Syntax;
 using CilView.Common;
+using CilView.Core.Documents;
 
 namespace CilView.Core.Syntax
 {
@@ -104,6 +105,29 @@ namespace CilView.Core.Syntax
             {
                 //end of last directive
                 ret.Add(currNode);
+            }
+
+            return ret;
+        }
+
+        /// <summary>
+        /// Transforms syntax tree into a synthesized assembly with a collection of types (third stage of parsing).
+        /// </summary>
+        public static DocumentAssembly TreeToAssembly(DocumentSyntax tree)
+        {
+            DocumentAssembly ret = new DocumentAssembly(tree, "IlasmSourceAssembly");
+            SyntaxNode[] nodes = tree.GetChildNodes();
+
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                if (!(nodes[i] is DocumentSyntax)) continue; //not interested in simple nodes
+
+                DocumentSyntax ds = (DocumentSyntax)nodes[i];
+
+                if (Utils.StringEquals(ds.Name, ".class"))
+                {
+                    ret.AddType(new DocumentType(ret, ds, "Type" + i.ToString()));
+                }
             }
 
             return ret;
