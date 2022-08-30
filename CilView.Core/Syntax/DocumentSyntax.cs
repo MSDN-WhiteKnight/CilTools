@@ -40,6 +40,14 @@ namespace CilView.Core.Syntax
             this._name = name;
         }
 
+        public DocumentSyntax(string name, bool isInvalid, string parserDiagnostics)
+        {
+            this._children = new List<SyntaxNode>(100);
+            this._name = name;
+            this._isInvalid = isInvalid;
+            this._parserDiagnostics = parserDiagnostics;
+        }
+
         public void Add(SyntaxNode node)
         {
             this._children.Add(node);

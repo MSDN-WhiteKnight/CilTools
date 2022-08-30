@@ -170,7 +170,8 @@ namespace CilView.Tests
             SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
             DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
             tree = IlasmParser.ParseTopLevelDirectives(tree);
-            Assert.AreEqual(il, tree.ToString());
+            DocumentAssembly ass = IlasmParser.TreeToAssembly(tree);
+            Assert.AreEqual(il, ass.GetDocumentText());
         }
 
         [TestMethod]        
@@ -183,8 +184,14 @@ namespace CilView.Tests
             SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
             DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
             tree = IlasmParser.ParseTopLevelDirectives(tree);
-            Assert.AreEqual(1, tree.GetChildNodes().Length);
-            Assert.AreEqual(il, tree.ToString());
+            DocumentAssembly ass = IlasmParser.TreeToAssembly(tree);
+
+            Assert.AreEqual(1, ass.Syntax.GetChildNodes().Length);
+            Assert.AreEqual(il, ass.GetDocumentText());
+            Type[] types = ass.GetTypes();
+            Assert.AreEqual(1, types.Length);
+            Assert.AreEqual(typeof(SampleMethods).FullName, types[0].FullName);
+            Assert.AreEqual("SampleMethods", types[0].Name);
         }
 
         [TestMethod]
@@ -217,11 +224,28 @@ namespace CilView.Tests
             Assert.IsFalse(ass.IsDynamic);
             Assert.AreEqual(string.Empty, ass.Location);
             Assert.AreEqual(string.Empty, ass.CodeBase);
+            Assert.AreEqual("IlasmSourceAssembly", ass.FullName);
+            Assert.AreEqual("IlasmSourceAssembly", ass.ToString());
 
             Type[] types = ass.GetTypes();
             Assert.AreEqual(2, types.Length);
             Assert.AreEqual(".class private Foo { } ", ((DocumentType)types[0]).GetDocumentText());
             Assert.AreEqual(".class private Bar { } ", ((DocumentType)types[1]).GetDocumentText());
+            Assert.AreEqual("Foo", types[0].FullName);
+            Assert.AreEqual("Bar", types[1].FullName);
+            Assert.AreEqual("Foo", types[0].Name);
+            Assert.AreEqual("Bar", types[1].Name);
+            Assert.AreEqual("Foo", types[0].ToString());
+            Assert.AreEqual("Bar", types[1].ToString());
+
+            //equality is used by WPF so we need to ensure it does not throw
+            Assert.AreEqual(types[0], types[0]);
+            Assert.AreEqual(types[1], types[1]);
+            Assert.AreNotEqual(types[0], types[1]);
+            Assert.AreNotEqual(types[0], typeof(object));
+            Assert.AreNotEqual(types[1], typeof(object));
+            AssertThat.DoesNotThrow(() => { int _ = types[0].GetHashCode(); });
+            AssertThat.DoesNotThrow(() => { int _ = types[1].GetHashCode(); });
         }
     }
 }

@@ -71,7 +71,7 @@ namespace CilView.Core.Syntax
         /// </summary>
         public static DocumentSyntax ParseTopLevelDirectives(DocumentSyntax tree)
         {
-            DocumentSyntax ret = new DocumentSyntax(tree.Name);
+            DocumentSyntax ret = new DocumentSyntax(tree.Name, tree.IsInvalid, tree.ParserDiagnostics);
             SyntaxNode[] nodes = tree.GetChildNodes();
             bool inDir = false;
             DocumentSyntax currNode = ret;
@@ -110,6 +110,25 @@ namespace CilView.Core.Syntax
             return ret;
         }
 
+        static string FindFirstIdentifier(DocumentSyntax ds)
+        {
+            // .class ... Foo ... {
+
+            foreach (SyntaxNode node in ds.EnumerateChildNodes())
+            {
+                if (node is IdentifierSyntax)
+                {
+                    return ((IdentifierSyntax)node).Content;
+                }
+                else if (node is PunctuationSyntax)
+                {
+                    if (Utils.StringEquals(((PunctuationSyntax)node).Content, "{")) break;
+                }
+            }
+
+            return string.Empty;
+        }
+
         /// <summary>
         /// Transforms syntax tree into a synthesized assembly with a collection of types (third stage of parsing).
         /// </summary>
@@ -126,7 +145,11 @@ namespace CilView.Core.Syntax
 
                 if (Utils.StringEquals(ds.Name, ".class"))
                 {
-                    ret.AddType(new DocumentType(ret, ds, "Type" + i.ToString()));
+                    string typeName = FindFirstIdentifier(ds);
+
+                    if (string.IsNullOrEmpty(typeName)) typeName = "Type" + i.ToString();
+
+                    ret.AddType(new DocumentType(ret, ds, typeName));
                 }
             }
 

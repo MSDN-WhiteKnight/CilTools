@@ -63,7 +63,7 @@ namespace CilView.Core.Documents
             }
         }
 
-        public override Type UnderlyingSystemType => throw new NotImplementedException();
+        public override Type UnderlyingSystemType => null;
 
         public override string Name
         {
@@ -215,6 +215,35 @@ namespace CilView.Core.Documents
         protected override bool IsPrimitiveImpl()
         {
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            // Called by WPF - must not throw!
+            return this._syntax.GetHashCode();
+        }
+
+        public override bool Equals(object o)
+        {
+            // Called by WPF - must not throw!
+            if (o is DocumentType)
+            {
+                return this._syntax.Equals(((DocumentType)o).Syntax);
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        public override string ToString()
+        {
+            // Called by WPF - must not throw!
+            string ret = this._fullname;
+
+            if (string.IsNullOrEmpty(ret)) ret = "(DocumentType)";
+
+            return ret;
         }
     }
 }

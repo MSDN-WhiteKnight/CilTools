@@ -45,6 +45,8 @@ namespace CilView.Core.Documents
         {
             return this._asn;
         }
+        
+        public override string FullName => this._asn.FullName; // Called by WPF - must not throw!
 
         public override Type[] GetTypes()
         {

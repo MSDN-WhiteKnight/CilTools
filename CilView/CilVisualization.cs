@@ -15,6 +15,7 @@ using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
+using CilView.Core.Documents;
 using CilView.Core.Syntax;
 using CilView.SourceCode;
 using CilView.UI.Controls;
@@ -391,7 +392,20 @@ namespace CilView
             fd.TextAlignment = TextAlignment.Left;
             fd.FontFamily = new FontFamily("Courier New");
 
-            IEnumerable<SyntaxNode> tree = SyntaxNode.GetTypeDefSyntax(t);
+            IEnumerable<SyntaxNode> tree;
+
+            if (t is DocumentType)
+            {
+                //synthesized type that contains IL - no need to disassemble
+                DocumentType dt = (DocumentType)t;
+                tree = dt.Syntax.EnumerateChildNodes();
+            }
+            else
+            {
+                //disassemble type
+                tree = SyntaxNode.GetTypeDefSyntax(t);
+            }
+
             StringBuilder sb = new StringBuilder(500);
             StringWriter wr = new StringWriter(sb);
             Paragraph par = new Paragraph();

@@ -186,11 +186,10 @@ namespace CilView
                 else if (FileUtils.HasCilSourceExtension(file))
                 {
                     //IL source file
-                    string content = File.ReadAllText(file);
-                    string title = Path.GetFileName(file);
-                    this.SetSource(null);
-                    this.cilbrowser.NavigateToSourceDocument(content, title);
-
+                    DocumentAssemblySource das = new DocumentAssemblySource(file);
+                    this.SetSource(das);
+                    this.cilbrowser.NavigateToSourceDocument(das.Content, das.Title);
+                    cbAssembly.SelectedIndex = 0;
                     return; //no need to load assembly
                 }
                 else
