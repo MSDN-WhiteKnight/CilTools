@@ -425,7 +425,7 @@ namespace CilView
             return scroll;
         }
 
-        public static UIElement VisualizeSourceText(string text)
+        public static UIElement VisualizeSourceText(DocumentSyntax src)
         {
             FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
             scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
@@ -436,7 +436,7 @@ namespace CilView
             fd.TextAlignment = TextAlignment.Left;
             fd.FontFamily = new FontFamily("Courier New");
             
-            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(text);
+            SyntaxNode[] nodes = src.GetChildNodes();
             Paragraph par = new Paragraph();
             VisualizeGraphContext ctx = new VisualizeGraphContext();
 

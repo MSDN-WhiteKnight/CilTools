@@ -1,17 +1,14 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Navigation;
 using CilTools.BytecodeAnalysis;
+using CilView.Core.Documents;
 
 namespace CilView.UI.Controls
 {
@@ -77,7 +74,7 @@ namespace CilView.UI.Controls
             this.tbCurrLocation.Text = sb.ToString();
         }
 
-        public CilBrowserPage(string contentText, string filename)
+        public CilBrowserPage(DocumentAssembly content, string contentText, string filename)
         {
             InitializeComponent();           
             
@@ -86,7 +83,7 @@ namespace CilView.UI.Controls
             
             if (contentText.Length < 1024*1024)
             {
-                gridContent.Children.Add(CilVisualization.VisualizeSourceText(contentText));
+                gridContent.Children.Add(CilVisualization.VisualizeSourceText(content.Syntax));
             }
             else
             {
