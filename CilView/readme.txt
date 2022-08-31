@@ -162,8 +162,3 @@ Using auto-update requires stable internet connection and access to the https://
 ---------------------------------------------
 
 Copyright (c) 2022,  MSDN.WhiteKnight
-
-This CIL View distribution contains the binary code of the following libraries:
-
-- ClrMD (https://github.com/microsoft/clrmd): Copyright (c) .NET Foundation and Contributors, MIT License. 
-- Newtonsoft.Json (https://github.com/JamesNK/Newtonsoft.Json/): Copyright (c) 2007 James Newton-King, MIT License.

@@ -431,7 +431,13 @@ Author: MSDN.WhiteKnight
 Repository: https://github.com/MSDN-WhiteKnight/CilTools
 License: BSD 2.0
 
-This CIL View distribution contains binary code of the ClrMD library (https://github.com/microsoft/clrmd); Copyright (c) .NET Foundation and Contributors, MIT License.
+This CIL View distribution contains the binary code of the following libraries:
+
+- .NET Libraries (https://github.com/dotnet/runtime/): Copyright (c) .NET Foundation and Contributors, MIT License.
+- ClrMD (https://github.com/microsoft/clrmd/): Copyright (c) .NET Foundation and Contributors, MIT License. 
+- Newtonsoft.Json (https://github.com/JamesNK/Newtonsoft.Json/): Copyright (c) 2007 James Newton-King, MIT License.
+
+See Help - Credits for more information.
 ", 
 typeof(MainWindow).Assembly.GetName().Version.ToString());
 
@@ -1013,6 +1019,27 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
                 wnd.Title = "Assembly file properties";
                 wnd.Text = AssemblyInfoProvider.GetAssemblyInfo(ass);
                 wnd.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+        }
+
+        private void miCredits_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string text = "";
+                string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string path = Path.Combine(dir, "credits.txt");
+                text = File.ReadAllText(path);
+
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Text = text;
+                wnd.Title = "Credits";
+                wnd.Show();
             }
             catch (Exception ex)
             {

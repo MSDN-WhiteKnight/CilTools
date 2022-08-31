@@ -289,6 +289,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Build\CsTemplate.xml" />
     <EmbeddedResource Include="Build\VbTemplate.xml" />
+    <Content Include="credits.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

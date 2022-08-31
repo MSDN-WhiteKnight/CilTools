@@ -26,7 +26,8 @@ $fileList = "CilTools.BytecodeAnalysis.dll",
             "System.Collections.Immutable.dll",
             "Newtonsoft.Json.dll",
             "license.txt",
-            "ReadMe.txt"
+            "ReadMe.txt",
+            "credits.txt"
 
 foreach ($file in $fileList)
 {

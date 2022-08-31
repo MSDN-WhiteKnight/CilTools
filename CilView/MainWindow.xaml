@@ -46,6 +46,7 @@
                 <MenuItem x:Name="miFeedback" Header="Feedback" Click="miFeedback_Click"/>
                 <Separator/>
                 <MenuItem x:Name="miAbout" Header="About" Click="miAbout_Click"/>
+                <MenuItem x:Name="miCredits" Header="Credits" Click="miCredits_Click"/>
             </MenuItem>
         </Menu>
         <Button x:Name="bOpenFile" Content="Open file" HorizontalAlignment="Left" Height="24" Margin="10,30,0,0" VerticalAlignment="Top" 
