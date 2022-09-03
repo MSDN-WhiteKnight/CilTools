@@ -144,5 +144,14 @@ namespace CilView.Tests
 
             CollectionAssert.AreEqual(expected, tokens);
         }
+
+        [TestMethod]
+        public void Test_TokenReader_GenericArity()
+        {
+            string s = "ValueTuple`1<T>";
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
+            string[] tokens = reader.ReadAll().ToArray();
+            CollectionAssert.AreEqual(new string[] { "ValueTuple`1", "<", "T", ">" }, tokens);
+        }
     }
 }

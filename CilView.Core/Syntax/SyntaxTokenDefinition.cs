@@ -62,7 +62,12 @@ namespace CilView.Core.Syntax
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
             char c = reader.PeekChar();
-            return char.IsLetterOrDigit(c) || c == '.' || c == '_';
+
+            // Backtick should not be allowed according to ilasm grammar in ECMA-335 spec,
+            // but we include it here so the generic type name with suffix would be a single token,
+            // for example, "ValueTuple`1".
+
+            return char.IsLetterOrDigit(c) || c == '.' || c == '_' || c == '`';
         }
     }
 

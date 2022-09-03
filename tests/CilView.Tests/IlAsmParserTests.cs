@@ -161,6 +161,15 @@ namespace CilView.Tests
             Assert.AreEqual("(All text)", tree.Name);
         }
 
+        static IlasmAssembly ParseAssembly(string il)
+        {
+            SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
+            DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
+            tree = IlasmParser.ParseTopLevelDirectives(tree);
+            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
+            return ass;
+        }
+
         const string Data_EscapedNames = @".assembly extern 'Bobby Tables' {}
 .assembly 'Foo Bar' {}
 .class public '123' {}
@@ -172,6 +181,7 @@ namespace CilView.Tests
         [DataRow(".class public A { .method static void B (int32 x) cil managed { nop } }")]
         [DataRow(TokenReaderTests.Data_MultilineString, DisplayName = "Test_IlAsmParser_Roundtrip(Data_MultilineString)")]
         [DataRow(Data_EscapedNames, DisplayName = "Test_IlAsmParser_Roundtrip(Data_EscapedNames)")]
+        [DataRow(".class public System.ValueTuple`2<T1,T2> { }")]
         public void Test_IlAsmParser_Roundtrip(string il)
         {
             SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
@@ -294,6 +304,39 @@ namespace CilView.Tests
             Assert.AreEqual("Contoso.Foo", types[0].FullName);
             Assert.AreEqual("Contoso", types[0].Namespace);
             Assert.AreEqual("Foo", types[0].Name);
+        }
+
+        [TestMethod]
+        public void Test_IlAsmParser_GenericType()
+        {
+            string il = @"
+.class public sequential ansi serializable sealed beforefieldinit System.ValueTuple`1<T1>
+    extends System.ValueType
+    implements class System.IEquatable`1<valuetype System.ValueTuple`1<!T1>>
+{
+  .method public hidebysig newslot virtual final instance bool 
+          Equals(valuetype System.ValueTuple`1<!T1> other) cil managed
+  {
+    .maxstack  8
+    call       class System.Collections.Generic.EqualityComparer`1<!0> 
+               class System.Collections.Generic.EqualityComparer`1<!T1>::get_Default()
+    ldarg.0
+    ldfld      !0 valuetype System.ValueTuple`1<!T1>::Item1
+    ldarg.1
+    ldfld      !0 valuetype System.ValueTuple`1<!T1>::Item1
+    callvirt   instance bool class System.Collections.Generic.EqualityComparer`1<!T1>::Equals(!0, !0)
+    ret
+  } // end of method ValueTuple`1::Equals
+}";
+            IlasmAssembly ass = ParseAssembly(il);
+
+            Assert.AreEqual(1, ass.Syntax.GetChildNodes().Length);
+            Assert.AreEqual(il, ass.GetDocumentText());
+            Type[] types = ass.GetTypes();
+            Assert.AreEqual(1, types.Length);
+            Assert.AreEqual("System.ValueTuple`1", types[0].FullName);
+            Assert.AreEqual("System", types[0].Namespace);
+            Assert.AreEqual("ValueTuple`1", types[0].Name);
         }
     }
 }

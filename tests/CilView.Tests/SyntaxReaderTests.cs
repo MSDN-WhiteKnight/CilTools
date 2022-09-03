@@ -167,6 +167,7 @@ namespace CilView.Tests
         [DataRow(".method public hidebysig static void 'method'() cil managed")]
         [DataRow("ldc.i4.1 //load integer value onto the stack\r\nadd")]
         [DataRow(TokenReaderTests.Data_MultilineString, DisplayName = "Test_SyntaxReader_Roundtrip(Data_MultilineString)")]
+        [DataRow("System.ValueTuple`2<T1,T2>")]
         public void Test_SyntaxReader_Roundtrip(string src)
         {
             SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(src);
@@ -203,6 +204,46 @@ namespace CilView.Tests
             }
             
             Assert.IsTrue(found);
+        }
+
+        [TestMethod]
+        public void Test_SyntaxReader_GenericArity()
+        {
+            // Generic type name with arity suffix should be a single token.
+            // Not clear whether it is the right thing with respect to grammar, but enabling this makes 
+            // implementing types parsing in documents easier.
+
+            string s = "System.ValueTuple`1<T>";
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(s);
+            Assert.AreEqual(4, nodes.Length);
+
+            SyntaxNode node = nodes[0];
+            Assert.IsTrue(node is IdentifierSyntax);
+            Assert.AreEqual("System.ValueTuple`1", (node as IdentifierSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("System.ValueTuple`1", node.ToString());
+
+            node = nodes[1];
+            Assert.IsTrue(node is PunctuationSyntax);
+            Assert.AreEqual("<", (node as PunctuationSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("<", node.ToString());
+
+            node = nodes[2];
+            Assert.IsTrue(node is IdentifierSyntax);
+            Assert.AreEqual("T", (node as IdentifierSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("T", node.ToString());
+
+            node = nodes[3];
+            Assert.IsTrue(node is PunctuationSyntax);
+            Assert.AreEqual(">", (node as PunctuationSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual(">", node.ToString());
         }
     }
 }
