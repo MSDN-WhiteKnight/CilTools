@@ -8,18 +8,18 @@ using System.Reflection;
 using System.Text;
 using CilView.Core.Syntax;
 
-namespace CilView.Core.Documents
+namespace CilView.Core.DocumentModel
 {
     /// <summary>
-    /// Synthesized type that represents the type definition syntax in source document
+    /// Synthesized type that represents the type definition syntax in CIL assembler source document
     /// </summary>
-    public class DocumentType : Type
+    public class IlasmType : Type
     {
-        DocumentAssembly _owner;
+        IlasmAssembly _owner;
         DocumentSyntax _syntax;
         string _fullname;
 
-        public DocumentType(DocumentAssembly owner, DocumentSyntax syntax, string name)
+        public IlasmType(IlasmAssembly owner, DocumentSyntax syntax, string name)
         {
             this._owner = owner;
             this._syntax = syntax;
@@ -226,9 +226,9 @@ namespace CilView.Core.Documents
         public override bool Equals(object o)
         {
             // Called by WPF - must not throw!
-            if (o is DocumentType)
+            if (o is IlasmType)
             {
-                return this._syntax.Equals(((DocumentType)o).Syntax);
+                return this._syntax.Equals(((IlasmType)o).Syntax);
             }
             else
             {
@@ -241,7 +241,7 @@ namespace CilView.Core.Documents
             // Called by WPF - must not throw!
             string ret = this._fullname;
 
-            if (string.IsNullOrEmpty(ret)) ret = "(DocumentType)";
+            if (string.IsNullOrEmpty(ret)) ret = "(IlasmType)";
 
             return ret;
         }

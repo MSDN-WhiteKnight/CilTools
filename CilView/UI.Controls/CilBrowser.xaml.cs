@@ -15,7 +15,7 @@ using System.Collections.ObjectModel;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using CilView.Common;
-using CilView.Core.Documents;
+using CilView.Core.DocumentModel;
 
 namespace CilView.UI.Controls
 {
@@ -175,7 +175,7 @@ namespace CilView.UI.Controls
             this.text = String.Empty;
         }
 
-        public void NavigateToSourceDocument(DocumentAssembly content, string contentText, string filename)
+        public void NavigateToSourceDocument(IlasmAssembly content, string contentText, string filename)
         {
             CilBrowserPage page = new CilBrowserPage(content, contentText, filename);
             page.Title = filename;

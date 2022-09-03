@@ -9,7 +9,7 @@ using System.Reflection;
 using System.Text;
 using CilTools.Runtime;
 using CilTools.Syntax;
-using CilView.Core.Documents;
+using CilView.Core.DocumentModel;
 using CilView.Core.Syntax;
 
 namespace CilView
@@ -17,13 +17,13 @@ namespace CilView
     /// <summary>
     /// Provides synthesized assemblies that represent the content of the .il source document
     /// </summary>
-    sealed class DocumentAssemblySource : AssemblySource
+    sealed class IlasmAssemblySource : AssemblySource
     {
-        DocumentAssembly _ass;
+        IlasmAssembly _ass;
         string _content;
         string _title;
 
-        public DocumentAssemblySource(string path)
+        public IlasmAssemblySource(string path)
         {
             AssemblySource.TypeCacheClear();
             ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
@@ -39,7 +39,7 @@ namespace CilView
             this.Methods = new ObservableCollection<MethodBase>();
         }
 
-        public DocumentAssembly Assembly
+        public IlasmAssembly Assembly
         {
             get { return this._ass; }
         }

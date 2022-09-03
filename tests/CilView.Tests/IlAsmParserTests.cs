@@ -7,7 +7,7 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
-using CilView.Core.Documents;
+using CilView.Core.DocumentModel;
 using CilView.Core.Syntax;
 
 namespace CilView.Tests
@@ -170,7 +170,7 @@ namespace CilView.Tests
             SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
             DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
             tree = IlasmParser.ParseTopLevelDirectives(tree);
-            DocumentAssembly ass = IlasmParser.TreeToAssembly(tree);
+            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
             Assert.AreEqual(il, ass.GetDocumentText());
         }
 
@@ -184,7 +184,7 @@ namespace CilView.Tests
             SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
             DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
             tree = IlasmParser.ParseTopLevelDirectives(tree);
-            DocumentAssembly ass = IlasmParser.TreeToAssembly(tree);
+            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
 
             Assert.AreEqual(1, ass.Syntax.GetChildNodes().Length);
             Assert.AreEqual(il, ass.GetDocumentText());
@@ -216,21 +216,21 @@ namespace CilView.Tests
             };
 
             DocumentSyntax tree = new DocumentSyntax(tokens, "(All text)", false, string.Empty);
-            DocumentAssembly ass = IlasmParser.TreeToAssembly(tree);
+            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
 
-            Assert.AreEqual("IlasmSourceAssembly", ass.GetName().Name);
+            Assert.AreEqual("IlasmAssembly", ass.GetName().Name);
             Assert.AreEqual(tree.ToString(), ass.GetDocumentText());
             Assert.IsTrue(ass.ReflectionOnly);
             Assert.IsFalse(ass.IsDynamic);
             Assert.AreEqual(string.Empty, ass.Location);
             Assert.AreEqual(string.Empty, ass.CodeBase);
-            Assert.AreEqual("IlasmSourceAssembly", ass.FullName);
-            Assert.AreEqual("IlasmSourceAssembly", ass.ToString());
+            Assert.AreEqual("IlasmAssembly", ass.FullName);
+            Assert.AreEqual("IlasmAssembly", ass.ToString());
 
             Type[] types = ass.GetTypes();
             Assert.AreEqual(2, types.Length);
-            Assert.AreEqual(".class private Foo { } ", ((DocumentType)types[0]).GetDocumentText());
-            Assert.AreEqual(".class private Bar { } ", ((DocumentType)types[1]).GetDocumentText());
+            Assert.AreEqual(".class private Foo { } ", ((IlasmType)types[0]).GetDocumentText());
+            Assert.AreEqual(".class private Bar { } ", ((IlasmType)types[1]).GetDocumentText());
             Assert.AreEqual("Foo", types[0].FullName);
             Assert.AreEqual("Bar", types[1].FullName);
             Assert.AreEqual("Foo", types[0].Name);

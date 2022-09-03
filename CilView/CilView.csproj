@@ -114,7 +114,7 @@
     <Compile Include="Build\ProjectInfo.cs" />
     <Compile Include="Common\Audio.cs" />
     <Compile Include="Common\WpfUtils.cs" />
-    <Compile Include="DocumentAssemblySource.cs" />
+    <Compile Include="IlasmAssemblySource.cs" />
     <Compile Include="Exceptions\ExceptionInfo.cs" />
     <Compile Include="CilVisualization.cs" />
     <Compile Include="ErrorHandler.cs" />

@@ -8,21 +8,21 @@ using System.Reflection;
 using System.Text;
 using CilView.Core.Syntax;
 
-namespace CilView.Core.Documents
+namespace CilView.Core.DocumentModel
 {
     /// <summary>
-    /// Synthesized assembly that represents the content of parsed source text
+    /// Synthesized assembly that represents the content of parsed CIL assembler source text
     /// </summary>
-    public class DocumentAssembly : Assembly
+    public class IlasmAssembly : Assembly
     {
         DocumentSyntax _wholeDocument;
-        List<DocumentType> _types;
+        List<IlasmType> _types;
         AssemblyName _asn;
 
-        public DocumentAssembly(DocumentSyntax doc, string name)
+        public IlasmAssembly(DocumentSyntax doc, string name)
         {
             this._wholeDocument = doc;
-            this._types = new List<DocumentType>();
+            this._types = new List<IlasmType>();
             this._asn = new AssemblyName(name);
         }
 
@@ -36,7 +36,7 @@ namespace CilView.Core.Documents
             return this._wholeDocument.ToString();
         }
 
-        public void AddType(DocumentType type)
+        public void AddType(IlasmType type)
         {
             this._types.Add(type);
         }

@@ -8,7 +8,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using CilTools.BytecodeAnalysis;
-using CilView.Core.Documents;
+using CilView.Core.DocumentModel;
 
 namespace CilView.UI.Controls
 {
@@ -74,7 +74,7 @@ namespace CilView.UI.Controls
             this.tbCurrLocation.Text = sb.ToString();
         }
 
-        public CilBrowserPage(DocumentAssembly content, string contentText, string filename)
+        public CilBrowserPage(IlasmAssembly content, string contentText, string filename)
         {
             InitializeComponent();           
             

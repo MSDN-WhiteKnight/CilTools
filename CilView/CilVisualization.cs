@@ -15,7 +15,7 @@ using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
-using CilView.Core.Documents;
+using CilView.Core.DocumentModel;
 using CilView.Core.Syntax;
 using CilView.SourceCode;
 using CilView.UI.Controls;
@@ -394,10 +394,10 @@ namespace CilView
 
             IEnumerable<SyntaxNode> tree;
 
-            if (t is DocumentType)
+            if (t is IlasmType)
             {
                 //synthesized type that contains IL - no need to disassemble
-                DocumentType dt = (DocumentType)t;
+                IlasmType dt = (IlasmType)t;
                 tree = dt.Syntax.EnumerateChildNodes();
             }
             else
