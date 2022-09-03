@@ -392,10 +392,11 @@ namespace CilView
         {
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.RestoreDirectory = true;
-            dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|" +
-                "Code files (*.cs,*.vb)|*.cs;*.vb|" +
-                "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|" +
-                "IL source files (*.il,*.txt)|*.il;*.txt|All files|*";
+            dlg.Filter = "Supported file types|*.exe;*.dll;*.cs;*.vb;*.csproj;*.vbproj;*.il;*.txt|" +
+                ".NET Assemblies|*.exe;*.dll|" +
+                "Code files|*.cs;*.vb|" +
+                "MSBuild projects|*.csproj;*.vbproj|" +
+                "IL source files|*.il;*.txt|All files|*";
 
             if (dlg.ShowDialog(this) == true)
             {
