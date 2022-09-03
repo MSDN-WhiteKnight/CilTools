@@ -161,10 +161,17 @@ namespace CilView.Tests
             Assert.AreEqual("(All text)", tree.Name);
         }
 
+        const string Data_EscapedNames = @".assembly extern 'Bobby Tables' {}
+.assembly 'Foo Bar' {}
+.class public '123' {}
+.class public '*' {}
+";
+
         [TestMethod]
         [DataRow(".class public Foo { } .class public Bar { }")]
         [DataRow(".class public A { .method static void B (int32 x) cil managed { nop } }")]
-        [DataRow(TokenReaderTests.Data_MultilineString, DisplayName = "Test_TokensToInitialTree_Roundtrip(Data_MultilineString)")]
+        [DataRow(TokenReaderTests.Data_MultilineString, DisplayName = "Test_IlAsmParser_Roundtrip(Data_MultilineString)")]
+        [DataRow(Data_EscapedNames, DisplayName = "Test_IlAsmParser_Roundtrip(Data_EscapedNames)")]
         public void Test_IlAsmParser_Roundtrip(string il)
         {
             SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
@@ -246,6 +253,47 @@ namespace CilView.Tests
             Assert.AreNotEqual(types[1], typeof(object));
             AssertThat.DoesNotThrow(() => { int _ = types[0].GetHashCode(); });
             AssertThat.DoesNotThrow(() => { int _ = types[1].GetHashCode(); });
+        }
+
+        [TestMethod]
+        public void Test_TreeToAssembly_Name()
+        {
+            SyntaxNode[] tokens = new SyntaxNode[] {
+                new DocumentSyntax(new SyntaxNode[]{
+                    SyntaxFactory.CreateFromToken(".assembly", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("extern", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("mscorlib", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+                }, ".assembly", false, string.Empty),
+                new DocumentSyntax(new SyntaxNode[]{
+                    SyntaxFactory.CreateFromToken(".assembly", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("TestAssembly", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+                }, ".assembly", false, string.Empty),
+                new DocumentSyntax(new SyntaxNode[]{
+                    SyntaxFactory.CreateFromToken(".class", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("Contoso.Foo", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+                }, ".class", false, string.Empty)
+            };
+
+            DocumentSyntax tree = new DocumentSyntax(tokens, "(All text)", false, string.Empty);
+            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
+
+            Assert.AreEqual("TestAssembly", ass.GetName().Name);
+            Assert.AreEqual(tree.ToString(), ass.GetDocumentText());
+            Assert.AreEqual("TestAssembly", ass.FullName);
+            Assert.AreEqual("TestAssembly", ass.ToString());
+
+            Type[] types = ass.GetTypes();
+            Assert.AreEqual(1, types.Length);            
+            Assert.AreEqual("Contoso.Foo", types[0].FullName);
+            Assert.AreEqual("Contoso", types[0].Namespace);
+            Assert.AreEqual("Foo", types[0].Name);
         }
     }
 }

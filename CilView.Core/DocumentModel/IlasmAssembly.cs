@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -60,5 +61,12 @@ namespace CilView.Core.DocumentModel
         public override string CodeBase => string.Empty;
 
         public override string Location => string.Empty;
+
+        internal void SetName(AssemblyName newName)
+        {
+            Debug.Assert(!string.IsNullOrEmpty(newName.Name));
+
+            this._asn = newName;
+        }
     }
 }

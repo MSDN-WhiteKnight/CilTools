@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using CilTools.Syntax;
 using CilView.Common;
@@ -128,14 +129,41 @@ namespace CilView.Core.Syntax
 
             return string.Empty;
         }
+        
+        static string FindFirstKeyword(DocumentSyntax ds)
+        {
+            // .assembly ... extern ... {
+
+            foreach (SyntaxNode node in ds.EnumerateChildNodes())
+            {
+                if (node is KeywordSyntax)
+                {
+                    KeywordSyntax ks = (KeywordSyntax)node;
+
+                    if (ks.Kind == KeywordKind.DirectiveName) continue;
+
+                    return ks.Content;
+                }
+                else if (node is PunctuationSyntax)
+                {
+                    if (Utils.StringEquals(((PunctuationSyntax)node).Content, "{")) break;
+                }
+            }
+
+            return string.Empty;
+        }
 
         /// <summary>
         /// Transforms syntax tree into a synthesized assembly with a collection of types (third stage of parsing).
         /// </summary>
         public static IlasmAssembly TreeToAssembly(DocumentSyntax tree)
         {
-            IlasmAssembly ret = new IlasmAssembly(tree, "IlasmAssembly");
+            const string defaultName = "IlasmAssembly";
+            IlasmAssembly ret = new IlasmAssembly(tree, defaultName);
             SyntaxNode[] nodes = tree.GetChildNodes();
+            bool foundName = false;
+            AssemblyName an = new AssemblyName();
+            an.Name = defaultName;
 
             for (int i = 0; i < nodes.Length; i++)
             {
@@ -143,7 +171,25 @@ namespace CilView.Core.Syntax
 
                 DocumentSyntax ds = (DocumentSyntax)nodes[i];
 
-                if (Utils.StringEquals(ds.Name, ".class"))
+                if (!foundName && Utils.StringEquals(ds.Name, ".assembly"))
+                {
+                    string firstKeyword = FindFirstKeyword(ds);
+
+                    if (Utils.StringEquals(firstKeyword, "extern"))
+                    {
+                        continue; //not interested in external references
+                    }
+
+                    //assembly manifest
+                    foundName = true;
+                    string assName = FindFirstIdentifier(ds);
+
+                    if (!string.IsNullOrEmpty(assName))
+                    {
+                        an.Name = assName;
+                    }
+                }
+                else if (Utils.StringEquals(ds.Name, ".class"))
                 {
                     string typeName = FindFirstIdentifier(ds);
 
@@ -153,6 +199,8 @@ namespace CilView.Core.Syntax
                 }
             }
 
+            // We only support one assembly definition per .il file currently
+            ret.SetName(an);
             return ret;
         }
     }
