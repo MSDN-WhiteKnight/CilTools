@@ -161,6 +161,25 @@ namespace CilView
             if (this.source.Assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Loads .il source document in background with a progress indicator
+        /// </summary>
+        void OpenDocument(string path)
+        {
+            ProgressWindow pwnd;
+            OpenDocumentOperation op = new OpenDocumentOperation(path);
+            pwnd = new ProgressWindow(op);
+            pwnd.Owner = this;
+            bool? res = pwnd.ShowDialog();
+
+            if (res != true) return;
+            if (op.Result == null) return;
+
+            this.SetSource(op.Result);
+            this.cilbrowser.NavigateToSourceDocument(op.Result.Assembly, op.Result.Content, op.Result.Title);
+            cbAssembly.SelectedIndex = 0;
+        }
+
         void OpenFile(string file)
         {
             try
@@ -186,10 +205,7 @@ namespace CilView
                 else if (FileUtils.HasCilSourceExtension(file))
                 {
                     //IL source file
-                    IlasmAssemblySource ias = new IlasmAssemblySource(file);
-                    this.SetSource(ias);
-                    this.cilbrowser.NavigateToSourceDocument(ias.Assembly, ias.Content, ias.Title);
-                    cbAssembly.SelectedIndex = 0;
+                    this.OpenDocument(file);
                     return; //no need to load assembly
                 }
                 else

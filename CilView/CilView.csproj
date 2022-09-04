@@ -121,6 +121,7 @@
     <Compile Include="Exceptions\TypeExceptionInfo.cs" />
     <Compile Include="FileSystem\AssemblyFile.cs" />
     <Compile Include="FileSystem\RuntimeDir.cs" />
+    <Compile Include="OpenDocumentOperation.cs" />
     <Compile Include="SearchResult.cs" />
     <Compile Include="SourceCode\SourceCodeUI.cs" />
     <Compile Include="SourceCode\SourceLinkEntry.cs" />
