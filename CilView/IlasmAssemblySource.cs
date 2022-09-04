@@ -30,9 +30,7 @@ namespace CilView
             this._content = File.ReadAllText(path);
             this._title = Path.GetFileName(path);
             SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(this._content);
-            DocumentSyntax tree = IlasmParser.TokensToInitialTree(nodes);
-            tree = IlasmParser.ParseTopLevelDirectives(tree);
-            this._ass = IlasmParser.TreeToAssembly(tree);
+            this._ass = IlasmParser.ParseAssembly(nodes);
             ret.Add(this._ass);
             this.Assemblies = ret;
             this.Types = new ObservableCollection<Type>();

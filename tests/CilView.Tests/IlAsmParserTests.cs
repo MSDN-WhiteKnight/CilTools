@@ -164,9 +164,7 @@ namespace CilView.Tests
         static IlasmAssembly ParseAssembly(string il)
         {
             SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
-            DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
-            tree = IlasmParser.ParseTopLevelDirectives(tree);
-            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
+            IlasmAssembly ass = IlasmParser.ParseAssembly(tokens);
             return ass;
         }
 
@@ -184,10 +182,7 @@ namespace CilView.Tests
         [DataRow(".class public System.ValueTuple`2<T1,T2> { }")]
         public void Test_IlAsmParser_Roundtrip(string il)
         {
-            SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
-            DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
-            tree = IlasmParser.ParseTopLevelDirectives(tree);
-            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
+            IlasmAssembly ass = ParseAssembly(il);
             Assert.AreEqual(il, ass.GetDocumentText());
         }
 
@@ -197,11 +192,7 @@ namespace CilView.Tests
             Type t = typeof(SampleMethods);
             IEnumerable<SyntaxNode> tdef = SyntaxNode.GetTypeDefSyntax(t, true, new DisassemblerParams());
             string il = Utils.SyntaxToString(tdef);
-
-            SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
-            DocumentSyntax tree = IlasmParser.TokensToInitialTree(tokens);
-            tree = IlasmParser.ParseTopLevelDirectives(tree);
-            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
+            IlasmAssembly ass = ParseAssembly(il);
 
             Assert.AreEqual(1, ass.Syntax.GetChildNodes().Length);
             Assert.AreEqual(il, ass.GetDocumentText());

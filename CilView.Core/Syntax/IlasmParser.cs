@@ -203,5 +203,16 @@ namespace CilView.Core.Syntax
             ret.SetName(an);
             return ret;
         }
+
+        /// <summary>
+        /// Transforms tokens sequence into a synthesized assembly with a collection of types 
+        /// (runs the complete parsing pipeline).
+        /// </summary>
+        public static IlasmAssembly ParseAssembly(IEnumerable<SyntaxNode> tokens)
+        {
+            DocumentSyntax tree = TokensToInitialTree(tokens);
+            tree = ParseTopLevelDirectives(tree);
+            return TreeToAssembly(tree);
+        }
     }
 }
