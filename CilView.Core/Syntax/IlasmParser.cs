@@ -70,7 +70,12 @@ namespace CilView.Core.Syntax
         /// Transforms the syntax tree so every top level directive (.assembly, .class) with its content 
         /// is represented as subnode (second stage of parsing).
         /// </summary>
-        public static DocumentSyntax ParseTopLevelDirectives(DocumentSyntax tree)
+        /// <param name="tree">Syntax tree returned by <c>TokensToInitialTree</c>, or its subtree</param>
+        /// <param name="isBlock">
+        /// <c>true</c> if the tree represents a block inside the document (i.e. <c>{something}</c>), 
+        /// <c>false</c> if the tree represents a root of the document
+        /// </param>
+        public static DocumentSyntax ParseTopLevelDirectives(DocumentSyntax tree, bool isBlock)
         {
             DocumentSyntax ret = new DocumentSyntax(tree.Name, tree.IsInvalid, tree.ParserDiagnostics);
             SyntaxNode[] nodes = tree.GetChildNodes();
@@ -96,6 +101,13 @@ namespace CilView.Core.Syntax
                         inDir = true;
                     }
                 }
+                else if (inDir && i == nodes.Length - 1 && isBlock)
+                {
+                    //for a block, the trailing brace should not be included in the last directive
+                    ret.Add(currNode); //add previous directive
+                    ret.Add(nodes[i]); //add final node
+                    inDir = false; //end of last directive
+                }
                 else
                 {
                     currNode.Add(nodes[i]);
@@ -109,6 +121,34 @@ namespace CilView.Core.Syntax
             }
 
             return ret;
+        }
+        
+        static DocumentSyntax ParseInnerDirectives(DocumentSyntax tree)
+        {
+            DocumentSyntax innerBlock = null;
+            int innerBlockIndex = -1;
+            SyntaxNode[] subnodes = tree.GetChildNodes();
+
+            //find first compound syntax node in subnodes
+            for (int i = 0; i < subnodes.Length; i++)
+            {
+                SyntaxNode subnode = subnodes[i];
+
+                if (subnode is DocumentSyntax)
+                {
+                    innerBlock = (DocumentSyntax)subnode;
+                    innerBlockIndex = i;
+                    break;
+                }
+            }
+
+            //if not found, just return the original tree
+            if (innerBlock == null) return tree;
+            
+            //return the transformed tree
+            innerBlock = ParseTopLevelDirectives(innerBlock, true);
+            subnodes[innerBlockIndex] = innerBlock;
+            return new DocumentSyntax(subnodes, tree.Name, tree.IsInvalid, tree.ParserDiagnostics);
         }
 
         static string FindFirstIdentifier(DocumentSyntax ds)
@@ -211,7 +251,26 @@ namespace CilView.Core.Syntax
         public static IlasmAssembly ParseAssembly(IEnumerable<SyntaxNode> tokens)
         {
             DocumentSyntax tree = TokensToInitialTree(tokens);
-            tree = ParseTopLevelDirectives(tree);
+            tree = ParseTopLevelDirectives(tree, false);
+
+            //Parse directives on the second nesting level, so, for example,
+            //".ver 1:0:0:0" will be grouped under .assembly.
+            //We don't do full recursive walk here to save resources.
+            SyntaxNode[] nodes = tree.GetChildNodes();
+
+            for (int i = 0; i < nodes.Length; i++)
+            {
+                if (!(nodes[i] is DocumentSyntax)) continue;
+
+                DocumentSyntax subtree = (DocumentSyntax)nodes[i];
+                subtree = ParseInnerDirectives(subtree);
+                nodes[i] = subtree;
+            }
+
+            //Reconstruct tree from transformed nodes
+            tree = new DocumentSyntax(nodes, tree.Name, tree.IsInvalid, tree.ParserDiagnostics);
+
+            //Construct final assembly from tree
             return TreeToAssembly(tree);
         }
     }

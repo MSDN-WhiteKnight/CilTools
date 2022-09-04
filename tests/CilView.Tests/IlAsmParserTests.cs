@@ -151,7 +151,7 @@ namespace CilView.Tests
             };
 
             DocumentSyntax initialTree = new DocumentSyntax(tokens, "(All text)", false, string.Empty);
-            DocumentSyntax tree = IlasmParser.ParseTopLevelDirectives(initialTree);
+            DocumentSyntax tree = IlasmParser.ParseTopLevelDirectives(initialTree, false);
             SyntaxNode[] items = tree.GetChildNodes();
 
             Assert.AreEqual(3, items.Length);
@@ -159,6 +159,49 @@ namespace CilView.Tests
             Assert.AreEqual(".class private Foo { .field private int32 X } ", items[1].ToString());
             Assert.AreEqual(".class private Bar { .field private string Y } ", items[2].ToString());
             Assert.AreEqual("(All text)", tree.Name);
+        }
+
+        [TestMethod]
+        public void Test_ParseTopLevelDirectives_Block()
+        {
+            SyntaxNode[] tokens = new SyntaxNode[] {
+                SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                SyntaxFactory.CreateFromToken(".method", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("Foo", string.Empty, " "),
+                new DocumentSyntax(new SyntaxNode[]{
+                    SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("nop", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("ret", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+                }, string.Empty, false, string.Empty),
+                SyntaxFactory.CreateFromToken(".method", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("private", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("Bar", string.Empty, " "),
+                new DocumentSyntax(new SyntaxNode[]{
+                    SyntaxFactory.CreateFromToken("{", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("nop", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("ret", string.Empty, " "),
+                    SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+                }, string.Empty, false, string.Empty),
+                SyntaxFactory.CreateFromToken("}", string.Empty, " ")
+            };
+
+            DocumentSyntax initialTree = new DocumentSyntax(tokens, "(All text)", false, string.Empty);
+            DocumentSyntax tree = IlasmParser.ParseTopLevelDirectives(initialTree, true);
+            SyntaxNode[] items = tree.GetChildNodes();
+
+            Assert.AreEqual(4, items.Length);
+            Assert.AreEqual("{ ", items[0].ToString());
+            Assert.AreEqual(".method private Foo { nop ret } ", items[1].ToString());
+            Assert.AreEqual(".method private Bar { nop ret } ", items[2].ToString());
+            Assert.AreEqual("} ", items[3].ToString());
+
+            Assert.IsTrue(items[1] is DocumentSyntax);
+            Assert.IsTrue(items[2] is DocumentSyntax);
+            Assert.AreEqual("(All text)", tree.Name);
+            Assert.AreEqual(".method", (items[1] as DocumentSyntax).Name);
+            Assert.AreEqual(".method", (items[2] as DocumentSyntax).Name);
         }
 
         static IlasmAssembly ParseAssembly(string il)
@@ -328,6 +371,34 @@ namespace CilView.Tests
             Assert.AreEqual("System.ValueTuple`1", types[0].FullName);
             Assert.AreEqual("System", types[0].Namespace);
             Assert.AreEqual("ValueTuple`1", types[0].Name);
+        }
+
+        [TestMethod]
+        public void Test_IlAsmParser_AssemblyManifest()
+        {
+            string il = ".assembly Foo.Bar { .ver 1:0:0:0 }";
+            IlasmAssembly ass = ParseAssembly(il);
+
+            Assert.AreEqual(1, ass.Syntax.GetChildNodes().Length);
+            Assert.AreEqual(il, ass.GetDocumentText());
+            Assert.AreEqual("Foo.Bar", ass.GetName().Name);
+            Type[] types = ass.GetTypes();
+            Assert.AreEqual(0, types.Length);
+
+            //verify top-level directive document
+            SyntaxNode node = ass.Syntax.GetChildNodes()[0];
+            SyntaxNode[] subnodes = node.GetChildNodes();
+            Assert.AreEqual(3, subnodes.Length);
+            Assert.AreEqual(".assembly ", subnodes[0].ToString());
+            Assert.AreEqual("Foo.Bar ", subnodes[1].ToString());
+            Assert.AreEqual("{ .ver 1:0:0:0 }", subnodes[2].ToString());
+
+            //verify the contained subdocument
+            subnodes = subnodes[2].GetChildNodes(); //{ .ver 1:0:0:0 }
+            Assert.AreEqual(3, subnodes.Length);
+            Assert.AreEqual("{ ", subnodes[0].ToString());
+            Assert.AreEqual(".ver 1:0:0:0 ", subnodes[1].ToString());
+            Assert.AreEqual("}", subnodes[2].ToString());
         }
     }
 }
