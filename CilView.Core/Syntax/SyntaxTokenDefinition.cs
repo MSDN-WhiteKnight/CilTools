@@ -48,26 +48,27 @@ namespace CilView.Core.Syntax
         public abstract bool HasContinuation(string prevPart, TokenReader reader);
     }
 
+    /// <summary>
+    /// Ilasm DottedName token (ECMA-335 II.5.2 - Basic syntax categories).
+    /// </summary>
     internal class NameToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.Name;
+
+        static readonly HashSet<char> validChars = new HashSet<char>(new char[] { '.', '_', '$', '@', '`', '?' });
 
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
 
-            return char.IsLetter(c) || c == '.' || c == '_';
+            return char.IsLetter(c) || validChars.Contains(c);
         }
 
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
             char c = reader.PeekChar();
-
-            // Backtick should not be allowed according to ilasm grammar in ECMA-335 spec,
-            // but we include it here so the generic type name with suffix would be a single token,
-            // for example, "ValueTuple`1".
-
-            return char.IsLetterOrDigit(c) || c == '.' || c == '_' || c == '`';
+            
+            return char.IsLetterOrDigit(c) || validChars.Contains(c);
         }
     }
 

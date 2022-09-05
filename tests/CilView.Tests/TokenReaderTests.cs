@@ -153,5 +153,17 @@ namespace CilView.Tests
             string[] tokens = reader.ReadAll().ToArray();
             CollectionAssert.AreEqual(new string[] { "ValueTuple`1", "<", "T", ">" }, tokens);
         }
+
+        [TestMethod]
+        public void Test_TokenReader_IdSpecialChars()
+        {
+            string s = ".class public @MyClass$ {";
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
+            string[] tokens = reader.ReadAll().ToArray();
+
+            CollectionAssert.AreEqual(
+                new string[] { ".class", " ", "public", " ", "@MyClass$", " ", "{"}, 
+                tokens);
+        }
     }
 }

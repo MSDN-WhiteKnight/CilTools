@@ -69,7 +69,8 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         [DataRow("WriteLine")]
         [DataRow("'ldstr'")]
         [DataRow("'\"Quick brown fox\"'")]
-        public void Test_CreateFromToken_Indentifier(string token)
+        [DataRow("$abc@")]
+        public void Test_CreateFromToken_Identifier(string token)
         {
             SyntaxNode node = SyntaxFactory.CreateFromToken(token, string.Empty, string.Empty);
             Assert.IsTrue(node is IdentifierSyntax);
