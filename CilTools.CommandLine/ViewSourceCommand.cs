@@ -11,7 +11,6 @@ using CilTools.Metadata;
 using CilTools.SourceCode;
 using CilTools.Syntax;
 using CilView.Common;
-using CilView.Core;
 using CilView.Core.Syntax;
 using CilView.SourceCode;
 
@@ -42,7 +41,7 @@ namespace CilTools.CommandLine
             }
         }
 
-        public static void PrintNode(SyntaxNode node, bool noColor, TextWriter target)
+        static void PrintNode(SyntaxNode node, bool noColor, TextWriter target)
         {
             //recursively prints syntax tree to console
             SyntaxNode[] children = node.GetChildNodes();
@@ -91,6 +90,144 @@ namespace CilTools.CommandLine
             }
         }
 
+        static string MethodToString(MethodBase m)
+        {
+            StringBuilder sb = new StringBuilder();
+            ParameterInfo[] pars = m.GetParameters();
+            sb.Append(m.Name);
+
+            if (m.IsGenericMethod)
+            {
+                sb.Append('<');
+
+                Type[] args = m.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) sb.Append(", ");
+
+                    sb.Append(args[i].Name);
+                }
+
+                sb.Append('>');
+            }
+
+            sb.Append('(');
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (i >= 1) sb.Append(", ");
+                sb.Append(pars[i].ParameterType.Name);
+            }
+
+            sb.Append(')');
+            return sb.ToString();
+        }
+
+        static int PrintMethodSource(MethodBase mb, bool noColor)
+        {
+            if (Utils.IsMethodWithoutBody(mb))
+            {
+                //method without IL body has no sequence points in PDB, just use decompiler
+                IEnumerable<SourceToken> decompiled = Decompiler.DecompileMethodSignature(".cs", mb);
+                Console.WriteLine("Source code from: Decompiler");
+
+                foreach(SourceToken token in decompiled)
+                {
+                    PrintNode(token, noColor, Console.Out);
+                }
+
+                Console.WriteLine();
+                return 0;
+            }
+
+            //from PDB
+            PdbCodeProvider provider = PdbCodeProvider.Instance;
+            SourceDocument doc = provider.GetSourceCodeDocuments(mb).FirstOrDefault();
+
+            if (doc == null)
+            {
+                Console.WriteLine("Error: Line info not found for this method.");
+                return 1;
+            }
+
+            if (string.IsNullOrEmpty(doc.Text))
+            {
+                Console.WriteLine("Error: Source file " + doc.FilePath + " is not found or empty.");
+                return 1;
+            }
+
+            string src = doc.Text;
+            string ext = Path.GetExtension(doc.FilePath);
+            StringBuilder sb;
+            SourceToken[] sigTokens = new SourceToken[0];
+
+            try
+            {
+                if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
+                {
+                    sigTokens = Decompiler.DecompileMethodSignature(ext, doc.Method).ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                //don't error out if we can't build good signature string
+                Console.WriteLine("Warning: Failed to decompile method signature (" + ex.GetType().ToString() +
+                    ": " + ex.Message + ")");
+                string methodstr = MethodToString(doc.Method);
+                sigTokens = new SourceToken[] { new SourceToken(methodstr, TokenKind.Unknown) };
+            }
+
+            //header
+            sb = new StringBuilder();
+            sb.Append("Source code from: ");
+            sb.Append(doc.FilePath);
+            sb.AppendFormat(", lines {0}-{1}", doc.LineStart, doc.LineEnd);
+            string header = sb.ToString();
+
+            //body
+            sb = new StringBuilder(src.Length + 2);
+            string srcDeindented = PdbUtils.Deindent(src);
+            sb.Append(srcDeindented);
+
+            if (Decompiler.IsCppExtension(ext))
+            {
+                //C++ PDB sequence points don't include the trailing brace for some reason
+                if (!srcDeindented.EndsWith(Environment.NewLine, StringComparison.Ordinal)) sb.AppendLine();
+                sb.Append('}');
+            }
+
+            SourceToken[] bodyTokens = TokenParser.ParseTokens(sb.ToString(), TokenParser.GetDefinitions(ext),
+                TokenClassifier.Create(ext));
+
+            List<SourceToken> tokens = new List<SourceToken>(sigTokens.Length + bodyTokens.Length + 1);
+            tokens.AddRange(sigTokens);
+            tokens.Add(new SourceToken(Environment.NewLine, TokenKind.Unknown));
+            tokens.AddRange(bodyTokens);
+
+            //caption
+            sb = new StringBuilder();
+            sb.Append("Symbols file: ");
+            sb.Append(doc.SymbolsFile);
+            sb.Append(" (");
+            sb.Append(doc.SymbolsFileFormat);
+            sb.Append(')');
+            string caption = sb.ToString();
+
+            //show source code
+            Console.WriteLine(header);
+            Console.WriteLine();
+
+            for (int i = 0; i < tokens.Count; i++)
+            {
+                PrintNode(tokens[i], noColor, Console.Out);
+            }
+
+            Console.WriteLine();
+            Console.WriteLine(caption);
+            Console.WriteLine();
+            return 0;
+        }
+
         public override int Execute(string[] args)
         {
             string filepath;
@@ -136,7 +273,7 @@ namespace CilTools.CommandLine
             }
 
             method = CLI.ReadCommandParameter(args, pos);
-            
+
             if (method == null)
             {
                 Console.WriteLine("Error: Mathod name is not provided for the 'view-source' command.");
@@ -146,17 +283,15 @@ namespace CilTools.CommandLine
 
             //view method source
             Console.WriteLine("Assembly: " + filepath);
-            Console.WriteLine("{0}.{1}", type, method);
+            Console.WriteLine("Type: " + type);
             Console.WriteLine();
-            
-            //read method from assembly
+
             AssemblyReader reader = new AssemblyReader();
-            Assembly ass;
-            MethodBase mb=null;
-            
+
             try
             {
-                ass = reader.LoadFrom(filepath);
+                //read methods from assembly
+                Assembly ass = reader.LoadFrom(filepath);
                 Type t = ass.GetType(type);
 
                 if (t == null)
@@ -177,97 +312,19 @@ namespace CilTools.CommandLine
                     return 1;
                 }
 
+                //print sources for matching methods
+                int retCode = 0;
+
                 for (int i = 0; i < selectedMethods.Length; i++)
                 {
-                    mb=selectedMethods[i];
-                }
-            
-            
-                //from PDB
-                PdbCodeProvider provider = PdbCodeProvider.Instance;
-                SourceDocument doc = provider.GetSourceCodeDocuments(mb).FirstOrDefault();
-                
-                if (doc == null)
-                {
-                    Console.WriteLine("Error: Line info not found for this method.");
-                    return 1;
-                }
-            
-                if (string.IsNullOrEmpty(doc.Text))
-                {
-                    Console.WriteLine("Error: Source file " + doc.FilePath +" is not found or empty.");
-                    return 1;
-                }
-            
-                string src = doc.Text;
-                string ext = Path.GetExtension(doc.FilePath);
-                StringBuilder sb;
-                SourceToken[] sigTokens = new SourceToken[0];
-            
-                try
-                {
-                    if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
-                    {
-                        sigTokens = Decompiler.DecompileMethodSignature(ext, doc.Method).ToArray();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    //don't error out if we can't build good signature string
-                    Console.WriteLine("Warning: Failed to decompile method signature ("+ex.GetType().ToString()+
-                        ": "+ex.Message+")");
-                    string methodstr = /*CilVisualization.MethodToString(doc.Method)*/ doc.Method.Name;
-                    sigTokens = new SourceToken[] { new SourceToken(methodstr, TokenKind.Unknown) };
-                }
-            
-                //header
-                sb = new StringBuilder();
-                sb.Append("Source code from: ");
-                sb.Append(doc.FilePath);
-                sb.AppendFormat(", lines {0}-{1}", doc.LineStart, doc.LineEnd);
-                string header = sb.ToString();
-            
-                //body
-                sb = new StringBuilder(src.Length + 2);
-                string srcDeindented = PdbUtils.Deindent(src);
-                sb.Append(srcDeindented);
+                    Console.WriteLine(MethodToString(selectedMethods[i]));
 
-                if (Decompiler.IsCppExtension(ext))
-                {
-                    //C++ PDB sequence points don't include the trailing brace for some reason
-                    if (!srcDeindented.EndsWith(Environment.NewLine, StringComparison.Ordinal)) sb.AppendLine();
-                    sb.Append('}');
+                    int res = PrintMethodSource(selectedMethods[i], noColor);
+
+                    if (res != 0) retCode = res;
                 }
 
-                SourceToken[] bodyTokens = TokenParser.ParseTokens(sb.ToString(), TokenParser.GetDefinitions(ext),
-                    TokenClassifier.Create(ext));
-
-                List<SourceToken> tokens = new List<SourceToken>(sigTokens.Length + bodyTokens.Length + 1);
-                tokens.AddRange(sigTokens);
-                tokens.Add(new SourceToken(Environment.NewLine, TokenKind.Unknown));
-                tokens.AddRange(bodyTokens);
-
-                //caption
-                sb = new StringBuilder();
-                sb.Append("Symbols file: ");
-                sb.Append(doc.SymbolsFile);
-                sb.Append(" (");
-                sb.Append(doc.SymbolsFileFormat);
-                sb.Append(')');
-                string caption = sb.ToString();
-            
-                //show source code
-                Console.WriteLine(header);
-                Console.WriteLine();
-            
-                for (int i = 0; i < tokens.Count; i++)
-                {
-                    PrintNode(tokens[i], noColor, Console.Out);
-                }
-
-                Console.WriteLine();
-                Console.WriteLine(caption);
-            
+                return retCode;
             }
             catch (Exception ex)
             {
@@ -279,8 +336,6 @@ namespace CilTools.CommandLine
             {
                 reader.Dispose();
             }
-            
-            return 0;
         }
     }
 }
