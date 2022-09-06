@@ -18,6 +18,7 @@ namespace CilTools.CommandLine
             //register commands
             Command.All["view"] = new ViewCommand();
             Command.All["disasm"] = new DisasmCommand();
+            Command.All["view-source"] = new ViewSourceCommand();
             Command.All["help"] = new HelpCommand();
             Command.All["readme"] = new ReadmeCommand();
 
