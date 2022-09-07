@@ -25,7 +25,7 @@ namespace CilTools.CommandLine
 
         public override string Description 
         { 
-            get { return "Print source code of the specified method (based on symbols)"; } 
+            get { return "Print source code of the specified method"; } 
         }
 
         public override IEnumerable<TextParagraph> UsageDocumentation
@@ -38,6 +38,11 @@ namespace CilTools.CommandLine
                     " view-source [--nocolor] <assembly path> <type full name> <method name>");
                 yield return TextParagraph.Text(string.Empty);
                 yield return TextParagraph.Text("[--nocolor] - Disable syntax highlighting");
+                yield return TextParagraph.Text(string.Empty);
+
+                yield return TextParagraph.Text("For methods with body, this command can print source code " +
+                    "based on symbols, if they are available. For methods without body, the command prints a " +
+                    "disassembled source code.");
             }
         }
 
@@ -130,8 +135,9 @@ namespace CilTools.CommandLine
                 //method without IL body has no sequence points in PDB, just use decompiler
                 IEnumerable<SourceToken> decompiled = Decompiler.DecompileMethodSignature(".cs", mb);
                 Console.WriteLine("Source code from: Decompiler");
+                Console.WriteLine();
 
-                foreach(SourceToken token in decompiled)
+                foreach (SourceToken token in decompiled)
                 {
                     PrintNode(token, noColor, Console.Out);
                 }
@@ -152,8 +158,22 @@ namespace CilTools.CommandLine
 
             if (string.IsNullOrEmpty(doc.Text))
             {
-                Console.WriteLine("Error: Source file " + doc.FilePath + " is not found or empty.");
-                return 1;
+                //Local sources not available
+                string sourceLinkStr = doc.SourceLinkMap;
+
+                if (string.IsNullOrEmpty(sourceLinkStr))
+                {
+                    Console.WriteLine("Error: Source file " + doc.FilePath + " is not found or empty.");
+                    return 1;
+                }
+                else
+                {
+                    //Source Link stub implementation
+                    Console.WriteLine("The source code is located on the remote server:");
+                    Console.WriteLine(sourceLinkStr);
+                    Console.WriteLine("File path: " + doc.FilePath);
+                    return 1;
+                }
             }
 
             string src = doc.Text;
