@@ -296,7 +296,7 @@ namespace CilTools.CommandLine
 
             if (method == null)
             {
-                Console.WriteLine("Error: Mathod name is not provided for the 'view-source' command.");
+                Console.WriteLine("Error: Method name is not provided for the 'view-source' command.");
                 Console.WriteLine(CLI.GetErrorInfo());
                 return 1;
             }
