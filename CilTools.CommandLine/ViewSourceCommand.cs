@@ -48,7 +48,7 @@ namespace CilTools.CommandLine
 
         static void PrintNode(SyntaxNode node, bool noColor, TextWriter target)
         {
-            //recursively prints syntax tree to console
+            //recursively prints source fragment's syntax tree to console
             SyntaxNode[] children = node.GetChildNodes();
 
             if (children.Length == 0)
@@ -62,7 +62,7 @@ namespace CilTools.CommandLine
                     return;
                 }
 
-                //hightlight syntax elements
+                //highlight syntax elements
                 ConsoleColor originalColor = Console.ForegroundColor;
                 
                 if(node is SourceToken){
