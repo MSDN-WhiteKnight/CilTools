@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Syntax;
@@ -399,6 +400,35 @@ namespace CilView.Tests
             Assert.AreEqual("{ ", subnodes[0].ToString());
             Assert.AreEqual(".ver 1:0:0:0 ", subnodes[1].ToString());
             Assert.AreEqual("}", subnodes[2].ToString());
+
+            //verify version
+            Assert.AreEqual(new Version(1, 0, 0, 0), ass.GetName().Version);
+        }
+
+        [TestMethod]
+        public void Test_IlAsmParser_AssemblyNoVersion()
+        {
+            string il =
+                ".assembly A.B.C { .custom instance void MyAttribute::.ctor(string) = ( 01 00 00 00 ) }";
+            IlasmAssembly ass = ParseAssembly(il);
+            AssemblyName an = ass.GetName();
+
+            Assert.AreEqual("A.B.C", an.Name);
+            Assert.IsNull(an.Version);
+        }
+
+        [DataTestMethod]
+        [DataRow(".assembly Test2 { .ver BLAH_BLAH }")]
+        [DataRow(".assembly Test2 { .ver 1 }")]
+        [DataRow(".assembly Test2 { .ver 1:2:3:4:5 }")]
+        [DataRow(".assembly Test2 { .var 1:2:3:4 }")]
+        public void Test_IlAsmParser_AssemblyInvalidVersion(string il)
+        {
+            IlasmAssembly ass = ParseAssembly(il);
+            AssemblyName an = ass.GetName();
+
+            Assert.AreEqual("Test2", an.Name);
+            Assert.IsNull(an.Version);
         }
     }
 }

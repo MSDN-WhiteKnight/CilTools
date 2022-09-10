@@ -122,14 +122,12 @@ namespace CilView.Core.Syntax
 
             return ret;
         }
-        
-        static DocumentSyntax ParseInnerDirectives(DocumentSyntax tree)
+
+        static DocumentSyntax FindFirstChildBlock(SyntaxNode[] subnodes, out int index)
         {
             DocumentSyntax innerBlock = null;
             int innerBlockIndex = -1;
-            SyntaxNode[] subnodes = tree.GetChildNodes();
 
-            //find first compound syntax node in subnodes
             for (int i = 0; i < subnodes.Length; i++)
             {
                 SyntaxNode subnode = subnodes[i];
@@ -141,6 +139,19 @@ namespace CilView.Core.Syntax
                     break;
                 }
             }
+
+            index = innerBlockIndex;
+            return innerBlock;
+        }
+
+        static DocumentSyntax ParseInnerDirectives(DocumentSyntax tree)
+        {
+            DocumentSyntax innerBlock;
+            int innerBlockIndex;
+            SyntaxNode[] subnodes = tree.GetChildNodes();
+
+            //find first compound syntax node in subnodes
+            innerBlock = FindFirstChildBlock(subnodes, out innerBlockIndex);
 
             //if not found, just return the original tree
             if (innerBlock == null) return tree;
@@ -193,6 +204,30 @@ namespace CilView.Core.Syntax
             return string.Empty;
         }
 
+        static Version ParseVersion(DocumentSyntax dir)
+        {
+            int part;
+            List<int> parts = new List<int>(4);
+            SyntaxNode[] subnodes = dir.GetChildNodes();
+
+            //pick all interger literals from version syntax, they represent version parts,
+            //for example, 1:0:0:0
+            for (int i = 0; i < subnodes.Length; i++)
+            {
+                if (!(subnodes[i] is LiteralSyntax)) continue;
+
+                LiteralSyntax ls = (LiteralSyntax)subnodes[i];
+                string str = ls.ToString().Trim();
+
+                if (!int.TryParse(str, out part)) continue;
+                else parts.Add(part);
+            }
+            
+            if (parts.Count != 4) return null; //invalid version syntax
+
+            return new Version(parts[0], parts[1], parts[2], parts[3]);
+        }
+
         /// <summary>
         /// Transforms syntax tree into a synthesized assembly with a collection of types (third stage of parsing).
         /// </summary>
@@ -227,6 +262,28 @@ namespace CilView.Core.Syntax
                     if (!string.IsNullOrEmpty(assName))
                     {
                         an.Name = assName;
+                    }
+
+                    int index;
+                    SyntaxNode[] assManifestNodes = ds.GetChildNodes();
+                    DocumentSyntax assManifestBlock = FindFirstChildBlock(assManifestNodes, out index);
+
+                    if (assManifestBlock == null) continue;
+
+                    //find ".ver ?:?:?:?"
+                    foreach (SyntaxNode node in assManifestBlock.EnumerateChildNodes())
+                    {
+                        if (!(node is DocumentSyntax)) continue;
+
+                        DocumentSyntax dsNode = (DocumentSyntax)node;
+
+                        if (!Utils.StringEquals(dsNode.Name, ".ver")) continue;
+
+                        Version assver = ParseVersion(dsNode);
+
+                        if (assver != null) an.Version = assver;
+
+                        break;
                     }
                 }
                 else if (Utils.StringEquals(ds.Name, ".class"))
