@@ -837,6 +837,28 @@ namespace CilTools.Syntax
                 content.Add(dirProp);
             }
 
+            //events
+            try
+            {
+                foreach (SyntaxNode node in SyntaxGenerator.GetEventsSyntax(t, startIndent))
+                {
+                    content.Add(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ReflectionUtils.IsExpectedException(ex))
+                {
+                    CommentSyntax cs = CommentSyntax.Create(GetIndentString(startIndent + 1),
+                        "Failed to show events. " + ReflectionUtils.GetErrorShortString(ex), null, false);
+
+                    content.Add(cs);
+                    CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get events.");
+                    Diagnostics.OnError(t, ea);
+                }
+                else throw;
+            }
+
             if (full)
             {
                 //constructors

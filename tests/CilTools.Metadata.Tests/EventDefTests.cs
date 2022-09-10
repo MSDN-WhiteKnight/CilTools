@@ -167,5 +167,32 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual("remove_C", miRemove.Name);
             Assert.AreSame(t, miRemove.DeclaringType);
         }
+
+        [TestMethod]
+        public void Test_EventHandlerType()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(EventsSample).Assembly.Location);
+            Type t = ass.GetType(typeof(EventsSample).FullName);
+            EventInfo ei = t.GetEvent("A");
+            Type handlerType = ei.EventHandlerType;
+
+            Assert.AreEqual("System.Action", handlerType.FullName);
+        }
+
+        [TestMethod]
+        public void Test_EventHandlerType_Generic()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(EventsSample).Assembly.Location);
+            Type t = ass.GetType(typeof(EventsSample).FullName);
+            EventInfo ei = t.GetEvent("B");
+            Type handlerType = ei.EventHandlerType;
+            Type[] args = handlerType.GetGenericArguments();
+
+            Assert.AreEqual("System.EventHandler`1", handlerType.FullName);
+            Assert.AreEqual(1, args.Length);
+            Assert.AreEqual("System.EventArgs", args[0].FullName);
+        }
     }
 }

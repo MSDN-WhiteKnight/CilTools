@@ -199,5 +199,73 @@ namespace CilTools.BytecodeAnalysis.Tests
                 "{", Text.Any, "}", Text.Any
             });
         }
+
+        [TestMethod]
+        [TypeTestData(typeof(EventsSample), BytecodeProviders.Metadata)]
+        public void Test_Events_Metadata(Type t)
+        {
+            string expected = @".class public auto ansi beforefieldinit CilTools.Tests.Common.TestData.EventsSample
+extends [mscorlib]System.Object {
+
+ .field private class [mscorlib]System.Action A
+ .field private static class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B
+
+ .event class [mscorlib]System.Action A {
+  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
+  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
+ }
+
+ .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
+  .custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 04 00 00 00 00 00 )
+  .addon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+  .removeon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+ }
+
+ .event class [mscorlib]System.Action`1<int32> C {
+  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_C(class [mscorlib]System.Action`1<int32>)
+  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_C(class [mscorlib]System.Action`1<int32>)
+ }
+
+ //... 
+}";
+
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.CilEquals(expected, s);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(EventsSample), BytecodeProviders.Reflection)]
+        public void Test_Events_Reflection(Type t)
+        {
+            //this is different, because we can't get exact custom attributes IL from runtime reflection
+            string expected = @".class  public auto ansi beforefieldinit CilTools.Tests.Common.TestData.EventsSample
+extends [mscorlib]System.Object {
+ .field private class [mscorlib]System.Action A
+ .field private static class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B
+
+ .event class [mscorlib]System.Action A {
+  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
+  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
+ }
+
+ .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
+  //.custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)
+  .addon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+  .removeon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+ }
+
+ .event class [mscorlib]System.Action`1<int32> C {
+  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_C(class [mscorlib]System.Action`1<int32>)
+  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_C(class [mscorlib]System.Action`1<int32>)
+ }
+
+ //...
+}";
+
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.CilEquals(expected, s);
+        }
     }
 }

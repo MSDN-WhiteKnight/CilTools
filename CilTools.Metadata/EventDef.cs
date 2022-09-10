@@ -65,6 +65,14 @@ namespace CilTools.Metadata
             return this.GetAccessor(mdh, nonPublic);
         }
 
+        public override Type EventHandlerType
+        {
+            get
+            {
+                return this.owner.GetTypeByHandle(e.Type);
+            }
+        }
+
         public override object[] GetCustomAttributes(bool inherit)
         {
             //we can't instantiate actual attribute objects here

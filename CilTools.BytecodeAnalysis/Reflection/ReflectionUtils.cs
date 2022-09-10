@@ -15,6 +15,11 @@ namespace CilTools.Reflection
             get { return BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic; }
         }
 
+        public static BindingFlags AllMembers
+        {
+            get { return BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic; }
+        }
+
         public static bool IsExpectedException(Exception ex)
         {
             //check expected exception types that can pop up due to reflection APIs being not 
@@ -22,6 +27,11 @@ namespace CilTools.Reflection
 
             return ex is NotImplementedException || ex is NotSupportedException ||
                 ex is InvalidOperationException;
+        }
+
+        public static string GetErrorShortString(Exception ex)
+        {
+            return ex.GetType().ToString() + ": " + ex.Message;
         }
 
         public static bool IsEntryPoint(MethodBase m)
