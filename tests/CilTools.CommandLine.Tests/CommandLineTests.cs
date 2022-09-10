@@ -181,5 +181,20 @@ namespace CilTools.CommandLine.Tests
                 expectedSource, Text.Any
             });
         }
+
+        [TestMethod]
+        public void Test_FileInfo()
+        {
+            const string cmd = "fileinfo CilTools.Tests.Common.dll";
+            CommandResult cr = Execute(GetExePath(), cmd);
+            string s = cr.StandardOutputText;
+            Console.WriteLine(s);
+            Console.WriteLine(cr.StandardErrorText);
+            Assert.IsTrue(cr.Success);
+
+            s = s.Replace("\r\n", "\n");
+            Assert.IsTrue(s.Contains(appHeader));
+            CilViewTestsCore.VerifyAssemblyInfoText(s, "CilTools.Tests.Common.dll");
+        }
     }
 }
