@@ -82,7 +82,7 @@ namespace CilTools.Metadata.Tests
         {
             AssemblyReader reader = ReaderFactory.GetReader();
             Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.PInvokeModules);
+            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ReferencedModules);
 
             Assert.AreEqual(1, modules.Length);
             Assert.AreEqual("user32.dll", modules[0], ignoreCase: true);
@@ -95,7 +95,7 @@ namespace CilTools.Metadata.Tests
 
             //load CilTools.BytecodeAnalysis
             Assembly ass = reader.LoadFrom(typeof(ReflectionInfoProperties).Assembly.Location);
-            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.PInvokeModules);
+            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ReferencedModules);
 
             Assert.AreEqual(0, modules.Length);
         }

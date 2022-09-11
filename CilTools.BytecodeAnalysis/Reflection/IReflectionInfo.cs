@@ -31,9 +31,9 @@ namespace CilTools.Reflection
         public const int InfoText = 1;
 
         /// <summary>
-        /// Represents the array of unmanaged P/Invoke modules imported by assembly (Type: string[])
+        /// Represents the array of external modules referenced by assembly (Type: string[])
         /// </summary>
-        public const int PInvokeModules = 100;
+        public const int ReferencedModules = 100;
 
         /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object

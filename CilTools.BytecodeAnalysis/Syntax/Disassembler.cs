@@ -37,7 +37,7 @@ namespace CilTools.Syntax
             SyntaxNode[] content;
 
             // Module references
-            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.PInvokeModules);
+            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ReferencedModules);
 
             if (modules != null)
             {

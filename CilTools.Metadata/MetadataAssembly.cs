@@ -822,7 +822,7 @@ namespace CilTools.Metadata
             return ret.ToArray();
         }
 
-        public string[] GetPInvokeModules()
+        public string[] GetReferencedModules()
         {
             int countModules = this.reader.GetTableRowCount(TableIndex.ModuleRef);
 
@@ -885,7 +885,7 @@ namespace CilTools.Metadata
             sb.AppendLine(")");
 
             //Imported P/Invoke modules
-            string[] modules = this.GetPInvokeModules();
+            string[] modules = this.GetReferencedModules();
 
             if (modules.Length > 0)
             {
@@ -907,7 +907,7 @@ namespace CilTools.Metadata
             switch (id)
             {
                 case ReflectionInfoProperties.InfoText: return this.GetInfoText();
-                case ReflectionInfoProperties.PInvokeModules: return this.GetPInvokeModules();
+                case ReflectionInfoProperties.ReferencedModules: return this.GetReferencedModules();
                 default: return null;
             }
         }
