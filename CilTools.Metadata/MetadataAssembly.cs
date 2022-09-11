@@ -192,6 +192,18 @@ namespace CilTools.Metadata
             }
         }
 
+        public override Module ManifestModule
+        {
+            get
+            {
+                // There's only one module definition (others are external references), so the handle
+                // is just synthesized.
+                ModuleDefinitionHandle h = (ModuleDefinitionHandle)MetadataTokens.EntityHandle(TableIndex.Module, 1);
+                ModuleDefinition m = this.reader.GetModuleDefinition();
+                return new ModuleDef(this, m, h);
+            }
+        }
+
         Type ResolveTypeImpl(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments) 
         {
             if (this.reader == null) return null;
