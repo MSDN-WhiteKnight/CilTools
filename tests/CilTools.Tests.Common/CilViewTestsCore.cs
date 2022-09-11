@@ -20,6 +20,9 @@ namespace CilTools.Tests.Common
             Assert.IsTrue(info.Contains("Subsystem: WindowsCui"));
             Assert.IsTrue(info.Contains("CorFlags: 0x1 (ILOnly; )"));
 
+            Assert.IsTrue(info.Contains("Referenced unmanaged modules"));
+            Assert.IsTrue(info.ToLower().Contains("user32.dll"));
+
             AssemblyName anCilTools = typeof(CilViewTestsCore).Assembly.GetName();
             Assert.IsTrue(info.Contains("Referenced assemblies"));
             Assert.IsTrue(info.Contains("CilTools.BytecodeAnalysis, Version: " + anCilTools.Version.ToString()));

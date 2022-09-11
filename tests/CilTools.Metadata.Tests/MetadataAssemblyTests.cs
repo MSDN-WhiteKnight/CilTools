@@ -76,5 +76,28 @@ namespace CilTools.Metadata.Tests
             AssertThat.HasOnlyOneMatch(refs, x => x.Name == "mscorlib" && x.Version == anCorelib.Version &&
                 x.GetPublicKeyToken().SequenceEqual(anCorelib.GetPublicKeyToken()));
         }
+
+        [TestMethod]
+        public void Test_GetPInvokeModules()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.PInvokeModules);
+
+            Assert.AreEqual(1, modules.Length);
+            Assert.AreEqual("user32.dll", modules[0], ignoreCase: true);
+        }
+
+        [TestMethod]
+        public void Test_GetPInvokeModules_Negative()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+
+            //load CilTools.BytecodeAnalysis
+            Assembly ass = reader.LoadFrom(typeof(ReflectionInfoProperties).Assembly.Location);
+            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.PInvokeModules);
+
+            Assert.AreEqual(0, modules.Length);
+        }
     }
 }

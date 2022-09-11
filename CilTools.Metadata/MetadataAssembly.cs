@@ -810,27 +810,30 @@ namespace CilTools.Metadata
             return ret.ToArray();
         }
 
-        /// <summary>
-        /// Releases resources associated with this instance
-        /// </summary>
-        /// <remarks>
-        /// Calling <c>Dispose</c> is not required when the instance is owned by the 
-        /// <see cref="CilTools.Metadata.AssemblyReader"/> and the owning reader was disposed.
-        /// </remarks>
-        public void Dispose()
+        public string[] GetPInvokeModules()
         {
-            if (this.peReader != null)
+            int countModules = this.reader.GetTableRowCount(TableIndex.ModuleRef);
+
+            if (countModules == 0)
             {
-                this.peReader.Dispose();
-                this.reader = null;
-                this.peReader = null;
+                return new string[0];
             }
+
+            string[] ret = new string[countModules];
+
+            for (int i = 1; i <= countModules; i++)
+            {
+                ModuleReferenceHandle h = MetadataTokens.ModuleReferenceHandle(i);
+                ModuleReference mref = this.reader.GetModuleReference(h);
+                string name = this.reader.GetString(mref.Name);
+                ret[i - 1] = name;
+            }
+
+            return ret;
         }
 
-        public object GetReflectionProperty(int id)
+        public string GetInfoText()
         {
-            if (id != ReflectionInfoProperties.InfoText) return null;
-
             StringBuilder sb = new StringBuilder(1000);
             sb.Append("Type: ");
 
@@ -866,10 +869,52 @@ namespace CilTools.Metadata
             CorFlags flags = this.peReader.PEHeaders.CorHeader.Flags;
             string flagsStr = Utils.FlagsEnumToString<CorFlags>((int)flags);
             sb.Append("CorFlags: 0x" + ((uint)flags).ToString("X") + " (");
-            sb.Append(flagsStr);            
+            sb.Append(flagsStr);
             sb.AppendLine(")");
 
+            //Imported P/Invoke modules
+            string[] modules = this.GetPInvokeModules();
+
+            if (modules.Length > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine("    Referenced unmanaged modules");
+                sb.AppendLine();
+
+                for (int i = 0; i < modules.Length; i++)
+                {
+                    sb.AppendLine(modules[i]);
+                }
+            }
+
             return sb.ToString();
+        }
+
+        public object GetReflectionProperty(int id)
+        {
+            switch (id)
+            {
+                case ReflectionInfoProperties.InfoText: return this.GetInfoText();
+                case ReflectionInfoProperties.PInvokeModules: return this.GetPInvokeModules();
+                default: return null;
+            }
+        }
+
+        /// <summary>
+        /// Releases resources associated with this instance
+        /// </summary>
+        /// <remarks>
+        /// Calling <c>Dispose</c> is not required when the instance is owned by the 
+        /// <see cref="CilTools.Metadata.AssemblyReader"/> and the owning reader was disposed.
+        /// </remarks>
+        public void Dispose()
+        {
+            if (this.peReader != null)
+            {
+                this.peReader.Dispose();
+                this.reader = null;
+                this.peReader = null;
+            }
         }
     }
 }
