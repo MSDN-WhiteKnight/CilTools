@@ -125,6 +125,19 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
+        internal static SyntaxNode[] GetAttributesSyntax(Assembly ass, int indent)
+        {
+            object[] attrs = ass.GetCustomAttributes(false);
+            List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
+
+            for (int i = 0; i < attrs.Length; i++)
+            {
+                GetAttributeSyntax(attrs[i], indent, ret);
+            }
+
+            return ret.ToArray();
+        }
+
         internal static string GetConstantValueString(Type t,object constant)
         {
             StringBuilder sb = new StringBuilder(100);
