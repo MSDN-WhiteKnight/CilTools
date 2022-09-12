@@ -175,5 +175,37 @@ namespace CilTools.CommandLine
 
             return retCode;
         }
+        
+        public static int DisassembleAssembly(string asspath, bool noColor, TextWriter target)
+        {
+            AssemblyReader reader = new AssemblyReader();
+            Assembly ass;
+            int retCode;
+
+            try
+            {
+                ass = reader.LoadFrom(asspath);                
+                IEnumerable<SyntaxNode> nodes = Syntax.Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+
+                foreach (SyntaxNode node in nodes)
+                {
+                    PrintNode(node, noColor, target);
+                }
+                
+                retCode = 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
+                retCode = 1;
+            }
+            finally
+            {
+                reader.Dispose();
+            }
+
+            return retCode;
+        }
     }
 }
