@@ -3,6 +3,8 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Configuration.Assemblies;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -29,12 +31,65 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        static DirectiveSyntax GetPublicKeyDirective(AssemblyName an)
+        {
+            // Public key or token
+            StringBuilder sb;
+            StringWriter wr;
+            string dirname = null;
+            string keyStr = null;
+
+            if ((an.Flags & AssemblyNameFlags.PublicKey) != 0)
+            {
+                byte[] key = an.GetPublicKey();
+
+                if (key != null && key.Length > 0)
+                {
+                    sb = new StringBuilder(100);
+                    wr = new StringWriter(sb);
+                    ArrayBytesToText(key, wr);
+                    keyStr = sb.ToString();
+                    dirname = "publickey";
+                }
+            }
+            else
+            {
+                byte[] tok = an.GetPublicKeyToken();
+
+                if (tok != null && tok.Length > 0)
+                {
+                    sb = new StringBuilder(100);
+                    wr = new StringWriter(sb);
+                    ArrayBytesToText(tok, wr);
+                    keyStr = sb.ToString();
+                    dirname = "publickeytoken";
+                }
+            }
+
+            if (dirname != null)
+            {
+                SyntaxNode[] content = new SyntaxNode[] {
+                        new PunctuationSyntax(string.Empty, "=", " "),
+                        new PunctuationSyntax(string.Empty, "(", " "),
+                        new GenericSyntax(keyStr),
+                        new PunctuationSyntax(string.Empty, ")", Environment.NewLine)
+                    };
+
+                return new DirectiveSyntax("  ", dirname, content);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         /// <summary>
         /// Gets the collection of syntax nodes that make up an assembly manifest of the specified assembly
         /// </summary>
         public static IEnumerable<SyntaxNode> GetAssemblyManifestSyntaxNodes(Assembly ass)
         {
             SyntaxNode[] content;
+            DirectiveSyntax ds;
 
             // Module references
             string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ReferencedModules);
@@ -68,49 +123,9 @@ namespace CilTools.Syntax
                 yield return new PunctuationSyntax(string.Empty, "{", Environment.NewLine);
 
                 // Public key or token
-                StringBuilder sb;
-                StringWriter wr;
-                string dirname = null;
-                string keyStr = null;
+                ds = GetPublicKeyDirective(refs[i]);
 
-                if ((refs[i].Flags & AssemblyNameFlags.PublicKey) != 0)
-                {
-                    byte[] key = refs[i].GetPublicKey();
-
-                    if (key != null && key.Length > 0)
-                    {
-                        sb = new StringBuilder(100);
-                        wr = new StringWriter(sb);
-                        ArrayBytesToText(key, wr);
-                        keyStr = sb.ToString();
-                        dirname = "publickey";
-                    }
-                }
-                else
-                {
-                    byte[] tok = refs[i].GetPublicKeyToken();
-
-                    if (tok != null && tok.Length > 0)
-                    {
-                        sb = new StringBuilder(100);
-                        wr = new StringWriter(sb);
-                        ArrayBytesToText(tok, wr);
-                        keyStr = sb.ToString();
-                        dirname = "publickeytoken";
-                    }
-                }
-
-                if (dirname != null)
-                {
-                    content = new SyntaxNode[] {
-                        new PunctuationSyntax(string.Empty, "=", " "),
-                        new PunctuationSyntax(string.Empty, "(", " "),
-                        new GenericSyntax(keyStr),
-                        new PunctuationSyntax(string.Empty, ")", Environment.NewLine)
-                    };
-
-                    yield return new DirectiveSyntax("  ", dirname, content);
-                }
+                if (ds != null) yield return ds;
 
                 // Version
                 if (refs[i].Version != null)
@@ -179,6 +194,25 @@ namespace CilTools.Syntax
             }
 
             if (arr.Length > 0) yield return new GenericSyntax(Environment.NewLine);
+
+            // Public key or token
+            ds = GetPublicKeyDirective(an);
+
+            if (ds != null) yield return ds;
+
+            // Hash algorithm
+            if (an.HashAlgorithm != AssemblyHashAlgorithm.None)
+            {
+                string algStr = "0x" + ((uint)an.HashAlgorithm).ToString("X", CultureInfo.InvariantCulture);
+
+                content = new SyntaxNode[] {
+                    new KeywordSyntax(string.Empty, "algorithm", " ", KeywordKind.Other),
+                    new GenericSyntax(algStr + " "),
+                    CommentSyntax.Create(string.Empty, an.HashAlgorithm.ToString(), null, false)
+                };
+
+                yield return new DirectiveSyntax("  ", "hash", content);
+            }
 
             // Version
             if (an.Version != null)
