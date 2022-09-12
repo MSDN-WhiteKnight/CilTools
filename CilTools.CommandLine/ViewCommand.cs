@@ -51,7 +51,7 @@ namespace CilTools.CommandLine
 
             for (int i = 0; i < nodes.Length; i++)
             {
-                Disassembler.PrintNode(nodes[i], noColor, target);
+                Visualizer.PrintNode(nodes[i], noColor, target);
             }
         }
 
@@ -120,7 +120,7 @@ namespace CilTools.CommandLine
             {
                 //view assembly manifest
                 Console.WriteLine();
-                return Disassembler.DisassembleAssembly(filepath, noColor, Console.Out);
+                return Visualizer.VisualizeAssembly(filepath, noColor, Console.Out);
             }
 
             method = CLI.ReadCommandParameter(args, pos);
@@ -129,13 +129,13 @@ namespace CilTools.CommandLine
             {
                 //view type
                 Console.WriteLine();
-                return Disassembler.DisassembleType(filepath, type, false, noColor, Console.Out);
+                return Visualizer.VisualizeType(filepath, type, false, noColor, Console.Out);
             }
 
             //view method
             Console.WriteLine("{0}.{1}", type, method);
             Console.WriteLine();
-            return Disassembler.DisassembleMethod(filepath, type, method, noColor, Console.Out);
+            return Visualizer.VisualizeMethod(filepath, type, method, noColor, Console.Out);
         }
     }
 }

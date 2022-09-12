@@ -13,7 +13,7 @@ using CilTools.Syntax;
 
 namespace CilTools.CommandLine
 {
-    static class Disassembler
+    static class Visualizer
     {
         public static void PrintNode(SyntaxNode node, bool noColor, TextWriter target)
         {
@@ -91,7 +91,7 @@ namespace CilTools.CommandLine
             }
         }
 
-        public static int DisassembleMethod(string asspath, string type, string method, bool noColor, TextWriter target)
+        public static int VisualizeMethod(string asspath, string type, string method, bool noColor, TextWriter target)
         {
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
@@ -142,7 +142,7 @@ namespace CilTools.CommandLine
             return retCode;
         }
 
-        public static int DisassembleType(string asspath, string type, bool full, bool noColor, TextWriter target)
+        public static int VisualizeType(string asspath, string type, bool full, bool noColor, TextWriter target)
         {
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
@@ -176,7 +176,7 @@ namespace CilTools.CommandLine
             return retCode;
         }
         
-        public static int DisassembleAssembly(string asspath, bool noColor, TextWriter target)
+        public static int VisualizeAssembly(string asspath, bool noColor, TextWriter target)
         {
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
@@ -185,7 +185,7 @@ namespace CilTools.CommandLine
             try
             {
                 ass = reader.LoadFrom(asspath);                
-                IEnumerable<SyntaxNode> nodes = Syntax.Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+                IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
 
                 foreach (SyntaxNode node in nodes)
                 {

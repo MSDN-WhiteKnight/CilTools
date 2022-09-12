@@ -78,7 +78,7 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
-        public void Test_GetPInvokeModules()
+        public void Test_GetReferencedModules()
         {
             AssemblyReader reader = ReaderFactory.GetReader();
             Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
@@ -89,7 +89,7 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
-        public void Test_GetPInvokeModules_Negative()
+        public void Test_GetReferencedModules_Negative()
         {
             AssemblyReader reader = ReaderFactory.GetReader();
 
