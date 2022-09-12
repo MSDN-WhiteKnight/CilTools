@@ -193,7 +193,7 @@ namespace CilTools.Syntax
                     LiteralSyntax.CreateFromValue(string.Empty, an.Version.Revision, Environment.NewLine)
                 };
 
-                yield return new DirectiveSyntax(" ", "ver", content);
+                yield return new DirectiveSyntax("  ", "ver", content);
             }
 
             yield return new PunctuationSyntax(string.Empty, "}", Environment.NewLine);
