@@ -230,7 +230,47 @@ namespace CilTools.Syntax
                 yield return new DirectiveSyntax("  ", "ver", content);
             }
 
-            yield return new PunctuationSyntax(string.Empty, "}", Environment.NewLine);
+            yield return new PunctuationSyntax(string.Empty, "}", Environment.NewLine + Environment.NewLine);
+
+            // Manifest module definition
+            Module module = ass.ManifestModule;
+
+            if (module != null)
+            {
+                content = new SyntaxNode[] {
+                    new IdentifierSyntax(string.Empty, module.Name, Environment.NewLine, false, null)
+                };
+
+                yield return new DirectiveSyntax(string.Empty, "module", content);
+
+                string str = "MVID: " + module.ModuleVersionId.ToString();
+                yield return CommentSyntax.Create(string.Empty, str, null, false);
+
+                // Module custom attributes
+                try
+                {
+                    arr = SyntaxNode.GetAttributesSyntax(module, 0);
+                }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        CommentSyntax cs = CommentSyntax.Create(SyntaxNode.GetIndentString(2),
+                            "Failed to show custom attributes. " + ReflectionUtils.GetErrorShortString(ex),
+                            null, false);
+
+                        arr = new SyntaxNode[] { cs };
+                        CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to show module custom attributes.");
+                        Diagnostics.OnError(ass, ea);
+                    }
+                    else throw;
+                }
+
+                for (int j = 0; j < arr.Length; j++)
+                {
+                    yield return arr[j];
+                }
+            }//endif
         }
     }
 }
