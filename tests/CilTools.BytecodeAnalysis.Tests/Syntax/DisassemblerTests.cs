@@ -43,15 +43,10 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
                     x.ToString().Contains(ver);
             });
 
-            //text output
-            string s = Utils.SyntaxToString(nodes);
-
-            AssertThat.IsMatch(s, new Text[] {
-                ".assembly", Text.Any, "extern", Text.Any, "CilTools.BytecodeAnalysis", Text.Any,
-                "{", Text.Any, ".ver", Text.Any, ver, Text.Any, "}", Text.Any,
-                ".assembly", Text.Any, "CilTools.Tests.Common", Text.Any, "{", Text.Any,
-                ".custom", Text.Any, "System.Reflection.AssemblyTitleAttribute::.ctor(string)", Text.Any,
-                ".ver", Text.Any, ver, Text.Any, "}", Text.Any
+            AssertThat.HasOnlyOneMatch(nodes, (x) =>
+            {
+                return x is DirectiveSyntax && (x as DirectiveSyntax).Name == "module" &&
+                    x.ToString().Contains("CilTools.Tests.Common.dll");
             });
         }
 
@@ -59,10 +54,12 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         public void Test_GetAssemblyManifestSyntaxNodes_Reflection()
         {
             Assembly ass = typeof(SampleMethods).Assembly;
-            string ver = ass.GetName().Version.ToString(4).Replace(".", ":");
+            string ver = Utils.GetVersionIL(ass);
             IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+            string str = Utils.SyntaxToString(nodes);
 
             VerifyAssemblyManifest(nodes, ver);
+            SyntaxTestsCore.VerifyAssemblyManifestString(str, ver);
         }
 
         [TestMethod]
@@ -73,9 +70,11 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
             using (reader)
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-                string ver = ass.GetName().Version.ToString(4).Replace(".", ":");
+                string ver = Utils.GetVersionIL(ass);
                 IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+                string str = Utils.SyntaxToString(nodes);
 
+                //syntax tree
                 VerifyAssemblyManifest(nodes, ver);
 
                 AssertThat.HasOnlyOneMatch(nodes, (x) =>
@@ -84,9 +83,10 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
                         x.ToString().ToLower().Contains("extern user32.dll");
                 });
 
-                string s = Utils.SyntaxToString(nodes).ToLower();
+                //text output
+                SyntaxTestsCore.VerifyAssemblyManifestString(str, ver);
 
-                AssertThat.IsMatch(s, new Text[] {
+                AssertThat.IsMatch(str.ToLower(), new Text[] {
                     ".module", Text.Any, "extern", Text.Any, "user32.dll"
                 });
             }

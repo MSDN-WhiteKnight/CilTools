@@ -140,5 +140,13 @@ namespace CilTools.Tests.Common
             sb.Append(ext);
             return Path.Combine(GetProgramDir(), sb.ToString());
         }
+
+        /// <summary>
+        /// Gets assembly version in IL format (A:B:C:D)
+        /// </summary>
+        public static string GetVersionIL(Assembly ass)
+        {
+            return ass.GetName().Version.ToString(4).Replace(".", ":");
+        }
     }
 }

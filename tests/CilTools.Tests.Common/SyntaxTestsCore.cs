@@ -31,5 +31,20 @@ namespace CilTools.Tests.Common
 
             Assert.IsFalse(s.Contains(".method"));
         }
+
+        public static void VerifyAssemblyManifestString(string str, string ver)
+        {
+            // Verify disassembled assembly manifest for CilTools.Tests.Common
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".assembly", Text.Any, "extern", Text.Any, "CilTools.BytecodeAnalysis", Text.Any,
+                "{", Text.Any, ".ver", Text.Any, ver, Text.Any, "}", Text.Any,
+                ".assembly", Text.Any, "CilTools.Tests.Common", Text.Any, "{", Text.Any,
+                ".custom", Text.Any, "System.Reflection.AssemblyTitleAttribute::.ctor(string)", Text.Any,
+                ".ver", Text.Any, ver, Text.Any, "}", Text.Any,
+                ".module", Text.Any, "CilTools.Tests.Common.dll", Text.Any,
+                ".custom", Text.Any, "System.Security.UnverifiableCodeAttribute::.ctor() = ( 01 00 00 00 )", Text.Any,
+            });
+        }
     }
 }
