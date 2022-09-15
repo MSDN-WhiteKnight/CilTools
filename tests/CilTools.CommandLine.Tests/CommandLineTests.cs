@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -134,7 +135,7 @@ namespace CilTools.CommandLine.Tests
             CilGraphTestsCore.Assert_CilGraph_Loop(output);
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.DebugBuildOnly, "PDB content is different in debug and release")]
         public void Test_ViewSource_PDB()
         {
             const string cmd = "view-source CilTools.Tests.Common.dll CilTools.Tests.Common.SampleMethods CalcSum";
