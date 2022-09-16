@@ -80,7 +80,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent Condition=" '$(Configuration)' == 'Release' ">$(ProjectDir)\pkg\package.cmd</PostBuildEvent>
+    <PostBuildEvent Condition=" '$(Configuration)' == 'Release' AND '$(CI)' != 'true' ">$(ProjectDir)\pkg\package.cmd</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
