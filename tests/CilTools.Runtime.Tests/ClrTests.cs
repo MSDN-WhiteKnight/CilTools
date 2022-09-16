@@ -28,7 +28,7 @@ namespace CilTools.Runtime.Tests
         public static void StartSession()
         {
             //start test app
-            string path = @"..\..\..\EmitSampleApp\bin\Debug\net45\win-x86\EmitSampleApp.exe";
+            string path = @"..\..\..\EmitSampleApp\bin\" + Utils.GetConfig() + @"\net45\win-x86\EmitSampleApp.exe";
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = path;
             psi.CreateNoWindow = true;
