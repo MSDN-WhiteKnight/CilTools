@@ -303,6 +303,9 @@ namespace CilView
                 }
                 else
                 {
+                    //display assembly manifest
+                    this.cilbrowser.NavigateToAssembly(ass);
+
                     int c = 0;
                     int index = 0;
 
