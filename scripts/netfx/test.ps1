@@ -2,7 +2,7 @@
 Param($config = "Debug")
 
 $toTest = "tests\CilTools.BytecodeAnalysis.Tests\bin\$config\net45\CilTools.BytecodeAnalysis.Tests.dll",
-          "tests\CilTools.Metadata.Tests\bin\$config\CilTools.Metadata.Tests.dll"
+          "tests\CilTools.Metadata.Tests\bin\$config\net45\CilTools.Metadata.Tests.dll"
 
 $exitCode = 0           
 
