@@ -5,7 +5,7 @@ echo "Building CIL Tools..."
 echo ('Configuration: '+$config)
 $exitCode = 0
 
-msbuild ('-t:Restore;Build -p:Configuration='+$config)
+msbuild -t:Restore;Build ('-p:Configuration='+$config)
 
 if ($LASTEXITCODE -ne 0) {$exitCode = $LASTEXITCODE}       
 
