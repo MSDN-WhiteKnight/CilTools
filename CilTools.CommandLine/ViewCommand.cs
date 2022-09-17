@@ -29,9 +29,9 @@ namespace CilTools.CommandLine
             {
                 string exeName = typeof(Program).Assembly.GetName().Name;
 
-                yield return TextParagraph.Text("Print disassembled CIL code of the specified type or method:");
+                yield return TextParagraph.Text("Print disassembled CIL code of the specified assembly, type or method:");
                 yield return TextParagraph.Code("    " + exeName +
-                    " view [--nocolor] <assembly path> <type full name> [<method name>]");
+                    " view [--nocolor] <assembly path> [<type full name>] [<method name>]");
                 yield return TextParagraph.Text("Print contents of the specified CIL source file (*.il):");
                 yield return TextParagraph.Code("    " + exeName + " view [--nocolor] <source file path>");
                 yield return TextParagraph.Text(string.Empty);
@@ -51,7 +51,7 @@ namespace CilTools.CommandLine
 
             for (int i = 0; i < nodes.Length; i++)
             {
-                Disassembler.PrintNode(nodes[i], noColor, target);
+                Visualizer.PrintNode(nodes[i], noColor, target);
             }
         }
 
@@ -89,7 +89,7 @@ namespace CilTools.CommandLine
             }
 
             if (FileUtils.HasCilSourceExtension(filepath) ||
-                (args.Length < 4 && !FileUtils.HasPeFileExtension(filepath)))
+                (args.Length < 3 && !FileUtils.HasPeFileExtension(filepath)))
             {
                 //view IL source file
 
@@ -110,32 +110,32 @@ namespace CilTools.CommandLine
                 }
             }
 
+            Console.WriteLine("Assembly: " + filepath);
+            
             //read type and method name from arguments
             type = CLI.ReadCommandParameter(args, pos);
             pos++;
 
             if (type == null)
             {
-                Console.WriteLine("Error: Type name is not provided for the 'view' command.");
-                Console.WriteLine(CLI.GetErrorInfo());
-                return 1;
+                //view assembly manifest
+                Console.WriteLine();
+                return Visualizer.VisualizeAssembly(filepath, noColor, Console.Out);
             }
 
             method = CLI.ReadCommandParameter(args, pos);
-
-            Console.WriteLine("Assembly: " + filepath);
 
             if (string.IsNullOrEmpty(method))
             {
                 //view type
                 Console.WriteLine();
-                return Disassembler.DisassembleType(filepath, type, false, noColor, Console.Out);
+                return Visualizer.VisualizeType(filepath, type, false, noColor, Console.Out);
             }
 
             //view method
             Console.WriteLine("{0}.{1}", type, method);
             Console.WriteLine();
-            return Disassembler.DisassembleMethod(filepath, type, method, noColor, Console.Out);
+            return Visualizer.VisualizeMethod(filepath, type, method, noColor, Console.Out);
         }
     }
 }

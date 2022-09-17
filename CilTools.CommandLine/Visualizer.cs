@@ -13,7 +13,7 @@ using CilTools.Syntax;
 
 namespace CilTools.CommandLine
 {
-    static class Disassembler
+    static class Visualizer
     {
         public static void PrintNode(SyntaxNode node, bool noColor, TextWriter target)
         {
@@ -91,7 +91,7 @@ namespace CilTools.CommandLine
             }
         }
 
-        public static int DisassembleMethod(string asspath, string type, string method, bool noColor, TextWriter target)
+        public static int VisualizeMethod(string asspath, string type, string method, bool noColor, TextWriter target)
         {
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
@@ -142,7 +142,7 @@ namespace CilTools.CommandLine
             return retCode;
         }
 
-        public static int DisassembleType(string asspath, string type, bool full, bool noColor, TextWriter target)
+        public static int VisualizeType(string asspath, string type, bool full, bool noColor, TextWriter target)
         {
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
@@ -160,6 +160,38 @@ namespace CilTools.CommandLine
                 }
 
                 PrintType(t, full, noColor, target);
+                retCode = 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
+                retCode = 1;
+            }
+            finally
+            {
+                reader.Dispose();
+            }
+
+            return retCode;
+        }
+        
+        public static int VisualizeAssembly(string asspath, bool noColor, TextWriter target)
+        {
+            AssemblyReader reader = new AssemblyReader();
+            Assembly ass;
+            int retCode;
+
+            try
+            {
+                ass = reader.LoadFrom(asspath);                
+                IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+
+                foreach (SyntaxNode node in nodes)
+                {
+                    PrintNode(node, noColor, target);
+                }
+                
                 retCode = 0;
             }
             catch (Exception ex)

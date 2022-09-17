@@ -36,6 +36,31 @@ namespace CilTools.Reflection
         public const int ReferencedModules = 100;
 
         /// <summary>
+        /// Represents the preferred base address for the PE image (Type: ulong)
+        /// </summary>
+        public const int ImageBase = 101;
+
+        /// <summary>
+        /// Represents the PE image alignment factor, in bytes (Type: int)
+        /// </summary>
+        public const int FileAlignment = 102;
+
+        /// <summary>
+        /// Represents the PE image reserved stack size, in bytes (Type: ulong)
+        /// </summary>
+        public const int StackReserve = 103;
+
+        /// <summary>
+        /// Represents the PE image subsystem (Type: int)
+        /// </summary>
+        public const int Subsystem = 104;
+
+        /// <summary>
+        /// Represents the PE image runtime flags (Type: int)
+        /// </summary>
+        public const int CorFlags = 105;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>

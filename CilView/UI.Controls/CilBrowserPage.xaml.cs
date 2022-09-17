@@ -74,6 +74,20 @@ namespace CilView.UI.Controls
             this.tbCurrLocation.Text = sb.ToString();
         }
 
+        public CilBrowserPage(Assembly ass, RoutedEventHandler navigation)
+        {
+            InitializeComponent();
+            
+            string plaintext;
+            UIElement elem = CilVisualization.VisualizeAssembly(ass, navigation, out plaintext);
+            this.tbMainContent.Text = plaintext;
+            gridContent.Children.Clear();
+            gridContent.Children.Add(elem);
+
+            //display assembly name as location
+            this.tbCurrLocation.Text = ass.GetName().Name;
+        }
+
         public CilBrowserPage(IlasmAssembly content, string contentText, string filename)
         {
             InitializeComponent();           

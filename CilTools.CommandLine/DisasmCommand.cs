@@ -103,12 +103,12 @@ namespace CilTools.CommandLine
                 if (string.IsNullOrEmpty(method))
                 {
                     //disassemble type
-                    res = Disassembler.DisassembleType(asspath, type, full: true, noColor: true, wr);
+                    res = Visualizer.VisualizeType(asspath, type, full: true, noColor: true, wr);
                 }
                 else
                 {
                     //disassemble method
-                    res = Disassembler.DisassembleMethod(asspath, type, method, noColor: true, wr);
+                    res = Visualizer.VisualizeMethod(asspath, type, method, noColor: true, wr);
                 }
 
                 if (res == 0) Console.WriteLine("Output successfully written to " + outpath);

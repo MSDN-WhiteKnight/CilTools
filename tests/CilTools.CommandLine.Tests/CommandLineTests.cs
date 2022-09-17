@@ -116,6 +116,27 @@ namespace CilTools.CommandLine.Tests
         }
 
         [TestMethod]
+        public void Test_View_Assembly()
+        {
+            const string cmd = "view CilTools.Tests.Common.dll";
+            CommandResult cr = Execute(GetExePath(), cmd);
+            string s = cr.StandardOutputText;
+            Console.WriteLine(s);
+            Console.WriteLine(cr.StandardErrorText);
+            Assert.IsTrue(cr.Success);
+
+            AssertThat.IsMatch(s, new Text[] {
+                "*** CIL Tools command line ***", Text.Any, "Assembly: CilTools.Tests.Common.dll" , Text.Any
+            });
+
+            SyntaxTestsCore.VerifyAssemblyManifestString(s, Utils.GetVersionIL(typeof(SampleMethods).Assembly));
+
+            AssertThat.IsMatch(s.ToLower(), new Text[] {
+                ".module", Text.Any, "extern", Text.Any, "user32.dll"
+            });
+        }
+
+        [TestMethod]
         public void Test_Disasm()
         {
             const string cmd = "disasm --output test.il CilTools.Tests.Common.dll CilTools.Tests.Common.SampleMethods PrintTenNumbers";

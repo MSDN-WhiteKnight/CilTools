@@ -902,13 +902,30 @@ namespace CilTools.Metadata
             return sb.ToString();
         }
 
+        object GetImageProperty(int id)
+        {
+            PEHeader peh = this.peReader.PEHeaders.PEHeader;
+            CorHeader ch = this.peReader.PEHeaders.CorHeader;
+
+            switch (id)
+            {
+                case ReflectionInfoProperties.ImageBase: return peh.ImageBase;
+                case ReflectionInfoProperties.FileAlignment: return peh.FileAlignment;
+                case ReflectionInfoProperties.StackReserve: return peh.SizeOfStackReserve;
+                case ReflectionInfoProperties.Subsystem: return (int)peh.Subsystem;
+                case ReflectionInfoProperties.CorFlags: return (int)ch.Flags;
+            }
+
+            return null;
+        }
+
         public object GetReflectionProperty(int id)
         {
             switch (id)
             {
                 case ReflectionInfoProperties.InfoText: return this.GetInfoText();
                 case ReflectionInfoProperties.ReferencedModules: return this.GetReferencedModules();
-                default: return null;
+                default: return this.GetImageProperty(id);
             }
         }
 

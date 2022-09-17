@@ -425,6 +425,50 @@ namespace CilView
             return scroll;
         }
 
+        public static UIElement VisualizeAssembly(Assembly ass, RoutedEventHandler navigation, out string plaintext)
+        {
+            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
+            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
+            scroll.VerticalAlignment = VerticalAlignment.Stretch;
+            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+
+            FlowDocument fd = new FlowDocument();
+            fd.TextAlignment = TextAlignment.Left;
+            fd.FontFamily = new FontFamily("Courier New");
+
+            IEnumerable<SyntaxNode> tree;
+
+            if (ass is IlasmAssembly)
+            {
+                //synthesized assembly that contains IL - no need to disassemble
+                IlasmAssembly ia = (IlasmAssembly)ass;
+                tree = ia.Syntax.EnumerateChildNodes();
+            }
+            else
+            {
+                //disassemble assembly manifest
+                tree = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+            }
+
+            StringBuilder sb = new StringBuilder(500);
+            StringWriter wr = new StringWriter(sb);
+            Paragraph par = new Paragraph();
+
+            VisualizeGraphContext ctx = new VisualizeGraphContext();
+            ctx.navigation = navigation;
+
+            foreach (SyntaxNode node in tree)
+            {
+                VisualizeNode(node, par, ctx);
+                node.ToText(wr);
+            }
+
+            fd.Blocks.Add(par);
+            scroll.Document = fd;
+            plaintext = sb.ToString();
+            return scroll;
+        }
+
         public static UIElement VisualizeSourceText(DocumentSyntax src)
         {
             FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();

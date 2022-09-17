@@ -112,24 +112,11 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
-        internal static SyntaxNode[] GetAttributesSyntax(MemberInfo m, int indent)
+        internal static SyntaxNode[] GetAttributesSyntax(ICustomAttributeProvider m, int indent)
         {
             object[] attrs = m.GetCustomAttributes(false);
             List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
             
-            for (int i = 0; i < attrs.Length; i++)
-            {
-                GetAttributeSyntax(attrs[i], indent, ret);
-            }
-
-            return ret.ToArray();
-        }
-
-        internal static SyntaxNode[] GetAttributesSyntax(Assembly ass, int indent)
-        {
-            object[] attrs = ass.GetCustomAttributes(false);
-            List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
-
             for (int i = 0; i < attrs.Length; i++)
             {
                 GetAttributeSyntax(attrs[i], indent, ret);

@@ -78,7 +78,7 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
-        public void Test_GetPInvokeModules()
+        public void Test_GetReferencedModules()
         {
             AssemblyReader reader = ReaderFactory.GetReader();
             Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
@@ -89,7 +89,7 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
-        public void Test_GetPInvokeModules_Negative()
+        public void Test_GetReferencedModules_Negative()
         {
             AssemblyReader reader = ReaderFactory.GetReader();
 
@@ -98,6 +98,26 @@ namespace CilTools.Metadata.Tests
             string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ReferencedModules);
 
             Assert.AreEqual(0, modules.Length);
+        }
+
+        [TestMethod]
+        public void Test_Subsystem()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            int subsystem = (int)ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.Subsystem);
+
+            Assert.AreEqual(0x0003, subsystem); //WINDOWS_CUI
+        }
+
+        [TestMethod]
+        public void Test_CorFlags()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            int subsystem = (int)ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.CorFlags);
+
+            Assert.AreEqual(0x0001, subsystem); //ILONLY
         }
     }
 }
