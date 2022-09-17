@@ -34,9 +34,7 @@ namespace CilView.SourceCode
 
         public static FlowDocument VisualizeTokens(IEnumerable<SourceToken> tokens, string header, string caption)
         {
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.FontFamily = new FontFamily("Courier New");
+            FlowDocument fd = CilVisualization.CreateFlowDocument();
             Paragraph par;
 
             if (!string.IsNullOrEmpty(header))

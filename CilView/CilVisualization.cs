@@ -338,19 +338,30 @@ namespace CilView
             public bool ScrollCallbackApplied = false;
         }
 
-        public static UIElement VisualizeGraph(
-            CilGraph gr, RoutedEventHandler navigation,int highlight_start=-1,int highlight_end=Int32.MaxValue
-            )
+        static FlowDocumentScrollViewer CreateScrollViewer(FlowDocument fd)
         {
             FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
             scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
             scroll.VerticalAlignment = VerticalAlignment.Stretch;
             scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            scroll.Document = fd;
+            return scroll;
+        }
 
+        internal static FlowDocument CreateFlowDocument()
+        {
             FlowDocument fd = new FlowDocument();
             fd.TextAlignment = TextAlignment.Left;
             fd.FontFamily = new FontFamily("Courier New");
-            
+            return fd;
+        }
+
+        public static UIElement VisualizeGraph(
+            CilGraph gr, RoutedEventHandler navigation,int highlight_start=-1,int highlight_end=Int32.MaxValue
+            )
+        {
+            FlowDocument fd = CreateFlowDocument();
+
             SyntaxNode[] tree = gr.ToSyntaxTree(CurrentDisassemblerParams).GetChildNodes();
             Paragraph par = new Paragraph();
 
@@ -362,15 +373,12 @@ namespace CilView
             for (int i = 0; i < tree.Length; i++) VisualizeNode(tree[i], par, ctx);
 
             fd.Blocks.Add(par);
-            scroll.Document = fd;
-            return scroll;
+            return CreateScrollViewer(fd);
         }
 
         public static FlowDocument VisualizeNodes(IEnumerable<SyntaxNode> nodes)
         {
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.FontFamily = new FontFamily("Courier New");
+            FlowDocument fd = CreateFlowDocument();
             Paragraph par = new Paragraph();
             VisualizeGraphContext ctx = new VisualizeGraphContext();
             ctx.ContextMenuEnabled = false;
@@ -383,14 +391,7 @@ namespace CilView
 
         public static UIElement VisualizeType(Type t, RoutedEventHandler navigation,out string plaintext)
         {
-            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
-            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            scroll.VerticalAlignment = VerticalAlignment.Stretch;
-            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.FontFamily = new FontFamily("Courier New");
+            FlowDocument fd = CreateFlowDocument();
 
             IEnumerable<SyntaxNode> tree;
 
@@ -419,22 +420,14 @@ namespace CilView
                 node.ToText(wr);
             }
 
-            fd.Blocks.Add(par);
-            scroll.Document = fd;
+            fd.Blocks.Add(par);            
             plaintext = sb.ToString();
-            return scroll;
+            return CreateScrollViewer(fd);
         }
 
         public static UIElement VisualizeAssembly(Assembly ass, RoutedEventHandler navigation, out string plaintext)
         {
-            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
-            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            scroll.VerticalAlignment = VerticalAlignment.Stretch;
-            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.FontFamily = new FontFamily("Courier New");
+            FlowDocument fd = CreateFlowDocument();
 
             IEnumerable<SyntaxNode> tree;
 
@@ -464,22 +457,13 @@ namespace CilView
             }
 
             fd.Blocks.Add(par);
-            scroll.Document = fd;
             plaintext = sb.ToString();
-            return scroll;
+            return CreateScrollViewer(fd);
         }
 
         public static UIElement VisualizeSourceText(DocumentSyntax src)
         {
-            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
-            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            scroll.VerticalAlignment = VerticalAlignment.Stretch;
-            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.FontFamily = new FontFamily("Courier New");
-            
+            FlowDocument fd = CreateFlowDocument();
             SyntaxNode[] nodes = src.GetChildNodes();
             Paragraph par = new Paragraph();
             VisualizeGraphContext ctx = new VisualizeGraphContext();
@@ -487,8 +471,7 @@ namespace CilView
             for (int i = 0; i < nodes.Length; i++) VisualizeNode(nodes[i], par, ctx);
 
             fd.Blocks.Add(par);
-            scroll.Document = fd;
-            return scroll;
+            return CreateScrollViewer(fd);
         }
     }
 }
