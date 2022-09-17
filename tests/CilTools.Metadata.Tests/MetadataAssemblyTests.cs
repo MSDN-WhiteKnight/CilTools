@@ -99,5 +99,25 @@ namespace CilTools.Metadata.Tests
 
             Assert.AreEqual(0, modules.Length);
         }
+
+        [TestMethod]
+        public void Test_Subsystem()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            int subsystem = (int)ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.Subsystem);
+
+            Assert.AreEqual(0x0003, subsystem); //WINDOWS_CUI
+        }
+
+        [TestMethod]
+        public void Test_CorFlags()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            int subsystem = (int)ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.CorFlags);
+
+            Assert.AreEqual(0x0001, subsystem); //ILONLY
+        }
     }
 }

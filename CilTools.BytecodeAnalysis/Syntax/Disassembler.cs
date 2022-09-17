@@ -90,6 +90,7 @@ namespace CilTools.Syntax
         {
             SyntaxNode[] content;
             DirectiveSyntax ds;
+            string str;
 
             // Module references
             string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ReferencedModules);
@@ -243,7 +244,7 @@ namespace CilTools.Syntax
 
                 yield return new DirectiveSyntax(string.Empty, "module", content);
 
-                string str = "MVID: " + module.ModuleVersionId.ToString();
+                str = "MVID: " + module.ModuleVersionId.ToString();
                 yield return CommentSyntax.Create(string.Empty, str, null, false);
 
                 // Module custom attributes
@@ -270,6 +271,70 @@ namespace CilTools.Syntax
                 {
                     yield return arr[j];
                 }
+
+                // PE Image params
+                object val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ImageBase);
+
+                if (val != null)
+                {
+                    ulong imageBase = (ulong)val;
+                    str = "0x" + imageBase.ToString("X", CultureInfo.InvariantCulture);
+                    content = new SyntaxNode[] { new GenericSyntax(str + Environment.NewLine) };
+                    yield return new DirectiveSyntax(string.Empty, "imagebase", content);
+                }
+
+                val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.FileAlignment);
+
+                if (val != null)
+                {
+                    int fileAlign = (int)val;
+                    str = "0x" + fileAlign.ToString("X", CultureInfo.InvariantCulture);
+
+                    content = new SyntaxNode[] { new KeywordSyntax(string.Empty, "alignment", " ", KeywordKind.Other),
+                        new GenericSyntax(str + Environment.NewLine) };
+
+                    yield return new DirectiveSyntax(string.Empty, "file", content);
+                }
+
+                val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.StackReserve);
+
+                if (val != null)
+                {
+                    ulong stackReserve = (ulong)val;
+                    str = "0x" + stackReserve.ToString("X", CultureInfo.InvariantCulture);
+                    content = new SyntaxNode[] { new GenericSyntax(str + Environment.NewLine) };
+                    yield return new DirectiveSyntax(string.Empty, "stackreserve", content);
+                }
+
+                val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.Subsystem);
+
+                if (val != null)
+                {
+                    int subsystem = (int)val;
+                    str = "0x" + subsystem.ToString("X", CultureInfo.InvariantCulture);
+                    string commentStr = string.Empty;
+
+                    //not handling all variants as they are rare for .NET assemblies
+                    if (subsystem == 2) commentStr = " WINDOWS_GUI";
+                    else if (subsystem == 3) commentStr = " WINDOWS_CUI";
+                    else if (subsystem == 0) commentStr = " UNKNOWN";
+
+                    content = new SyntaxNode[] { new GenericSyntax(str + " "),
+                        CommentSyntax.Create(string.Empty, commentStr, null, false) };
+
+                    yield return new DirectiveSyntax(string.Empty, "subsystem", content);
+                }
+
+                val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.CorFlags);
+
+                if (val != null)
+                {
+                    int flags = (int)val;
+                    str = "0x" + flags.ToString("X", CultureInfo.InvariantCulture);
+                    content = new SyntaxNode[] { new GenericSyntax(str + Environment.NewLine) };
+                    yield return new DirectiveSyntax(string.Empty, "corflags", content);
+                }
+
             }//endif
         }
     }

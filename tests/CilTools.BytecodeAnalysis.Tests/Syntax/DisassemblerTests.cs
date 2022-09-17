@@ -89,6 +89,14 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
                 AssertThat.IsMatch(str.ToLower(), new Text[] {
                     ".module", Text.Any, "extern", Text.Any, "user32.dll"
                 });
+
+                AssertThat.IsMatch(str, new Text[] {
+                    ".imagebase", Text.Any,
+                    ".file", Text.Any, "alignment", Text.Any,
+                    ".stackreserve", Text.Any, 
+                    ".subsystem", Text.Any, "0x3", Text.Any, "// WINDOWS_CUI", Text.Any,
+                    ".corflags", Text.Any, "0x1", Text.Any
+                });
             }
         }
     }
