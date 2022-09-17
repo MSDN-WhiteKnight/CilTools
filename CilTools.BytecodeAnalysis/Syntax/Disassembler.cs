@@ -93,7 +93,7 @@ namespace CilTools.Syntax
             string str;
 
             // Module references
-            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ReferencedModules);
+            string[] modules = (string[])ReflectionProperties.Get(ass, ReflectionProperties.ReferencedModules);
 
             if (modules != null)
             {
@@ -273,7 +273,7 @@ namespace CilTools.Syntax
                 }
 
                 // PE Image params
-                object val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ImageBase);
+                object val = ReflectionProperties.Get(ass, ReflectionProperties.ImageBase);
 
                 if (val != null)
                 {
@@ -283,7 +283,7 @@ namespace CilTools.Syntax
                     yield return new DirectiveSyntax(string.Empty, "imagebase", content);
                 }
 
-                val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.FileAlignment);
+                val = ReflectionProperties.Get(ass, ReflectionProperties.FileAlignment);
 
                 if (val != null)
                 {
@@ -296,7 +296,7 @@ namespace CilTools.Syntax
                     yield return new DirectiveSyntax(string.Empty, "file", content);
                 }
 
-                val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.StackReserve);
+                val = ReflectionProperties.Get(ass, ReflectionProperties.StackReserve);
 
                 if (val != null)
                 {
@@ -306,7 +306,7 @@ namespace CilTools.Syntax
                     yield return new DirectiveSyntax(string.Empty, "stackreserve", content);
                 }
 
-                val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.Subsystem);
+                val = ReflectionProperties.Get(ass, ReflectionProperties.Subsystem);
 
                 if (val != null)
                 {
@@ -325,7 +325,7 @@ namespace CilTools.Syntax
                     yield return new DirectiveSyntax(string.Empty, "subsystem", content);
                 }
 
-                val = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.CorFlags);
+                val = ReflectionProperties.Get(ass, ReflectionProperties.CorFlags);
 
                 if (val != null)
                 {

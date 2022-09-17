@@ -102,7 +102,7 @@ namespace CilView.Core.Reflection
             wr.WriteLine();
 
             // PE info
-            string peinfo = ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.InfoText) as string;
+            string peinfo = ReflectionProperties.Get(ass, ReflectionProperties.InfoText) as string;
 
             if (peinfo != null)
             {

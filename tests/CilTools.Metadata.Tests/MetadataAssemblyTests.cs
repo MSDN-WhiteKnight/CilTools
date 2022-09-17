@@ -22,7 +22,7 @@ namespace CilTools.Metadata.Tests
         {
             AssemblyReader reader = ReaderFactory.GetReader();
             Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-            string info = (string)ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.InfoText);
+            string info = (string)ReflectionProperties.Get(ass, ReflectionProperties.InfoText);
 
             Assert.IsFalse(string.IsNullOrEmpty(info));
             Assert.IsTrue(info.Contains("Type: DLL"));
@@ -40,7 +40,7 @@ namespace CilTools.Metadata.Tests
         {
             AssemblyReader reader = ReaderFactory.GetReader();
             Assembly ass = reader.LoadFrom(typeof(object).Assembly.Location);
-            string info = (string)ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.InfoText);
+            string info = (string)ReflectionProperties.Get(ass, ReflectionProperties.InfoText);
 
             Assert.IsFalse(string.IsNullOrEmpty(info));
             Assert.IsTrue(info.Contains("Type: DLL"));
@@ -82,7 +82,7 @@ namespace CilTools.Metadata.Tests
         {
             AssemblyReader reader = ReaderFactory.GetReader();
             Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ReferencedModules);
+            string[] modules = (string[])ReflectionProperties.Get(ass, ReflectionProperties.ReferencedModules);
 
             Assert.AreEqual(1, modules.Length);
             Assert.AreEqual("user32.dll", modules[0], ignoreCase: true);
@@ -94,8 +94,8 @@ namespace CilTools.Metadata.Tests
             AssemblyReader reader = ReaderFactory.GetReader();
 
             //load CilTools.BytecodeAnalysis
-            Assembly ass = reader.LoadFrom(typeof(ReflectionInfoProperties).Assembly.Location);
-            string[] modules = (string[])ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.ReferencedModules);
+            Assembly ass = reader.LoadFrom(typeof(ReflectionProperties).Assembly.Location);
+            string[] modules = (string[])ReflectionProperties.Get(ass, ReflectionProperties.ReferencedModules);
 
             Assert.AreEqual(0, modules.Length);
         }
@@ -105,7 +105,7 @@ namespace CilTools.Metadata.Tests
         {
             AssemblyReader reader = ReaderFactory.GetReader();
             Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-            int subsystem = (int)ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.Subsystem);
+            int subsystem = (int)ReflectionProperties.Get(ass, ReflectionProperties.Subsystem);
 
             Assert.AreEqual(0x0003, subsystem); //WINDOWS_CUI
         }
@@ -115,7 +115,7 @@ namespace CilTools.Metadata.Tests
         {
             AssemblyReader reader = ReaderFactory.GetReader();
             Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-            int subsystem = (int)ReflectionInfoProperties.GetProperty(ass, ReflectionInfoProperties.CorFlags);
+            int subsystem = (int)ReflectionProperties.Get(ass, ReflectionProperties.CorFlags);
 
             Assert.AreEqual(0x0001, subsystem); //ILONLY
         }

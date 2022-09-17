@@ -23,7 +23,7 @@ namespace CilTools.Reflection
     /// <summary>
     /// Provides constants for reflection properties used with <see cref="IReflectionInfo"/>
     /// </summary>
-    public static class ReflectionInfoProperties
+    public static class ReflectionProperties
     {
         /// <summary>
         /// Represents the string containing information about object
@@ -66,7 +66,7 @@ namespace CilTools.Reflection
         /// <param name="obj">Reflection object to get property</param>
         /// <param name="id">Property Id</param>
         /// <returns>The property value, or null if property is not supported</returns>
-        public static object GetProperty(object obj, int id)
+        public static object Get(object obj, int id)
         {
             IReflectionInfo info = obj as IReflectionInfo;
 

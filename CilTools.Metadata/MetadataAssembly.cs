@@ -909,11 +909,11 @@ namespace CilTools.Metadata
 
             switch (id)
             {
-                case ReflectionInfoProperties.ImageBase: return peh.ImageBase;
-                case ReflectionInfoProperties.FileAlignment: return peh.FileAlignment;
-                case ReflectionInfoProperties.StackReserve: return peh.SizeOfStackReserve;
-                case ReflectionInfoProperties.Subsystem: return (int)peh.Subsystem;
-                case ReflectionInfoProperties.CorFlags: return (int)ch.Flags;
+                case ReflectionProperties.ImageBase: return peh.ImageBase;
+                case ReflectionProperties.FileAlignment: return peh.FileAlignment;
+                case ReflectionProperties.StackReserve: return peh.SizeOfStackReserve;
+                case ReflectionProperties.Subsystem: return (int)peh.Subsystem;
+                case ReflectionProperties.CorFlags: return (int)ch.Flags;
             }
 
             return null;
@@ -923,8 +923,8 @@ namespace CilTools.Metadata
         {
             switch (id)
             {
-                case ReflectionInfoProperties.InfoText: return this.GetInfoText();
-                case ReflectionInfoProperties.ReferencedModules: return this.GetReferencedModules();
+                case ReflectionProperties.InfoText: return this.GetInfoText();
+                case ReflectionProperties.ReferencedModules: return this.GetReferencedModules();
                 default: return this.GetImageProperty(id);
             }
         }
