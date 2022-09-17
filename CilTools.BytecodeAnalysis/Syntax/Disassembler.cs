@@ -31,6 +31,16 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        static CommentSyntax OnReflectionError(object sender, string msg, Exception ex)
+        {
+            CommentSyntax cs = CommentSyntax.Create(string.Empty,
+                msg + " " + ReflectionUtils.GetErrorShortString(ex), null, false);
+            
+            CilErrorEventArgs ea = new CilErrorEventArgs(ex, msg);
+            Diagnostics.OnError(sender, ea);
+            return cs;
+        }
+
         static DirectiveSyntax GetPublicKeyDirective(AssemblyName an)
         {
             // Public key or token
@@ -91,6 +101,7 @@ namespace CilTools.Syntax
             SyntaxNode[] content;
             DirectiveSyntax ds;
             string str;
+            CommentSyntax cs;
 
             // Module references
             string[] modules = (string[])ReflectionProperties.Get(ass, ReflectionProperties.ReferencedModules);
@@ -111,51 +122,70 @@ namespace CilTools.Syntax
             }
 
             // Assembly references
-            AssemblyName[] refs = ass.GetReferencedAssemblies();
+            List<SyntaxNode> refsSyntax = new List<SyntaxNode>(20);
 
-            for (int i = 0; i < refs.Length; i++)
+            try
             {
-                content = new SyntaxNode[] {
-                    new KeywordSyntax(string.Empty, "extern", " ", KeywordKind.Other),
-                    new IdentifierSyntax(string.Empty, refs[i].Name, Environment.NewLine, false, null)
-                };
+                AssemblyName[] refs = ass.GetReferencedAssemblies();
 
-                yield return new DirectiveSyntax(string.Empty, "assembly", content);
-                yield return new PunctuationSyntax(string.Empty, "{", Environment.NewLine);
-
-                // Public key or token
-                ds = GetPublicKeyDirective(refs[i]);
-
-                if (ds != null) yield return ds;
-
-                // Version
-                if (refs[i].Version != null)
+                for (int i = 0; i < refs.Length; i++)
                 {
                     content = new SyntaxNode[] {
-                        LiteralSyntax.CreateFromValue(string.Empty, refs[i].Version.Major, string.Empty),
-                        new PunctuationSyntax(string.Empty, ":", string.Empty),
-                        LiteralSyntax.CreateFromValue(string.Empty, refs[i].Version.Minor, string.Empty),
-                        new PunctuationSyntax(string.Empty, ":", string.Empty),
-                        LiteralSyntax.CreateFromValue(string.Empty, refs[i].Version.Build, string.Empty),
-                        new PunctuationSyntax(string.Empty, ":", string.Empty),
-                        LiteralSyntax.CreateFromValue(string.Empty, refs[i].Version.Revision, Environment.NewLine)
+                        new KeywordSyntax(string.Empty, "extern", " ", KeywordKind.Other),
+                        new IdentifierSyntax(string.Empty, refs[i].Name, Environment.NewLine, false, null)
                     };
 
-                    yield return new DirectiveSyntax("  ", "ver", content);
-                }
+                    refsSyntax.Add(new DirectiveSyntax(string.Empty, "assembly", content));
+                    refsSyntax.Add(new PunctuationSyntax(string.Empty, "{", Environment.NewLine));
 
-                // Culture
-                if (refs[i].CultureInfo != null && !string.IsNullOrEmpty(refs[i].CultureInfo.Name))
+                    // Public key or token
+                    ds = GetPublicKeyDirective(refs[i]);
+
+                    if (ds != null) refsSyntax.Add(ds);
+
+                    // Version
+                    if (refs[i].Version != null)
+                    {
+                        content = new SyntaxNode[] {
+                            LiteralSyntax.CreateFromValue(string.Empty, refs[i].Version.Major, string.Empty),
+                            new PunctuationSyntax(string.Empty, ":", string.Empty),
+                            LiteralSyntax.CreateFromValue(string.Empty, refs[i].Version.Minor, string.Empty),
+                            new PunctuationSyntax(string.Empty, ":", string.Empty),
+                            LiteralSyntax.CreateFromValue(string.Empty, refs[i].Version.Build, string.Empty),
+                            new PunctuationSyntax(string.Empty, ":", string.Empty),
+                            LiteralSyntax.CreateFromValue(string.Empty, refs[i].Version.Revision, Environment.NewLine)
+                        };
+
+                        refsSyntax.Add(new DirectiveSyntax("  ", "ver", content));
+                    }
+
+                    // Culture
+                    if (refs[i].CultureInfo != null && !string.IsNullOrEmpty(refs[i].CultureInfo.Name))
+                    {
+                        content = new SyntaxNode[] {
+                            LiteralSyntax.CreateFromValue(string.Empty, refs[i].CultureInfo.Name, Environment.NewLine)
+                        };
+
+                        refsSyntax.Add(new DirectiveSyntax("  ", "culture", content));
+                    }
+
+                    refsSyntax.Add(new PunctuationSyntax(string.Empty, "}", Environment.NewLine + Environment.NewLine));
+                }//end for
+            }
+            catch (Exception ex)
+            {
+                if (ReflectionUtils.IsExpectedException(ex))
                 {
-                    content = new SyntaxNode[] {
-                        LiteralSyntax.CreateFromValue(string.Empty, refs[i].CultureInfo.Name, Environment.NewLine)
-                    };
-
-                    yield return new DirectiveSyntax("  ", "culture", content);
+                    cs = OnReflectionError(ass, "Failed to show assembly references.", ex);
+                    refsSyntax.Add(cs);
                 }
+                else throw;
+            }
 
-                yield return new PunctuationSyntax(string.Empty, "}", Environment.NewLine + Environment.NewLine);
-            }//end for
+            for (int i = 0; i < refsSyntax.Count; i++)
+            {
+                yield return refsSyntax[i];
+            }
 
             // Assembly definition
             AssemblyName an = ass.GetName();
@@ -178,7 +208,7 @@ namespace CilTools.Syntax
             {
                 if (ReflectionUtils.IsExpectedException(ex))
                 {
-                    CommentSyntax cs = CommentSyntax.Create(SyntaxNode.GetIndentString(2),
+                    cs = CommentSyntax.Create(SyntaxNode.GetIndentString(2),
                         "Failed to show custom attributes. " + ReflectionUtils.GetErrorShortString(ex),
                         null, false);
 
@@ -234,7 +264,27 @@ namespace CilTools.Syntax
             yield return new PunctuationSyntax(string.Empty, "}", Environment.NewLine + Environment.NewLine);
 
             // Manifest module definition
-            Module module = ass.ManifestModule;
+            Module module = null;
+            cs = null;
+
+            try
+            {
+                module = ass.ManifestModule;
+            }
+            catch (Exception ex)
+            {
+                if (ReflectionUtils.IsExpectedException(ex))
+                {
+                    cs = OnReflectionError(ass, "Failed to show module definition.", ex);
+                }
+                else throw;
+            }
+
+            if (cs != null)
+            {
+                yield return cs; //comment with error
+                cs = null;
+            }
 
             if (module != null)
             {
@@ -256,7 +306,7 @@ namespace CilTools.Syntax
                 {
                     if (ReflectionUtils.IsExpectedException(ex))
                     {
-                        CommentSyntax cs = CommentSyntax.Create(SyntaxNode.GetIndentString(2),
+                        cs = CommentSyntax.Create(SyntaxNode.GetIndentString(2),
                             "Failed to show custom attributes. " + ReflectionUtils.GetErrorShortString(ex),
                             null, false);
 

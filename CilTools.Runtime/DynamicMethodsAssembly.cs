@@ -268,6 +268,12 @@ namespace CilTools.Runtime
         }
 
         /// <summary>
+        /// Gets a module that contains the assembly manifest
+        /// </summary>
+        /// <returns>This implementation always returns null</returns>
+        public override Module ManifestModule => null;
+
+        /// <summary>
         /// Releases unmagnaged resources associated with this assembly object
         /// </summary>
         /// <remarks>
