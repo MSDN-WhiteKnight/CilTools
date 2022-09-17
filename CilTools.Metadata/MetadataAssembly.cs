@@ -1,14 +1,15 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Reflection.Metadata.Ecma335;
-using System.Globalization;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
@@ -26,7 +27,7 @@ namespace CilTools.Metadata
     /// when the instance is owned by the <see cref="CilTools.Metadata.AssemblyReader"/> and the owning 
     /// reader was disposed.
     /// </remarks>
-    internal sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable
+    internal sealed class MetadataAssembly : Assembly, ITokenResolver, IDisposable, IReflectionInfo
     {
         static MetadataAssembly unknown = new MetadataAssembly((string)null,null);
 
@@ -83,7 +84,7 @@ namespace CilTools.Metadata
             n.CodeBase = path;
             this.asn = n;
             this.fromMemory = false;
-            System.Diagnostics.Debug.WriteLine("Loaded from file: "+n.Name);
+            Debug.WriteLine("Loaded from file: "+n.Name);
         }
 
         internal MetadataAssembly(MemoryImage image, AssemblyReader ar)
@@ -120,7 +121,7 @@ namespace CilTools.Metadata
             n.CodeBase = image.FilePath;
             this.asn = n;
             this.fromMemory = true;
-            System.Diagnostics.Debug.WriteLine("Loaded from memory: " + n.Name);
+            Debug.WriteLine("Loaded from memory: " + n.Name);
         }
 
         MemberInfo CacheGetValue(int token)
@@ -130,7 +131,7 @@ namespace CilTools.Metadata
         }
 
         /// <summary>
-        /// Gets the assembly reader that owns this instance
+        /// Gets an object used to read .NET metadata of this assembly
         /// </summary>
         public MetadataReader MetadataReader { get { return this.reader; } }
 
@@ -140,7 +141,7 @@ namespace CilTools.Metadata
         public PEReader PEReader { get { return this.peReader; } }
 
         /// <summary>
-        /// Gets an object used to read .NET metadata of this assembly
+        /// Gets the assembly reader that owns this instance
         /// </summary>
         public AssemblyReader AssemblyReader { get { return this.assreader; } }
 
@@ -188,6 +189,18 @@ namespace CilTools.Metadata
             get
             {
                 return this.asn.CodeBase;
+            }
+        }
+
+        public override Module ManifestModule
+        {
+            get
+            {
+                // There's only one module definition (others are external references), so the handle
+                // is just synthesized.
+                ModuleDefinitionHandle h = (ModuleDefinitionHandle)MetadataTokens.EntityHandle(TableIndex.Module, 1);
+                ModuleDefinition m = this.reader.GetModuleDefinition();
+                return new ModuleDef(this, m, h);
             }
         }
 
@@ -519,11 +532,25 @@ namespace CilTools.Metadata
             return this.ResolveTypeImpl(token, null, null);
         }
 
+        internal Type GetTypeByHandle(EntityHandle ht)
+        {
+            int token = this.MetadataReader.GetToken(ht);
+
+            return this.ResolveTypeImpl(token, null, null);
+        }
+
         internal MethodBase GetMethodDefinition(MethodDefinitionHandle hm)
         {
             int token = this.MetadataReader.GetToken(hm);
 
             return this.ResolveMethodImpl(token, null, null);
+        }
+
+        internal MethodInfo GetMethodByHandle(EntityHandle hm)
+        {
+            int token = this.MetadataReader.GetToken(hm);
+
+            return this.ResolveMethodImpl(token, null, null) as MethodInfo;
         }
 
         /// <summary>
@@ -712,7 +739,7 @@ namespace CilTools.Metadata
             //so we will create special ICustomAttribute objects that CilTools.BytecodeAnalysis recognizes
             //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
 
-            CustomAttributeHandleCollection coll = this.reader.CustomAttributes;
+            CustomAttributeHandleCollection coll = this.reader.GetAssemblyDefinition().GetCustomAttributes();
             return Utils.ReadCustomAttributes(coll, this, this);
         }
 
@@ -728,6 +755,177 @@ namespace CilTools.Metadata
                 if (token == 0) return null;
 
                 return this.ResolveMethodImpl(token, null, null) as MethodInfo;
+            }
+        }
+
+        public override AssemblyName[] GetReferencedAssemblies()
+        {
+            if (this.reader == null) return new AssemblyName[0];
+
+            List<AssemblyName> ret = new List<AssemblyName>(this.reader.AssemblyReferences.Count);
+
+            foreach (AssemblyReferenceHandle h in this.reader.AssemblyReferences)
+            {
+                AssemblyReference ar = this.reader.GetAssemblyReference(h);
+                AssemblyName an = new AssemblyName();
+                an.Name = this.reader.GetString(ar.Name);
+                an.Version = ar.Version;
+
+                try
+                {
+                    if (!ar.Culture.IsNil) an.CultureInfo = new CultureInfo(this.reader.GetString(ar.Culture));
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Failed to get AssemblyReference culture");
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                if (ar.Flags.HasFlag(AssemblyFlags.PublicKey))
+                {
+                    BlobHandle key = ar.PublicKeyOrToken;
+
+                    if (!key.IsNil)
+                    {
+                        an.SetPublicKey(reader.GetBlobBytes(key));
+                        an.Flags |= AssemblyNameFlags.PublicKey;
+                    }
+                }
+                else
+                {
+                    BlobHandle tok = ar.PublicKeyOrToken;
+
+                    if (!tok.IsNil)
+                    {
+                        an.SetPublicKeyToken(reader.GetBlobBytes(tok));
+                    }
+                }
+
+                if (!ar.Flags.HasFlag(AssemblyFlags.DisableJitCompileOptimizer))
+                {
+                    an.Flags |= AssemblyNameFlags.EnableJITcompileOptimizer;
+                }
+
+                if (ar.Flags.HasFlag(AssemblyFlags.EnableJitCompileTracking))
+                {
+                    an.Flags |= AssemblyNameFlags.EnableJITcompileTracking;
+                }
+
+                if (ar.Flags.HasFlag(AssemblyFlags.Retargetable))
+                {
+                    an.Flags |= AssemblyNameFlags.Retargetable;
+                }
+
+                ret.Add(an);
+            }
+
+            return ret.ToArray();
+        }
+
+        public string[] GetReferencedModules()
+        {
+            int countModules = this.reader.GetTableRowCount(TableIndex.ModuleRef);
+
+            if (countModules == 0)
+            {
+                return new string[0];
+            }
+
+            string[] ret = new string[countModules];
+
+            for (int i = 1; i <= countModules; i++)
+            {
+                ModuleReferenceHandle h = MetadataTokens.ModuleReferenceHandle(i);
+                ModuleReference mref = this.reader.GetModuleReference(h);
+                string name = this.reader.GetString(mref.Name);
+                ret[i - 1] = name;
+            }
+
+            return ret;
+        }
+
+        public string GetInfoText()
+        {
+            StringBuilder sb = new StringBuilder(1000);
+            sb.Append("Type: ");
+
+            if (this.peReader.PEHeaders.IsExe) sb.AppendLine("EXE");
+            else sb.AppendLine("DLL");
+
+            //PE Header
+            PEHeader peh = this.peReader.PEHeaders.PEHeader;
+            sb.AppendLine("Subsystem: " + peh.Subsystem.ToString());
+            sb.AppendLine("Image base: 0x" + peh.ImageBase.ToString("X"));
+            sb.AppendLine("File alignment: " + peh.FileAlignment.ToString());
+            sb.AppendLine("Section alignment: " + peh.SectionAlignment.ToString());
+            sb.AppendLine("Loaded image size: " + Math.Round(peh.SizeOfImage / 1024.0f, 2).ToString() + " KB");
+
+            sb.Append("OS version: ");
+            sb.Append(peh.MajorOperatingSystemVersion.ToString());
+            sb.AppendLine("." + peh.MinorOperatingSystemVersion.ToString());
+
+            sb.Append("Linker version: ");
+            sb.Append(peh.MajorLinkerVersion.ToString());
+            sb.AppendLine("." + peh.MinorLinkerVersion.ToString());
+
+            //COFF Header
+            CoffHeader ch = this.peReader.PEHeaders.CoffHeader;
+            sb.AppendLine("Machine type: " + ch.Machine.ToString());
+
+            int x = (int)ch.Characteristics;
+            string characterstics = Utils.FlagsEnumToString<Characteristics>(x);
+            sb.Append("Characteristics: 0x" + x.ToString("X"));
+            sb.AppendLine(" (" + characterstics + ")");
+
+            //Cor Header
+            CorFlags flags = this.peReader.PEHeaders.CorHeader.Flags;
+            string flagsStr = Utils.FlagsEnumToString<CorFlags>((int)flags);
+            sb.Append("CorFlags: 0x" + ((uint)flags).ToString("X") + " (");
+            sb.Append(flagsStr);
+            sb.AppendLine(")");
+
+            //Imported P/Invoke modules
+            string[] modules = this.GetReferencedModules();
+
+            if (modules.Length > 0)
+            {
+                sb.AppendLine();
+                sb.AppendLine("    Referenced unmanaged modules");
+                sb.AppendLine();
+
+                for (int i = 0; i < modules.Length; i++)
+                {
+                    sb.AppendLine(modules[i]);
+                }
+            }
+
+            return sb.ToString();
+        }
+
+        object GetImageProperty(int id)
+        {
+            PEHeader peh = this.peReader.PEHeaders.PEHeader;
+            CorHeader ch = this.peReader.PEHeaders.CorHeader;
+
+            switch (id)
+            {
+                case ReflectionProperties.ImageBase: return peh.ImageBase;
+                case ReflectionProperties.FileAlignment: return peh.FileAlignment;
+                case ReflectionProperties.StackReserve: return peh.SizeOfStackReserve;
+                case ReflectionProperties.Subsystem: return (int)peh.Subsystem;
+                case ReflectionProperties.CorFlags: return (int)ch.Flags;
+            }
+
+            return null;
+        }
+
+        public object GetReflectionProperty(int id)
+        {
+            switch (id)
+            {
+                case ReflectionProperties.InfoText: return this.GetInfoText();
+                case ReflectionProperties.ReferencedModules: return this.GetReferencedModules();
+                default: return this.GetImageProperty(id);
             }
         }
 

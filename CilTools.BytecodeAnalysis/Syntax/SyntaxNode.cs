@@ -1,13 +1,13 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Reflection;
-using System.Globalization;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 
@@ -29,8 +29,16 @@ namespace CilTools.Syntax
     /// </remarks>
     public abstract class SyntaxNode
     {
-        internal string _lead=String.Empty;
-        internal string _trail = String.Empty;
+        /// <summary>
+        /// Whitespace content at the beginning of this node's code
+        /// </summary>
+        protected string _lead = string.Empty;
+
+        /// <summary>
+        /// Whitespace content at the end of this node's code
+        /// </summary>
+        protected string _trail = string.Empty;
+
         internal SyntaxNode _parent;
 
         internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
@@ -104,92 +112,15 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
-        internal static SyntaxNode[] GetAttributesSyntax(MemberInfo m, int indent)
+        internal static SyntaxNode[] GetAttributesSyntax(ICustomAttributeProvider m, int indent)
         {
             object[] attrs = m.GetCustomAttributes(false);
             List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
-            string content;
-            StringBuilder sb;
-            string strIndent = "".PadLeft(indent,' ');
-
+            
             for (int i = 0; i < attrs.Length; i++)
             {
-                //from metadata
-                if (attrs[i] is ICustomAttribute)
-                {
-                    ICustomAttribute ca = (ICustomAttribute)attrs[i];
-
-                    List<SyntaxNode> children = new List<SyntaxNode>();
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor,false);
-                    children.Add(mref);
-                    children.Add(new PunctuationSyntax(" ", "=", " "));
-                    children.Add(new PunctuationSyntax("", "(", " "));
-                    sb = new StringBuilder(ca.Data.Length*3);
-
-                    for (int j = 0; j < ca.Data.Length; j++)
-                    {
-                        sb.Append(ca.Data[j].ToString("X2", CultureInfo.InvariantCulture));
-                        sb.Append(' ');
-                    }
-
-                    children.Add(new GenericSyntax(sb.ToString()));
-                    children.Add(new PunctuationSyntax("", ")", Environment.NewLine));
-
-                    DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
-                    ret.Add(dir);
-                    continue;
-                }
-
-                //from reflection
-                Type t = attrs[i].GetType();
-                ConstructorInfo[] constr = t.GetConstructors();
-                string s_attr;
-                sb = new StringBuilder(100);
-                StringWriter output = new StringWriter(sb);
-
-                if (constr.Length == 1)
-                {
-                    int parcount = constr[0].GetParameters().Length;
-
-                    if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
-                        t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
-                        Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
-                        )
-                    {
-                        //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
-                        List<SyntaxNode> children = new List<SyntaxNode>();
-                        MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0], false);
-                        children.Add(mref);
-                        children.Add(new PunctuationSyntax(" ", "=", " "));
-                        children.Add(new PunctuationSyntax("", "(", " "));
-                        children.Add(new GenericSyntax("01 00 00 00"));
-                        children.Add(new PunctuationSyntax(" ", ")", Environment.NewLine));
-                        
-                        DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
-                        ret.Add(dir);
-                    }
-                    else
-                    {
-                        s_attr = CilAnalysis.MethodToString(constr[0]);
-                        output.Write(".custom ");
-                        output.Write(s_attr);
-                        output.Flush();
-                        content = sb.ToString();
-                        CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
-                        ret.Add(node);
-                    }
-                }
-                else
-                {
-                    output.Write(".custom ");
-                    s_attr = CilAnalysis.GetTypeSpecString(t);
-                    output.Write(s_attr);
-                    output.Flush();
-                    content = sb.ToString();
-                    CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
-                    ret.Add(node);
-                }
-            }//end for
+                GetAttributeSyntax(attrs[i], indent, ret);
+            }
 
             return ret.ToArray();
         }
@@ -220,7 +151,7 @@ namespace CilTools.Syntax
                 {
                     output.Write(CilAnalysis.GetTypeName(t));
                     output.Write('(');
-                    output.Write(Convert.ToString(constant, System.Globalization.CultureInfo.InvariantCulture));
+                    output.Write(Convert.ToString(constant, CultureInfo.InvariantCulture));
                     output.Write(')');
                 }
             }
@@ -235,31 +166,196 @@ namespace CilTools.Syntax
             return "".PadLeft(c, ' ');
         }
 
+        internal static void GetAttributeSyntax(object attr, int indent, List<SyntaxNode> ret)
+        {
+            string content;
+            StringBuilder sb;
+            string strIndent = "".PadLeft(indent, ' ');
+
+            //from metadata
+            if (attr is ICustomAttribute)
+            {
+                ICustomAttribute ca = (ICustomAttribute)attr;
+
+                if (string.Equals(ca.Constructor.DeclaringType.FullName,
+                    "System.Runtime.InteropServices.OptionalAttribute", StringComparison.Ordinal))
+                {
+                    //OptionalAttribute translated to [opt]
+                    return;
+                }
+
+                List<SyntaxNode> children = new List<SyntaxNode>();
+                MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor, false);
+                children.Add(mref);
+                children.Add(new PunctuationSyntax(" ", "=", " "));
+                children.Add(new PunctuationSyntax("", "(", " "));
+                sb = new StringBuilder(ca.Data.Length * 3);
+
+                for (int j = 0; j < ca.Data.Length; j++)
+                {
+                    sb.Append(ca.Data[j].ToString("X2", CultureInfo.InvariantCulture));
+                    sb.Append(' ');
+                }
+
+                children.Add(new GenericSyntax(sb.ToString()));
+                children.Add(new PunctuationSyntax("", ")", Environment.NewLine));
+
+                DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
+                ret.Add(dir);
+                return;
+            }
+
+            //from reflection
+            Type t = attr.GetType();
+
+            if (string.Equals(t.FullName, "System.Runtime.InteropServices.OptionalAttribute", 
+                StringComparison.Ordinal))
+            {
+                //OptionalAttribute translated to [opt]
+                return;
+            }
+
+            ConstructorInfo[] constr = t.GetConstructors();
+            string s_attr;
+            sb = new StringBuilder(100);
+            StringWriter output = new StringWriter(sb);
+
+            if (constr.Length == 1)
+            {
+                int parcount = constr[0].GetParameters().Length;
+
+                if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
+                    t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
+                    Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
+                    )
+                {
+                    //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
+                    List<SyntaxNode> children = new List<SyntaxNode>();
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0], false);
+                    children.Add(mref);
+                    children.Add(new PunctuationSyntax(" ", "=", " "));
+                    children.Add(new PunctuationSyntax("", "(", " "));
+                    children.Add(new GenericSyntax("01 00 00 00"));
+                    children.Add(new PunctuationSyntax(" ", ")", Environment.NewLine));
+
+                    DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
+                    ret.Add(dir);
+                }
+                else
+                {
+                    s_attr = CilAnalysis.MethodToString(constr[0]);
+                    output.Write(".custom ");
+                    output.Write(s_attr);
+                    output.Flush();
+                    content = sb.ToString();
+                    CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
+                    ret.Add(node);
+                }
+            }
+            else
+            {
+                output.Write(".custom ");
+                s_attr = CilAnalysis.GetTypeSpecString(t);
+                output.Write(s_attr);
+                output.Flush();
+                content = sb.ToString();
+                CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
+                ret.Add(node);
+            }
+        }
+
         internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m, int startIndent)
         {
             ParameterInfo[] pars = m.GetParameters();
             List<SyntaxNode> ret = new List<SyntaxNode>(pars.Length);
+            
+            // Return type custom attributes
+            ICustomAttributeProvider provider = null;
 
+            if (m is MethodInfo)
+            {
+                try { provider = ((MethodInfo)m).ReturnTypeCustomAttributes; }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        CommentSyntax commentSyntax = CommentSyntax.Create(GetIndentString(startIndent + 1),
+                            "NOTE: Return type and parameters custom attributes are not shown.", null, false);
+                        ret.Add(commentSyntax);
+                    }
+                    else throw;
+                }
+            }
+
+            if (provider != null)
+            {
+                object[] attrs = provider.GetCustomAttributes(false);
+
+                if (attrs.Length > 0)
+                {
+                    DirectiveSyntax dir = new DirectiveSyntax(GetIndentString(startIndent + 1), "param",
+                        new SyntaxNode[] { new GenericSyntax("[0]" + Environment.NewLine) });
+                    ret.Add(dir);
+
+                    for (int i = 0; i < attrs.Length; i++)
+                    {
+                        GetAttributeSyntax(attrs[i], startIndent + 1, ret);
+                    }
+                }
+            }
+
+            // Parameters
             for (int i = 0; i < pars.Length; i++)
             {
-                if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                object[] attrs = new object[0];
+
+                try
+                {
+                    attrs = pars[i].GetCustomAttributes(false);
+                }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        Diagnostics.OnError(m, 
+                            new CilErrorEventArgs(ex, "Failed to get parameter custom attributes"));
+                    }
+                    else throw;
+                }
+
+                if ((pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value) || attrs.Length > 0)
                 {
                     StringBuilder sb = new StringBuilder(100);
                     StringWriter output = new StringWriter(sb);
                     output.Write(' ');
                     output.Write('[');
                     output.Write((i + 1).ToString());
-                    output.Write("] = ");
+                    output.Write(']');
 
-                    string valstr = GetConstantValueString(pars[i].ParameterType, pars[i].RawDefaultValue);
-                    output.WriteLine(valstr);
+                    if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                    {
+                        output.Write(" = ");
+
+                        string valstr = GetConstantValueString(pars[i].ParameterType, pars[i].RawDefaultValue);
+                        output.WriteLine(valstr);
+                    }
+                    else
+                    {
+                        output.WriteLine();
+                    }
+
                     output.Flush();
 
                     string content = sb.ToString();
-                    DirectiveSyntax dir = new DirectiveSyntax(
-                        GetIndentString(startIndent+1), "param", new SyntaxNode[] { new GenericSyntax(content) }
-                        );
+                    DirectiveSyntax dir = new DirectiveSyntax( GetIndentString(startIndent+1), "param", 
+                        new SyntaxNode[] { new GenericSyntax(content) });
                     ret.Add(dir);
+
+                    // Parameter custom attributes
+                    for (int j = 0; j < attrs.Length; j++)
+                    {
+                        GetAttributeSyntax(attrs[j], startIndent + 1, ret);
+                    }
                 }
             }//end for
 
@@ -461,7 +557,7 @@ namespace CilTools.Syntax
 
                 try
                 {
-                    content.Add(new MemberRefSyntax(CilAnalysis.GetTypeFullNameSyntax(t.BaseType).ToArray(), t.BaseType));
+                    content.Add(new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax(t.BaseType).ToArray(), t.BaseType));
                 }
                 catch (TypeLoadException ex) 
                 {
@@ -499,7 +595,7 @@ namespace CilTools.Syntax
                     }
 
                     content.Add(
-                        new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(interfaces[i]).ToArray(), interfaces[i])
+                        new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax(interfaces[i]).ToArray(), interfaces[i])
                         );
                 }
 
@@ -739,6 +835,28 @@ namespace CilTools.Syntax
                 inner.Add(new PunctuationSyntax(GetIndentString(startIndent + 1), "}", Environment.NewLine + Environment.NewLine));
                 DirectiveSyntax dirProp = new DirectiveSyntax(GetIndentString(startIndent + 1), "property", inner.ToArray());
                 content.Add(dirProp);
+            }
+
+            //events
+            try
+            {
+                foreach (SyntaxNode node in SyntaxGenerator.GetEventsSyntax(t, startIndent))
+                {
+                    content.Add(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ReflectionUtils.IsExpectedException(ex))
+                {
+                    CommentSyntax cs = CommentSyntax.Create(GetIndentString(startIndent + 1),
+                        "Failed to show events. " + ReflectionUtils.GetErrorShortString(ex), null, false);
+
+                    content.Add(cs);
+                    CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get events.");
+                    Diagnostics.OnError(t, ea);
+                }
+                else throw;
             }
 
             if (full)

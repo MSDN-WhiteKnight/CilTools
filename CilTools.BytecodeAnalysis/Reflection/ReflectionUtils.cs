@@ -15,6 +15,11 @@ namespace CilTools.Reflection
             get { return BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic; }
         }
 
+        public static BindingFlags AllMembers
+        {
+            get { return BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic; }
+        }
+
         public static bool IsExpectedException(Exception ex)
         {
             //check expected exception types that can pop up due to reflection APIs being not 
@@ -22,6 +27,11 @@ namespace CilTools.Reflection
 
             return ex is NotImplementedException || ex is NotSupportedException ||
                 ex is InvalidOperationException;
+        }
+
+        public static string GetErrorShortString(Exception ex)
+        {
+            return ex.GetType().ToString() + ": " + ex.Message;
         }
 
         public static bool IsEntryPoint(MethodBase m)
@@ -62,6 +72,39 @@ namespace CilTools.Reflection
                 return true;
             }
             else return false;
+        }
+
+        public static MethodInfo GetExplicitlyImplementedMethod(MethodBase m)
+        {
+            if (m is ConstructorInfo) return null;
+            if (m.DeclaringType == null) return null;
+            if (m.IsStatic) return null;
+
+            Type t = m.DeclaringType;
+            Type[] ifTypes = t.GetInterfaces();
+
+            for (int i = 0; i < ifTypes.Length; i++)
+            {
+                InterfaceMapping map = t.GetInterfaceMap(ifTypes[i]);
+
+                for (int j = 0; j < map.TargetMethods.Length; j++)
+                {
+                    if (map.TargetMethods[j].MetadataToken != m.MetadataToken) continue;
+
+                    //method implements interface method
+
+                    if (string.Equals(m.Name, map.InterfaceMethods[j].Name))
+                    {
+                        continue; //implements implicitly
+                    }
+                    else
+                    {
+                        return map.InterfaceMethods[j];
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

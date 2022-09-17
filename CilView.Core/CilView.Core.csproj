@@ -2,14 +2,11 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Version>2.4.0</Version>
-    <Authors>MSDN-WhiteKnight</Authors>
-    <Company>CIL Tools</Company>
-    <Product>CIL Tools</Product>
-    <Copyright>Copyright (c) 2022, MSDN.WhiteKnight</Copyright>
-    <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
-    <FileVersion>2.4.0.0</FileVersion>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Reflection.Metadata" Version="1.8.0" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />

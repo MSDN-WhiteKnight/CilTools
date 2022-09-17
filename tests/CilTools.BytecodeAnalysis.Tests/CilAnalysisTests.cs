@@ -1,8 +1,9 @@
 ﻿/* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using CilTools.Tests.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,14 +17,39 @@ namespace CilTools.BytecodeAnalysis.Tests
         [MethodTestData(typeof(SampleMethods), "PrintProcessId", BytecodeProviders.All)]
         public void Test_GetReferencedMethods(MethodBase m)
         {
-            CilAnalysisTestsCore.Test_GetReferencedMethods(m);
+            MethodBase[] methods = CilAnalysis.GetReferencedMethods(m).ToArray();
+
+            AssertThat.HasAtLeastOneMatch(
+                methods,
+                (x) => x.Name == "GetCurrentProcess" && x.DeclaringType.Name == "Process",
+                "PrintProcessId should reference Process.GetCurrentProcess");
+
+            AssertThat.HasAtLeastOneMatch(
+                methods,
+                (x) => x.Name == typeof(System.Diagnostics.Process).GetProperty("Id").GetMethod.Name && x.DeclaringType.Name == "Process",
+                "PrintProcessId should reference Process.Id getter");
+
+            AssertThat.HasAtLeastOneMatch(
+                methods,
+                (x) => x.Name == "ToString" && x.DeclaringType.Name == "Int32",
+                "PrintProcessId should reference Int32.ToString");
+
+            AssertThat.HasAtLeastOneMatch(
+                methods,
+                (x) => x.Name == "WriteLine" && x.DeclaringType.Name == "Console",
+                "PrintProcessId should reference Console.WriteLine");
         }
 
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "SquareFoo", BytecodeProviders.All)]
         public void Test_GetReferencedMembers(MethodBase m)
         {
-            CilAnalysisTestsCore.Test_GetReferencedMembers(m);
+            MemberInfo[] methods = CilAnalysis.GetReferencedMembers(m).ToArray();
+
+            AssertThat.HasOnlyOneMatch(
+                methods,
+                (x) => x.MemberType == MemberTypes.Field && x.Name == "Foo" && x.DeclaringType.Name == "SampleMethods",
+                "SquareFoo should reference only SampleMethods.Foo");
         }
 
         [TestMethod]        

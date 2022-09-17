@@ -8,33 +8,62 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows;
-using System.Windows.Media;
 using CilTools.SourceCode;
 using CilView.Common;
+using CilView.Core.Syntax;
 using CilView.UI.Dialogs;
 
 namespace CilView.SourceCode
 {
     static class SourceCodeUI
     {
+        static HashSet<string> s_allowedRemoteServers = new HashSet<string>();
+
+        static string GetHost(string url)
+        {
+            try
+            {
+                Uri uri = new Uri(url);
+                return uri.Host.ToLower();
+            }
+            catch (UriFormatException)
+            {
+                return string.Empty;
+            }
+        }
+
+        static bool IsRemoteNavigationAllowed(string url)
+        {
+            string server = GetHost(url);
+
+            if (string.IsNullOrEmpty(server)) return false;
+
+            return s_allowedRemoteServers.Contains(server);
+        }
+
+        static void AllowRemoteNavigation(string url)
+        {
+            string server = GetHost(url);
+
+            if (!string.IsNullOrEmpty(server)) s_allowedRemoteServers.Add(server);
+        }
+
         static void ShowDecompiledSource(MethodBase method)
         {
-            //stub implementation that only works for abstract methods
-            string src = Decompiler.DecompileMethodSignature(".cs", method);
-
-            //build display string
-            StringBuilder sb = new StringBuilder(src.Length * 2);            
-            sb.AppendLine(src);
-            sb.AppendLine();
-            sb.AppendLine("Source code from: Decompiler");
-
-            //show source code
-            TextViewWindow wnd = new TextViewWindow();
+            //stub implementation that only works for methods without body
+            IEnumerable<SourceToken> tokens = Decompiler.DecompileMethodSignature(".cs", method);
+            DocumentViewWindow wnd = new DocumentViewWindow();
             wnd.Title = "Source code";
-            wnd.Text = sb.ToString();
+            wnd.Document = SourceVisualization.VisualizeTokens(tokens, string.Empty, "Source code from: Decompiler");
             wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-            wnd.TextFontFamily = new FontFamily("Courier New");
-            wnd.TextFontSize = 14.0;
+            wnd.ShowDialog();
+        }
+
+        static void ShowSourceWholeMethod(SourceDocument doc)
+        {
+            MethodSourceViewWindow wnd = new MethodSourceViewWindow();
+            wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            wnd.LoadDocument(doc);
             wnd.ShowDialog();
         }
 
@@ -51,9 +80,9 @@ namespace CilView.SourceCode
         {
             try
             {
-                if (method.IsAbstract)
+                if (Utils.IsMethodWithoutBody(method))
                 {
-                    //abstract method has no sequence points in PDB, just use decompiler
+                    //method without IL body has no sequence points in PDB, just use decompiler
                     ShowDecompiledSource(method);
                     return;
                 }
@@ -67,57 +96,65 @@ namespace CilView.SourceCode
                     MessageBox.Show("Failed to get source code: line info not found for this method", "Error");
                     return;
                 }
-                
-                if (wholeMethod)
-                {
-                    string src = doc.Text;
-                    string methodstr = string.Empty;
-                    string ext = Path.GetExtension(doc.FilePath);
 
-                    try
+                if (string.IsNullOrEmpty(doc.Text))
+                {
+                    //Local sources not available
+                    string sourceLinkStr = doc.SourceLinkMap;
+
+                    if (string.IsNullOrEmpty(sourceLinkStr))
                     {
-                        if (!Utils.IsConstructor(doc.Method) && !Utils.IsPropertyMethod(doc.Method))
+                        MessageBox.Show("Failed to get source code: Source file " + doc.FilePath +
+                            " is not found or empty", "Error");
+                        return;
+                    }
+
+                    //Source Link
+                    SourceLinkMap map = SourceLinkMap.Read(sourceLinkStr);
+                    string serverPath = map.GetServerPath(doc.FilePath);
+
+                    if (string.IsNullOrEmpty(serverPath))
+                    {
+                        MessageBox.Show("Failed to map file path " + doc.FilePath +
+                            "into a source link server path", "Error");
+                        return;
+                    }
+
+                    bool shouldNavigate = false;
+
+                    if (IsRemoteNavigationAllowed(serverPath))
+                    {
+                        shouldNavigate = true;
+                    }
+                    else
+                    {
+                        string msg = string.Format(
+                            "The source code is located on the remote server:\r\n{0}\r\n\r\n" +
+                            "Would you like to allow navigation to files on this server?",
+                            serverPath);
+
+                        MessageBoxResult res = MessageBox.Show(msg, "Source Link information",
+                            MessageBoxButton.YesNo);
+
+                        if (res == MessageBoxResult.Yes)
                         {
-                            methodstr = Decompiler.DecompileMethodSignature(ext, doc.Method);
+                            shouldNavigate = true;
+                            AllowRemoteNavigation(serverPath);
                         }
                     }
-                    catch (Exception ex)
+
+                    if (shouldNavigate)
                     {
-                        //don't error out if we can't build good signature string
-                        ErrorHandler.Current.Error(ex, "PdbUtils.GetMethodSigString", silent: true);
-                        methodstr = CilVisualization.MethodToString(doc.Method);
+                        WpfUtils.ShellExecute(serverPath, null, "Failed to open source code URL");
                     }
 
-                    //build display string
-                    StringBuilder sb = new StringBuilder(src.Length * 2);
-                    sb.AppendFormat("({0}, ", doc.FilePath);
-                    sb.AppendFormat("lines {0}-{1})", doc.LineStart, doc.LineEnd);
-                    sb.AppendLine();
-                    sb.AppendLine();
-                    sb.AppendLine(methodstr);
-                    sb.AppendLine(PdbUtils.Deindent(src));
-
-                    if (Decompiler.IsCppExtension(ext))
-                    {
-                        //C++ PDB sequence points don't include the trailing brace for some reason
-                        sb.AppendLine("}");
-                    }
-
-                    sb.AppendLine();
-                    sb.Append("Symbols file: ");
-                    sb.Append(doc.SymbolsFile);
-                    sb.Append(" (");
-                    sb.Append(doc.SymbolsFileFormat);
-                    sb.Append(')');
-
-                    //show source code
-                    TextViewWindow wnd = new TextViewWindow();
-                    wnd.Title = "Source code";
-                    wnd.Text = sb.ToString();
-                    wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                    wnd.TextFontFamily = new FontFamily("Courier New");
-                    wnd.TextFontSize = 14.0;
-                    wnd.ShowDialog();
+                    return;
+                }
+                
+                //Local sources
+                if (wholeMethod)
+                {
+                    ShowSourceWholeMethod(doc);
                 }
                 else
                 {
@@ -145,6 +182,33 @@ namespace CilView.SourceCode
                     ErrorHandler.Current.Error(ex);
                 }
             }//end try
+        }
+
+        public static void OpenSymbolsDir(string path, Window wnd)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(path))
+                {
+                    MessageBox.Show(wnd, "Symbols path is not available", "Error");
+                    return;
+                }
+
+                string dir = Path.GetDirectoryName(path);
+
+                if (string.IsNullOrEmpty(dir))
+                {
+                    MessageBox.Show(wnd, "Cannot determine symbols file directory", "Error");
+                    return;
+                }
+
+                //open symbols file directory in Explorer
+                WpfUtils.ShellExecute(dir, wnd, "Failed to open symbols file directory");
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
         }
     }
 }

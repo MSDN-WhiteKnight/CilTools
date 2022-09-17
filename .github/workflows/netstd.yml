@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  NetStd-CI:
+  NetStd-Debug:
 
     runs-on: ubuntu-latest
 
@@ -28,3 +28,37 @@ jobs:
       with:
           name: Output
           path: CilTools.Metadata/bin/Debug/
+    - name: Archive test results
+      if: always()
+      uses: actions/upload-artifact@v1
+      with:
+          name: Test results
+          path: tests/CilTools.BytecodeAnalysis.Tests/bin/Debug/
+
+  NetStd-Release:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '3.1.100'
+    - name: Build with dotnet
+      run: .\scripts\netstd\build.ps1 -config Release
+      shell: pwsh
+    - name: Test
+      run: .\scripts\netstd\test.ps1 -config Release
+      shell: pwsh
+    - name: Archive build results
+      uses: actions/upload-artifact@v1
+      with:
+          name: Output
+          path: CilTools.Metadata/bin/Release/
+    - name: Archive test results
+      if: always()
+      uses: actions/upload-artifact@v1
+      with:
+          name: Test results
+          path: tests/CilTools.BytecodeAnalysis.Tests/bin/Release/

@@ -1,24 +1,25 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Microsoft.Win32;
 using CilTools.Runtime;
 using CilView.Build;
 using CilView.Common;
 using CilView.Core;
+using CilView.Core.Reflection;
 using CilView.Core.Syntax;
 using CilView.Exceptions;
 using CilView.SourceCode;
 using CilView.UI.Dialogs;
-using Microsoft.Win32;
 
 namespace CilView
 {
@@ -160,6 +161,25 @@ namespace CilView
             if (this.source.Assemblies.Count == 1) cbAssembly.SelectedIndex = 0;
         }
 
+        /// <summary>
+        /// Loads .il source document in background with a progress indicator
+        /// </summary>
+        void OpenDocument(string path)
+        {
+            ProgressWindow pwnd;
+            OpenDocumentOperation op = new OpenDocumentOperation(path);
+            pwnd = new ProgressWindow(op);
+            pwnd.Owner = this;
+            bool? res = pwnd.ShowDialog();
+
+            if (res != true) return;
+            if (op.Result == null) return;
+
+            this.SetSource(op.Result);
+            this.cilbrowser.NavigateToSourceDocument(op.Result.Assembly, op.Result.Content, op.Result.Title);
+            cbAssembly.SelectedIndex = 0;
+        }
+
         void OpenFile(string file)
         {
             try
@@ -185,11 +205,7 @@ namespace CilView
                 else if (FileUtils.HasCilSourceExtension(file))
                 {
                     //IL source file
-                    string content = File.ReadAllText(file);
-                    string title = Path.GetFileName(file);
-                    this.SetSource(null);
-                    this.cilbrowser.NavigateToSourceDocument(content, title);
-
+                    this.OpenDocument(file);
                     return; //no need to load assembly
                 }
                 else
@@ -287,6 +303,9 @@ namespace CilView
                 }
                 else
                 {
+                    //display assembly manifest
+                    this.cilbrowser.NavigateToAssembly(ass);
+
                     int c = 0;
                     int index = 0;
 
@@ -392,10 +411,11 @@ namespace CilView
         {
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.RestoreDirectory = true;
-            dlg.Filter = ".NET Assemblies (*.exe,*.dll)|*.exe;*.dll|" +
-                "Code files (*.cs,*.vb)|*.cs;*.vb|" +
-                "MSBuild projects (*.csproj,*.vbproj)|*.csproj;*.vbproj|" +
-                "IL source files (*.il,*.txt)|*.il;*.txt|All files|*";
+            dlg.Filter = "Supported file types|*.exe;*.dll;*.cs;*.vb;*.csproj;*.vbproj;*.il;*.txt|" +
+                ".NET Assemblies|*.exe;*.dll|" +
+                "Code files|*.cs;*.vb|" +
+                "MSBuild projects|*.csproj;*.vbproj|" +
+                "IL source files|*.il;*.txt|All files|*";
 
             if (dlg.ShowDialog(this) == true)
             {
@@ -431,7 +451,13 @@ Author: MSDN.WhiteKnight
 Repository: https://github.com/MSDN-WhiteKnight/CilTools
 License: BSD 2.0
 
-This CIL View distribution contains binary code of the ClrMD library (https://github.com/microsoft/clrmd); Copyright (c) .NET Foundation and Contributors, MIT License.
+This CIL View distribution contains the binary code of the following libraries:
+
+- .NET Libraries (https://github.com/dotnet/runtime/): Copyright (c) .NET Foundation and Contributors, MIT License.
+- ClrMD (https://github.com/microsoft/clrmd/): Copyright (c) .NET Foundation and Contributors, MIT License. 
+- Newtonsoft.Json (https://github.com/JamesNK/Newtonsoft.Json/): Copyright (c) 2007 James Newton-King, MIT License.
+
+See Help - Credits for more information.
 ", 
 typeof(MainWindow).Assembly.GetName().Version.ToString());
 
@@ -690,14 +716,14 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
         {
             const string url = "https://github.com/MSDN-WhiteKnight/CilTools";
             string mes = string.Format("Failed to open URL. Navigate to {0} manually in browser to access source code", url);
-            Utils.ShellExecute(url,this,mes);
+            WpfUtils.ShellExecute(url,this,mes);
         }
 
         private void miFeedback_Click(object sender, RoutedEventArgs e)
         {
             const string url = "https://github.com/MSDN-WhiteKnight/CilTools/issues/new";
             string mes = string.Format("Failed to open URL. Navigate to {0} manually in browser to provide feedback", url);
-            Utils.ShellExecute(url,this,mes);
+            WpfUtils.ShellExecute(url,this,mes);
         }
 
         void OnSearchClick()
@@ -996,6 +1022,49 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
             ExecuteWindow.ShowExecuteMethodUI(current_method, this);
         }
 
-        
+        private void miFileProperties_Click(object sender, RoutedEventArgs e)
+        {
+            Assembly ass = cbAssembly.SelectedItem as Assembly;
+
+            if (ass == null)
+            {
+                MessageBox.Show(this, "Assembly file is not loaded", "Error");
+                return;
+            }
+
+            try
+            {
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Title = "Assembly file properties";
+                wnd.Text = AssemblyInfoProvider.GetAssemblyInfo(ass);
+                wnd.ShowDialog();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+        }
+
+        private void miCredits_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                string text = "";
+                string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string path = Path.Combine(dir, "credits.txt");
+                text = File.ReadAllText(path);
+
+                TextViewWindow wnd = new TextViewWindow();
+                wnd.Owner = this;
+                wnd.Text = text;
+                wnd.Title = "Credits";
+                wnd.Show();
+            }
+            catch (Exception ex)
+            {
+                ErrorHandler.Current.Error(ex);
+            }
+        }
     }
 }

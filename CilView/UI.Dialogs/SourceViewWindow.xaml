@@ -18,17 +18,21 @@
             </Grid.RowDefinitions>
             <TextBox x:Name="tbMethod" HorizontalAlignment="Stretch" Height="23" Margin="5,5,5,5" TextWrapping="NoWrap" 
                  Text="" VerticalAlignment="Top" IsReadOnly="True"/>
-            <TextBox x:Name="tbCIL" HorizontalAlignment="Stretch" Margin="5,35,5,5" Text="" 
-                 VerticalAlignment="Stretch" IsReadOnly="True" Style="{StaticResource CodeBlock}"
-                 Grid.Column="0" />
+            <Border HorizontalAlignment="Stretch" Margin="5,35,5,5"
+                 VerticalAlignment="Stretch" Grid.Column="0" BorderBrush="DarkGray" BorderThickness="1">
+                <FlowDocumentScrollViewer x:Name="fdCIL" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" />
+            </Border>
 
             <TextBlock x:Name="tbFileName" Text="File" HorizontalAlignment="Stretch" Margin="5,5,0,0" 
                  VerticalAlignment="Top" Foreground="Blue" Cursor="Hand"
                  ToolTip="Open in external editor" Grid.Column="1" 
                  MouseDown="tbFileName_MouseDown"/>
-            <TextBox x:Name="tbSource" HorizontalAlignment="Stretch" Margin="5,35,5,5" 
-                 Text="" VerticalAlignment="Stretch" IsReadOnly="True" Style="{StaticResource CodeBlock}" 
-                 Grid.Column="1" />
+            <Border HorizontalAlignment="Stretch" Margin="5,35,5,5"
+                 VerticalAlignment="Stretch" Grid.Column="1" BorderBrush="DarkGray" BorderThickness="1">
+                <FlowDocumentScrollViewer x:Name="fdSource" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" />
+            </Border>
 
         </Grid>
 

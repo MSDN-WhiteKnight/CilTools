@@ -318,7 +318,11 @@ namespace CilTools.Metadata.Methods
 
         public override MethodInfo GetBaseDefinition()
         {
-            throw new NotImplementedException();
+            if (this.definition is MethodInfo)
+            {
+                return ((MethodInfo)this.definition).GetBaseDefinition();
+            }
+            else throw new NotImplementedException();
         }
 
         public Reflection.LocalVariable[] GetLocalVariables()

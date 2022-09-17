@@ -15,6 +15,7 @@ using System.Collections.ObjectModel;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using CilView.Common;
+using CilView.Core.DocumentModel;
 
 namespace CilView.UI.Controls
 {
@@ -165,6 +166,25 @@ namespace CilView.UI.Controls
             return methods;
         }
 
+        public void NavigateToAssembly(Assembly ass)
+        {
+            if (ass is IlasmAssembly) return; //synthesized assemblies are handled separately
+
+            string contenttext = string.Empty;
+
+            CilBrowserPage page = new CilBrowserPage(ass, Navigated);
+            page.Title = "Assembly: " + ass.GetName().Name;
+            frameContent.Navigate(page);
+            contenttext = page.ContentText;
+            
+            this.current_method = null;
+            this.current_type = null;
+            this.text = contenttext;
+
+            //make sure content is visible
+            ExpandContentPane();
+        }
+
         public void NavigateToStackTrace(ClrThreadInfo th)
         {
             this.tlv = CilVisualization.VisualizeStackTrace(th, Navigated, null);
@@ -174,9 +194,9 @@ namespace CilView.UI.Controls
             this.text = String.Empty;
         }
 
-        public void NavigateToSourceDocument(string contentText, string filename)
+        public void NavigateToSourceDocument(IlasmAssembly content, string contentText, string filename)
         {
-            CilBrowserPage page = new CilBrowserPage(contentText, filename);
+            CilBrowserPage page = new CilBrowserPage(content, contentText, filename);
             page.Title = filename;
             frameContent.Navigate(page);
             this.text = contentText;
@@ -247,7 +267,7 @@ namespace CilView.UI.Controls
                 this.text = String.Empty;
             }
 
-            if (m != null && m is MethodBase)
+            if (m != null && m is MethodBase && this.tlv != null)
             {
                 MethodBase mb = null;
                 mb = (MethodBase)m;

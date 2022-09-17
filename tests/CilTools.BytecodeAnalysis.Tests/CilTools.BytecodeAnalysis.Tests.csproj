@@ -3,10 +3,6 @@
   <PropertyGroup>
     <TargetFrameworks>netcoreapp3.1;net45</TargetFrameworks>
     <EnableDefaultItems>false</EnableDefaultItems>
-    <Authors>MSDN-WhiteKnight</Authors>
-    <Company>CIL Tools</Company>
-    <Product>CIL Tools</Product>
-    <Copyright>Copyright (c) 2021, MSDN.WhiteKnight</Copyright>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
@@ -38,6 +34,7 @@
     <Compile Include="Signatures\TypeSpecTests.cs" />    
     <Compile Include="SourceCode\SourceCodeProviderTests.cs" />    
     <Compile Include="SyntaxTests.cs" />    
+    <Compile Include="Syntax\DisassemblerTests.cs" />    
     <Compile Include="Syntax\SyntaxFactoryTests.cs" />    
     <Compile Include="Syntax\SyntaxNodeTests.cs" />
   </ItemGroup>

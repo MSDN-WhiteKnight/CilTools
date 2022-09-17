@@ -1,60 +1,15 @@
 ﻿/* CIL Tools
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.Reflection;
-using CilTools.BytecodeAnalysis;
-using CilTools.Reflection;
-using CilTools.Syntax;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Tests.Common
 {
     public static class SyntaxTestsCore
     {
-        public static void Test_ToSyntaxTree(MethodBase mi)
-        {
-            CilGraph graph = CilGraph.Create(mi);
-            MethodDefSyntax mds = graph.ToSyntaxTree();
-            AssertThat.IsSyntaxTreeCorrect(mds);
-            Assert.AreEqual("method", mds.Signature.Name);
-
-            AssertThat.HasOnlyOneMatch(
-                mds.Signature.EnumerateChildNodes(),
-                (x) => { return x is KeywordSyntax && (x as KeywordSyntax).Content == "public"; },
-                "Method signature should contain 'public' keyword"
-                );
-
-            AssertThat.HasOnlyOneMatch(
-                mds.Signature.EnumerateChildNodes(),
-                (x) => { 
-                    return x is IdentifierSyntax && (x as IdentifierSyntax).Content == "PrintHelloWorld"; 
-                },
-                "Method signature should contain mathod name identifier"
-                );
-
-            AssertThat.HasOnlyOneMatch(
-                mds.Body.Content,
-                (x) => {
-                    return x is InstructionSyntax && (x as InstructionSyntax).Operation == "ldstr";
-                },
-                "Method body should contain 'ldstr' instruction"
-                );
-        }
-
-        public static void Test_KeywordAsIdentifier(MethodBase mi)
-        {
-            string str = CilAnalysis.MethodToText(mi);
-
-            AssertThat.IsMatch(str, new Text[] {
-                ".method", Text.Any, "public", Text.Any,
-                "void", Text.Any,
-                "'method'", Text.Any,
-                "cil", Text.Any, "managed", Text.Any,                
-            });
-        }
-
         public static void SampleMethods_AssertTypeSyntax(string s)
         {
             AssertThat.IsMatch(s, new Text[] {
@@ -77,26 +32,18 @@ namespace CilTools.Tests.Common
             Assert.IsFalse(s.Contains(".method"));
         }
 
-        public static void Test_GetTypeDefSyntax_Short(Type t)
+        public static void VerifyAssemblyManifestString(string str, string ver)
         {
-            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
-            string s = Utils.SyntaxToString(nodes);
-            SampleMethods_AssertTypeSyntax(s);
-        }
+            // Verify disassembled assembly manifest for CilTools.Tests.Common
 
-        public static void Test_GetTypeDefSyntax_Full(Type t)
-        {
-            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, true, new DisassemblerParams());
-            string s = Utils.SyntaxToString(nodes);
-
-            AssertThat.IsMatch(s, new Text[] {
-                ".class", Text.Any,"public", Text.Any,"CilTools.Tests.Common.DisassemblerSampleType", Text.Any,
-                "{", Text.Any,
-                ".field", Text.Any,"public", Text.Any,"static", Text.Any,"int32", Text.Any,"x", Text.Any,
-                ".method", Text.Any,"static", Text.Any,"Test()", Text.Any,"cil", Text.Any,"managed", Text.Any,
-                "{", Text.Any,".maxstack", Text.Any,"8", Text.Any,"ldstr", Text.Any,"\"Hello, World\"", Text.Any,
-                "call", Text.Any, "System.Console::WriteLine", Text.Any,"ret", Text.Any,"}", Text.Any,
-                "}", Text.Any
+            AssertThat.IsMatch(str, new Text[] {
+                ".assembly", Text.Any, "extern", Text.Any, "CilTools.BytecodeAnalysis", Text.Any,
+                "{", Text.Any, ".ver", Text.Any, ver, Text.Any, "}", Text.Any,
+                ".assembly", Text.Any, "CilTools.Tests.Common", Text.Any, "{", Text.Any,
+                ".custom", Text.Any, "System.Reflection.AssemblyTitleAttribute::.ctor(string)", Text.Any,
+                ".ver", Text.Any, ver, Text.Any, "}", Text.Any,
+                ".module", Text.Any, "CilTools.Tests.Common.dll", Text.Any,
+                ".custom", Text.Any, "System.Security.UnverifiableCodeAttribute::.ctor() = ( 01 00 00 00 )", Text.Any,
             });
         }
     }

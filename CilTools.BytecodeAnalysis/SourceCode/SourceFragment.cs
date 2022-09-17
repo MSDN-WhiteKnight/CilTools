@@ -29,7 +29,7 @@ namespace CilTools.SourceCode
         public int CilStart { get; set; }
 
         /// <summary>
-        /// Gets or sets the starting byte offset of CIL bytecode corresponding to this fragment 
+        /// Gets or sets the ending byte offset of CIL bytecode corresponding to this fragment 
         /// </summary>
         public int CilEnd { get; set; }
 

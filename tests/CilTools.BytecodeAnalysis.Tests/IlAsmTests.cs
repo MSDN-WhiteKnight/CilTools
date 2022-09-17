@@ -1,5 +1,5 @@
-﻿/* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+/* CilTools.BytecodeAnalysis library tests
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,8 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 // * Tests that use IlAsm to produce test data or verify disassembler output *
@@ -19,14 +21,8 @@ namespace CilTools.BytecodeAnalysis.Tests
     [TestClass]
     public class IlAsmTests
     {
-        static void CheckEnvironment()
-        {
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
-            {
-                Assert.Inconclusive("IlAsm is not available on non-Windows platforms");
-            }
-        }
-
+        const string ConditionMessage = "IlAsm is not available on non-Windows platforms";
+        
         /// <summary>
         /// Shared test logic for indirect call tests
         /// </summary>
@@ -88,11 +84,9 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
         public void Test_IndirectCall_IlAsm()
         {
-            CheckEnvironment();
-
             const string code = @"
 .method public static void IndirectCallTest(string x) cil managed 
 { 
@@ -113,11 +107,9 @@ namespace CilTools.BytecodeAnalysis.Tests
             IndirectCall_VerifyMethod(mb);
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
         public void Test_FaultExceptionBlock()
         {
-            CheckEnvironment();
-
             const string code = @"
 .method  public hidebysig static int32 FaultTest(
     int32 x, int32 y
@@ -205,7 +197,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
         [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.Metadata)]
         [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", BytecodeProviders.Metadata)]
         [MethodTestData(typeof(SampleMethods), "PrintList", BytecodeProviders.Metadata)]
@@ -214,8 +206,6 @@ namespace CilTools.BytecodeAnalysis.Tests
         [MethodTestData(typeof(SampleMethods), "TestEscaping", BytecodeProviders.Metadata)]
         public void Test_Disassembler_Roundtrip(MethodBase m)
         {
-            CheckEnvironment();
-
             CilGraph graph = CilGraph.Create(m);
             string code = graph.ToText();
 
@@ -225,6 +215,65 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             //verify method executes and does not crash
             mAssembled.Invoke(null, new object[0]);
+        }
+
+        const string IL_HelloWorld = @".method public hidebysig static void HelloWorld() cil managed {
+ .maxstack 8
+
+          nop 
+          ldstr     ""Hello, World""
+          call      void [mscorlib]System.Console::WriteLine(string)
+          nop
+          ret
+}";
+
+        const string IL_TestEmptyString = @".method public hidebysig static bool TestEmptyString(
+    string str
+) cil managed {
+ .maxstack 2
+ .locals init (bool V_0)
+
+          nop 
+          ldarg.0 
+          ldstr        """"
+          call         bool [mscorlib]System.String::op_Equality(string, string)
+          stloc.0 
+          br.s         IL_0001
+ IL_0001: ldloc.0 
+          ret 
+}";
+
+        const string IL_TestOptionalParams = @".method public hidebysig static void TestOptionalParams(
+    [opt] string str, 
+    [opt] int32 x
+) cil managed {
+ .param [1] = """"
+ .param [2] = int32(0)
+ .maxstack 8
+
+          nop 
+          ldarg.0 
+          ldarga.s     x
+          call         instance string [mscorlib]System.Int32::ToString()
+          call         string [mscorlib]System.String::Concat(string, string)
+          call         void [mscorlib]System.Console::WriteLine(string)
+          nop 
+          ret 
+}";
+
+        [ConditionalTest(TestCondition.WindowsOnly, ConditionMessage)]
+        [DataRow(IL_HelloWorld, "HelloWorld", DisplayName = "Test_Disassembler_RoundtripIL (HelloWorld)")]
+        [DataRow(IL_TestEmptyString, "TestEmptyString", DisplayName = "Test_Disassembler_RoundtripIL (TestEmptyString)")]
+        [DataRow(IL_TestOptionalParams, "TestOptionalParams", DisplayName = "Test_Disassembler_RoundtripIL (TestOptionalParams)")]
+        public void Test_Disassembler_RoundtripIL(string code, string name)
+        {
+            //Compile method from CIL
+            MethodBase mb = IlAsm.BuildFunction(code, name);
+
+            //Test disassembler output
+            CilGraph graph = CilGraph.Create(mb);
+            string disassembled = graph.ToText();
+            AssertThat.CilEquals(code, disassembled);
         }
     }
 }

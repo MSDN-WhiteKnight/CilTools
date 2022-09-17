@@ -15,6 +15,7 @@ using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
+using CilView.Core.DocumentModel;
 using CilView.Core.Syntax;
 using CilView.SourceCode;
 using CilView.UI.Controls;
@@ -27,7 +28,7 @@ namespace CilView
         //static readonly SolidColorBrush HyperlinkBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x66, 0xCC));
 
         //Default in Visual Studio for types
-        static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
+        internal static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
 
         //Parameters that control how disassembled CIL is produced. They are changed from main window UI.
         internal static readonly DisassemblerParams CurrentDisassemblerParams = InitDisassemblerParams();
@@ -221,9 +222,12 @@ namespace CilView
                     if (instr != null)
                     {
                         //attach context menu to instruction opcode
-                        r.ContextMenu = InstructionMenu.GetInstructionMenu();
-                        r.ContextMenuOpening += InstructionMenu.R_ContextMenuOpening;
-                        r.Tag = par;
+                        if (ctx.ContextMenuEnabled)
+                        {
+                            r.ContextMenu = InstructionMenu.GetInstructionMenu();
+                            r.ContextMenuOpening += InstructionMenu.R_ContextMenuOpening;
+                            r.Tag = par;
+                        }
                     }
                 }
 
@@ -267,7 +271,7 @@ namespace CilView
                 r = new Run();
                 MethodBase m = id.TargetMember as MethodBase;
 
-                if (m != null && !(node.Parent is DirectiveSyntax))
+                if (m != null && !(node.Parent is DirectiveSyntax) && ctx.navigation != null)
                 {
                     //if target is method and we are not in directive (method sig), 
                     //enable navigation functionality
@@ -280,7 +284,7 @@ namespace CilView
                     Hyperlink lnk = new Hyperlink(r);
                     lnk.TextDecorations = new TextDecorationCollection(); //remove underline
                     lnk.Tag = m;
-                    if (ctx.navigation != null) lnk.Click += ctx.navigation;
+                    lnk.Click += ctx.navigation;
                     target.Inlines.Add(lnk);
                 }
                 else
@@ -330,22 +334,34 @@ namespace CilView
             public RoutedEventHandler navigation;
             public int highlight_start=-1;
             public int highlight_end = Int32.MaxValue;
+            public bool ContextMenuEnabled = true;
             public bool ScrollCallbackApplied = false;
+        }
+
+        static FlowDocumentScrollViewer CreateScrollViewer(FlowDocument fd)
+        {
+            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
+            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
+            scroll.VerticalAlignment = VerticalAlignment.Stretch;
+            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            scroll.Document = fd;
+            return scroll;
+        }
+
+        internal static FlowDocument CreateFlowDocument()
+        {
+            FlowDocument fd = new FlowDocument();
+            fd.TextAlignment = TextAlignment.Left;
+            fd.FontFamily = new FontFamily("Courier New");
+            return fd;
         }
 
         public static UIElement VisualizeGraph(
             CilGraph gr, RoutedEventHandler navigation,int highlight_start=-1,int highlight_end=Int32.MaxValue
             )
         {
-            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
-            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            scroll.VerticalAlignment = VerticalAlignment.Stretch;
-            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            FlowDocument fd = CreateFlowDocument();
 
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.FontFamily = new FontFamily("Courier New");
-            
             SyntaxNode[] tree = gr.ToSyntaxTree(CurrentDisassemblerParams).GetChildNodes();
             Paragraph par = new Paragraph();
 
@@ -357,22 +373,40 @@ namespace CilView
             for (int i = 0; i < tree.Length; i++) VisualizeNode(tree[i], par, ctx);
 
             fd.Blocks.Add(par);
-            scroll.Document = fd;
-            return scroll;
+            return CreateScrollViewer(fd);
+        }
+
+        public static FlowDocument VisualizeNodes(IEnumerable<SyntaxNode> nodes)
+        {
+            FlowDocument fd = CreateFlowDocument();
+            Paragraph par = new Paragraph();
+            VisualizeGraphContext ctx = new VisualizeGraphContext();
+            ctx.ContextMenuEnabled = false;
+
+            foreach (SyntaxNode node in nodes) VisualizeNode(node, par, ctx);
+
+            fd.Blocks.Add(par);
+            return fd;
         }
 
         public static UIElement VisualizeType(Type t, RoutedEventHandler navigation,out string plaintext)
         {
-            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
-            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            scroll.VerticalAlignment = VerticalAlignment.Stretch;
-            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            FlowDocument fd = CreateFlowDocument();
 
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.FontFamily = new FontFamily("Courier New");
+            IEnumerable<SyntaxNode> tree;
 
-            IEnumerable<SyntaxNode> tree = SyntaxNode.GetTypeDefSyntax(t);
+            if (t is IlasmType)
+            {
+                //synthesized type that contains IL - no need to disassemble
+                IlasmType dt = (IlasmType)t;
+                tree = dt.Syntax.EnumerateChildNodes();
+            }
+            else
+            {
+                //disassemble type
+                tree = SyntaxNode.GetTypeDefSyntax(t);
+            }
+
             StringBuilder sb = new StringBuilder(500);
             StringWriter wr = new StringWriter(sb);
             Paragraph par = new Paragraph();
@@ -386,32 +420,58 @@ namespace CilView
                 node.ToText(wr);
             }
 
-            fd.Blocks.Add(par);
-            scroll.Document = fd;
+            fd.Blocks.Add(par);            
             plaintext = sb.ToString();
-            return scroll;
+            return CreateScrollViewer(fd);
         }
 
-        public static UIElement VisualizeSourceText(string text)
+        public static UIElement VisualizeAssembly(Assembly ass, RoutedEventHandler navigation, out string plaintext)
         {
-            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
-            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            scroll.VerticalAlignment = VerticalAlignment.Stretch;
-            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
+            FlowDocument fd = CreateFlowDocument();
 
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.FontFamily = new FontFamily("Courier New");
-            
-            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(text);
+            IEnumerable<SyntaxNode> tree;
+
+            if (ass is IlasmAssembly)
+            {
+                //synthesized assembly that contains IL - no need to disassemble
+                IlasmAssembly ia = (IlasmAssembly)ass;
+                tree = ia.Syntax.EnumerateChildNodes();
+            }
+            else
+            {
+                //disassemble assembly manifest
+                tree = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+            }
+
+            StringBuilder sb = new StringBuilder(500);
+            StringWriter wr = new StringWriter(sb);
+            Paragraph par = new Paragraph();
+
+            VisualizeGraphContext ctx = new VisualizeGraphContext();
+            ctx.navigation = navigation;
+
+            foreach (SyntaxNode node in tree)
+            {
+                VisualizeNode(node, par, ctx);
+                node.ToText(wr);
+            }
+
+            fd.Blocks.Add(par);
+            plaintext = sb.ToString();
+            return CreateScrollViewer(fd);
+        }
+
+        public static UIElement VisualizeSourceText(DocumentSyntax src)
+        {
+            FlowDocument fd = CreateFlowDocument();
+            SyntaxNode[] nodes = src.GetChildNodes();
             Paragraph par = new Paragraph();
             VisualizeGraphContext ctx = new VisualizeGraphContext();
 
             for (int i = 0; i < nodes.Length; i++) VisualizeNode(nodes[i], par, ctx);
 
             fd.Blocks.Add(par);
-            scroll.Document = fd;
-            return scroll;
+            return CreateScrollViewer(fd);
         }
     }
 }

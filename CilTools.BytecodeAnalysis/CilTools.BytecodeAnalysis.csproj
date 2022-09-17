@@ -2,22 +2,14 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net35</TargetFrameworks>
-    <Version>2.4.0</Version>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <Authors>MSDN-WhiteKnight</Authors>
-    <Company>CIL Tools</Company>
-    <Product>CIL Tools</Product>
-    <Copyright>Copyright (c) 2022, MSDN.WhiteKnight</Copyright>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
-    <PackageProjectUrl>https://github.com/MSDN-WhiteKnight/CilTools</PackageProjectUrl>
     <PackageIcon>IL.png</PackageIcon>
-    <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
     <PackageTags>dotnet dotnet-standard dotnet-framework il cil msil bytecode reflection disassembler inspection</PackageTags>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <FileVersion>2.4.0.0</FileVersion>
     <Description>CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.</Description>
   </PropertyGroup>
-      
+ 
   <ItemGroup>
     <None Include="..\docs\images\IL.png">
       <Pack>True</Pack>

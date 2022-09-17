@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library tests
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.BytecodeAnalysis.Tests
@@ -208,8 +209,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             Assert.AreEqual(4, SampleMethods.Foo, "The value of SampleMethods.Foo is wrong");
         }
 
-#if !DEBUG
-        [TestMethod]
+        [ConditionalTest(TestCondition.ReleaseBuildOnly, "Codegen is different in debug build")]
         [MethodTestData(typeof(SampleMethods), "GetInterfaceCount", BytecodeProviders.Reflection)]
         public void Test_CilReader_VirtualCall_Emit(MethodBase mi)
         {
@@ -232,7 +232,6 @@ namespace CilTools.BytecodeAnalysis.Tests
             int res = deleg(typeof(List<>));
             Assert.AreEqual(SampleMethods.GetInterfaceCount(typeof(List<>)), res, "The result of GetInterfaceCountDynamic is wrong");
         }
-#endif
 
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "PrintList", BytecodeProviders.Reflection)]

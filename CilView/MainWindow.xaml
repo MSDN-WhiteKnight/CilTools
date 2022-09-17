@@ -14,6 +14,7 @@
                 <MenuItem x:Name="miExportMethod" Header="Export to file" Click="miExportMethod_Click"/>
                 <MenuItem x:Name="miExportType" Header="Export type to file" Click="miExportType_Click"/>
                 <Separator/>
+                <MenuItem x:Name="miFileProperties" Header="Properties" Click="miFileProperties_Click"/>
                 <MenuItem x:Name="miExit" Header="Exit" Click="miExit_Click"/>
             </MenuItem>
             <MenuItem Header="Process" IsEnabled="{Binding HasProcessInfo, FallbackValue=False}">
@@ -45,6 +46,7 @@
                 <MenuItem x:Name="miFeedback" Header="Feedback" Click="miFeedback_Click"/>
                 <Separator/>
                 <MenuItem x:Name="miAbout" Header="About" Click="miAbout_Click"/>
+                <MenuItem x:Name="miCredits" Header="Credits" Click="miCredits_Click"/>
             </MenuItem>
         </Menu>
         <Button x:Name="bOpenFile" Content="Open file" HorizontalAlignment="Left" Height="24" Margin="10,30,0,0" VerticalAlignment="Top" 

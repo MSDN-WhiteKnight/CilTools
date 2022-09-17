@@ -145,7 +145,7 @@ namespace CilTools.Metadata.Constructors
         {
             if (this.sig == null) return new ParameterInfo[0];
 
-            return Utils.GetMethodParameters(this.assembly.MetadataReader, this, this.mdef, this.sig);
+            return Utils.GetMethodParameters(this.assembly, this, this.mdef, this.sig);
         }
         
         /// <inheritdoc/>

@@ -11,7 +11,7 @@ namespace CilView.Core.Syntax
 {
     public static class SyntaxReader
     {
-        static bool IsWhitespace(string str)
+        internal static bool IsWhitespace(string str)
         {
             for (int i = 0; i < str.Length; i++)
             {
@@ -24,7 +24,7 @@ namespace CilView.Core.Syntax
         public static SyntaxNode[] ReadAllNodes(string src)
         {
             List<SyntaxNode> nodes = new List<SyntaxNode>();
-            TokenReader reader = new TokenReader(src);
+            TokenReader reader = new TokenReader(src, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
             if (tokens.Length == 0) return new SyntaxNode[0];
 

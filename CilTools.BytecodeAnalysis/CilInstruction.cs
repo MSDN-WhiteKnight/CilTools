@@ -366,6 +366,24 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Gets the instruction syntax
+        /// </summary>
+        /// <returns>The collection of syntax nodes that represent this instruction syntax</returns>
+        public IEnumerable<SyntaxNode> ToSyntax()
+        {
+            int spaces = 10 - this.Name.Length;
+
+            if (spaces < 0) spaces = 0;
+
+            yield return new KeywordSyntax(string.Empty, this.Name, "".PadLeft(spaces + 1), KeywordKind.InstructionName);
+
+            foreach (SyntaxNode node in this.OperandToSyntax())
+            {
+                yield return node;
+            }
+        }
+
 #if !NETSTANDARD
         /// <summary>
         /// Emits CIL code for this instruction into the specified IL generator.

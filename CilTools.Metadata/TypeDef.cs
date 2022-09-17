@@ -63,7 +63,7 @@ namespace CilTools.Metadata
                 if (bindingAttr.HasFlag(BindingFlags.Static) && mb.IsStatic) sem_match = true;
                 else if (bindingAttr.HasFlag(BindingFlags.Instance) && !mb.IsStatic) sem_match = true;
             }
-            else if (m is PropertyInfo)
+            else if (m is PropertyInfo || m is EventInfo)
             {
                 //filtering is not implemented
                 if (bindingAttr != BindingFlags.Default)
@@ -201,12 +201,31 @@ namespace CilTools.Metadata
 
         public override EventInfo GetEvent(string name, BindingFlags bindingAttr)
         {
-            throw new NotSupportedException("This type implementation does not support events");
+            EventInfo[] events = this.GetEvents(bindingAttr);
+
+            for (int i = 0; i < events.Length; i++)
+            {
+                EventInfo m = events[i];
+
+                if (string.Equals(m.Name, name, StringComparison.InvariantCulture)) return m;
+            }
+
+            return null;
         }
 
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
-            throw new NotSupportedException("This type implementation does not support events");
+            List<EventInfo> members = new List<EventInfo>();
+            EventInfo m;
+
+            foreach (EventDefinitionHandle he in this.type.GetEvents())
+            {
+                EventDefinition e = this.assembly.MetadataReader.GetEventDefinition(he);
+                m = new EventDef(e, he, this.assembly, this);
+                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+            }
+
+            return members.ToArray();
         }
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
@@ -245,7 +264,101 @@ namespace CilTools.Metadata
 
         public override Type[] GetInterfaces()
         {
-            throw new NotImplementedException();
+            InterfaceImplementationHandleCollection coll = this.type.GetInterfaceImplementations();
+            List<Type> ret = new List<Type>(coll.Count);
+
+            foreach (InterfaceImplementationHandle h in coll)
+            {
+                InterfaceImplementation ii = this.assembly.MetadataReader.GetInterfaceImplementation(h);
+                ret.Add(this.assembly.GetTypeByHandle(ii.Interface));
+            }
+
+            return ret.ToArray();
+        }
+
+        static bool ContainsMethod(List<MethodInfo> coll, MethodInfo match)
+        {
+            for (int i = 0; i < coll.Count; i++)
+            {
+                if (coll[i].MetadataToken == match.MetadataToken)
+                {
+                    //all methods are in the same module, so only need to compare
+                    //by metadata token
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public override InterfaceMapping GetInterfaceMap(Type interfaceType)
+        {
+            if (interfaceType == null)
+            {
+                throw new ArgumentNullException(nameof(interfaceType));
+            }
+
+            if (!interfaceType.IsInterface)
+            {
+                throw new ArgumentException("Type is not an interface");
+            }
+
+            MethodImplementationHandleCollection coll = this.type.GetMethodImplementations();
+            List<MethodInfo> bodys = new List<MethodInfo>();
+            List<MethodInfo> decls = new List<MethodInfo>();
+
+            //explicitly implemented
+            foreach (MethodImplementationHandle h in coll)
+            {
+                if (h.IsNil) continue;
+
+                MethodImplementation impl = this.assembly.MetadataReader.GetMethodImplementation(h);
+                MethodInfo decl = this.assembly.GetMethodByHandle(impl.MethodDeclaration);
+                Debug.Assert(decl != null);
+
+                if (!Utils.TypeEquals(decl.DeclaringType, interfaceType)) continue;
+
+                MethodInfo body = this.assembly.GetMethodByHandle(impl.MethodBody);
+                Debug.Assert(body != null);
+                bodys.Add(body);
+                decls.Add(decl);
+            }
+
+            //implicitly implemented
+            MethodInfo[] ifMethods = interfaceType.GetMethods();
+
+            for (int i = 0; i < ifMethods.Length; i++)
+            {
+                //interface method
+                MethodInfo ifMethod = ifMethods[i];
+
+                //check if already picked up
+                if (ContainsMethod(decls, ifMethod)) continue;
+
+                //find method with the same name and signature on current type
+                Type[] sig = Utils.GetParameterTypesArray(ifMethod);
+                MethodInfo mi = this.GetMethod(ifMethod.Name, Utils.AllMembers(), null, sig, null);
+
+                if (mi != null)
+                {
+                    bodys.Add(mi);
+                    decls.Add(ifMethod);
+                }
+            }
+
+            if (decls.Count == 0)
+            {
+                throw new ArgumentException("Type does not implement the specified interface");
+            }
+
+            Debug.Assert(decls.Count == bodys.Count);
+
+            InterfaceMapping map = new InterfaceMapping();
+            map.InterfaceMethods = decls.ToArray();
+            map.TargetMethods = bodys.ToArray();
+            map.InterfaceType = interfaceType;
+            map.TargetType = this;
+            return map;
         }
 
         public override MemberInfo[] GetMember(string name, BindingFlags bindingAttr)
@@ -311,6 +424,14 @@ namespace CilTools.Metadata
                 {
                     members.Add(this.properties[i]);
                 }
+            }
+
+            //events
+            EventInfo[] events = this.GetEvents(bindingAttr);
+
+            for (int i = 0; i < events.Length; i++)
+            {
+                members.Add(events[i]);
             }
 
             return members.ToArray();

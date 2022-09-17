@@ -1,17 +1,14 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Navigation;
 using CilTools.BytecodeAnalysis;
+using CilView.Core.DocumentModel;
 
 namespace CilView.UI.Controls
 {
@@ -77,13 +74,39 @@ namespace CilView.UI.Controls
             this.tbCurrLocation.Text = sb.ToString();
         }
 
-        public CilBrowserPage(string contentText, string filename)
+        public CilBrowserPage(Assembly ass, RoutedEventHandler navigation)
+        {
+            InitializeComponent();
+            
+            string plaintext;
+            UIElement elem = CilVisualization.VisualizeAssembly(ass, navigation, out plaintext);
+            this.tbMainContent.Text = plaintext;
+            gridContent.Children.Clear();
+            gridContent.Children.Add(elem);
+
+            //display assembly name as location
+            this.tbCurrLocation.Text = ass.GetName().Name;
+        }
+
+        public CilBrowserPage(IlasmAssembly content, string contentText, string filename)
         {
             InitializeComponent();           
             
             this.tbMainContent.Text = contentText;
             gridContent.Children.Clear();
-            gridContent.Children.Add(CilVisualization.VisualizeSourceText(contentText));
+            
+            if (contentText.Length < 1024*1024)
+            {
+                gridContent.Children.Add(CilVisualization.VisualizeSourceText(content.Syntax));
+            }
+            else
+            {
+                TextBlock txt = new TextBlock();
+                txt.Text = "[Error: Formatted view is not supported for files larger then 1 MB]";
+                txt.Padding = new Thickness(5);
+                gridContent.Children.Add(txt);
+            }
+            
             this.tbCurrLocation.Text = filename;
         }
 

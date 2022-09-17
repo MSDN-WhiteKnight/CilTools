@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
@@ -120,6 +121,21 @@ namespace CilTools.Internal
 
             return true;
         }
+        
+        public static BindingFlags AllMembers()
+        {
+            return BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance;
+        }
+
+        public static Type[] GetParameterTypesArray(MethodBase mb)
+        {
+            ParameterInfo[] pars = mb.GetParameters();
+            List<Type> ret = new List<Type>(pars.Length);
+
+            for (int i = 0; i < pars.Length; i++) ret.Add(pars[i].ParameterType);
+
+            return ret.ToArray();
+        }
 
         /// <summary>
         /// Reads custom attributes from the specified collection and returns them as an array of 
@@ -214,10 +230,12 @@ namespace CilTools.Internal
         /// <summary>
         /// Creates an array of parameters for the specified method definition
         /// </summary>
-        public static ParameterInfo[] GetMethodParameters(MetadataReader reader, MethodBase method, MethodDefinition mdef, Signature sig)
+        public static ParameterInfo[] GetMethodParameters(MetadataAssembly ass, MethodBase method, 
+            MethodDefinition mdef, Signature sig)
         {
             ParameterInfo[] pars = new ParameterInfo[sig.ParamsCount];
             ParameterHandleCollection hcoll = mdef.GetParameters();
+            MetadataReader reader = ass.MetadataReader;
 
             foreach (ParameterHandle h in hcoll)
             {
@@ -226,7 +244,7 @@ namespace CilTools.Internal
                 if (index >= pars.Length) continue;
                 if (index < 0) continue;
 
-                pars[index] = new ParameterSpec(sig.GetParamType(index), par, method, reader);
+                pars[index] = new ParameterSpec(sig.GetParamType(index), par, method, ass);
             }
 
             for (int i = 0; i < pars.Length; i++)
@@ -431,6 +449,30 @@ namespace CilTools.Internal
             }
 
             return ret;
+        }
+
+        public static string FlagsEnumToString<T>(int val)
+        {
+            Debug.Assert(typeof(T).IsEnum);
+
+            StringBuilder sb = new StringBuilder(1000);
+            string[] names = Enum.GetNames(typeof(T));
+            Array vals = Enum.GetValues(typeof(T));
+            
+            for (int i = 0; i < names.Length; i++)
+            {
+                int x = Convert.ToInt32(vals.GetValue(i));
+
+                if (x == 0)
+                {
+                    if (val == 0) return names[i];
+                    else continue;
+                }
+
+                if ((val & x) != 0) sb.Append(names[i]+"; ");
+            }
+
+            return sb.ToString();
         }
     }
 }

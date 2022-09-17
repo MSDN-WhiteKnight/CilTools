@@ -1,5 +1,5 @@
 ﻿/* CIL Tools
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,9 @@ using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TestData;
+using CilTools.Tests.Common.TextUtils;
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
@@ -26,20 +28,53 @@ namespace CilTools.BytecodeAnalysis.Tests
         [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
         public void Test_ToSyntaxTree(MethodBase mi)
         {
-            SyntaxTestsCore.Test_ToSyntaxTree(mi);
+            CilGraph graph = CilGraph.Create(mi);
+            MethodDefSyntax mds = graph.ToSyntaxTree();
+            AssertThat.IsSyntaxTreeCorrect(mds);
+            Assert.AreEqual("method", mds.Signature.Name);
+
+            AssertThat.HasOnlyOneMatch(
+                mds.Signature.EnumerateChildNodes(),
+                (x) => { return x is KeywordSyntax && (x as KeywordSyntax).Content == "public"; },
+                "Method signature should contain 'public' keyword"
+                );
+
+            AssertThat.HasOnlyOneMatch(
+                mds.Signature.EnumerateChildNodes(),
+                (x) => {
+                    return x is IdentifierSyntax && (x as IdentifierSyntax).Content == "PrintHelloWorld";
+                },
+                "Method signature should contain mathod name identifier"
+                );
+
+            AssertThat.HasOnlyOneMatch(
+                mds.Body.Content,
+                (x) => {
+                    return x is InstructionSyntax && (x as InstructionSyntax).Operation == "ldstr";
+                },
+                "Method body should contain 'ldstr' instruction"
+                );
         }
 
         [TestMethod]
         [MethodTestData(typeof(SampleMethods), "method", BytecodeProviders.All)]
         public void Test_KeywordAsIdentifier(MethodBase mi)
         {
-            SyntaxTestsCore.Test_KeywordAsIdentifier(mi);
+            string str = CilAnalysis.MethodToText(mi);
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any, "public", Text.Any,
+                "void", Text.Any,
+                "'method'", Text.Any,
+                "cil", Text.Any, "managed", Text.Any,
+            });
         }
 
-        [TestMethod]        
-        public void Test_Properties()
+        [TestMethod]
+        [TypeTestData(typeof(TypeWithProperties), BytecodeProviders.All)]
+        public void Test_Properties(Type t)
         {
-            IEnumerable<SyntaxNode> nodes=SyntaxNode.GetTypeDefSyntax(typeof(TypeWithProperties));            
+            IEnumerable<SyntaxNode> nodes=SyntaxNode.GetTypeDefSyntax(t);            
             string s = Utils.SyntaxToString(nodes);
                         
             AssertThat.IsMatch(s, new Text[] {
@@ -136,9 +171,9 @@ namespace CilTools.BytecodeAnalysis.Tests
 
         [TestMethod]
         [WorkItem(53)]
-        public void Test_GenericTypeParameterConstraints()
+        [TypeTestData(typeof(GenericConstraintsSample<>), BytecodeProviders.All)]
+        public void Test_GenericTypeParameterConstraints(Type t)
         {
-            Type t = typeof(GenericConstraintsSample<>);
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
             string str = Utils.SyntaxToString(nodes);
 
@@ -152,9 +187,9 @@ namespace CilTools.BytecodeAnalysis.Tests
 
         [TestMethod]
         [WorkItem(53)]
-        public void Test_GenericTypeParameterFlags()
+        [TypeTestData(typeof(Action<>), BytecodeProviders.All)]
+        public void Test_GenericTypeParameterFlags(Type t)
         {
-            Type t = typeof(Action<>);
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
             string str = Utils.SyntaxToString(nodes);
 
@@ -163,6 +198,74 @@ namespace CilTools.BytecodeAnalysis.Tests
                 "<", Text.Any, "-", Text.Any, "T", Text.Any, ">", Text.Any,
                 "{", Text.Any, "}", Text.Any
             });
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(EventsSample), BytecodeProviders.Metadata)]
+        public void Test_Events_Metadata(Type t)
+        {
+            string expected = @".class public auto ansi beforefieldinit CilTools.Tests.Common.TestData.EventsSample
+extends [mscorlib]System.Object {
+
+ .field private class [mscorlib]System.Action A
+ .field private static class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B
+
+ .event class [mscorlib]System.Action A {
+  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
+  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
+ }
+
+ .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
+  .custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 04 00 00 00 00 00 )
+  .addon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+  .removeon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+ }
+
+ .event class [mscorlib]System.Action`1<int32> C {
+  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_C(class [mscorlib]System.Action`1<int32>)
+  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_C(class [mscorlib]System.Action`1<int32>)
+ }
+
+ //... 
+}";
+
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.CilEquals(expected, s);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(EventsSample), BytecodeProviders.Reflection)]
+        public void Test_Events_Reflection(Type t)
+        {
+            //this is different, because we can't get exact custom attributes IL from runtime reflection
+            string expected = @".class  public auto ansi beforefieldinit CilTools.Tests.Common.TestData.EventsSample
+extends [mscorlib]System.Object {
+ .field private class [mscorlib]System.Action A
+ .field private static class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B
+
+ .event class [mscorlib]System.Action A {
+  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
+  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
+ }
+
+ .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
+  //.custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)
+  .addon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+  .removeon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+ }
+
+ .event class [mscorlib]System.Action`1<int32> C {
+  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_C(class [mscorlib]System.Action`1<int32>)
+  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_C(class [mscorlib]System.Action`1<int32>)
+ }
+
+ //...
+}";
+
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.CilEquals(expected, s);
         }
     }
 }

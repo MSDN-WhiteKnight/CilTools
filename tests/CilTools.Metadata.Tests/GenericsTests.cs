@@ -9,6 +9,7 @@ using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.TestData;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Metadata.Tests

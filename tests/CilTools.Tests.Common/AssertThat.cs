@@ -1,13 +1,15 @@
 ﻿/* CIL Tools
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Tests.Common
@@ -82,6 +84,19 @@ namespace CilTools.Tests.Common
             }
         }
 
+        public static void AllMatch<T>(IEnumerable<T> collection, Func<T, bool> condition, string message = "")
+        {
+            if (string.IsNullOrEmpty(message))
+            {
+                message = "Some items in collection does not match the condition";
+            }
+
+            foreach (T item in collection)
+            {
+                Assert.IsTrue(condition(item), message);
+            }
+        }
+
         public static void IsCorrect(CilGraph graph)
         {
             CilGraphNode[] nodes = graph.GetNodes().ToArray();
@@ -117,7 +132,21 @@ namespace CilTools.Tests.Common
                 Trace.WriteLine("Input string: ");
                 Trace.WriteLine(s);
 
-                if (String.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern.";
+                try
+                {
+                    string baseline = Text.GetMinMatchingText(match).Trim();
+                    StringDiff diff = StringDiff.GetDiff(baseline, s.Trim());
+                    Debug.WriteLine("Diff:");
+                    Debug.WriteLine(diff.ToString());
+                    Debug.WriteLine(diff.Visualize());
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error when trying to diff");
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                if (string.IsNullOrEmpty(message)) message = "Input string does not match the expected pattern.";
 
                 Fail("AssertThat.IsMatch failed. " + message);
             }
@@ -184,6 +213,100 @@ namespace CilTools.Tests.Common
                     "The callback expected not to throw, but actually throws " + 
                     ex.ToString());
             }
+        }
+
+        /// <summary>
+        /// Asserts that two specified strings consist of the same lexical element sequences 
+        /// (that is, they are equal after all adjacent whitespace character sequences are replaced with a single whitespace).
+        /// </summary>
+        public static void AreLexicallyEqual(string expected, string actual)
+        {
+            if (string.Equals(expected, actual, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            if (expected == null || actual == null)
+            {
+                Assert.AreEqual(expected, actual);
+            }
+
+            //normalize strings to replace all whitespace sequences with a single whitespace
+            char[] splitter = new char[] { ' ', '\t', '\r', '\n' };
+            string[] arr1 = expected.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb1 = new StringBuilder(expected.Length);
+
+            for (int i = 0; i < arr1.Length; i++)
+            {
+                sb1.Append(arr1[i]);
+
+                if (i < arr1.Length - 1) sb1.Append(' ');
+            }
+
+            string[] arr2 = actual.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb2 = new StringBuilder(actual.Length);
+
+            for (int i = 0; i < arr2.Length; i++)
+            {
+                sb2.Append(arr2[i]);
+
+                if (i < arr2.Length - 1) sb2.Append(' ');
+            }
+
+            //compare resulting strings
+            string s1 = sb1.ToString();
+            string s2 = sb2.ToString();
+
+            if (!string.Equals(s1, s2, StringComparison.Ordinal))
+            {
+                string diffDescr = string.Empty;
+
+                try
+                {
+                    StringDiff diff = StringDiff.GetDiff(s1, s2);
+                    Debug.WriteLine("AssertThat.AreLexicallyEqual diff:");
+                    Debug.WriteLine(diff.Visualize());
+                    diffDescr = diff.ToString();
+
+                    string path = Utils.GetRandomFilePath("diff", 5, "html");
+                    FileStream fs = File.Open(path, FileMode.CreateNew, FileAccess.Write);
+                    StreamWriter wr = new StreamWriter(fs);
+
+                    using (wr)
+                    {
+                        diff.VisualizeHTML(wr, "AssertThat.AreLexicallyEqual");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Error in GetDiff:");
+                    Debug.WriteLine(ex.ToString());
+                }
+
+                string mes = string.Format(
+                    "AssertThat.AreLexicallyEqual failed. Expected: \n{0}\nActual: \n{1}\n{2}",
+                    expected, actual, diffDescr);
+
+                Fail(mes);
+            }
+        }
+
+        /// <summary>
+        /// Assert that two IL strings are equal, ignoring differences in whitespaces and BCL assembly names
+        /// </summary>
+        public static void CilEquals(string expected, string actual)
+        {
+            // Normalize IL to account for variations in BCL assembly names
+            string s1 = expected.Replace("[System.Private.CoreLib]", "[mscorlib]");
+            s1 = s1.Replace("[netstandard]", "[mscorlib]");
+            s1 = s1.Replace("[System.Console]", "[mscorlib]");
+
+            string s2 = actual.Replace("[System.Private.CoreLib]", "[mscorlib]");
+            s2 = s2.Replace("[netstandard]", "[mscorlib]");
+            s2 = s2.Replace("[System.Console]", "[mscorlib]");
+
+            // Assert on the normalized strings
+            AreLexicallyEqual(s1, s2);
         }
     }
 }

@@ -7,31 +7,10 @@ using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Metadata;
+using CilTools.Tests.Common;
 
 namespace CilTools.BytecodeAnalysis.Tests
 {
-    /// <summary>
-    /// Represents APIs that could be used to fetch method's bytecode from .NET assembly
-    /// </summary>
-    [Flags]
-    public enum BytecodeProviders
-    {
-        /// <summary>
-        /// Standard reflection
-        /// </summary>
-        Reflection = 0x01,
-
-        /// <summary>
-        /// CilTools.Metadata library
-        /// </summary>
-        Metadata = 0x02,
-
-        /// <summary>
-        /// All supported providers
-        /// </summary>
-        All = Reflection|Metadata
-    }
-
     /// <summary>
     /// Represents data for the data-oriented test that takes a method as its argument
     /// </summary>
@@ -75,7 +54,7 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             if (this._prov.HasFlag(BytecodeProviders.Reflection))
             {
-                m = this._type.GetMethod(this._method);
+                m = this._type.GetMethod(this._method, Utils.AllMembers());
                 yield return new object[] { m };
             }
 
@@ -85,7 +64,7 @@ namespace CilTools.BytecodeAnalysis.Tests
                 {
                     Assembly ass = s_reader.LoadFrom(this._type.Assembly.Location);
                     Type t = ass.GetType(this._type.FullName);
-                    m = t.GetMember(this._method)[0] as MethodBase;
+                    m = t.GetMember(this._method, Utils.AllMembers())[0] as MethodBase;
                     yield return new object[] { m };
                 }
             }

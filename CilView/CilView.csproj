@@ -76,6 +76,9 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections.Immutable, Version=1.2.5.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.7.0\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
@@ -110,47 +113,20 @@
     <Compile Include="Build\ProjectGenerator.cs" />
     <Compile Include="Build\ProjectInfo.cs" />
     <Compile Include="Common\Audio.cs" />
-    <Compile Include="Common\Utils.cs" />
+    <Compile Include="Common\WpfUtils.cs" />
+    <Compile Include="IlasmAssemblySource.cs" />
     <Compile Include="Exceptions\ExceptionInfo.cs" />
     <Compile Include="CilVisualization.cs" />
     <Compile Include="ErrorHandler.cs" />
     <Compile Include="Exceptions\TypeExceptionInfo.cs" />
     <Compile Include="FileSystem\AssemblyFile.cs" />
     <Compile Include="FileSystem\RuntimeDir.cs" />
-    <Compile Include="Internal.Pdb.Readers\Portable\PortablePdb.cs" />
-    <Compile Include="Internal.Pdb.Readers\Portable\SourceLineData.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\BitAccess.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\BitSet.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\CvInfo.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\DataStream.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\DbiDbgHdr.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\DbiHeader.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\DbiModuleInfo.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\DbiSecCon.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\MsfDirectory.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbConstant.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbDebugException.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbException.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbFile.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbFileHeader.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbFunction.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbReader.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbScope.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbSequencePoint.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbSequencePointCollection.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbSlot.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbSource.cs" />
-    <Compile Include="Internal.Pdb.Readers\Windows\PdbStreamHelper.cs" />
+    <Compile Include="OpenDocumentOperation.cs" />
     <Compile Include="SearchResult.cs" />
-    <Compile Include="SourceCode\CppDecompiler.cs" />
-    <Compile Include="SourceCode\CsharpDecompiler.cs" />
-    <Compile Include="SourceCode\Decompiler.cs" />
-    <Compile Include="SourceCode\PdbCodeProvider.cs" />
-    <Compile Include="SourceCode\PdbUtils.cs" />
     <Compile Include="SourceCode\SourceCodeUI.cs" />
-    <Compile Include="SourceCode\SymbolsException.cs" />
-    <Compile Include="SourceCode\SymbolsQueryType.cs" />
-    <Compile Include="SourceCode\VbDecompiler.cs" />
+    <Compile Include="SourceCode\SourceLinkEntry.cs" />
+    <Compile Include="SourceCode\SourceLinkMap.cs" />
+    <Compile Include="SourceCode\SourceVisualization.cs" />
     <Compile Include="UI.Controls\CilBrowserPage.xaml.cs">
       <DependentUpon>CilBrowserPage.xaml</DependentUpon>
     </Compile>
@@ -162,8 +138,14 @@
     <Compile Include="UI.Controls\CilBrowser.xaml.cs">
       <DependentUpon>CilBrowser.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI.Dialogs\DocumentViewWindow.xaml.cs">
+      <DependentUpon>DocumentViewWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI.Dialogs\ExecuteWindow.xaml.cs">
       <DependentUpon>ExecuteWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI.Dialogs\MethodSourceViewWindow.xaml.cs">
+      <DependentUpon>MethodSourceViewWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI.Dialogs\OpenCodeWindow.xaml.cs">
       <DependentUpon>OpenCodeWindow.xaml</DependentUpon>
@@ -212,7 +194,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UI.Dialogs\DocumentViewWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI.Dialogs\ExecuteWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI.Dialogs\MethodSourceViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -268,7 +258,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Internal.Pdb.Readers\Windows\LICENSE" />
     <None Include="packages.config" />
     <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
@@ -301,7 +290,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Build\CsTemplate.xml" />
     <EmbeddedResource Include="Build\VbTemplate.xml" />
-    <None Include="Internal.Pdb.Readers\Windows\ReadMe.txt" />
+    <Content Include="credits.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

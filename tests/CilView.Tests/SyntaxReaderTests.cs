@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using CilTools.Syntax;
+using CilTools.Tests.Common;
 using CilView.Core.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -166,6 +167,8 @@ namespace CilView.Tests
         [DataRow(".method public hidebysig static void 'method'() cil managed")]
         [DataRow("ldc.i4.1 //load integer value onto the stack\r\nadd")]
         [DataRow(TokenReaderTests.Data_MultilineString, DisplayName = "Test_SyntaxReader_Roundtrip(Data_MultilineString)")]
+        [DataRow("System.ValueTuple`2<T1,T2>")]
+        [DataRow(".class public _@$b?c.d_ {}")]
         public void Test_SyntaxReader_Roundtrip(string src)
         {
             SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(src);
@@ -180,6 +183,94 @@ namespace CilView.Tests
             wr.Flush();
             string processed = sb.ToString();
             Assert.AreEqual(src, processed);
+        }
+        
+        [TestMethod]
+        public void Test_SyntaxReader_LargeText()
+        {
+            // Generate random large source
+            string src = Utils.GenerateFakeIL(15000);
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(src);
+            
+            // Just verify that it does not crash and produce reasonable results
+            bool found = false;
+            
+            for (int i=0; i<nodes.Length; i++)
+            {
+                if(nodes[i] is KeywordSyntax && (nodes[i] as KeywordSyntax).Content == "static")
+                {
+                    found = true;
+                    break;
+                }
+            }
+            
+            Assert.IsTrue(found);
+        }
+
+        [TestMethod]
+        public void Test_SyntaxReader_GenericArity()
+        {
+            // Generic type name with arity suffix should be a single token.
+            
+            string s = "System.ValueTuple`1<T>";
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(s);
+            Assert.AreEqual(4, nodes.Length);
+
+            SyntaxNode node = nodes[0];
+            Assert.IsTrue(node is IdentifierSyntax);
+            Assert.AreEqual("System.ValueTuple`1", (node as IdentifierSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("System.ValueTuple`1", node.ToString());
+
+            node = nodes[1];
+            Assert.IsTrue(node is PunctuationSyntax);
+            Assert.AreEqual("<", (node as PunctuationSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("<", node.ToString());
+
+            node = nodes[2];
+            Assert.IsTrue(node is IdentifierSyntax);
+            Assert.AreEqual("T", (node as IdentifierSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("T", node.ToString());
+
+            node = nodes[3];
+            Assert.IsTrue(node is PunctuationSyntax);
+            Assert.AreEqual(">", (node as PunctuationSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual(">", node.ToString());
+        }
+
+        [TestMethod]
+        public void Test_SyntaxReader_IdSpecialChars()
+        {
+            string s = "?rabbit_+1";
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(s);
+            Assert.AreEqual(3, nodes.Length);
+
+            SyntaxNode node = nodes[0];
+            Assert.IsTrue(node is IdentifierSyntax);
+            Assert.AreEqual("?rabbit_", (node as IdentifierSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("?rabbit_", node.ToString());
+
+            node = nodes[1];
+            Assert.IsTrue(node is PunctuationSyntax);
+            Assert.AreEqual("+", (node as PunctuationSyntax).Content);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("+", node.ToString());
+
+            node = nodes[2];
+            Assert.IsTrue(node is LiteralSyntax);
+            Assert.AreEqual(string.Empty, node.LeadingWhitespace);
+            Assert.AreEqual(string.Empty, node.TrailingWhitespace);
+            Assert.AreEqual("1", node.ToString());
         }
     }
 }

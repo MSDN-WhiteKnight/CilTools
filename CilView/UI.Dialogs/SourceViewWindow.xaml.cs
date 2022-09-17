@@ -7,8 +7,10 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Documents;
 using System.Windows.Input;
 using CilTools.SourceCode;
+using CilTools.Syntax;
 using CilView.Common;
 using CilView.SourceCode;
 
@@ -41,17 +43,30 @@ namespace CilView.UI.Dialogs
             try
             {
                 //get CIL for the range of the sequence point
-                tbCIL.Text = PdbUtils.GetCilText(f.Method, (uint)f.CilStart, (uint)f.CilEnd);
+                IEnumerable<SyntaxNode> nodes = PdbUtils.GetCilSyntax(f.Method, (uint)f.CilStart, (uint)f.CilEnd);
+                fdCIL.Document = CilVisualization.VisualizeNodes(nodes);
             }
             catch (Exception ex)
             {
                 //don't stop the rest of method to work if this errors out
                 //showing source can still be useful
-                tbCIL.Text = "[error!]";
+                FlowDocument errorDocument = new FlowDocument();
+                errorDocument.TextAlignment = TextAlignment.Left;
+                Paragraph par = new Paragraph();
+                par.Inlines.Add(new Run("[error!]"));
+                errorDocument.Blocks.Add(par);
+                fdCIL.Document = errorDocument;
+
                 ErrorHandler.Current.Error(ex);
             }
 
-            tbSource.Text = f.Text;
+            //source text
+            string ext = Path.GetExtension(f.Document.FilePath);
+
+            SourceToken[] tokens = TokenParser.ParseTokens(f.Text, TokenParser.GetDefinitions(ext), 
+                TokenClassifier.Create(ext));
+
+            fdSource.Document = SourceVisualization.VisualizeTokens(tokens, string.Empty, string.Empty);
 
             if (f.CilStart == 0) bPrevious.IsEnabled = false;
             else bPrevious.IsEnabled = true;
@@ -85,7 +100,7 @@ namespace CilView.UI.Dialogs
             if (e.LeftButton != MouseButtonState.Pressed) return;
 
             //open the source file in external editor
-            Utils.ShellExecute(this._f.Document.FilePath, this, "Failed to open source code file");
+            WpfUtils.ShellExecute(this._f.Document.FilePath, this, "Failed to open source code file");
         }
         
         private void bPrevious_Click(object sender, RoutedEventArgs e)
@@ -141,31 +156,9 @@ namespace CilView.UI.Dialogs
 
         private void tbSymbolsFile_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            try
-            {
-                string path = this._f.Document.SymbolsFile;
+            if (e.LeftButton != MouseButtonState.Pressed) return;
 
-                if (string.IsNullOrEmpty(path))
-                {
-                    MessageBox.Show(this, "Symbols path is not available", "Error");
-                    return;
-                }
-
-                string dir = Path.GetDirectoryName(path);
-
-                if (string.IsNullOrEmpty(dir))
-                {
-                    MessageBox.Show(this, "Cannot determine symbols file directory", "Error");
-                    return;
-                }
-
-                //open symbols file directory in Explorer
-                Utils.ShellExecute(dir, this, "Failed to open symbols file directory");
-            }
-            catch (Exception ex)
-            {
-                ErrorHandler.Current.Error(ex);
-            }
+            SourceCodeUI.OpenSymbolsDir(this._f.Document.SymbolsFile, this);
         }
     }
 }

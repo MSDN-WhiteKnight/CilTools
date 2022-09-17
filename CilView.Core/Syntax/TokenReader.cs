@@ -11,10 +11,12 @@ namespace CilView.Core.Syntax
     {
         char[] _source;
         int _pos = 0;
+        SyntaxTokenDefinition[] tokens;
 
-        public TokenReader(string src)
+        public TokenReader(string src, SyntaxTokenDefinition[] tokenDefinitions)
         {
             this._source = src.ToCharArray();
+            this.tokens = tokenDefinitions;
         }
 
         public string ReadToken()
@@ -22,9 +24,8 @@ namespace CilView.Core.Syntax
             if (_pos >= _source.Length) return string.Empty;
 
             StringBuilder sb = new StringBuilder();
-            SyntaxToken currentToken = null;
-            SyntaxToken[] tokens = SyntaxToken.AllTokens;
-
+            SyntaxTokenDefinition currentToken = null;
+            
             for (int i = 0; i < tokens.Length; i++)
             {
                 if (tokens[i].HasStart(this))

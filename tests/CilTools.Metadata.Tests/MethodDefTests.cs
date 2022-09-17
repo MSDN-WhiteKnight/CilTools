@@ -8,10 +8,33 @@ using System.Reflection;
 using System.Text;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Metadata.Tests
 {
+    public class MethodDefTests_BaseClass
+    {
+        public virtual void Foo(int x, int y) { }
+        public virtual void Foo(string s) { }
+        public virtual void Bar(DateTime dt) { }
+    }
+
+    public class MethodDefTests_DerivedClass : MethodDefTests_BaseClass
+    {
+        public override void Foo(int x, int y) { }
+        public override void Foo(string s) { }
+        public new void Bar(DateTime dt) { }
+        public static void Buzz() { }
+        public virtual void Frobby() { }
+        public void Bobby() { }
+
+        public override string ToString()
+        {
+            return base.ToString();
+        }
+    }
+
     [TestClass]
     public class MethodDefTests
     {
@@ -178,6 +201,92 @@ namespace CilTools.Metadata.Tests
 
                 Assert.AreEqual(0, attrs.Length);
             }
+        }
+
+        [TestMethod]
+        public void Test_GetBaseDefinition_Same()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Type t = ass.GetType(typename);
+            MethodInfo m = t.GetMethod("PrintHelloWorld");
+            MethodInfo baseDef = m.GetBaseDefinition();
+            Assert.IsNotNull(baseDef);
+            Assert.AreSame(m, baseDef);
+        }
+
+        [TestMethod]
+        public void Test_GetBaseDefinition_Override()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+
+            Assembly ass = reader.LoadFrom(typeof(MethodDefTests_DerivedClass).Assembly.Location);
+            Type t = ass.GetType(typeof(MethodDefTests_DerivedClass).FullName);
+
+            MethodInfo m1 = t.GetMethod("Foo", new Type[] { typeof(int), typeof(int) });
+            MethodInfo baseDef1 = m1.GetBaseDefinition();
+            Assert.IsNotNull(baseDef1);
+            Assert.AreEqual("MethodDefTests_BaseClass", baseDef1.DeclaringType.Name);
+            Assert.AreEqual("Foo", baseDef1.Name);
+            ParameterInfo[] pars = baseDef1.GetParameters();
+            Assert.AreEqual(2, pars.Length);
+            Assert.AreEqual("x", pars[0].Name);
+            Assert.AreEqual("y", pars[1].Name);
+
+            MethodInfo m2 = t.GetMethod("Foo", new Type[] { typeof(string) });
+            MethodInfo baseDef2 = m2.GetBaseDefinition();
+            Assert.IsNotNull(baseDef2);
+            Assert.AreEqual("MethodDefTests_BaseClass", baseDef2.DeclaringType.Name);
+            Assert.AreEqual("Foo", baseDef2.Name);
+            pars = baseDef2.GetParameters();
+            Assert.AreEqual(1, pars.Length);
+            Assert.AreEqual("s", pars[0].Name);
+
+            Assert.AreNotEqual(baseDef1.MetadataToken, baseDef2.MetadataToken);
+            Assert.AreNotEqual(baseDef1, baseDef2);
+        }
+
+        [TestMethod]
+        [DataRow("Bar")] //hide
+        [DataRow("Buzz")] //static
+        [DataRow("Frobby")] //instance virtual
+        [DataRow("Bobby")] //instance non-virtual
+        public void Test_GetBaseDefinition_NoOverride(string name)
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+
+            Assembly ass = reader.LoadFrom(typeof(MethodDefTests_DerivedClass).Assembly.Location);
+            Type t = ass.GetType(typeof(MethodDefTests_DerivedClass).FullName);
+
+            MethodInfo m = t.GetMethod(name);
+            MethodInfo baseDef = m.GetBaseDefinition();
+            Assert.IsNotNull(baseDef);
+            Assert.AreEqual("MethodDefTests_DerivedClass", baseDef.DeclaringType.Name);
+            Assert.AreEqual(name, baseDef.Name);
+            Assert.AreSame(m, baseDef);
+
+        }
+
+        [ConditionalTest(TestCondition.NetFrameworkOnly, "TypeRef.GetMethodImpl is not implemented")]
+        [WorkItem(127)]
+        public void Test_GetBaseDefinition_FromObject()
+        {
+            //https://github.com/MSDN-WhiteKnight/CilTools/issues/127
+
+            AssemblyReader reader = ReaderFactory.GetReader();
+
+            Assembly ass = reader.LoadFrom(typeof(MethodDefTests_DerivedClass).Assembly.Location);
+            Type t = ass.GetType(typeof(MethodDefTests_DerivedClass).FullName);
+
+            MethodInfo m = t.GetMethod("ToString");
+            MethodInfo baseDef = m.GetBaseDefinition();
+            Assert.IsNotNull(baseDef);
+            Assert.AreEqual("System.Object", baseDef.DeclaringType.FullName);
+            Assert.AreEqual("ToString", baseDef.Name);
+
+            Assert.AreNotEqual(m.MetadataToken, baseDef.MetadataToken);
+            Assert.AreNotEqual(m, baseDef);
         }
     }
 }

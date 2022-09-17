@@ -296,5 +296,22 @@ namespace CilTools.Metadata.Methods
         {
             return null;
         }
+
+        public override ICustomAttributeProvider ReturnTypeCustomAttributes
+        {
+            get
+            {
+                this.LoadImpl();
+
+                if (this.impl != null && this.impl is MethodInfo)
+                {
+                    return ((MethodInfo)this.impl).ReturnTypeCustomAttributes;
+                }
+                else
+                {
+                    return base.ReturnTypeCustomAttributes;
+                }
+            }
+        }
     }
 }

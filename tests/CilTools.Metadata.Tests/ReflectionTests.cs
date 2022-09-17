@@ -2,14 +2,18 @@
  * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Metadata.Tests
@@ -88,11 +92,12 @@ namespace CilTools.Metadata.Tests
                 MethodBase mi = t.GetMember("GetInterfaceCount")[0] as MethodBase;
                 Type paramtype = mi.GetParameters()[0].ParameterType;
 
+                Assert.AreEqual("Type", paramtype.Name);
+                Assert.AreEqual("System.Type", paramtype.FullName);
+                Assert.IsTrue(paramtype.IsClass);
                 Assert.IsTrue(paramtype.Attributes.HasFlag(TypeAttributes.Public));
                 Assert.AreEqual("MemberInfo", paramtype.BaseType.Name);
-
                 Assert.IsTrue(paramtype.IsAssignableFrom(paramtype));
-                Assert.IsTrue(paramtype.IsAssignableFrom(typeof(Type)));
             }
         }
 
@@ -157,7 +162,64 @@ namespace CilTools.Metadata.Tests
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
                 Type t = ass.GetType("CilTools.Tests.Common.SampleMethods");
                 MethodBase mi = t.GetMember("GenericsTest")[0] as MethodBase;
-                ReflectionTestsCore.Test_NavigationGenericMethod(mi);
+                CilGraph graph = CilGraph.Create(mi);
+                CilGraphNode[] nodes = graph.GetNodes().ToArray();
+
+                //find called GenerateArray method
+                MethodBase navigated = null;
+
+                for (int i = 0; i < nodes.Length; i++)
+                {
+                    if (nodes[i].Instruction.OpCode.FlowControl == FlowControl.Call)
+                    {
+                        MethodBase target = nodes[i].Instruction.ReferencedMember as MethodBase;
+
+                        if (String.Equals(target.Name, "GenerateArray", StringComparison.InvariantCulture))
+                        {
+                            navigated = target;
+                            break;
+                        }
+                    }
+                }
+
+                Assert.IsNotNull(navigated, "GenericsTest should contain a call to GenerateArray");
+
+                //decompile called method
+                graph = CilGraph.Create(navigated);
+                nodes = graph.GetNodes().ToArray();
+                AssertThat.IsCorrect(graph);
+                string str = graph.ToText();
+
+                AssertThat.HasOnlyOneMatch(
+                    nodes,
+                    (x) => x.Instruction.OpCode == OpCodes.Newarr
+                    && x.Instruction.ReferencedType.IsGenericParameter == true
+                    && x.Instruction.ReferencedType.GenericParameterPosition == 0
+                    );
+
+                AssertThat.IsMatch(str, new Text[] {
+                ".method", Text.Any,
+                "GenerateArray", Text.Any,
+                "newarr", Text.Any,
+                "!!", Text.Any
+            });
+
+                /*
+                .method   public hidebysig static !!0[] GenerateArray<T>(
+                    int32 len
+                ) cil managed
+                {
+                 .maxstack   1
+                 .locals   init (!!0[] V_0)
+
+                          nop          
+                          ldarg.0      
+                          newarr       !!0
+                          stloc.0      
+                          br.s         IL_0001
+                 IL_0001: ldloc.0      
+                          ret          
+                }*/
             }
         }
 
@@ -202,17 +264,15 @@ namespace CilTools.Metadata.Tests
             AssertThat.DoesNotThrow(() => t.GetHashCode());
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.WindowsOnly, "References .NET Framework")]
         public void Test_FunctionPointers()
         {
             AssemblyReader reader = new AssemblyReader();
 
             using (reader)
             {
-                string path = Path.Combine(
-                    System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory(),
-                    "WPF\\PresentationCore.dll"
-                    );
+                string windir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+                string path = Path.Combine(windir,"Microsoft.NET\\Framework\\v4.0.30319\\WPF\\PresentationCore.dll");
 
                 Assembly ass = reader.LoadFrom(path);
                 Type mt = ass.GetType("<Module>");

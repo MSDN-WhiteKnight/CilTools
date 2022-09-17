@@ -16,7 +16,7 @@ namespace CilTools.Syntax
     /// Punctuation signs divide other tokens in syntax constructs. Punctuation signs used in CIL are colons, 
     /// braces, angle braces and others. 
     /// </remarks>
-    class PunctuationSyntax : SyntaxNode
+    public class PunctuationSyntax : SyntaxNode
     {
         string _content;
 

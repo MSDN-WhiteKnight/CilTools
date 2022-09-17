@@ -46,5 +46,107 @@ namespace CilTools.Tests.Common
             return "Release";
 #endif
         }
+
+        public static string GetSampleAppPath()
+        {
+            AssemblyName an = typeof(object).Assembly.GetName();
+            string fmt;
+
+            if (an.Name.Equals("System.Private.CoreLib", StringComparison.Ordinal))
+            {
+                //.NET Core
+                fmt = @"..\..\..\..\EmitSampleApp\bin\{0}\netcoreapp3.1\win-x86\EmitSampleApp.dll";
+            }
+            else
+            {
+                //.NET Framework
+                fmt = @"..\..\..\..\EmitSampleApp\bin\{0}\net45\win-x86\EmitSampleApp.exe";
+            }
+
+            return string.Format(fmt, GetConfig());
+        }
+
+        public static void GenerateFakeIL(int repeats, TextWriter target)
+        {
+            string[] words = {
+                "Test","Foo","Bar","Buzz","Frobby","Bobby","Hello","Alice","Bob","Lee","Miroslav","Nicolas","Peter"
+            };
+
+            Random rnd = new Random();
+
+            for (int i = 0; i < repeats; i++)
+            {
+                int nWord = rnd.Next(words.Length);
+                int nNumber = rnd.Next();
+
+                string name = words[nWord] + nNumber.ToString();
+                string str = ".method public static void " + name + "() cil managed { } ";
+                target.Write(str);
+
+                nWord = rnd.Next(words.Length);
+                nNumber = rnd.Next();
+                str = "//" + words[nWord] + nNumber.ToString();
+                target.WriteLine(str);
+            }
+
+            target.Flush();
+        }
+
+        public static string GenerateFakeIL(int repeats)
+        {
+            StringBuilder sb = new StringBuilder(5000);
+            StringWriter wr = new StringWriter(sb);
+            GenerateFakeIL(repeats, wr);
+            return sb.ToString();
+        }
+
+        public static string GetStringCapped(string input, int maxCount)
+        {
+            if (input.Length < maxCount) return input;
+            else return input.Substring(0, maxCount - 4) + "...";
+        }
+
+        public static string GetProgramDir()
+        {
+            return Path.GetDirectoryName(typeof(Utils).Assembly.Location);
+        }
+
+        static readonly Random rng = new Random();
+
+        public static string GetRandomFilePath(string start, int n, string ext)
+        {
+            StringBuilder sb = new StringBuilder(n);
+            sb.Append(start);
+            sb.Append(DateTime.Now.ToString("yyyyMMdd_hhmmss"));
+            sb.Append('_');
+            int nLetters = 'Z' - 'A';
+            int nDigits = 10;
+
+            for (int i = 0; i < n; i++)
+            {
+                int x = rng.Next(nLetters + nDigits);
+
+                if (x <= 9)
+                {
+                    sb.Append(x.ToString());
+                }
+                else
+                {
+                    sb.Append((char)('A' + (x - 9)));
+                }
+            }
+            
+            sb.Append('.');
+            sb.Append(ext);
+            return Path.Combine(GetProgramDir(), sb.ToString());
+        }
+
+        /// <summary>
+        /// Gets assembly version in IL format (A:B:C:D)
+        /// </summary>
+        public static string GetVersionIL(Assembly ass)
+        {
+            return ass.GetName().Version.ToString(4).Replace(".", ":");
+        }
     }
 }

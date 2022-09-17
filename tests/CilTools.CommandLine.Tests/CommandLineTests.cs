@@ -5,6 +5,8 @@ using System;
 using System.IO;
 using System.Diagnostics;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
+using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.CommandLine.Tests
@@ -53,6 +55,7 @@ namespace CilTools.CommandLine.Tests
         }
 
         const string exepath = "../../../../../CilTools.CommandLine/bin/{0}/netcoreapp3.1/cil";
+        const string appHeader = "*** CIL Tools command line ***";
 
         static string GetExePath()
         {
@@ -113,6 +116,27 @@ namespace CilTools.CommandLine.Tests
         }
 
         [TestMethod]
+        public void Test_View_Assembly()
+        {
+            const string cmd = "view CilTools.Tests.Common.dll";
+            CommandResult cr = Execute(GetExePath(), cmd);
+            string s = cr.StandardOutputText;
+            Console.WriteLine(s);
+            Console.WriteLine(cr.StandardErrorText);
+            Assert.IsTrue(cr.Success);
+
+            AssertThat.IsMatch(s, new Text[] {
+                "*** CIL Tools command line ***", Text.Any, "Assembly: CilTools.Tests.Common.dll" , Text.Any
+            });
+
+            SyntaxTestsCore.VerifyAssemblyManifestString(s, Utils.GetVersionIL(typeof(SampleMethods).Assembly));
+
+            AssertThat.IsMatch(s.ToLower(), new Text[] {
+                ".module", Text.Any, "extern", Text.Any, "user32.dll"
+            });
+        }
+
+        [TestMethod]
         public void Test_Disasm()
         {
             const string cmd = "disasm --output test.il CilTools.Tests.Common.dll CilTools.Tests.Common.SampleMethods PrintTenNumbers";
@@ -130,6 +154,69 @@ namespace CilTools.CommandLine.Tests
             string output = File.ReadAllText("test.il");
             Console.WriteLine(output);
             CilGraphTestsCore.Assert_CilGraph_Loop(output);
+        }
+
+        [ConditionalTest(TestCondition.DebugBuildOnly, "PDB content is different in debug and release")]
+        public void Test_ViewSource_PDB()
+        {
+            const string cmd = "view-source CilTools.Tests.Common.dll CilTools.Tests.Common.SampleMethods CalcSum";
+            CommandResult cr = Execute(GetExePath(), cmd);
+            string s = cr.StandardOutputText;
+            Console.WriteLine(s);
+            Console.WriteLine(cr.StandardErrorText);
+            Assert.IsTrue(cr.Success);
+
+            string expectedSource = @"public static double CalcSum(double x, double y)
+{
+    return x + y;
+}";
+
+            //normalize line breaks across platforms
+            s = s.Replace("\r\n", "\n");
+            expectedSource = expectedSource.Replace("\r\n", "\n");
+
+            AssertThat.IsMatch(s, new Text[] {
+                appHeader, Text.Any, "Assembly: CilTools.Tests.Common.dll" , Text.Any,
+                "Type: CilTools.Tests.Common.SampleMethods" , Text.Any, "CalcSum(Double, Double)", Text.Any,
+                "Source code from:", Text.Any, "SampleMethods.cs", Text.Any,
+                expectedSource, Text.Any,
+                "Symbols file:", Text.Any, "CilTools.Tests.Common.pdb (Portable PDB)", Text.Any
+            });
+        }
+
+        [TestMethod]
+        public void Test_ViewSource_Decompiled()
+        {
+            const string cmd = "view-source CilTools.Tests.Common.dll CilTools.Tests.Common.TestData.ITest Bar";
+            CommandResult cr = Execute(GetExePath(), cmd);
+            string s = cr.StandardOutputText;
+            Console.WriteLine(s);
+            Console.WriteLine(cr.StandardErrorText);
+            Assert.IsTrue(cr.Success);
+
+            string expectedSource = "void Bar(string s, object o);";
+            
+            AssertThat.IsMatch(s, new Text[] {
+                appHeader, Text.Any, "Assembly: CilTools.Tests.Common.dll" , Text.Any,
+                "Type: CilTools.Tests.Common.TestData.ITest" , Text.Any, "Bar(String, Object)", Text.Any,
+                "Source code from: Decompiler", Text.Any, 
+                expectedSource, Text.Any
+            });
+        }
+
+        [TestMethod]
+        public void Test_FileInfo()
+        {
+            const string cmd = "fileinfo CilTools.Tests.Common.dll";
+            CommandResult cr = Execute(GetExePath(), cmd);
+            string s = cr.StandardOutputText;
+            Console.WriteLine(s);
+            Console.WriteLine(cr.StandardErrorText);
+            Assert.IsTrue(cr.Success);
+
+            s = s.Replace("\r\n", "\n");
+            Assert.IsTrue(s.Contains(appHeader));
+            CilViewTestsCore.VerifyAssemblyInfoText(s, "CilTools.Tests.Common.dll");
         }
     }
 }
