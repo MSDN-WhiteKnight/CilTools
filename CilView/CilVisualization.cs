@@ -428,47 +428,54 @@ namespace CilView
         public static UIElement VisualizeAssembly(Assembly ass, RoutedEventHandler navigation, out string plaintext)
         {
             FlowDocument fd = CreateFlowDocument();
-
+            Paragraph par = new Paragraph();
             IEnumerable<SyntaxNode> tree;
-
+            VisualizeGraphContext ctx = new VisualizeGraphContext();
+            
             if (ass is IlasmAssembly)
             {
                 //synthesized assembly that contains IL - no need to disassemble
                 IlasmAssembly ia = (IlasmAssembly)ass;
-                tree = ia.Syntax.EnumerateChildNodes();
+                string contentText = ia.GetDocumentText();
+
+                if (contentText.Length < 1024 * 1024)
+                {
+                    tree = ia.Syntax.EnumerateChildNodes();
+
+                    //visualize IL
+                    foreach (SyntaxNode node in tree)
+                    {
+                        VisualizeNode(node, par, ctx);
+                    }
+                }
+                else
+                {
+                    Run r = new Run("[Error: Formatted view is not supported for files larger then 1 MB]");
+                    par.Inlines.Add(r);
+                }
+
+                //no need to reconstruct raw text as it is stored on IlasmAssembly
+                plaintext = contentText;
             }
             else
             {
+                ctx.navigation = navigation;
+
                 //disassemble assembly manifest
                 tree = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+
+                //visualize assembly manifest
+                StringBuilder sb = new StringBuilder(500);
+                StringWriter wr = new StringWriter(sb);
+                
+                foreach (SyntaxNode node in tree)
+                {
+                    VisualizeNode(node, par, ctx);
+                    node.ToText(wr);
+                }
+                
+                plaintext = sb.ToString();
             }
-
-            StringBuilder sb = new StringBuilder(500);
-            StringWriter wr = new StringWriter(sb);
-            Paragraph par = new Paragraph();
-
-            VisualizeGraphContext ctx = new VisualizeGraphContext();
-            ctx.navigation = navigation;
-
-            foreach (SyntaxNode node in tree)
-            {
-                VisualizeNode(node, par, ctx);
-                node.ToText(wr);
-            }
-
-            fd.Blocks.Add(par);
-            plaintext = sb.ToString();
-            return CreateScrollViewer(fd);
-        }
-
-        public static UIElement VisualizeSourceText(DocumentSyntax src)
-        {
-            FlowDocument fd = CreateFlowDocument();
-            SyntaxNode[] nodes = src.GetChildNodes();
-            Paragraph par = new Paragraph();
-            VisualizeGraphContext ctx = new VisualizeGraphContext();
-
-            for (int i = 0; i < nodes.Length; i++) VisualizeNode(nodes[i], par, ctx);
 
             fd.Blocks.Add(par);
             return CreateScrollViewer(fd);

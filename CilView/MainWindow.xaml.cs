@@ -15,6 +15,7 @@ using CilTools.Runtime;
 using CilView.Build;
 using CilView.Common;
 using CilView.Core;
+using CilView.Core.DocumentModel;
 using CilView.Core.Reflection;
 using CilView.Core.Syntax;
 using CilView.Exceptions;
@@ -176,7 +177,8 @@ namespace CilView
             if (op.Result == null) return;
 
             this.SetSource(op.Result);
-            this.cilbrowser.NavigateToSourceDocument(op.Result.Assembly, op.Result.Content, op.Result.Title);
+
+            // IlasmAssemblySource contains a single synthesized assembly
             cbAssembly.SelectedIndex = 0;
         }
 
@@ -296,7 +298,7 @@ namespace CilView
                 source.Methods.Clear();
                 source.Types = AssemblySource.LoadTypes(ass);
 
-                if (source.Types.Count == 1)
+                if (source.Types.Count == 1 && !(ass is IlasmAssembly))
                 {
                     //if there's only one type, select it automatically
                     cbType.SelectedIndex = 0;
@@ -325,7 +327,7 @@ namespace CilView
                     //If there's only one non-module type, select it automatically.
                     //There's a good chance it's exactly what user needs.
 
-                    if (c == 1)
+                    if (c == 1 && !(ass is IlasmAssembly))
                     {
                         cbType.SelectedIndex = index;
                     }

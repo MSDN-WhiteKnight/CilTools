@@ -208,7 +208,7 @@ namespace CilView.Tests
         static IlasmAssembly ParseAssembly(string il)
         {
             SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
-            IlasmAssembly ass = IlasmParser.ParseAssembly(tokens);
+            IlasmAssembly ass = IlasmParser.ParseAssembly(tokens, il);
             return ass;
         }
 
@@ -268,10 +268,12 @@ namespace CilView.Tests
             };
 
             DocumentSyntax tree = new DocumentSyntax(tokens, "(All text)", false, string.Empty);
-            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
+            string rawIL = tree.ToString();
+            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree, rawIL);
 
             Assert.AreEqual("IlasmAssembly", ass.GetName().Name);
-            Assert.AreEqual(tree.ToString(), ass.GetDocumentText());
+            Assert.AreEqual(rawIL, ass.GetDocumentText());
+            Assert.AreEqual(rawIL, ass.Syntax.ToString());
             Assert.IsTrue(ass.ReflectionOnly);
             Assert.IsFalse(ass.IsDynamic);
             Assert.AreEqual(string.Empty, ass.Location);
@@ -327,7 +329,7 @@ namespace CilView.Tests
             };
 
             DocumentSyntax tree = new DocumentSyntax(tokens, "(All text)", false, string.Empty);
-            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree);
+            IlasmAssembly ass = IlasmParser.TreeToAssembly(tree, tree.ToString());
 
             Assert.AreEqual("TestAssembly", ass.GetName().Name);
             Assert.AreEqual(tree.ToString(), ass.GetDocumentText());

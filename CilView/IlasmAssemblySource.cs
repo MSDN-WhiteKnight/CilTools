@@ -28,9 +28,11 @@ namespace CilView
             AssemblySource.TypeCacheClear();
             ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
             this._content = File.ReadAllText(path);
-            this._title = Path.GetFileName(path);
+            string title = Path.GetFileName(path);
+            this._title = title;
             SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(this._content);
-            this._ass = IlasmParser.ParseAssembly(nodes);
+            this._ass = IlasmParser.ParseAssembly(nodes, this._content);
+            this._ass.Title = title;
             ret.Add(this._ass);
             this.Assemblies = ret;
             this.Types = new ObservableCollection<Type>();

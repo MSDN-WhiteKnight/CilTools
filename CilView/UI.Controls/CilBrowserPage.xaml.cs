@@ -84,30 +84,17 @@ namespace CilView.UI.Controls
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);
 
-            //display assembly name as location
-            this.tbCurrLocation.Text = ass.GetName().Name;
-        }
-
-        public CilBrowserPage(IlasmAssembly content, string contentText, string filename)
-        {
-            InitializeComponent();           
-            
-            this.tbMainContent.Text = contentText;
-            gridContent.Children.Clear();
-            
-            if (contentText.Length < 1024*1024)
+            if (ass is IlasmAssembly)
             {
-                gridContent.Children.Add(CilVisualization.VisualizeSourceText(content.Syntax));
+                //display title as location for synthesized assembly
+                IlasmAssembly ia = (IlasmAssembly)ass;
+                this.tbCurrLocation.Text = ia.Title;
             }
             else
             {
-                TextBlock txt = new TextBlock();
-                txt.Text = "[Error: Formatted view is not supported for files larger then 1 MB]";
-                txt.Padding = new Thickness(5);
-                gridContent.Children.Add(txt);
+                //display assembly name as location for real assembly
+                this.tbCurrLocation.Text = ass.GetName().Name;
             }
-            
-            this.tbCurrLocation.Text = filename;
         }
 
         public MemberInfo Member { get { return this.member; } }

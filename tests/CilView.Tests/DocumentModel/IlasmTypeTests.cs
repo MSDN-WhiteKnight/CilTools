@@ -34,7 +34,7 @@ namespace CilView.Tests.DocumentModel
         [TestMethod]
         public void Test_IlasmType()
         {
-            IlasmAssembly ass = new IlasmAssembly(new DocumentSyntax("TestAssembly"), "TestAssembly");
+            IlasmAssembly ass = new IlasmAssembly(new DocumentSyntax("TestAssembly"), "TestAssembly", string.Empty);
             const string typeName = "MyNamespace.TestClass";
             DocumentSyntax ds = new DocumentSyntax(GetTestTypeTokens(typeName), typeName, false, string.Empty);
             IlasmType t = new IlasmType(ass, ds, typeName);
@@ -52,7 +52,7 @@ namespace CilView.Tests.DocumentModel
         {
             //equality is used by WPF so we need to ensure it does not throw
 
-            IlasmAssembly ass = new IlasmAssembly(new DocumentSyntax("TestAssembly"), "TestAssembly");
+            IlasmAssembly ass = new IlasmAssembly(new DocumentSyntax("TestAssembly"), "TestAssembly", string.Empty);
             const string typeName1 = "MyNamespace.TestClass";
             DocumentSyntax ds1 = new DocumentSyntax(GetTestTypeTokens(typeName1), typeName1, false, string.Empty);
             IlasmType t1 = new IlasmType(ass, ds1, typeName1);

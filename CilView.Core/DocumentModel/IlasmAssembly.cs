@@ -17,14 +17,18 @@ namespace CilView.Core.DocumentModel
     public class IlasmAssembly : Assembly
     {
         DocumentSyntax _wholeDocument;
+        string _documentText;
         List<IlasmType> _types;
         AssemblyName _asn;
+        string _title;
 
-        public IlasmAssembly(DocumentSyntax doc, string name)
+        public IlasmAssembly(DocumentSyntax doc, string name, string text)
         {
             this._wholeDocument = doc;
             this._types = new List<IlasmType>();
             this._asn = new AssemblyName(name);
+            this._documentText = text;
+            this._title = name;
         }
 
         public DocumentSyntax Syntax
@@ -32,9 +36,15 @@ namespace CilView.Core.DocumentModel
             get { return this._wholeDocument; }
         }
 
+        public string Title
+        {
+            get { return this._title; }
+            set { this._title = value; }
+        }
+
         public string GetDocumentText()
         {
-            return this._wholeDocument.ToString();
+            return this._documentText;
         }
 
         public void AddType(IlasmType type)

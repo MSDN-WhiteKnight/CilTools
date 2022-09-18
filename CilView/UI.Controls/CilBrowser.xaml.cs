@@ -168,12 +168,20 @@ namespace CilView.UI.Controls
 
         public void NavigateToAssembly(Assembly ass)
         {
-            if (ass is IlasmAssembly) return; //synthesized assemblies are handled separately
-
             string contenttext = string.Empty;
 
             CilBrowserPage page = new CilBrowserPage(ass, Navigated);
-            page.Title = "Assembly: " + ass.GetName().Name;
+
+            if (ass is IlasmAssembly)
+            {
+                IlasmAssembly ia = (IlasmAssembly)ass;
+                page.Title = ia.Title;
+            }
+            else
+            {
+                page.Title = "Assembly: " + ass.GetName().Name;
+            }
+
             frameContent.Navigate(page);
             contenttext = page.ContentText;
             
@@ -193,20 +201,7 @@ namespace CilView.UI.Controls
             frameContent.Navigate("(Stack trace)");
             this.text = String.Empty;
         }
-
-        public void NavigateToSourceDocument(IlasmAssembly content, string contentText, string filename)
-        {
-            CilBrowserPage page = new CilBrowserPage(content, contentText, filename);
-            page.Title = filename;
-            frameContent.Navigate(page);
-            this.text = contentText;
-            this.current_method = null;
-            this.current_type = null;
-
-            //make sure content is visible
-            ExpandContentPane();
-        }
-
+        
         public void Clear()
         {
             if (tlv != null) tlv.Clear();

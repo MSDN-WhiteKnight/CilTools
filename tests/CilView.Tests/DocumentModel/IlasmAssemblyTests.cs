@@ -51,7 +51,7 @@ namespace CilView.Tests.DocumentModel
         {
             SyntaxNode[] tokens = GetTestAssemblyTokens();
             DocumentSyntax ds = new DocumentSyntax(tokens);
-            IlasmAssembly ass = new IlasmAssembly(ds, "TestAssembly");
+            IlasmAssembly ass = new IlasmAssembly(ds, "TestAssembly", ds.ToString());
             Assert.AreEqual("TestAssembly", ass.GetName().Name);
             Assert.AreEqual("TestAssembly", ass.FullName);
             Assert.AreEqual("TestAssembly", ass.ToString()); //used by WPF, should not throw!
@@ -71,7 +71,7 @@ namespace CilView.Tests.DocumentModel
         {
             SyntaxNode[] tokens = GetTestAssemblyTokens();
             DocumentSyntax ds = new DocumentSyntax(tokens);
-            IlasmAssembly ass = new IlasmAssembly(ds, "TestAssembly");
+            IlasmAssembly ass = new IlasmAssembly(ds, "TestAssembly", ds.ToString());
             ass.AddType(new IlasmType(ass, new DocumentSyntax(GetTestTypeTokens("Foo")), "Foo"));
             ass.AddType(new IlasmType(ass, new DocumentSyntax(GetTestTypeTokens("Bar")), "Bar"));
 

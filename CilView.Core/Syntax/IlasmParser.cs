@@ -231,10 +231,10 @@ namespace CilView.Core.Syntax
         /// <summary>
         /// Transforms syntax tree into a synthesized assembly with a collection of types (third stage of parsing).
         /// </summary>
-        public static IlasmAssembly TreeToAssembly(DocumentSyntax tree)
+        public static IlasmAssembly TreeToAssembly(DocumentSyntax tree, string rawText)
         {
             const string defaultName = "IlasmAssembly";
-            IlasmAssembly ret = new IlasmAssembly(tree, defaultName);
+            IlasmAssembly ret = new IlasmAssembly(tree, defaultName, rawText);
             SyntaxNode[] nodes = tree.GetChildNodes();
             bool foundName = false;
             AssemblyName an = new AssemblyName();
@@ -305,8 +305,11 @@ namespace CilView.Core.Syntax
         /// Transforms tokens sequence into a synthesized assembly with a collection of types 
         /// (runs the complete parsing pipeline).
         /// </summary>
-        public static IlasmAssembly ParseAssembly(IEnumerable<SyntaxNode> tokens)
+        public static IlasmAssembly ParseAssembly(IEnumerable<SyntaxNode> tokens, string rawText)
         {
+            // Raw source text is passed here so we don't have to reconstruct it again by walking syntax 
+            // nodes when we need plaintext representation. The parser operates tokens only.
+
             DocumentSyntax tree = TokensToInitialTree(tokens);
             tree = ParseTopLevelDirectives(tree, false);
 
@@ -328,7 +331,7 @@ namespace CilView.Core.Syntax
             tree = new DocumentSyntax(nodes, tree.Name, tree.IsInvalid, tree.ParserDiagnostics);
 
             //Construct final assembly from tree
-            return TreeToAssembly(tree);
+            return TreeToAssembly(tree, rawText);
         }
     }
 }
