@@ -4,7 +4,12 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
+using CilTools.Metadata;
+using CilTools.Syntax;
+using CilView.Core.Syntax;
 
 namespace CilTools.CommandLine
 {
@@ -30,6 +35,40 @@ namespace CilTools.CommandLine
                     " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
                 yield return TextParagraph.Text("[--output <output path>] - Output file path");
             }
+        }
+
+        static async Task<int> DisassembleType(string asspath, string type, TextWriter target)
+        {
+            AssemblyReader reader = new AssemblyReader();
+            Assembly ass;
+            int retCode;
+
+            try
+            {
+                ass = reader.LoadFrom(asspath);
+                Type t = ass.GetType(type);
+
+                if (t == null)
+                {
+                    Console.WriteLine("Error: Type {0} not found in assembly {1}", type, asspath);
+                    return 1;
+                }
+
+                await SyntaxWriter.DisassembleTypeAsync(t, new DisassemblerParams(), target);
+                retCode = 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
+                retCode = 1;
+            }
+            finally
+            {
+                reader.Dispose();
+            }
+
+            return retCode;
         }
 
         public override int Execute(string[] args)
@@ -103,7 +142,11 @@ namespace CilTools.CommandLine
                 if (string.IsNullOrEmpty(method))
                 {
                     //disassemble type
-                    res = Visualizer.VisualizeType(asspath, type, full: true, noColor: true, wr);
+                    Task<int> task = DisassembleType(asspath, type, wr);
+                    task.Wait(); //OK to block in console app
+
+                    if (task.IsCompletedSuccessfully) res = task.Result;
+                    else res = 1;
                 }
                 else
                 {
