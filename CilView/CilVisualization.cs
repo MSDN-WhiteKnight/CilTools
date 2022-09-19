@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.ObjectModel;
@@ -10,13 +10,11 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
 using CilView.Core.DocumentModel;
-using CilView.Core.Syntax;
 using CilView.SourceCode;
 using CilView.UI.Controls;
 
@@ -44,9 +42,9 @@ namespace CilView
 
         internal static string MethodToString(MethodBase m)
         {
-            if (m is CilTools.Runtime.ClrMethodInfo)
+            if (m is ClrMethodInfo)
             {
-                string sig = ((CilTools.Runtime.ClrMethodInfo)m).InnerMethod.GetFullSignature();
+                string sig = ((ClrMethodInfo)m).InnerMethod.GetFullSignature();
                 string name = m.Name;
 
                 int index = sig.IndexOf(name);
@@ -55,12 +53,8 @@ namespace CilView
                 return sig.Substring(index);
             }
 
-            StringBuilder sb = new StringBuilder();
-            Type t = m.DeclaringType;
             ParameterInfo[] pars = m.GetParameters();
-
-            MethodInfo mi = m as MethodInfo;
-
+            StringBuilder sb = new StringBuilder();
             sb.Append(m.Name);
 
             if (m.IsGenericMethod)
