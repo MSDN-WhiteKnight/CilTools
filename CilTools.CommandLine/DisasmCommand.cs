@@ -4,11 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using CilTools.Metadata;
 using CilTools.Syntax;
+using CilView.Common;
 using CilView.Core.Syntax;
 
 namespace CilTools.CommandLine
@@ -55,6 +57,57 @@ namespace CilTools.CommandLine
                 }
 
                 await SyntaxWriter.DisassembleTypeAsync(t, new DisassemblerParams(), target);
+                retCode = 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
+                retCode = 1;
+            }
+            finally
+            {
+                reader.Dispose();
+            }
+
+            return retCode;
+        }
+
+        static int DisassembleMethod(string asspath, string type, string method, TextWriter target)
+        {
+            AssemblyReader reader = new AssemblyReader();
+            Assembly ass;
+            int retCode;
+
+            try
+            {
+                ass = reader.LoadFrom(asspath);
+                Type t = ass.GetType(type);
+
+                if (t == null)
+                {
+                    Console.WriteLine("Error: Type {0} not found in assembly {1}", type, asspath);
+                    return 1;
+                }
+
+                MemberInfo[] methods = Utils.GetAllMembers(t);
+                Func<MethodBase, bool> predicate = (x) => Utils.StringEquals(x.Name, method);
+                MethodBase[] selectedMethods = methods.OfType<MethodBase>().Where(predicate).ToArray();
+
+                if (selectedMethods.Length == 0)
+                {
+                    Console.WriteLine("Error: Type {0} does not declare methods with the specified name", type);
+                    return 1;
+                }
+
+                SyntaxWriter.WriteHeader(target);
+
+                for (int i = 0; i < selectedMethods.Length; i++)
+                {
+                    SyntaxWriter.DisassembleMethod(selectedMethods[i], new DisassemblerParams(), target);
+                    target.WriteLine();
+                }
+
                 retCode = 0;
             }
             catch (Exception ex)
@@ -151,7 +204,7 @@ namespace CilTools.CommandLine
                 else
                 {
                     //disassemble method
-                    res = Visualizer.VisualizeMethod(asspath, type, method, noColor: true, wr);
+                    res = DisassembleMethod(asspath, type, method, wr);
                 }
 
                 if (res == 0) Console.WriteLine("Output successfully written to " + outpath);
