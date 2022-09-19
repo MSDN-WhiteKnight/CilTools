@@ -3,15 +3,14 @@
  * License: BSD 2.0 */
 using System.Reflection;
 using System.Resources;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Windows;
 
 [assembly: AssemblyTitle("CilView")]
 [assembly: AssemblyDescription(".NET bytecode visualizer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CilView")]
+[assembly: AssemblyCompany("CIL Tools")]
+[assembly: AssemblyProduct("CIL Tools")]
 [assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight 2022")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -27,5 +26,5 @@ using System.Windows;
     // в приложении или в каких-либо словарях ресурсов для конкретной темы)
 )]
 
-[assembly: AssemblyVersion("2.4.0.0")]
-[assembly: AssemblyFileVersion("2.4.0.0")]
+[assembly: AssemblyVersion("2.5.0.0")]
+[assembly: AssemblyFileVersion("2.5.0.0")]
