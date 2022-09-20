@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
+using CilView.Common;
 
 namespace CilView.Core.Syntax
 {
@@ -42,6 +43,31 @@ namespace CilView.Core.Syntax
         public static void WriteHeader(TextWriter target)
         {
             target.WriteLine(header);
+        }
+
+        public static async Task DisassembleAsync(Assembly ass, DisassemblerParams pars, TextWriter target)
+        {
+            await WriteHeaderAsync(target);
+
+            //assembly manifest
+            IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+            await WriteSyntaxAsync(nodes, target);
+            await target.WriteLineAsync();
+
+            //types
+            Type[] types = ass.GetTypes();
+
+            for (int i = 0; i < types.Length; i++)
+            {
+                if (types[i].IsNested) continue;
+                if (Utils.StringEquals(types[i].FullName, "<Module>")) continue;
+
+                nodes = SyntaxNode.GetTypeDefSyntax(types[i], true, pars);
+                await WriteSyntaxAsync(nodes, target);
+                await target.WriteLineAsync();
+            }
+
+            await target.FlushAsync();
         }
 
         public static async Task DisassembleTypeAsync(Type t, DisassemblerParams pars, TextWriter target)

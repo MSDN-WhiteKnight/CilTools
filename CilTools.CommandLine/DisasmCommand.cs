@@ -24,7 +24,7 @@ namespace CilTools.CommandLine
 
         public override string Description 
         { 
-            get { return "Write disassembled CIL code of the specified type or method into the file"; } 
+            get { return "Write disassembled CIL code of the specified assembly, type or method into the file"; } 
         }
 
         public override IEnumerable<TextParagraph> UsageDocumentation
@@ -34,9 +34,35 @@ namespace CilTools.CommandLine
                 string exeName = typeof(Program).Assembly.GetName().Name;
 
                 yield return TextParagraph.Code("    " + exeName +
-                    " disasm [--output <output path>] <assembly path> <type full name> [<method name>]");
+                    " disasm [--output <output path>] <assembly path> [<type full name>] [<method name>]");
                 yield return TextParagraph.Text("[--output <output path>] - Output file path");
             }
+        }
+
+        static async Task<int> DisassembleAssembly(string asspath, TextWriter target)
+        {
+            AssemblyReader reader = new AssemblyReader();
+            Assembly ass;
+            int retCode;
+
+            try
+            {
+                ass = reader.LoadFrom(asspath);
+                await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), target);
+                retCode = 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
+                retCode = 1;
+            }
+            finally
+            {
+                reader.Dispose();
+            }
+
+            return retCode;
         }
 
         static async Task<int> DisassembleType(string asspath, string type, TextWriter target)
@@ -131,7 +157,7 @@ namespace CilTools.CommandLine
             string method;
             string outpath = null;
 
-            if (args.Length < 3)
+            if (args.Length < 2)
             {
                 Console.WriteLine("Error: not enough arguments for 'disasm' command.");
                 Console.WriteLine(CLI.GetErrorInfo());
@@ -164,14 +190,6 @@ namespace CilTools.CommandLine
 
             type = CLI.ReadCommandParameter(args, pos);
             pos++;
-
-            if (type == null)
-            {
-                Console.WriteLine("Error: Type name is not provided for the 'disasm' command.");
-                Console.WriteLine(CLI.GetErrorInfo());
-                return 1;
-            }
-
             Console.WriteLine("Input file: " + asspath);
             StreamWriter wr;
 
@@ -188,9 +206,25 @@ namespace CilTools.CommandLine
 
             using (wr)
             {
-                Console.WriteLine("Disassembling CIL...");
-                method = CLI.ReadCommandParameter(args, pos);
                 int res;
+                Console.WriteLine("Disassembling CIL...");
+
+                if (string.IsNullOrEmpty(type))
+                {
+                    // disassemble assembly
+                    Task<int> task = DisassembleAssembly(asspath, wr);
+                    task.Wait(); //OK to block in console app
+
+                    if (task.IsCompletedSuccessfully) res = task.Result;
+                    else res = 1;
+
+                    if (res == 0) Console.WriteLine("Output successfully written to " + outpath);
+                    else Console.WriteLine("Failed to disassemble");
+
+                    return res;
+                }
+
+                method = CLI.ReadCommandParameter(args, pos);
 
                 if (string.IsNullOrEmpty(method))
                 {
