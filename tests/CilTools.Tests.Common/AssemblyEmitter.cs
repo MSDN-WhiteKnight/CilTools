@@ -1,3 +1,6 @@
+﻿/* CIL Tools
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,8 +10,11 @@ using System.Reflection.PortableExecutable;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
-namespace MetadataAssemblyGenerator
+namespace CilTools.Tests.Common
 {
+    /// <summary>
+    /// Dynamically creates test data assemblies
+    /// </summary>
     public class AssemblyEmitter
     {
         private static readonly Guid s_guid = Guid.NewGuid();
@@ -19,7 +25,7 @@ namespace MetadataAssemblyGenerator
         MetadataBuilder builder = new MetadataBuilder();
         BlobBuilder ilBuilder = new BlobBuilder();
 
-        public AssemblyEmitter(string assName, 
+        public AssemblyEmitter(string assName,
             Func<MetadataBuilder, AssemblyReferenceHandle, InstructionEncoder> emitter)
         {
             this.name = assName;
@@ -121,10 +127,10 @@ namespace MetadataAssemblyGenerator
 
             // Emit IL for a method
             il = this.callbackEmitMethodBody(metadata, corlibAssemblyRef);
-            
+
             int methodBodyOffset = methodBodyStream.AddMethodBody(il);
             codeBuilder.Clear();
-            
+
             // Create method definition
             MethodDefinitionHandle methodDef = metadata.AddMethodDefinition(
                 MethodAttributes.Public | MethodAttributes.Static | MethodAttributes.HideBySig,
@@ -206,7 +212,7 @@ namespace MetadataAssemblyGenerator
             {
                 WritePEImage(peStream, this.builder, ilBuilder, default(MethodDefinitionHandle));
             }
-            
+
             Assembly ass = Assembly.LoadFrom(this.Name + ".dll");
             return ass;
         }
@@ -221,6 +227,15 @@ namespace MetadataAssemblyGenerator
             }
         }
 
+        public byte[] GetAssemblyBytes()
+        {
+            using (var peStream = new MemoryStream())
+            {
+                WritePEImage(peStream, this.builder, ilBuilder, default(MethodDefinitionHandle));
+                return (peStream.ToArray());
+            }
+        }
+
         public object Execute(Assembly ass)
         {
             Type t = ass.GetType(this.Name + ".Program");
@@ -229,58 +244,4 @@ namespace MetadataAssemblyGenerator
             return ret;
         }
     }
-    
-    // ****
-    
-    class Program
-    {
-        static InstructionEncoder EmitMethodBody(MetadataBuilder metadata, AssemblyReferenceHandle corlibAssemblyRef)
-        {
-            var codeBuilder = new BlobBuilder();
-            var encoder = new InstructionEncoder(codeBuilder, new ControlFlowBuilder());
-            
-            AssemblyReferenceHandle consoleAssemblyRef = AssemblyEmitter.AddAssemblyReference(
-                metadata, 
-                "System.Console", 
-                new Version(4, 0, 0, 0));
-
-            TypeReferenceHandle systemConsoleTypeRefHandle = metadata.AddTypeReference(
-                consoleAssemblyRef,
-                metadata.GetOrAddString("System"),
-                metadata.GetOrAddString("Console"));
-
-            var consoleWriteLineSignature = new BlobBuilder();
-
-            new BlobEncoder(consoleWriteLineSignature).
-                MethodSignature().
-                Parameters(1,
-                    returnType => returnType.Void(),
-                    parameters => parameters.AddParameter().Type().String());
-
-            MemberReferenceHandle consoleWriteLineMemberRef = metadata.AddMemberReference(
-                systemConsoleTypeRefHandle,
-                metadata.GetOrAddString("WriteLine"),
-                metadata.GetOrAddBlob(consoleWriteLineSignature));
-
-            // ldstr "hello"
-            encoder.LoadString(metadata.GetOrAddUserString("hello"));
-
-            // call void [mscorlib]System.Console::WriteLine(string)
-            encoder.Call(consoleWriteLineMemberRef);
-
-            // ret
-            encoder.OpCode(ILOpCode.Ret);
-
-            return encoder;
-        }
-
-        static void Main(string[] args)
-        {
-            AssemblyEmitter emitter = new AssemblyEmitter("MyAssembly", EmitMethodBody);
-            Assembly ass = emitter.BuildAssemblyInMemory();
-            object obj = emitter.Execute(ass);
-            Console.WriteLine("End");
-            Console.Read();
-        }
-    }    
 }

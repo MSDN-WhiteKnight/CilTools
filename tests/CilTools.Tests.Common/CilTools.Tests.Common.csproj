@@ -12,6 +12,7 @@
     <ProjectReference Include="..\..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
     <ProjectReference Include="..\..\CilTools.Metadata\CilTools.Metadata.csproj" />
     <PackageReference Include="MSTest.TestFramework" Version="2.1.0" />
+    <PackageReference Include="System.Reflection.Metadata" Version="1.8.0" />
   </ItemGroup>
   
   
