@@ -232,31 +232,10 @@ namespace CilTools.Tests.Common
             }
 
             //normalize strings to replace all whitespace sequences with a single whitespace
-            char[] splitter = new char[] { ' ', '\t', '\r', '\n' };
-            string[] arr1 = expected.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-            StringBuilder sb1 = new StringBuilder(expected.Length);
-
-            for (int i = 0; i < arr1.Length; i++)
-            {
-                sb1.Append(arr1[i]);
-
-                if (i < arr1.Length - 1) sb1.Append(' ');
-            }
-
-            string[] arr2 = actual.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
-            StringBuilder sb2 = new StringBuilder(actual.Length);
-
-            for (int i = 0; i < arr2.Length; i++)
-            {
-                sb2.Append(arr2[i]);
-
-                if (i < arr2.Length - 1) sb2.Append(' ');
-            }
+            string s1 = Utils.NormalizeWhitespace(expected);
+            string s2 = Utils.NormalizeWhitespace(actual);
 
             //compare resulting strings
-            string s1 = sb1.ToString();
-            string s2 = sb2.ToString();
-
             if (!string.Equals(s1, s2, StringComparison.Ordinal))
             {
                 string diffDescr = string.Empty;

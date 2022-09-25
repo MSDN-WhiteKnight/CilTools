@@ -13,6 +13,8 @@ using CilTools.Metadata;
 using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
+using CilTools.Tests.Common.TextUtils;
 using CilView.Core.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -139,6 +141,64 @@ extends [System.Runtime]System.Object
             string il = IL_HelloWorld.Replace("@version", ver).Replace("@mvid", mvid);
             string str = sb.ToString().Trim();
             AssertThat.AreLexicallyEqual(il, str);
+        }
+
+        static void VerifyType_SampleMethods(string str)
+        {
+            string il = ".class public abstract auto ansi sealed beforefieldinit CilTools.Tests.Common.SampleMethods";
+            Assert.IsTrue(str.Contains(il));
+
+            Assert.IsTrue(str.Contains(".field public static int32 Foo"));
+
+            il = ".method public hidebysig static void PrintHelloWorld() cil managed";
+            Assert.IsTrue(str.Contains(il));
+
+            il = ".method public hidebysig static float64 CalcSum( float64 x, float64 y ) cil managed";
+            Assert.IsTrue(str.Contains(il));
+        }
+
+        [TestMethod]
+        public async Task Test_DisassembleAsync_SampleMethods()
+        {
+            //disassemble assembly
+            AssemblyReader reader = new AssemblyReader();
+            StringBuilder sb = new StringBuilder(1000);
+            StringWriter wr = new StringWriter(sb);
+
+            using (reader)
+            {
+                Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+                await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), wr);
+            }
+
+            string str = sb.ToString().Trim();
+            str = Utils.NormalizeWhitespace(str);
+
+            //verify output
+            AssertThat.IsMatch(str, new Text[] { "// CIL Tools ", Text.Any,
+                "// https://github.com/MSDN-WhiteKnight/CilTools", Text.Any,
+                ".assembly", Text.Any, "CilTools.Tests.Common", Text.Any
+            });
+
+            Assert.IsTrue(str.Contains(".assembly extern CilTools.BytecodeAnalysis"));
+            VerifyType_SampleMethods(str);
+        }
+
+        [DataTestMethod]
+        [TypeTestData(typeof(SampleMethods), BytecodeProviders.All)]
+        public async Task Test_SyntaxWriter_DisassembleTypeAsync(Type t)
+        {
+            StringBuilder sb = new StringBuilder(1000);
+            StringWriter wr = new StringWriter(sb);
+            await SyntaxWriter.DisassembleTypeAsync(t, new DisassemblerParams(), wr);
+            string str = Utils.NormalizeWhitespace(sb.ToString());
+
+            AssertThat.IsMatch(str, new Text[] { "// CIL Tools ", Text.Any,
+                "// https://github.com/MSDN-WhiteKnight/CilTools", Text.Any,
+                ".class", Text.Any,"public", Text.Any,"abstract", Text.Any,"CilTools.Tests.Common.SampleMethods", Text.Any
+            });
+
+            VerifyType_SampleMethods(str);
         }
     }
 }

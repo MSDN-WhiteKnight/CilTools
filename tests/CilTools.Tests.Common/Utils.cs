@@ -148,5 +148,24 @@ namespace CilTools.Tests.Common
         {
             return ass.GetName().Version.ToString(4).Replace(".", ":");
         }
+
+        /// <summary>
+        /// Normalize string to replace all whitespace sequences with a single whitespace
+        /// </summary>
+        public static string NormalizeWhitespace(string input)
+        {
+            char[] splitter = new char[] { ' ', '\t', '\r', '\n' };
+            string[] arr = input.Split(splitter, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb = new StringBuilder(input.Length);
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                sb.Append(arr[i]);
+
+                if (i < arr.Length - 1) sb.Append(' ');
+            }
+
+            return sb.ToString();
+        }
     }
 }
