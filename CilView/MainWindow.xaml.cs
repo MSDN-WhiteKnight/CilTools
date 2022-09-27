@@ -530,18 +530,78 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
                 dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
                 dlg.FileName = t.Name + ".il";
 
-                if (dlg.ShowDialog(this) == true)
-                {
-                    StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
+                if (dlg.ShowDialog(this) != true) return;
 
-                    using (wr)
+                Mouse.OverrideCursor = Cursors.Wait;
+                StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
+
+                using (wr)
+                {
+                    if (t is IlasmType)
+                    {
+                        IlasmType it = (IlasmType)t;
+                        await SyntaxWriter.WriteHeaderAsync(wr);
+                        await wr.WriteAsync(it.GetDocumentText());
+                    }
+                    else
                     {
                         await SyntaxWriter.DisassembleTypeAsync(t, CilVisualization.CurrentDisassemblerParams, wr);
                     }
                 }
+
+                Mouse.OverrideCursor = null;
+                MessageBox.Show(this, "Export is completed successfully", "Information");
             }
             catch (Exception ex)
             {
+                Mouse.OverrideCursor = null;
+                ErrorHandler.Current.Error(ex);
+            }
+        }
+
+        private async void miExportAssembly_Click(object sender, RoutedEventArgs e)
+        {
+            Assembly ass = this.cilbrowser.GetCurrentAssembly();
+
+            if (ass == null)
+            {
+                MessageBox.Show(this, "No content to export. Open assembly first to export its code", "Error");
+                return;
+            }
+
+            try
+            {
+                SaveFileDialog dlg = new SaveFileDialog();
+                dlg.RestoreDirectory = true;
+                dlg.DefaultExt = ".il";
+                dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
+                dlg.FileName = ass.GetName().Name + ".il";
+
+                if (dlg.ShowDialog(this) != true) return;
+
+                Mouse.OverrideCursor = Cursors.Wait;
+                StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
+
+                using (wr)
+                {
+                    if (ass is IlasmAssembly)
+                    {
+                        IlasmAssembly ia = (IlasmAssembly)ass;
+                        await SyntaxWriter.WriteHeaderAsync(wr);
+                        await wr.WriteAsync(ia.GetDocumentText());
+                    }
+                    else
+                    {
+                        await SyntaxWriter.DisassembleAsync(ass, CilVisualization.CurrentDisassemblerParams, wr);
+                    }
+                }
+
+                Mouse.OverrideCursor = null;
+                MessageBox.Show(this, "Export is completed successfully", "Information");
+            }
+            catch (Exception ex)
+            {
+                Mouse.OverrideCursor = null;
                 ErrorHandler.Current.Error(ex);
             }
         }

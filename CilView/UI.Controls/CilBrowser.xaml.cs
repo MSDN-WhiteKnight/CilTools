@@ -27,6 +27,7 @@ namespace CilView.UI.Controls
         TextListViewer tlv;
         MethodBase current_method = null;
         Type current_type = null;
+        Assembly current_assembly = null;
         string text = String.Empty;
         bool shouldClearHistory = false;
         int nav_counter = 0;
@@ -187,6 +188,7 @@ namespace CilView.UI.Controls
             
             this.current_method = null;
             this.current_type = null;
+            this.current_assembly = ass;
             this.text = contenttext;
 
             //make sure content is visible
@@ -211,6 +213,11 @@ namespace CilView.UI.Controls
             frameContent.Navigate(String.Empty);
             this.current_method = null;
             this.current_type = null;
+        }
+
+        public Assembly GetCurrentAssembly()
+        {
+            return this.current_assembly;
         }
 
         public Type GetCurrentType()

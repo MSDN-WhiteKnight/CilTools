@@ -13,6 +13,7 @@
                 <Separator/>
                 <MenuItem x:Name="miExportMethod" Header="Export to file" Click="miExportMethod_Click"/>
                 <MenuItem x:Name="miExportType" Header="Export type to file" Click="miExportType_Click"/>
+                <MenuItem x:Name="miExportAssembly" Header="Export assembly to file" Click="miExportAssembly_Click"/>
                 <Separator/>
                 <MenuItem x:Name="miFileProperties" Header="Properties" Click="miFileProperties_Click"/>
                 <MenuItem x:Name="miExit" Header="Exit" Click="miExit_Click"/>

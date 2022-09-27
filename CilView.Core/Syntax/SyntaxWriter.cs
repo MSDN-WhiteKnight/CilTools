@@ -35,7 +35,7 @@ namespace CilView.Core.Syntax
             return sb.ToString();
         }
 
-        static async Task WriteHeaderAsync(TextWriter target)
+        public static async Task WriteHeaderAsync(TextWriter target)
         {
             await target.WriteLineAsync(header);
         }
