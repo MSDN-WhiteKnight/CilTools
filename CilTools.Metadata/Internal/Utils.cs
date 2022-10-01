@@ -79,6 +79,11 @@ namespace CilTools.Internal
             if (left == null) return false;
             if (right == null) return false;
             
+            // Generic parameters and types that could contain them are special-cased so we won't hit 
+            // Type.Name which might be not defined for them.
+            // This prevents issues like https://github.com/MSDN-WhiteKnight/CilTools/issues/92
+
+            //byref
             if (left.IsByRef)
             {
                 if (!right.IsByRef) return false;
@@ -90,9 +95,38 @@ namespace CilTools.Internal
                 return false; //left is not byref at this point
             }
 
-            //Generic parameters are special-cased so we won't hit Type.Name which might be not defined for them.
-            //This prevents issues like https://github.com/MSDN-WhiteKnight/CilTools/issues/92
+            //pointer
+            if (left.IsPointer)
+            {
+                if (!right.IsPointer) return false;
+                else return TypeEqualsSignature(left.GetElementType(), right.GetElementType());
+            }
 
+            if (right.IsPointer)
+            {
+                return false; //left is not pointer at this point
+            }
+
+            //array
+            if (left.IsArray)
+            {
+                if (!right.IsArray)
+                {
+                    return false;
+                }
+                else
+                {
+                    return left.GetArrayRank() == right.GetArrayRank() &&
+                        TypeEqualsSignature(left.GetElementType(), right.GetElementType());
+                }
+            }
+
+            if (right.IsArray)
+            {
+                return false; //left is not array at this point
+            }
+
+            //generic parameters
             if (left.IsGenericParameter)
             {
                 if (!right.IsGenericParameter) return false;
