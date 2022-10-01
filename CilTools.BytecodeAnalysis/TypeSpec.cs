@@ -54,6 +54,7 @@ namespace CilTools.BytecodeAnalysis
         bool _pinned;
         SignatureContext _ctx;
         Type _tdef;
+        TypeSpec _refTargetType;
 
         internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, SignatureContext ctx, Type tdef, TypeSpec ts = null,
             uint parnum = 0, bool pinned = false)
@@ -161,6 +162,7 @@ namespace CilTools.BytecodeAnalysis
             bool isbyref = false;
             bool ispinned = false;
             Type tRetGenericDefinition = parentGenericDefinition;
+            Type refTarget = null;
 
             byte type = 0; //element type
             List<CustomModifier> mods = new List<CustomModifier>(5);
@@ -366,9 +368,20 @@ namespace CilTools.BytecodeAnalysis
                 }//end switch
             }
 
-            if (isbyref) restype = restype.MakeByRefType();
+            if (isbyref)
+            {
+                refTarget = restype;
+                restype = refTarget.MakeByRefType();
+            }
 
-            return new TypeSpec(mods.ToArray(), type, restype, ctx, tRetGenericDefinition, ts, paramnum, ispinned);
+            TypeSpec ret = new TypeSpec(mods.ToArray(), type, restype, ctx, tRetGenericDefinition, ts, paramnum, ispinned);
+            
+            // Save TypeSpec for a type pointed by managed reference. This is needed so we can distinguish 
+            // class/valuetype without digging into actual base type, because it could be in external assembly.
+            ret._refTargetType = new TypeSpec(mods.ToArray(), type, refTarget, ctx, tRetGenericDefinition, ts, 
+                paramnum, ispinned);
+
+            return ret;
         }
 
         internal static TypeSpec FromType(Type t, bool pinned)
@@ -670,6 +683,12 @@ namespace CilTools.BytecodeAnalysis
         /// <inheritdoc/>
         public override Type GetElementType()
         {
+            if (this._Type.IsByRef)
+            {
+                if (this._refTargetType != null) return this._refTargetType;
+                else return this._Type.GetElementType();
+            }
+
             if (this._InnerSpec != null) return this._InnerSpec;
             else return this._Type.GetElementType();
         }

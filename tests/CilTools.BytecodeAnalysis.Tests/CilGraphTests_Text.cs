@@ -313,5 +313,17 @@ namespace CilTools.BytecodeAnalysis.Tests
                 "System.Collections.Generic.ICollection`1<!", Text.Any, ">::get_IsReadOnly"
             });
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestByRefTypes", BytecodeProviders.All)]
+        public void Test_ToString_ByRefTypes(MethodBase m)
+        {
+            const string expected = ".method public hidebysig static void TestByRefTypes( " +
+                "valuetype [mscorlib]System.DateTime& x, class [mscorlib]System.Attribute& y ) cil managed";
+
+            CilGraph graph = CilGraph.Create(m);
+            string str = graph.ToString();
+            AssertThat.CilEquals(expected, str);
+        }
     }
 }

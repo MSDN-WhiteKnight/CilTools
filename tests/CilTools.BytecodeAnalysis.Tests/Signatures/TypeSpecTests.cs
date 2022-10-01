@@ -119,5 +119,30 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
             Assert.AreEqual(typeof(SampleGenericType<>).FullName, t.DeclaringType.FullName);
             Assert.AreEqual("U", t.Name);
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestByRefTypes", BytecodeProviders.Metadata)]
+        public void Test_TypeSpec_ByRefTypes(MethodBase m)
+        {
+            ParameterInfo[] pars = m.GetParameters();
+            Type t = pars[0].ParameterType;
+            Type t2 = pars[1].ParameterType;
+
+            //ref to struct
+            Assert.IsTrue(t.IsByRef);
+            Type elementType = t.GetElementType();
+            Assert.IsFalse(elementType.IsByRef);
+            Assert.IsTrue(elementType.IsValueType);
+            Assert.IsFalse(elementType.IsClass);
+            Assert.AreEqual("System.DateTime", elementType.FullName);
+
+            //ref to class
+            Assert.IsTrue(t2.IsByRef);
+            elementType = t2.GetElementType();
+            Assert.IsFalse(elementType.IsByRef);
+            Assert.IsFalse(elementType.IsValueType);
+            Assert.IsTrue(elementType.IsClass);
+            Assert.AreEqual("System.Attribute", elementType.FullName);
+        }
     }
 }

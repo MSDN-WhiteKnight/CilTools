@@ -222,6 +222,8 @@ namespace CilTools.Tests.Common
             }
             else throw new NotSupportedException();
         }
+
+        public static void TestByRefTypes(ref DateTime x, ref Attribute y) { }
     }
 
     public class MyPoint
