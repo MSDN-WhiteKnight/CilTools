@@ -144,5 +144,47 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
             Assert.IsTrue(elementType.IsClass);
             Assert.AreEqual("System.Attribute", elementType.FullName);
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestGenericStruct", BytecodeProviders.Metadata)]
+        public void Test_TypeSpec_GenericStruct(MethodBase m)
+        {
+            ParameterInfo[] pars = m.GetParameters();
+            Type t = pars[0].ParameterType;
+
+            Assert.IsTrue(t.IsValueType);
+            Assert.IsFalse(t.IsClass);
+            Assert.IsTrue(t.IsGenericType);
+            Assert.IsFalse(t.IsGenericTypeDefinition);
+            Assert.AreEqual(typeof(ArraySegment<>).FullName, t.FullName);
+            Assert.AreEqual("System.Int32", t.GetGenericArguments()[0].FullName);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(Enumerable), "ToList", BytecodeProviders.Metadata)]
+        public void Test_TypeSpec_GenericClass(MethodInfo m)
+        {
+            Type t = m.ReturnType;
+
+            Assert.IsFalse(t.IsValueType);
+            Assert.IsTrue(t.IsClass);
+            Assert.IsTrue(t.IsGenericType);
+            Assert.IsFalse(t.IsGenericTypeDefinition);
+            Assert.AreEqual(typeof(List<>).FullName, t.FullName);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "CalcSum", BytecodeProviders.Metadata)]
+        public void Test_IsValueType_Double(MethodBase m)
+        {
+            ParameterInfo[] pars = m.GetParameters();
+            Type t = pars[0].ParameterType;
+            Type t2 = pars[1].ParameterType;
+
+            Assert.IsTrue(t.IsValueType);
+            Assert.AreEqual("System.Double", t.FullName);
+            Assert.IsTrue(t2.IsValueType);
+            Assert.AreEqual("System.Double", t2.FullName);
+        }
     }
 }

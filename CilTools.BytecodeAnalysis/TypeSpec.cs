@@ -55,6 +55,7 @@ namespace CilTools.BytecodeAnalysis
         SignatureContext _ctx;
         Type _tdef;
         TypeSpec _refTargetType;
+        bool _isValueType;
 
         internal TypeSpec(CustomModifier[] mods, byte elemtype, Type t, SignatureContext ctx, Type tdef, TypeSpec ts = null,
             uint parnum = 0, bool pinned = false)
@@ -163,6 +164,7 @@ namespace CilTools.BytecodeAnalysis
             bool ispinned = false;
             Type tRetGenericDefinition = parentGenericDefinition;
             Type refTarget = null;
+            byte genInstElementType = 0;
 
             byte type = 0; //element type
             List<CustomModifier> mods = new List<CustomModifier>(5);
@@ -276,7 +278,7 @@ namespace CilTools.BytecodeAnalysis
 
                             throw new NotSupportedException("The signature contains TypeSpec that cannot be parsed");
                         }
-                                                
+
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Array:
                         ts = TypeSpec.ReadFromStream(source, ctx, tRetGenericDefinition);
@@ -334,9 +336,10 @@ namespace CilTools.BytecodeAnalysis
                         restype = new FunctionPointerType(psig);
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.GenericInst:
-                        byte tdef = MetadataReader.ReadByte(source);
+                        genInstElementType = MetadataReader.ReadByte(source);
+                        
                         typetok = DecodeToken(MetadataReader.ReadCompressed(source));
-                        Type tdef_t=null;
+                        Type tdef_t;
 
                         try
                         {
@@ -376,10 +379,31 @@ namespace CilTools.BytecodeAnalysis
 
             TypeSpec ret = new TypeSpec(mods.ToArray(), type, restype, ctx, tRetGenericDefinition, ts, paramnum, ispinned);
             
+            if (type == (byte)ElementType.GenericInst)
+            {
+                if (genInstElementType == (byte)ElementType.ValueType) ret._isValueType = true;
+                else ret._isValueType = false;
+            }
+            else if (type == (byte)ElementType.Class || type == (byte)ElementType.Object ||
+                type == (byte)ElementType.TypedByRef || type == (byte)ElementType.Array ||
+                type == (byte)ElementType.SzArray || type == (byte)ElementType.Var ||
+                type == (byte)ElementType.MVar)
+            {
+                ret._isValueType = false;
+            }
+            else
+            {
+                ret._isValueType = true; //structs and built-in value types
+            }
+
             // Save TypeSpec for a type pointed by managed reference. This is needed so we can distinguish 
             // class/valuetype without digging into actual base type, because it could be in external assembly.
-            ret._refTargetType = new TypeSpec(mods.ToArray(), type, refTarget, ctx, tRetGenericDefinition, ts, 
-                paramnum, ispinned);
+            if (isbyref)
+            {
+                ret._refTargetType = new TypeSpec(mods.ToArray(), type, refTarget, ctx, tRetGenericDefinition, ts,
+                    paramnum, ispinned);
+                ret._refTargetType._isValueType = ret._isValueType;
+            }
 
             return ret;
         }
@@ -936,12 +960,10 @@ namespace CilTools.BytecodeAnalysis
         /// <inheritdoc/>
         protected override bool IsValueTypeImpl()
         {
-            //For struct and class we can deterimine IsValueType without checking the base type.
-            //This fixes exception when the actual type in an external assembly which can't be 
-            //resolved.
-            if (this._ElementType == (byte)ElementType.Class) return false;
-            else if (this._ElementType == (byte)ElementType.ValueType) return true;
-            else return base.IsValueTypeImpl();
+            // Overridden to avoid checking base type, because it could cause exception when the base type
+            // is in an external assembly which can't be resolved.
+
+            return this._isValueType;
         }
 
         /// <inheritdoc/>
