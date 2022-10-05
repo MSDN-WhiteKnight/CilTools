@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CilView.Core.Documentation;
 
 namespace CilTools.CommandLine
 {

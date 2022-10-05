@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using CilTools.Metadata;
 using CilTools.Syntax;
 using CilView.Common;
+using CilView.Core.Documentation;
 using CilView.Core.Syntax;
 
 namespace CilTools.CommandLine

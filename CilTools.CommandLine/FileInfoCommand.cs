@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using CilTools.Metadata;
+using CilView.Core.Documentation;
 using CilView.Core.Reflection;
 
 namespace CilTools.CommandLine

@@ -11,6 +11,7 @@ using CilTools.Metadata;
 using CilTools.SourceCode;
 using CilTools.Syntax;
 using CilView.Common;
+using CilView.Core.Documentation;
 using CilView.Core.Syntax;
 using CilView.SourceCode;
 
