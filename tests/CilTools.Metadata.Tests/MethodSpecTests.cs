@@ -88,5 +88,44 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual(m.Name, baseDef.Name);
             Assert.AreEqual(m.DeclaringType.FullName, baseDef.DeclaringType.FullName);
         }
+
+        [DataTestMethod]
+        [DataRow(RefResolutionMode.NoResolve)]
+        [DataRow(RefResolutionMode.RequireResolve)]
+        [DataRow(RefResolutionMode.TryResolve)]
+        public void Test_MethodSpec_GetParameters_Sig(RefResolutionMode mode)
+        {
+            MethodBase m = GetMethodSpec();
+            ParameterInfo[] pars = (m as IParamsProvider).GetParameters(mode);
+
+            Assert.AreEqual(1, pars.Length);
+            Assert.AreEqual("System.Int32", pars[0].ParameterType.FullName);
+        }
+
+        [TestMethod]
+        public void Test_MethodSpec_GetParameters()
+        {
+            MethodInfo m = (MethodInfo)GetMethodSpec();
+            ParameterInfo[] pars = m.GetParameters();
+
+            Assert.AreEqual(1, pars.Length);
+            Assert.AreEqual("System.Int32", pars[0].ParameterType.FullName);
+            Assert.AreEqual("len", pars[0].Name);
+            Assert.IsFalse(pars[0].IsOptional);
+            Assert.IsFalse(pars[0].IsOut);
+            Assert.IsFalse(pars[0].HasDefaultValue);
+            Assert.AreEqual(DBNull.Value, pars[0].DefaultValue);
+            Assert.AreEqual(DBNull.Value, pars[0].RawDefaultValue);
+        }
+
+        [TestMethod]
+        public void Test_MethodSpec_IsStatic()
+        {
+            MethodInfo m = (MethodInfo)GetMethodSpec();
+            bool isStatic = (bool)ReflectionProperties.Get(m, ReflectionProperties.IsStatic);
+
+            Assert.IsTrue(m.IsStatic);
+            Assert.IsTrue(isStatic);
+        }
     }
 }

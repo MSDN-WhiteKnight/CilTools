@@ -13,7 +13,7 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata.Methods
 {
-    class MethodSpec : MethodInfo, ICustomMethod
+    class MethodSpec : MethodInfo, ICustomMethod, IParamsProvider, IReflectionInfo
     {
         MetadataAssembly assembly;
         MethodSpecificationHandle mspech;
@@ -183,6 +183,28 @@ namespace CilTools.Metadata.Methods
         public override ParameterInfo[] GetParameters()
         {
             return this.definition.GetParameters();
+        }
+
+        public ParameterInfo[] GetParameters(RefResolutionMode refResolutionMode)
+        {
+            if (this.definition is IParamsProvider)
+            {
+                return ((IParamsProvider)this.definition).GetParameters(refResolutionMode);
+            }
+            else
+            {
+                return this.definition.GetParameters();
+            }
+        }
+
+        public object GetReflectionProperty(int id)
+        {
+            object val = ReflectionProperties.Get(this.definition, id);
+
+            if (val != null) return val;
+
+            if (id == ReflectionProperties.IsStatic) return this.definition.IsStatic;
+            else return null;
         }
 
         public override Type[] GetGenericArguments()
