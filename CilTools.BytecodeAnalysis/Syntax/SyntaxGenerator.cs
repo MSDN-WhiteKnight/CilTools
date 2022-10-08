@@ -3,6 +3,8 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -11,9 +13,12 @@ using CilTools.Reflection;
 
 namespace CilTools.Syntax
 {
+    /// <summary>
+    /// Provides internal static helpers that produce sequences of syntax nodes
+    /// </summary>
     internal static class SyntaxGenerator
     {
-        public static SyntaxNode[] GetGenericParameterSyntax(Type t)
+        internal static SyntaxNode[] GetGenericParameterSyntax(Type t)
         {
             if (!t.IsGenericParameter)
             {
@@ -70,7 +75,7 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
-        public static IEnumerable<SyntaxNode> GetEventsSyntax(Type t, int startIndent)
+        internal static IEnumerable<SyntaxNode> GetEventsSyntax(Type t, int startIndent)
         {
             //ECMA_335 II.18 - Defining events
             EventInfo[] events = t.GetEvents(ReflectionUtils.AllMembers);
@@ -88,12 +93,12 @@ namespace CilTools.Syntax
                     events[i].EventHandlerType));
 
                 inner.Add(new IdentifierSyntax(" ", events[i].Name, Environment.NewLine, true, events[i]));
-                inner.Add(new PunctuationSyntax(SyntaxNode.GetIndentString(startIndent + 1), "{", Environment.NewLine));
+                inner.Add(new PunctuationSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "{", Environment.NewLine));
 
                 //custom attributes
                 try
                 {
-                    SyntaxNode[] arr = SyntaxNode.GetAttributesSyntax(events[i], startIndent + 2);
+                    SyntaxNode[] arr = GetAttributesSyntax(events[i], startIndent + 2);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
@@ -104,7 +109,7 @@ namespace CilTools.Syntax
                 {
                     if (ReflectionUtils.IsExpectedException(ex))
                     {
-                        CommentSyntax cs = CommentSyntax.Create(SyntaxNode.GetIndentString(startIndent + 2),
+                        CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 2),
                             "Failed to show custom attributes. " + ReflectionUtils.GetErrorShortString(ex), 
                             null, false);
 
@@ -122,7 +127,7 @@ namespace CilTools.Syntax
                 {
                     MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(adder, false);
 
-                    DirectiveSyntax dirAdd = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 2),
+                    DirectiveSyntax dirAdd = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "addon", new SyntaxNode[] { mref });
 
                     inner.Add(dirAdd);
@@ -135,7 +140,7 @@ namespace CilTools.Syntax
                 {
                     MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(remover, false);
 
-                    DirectiveSyntax dirRemove = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 2),
+                    DirectiveSyntax dirRemove = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "removeon", new SyntaxNode[] { mref });
 
                     inner.Add(dirRemove);
@@ -148,21 +153,804 @@ namespace CilTools.Syntax
                 {
                     MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(raiser, false);
 
-                    DirectiveSyntax dirFire = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 2),
+                    DirectiveSyntax dirFire = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "fire", new SyntaxNode[] { mref });
 
                     inner.Add(dirFire);
                     inner.Add(new GenericSyntax(Environment.NewLine));
                 }
 
-                PunctuationSyntax ps = new PunctuationSyntax(SyntaxNode.GetIndentString(startIndent + 1), "}",
+                PunctuationSyntax ps = new PunctuationSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "}",
                     Environment.NewLine + Environment.NewLine);
                 inner.Add(ps);
 
-                DirectiveSyntax dirEvent = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 1), 
+                DirectiveSyntax dirEvent = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), 
                     "event", inner.ToArray());
                 yield return dirEvent;
             }//end for
+        }
+
+        internal static SyntaxNode[] GetAttributesSyntax(ICustomAttributeProvider m, int indent)
+        {
+            object[] attrs = m.GetCustomAttributes(false);
+            List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
+
+            for (int i = 0; i < attrs.Length; i++)
+            {
+                GetAttributeSyntax(attrs[i], indent, ret);
+            }
+
+            return ret.ToArray();
+        }
+
+        internal static void GetAttributeSyntax(object attr, int indent, List<SyntaxNode> ret)
+        {
+            string content;
+            StringBuilder sb;
+            string strIndent = "".PadLeft(indent, ' ');
+
+            //from metadata
+            if (attr is ICustomAttribute)
+            {
+                ICustomAttribute ca = (ICustomAttribute)attr;
+
+                if (string.Equals(ca.Constructor.DeclaringType.FullName,
+                    "System.Runtime.InteropServices.OptionalAttribute", StringComparison.Ordinal))
+                {
+                    //OptionalAttribute translated to [opt]
+                    return;
+                }
+
+                List<SyntaxNode> children = new List<SyntaxNode>();
+                MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor, false);
+                children.Add(mref);
+                children.Add(new PunctuationSyntax(" ", "=", " "));
+                children.Add(new PunctuationSyntax("", "(", " "));
+                sb = new StringBuilder(ca.Data.Length * 3);
+
+                for (int j = 0; j < ca.Data.Length; j++)
+                {
+                    sb.Append(ca.Data[j].ToString("X2", CultureInfo.InvariantCulture));
+                    sb.Append(' ');
+                }
+
+                children.Add(new GenericSyntax(sb.ToString()));
+                children.Add(new PunctuationSyntax("", ")", Environment.NewLine));
+
+                DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
+                ret.Add(dir);
+                return;
+            }
+
+            //from reflection
+            Type t = attr.GetType();
+
+            if (string.Equals(t.FullName, "System.Runtime.InteropServices.OptionalAttribute",
+                StringComparison.Ordinal))
+            {
+                //OptionalAttribute translated to [opt]
+                return;
+            }
+
+            ConstructorInfo[] constr = t.GetConstructors();
+            string s_attr;
+            sb = new StringBuilder(100);
+            StringWriter output = new StringWriter(sb);
+
+            if (constr.Length == 1)
+            {
+                int parcount = constr[0].GetParameters().Length;
+
+                if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
+                    t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
+                    Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
+                    )
+                {
+                    //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
+                    List<SyntaxNode> children = new List<SyntaxNode>();
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0], false);
+                    children.Add(mref);
+                    children.Add(new PunctuationSyntax(" ", "=", " "));
+                    children.Add(new PunctuationSyntax("", "(", " "));
+                    children.Add(new GenericSyntax("01 00 00 00"));
+                    children.Add(new PunctuationSyntax(" ", ")", Environment.NewLine));
+
+                    DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
+                    ret.Add(dir);
+                }
+                else
+                {
+                    s_attr = CilAnalysis.MethodToString(constr[0]);
+                    output.Write(".custom ");
+                    output.Write(s_attr);
+                    output.Flush();
+                    content = sb.ToString();
+                    CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
+                    ret.Add(node);
+                }
+            }
+            else
+            {
+                output.Write(".custom ");
+                s_attr = CilAnalysis.GetTypeSpecString(t);
+                output.Write(s_attr);
+                output.Flush();
+                content = sb.ToString();
+                CommentSyntax node = CommentSyntax.Create(strIndent, content, null, false);
+                ret.Add(node);
+            }
+        }
+
+        internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m, int startIndent)
+        {
+            ParameterInfo[] pars = m.GetParameters();
+            List<SyntaxNode> ret = new List<SyntaxNode>(pars.Length);
+
+            // Return type custom attributes
+            ICustomAttributeProvider provider = null;
+
+            if (m is MethodInfo)
+            {
+                try { provider = ((MethodInfo)m).ReturnTypeCustomAttributes; }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        CommentSyntax commentSyntax = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                            "NOTE: Return type and parameters custom attributes are not shown.", null, false);
+                        ret.Add(commentSyntax);
+                    }
+                    else throw;
+                }
+            }
+
+            if (provider != null)
+            {
+                object[] attrs = provider.GetCustomAttributes(false);
+
+                if (attrs.Length > 0)
+                {
+                    DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "param",
+                        new SyntaxNode[] { new GenericSyntax("[0]" + Environment.NewLine) });
+                    ret.Add(dir);
+
+                    for (int i = 0; i < attrs.Length; i++)
+                    {
+                        GetAttributeSyntax(attrs[i], startIndent + 1, ret);
+                    }
+                }
+            }
+
+            // Parameters
+            for (int i = 0; i < pars.Length; i++)
+            {
+                object[] attrs = new object[0];
+
+                try
+                {
+                    attrs = pars[i].GetCustomAttributes(false);
+                }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        Diagnostics.OnError(m,
+                            new CilErrorEventArgs(ex, "Failed to get parameter custom attributes"));
+                    }
+                    else throw;
+                }
+
+                if ((pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value) || attrs.Length > 0)
+                {
+                    StringBuilder sb = new StringBuilder(100);
+                    StringWriter output = new StringWriter(sb);
+                    output.Write(' ');
+                    output.Write('[');
+                    output.Write((i + 1).ToString());
+                    output.Write(']');
+
+                    if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
+                    {
+                        output.Write(" = ");
+
+                        string valstr = ReflectionUtils.GetConstantValueString(pars[i].ParameterType, pars[i].RawDefaultValue);
+                        output.WriteLine(valstr);
+                    }
+                    else
+                    {
+                        output.WriteLine();
+                    }
+
+                    output.Flush();
+
+                    string content = sb.ToString();
+                    DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "param",
+                        new SyntaxNode[] { new GenericSyntax(content) });
+                    ret.Add(dir);
+
+                    // Parameter custom attributes
+                    for (int j = 0; j < attrs.Length; j++)
+                    {
+                        GetAttributeSyntax(attrs[j], startIndent + 1, ret);
+                    }
+                }
+            }//end for
+
+            return ret.ToArray();
+        }
+
+        static MethodBase GetPropertyMethod(PropertyInfo p, string accName)
+        {
+            Type t = p.DeclaringType;
+            if (t == null) return null;
+
+            //CilTools.Metadata does not implement GetGetMethod/GetSetMethod currently,
+            //so we lookup accessors via well-known name patterns
+            string methodName = accName + "_" + p.Name;
+            MemberInfo[] members = t.GetMember(methodName, ReflectionUtils.AllMembers);
+
+            for (int i = 0; i < members.Length; i++)
+            {
+                if (members[i] is MethodBase) return (MethodBase)members[i];
+            }
+
+            return null;
+        }
+
+        internal static IEnumerable<SyntaxNode> GetTypeDefSyntaxImpl(Type t, bool full,
+            DisassemblerParams disassemblerParams, int startIndent)
+        {
+            List<SyntaxNode> content = new List<SyntaxNode>(10);
+
+            //type standard attributes
+            if (t.IsInterface)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "interface", " ", KeywordKind.Other));
+            }
+
+            if (t.IsNested)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "nested", " ", KeywordKind.Other));
+
+                if (t.IsNestedPublic)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
+                }
+                else if (t.IsNestedAssembly)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "assembly", " ", KeywordKind.Other));
+                }
+                else if (t.IsNestedFamily)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "family", " ", KeywordKind.Other));
+                }
+                else if (t.IsNestedFamORAssem)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "famorassem", " ", KeywordKind.Other));
+                }
+                else if (t.IsNestedFamANDAssem)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "famandassem", " ", KeywordKind.Other));
+                }
+                else
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                }
+            }
+            else
+            {
+                if (t.IsPublic)
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
+                }
+                else
+                {
+                    content.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                }
+            }
+
+            if (t.IsAbstract)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "abstract", " ", KeywordKind.Other));
+            }
+
+            if (t.IsAutoLayout)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "auto", " ", KeywordKind.Other));
+            }
+            else if (t.IsLayoutSequential)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "sequential", " ", KeywordKind.Other));
+            }
+            else if (t.IsExplicitLayout)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "explicit", " ", KeywordKind.Other));
+            }
+
+            if (t.IsAnsiClass)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "ansi", " ", KeywordKind.Other));
+            }
+            else if (t.IsUnicodeClass)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "unicode", " ", KeywordKind.Other));
+            }
+            else if (t.IsAutoClass)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "autochar", " ", KeywordKind.Other));
+            }
+
+            if (t.IsSealed)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "sealed", " ", KeywordKind.Other));
+            }
+
+            if (t.IsSerializable)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "serializable", " ", KeywordKind.Other));
+            }
+
+            if (t.IsSpecialName)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "specialname", " ", KeywordKind.Other));
+            }
+
+            if ((t.Attributes & TypeAttributes.RTSpecialName) != 0)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "rtspecialname", " ", KeywordKind.Other));
+            }
+
+            if ((t.Attributes & TypeAttributes.BeforeFieldInit) != 0)
+            {
+                content.Add(new KeywordSyntax(String.Empty, "beforefieldinit", " ", KeywordKind.Other));
+            }
+
+            //type name
+            string tname = "";
+            if (!t.IsNested && !String.IsNullOrEmpty(t.Namespace)) tname += t.Namespace + ".";
+            tname += t.Name;
+            content.Add(new IdentifierSyntax(String.Empty, tname, String.Empty, true, t));
+
+            //generic parameters
+            if (t.IsGenericType)
+            {
+                content.Add(new PunctuationSyntax(String.Empty, "<", String.Empty));
+                Type[] targs = t.GetGenericArguments();
+
+                for (int i = 0; i < targs.Length; i++)
+                {
+                    if (i >= 1) content.Add(new PunctuationSyntax(string.Empty, ",", " "));
+
+                    SyntaxNode[] gpSyntax = GetGenericParameterSyntax(targs[i]);
+
+                    for (int j = 0; j < gpSyntax.Length; j++)
+                    {
+                        content.Add(gpSyntax[j]);
+                    }
+                }
+
+                content.Add(new PunctuationSyntax(String.Empty, ">", String.Empty));
+            }
+
+            content.Add(new GenericSyntax(Environment.NewLine));
+
+            //base type
+            if (!t.IsInterface && t.BaseType != null)
+            {
+                content.Add(new KeywordSyntax(SyntaxUtils.GetIndentString(startIndent), "extends", " ", KeywordKind.Other));
+
+                try
+                {
+                    content.Add(new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax(t.BaseType).ToArray(), t.BaseType));
+                }
+                catch (TypeLoadException ex)
+                {
+                    //handle error when base type is not available
+                    content.Add(new IdentifierSyntax(String.Empty, "UnknownType", String.Empty, false, null));
+
+                    Diagnostics.OnError(
+                        t, new CilErrorEventArgs(ex, "Failed to read base type for: " + t.Name)
+                        );
+                }
+                content.Add(new GenericSyntax(Environment.NewLine));
+            }
+
+            //interfaces
+            Type[] interfaces = null;
+
+            try
+            {
+                interfaces = t.GetInterfaces();
+            }
+            catch (NotImplementedException ex)
+            {
+                Diagnostics.OnError(t, new CilErrorEventArgs(ex, ""));
+            }
+
+            if (interfaces != null && interfaces.Length > 0)
+            {
+                content.Add(new KeywordSyntax(SyntaxUtils.GetIndentString(startIndent), "implements", " ", KeywordKind.Other));
+
+                for (int i = 0; i < interfaces.Length; i++)
+                {
+                    if (i >= 1)
+                    {
+                        content.Add(new PunctuationSyntax(String.Empty, ",", Environment.NewLine));
+                    }
+
+                    content.Add(
+                        new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax(interfaces[i]).ToArray(), interfaces[i])
+                        );
+                }
+
+                content.Add(new GenericSyntax(Environment.NewLine));
+            }
+
+            DirectiveSyntax header = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent), "class", content.ToArray());
+            yield return header;
+
+            //body
+            content.Clear();
+
+            //custom attributes
+            try
+            {
+                SyntaxNode[] arr = GetAttributesSyntax(t, startIndent + 1);
+
+                for (int i = 0; i < arr.Length; i++)
+                {
+                    content.Add(arr[i]);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ReflectionUtils.IsExpectedException(ex))
+                {
+                    content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                        "NOTE: Custom attributes are not shown.", null, false));
+                }
+                else throw;
+            }
+
+            content.Add(new GenericSyntax(Environment.NewLine));
+
+            //fields
+            FieldInfo[] fields = t.GetFields(ReflectionUtils.AllMembers);
+
+            for (int i = 0; i < fields.Length; i++)
+            {
+                List<SyntaxNode> inner = new List<SyntaxNode>(10);
+
+                if (fields[i].IsPublic)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
+                }
+                else if (fields[i].IsAssembly)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "assembly", " ", KeywordKind.Other)); //internal
+                }
+                else if (fields[i].IsFamily)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "family", " ", KeywordKind.Other)); //protected
+                }
+                else if (fields[i].IsFamilyOrAssembly)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "famorassem", " ", KeywordKind.Other)); //protected internal
+                }
+                else if (fields[i].IsFamilyAndAssembly)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "famandassem", " ", KeywordKind.Other));
+                }
+                else
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                }
+
+                if (fields[i].IsStatic)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "static", " ", KeywordKind.Other));
+                }
+
+                if (fields[i].IsInitOnly)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "initonly", " ", KeywordKind.Other));
+                }
+
+                if (fields[i].IsLiteral)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "literal", " ", KeywordKind.Other));
+                }
+
+                if (fields[i].IsNotSerialized)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "notserialized", " ", KeywordKind.Other));
+                }
+
+                if (fields[i].IsSpecialName)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "specialname", " ", KeywordKind.Other));
+                }
+
+                if ((fields[i].Attributes & FieldAttributes.RTSpecialName) != 0)
+                {
+                    inner.Add(new KeywordSyntax(String.Empty, "rtspecialname", " ", KeywordKind.Other));
+                }
+
+                inner.Add(new MemberRefSyntax(
+                    CilAnalysis.GetTypeNameSyntax(fields[i].FieldType).ToArray(), fields[i].FieldType
+                    ));
+
+                inner.Add(new IdentifierSyntax(" ", fields[i].Name, String.Empty, true, fields[i]));
+
+                object constval = DBNull.Value;
+
+                try { constval = fields[i].GetRawConstantValue(); }
+                catch (NotImplementedException) { }
+                catch (NotSupportedException) { }
+                catch (InvalidOperationException) { }
+
+                if (constval != DBNull.Value)
+                {
+                    string valstr = ReflectionUtils.GetConstantValueString(fields[i].FieldType, constval);
+                    inner.Add(new PunctuationSyntax(" ", "=", " "));
+                    inner.Add(new GenericSyntax(valstr));
+                }
+
+                inner.Add(new GenericSyntax(Environment.NewLine));
+
+                DirectiveSyntax field = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1),
+                    "field", inner.ToArray());
+                content.Add(field);
+            }
+
+            if (fields.Length > 0) content.Add(new GenericSyntax(Environment.NewLine));
+
+            //properties
+            PropertyInfo[] props;
+
+            try
+            {
+                props = t.GetProperties(ReflectionUtils.AllMembers);
+            }
+            catch (Exception ex)
+            {
+                if (ReflectionUtils.IsExpectedException(ex))
+                {
+                    props = new PropertyInfo[0];
+                    content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                        "NOTE: Properties are not shown." + Environment.NewLine, null, false));
+                }
+                else throw;
+            }
+
+            for (int i = 0; i < props.Length; i++)
+            {
+                //ECMA-335 II.17 - Defining properties
+                List<SyntaxNode> inner = new List<SyntaxNode>(10);
+                MethodBase getter = null;
+                MethodBase setter = null;
+
+                if (props[i].IsSpecialName)
+                {
+                    inner.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
+                }
+
+                bool isStatic = false;
+
+                if (props[i].CanRead) getter = GetPropertyMethod(props[i], "get");
+                if (props[i].CanWrite) setter = GetPropertyMethod(props[i], "set");
+
+                if (getter != null && getter.IsStatic) isStatic = true;
+
+                if (isStatic)
+                {
+                    inner.Add(new KeywordSyntax(string.Empty, "static", " ", KeywordKind.Other));
+                }
+                else
+                {
+                    inner.Add(new KeywordSyntax(string.Empty, "instance", " ", KeywordKind.Other));
+                }
+
+                inner.Add(new MemberRefSyntax(
+                   CilAnalysis.GetTypeNameSyntax(props[i].PropertyType).ToArray(), props[i].PropertyType
+                   ));
+
+                inner.Add(new IdentifierSyntax(" ", props[i].Name, string.Empty, true, props[i]));
+
+                //index parameters
+                ParameterInfo[] pars = props[i].GetIndexParameters();
+                if (pars == null) pars = new ParameterInfo[0];
+
+                inner.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
+
+                for (int j = 0; j < pars.Length; j++)
+                {
+                    if (j >= 1) inner.Add(new PunctuationSyntax(string.Empty, ",", " "));
+
+                    SyntaxNode[] partype = CilAnalysis.GetTypeNameSyntax(pars[j].ParameterType).ToArray();
+                    inner.Add(new MemberRefSyntax(partype, pars[j].ParameterType));
+                }
+
+                inner.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
+                inner.Add(new PunctuationSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "{", Environment.NewLine));
+
+                //property custom attributes
+                try
+                {
+                    SyntaxNode[] arr = GetAttributesSyntax(props[i], startIndent + 2);
+
+                    for (int j = 0; j < arr.Length; j++)
+                    {
+                        inner.Add(arr[j]);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        inner.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 2),
+                            "NOTE: Custom attributes are not shown.", null, false));
+                    }
+                    else throw;
+                }
+
+                //property methods
+                if (getter != null)
+                {
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(getter, false);
+
+                    DirectiveSyntax dirGet = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
+                        "get", new SyntaxNode[] { mref });
+
+                    inner.Add(dirGet);
+                    inner.Add(new GenericSyntax(Environment.NewLine));
+                }
+
+                if (setter != null)
+                {
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(setter, false);
+
+                    DirectiveSyntax dirSet = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
+                        "set", new SyntaxNode[] { mref });
+
+                    inner.Add(dirSet);
+                    inner.Add(new GenericSyntax(Environment.NewLine));
+                }
+
+                inner.Add(new PunctuationSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "}",
+                    Environment.NewLine + Environment.NewLine));
+                DirectiveSyntax dirProp = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1),
+                    "property", inner.ToArray());
+                content.Add(dirProp);
+            }
+
+            //events
+            try
+            {
+                foreach (SyntaxNode node in GetEventsSyntax(t, startIndent))
+                {
+                    content.Add(node);
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ReflectionUtils.IsExpectedException(ex))
+                {
+                    CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                        "Failed to show events. " + ReflectionUtils.GetErrorShortString(ex), null, false);
+
+                    content.Add(cs);
+                    CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get events.");
+                    Diagnostics.OnError(t, ea);
+                }
+                else throw;
+            }
+
+            if (full)
+            {
+                //constructors
+                ConstructorInfo[] constructors;
+
+                try
+                {
+                    constructors = t.GetConstructors(ReflectionUtils.AllMembers);
+                }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                            "NOTE: Constructors are not shown.", null, false));
+                        constructors = new ConstructorInfo[0];
+                    }
+                    else throw;
+                }
+
+                for (int i = 0; i < constructors.Length; i++)
+                {
+                    CilGraph gr = CilGraph.Create(constructors[i]);
+                    MethodDefSyntax mds = gr.ToSyntaxTreeImpl(disassemblerParams, startIndent + 1);
+                    content.Add(mds);
+                    content.Add(new GenericSyntax(Environment.NewLine));
+                }
+
+                //methods
+                MethodInfo[] methods;
+
+                try
+                {
+                    methods = t.GetMethods(ReflectionUtils.AllMembers);
+                }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                            "NOTE: Methods are not shown.", null, false));
+                        methods = new MethodInfo[0];
+                    }
+                    else throw;
+                }
+
+                for (int i = 0; i < methods.Length; i++)
+                {
+                    CilGraph gr = CilGraph.Create(methods[i]);
+                    MethodDefSyntax mds = gr.ToSyntaxTreeImpl(disassemblerParams, startIndent + 1);
+                    content.Add(mds);
+                    content.Add(new GenericSyntax(Environment.NewLine));
+                }
+
+                //nested types
+                Type[] types = new Type[0];
+
+                if (startIndent > 20)
+                {
+                    content.Add(CommentSyntax.Create(string.Empty,
+                        "ERROR: Indentation is too deep to show nested types!", null, false));
+                }
+                else
+                {
+                    try
+                    {
+                        types = t.GetNestedTypes(ReflectionUtils.AllMembers);
+                    }
+                    catch (Exception ex)
+                    {
+                        if (ReflectionUtils.IsExpectedException(ex))
+                        {
+                            content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                                "NOTE: Nested types are not shown.", null, false));
+                        }
+                        else throw;
+                    }
+                }
+
+                for (int i = 0; i < types.Length; i++)
+                {
+                    IEnumerable<SyntaxNode> typeNodes = GetTypeDefSyntaxImpl(types[i],
+                        true, disassemblerParams, startIndent + 1);
+
+                    foreach (SyntaxNode node in typeNodes)
+                    {
+                        content.Add(node);
+                    }
+
+                    content.Add(new GenericSyntax(Environment.NewLine));
+                }
+            }
+            else
+            {
+                //add comment to indicate that not all members are listed here
+                content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1), "...", null, false));
+                content.Add(new GenericSyntax(Environment.NewLine));
+            }
+
+            BlockSyntax body = new BlockSyntax(SyntaxUtils.GetIndentString(startIndent),
+                SyntaxNode.EmptyArray, content.ToArray());
+
+            for (int i = 0; i < body._children.Count; i++) body._children[i]._parent = body;
+
+            yield return body;
         }
     }
 }

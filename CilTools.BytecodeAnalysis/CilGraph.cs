@@ -314,7 +314,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="output">The destination TextWriter</param>
         public void PrintDefaults(TextWriter output)
         {
-            SyntaxNode[] elems = SyntaxNode.GetDefaultsSyntax(this._Method, 0);
+            SyntaxNode[] elems = SyntaxGenerator.GetDefaultsSyntax(this._Method, 0);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -328,7 +328,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="output">The destination TextWriter</param>
         public void PrintAttributes(TextWriter output)
         {
-            SyntaxNode[] elems = SyntaxNode.GetAttributesSyntax(this._Method, 1);
+            SyntaxNode[] elems = SyntaxGenerator.GetAttributesSyntax(this._Method, 1);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -423,7 +423,7 @@ namespace CilTools.BytecodeAnalysis
                         true, mOverridden));
                 }
                 
-                DirectiveSyntax dir = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 1),
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1),
                     "override", list.ToArray());
                 ret.Add(dir);
             }
@@ -437,7 +437,7 @@ namespace CilTools.BytecodeAnalysis
 
                     if (bytecode != null)
                     {
-                        CommentSyntax comment = CommentSyntax.Create(SyntaxNode.GetIndentString(startIndent + 1),
+                        CommentSyntax comment = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
                             " Code size: " + bytecode.Length.ToString(CultureInfo.InvariantCulture), 
                             Environment.NewLine, false);
                         ret.Add(comment);
@@ -451,14 +451,14 @@ namespace CilTools.BytecodeAnalysis
 
             if (ReflectionUtils.IsEntryPoint(this._Method))
             {
-                DirectiveSyntax dir = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent+1), "entrypoint", 
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent+1), "entrypoint", 
                     new SyntaxNode[] { new GenericSyntax(Environment.NewLine) });
                 ret.Add(dir);
             }
 
             if (has_maxstack)
             {
-                DirectiveSyntax dir = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 1), "maxstack", 
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "maxstack", 
                     new SyntaxNode[] { new GenericSyntax(" "+maxstack.ToString()+Environment.NewLine) });
                 ret.Add(dir);
             }
@@ -484,7 +484,7 @@ namespace CilTools.BytecodeAnalysis
                     if (i >= 1)
                     {
                         inner.Add(new PunctuationSyntax(string.Empty, ",", 
-                            "\r\n" + SyntaxNode.GetIndentString(startIndent + 4)));
+                            "\r\n" + SyntaxUtils.GetIndentString(startIndent + 4)));
                     }
 
                     LocalVariable local = locals[i];
@@ -494,7 +494,7 @@ namespace CilTools.BytecodeAnalysis
 
                 inner.Add(new PunctuationSyntax(String.Empty, ")", Environment.NewLine));
 
-                DirectiveSyntax dir = new DirectiveSyntax(SyntaxNode.GetIndentString(startIndent + 1), 
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), 
                     "locals", inner.ToArray());
 
                 ret.Add(dir);
@@ -881,7 +881,7 @@ namespace CilTools.BytecodeAnalysis
         {
             if (pars == null) pars = DisassemblerParams.Default;
 
-            string strIndent = SyntaxNode.GetIndentString(startIndent);
+            string strIndent = SyntaxUtils.GetIndentString(startIndent);
             DirectiveSyntax sig = DirectiveSyntax.FromMethodSignature(this._Method, strIndent);
 
             List<SyntaxNode> nodes = new List<SyntaxNode>(100);
@@ -889,7 +889,7 @@ namespace CilTools.BytecodeAnalysis
 
             try
             {
-                arr = SyntaxNode.GetAttributesSyntax(this._Method, startIndent + 1);
+                arr = SyntaxGenerator.GetAttributesSyntax(this._Method, startIndent + 1);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
@@ -898,11 +898,11 @@ namespace CilTools.BytecodeAnalysis
             }
             catch (InvalidOperationException)
             {
-                nodes.Add(CommentSyntax.Create(SyntaxNode.GetIndentString(startIndent+1), 
+                nodes.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent+1), 
                     "NOTE: Custom attributes are not shown.", null, false));
             }
 
-            arr = SyntaxNode.GetDefaultsSyntax(this._Method, startIndent);
+            arr = SyntaxGenerator.GetDefaultsSyntax(this._Method, startIndent);
 
             for (int i = 0; i < arr.Length; i++)
             {

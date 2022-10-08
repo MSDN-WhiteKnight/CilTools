@@ -202,13 +202,13 @@ namespace CilTools.Syntax
 
             try
             {
-                arr = SyntaxNode.GetAttributesSyntax(ass, 2);
+                arr = SyntaxGenerator.GetAttributesSyntax(ass, 2);
             }
             catch (Exception ex)
             {
                 if (ReflectionUtils.IsExpectedException(ex))
                 {
-                    cs = CommentSyntax.Create(SyntaxNode.GetIndentString(2),
+                    cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(2),
                         "Failed to show custom attributes. " + ReflectionUtils.GetErrorShortString(ex),
                         null, false);
 
@@ -300,13 +300,13 @@ namespace CilTools.Syntax
                 // Module custom attributes
                 try
                 {
-                    arr = SyntaxNode.GetAttributesSyntax(module, 0);
+                    arr = SyntaxGenerator.GetAttributesSyntax(module, 0);
                 }
                 catch (Exception ex)
                 {
                     if (ReflectionUtils.IsExpectedException(ex))
                     {
-                        cs = CommentSyntax.Create(SyntaxNode.GetIndentString(2),
+                        cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(2),
                             "Failed to show custom attributes. " + ReflectionUtils.GetErrorShortString(ex),
                             null, false);
 

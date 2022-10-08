@@ -3,8 +3,11 @@
 * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Reflection
 {
@@ -129,6 +132,42 @@ namespace CilTools.Reflection
 
             if (val is bool) return (bool)val;
             else return method.IsStatic;
+        }
+
+        public static string GetConstantValueString(Type t, object constant)
+        {
+            StringBuilder sb = new StringBuilder(100);
+            StringWriter output = new StringWriter(sb);
+
+            if (constant != null)
+            {
+                if (constant.GetType() == typeof(string))
+                {
+                    output.Write('"');
+                    output.Write(CilAnalysis.EscapeString(constant.ToString()));
+                    output.Write('"');
+                }
+                else if (constant.GetType() == typeof(char))
+                {
+                    output.Write("char");
+                    output.Write('(');
+                    ushort val = Convert.ToUInt16(constant);
+                    output.Write("0x");
+                    output.Write(val.ToString("X4", CultureInfo.InvariantCulture));
+                    output.Write(')');
+                }
+                else //most of the types...
+                {
+                    output.Write(CilAnalysis.GetTypeName(t));
+                    output.Write('(');
+                    output.Write(Convert.ToString(constant, CultureInfo.InvariantCulture));
+                    output.Write(')');
+                }
+            }
+            else output.Write("nullref");
+            output.Flush();
+            string content = sb.ToString();
+            return content;
         }
     }
 }
