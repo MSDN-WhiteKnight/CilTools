@@ -106,5 +106,29 @@ namespace CilTools.Reflection
 
             return null;
         }
+
+        public static ParameterInfo[] GetMethodParams(MethodBase method, RefResolutionMode refResolutionMode)
+        {
+            if (method is IParamsProvider)
+            {
+                return ((IParamsProvider)method).GetParameters(refResolutionMode);
+            }
+            else
+            {
+                return method.GetParameters();
+            }
+        }
+
+        /// <summary>
+        /// Gets the value indicating whether the specified method is static. Avoids resolving external method 
+        /// references when it's possible.
+        /// </summary>
+        public static bool IsMethodStatic(MethodBase method)
+        {
+            object val = ReflectionProperties.Get(method, ReflectionProperties.IsStatic);
+
+            if (val is bool) return (bool)val;
+            else return method.IsStatic;
+        }
     }
 }

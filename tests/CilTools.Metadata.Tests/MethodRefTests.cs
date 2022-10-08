@@ -137,6 +137,28 @@ namespace CilTools.Metadata.Tests
             Assert.AreSame(mRef, baseDef);
         }
 
+        [DataTestMethod]
+        [DataRow(RefResolutionMode.NoResolve)]
+        [DataRow(RefResolutionMode.RequireResolve)]
+        [DataRow(RefResolutionMode.TryResolve)]
+        public void Test_MethodRef_GetParameters(RefResolutionMode mode)
+        {
+            MethodInfo mRef = GetMethodRef_Console_WriteLine() as MethodInfo;
+            
+            ParameterInfo[] pars = (mRef as IParamsProvider).GetParameters(mode);
+            Assert.AreEqual(1, pars.Length);
+            Assert.AreEqual("System.String", pars[0].ParameterType.FullName);
+        }
+
+        [TestMethod]        
+        public void Test_MethodRef_IsStatic()
+        {
+            MethodInfo mRef = GetMethodRef_Console_WriteLine() as MethodInfo;
+
+            bool isStatic = (bool)ReflectionProperties.Get(mRef, ReflectionProperties.IsStatic);
+            Assert.IsTrue(isStatic);
+        }
+
         [TestMethod]
         public void Test_ConstructorRef()
         {
@@ -157,6 +179,27 @@ namespace CilTools.Metadata.Tests
         {
             MethodBase mRef = GetConstructorRef();
             Assert.IsFalse(mRef.IsGenericMethod);
+        }
+
+        [DataTestMethod]
+        [DataRow(RefResolutionMode.NoResolve)]
+        [DataRow(RefResolutionMode.RequireResolve)]
+        [DataRow(RefResolutionMode.TryResolve)]
+        public void Test_ConstructorRef_GetParameters(RefResolutionMode mode)
+        {
+            MethodBase mRef = GetConstructorRef();
+
+            ParameterInfo[] pars = (mRef as IParamsProvider).GetParameters(mode);
+            Assert.AreEqual(0, pars.Length);
+        }
+
+        [TestMethod]
+        public void Test_ConstructorRef_IsStatic()
+        {
+            MethodBase mRef = GetConstructorRef();
+
+            bool isStatic = (bool)ReflectionProperties.Get(mRef, ReflectionProperties.IsStatic);
+            Assert.IsFalse(isStatic);
         }
     }
 }

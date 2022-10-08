@@ -412,7 +412,9 @@ namespace CilTools.BytecodeAnalysis
         {
             List<SyntaxNode> children = new List<SyntaxNode>(50);
             Type t = m.DeclaringType;
-            ParameterInfo[] pars = m.GetParameters();
+
+            //we only query parameter types so no need to resolve external references
+            ParameterInfo[] pars = ReflectionUtils.GetMethodParams(m, RefResolutionMode.NoResolve);
 
             MethodInfo mi = m as MethodInfo;
             IEnumerable<SyntaxNode> rt;
@@ -451,7 +453,10 @@ namespace CilTools.BytecodeAnalysis
                 rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
             }
 
-            if (!m.IsStatic) children.Add(new KeywordSyntax("", "instance", " ", KeywordKind.Other));
+            if (!ReflectionUtils.IsMethodStatic(m))
+            {
+                children.Add(new KeywordSyntax("", "instance", " ", KeywordKind.Other));
+            }
 
             foreach (SyntaxNode node in rt) children.Add(node);
 

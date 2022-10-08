@@ -61,6 +61,11 @@ namespace CilTools.Reflection
         public const int CorFlags = 105;
 
         /// <summary>
+        /// Indicates whether the member is static (Type: bool)
+        /// </summary>
+        public const int IsStatic = 106;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>

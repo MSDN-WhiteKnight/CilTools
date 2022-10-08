@@ -14,7 +14,7 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata.Constructors
 {
-    class ConstructorRef : MdConstructorBase, ICustomMethod
+    class ConstructorRef : MdConstructorBase, ICustomMethod, IParamsProvider, IReflectionInfo
     {
         MemberReferenceHandle mrefh;
         MemberReference mref;        
@@ -171,24 +171,59 @@ namespace CilTools.Metadata.Constructors
         /// <inheritdoc/>
         public override ParameterInfo[] GetParameters()
         {
-            try
-            {
-                this.LoadImpl();
-            }
-            catch (TypeLoadException) { }
+            return this.GetParameters(RefResolutionMode.TryResolve);
+        }
 
-            if (this.impl != null)
+        public ParameterInfo[] GetParameters(RefResolutionMode refResolutionMode)
+        {
+            switch (refResolutionMode)
             {
-                //reading parameters from impl gives more data (names, default values)
-                return this.impl.GetParameters();
-            }
-            else
-            {
-                //even if failed to load impl, we can read parameters from signature
-                return this.GetParameters_Sig();
+                case RefResolutionMode.NoResolve:
+                    return this.GetParameters_Sig();
+
+                case RefResolutionMode.TryResolve:
+
+                    try
+                    {
+                        this.LoadImpl();
+                    }
+                    catch (TypeLoadException) { }
+
+                    if (this.impl != null)
+                    {
+                        //reading parameters from impl gives more data (names, default values)
+                        return this.impl.GetParameters();
+                    }
+                    else
+                    {
+                        //even if failed to load impl, we can read parameters from signature
+                        return this.GetParameters_Sig();
+                    }
+
+                case RefResolutionMode.RequireResolve:
+                    this.LoadImpl();
+
+                    if (this.impl == null)
+                    {
+                        throw new MissingMethodException("Failed to resolve external method reference");
+                    }
+                    else
+                    {
+                        return this.impl.GetParameters();
+                    }
+
+                default: throw new ArgumentException("Unknown RefResolutionMode value!", "refResolutionMode");
             }
         }
-                
+
+        public object GetReflectionProperty(int id)
+        {
+            //Avoids MethodBase.IsStatic that calls .Attributes and resolves implementation
+
+            if (id == ReflectionProperties.IsStatic) return !this.sig.HasThis;
+            else return null;
+        }
+
         /// <inheritdoc/>
         public override object[] GetCustomAttributes(Type attributeType, bool inherit)
         {
