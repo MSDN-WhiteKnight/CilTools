@@ -34,6 +34,8 @@ All method references on the **Formatted** tab are hyperlinks to the referenced 
 
 ![CilView main window](../images/cilview.png)
 
+To view detailed information about CIL instruction, right-click on the instruction opcode in formatted view and choose **Instruction information** menu item. The displayed dialog box will provide information such as opcode and operand sizes and raw instruction bytes hexadecimal code.
+
 ## View the resulting CIL for C#/VB sources 
 
 This feature enables you to view disassembled CIL code corresponding to the entered code snippet. CIL View will compile the provided code in background, and open the output binary if the compilation is successful. If the build fails, it will display the build output to you.
@@ -60,7 +62,7 @@ CIL View can compile the provided sources in different ways, depending on your e
 
 2. Select CIL assembler source file (*.il) in the file open dialog.
 
-You cannot navigate between types or methods in the opened CIL in this case, but the syntax highlighting works. Note that opening large files can crash or freeze the application.
+To view CIL code of the particular type, select it in the **Type** drop-down list. You cannot navigate between methods in the opened CIL in this case, but the syntax highlighting works. Note that opening large files can crash or freeze the application.
 
 ## View assemblies in the specified process
 
@@ -145,11 +147,13 @@ The exception analysis is supported when opening both files and processes. Howev
 
 ## Source code viewer
 
-This feature enables you to display source code corresponding to disassembled CIL code. Source code viewer can fetch source code using symbols line data (see *Disassembler options* section above for information about symbols support) or display the decompiled code (currently only supported for abstract methods).
+This feature enables you to display source code corresponding to disassembled CIL code. Source code viewer can fetch source code using symbols line data (see *Disassembler options* section above for information about symbols support) or display the decompiled code (currently only supported for abstract methods or methods implemented in unmanaged code).
 
 To view the source code for individual instructions, click **Tools** -> **Show source code**. Alternatively, you could right-click the instruction of interest in formatted view. In the **View source** window you'll see the CIL code of the sequence point on the left and its corresponding source code fragment on the right. Use **<** and **>** buttons to navigate between sequence points, or the file hyperlink to open the whole source file in your default editor. 
 
-To view the source code for the whole method, **Tools** -> **Show source code (method)**. The **Source code** window will display the method's source code as well as the information about where it was fetched from.
+To view the source code for the whole method, click **Tools** -> **Show source code (method)**. The **Source code** window will display the method's source code as well as the information about where it was fetched from.
+
+If the source code is located on external server (this feature is called [Source Link](https://github.com/dotnet/designs/blob/main/accepted/2020/diagnostics/source-link.md)), the source viewer will prompt you with a dialog box to allow navigating to server. If you choose **Yes**, the source code will be opened in your default browser. Any subsequent attempts for the same domain will open the browser automatically without propmting again. The Source Link is supported for Portable PDB only.
 
 ## Method execution
 
@@ -158,6 +162,10 @@ To view the source code for the whole method, **Tools** -> **Show source code (m
 To execute the current method interactively, use the **Tools** -> **Execute** menu command. In the **Execute method** window, enter values for method parameters, if it has them, specify the timeout value that limits method execution time, and press **Execute**. The CIL View will load the method's assembly for execution and invoke the method using reflection, showing the results to you in a dialog box when it returns. The dialog box will show a method's return value, output parameter values (`ref`/`out`) or exception details, it the method would have thrown an exception. Note that if a method crashes or otherwise somehow corrupts the application state (the assembly is loaded into the main application domain), you might not see the mentioned output at all.
 
 Method execution feature has some limitations. It currently only supports primitive types or types convertible from `string` as method parameters. Instance methods, generic methods and constructors are not supported. Also the assembly in which the method is housed must target .NET Framework or .NET Standard and have x86 or AnyCPU processor architecture.
+
+## File properties
+
+To view infomation about currently opened assembly file, click **File** -> **Properties**. The file properties window will display general information about assembly file, Portable Executable header parameters, assembly-level custom attributes and referenced assemblies and unmanaged modules.
 
 ## ClickOnce installation with auto-update
 
@@ -242,4 +250,4 @@ Using auto-update requires stable internet connection and access to the https://
 
 *Copyright (c) 2022,  MSDN.WhiteKnight*
 
-*This CIL View distribution contains the binary code of [ClrMD](https://github.com/microsoft/clrmd) library: Copyright (c) .NET Foundation and Contributors, MIT License.*
+*See Help - Credits or [credits.txt](https://github.com/MSDN-WhiteKnight/CilTools/blob/master/CilView/credits.txt) for copyright and license notices of third-party projects.*

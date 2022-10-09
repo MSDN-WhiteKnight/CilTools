@@ -47,6 +47,9 @@ namespace CilView.Core.Documentation
             const string start = "<article class=\"content wrap\" id=\"_content\" data-uid=\"\">";
             const string end = "</article>";
 
+            const string footer = "<p><a href=\"https://msdn-whiteknight.github.io/CilTools/articles/cilview-manual.html\">" +
+                "View latest version of this document online</a></p>";
+
             int startIndex = text.IndexOf(start);
             int endIndex = text.IndexOf(end);
 
@@ -54,11 +57,17 @@ namespace CilView.Core.Documentation
             if (endIndex < 0) throw new Exception("Article end not found");
 
             startIndex += start.Length;
-
             string article = text.Substring(startIndex, endIndex - startIndex);
             article = StripImages(article);
-            string output = "<html><head><title>CIL View user manual</title></head><body>"+article+"</body></html>";
-            File.WriteAllText(outputPath, output);
+            StreamWriter output = new StreamWriter(outputPath);
+
+            using (output)
+            {
+                output.Write("<html><head><title>CIL View user manual</title></head><body>");
+                output.Write(article);
+                output.Write(footer);
+                output.Write("</body></html>");
+            }
         }
     }
 }
