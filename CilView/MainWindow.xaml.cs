@@ -731,14 +731,11 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
         {
             try
             {
-                string text = "";
                 string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string path = Path.Combine(dir, "readme.txt");
-                text = File.ReadAllText(path);
-
-                TextViewWindow wnd = new TextViewWindow();
+                string path = Path.Combine(dir, "manual.html");
+                
+                HtmlViewWindow wnd = new HtmlViewWindow(path);
                 wnd.Owner = this;
-                wnd.Text = text;
                 wnd.Title = "CIL View Help";
                 wnd.Show();
             }

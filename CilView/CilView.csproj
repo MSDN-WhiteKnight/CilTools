@@ -144,6 +144,9 @@
     <Compile Include="UI.Dialogs\ExecuteWindow.xaml.cs">
       <DependentUpon>ExecuteWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI.Dialogs\HtmlViewWindow.xaml.cs">
+      <DependentUpon>HtmlViewWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI.Dialogs\MethodSourceViewWindow.xaml.cs">
       <DependentUpon>MethodSourceViewWindow.xaml</DependentUpon>
     </Compile>
@@ -199,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI.Dialogs\ExecuteWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI.Dialogs\HtmlViewWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -295,6 +302,9 @@
     </Content>
     <Content Include="license.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="manual.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="readme.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

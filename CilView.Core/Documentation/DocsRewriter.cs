@@ -63,10 +63,10 @@ namespace CilView.Core.Documentation
 
             using (output)
             {
-                output.Write("<html><head><title>CIL View user manual</title></head><body>");
-                output.Write(article);
-                output.Write(footer);
-                output.Write("</body></html>");
+                output.WriteLine("<html><head><title>CIL View user manual</title></head><body>");
+                output.WriteLine(article);
+                output.WriteLine(footer);
+                output.WriteLine("</body></html>");
             }
         }
     }
