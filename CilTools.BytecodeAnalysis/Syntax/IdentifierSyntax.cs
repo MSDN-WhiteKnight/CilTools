@@ -1,12 +1,11 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
-using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
@@ -60,16 +59,7 @@ namespace CilTools.Syntax
             this._trail = trail;
             this._ismember = ismember;
             this._target = target;
-
-            //ECMA-335 VI.C.1 - ILAsm keywords
-            if (SyntaxClassifier.IsKeyword(content))
-            {
-                this._contentEscaped = "'" + content + "'";
-            }
-            else 
-            {
-                this._contentEscaped = content;
-            }
+            this._contentEscaped = SyntaxUtils.EscapeIdentifier(content);
         }
 
         /// <summary>

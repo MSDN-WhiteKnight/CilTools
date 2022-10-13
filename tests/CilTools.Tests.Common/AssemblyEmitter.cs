@@ -21,14 +21,26 @@ namespace CilTools.Tests.Common
         private static readonly BlobContentId s_contentId = new BlobContentId(s_guid, 0x04030201);
 
         string name;
+        string methodName;
         Func<MetadataBuilder, AssemblyReferenceHandle, InstructionEncoder> callbackEmitMethodBody;
         MetadataBuilder builder = new MetadataBuilder();
         BlobBuilder ilBuilder = new BlobBuilder();
 
         public AssemblyEmitter(string assName,
+            Func<MetadataBuilder, AssemblyReferenceHandle, InstructionEncoder> emitter,
+            string mname)
+        {
+            this.name = assName;
+            this.methodName = mname;
+            this.callbackEmitMethodBody = emitter;
+            this.Initialize();
+        }
+
+        public AssemblyEmitter(string assName,
             Func<MetadataBuilder, AssemblyReferenceHandle, InstructionEncoder> emitter)
         {
             this.name = assName;
+            this.methodName = "TestMethod";
             this.callbackEmitMethodBody = emitter;
             this.Initialize();
         }
@@ -38,7 +50,7 @@ namespace CilTools.Tests.Common
         void Initialize()
         {
             MethodDefinitionHandle mdh = EmitMethod(this.Name, this.builder, ilBuilder,
-                "TestMethod", ProduceMethodSignature);
+                this.methodName, ProduceMethodSignature);
         }
 
         public static AssemblyReferenceHandle AddAssemblyReference(MetadataBuilder metadata, string name,
@@ -51,6 +63,18 @@ namespace CilTools.Tests.Common
                 publicKeyOrToken: default(BlobHandle),
                 flags: default(AssemblyFlags),
                 hashValue: default(BlobHandle));
+        }
+
+        public static InstructionEncoder EmitMethodBody_Empty(MetadataBuilder metadata,
+            AssemblyReferenceHandle corlibAssemblyRef)
+        {
+            BlobBuilder codeBuilder = new BlobBuilder();
+            InstructionEncoder encoder = new InstructionEncoder(codeBuilder, new ControlFlowBuilder());
+                        
+            // ret
+            encoder.OpCode(ILOpCode.Ret);
+
+            return encoder;
         }
 
         MethodDefinitionHandle EmitMethod(string assemblyName,

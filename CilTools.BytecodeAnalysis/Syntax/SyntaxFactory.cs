@@ -12,9 +12,6 @@ namespace CilTools.Syntax
     /// </summary>
     public static class SyntaxFactory
     {
-        // Chars valid in DottedName token (ECMA-335 II.5.2 - Basic syntax categories)
-        static readonly HashSet<char> validIdChars = new HashSet<char>(new char[] { '.', '_', '$', '@', '`', '?' });
-
         internal static string Strip(string input, int startOffset, int endOffset)
         {
             int len = input.Length - startOffset - endOffset;
@@ -57,7 +54,7 @@ namespace CilTools.Syntax
             if (leadingWhitespace == null) leadingWhitespace = string.Empty;
             if (trailingWhitespace == null) trailingWhitespace = string.Empty;
 
-            if (char.IsLetter(tokenString[0]) || validIdChars.Contains(tokenString[0]))
+            if (SyntaxUtils.IsValidIdStartingCharacter(tokenString[0]))
             {
                 if (SyntaxClassifier.IsKeyword(tokenString))
                 {

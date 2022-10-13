@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using CilTools.Metadata;
+using CilTools.Reflection;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TestData;
@@ -182,6 +184,33 @@ namespace CilTools.BytecodeAnalysis.Tests
                 "ldstr", Text.Any,
                 "\"\\042English - Русский - Ελληνικά - Español\\015\\n\\tąęėšų,.\\042\"", Text.Any,
                 });
+        }
+
+        [TestMethod]
+        [WorkItem(68)]
+        public void Test_CilGraph_Escaping_Identifier()
+        {
+            //emit test data assembly
+            string methodName = "<TestMethod>";
+            AssemblyEmitter emitter = new AssemblyEmitter("MyAssembly", AssemblyEmitter.EmitMethodBody_Empty, methodName);
+            byte[] bytes = emitter.GetAssemblyBytes();
+            MemoryImage img = new MemoryImage(bytes, "MyAssembly.dll", true);
+            AssemblyReader reader = new AssemblyReader();
+            string str;
+            
+            using (reader)
+            {
+                //disassemble method
+                Assembly ass = reader.LoadImage(img);
+                Type t = ass.GetType("MyAssembly.Program");
+                MethodInfo mi = t.GetMethod(methodName);
+                CilGraph graph = CilGraph.Create(mi);
+                str = graph.ToString();
+            }
+
+            //verify output
+            const string expected = ".method public hidebysig static void '<TestMethod>'() cil managed";
+            AssertThat.AreLexicallyEqual(expected, str);
         }
 
         [ConditionalTest(TestCondition.DebugBuildOnly, ConditionMsg)]
