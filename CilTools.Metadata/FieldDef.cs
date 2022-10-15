@@ -9,6 +9,7 @@ using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using CilTools.BytecodeAnalysis;
+using CilTools.Internal;
 
 namespace CilTools.Metadata
 {
@@ -84,7 +85,12 @@ namespace CilTools.Metadata
 
         public override object[] GetCustomAttributes(bool inherit)
         {
-            return new object[] { };
+            //we can't instantiate actual attribute objects here
+            //so we will create special ICustomAttribute objects that CilTools.BytecodeAnalysis recognizes
+            //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
+
+            CustomAttributeHandleCollection coll = this.field.GetCustomAttributes();
+            return Utils.ReadCustomAttributes(coll, this, this.owner);
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
