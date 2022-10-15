@@ -95,5 +95,22 @@ extends [CilTools.Tests.Common]CilTools.Tests.Common.DisassemblerSampleType {
             string s = Utils.SyntaxToString(nodes);
             Assert.IsFalse(s.Contains("extends"));
         }
+
+        [TestMethod]
+        [TypeTestData(typeof(FieldsSampleType), BytecodeProviders.All)]
+        public void Test_GetTypeDefSyntax_Fields(Type t)
+        {
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+            
+            AssertThat.IsMatch(s, new Text[] {
+                ".class", Text.Any,"public", Text.Any,"CilTools.Tests.Common.TestData.FieldsSampleType", Text.Any,
+                "{", Text.Any,
+                ".field", Text.Any,"public", Text.Any,"string", Text.Any, "x", Text.Any,
+                ".custom", Text.Any, "CilTools.Tests.Common.MyAttribute", Text.Any,
+                ".field", Text.Any,"public", Text.Any,"static", Text.Any,"int32", Text.Any,"y", Text.Any,
+                "}", Text.Any
+            });
+        }
     }
 }

@@ -698,6 +698,32 @@ namespace CilTools.Syntax
 
                 inner.Add(new GenericSyntax(Environment.NewLine));
 
+                //field custom attributes
+                try
+                {
+                    SyntaxNode[] arr = GetAttributesSyntax(fields[i], startIndent + 1);
+
+                    for (int j = 0; j < arr.Length; j++)
+                    {
+                        inner.Add(arr[j]);
+                    }
+
+                    if(arr.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine));
+                }
+                catch (Exception ex)
+                {
+                    if (ReflectionUtils.IsExpectedException(ex))
+                    {
+                        CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                            "Failed to show field custom attributes. " + ReflectionUtils.GetErrorShortString(ex), null, false);
+
+                        inner.Add(cs);
+                        CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get field custom attributes.");
+                        Diagnostics.OnError(t, ea);
+                    }
+                    else throw;
+                }
+
                 DirectiveSyntax field = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1),
                     "field", inner.ToArray());
                 content.Add(field);
