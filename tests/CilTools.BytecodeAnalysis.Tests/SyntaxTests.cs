@@ -200,7 +200,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             });
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.DebugBuildOnly, "Codegen is different in release builds")]
         [TypeTestData(typeof(EventsSample), BytecodeProviders.Metadata)]
         public void Test_Events_Metadata(Type t)
         {
@@ -239,7 +239,7 @@ extends [mscorlib]System.Object {
             AssertThat.CilEquals(expected, s);
         }
 
-        [TestMethod]
+        [ConditionalTest(TestCondition.DebugBuildOnly, "Codegen is different in release builds")]
         [TypeTestData(typeof(EventsSample), BytecodeProviders.Reflection)]
         public void Test_Events_Reflection(Type t)
         {
