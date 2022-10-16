@@ -98,7 +98,6 @@ namespace CilTools.Syntax
             
             if (this._content.Length > 0)
             {
-                target.Write(' ');
                 this.WriteContent(target);
             }
         }
@@ -121,11 +120,26 @@ namespace CilTools.Syntax
             
             List<SyntaxNode> inner = new List<SyntaxNode>(100);
 
-            if (m.IsPublic) inner.Add(new KeywordSyntax(" ", "public", String.Empty, KeywordKind.Other));
-            else if (m.IsPrivate) inner.Add(new KeywordSyntax(" ", "private", String.Empty, KeywordKind.Other));
-            else if (m.IsAssembly) inner.Add(new KeywordSyntax(" ", "assembly", String.Empty, KeywordKind.Other)); //internal
-            else if (m.IsFamily) inner.Add(new KeywordSyntax(" ", "family", String.Empty, KeywordKind.Other)); //protected
-            else inner.Add(new KeywordSyntax(" ", "famorassem", String.Empty, KeywordKind.Other)); //protected internal
+            if (m.IsPublic)
+            {
+                inner.Add(new KeywordSyntax(string.Empty, "public", string.Empty, KeywordKind.Other));
+            }
+            else if (m.IsPrivate)
+            {
+                inner.Add(new KeywordSyntax(string.Empty, "private", string.Empty, KeywordKind.Other));
+            }
+            else if (m.IsAssembly)
+            {
+                inner.Add(new KeywordSyntax(string.Empty, "assembly", string.Empty, KeywordKind.Other)); //internal
+            }
+            else if (m.IsFamily)
+            {
+                inner.Add(new KeywordSyntax(string.Empty, "family", string.Empty, KeywordKind.Other)); //protected
+            }
+            else
+            {
+                inner.Add(new KeywordSyntax(string.Empty, "famorassem", string.Empty, KeywordKind.Other)); //protected internal
+            }
 
             if (m.IsHideBySig) inner.Add(new KeywordSyntax(" ", "hidebysig", String.Empty, KeywordKind.Other));
 
