@@ -95,7 +95,7 @@ namespace CilView.Tests
 extends [System.Runtime]System.Object
 {
 
- .method  public hidebysig instance .ctor() cil managed
+ .method public hidebysig instance void .ctor() cil managed
  {
   .maxstack 8
 

@@ -231,12 +231,17 @@ namespace CilTools.Syntax
             {
                 inner.Add(new KeywordSyntax(String.Empty, "vararg", " ", KeywordKind.Other));
             }
-                        
+
             if (cm.ReturnType != null)
             {
                 inner.Add(new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(cm.ReturnType).ToArray(), cm.ReturnType));
             }
-            
+            else
+            {
+                //we append return type here even for constructors
+                inner.Add(new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other));
+            }
+
             inner.Add(new IdentifierSyntax(" ", m.Name, String.Empty, true,m));
 
             if (m.IsGenericMethod)

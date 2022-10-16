@@ -354,5 +354,29 @@ namespace CilTools.BytecodeAnalysis.Tests
             string str = graph.ToString();
             AssertThat.CilEquals(expected, str);
         }
+
+        [TestMethod]
+        [TypeTestData(typeof(SampleMethods), BytecodeProviders.All)]
+        public void Test_CilGraph_StaticConstructor(Type t)
+        {
+            ConstructorInfo ci = t.GetConstructor(BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic, 
+                null, new Type[0], null);
+
+            CilGraph graph = CilGraph.Create(ci);
+            string str = graph.ToText();
+            AssertThat.CilContains(str, ".method private hidebysig static void .cctor() cil managed");
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(MyPoint), BytecodeProviders.All)]
+        public void Test_CilGraph_InstanceConstructor(Type t)
+        {
+            ConstructorInfo ci = t.GetConstructor(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic,
+                null, new Type[0], null);
+
+            CilGraph graph = CilGraph.Create(ci);
+            string str = graph.ToText();
+            AssertThat.CilContains(str, ".method public hidebysig instance void .ctor() cil managed");
+        }
     }
 }

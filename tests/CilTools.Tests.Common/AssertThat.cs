@@ -287,5 +287,29 @@ namespace CilTools.Tests.Common
             // Assert on the normalized strings
             AreLexicallyEqual(s1, s2);
         }
+
+        /// <summary>
+        /// Assert that tested string contains the specified CIL string, ignoring differences in whitespaces and 
+        /// BCL assembly names
+        /// </summary>
+        public static void CilContains(string testedString, string stringToFind)
+        {
+            // Normalize IL to account for variations in BCL assembly names
+            string s1 = stringToFind.Replace("[System.Private.CoreLib]", "[mscorlib]");
+            s1 = s1.Replace("[netstandard]", "[mscorlib]");
+            s1 = s1.Replace("[System.Console]", "[mscorlib]");
+
+            string s2 = testedString.Replace("[System.Private.CoreLib]", "[mscorlib]");
+            s2 = s2.Replace("[netstandard]", "[mscorlib]");
+            s2 = s2.Replace("[System.Console]", "[mscorlib]");
+
+            // Normalize strings to replace all whitespace sequences with a single whitespace
+            s1 = Utils.NormalizeWhitespace(s1);
+            s2 = Utils.NormalizeWhitespace(s2);
+
+            // Assert on the normalized strings
+            const string mes = "AssertThat.CilContains failed. Tested string does not contain the specified string.";
+            Assert.IsTrue(s2.Contains(s1), mes);
+        }
     }
 }
