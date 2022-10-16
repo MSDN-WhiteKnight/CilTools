@@ -66,6 +66,27 @@ namespace CilTools.Tests.Common.TextUtils
             return Regex.IsMatch(s, pattern);
         }
 
+        public static bool ContainsMatch(string testedString, string start, Text[] middle, string end)
+        {
+            int startIndex = testedString.IndexOf(start);
+
+            if (startIndex < 0) return false;
+
+            int middleIndex = startIndex + start.Length;
+
+            if (middleIndex >= testedString.Length) return false;
+
+            string substr = testedString.Substring(middleIndex);
+
+            int endIndex = substr.IndexOf(end);
+
+            if (endIndex < 0) return false;
+
+            string middleStr = substr.Substring(0, endIndex);
+
+            return IsMatch(middleStr, middle);
+        }
+
         /// <summary>
         /// Gets the minimal string that matches the specified sequence of text elements
         /// </summary>

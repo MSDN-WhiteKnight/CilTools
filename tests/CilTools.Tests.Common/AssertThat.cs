@@ -152,6 +152,18 @@ namespace CilTools.Tests.Common
             }
         }
 
+        /// <summary>
+        /// Asserts that tested string contains the specified pattern defined by start string, sequence of 
+        /// <see cref="Text"/> objects and end string. This is useful when the tested string is large, use 
+        /// <see cref="IsMatch(string, Text[], string)"/> for smaller strings.
+        /// </summary>
+        public static void ContainsMatch(string testedString, string start, Text[] middle, string end)
+        {
+            bool res = Text.ContainsMatch(testedString, start, middle, end);
+            const string mes = "Input string does not contain the expected pattern.";
+            Assert.IsTrue(res, mes);
+        }
+
         static void IsCorrectRecusive(SyntaxNode node,SyntaxNode parent, int c)
         {
             if (c > 100000)

@@ -149,12 +149,28 @@ extends [System.Runtime]System.Object
             Assert.IsTrue(str.Contains(il));
 
             Assert.IsTrue(str.Contains(".field public static int32 Foo"));
+                        
+            AssertThat.ContainsMatch(str, ".method public hidebysig static void PrintHelloWorld() cil managed",
+                new Text[] { "{", Text.Any, "ldstr", Text.Any, "\"Hello, World\"", Text.Any,
+                    "call", Text.Any, "System.Console::WriteLine(string)", Text.Any,
+                    "ret", Text.Any }, 
+                "}");
+            
+            AssertThat.ContainsMatch(str, 
+                ".method public hidebysig static float64 CalcSum( float64 x, float64 y ) cil managed",
+                new Text[] { "{", Text.Any, "ldarg.0", Text.Any, "ldarg.1", Text.Any,
+                    "add", Text.Any, "ret", Text.Any },
+                "}");
 
-            il = ".method public hidebysig static void PrintHelloWorld() cil managed";
-            Assert.IsTrue(str.Contains(il));
-
-            il = ".method public hidebysig static float64 CalcSum( float64 x, float64 y ) cil managed";
-            Assert.IsTrue(str.Contains(il));
+            AssertThat.ContainsMatch(str,
+                ".method public hidebysig static void SquareFoo() cil managed",
+                new Text[] { "{", Text.Any, ".maxstack", Text.Any,
+                    "ldsfld", Text.Any, "int32 [CilTools.Tests.Common]CilTools.Tests.Common.SampleMethods::Foo", Text.Any,
+                    "ldsfld", Text.Any, "int32 [CilTools.Tests.Common]CilTools.Tests.Common.SampleMethods::Foo", Text.Any,
+                    "mul", Text.Any,
+                    "stsfld", Text.Any, "int32 [CilTools.Tests.Common]CilTools.Tests.Common.SampleMethods::Foo", Text.Any,
+                    "ret", Text.Any },
+                "}");
         }
 
         [TestMethod]
