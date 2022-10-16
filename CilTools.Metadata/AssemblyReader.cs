@@ -59,6 +59,22 @@ namespace CilTools.Metadata
 
         Dictionary<AssemblyId, MetadataAssembly> _assemblies = new Dictionary<AssemblyId, MetadataAssembly>();
         string _runtimeDir = RuntimeEnvironment.GetRuntimeDirectory();
+        bool _allowResolve = true;
+
+        /// <summary>
+        /// Gets or sets the value indicating that assembly reader should resolve external assembly references 
+        /// when loading types. The default value is <c>true</c>.
+        /// </summary>
+        /// <remarks>
+        /// This property indicates that resolving external references is allowed, however, if some API is 
+        /// explicitly invoked with the <see cref="RefResolutionMode.NoResolve"/> option, the resolution 
+        /// will not be performed.
+        /// </remarks>
+        public bool ResolveExternalRefs 
+        { 
+            get { return this._allowResolve; }
+            set { this._allowResolve = value; }
+        }
         
         void SetAssembly(ref AssemblyId key, MetadataAssembly val)
         {
@@ -247,9 +263,16 @@ namespace CilTools.Metadata
 
             Assembly ass;
 
-            //if assembly is a reference to external assembly, resolve it
-            if (ea is MetadataAssembly) ass = ea;
-            else ass = this.Load(ea.GetName());
+            if (ea is MetadataAssembly)
+            {
+                ass = ea;
+            }
+            else
+            {
+                //if assembly is a reference to external assembly, resolve it
+                if (this._allowResolve) ass = this.Load(ea.GetName());
+                else ass = null;
+            }
 
             if (ass == null) throw new TypeLoadException("Failed to resolve external assembly " + ea.ToString());
 
