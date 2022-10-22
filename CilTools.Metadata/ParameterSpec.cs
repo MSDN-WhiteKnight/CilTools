@@ -21,6 +21,7 @@ namespace CilTools.Metadata
         ParameterAttributes attrs;
         object defval;
         Parameter rawParameter;
+        bool hasRawParameter;
         MetadataAssembly ass;
 
         public ParameterSpec(TypeSpec ts, int i, MemberInfo mi)
@@ -30,6 +31,7 @@ namespace CilTools.Metadata
             this.member = mi;
             this.name = "";
             this.defval = DBNull.Value;
+            this.hasRawParameter = false;
         }
 
         public ParameterSpec(TypeSpec ts, Parameter p, MemberInfo mi, MetadataAssembly ownerAssembly)
@@ -40,6 +42,7 @@ namespace CilTools.Metadata
             this.name = ownerAssembly.MetadataReader.GetString(p.Name);
             this.attrs = p.Attributes;
             this.rawParameter = p;
+            this.hasRawParameter = true;
             this.ass = ownerAssembly;
 
             if (!p.Attributes.HasFlag(ParameterAttributes.HasDefault)) //no default value
@@ -126,6 +129,11 @@ namespace CilTools.Metadata
 
         public override object[] GetCustomAttributes(bool inherit)
         {
+            // Parameter data may be missing in some cases, for example, for 'this' pointer in native class 
+            // methods in C++/CLI assembly (https://github.com/MSDN-WhiteKnight/CilTools/issues/132)
+
+            if (!this.hasRawParameter) return new object[0];
+
             //we can't instantiate actual attribute objects here
             //so we will create special ICustomAttribute objects that CilTools.BytecodeAnalysis recognizes
             //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
