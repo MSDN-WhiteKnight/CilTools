@@ -72,7 +72,7 @@ namespace CilTools.BytecodeAnalysis
 
             if (this._Type != null)
             {
-                ts = CilAnalysis.GetTypeSpecSyntax(this._Type);
+                ts = CilAnalysis.GetTypeSpecSyntaxAuto(this._Type);
                 foreach (SyntaxNode node in ts) yield return node;
             }
             else

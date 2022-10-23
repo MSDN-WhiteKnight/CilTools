@@ -117,7 +117,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (called_method != null)
                 {
-                    yield return CilAnalysis.GetMethodRefSyntax(called_method,false);
+                    yield return CilAnalysis.GetMethodRefSyntax(called_method, inlineTok: false, forceTypeSpec: false);
                 }
                 else
                 {
@@ -144,7 +144,7 @@ namespace CilTools.BytecodeAnalysis
                     //append declaring type
                     if (t != null && !CilAnalysis.IsModuleType(t))
                     {
-                        nodes = CilAnalysis.GetTypeSpecSyntax(t);
+                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t);
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
                         children.Add(new PunctuationSyntax("", "::", ""));
@@ -169,7 +169,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (t != null)
                 {
-                    yield return new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax(t).ToArray(),t);
+                    yield return new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntaxAuto(t).ToArray(),t);
                 }
                 else
                 {
@@ -205,7 +205,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (mi is Type)
                     {
-                        yield return new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntax((Type)mi).ToArray(), mi);
+                        yield return new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntaxAuto((Type)mi).ToArray(), mi);
                     }
                     else if (mi is FieldInfo)
                     {
@@ -219,7 +219,7 @@ namespace CilTools.BytecodeAnalysis
 
                         children.Add(new GenericSyntax(" "));
 
-                        nodes = CilAnalysis.GetTypeSpecSyntax(t);
+                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t);
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
                         children.Add(new PunctuationSyntax("", "::", ""));
@@ -230,7 +230,7 @@ namespace CilTools.BytecodeAnalysis
                     else if (mi is MethodBase) 
                     {
                         MethodBase mb = (MethodBase)mi;
-                        yield return CilAnalysis.GetMethodRefSyntax(mb,true);
+                        yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false);
                     }
                     else
                     {

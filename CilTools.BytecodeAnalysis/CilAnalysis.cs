@@ -181,7 +181,7 @@ namespace CilTools.BytecodeAnalysis
             return CilAnalysis.GetTypeSyntax(t, false);
         }
 
-        internal static IEnumerable<SyntaxNode> GetTypeSyntax(Type t,bool isspec)
+        internal static IEnumerable<SyntaxNode> GetTypeSyntax(Type t, bool isspec)
         {
             //converts reflection Type object to Type or TypeSpec CIL assembler syntax
             //(ECMA-335 II.7.1 Types)
@@ -278,7 +278,7 @@ namespace CilTools.BytecodeAnalysis
                 sb.Append(t.Name);
                 yield return new IdentifierSyntax(String.Empty, sb.ToString(), String.Empty, true,t);
 
-                if (t.IsGenericType)
+                if (t.IsGenericType && !isspec)
                 {
                     yield return new PunctuationSyntax(String.Empty, "<", String.Empty);
 
@@ -368,13 +368,16 @@ namespace CilTools.BytecodeAnalysis
             StringBuilder sb = new StringBuilder();
             StringWriter wr = new StringWriter(sb);
 
-            foreach (SyntaxNode node in CilAnalysis.GetTypeSpecSyntax(t)) node.ToText(wr);
+            foreach (SyntaxNode node in GetTypeSpecSyntaxAuto(t)) node.ToText(wr);
 
             wr.Flush();
             return sb.ToString();
         }
 
-        internal static IEnumerable<SyntaxNode> GetTypeSpecSyntax(Type t)
+        /// <summary>
+        /// Gets the syntax for a Type or TypeSpec construct (selects automatically)
+        /// </summary>
+        internal static IEnumerable<SyntaxNode> GetTypeSpecSyntaxAuto(Type t)
         {
             //this is used when we can omit class/valuetype prefix, such as for method calls
             Debug.Assert(t != null, "GetTypeSpecSyntax: Source type cannot be null");
@@ -384,12 +387,12 @@ namespace CilTools.BytecodeAnalysis
             else return CilAnalysis.GetTypeSyntax(t, true);
         }
 
-        internal static string MethodToString(MethodBase m)
+        internal static string MethodRefToString(MethodBase m)
         {
             //gets the CIL code of the reference to the specified method
             StringBuilder sb = new StringBuilder(200);
             StringWriter wr = new StringWriter(sb);
-            SyntaxNode node = CilAnalysis.GetMethodRefSyntax(m, false);
+            SyntaxNode node = GetMethodRefSyntax(m, inlineTok: false, forceTypeSpec: false);
             node.ToText(wr);            
             wr.Flush();
             return sb.ToString();
@@ -408,7 +411,7 @@ namespace CilTools.BytecodeAnalysis
             return bytes[0] == 0x01 && bytes[3] == 0x02;
         }
 
-        internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m,bool inlineTok)
+        internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m, bool inlineTok, bool forceTypeSpec)
         {
             List<SyntaxNode> children = new List<SyntaxNode>(50);
             Type t = m.DeclaringType;
@@ -465,7 +468,15 @@ namespace CilTools.BytecodeAnalysis
             //append declaring type
             if (t != null && !IsModuleType(t))
             {
-                IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeSpecSyntax(t);
+                IEnumerable<SyntaxNode> syntax;
+
+                // When method reference is used for property/event accessors, TypeSpec syntax is forced, so we don't 
+                // call into Type.IsValueType needlessly 
+                // (prevents issues like https://github.com/MSDN-WhiteKnight/CilTools/issues/140).
+                // See ECMA-335 II.17 - Defining properties.
+
+                if (forceTypeSpec) syntax = GetTypeSyntax(t, isspec: true);
+                else syntax = GetTypeSpecSyntaxAuto(t);
 
                 foreach (SyntaxNode node in syntax) children.Add(node);
                 
