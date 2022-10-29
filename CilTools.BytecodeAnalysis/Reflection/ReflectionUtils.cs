@@ -83,6 +83,19 @@ namespace CilTools.Reflection
             if (m.DeclaringType == null) return null;
             if (m.IsStatic) return null;
 
+            // Try to use special reflection property to avoid GetInterfaceMap that resolves
+            // external references
+            object val = ReflectionProperties.Get(m, ReflectionProperties.ExplicitlyImplementedMethods);
+
+            if (val != null && val is MethodInfo[])
+            {
+                MethodInfo[] eim = (MethodInfo[])val;
+
+                if (eim.Length == 0) return null;
+                else return eim[0];
+            }
+
+            // If it is not possible, determine explicitly implemented method based on the interface map
             Type t = m.DeclaringType;
             Type[] ifTypes = t.GetInterfaces();
 

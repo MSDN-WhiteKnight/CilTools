@@ -1,8 +1,9 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Metadata;
@@ -14,7 +15,7 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata.Methods
 {
-    class MethodDef : MdMethodInfoBase, ICustomMethod
+    class MethodDef : MdMethodInfoBase, ICustomMethod, IReflectionInfo
     {
         MethodDefinitionHandle mdefh;
         MethodDefinition mdef;
@@ -330,6 +331,47 @@ namespace CilTools.Metadata.Methods
             byte[] sig = this.GetLocalVarSignature();
 
             return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
+        }
+
+        MethodInfo[] GetExplicitlyImplementedMethods()
+        {
+            TypeDefinitionHandle tdh = this.mdef.GetDeclaringType();
+
+            if (tdh.IsNil) return null;
+
+            //get explicit method implementations table for the declaring type
+            TypeDefinition tdef = this.assembly.MetadataReader.GetTypeDefinition(tdh);
+            MethodImplementationHandleCollection coll = tdef.GetMethodImplementations();
+            List<MethodInfo> decls = new List<MethodInfo>(coll.Count);
+
+            //find implementations for this method
+            foreach (MethodImplementationHandle h in coll)
+            {
+                if (h.IsNil) continue;
+
+                MethodImplementation impl = this.assembly.MetadataReader.GetMethodImplementation(h);
+                MethodInfo decl = this.assembly.GetMethodByHandle(impl.MethodDeclaration);
+                Debug.Assert(decl != null);
+                
+                MethodInfo body = this.assembly.GetMethodByHandle(impl.MethodBody);
+                Debug.Assert(body != null);
+                
+                if (body.MetadataToken == this.MetadataToken) decls.Add(decl);
+            }
+
+            return decls.ToArray();
+        }
+
+        public object GetReflectionProperty(int id)
+        {
+            if (id == ReflectionProperties.ExplicitlyImplementedMethods)
+            {
+                return this.GetExplicitlyImplementedMethods();
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public override ICustomAttributeProvider ReturnTypeCustomAttributes

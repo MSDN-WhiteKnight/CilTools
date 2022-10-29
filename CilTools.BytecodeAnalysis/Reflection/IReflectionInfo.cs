@@ -66,6 +66,12 @@ namespace CilTools.Reflection
         public const int IsStatic = 106;
 
         /// <summary>
+        /// Represents interface methods implemented by this method, if this method is an explicit interface
+        /// implementation. Otherwise, should be an empty array. (Type: MethodInfo[])
+        /// </summary>
+        public const int ExplicitlyImplementedMethods = 107;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>

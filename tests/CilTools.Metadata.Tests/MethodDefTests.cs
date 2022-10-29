@@ -9,6 +9,7 @@ using System.Text;
 using CilTools.Reflection;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.Attributes;
+using CilTools.Tests.Common.TestData;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Metadata.Tests
@@ -287,6 +288,46 @@ namespace CilTools.Metadata.Tests
 
             Assert.AreNotEqual(m.MetadataToken, baseDef.MetadataToken);
             Assert.AreNotEqual(m, baseDef);
+        }
+
+        [TestMethod]
+        public void Test_GetExplicitlyImplementedMethods()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(InterfacesSampleType).Assembly.Location);
+            Type t = ass.GetType(typeof(InterfacesSampleType).FullName);
+            MethodBase mb = t.GetMethod("CilTools.Tests.Common.TestData.ITest.Foo", Utils.AllMembers());
+
+            MethodBase[] eim = ReflectionProperties.Get(mb, ReflectionProperties.ExplicitlyImplementedMethods)
+                as MethodBase[];
+
+            Assert.AreEqual(1, eim.Length);
+            Assert.AreEqual("Foo", eim[0].Name);
+            Assert.IsTrue(eim[0].DeclaringType.IsInterface);
+            Assert.AreEqual(typeof(ITest).FullName, eim[0].DeclaringType.FullName);
+        }
+        
+        [TestMethod]
+        public void Test_GetExplicitlyImplementedMethods_Negative()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(InterfacesSampleType).Assembly.Location);
+
+            //implicitly implements interface
+            Type t = ass.GetType(typeof(InterfacesSampleType).FullName);
+            MethodBase mb = t.GetMethod("Bar");
+            MethodBase[] eim = ReflectionProperties.Get(mb, ReflectionProperties.ExplicitlyImplementedMethods)
+                as MethodBase[];
+
+            Assert.AreEqual(0, eim.Length);
+
+            //does not implement interface
+            t = ass.GetType(typeof(SampleMethods).FullName);
+            mb = t.GetMethod("PrintHelloWorld");
+            eim = ReflectionProperties.Get(mb, ReflectionProperties.ExplicitlyImplementedMethods)
+                as MethodBase[];
+
+            Assert.AreEqual(0, eim.Length);
         }
     }
 }
