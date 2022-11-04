@@ -11,6 +11,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
+using CilTools.Metadata.PortableExecutable;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata.Methods
@@ -20,6 +21,7 @@ namespace CilTools.Metadata.Methods
         MethodDefinitionHandle mdefh;
         MethodDefinition mdef;
         MethodBodyBlock mb;
+        VTableSlot? vtSlot;
 
         internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
         {           
@@ -362,11 +364,55 @@ namespace CilTools.Metadata.Methods
             return decls.ToArray();
         }
 
+        /// <summary>
+        /// Gets method's VTable slot address if this method is a native C++ virtual method (used with C++/CLI).
+        /// If the method does not have associated VTable slot, returns <see cref="VTableSlot"/> value with
+        /// negative indices.
+        /// </summary>
+        VTableSlot GetVTableSlot()
+        {
+            //cached value
+            if (this.vtSlot.HasValue) return this.vtSlot.Value;
+
+            VTable[] tables = this.assembly.GetVTables();
+
+            for (int i = 0; i < tables.Length; i++)
+            {
+                for (int j = 0; j < tables[i].SlotsCount; j++)
+                {
+                    int val = tables[i].GetSlotValueInt32(j);
+
+                    if (val == this.MetadataToken)
+                    {
+                        this.vtSlot = new VTableSlot(i, j); //cache in instance field
+                        return this.vtSlot.Value;
+                    }
+                }
+            }
+
+            //not found
+            this.vtSlot = new VTableSlot(-1, -1); //cache in instance field
+            return this.vtSlot.Value;
+        }
+
         public object GetReflectionProperty(int id)
         {
             if (id == ReflectionProperties.ExplicitlyImplementedMethods)
             {
                 return this.GetExplicitlyImplementedMethods();
+            }
+            else if (id == ReflectionProperties.VTableEntry)
+            {
+                VTableSlot slot = this.GetVTableSlot();
+
+                if (slot.TableIndex < 0)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return (slot.TableIndex + 1).ToString() + " : " + (slot.SlotIndex + 1).ToString();
+                }
             }
             else
             {

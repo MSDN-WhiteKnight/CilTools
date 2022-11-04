@@ -329,5 +329,17 @@ namespace CilTools.Metadata.Tests
 
             Assert.AreEqual(0, eim.Length);
         }
+
+        [TestMethod]
+        public void Test_GetVTableSlot_Negative()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Type t = ass.GetType(typeof(SampleMethods).FullName);
+            MethodBase mb = t.GetMethod("PrintHelloWorld");
+            string vte = (string)ReflectionProperties.Get(mb, ReflectionProperties.VTableEntry);
+
+            Assert.AreEqual(string.Empty, vte);
+        }
     }
 }

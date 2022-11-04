@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
@@ -14,6 +15,7 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
 using CilTools.Metadata.Methods;
+using CilTools.Metadata.PortableExecutable;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata
@@ -42,6 +44,7 @@ namespace CilTools.Metadata
         AssemblyReader assreader;
         Dictionary<int, MemberInfo> cache = new Dictionary<int, MemberInfo>();
         bool fromMemory;
+        VTable[] vTables;
 
         internal MetadataAssembly(string path, AssemblyReader ar)
         {
@@ -842,6 +845,55 @@ namespace CilTools.Metadata
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Gets an array of native VTables defined in this assembly. Native VTables are used for 
+        /// C++ native class methods in C++/CLI. Returns an empty array if the assembly does not have 
+        /// VTables.
+        /// </summary>
+        internal VTable[] GetVTables()
+        {
+            //cached value
+            if (this.vTables != null) return this.vTables;
+
+            if (this.peReader == null) return new VTable[0];
+
+            PEReader pr = this.peReader;
+            DirectoryEntry de = pr.PEHeaders.CorHeader.VtableFixupsDirectory;
+            int vt_rva = de.RelativeVirtualAddress;
+            int vt_size = de.Size;
+
+            if(vt_size == 0) return new VTable[0];
+
+            //get VTable fixups directory raw bytes
+            ImmutableArray<byte> vt_data = pr.GetSectionData(vt_rva).GetContent(0, vt_size);
+            List<byte> vt_list = new List<byte>(vt_data);
+            MemoryStream ms = new MemoryStream(vt_list.ToArray());
+            BinaryReader br = new BinaryReader(ms);
+            List<VTable> ret = new List<VTable>();
+
+            //parse VTables from directory data
+            while (true)
+            {
+                if (ms.Position >= ms.Length) break;
+
+                int rva = br.ReadInt32();
+                short n_items = br.ReadInt16();
+                short type = br.ReadInt16();
+                int size;
+
+                if ((type & VTable.COR_VTABLE_64BIT) != 0) size = n_items * 8;
+                else size = n_items * 4;
+
+                ImmutableArray<byte> data = pr.GetSectionData(rva).GetContent(0, size);
+
+                VTable vt = new VTable(rva, n_items, type, data);
+                ret.Add(vt);
+            }
+
+            this.vTables = ret.ToArray(); //cache in instance field
+            return this.vTables;
         }
 
         public string GetInfoText()

@@ -428,6 +428,25 @@ namespace CilTools.BytecodeAnalysis
                 ret.Add(dir);
             }
 
+            //.vtentry (ECMA 335 II.25.3.3)
+            string vtslot = null;
+            try
+            {
+                vtslot = (string)ReflectionProperties.Get(this._Method, ReflectionProperties.VTableEntry);
+            }
+            catch (Exception ex)
+            {
+                string error = "Exception occured when trying to get vtable data.";
+                Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
+            }
+
+            if (!string.IsNullOrEmpty(vtslot))
+            {
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1),
+                    "vtentry", new SyntaxNode[] { new GenericSyntax(vtslot + Environment.NewLine) });
+                ret.Add(dir);
+            }
+
             //display bytecode size in bytes if specified
             if (disassemblerParams.IncludeCodeSize && !ReflectionUtils.IsMethodWithoutBody(this._Method))
             {
