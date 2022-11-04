@@ -21,6 +21,7 @@ namespace CilTools.Metadata.Methods
         MethodDefinitionHandle mdefh;
         MethodDefinition mdef;
         MethodBodyBlock mb;
+        VTableSlot? vtSlot;
 
         internal MethodDef(MethodDefinition m, MethodDefinitionHandle mh, MetadataAssembly owner)
         {           
@@ -363,8 +364,16 @@ namespace CilTools.Metadata.Methods
             return decls.ToArray();
         }
 
+        /// <summary>
+        /// Gets method's VTable slot address if this method is a native C++ virtual method (used with C++/CLI).
+        /// If the method does not have associated VTable slot, returns <see cref="VTableSlot"/> value with
+        /// negative indices.
+        /// </summary>
         VTableSlot GetVTableSlot()
         {
+            //cached value
+            if (this.vtSlot.HasValue) return this.vtSlot.Value;
+
             VTable[] tables = this.assembly.GetVTables();
 
             for (int i = 0; i < tables.Length; i++)
@@ -375,13 +384,15 @@ namespace CilTools.Metadata.Methods
 
                     if (val == this.MetadataToken)
                     {
-                        return new VTableSlot(i, j);
+                        this.vtSlot = new VTableSlot(i, j); //cache in instance field
+                        return this.vtSlot.Value;
                     }
                 }
             }
 
             //not found
-            return new VTableSlot(-1, -1);
+            this.vtSlot = new VTableSlot(-1, -1); //cache in instance field
+            return this.vtSlot.Value;
         }
 
         public object GetReflectionProperty(int id)

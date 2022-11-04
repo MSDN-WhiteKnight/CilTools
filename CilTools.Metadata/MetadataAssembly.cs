@@ -44,6 +44,7 @@ namespace CilTools.Metadata
         AssemblyReader assreader;
         Dictionary<int, MemberInfo> cache = new Dictionary<int, MemberInfo>();
         bool fromMemory;
+        VTable[] vTables;
 
         internal MetadataAssembly(string path, AssemblyReader ar)
         {
@@ -846,12 +847,24 @@ namespace CilTools.Metadata
             return ret;
         }
 
+        /// <summary>
+        /// Gets an array of native VTables defined in this assembly. Native VTables are used for 
+        /// C++ native class methods in C++/CLI. Returns an empty array if the assembly does not have 
+        /// VTables.
+        /// </summary>
         internal VTable[] GetVTables()
         {
+            //cached value
+            if (this.vTables != null) return this.vTables;
+
+            if (this.peReader == null) return new VTable[0];
+
             PEReader pr = this.peReader;
             DirectoryEntry de = pr.PEHeaders.CorHeader.VtableFixupsDirectory;
             int vt_rva = de.RelativeVirtualAddress;
             int vt_size = de.Size;
+
+            if(vt_size == 0) return new VTable[0];
 
             //get VTable fixups directory raw bytes
             ImmutableArray<byte> vt_data = pr.GetSectionData(vt_rva).GetContent(0, vt_size);
@@ -879,7 +892,8 @@ namespace CilTools.Metadata
                 ret.Add(vt);
             }
 
-            return ret.ToArray();
+            this.vTables = ret.ToArray(); //cache in instance field
+            return this.vTables;
         }
 
         public string GetInfoText()
