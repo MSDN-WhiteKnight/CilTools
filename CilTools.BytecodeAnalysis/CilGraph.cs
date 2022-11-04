@@ -428,7 +428,7 @@ namespace CilTools.BytecodeAnalysis
                 ret.Add(dir);
             }
 
-            //.vtentry
+            //.vtentry (ECMA 335 II.25.3.3)
             string vtslot = null;
             try
             {
