@@ -11,6 +11,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
+using CilTools.Metadata.PortableExecutable;
 using CilTools.Reflection;
 
 namespace CilTools.Metadata.Methods
@@ -362,11 +363,45 @@ namespace CilTools.Metadata.Methods
             return decls.ToArray();
         }
 
+        VTableSlot GetVTableSlot()
+        {
+            VTable[] tables = this.assembly.GetVTables();
+
+            for (int i = 0; i < tables.Length; i++)
+            {
+                for (int j = 0; j < tables[i].SlotsCount; j++)
+                {
+                    int val = tables[i].GetSlotValueInt32(j);
+
+                    if (val == this.MetadataToken)
+                    {
+                        return new VTableSlot(i, j);
+                    }
+                }
+            }
+
+            //not found
+            return new VTableSlot(-1, -1);
+        }
+
         public object GetReflectionProperty(int id)
         {
             if (id == ReflectionProperties.ExplicitlyImplementedMethods)
             {
                 return this.GetExplicitlyImplementedMethods();
+            }
+            else if (id == ReflectionProperties.VTableEntry)
+            {
+                VTableSlot slot = this.GetVTableSlot();
+
+                if (slot.TableIndex < 0)
+                {
+                    return string.Empty;
+                }
+                else
+                {
+                    return (slot.TableIndex + 1).ToString() + " : " + (slot.SlotIndex + 1).ToString();
+                }
             }
             else
             {

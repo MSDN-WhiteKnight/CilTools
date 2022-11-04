@@ -72,6 +72,12 @@ namespace CilTools.Reflection
         public const int ExplicitlyImplementedMethods = 107;
 
         /// <summary>
+        /// Represents the information about VTable entry associated with this method, or an empty 
+        /// string if the method does not have a VTable entry. (Type: string)
+        /// </summary>
+        public const int VTableEntry = 108;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>
