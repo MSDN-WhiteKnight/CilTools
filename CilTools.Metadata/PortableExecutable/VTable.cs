@@ -45,6 +45,10 @@ namespace CilTools.Metadata.PortableExecutable
             return ret;
         }
 
+        /// <summary>
+        /// Gets the VTable slot value as <c>Int64</c>. The initial slot value is a method's metadata token, 
+        /// which gets replaced with a native function address when the image is loaded.
+        /// </summary>
         public long GetSlotValue(int index)
         {
             int slot_size;
@@ -72,6 +76,11 @@ namespace CilTools.Metadata.PortableExecutable
             }
         }
 
+        /// <summary>
+        /// Gets the VTable slot value as <c>Int32</c>. If the value is 64-bit, it is truncated.
+        /// The initial slot value is a method's metadata token, 
+        /// which gets replaced with a native function address when the image is loaded.
+        /// </summary>
         public int GetSlotValueInt32(int index)
         {
             return (int)this.GetSlotValue(index);
