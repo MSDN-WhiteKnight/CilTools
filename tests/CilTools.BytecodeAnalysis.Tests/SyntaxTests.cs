@@ -215,7 +215,7 @@ extends [mscorlib]System.Object {
  .custom instance void [mscorlib]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor() = ( 01 00 00 00 )
  .custom instance void [mscorlib]System.Diagnostics.DebuggerBrowsableAttribute::.ctor(valuetype [mscorlib]System.Diagnostics.DebuggerBrowsableState) = ( 01 00 00 00 00 00 00 00 )
 
- .event class [mscorlib]System.Action A {
+ .event [mscorlib]System.Action A {
   .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
   .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
  }
@@ -254,7 +254,7 @@ extends [mscorlib]System.Object {
  .custom instance void [mscorlib]System.Runtime.CompilerServices.CompilerGeneratedAttribute::.ctor() = ( 01 00 00 00 )
  //.custom instance void [mscorlib]System.Diagnostics.DebuggerBrowsableAttribute::.ctor(valuetype [mscorlib]System.Diagnostics.DebuggerBrowsableState)
 
- .event class [mscorlib]System.Action A {
+ .event [mscorlib]System.Action A {
   .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
   .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
  }

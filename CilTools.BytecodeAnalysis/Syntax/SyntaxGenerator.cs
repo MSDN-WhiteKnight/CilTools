@@ -89,8 +89,8 @@ namespace CilTools.Syntax
                     inner.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
                 }
 
-                inner.Add(new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(events[i].EventHandlerType).ToArray(), 
-                    events[i].EventHandlerType));
+                IEnumerable<SyntaxNode> eventTypeSyntax = CilAnalysis.GetTypeSpecSyntaxAuto(events[i].EventHandlerType);
+                inner.Add(new MemberRefSyntax(eventTypeSyntax.ToArray(), events[i].EventHandlerType));
 
                 inner.Add(new IdentifierSyntax(" ", events[i].Name, Environment.NewLine, true, events[i]));
                 inner.Add(new PunctuationSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "{", Environment.NewLine));
