@@ -203,9 +203,15 @@ namespace CilTools.BytecodeAnalysis
 
                 if (mi != null)
                 {
-                    if (mi is Type)
+                    if (mi is TypeSpec)
                     {
                         yield return new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntaxAuto((Type)mi).ToArray(), mi);
+                    }
+                    else if (mi is Type)
+                    {
+                        //use TypeSpec syntax to avoid resolving external references
+                        SyntaxNode[] nodes = CilAnalysis.GetTypeSyntax((Type)mi, isspec: true).ToArray();
+                        yield return new MemberRefSyntax(nodes, mi);
                     }
                     else if (mi is FieldInfo)
                     {
@@ -227,7 +233,7 @@ namespace CilTools.BytecodeAnalysis
 
                         yield return new MemberRefSyntax(children.ToArray(), fi);
                     }
-                    else if (mi is MethodBase) 
+                    else if (mi is MethodBase)
                     {
                         MethodBase mb = (MethodBase)mi;
                         yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false);

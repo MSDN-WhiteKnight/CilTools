@@ -282,19 +282,25 @@ namespace CilTools.Tests.Common
             }
         }
 
+        static string NormalizeBclNames(string input)
+        {
+            // Normalize IL to account for variations in BCL assembly names
+            string s1 = input.Replace("[System.Private.CoreLib]", "[mscorlib]");
+            s1 = s1.Replace("[netstandard]", "[mscorlib]");
+            s1 = s1.Replace("[System.Runtime]", "[mscorlib]");
+            s1 = s1.Replace("[System.Console]", "[mscorlib]");
+            s1 = s1.Replace("[System.Collections]", "[mscorlib]");
+            return s1;
+        }
+
         /// <summary>
         /// Assert that two IL strings are equal, ignoring differences in whitespaces and BCL assembly names
         /// </summary>
         public static void CilEquals(string expected, string actual)
         {
             // Normalize IL to account for variations in BCL assembly names
-            string s1 = expected.Replace("[System.Private.CoreLib]", "[mscorlib]");
-            s1 = s1.Replace("[netstandard]", "[mscorlib]");
-            s1 = s1.Replace("[System.Console]", "[mscorlib]");
-
-            string s2 = actual.Replace("[System.Private.CoreLib]", "[mscorlib]");
-            s2 = s2.Replace("[netstandard]", "[mscorlib]");
-            s2 = s2.Replace("[System.Console]", "[mscorlib]");
+            string s1 = NormalizeBclNames(expected);
+            string s2 = NormalizeBclNames(actual);
 
             // Assert on the normalized strings
             AreLexicallyEqual(s1, s2);
@@ -307,13 +313,8 @@ namespace CilTools.Tests.Common
         public static void CilContains(string testedString, string stringToFind)
         {
             // Normalize IL to account for variations in BCL assembly names
-            string s1 = stringToFind.Replace("[System.Private.CoreLib]", "[mscorlib]");
-            s1 = s1.Replace("[netstandard]", "[mscorlib]");
-            s1 = s1.Replace("[System.Console]", "[mscorlib]");
-
-            string s2 = testedString.Replace("[System.Private.CoreLib]", "[mscorlib]");
-            s2 = s2.Replace("[netstandard]", "[mscorlib]");
-            s2 = s2.Replace("[System.Console]", "[mscorlib]");
+            string s1 = NormalizeBclNames(stringToFind);
+            string s2 = NormalizeBclNames(testedString);
 
             // Normalize strings to replace all whitespace sequences with a single whitespace
             s1 = Utils.NormalizeWhitespace(s1);

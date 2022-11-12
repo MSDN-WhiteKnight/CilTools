@@ -378,5 +378,65 @@ namespace CilTools.BytecodeAnalysis.Tests
             string str = graph.ToText();
             AssertThat.CilContains(str, ".method public hidebysig instance void .ctor() cil managed");
         }
+
+        public static void TestTokens_GenericType()
+        {
+            Console.WriteLine(typeof(List<>));
+            Console.WriteLine(typeof(List<int>));
+            Console.WriteLine(typeof(ArraySegment<>));
+            Console.WriteLine(typeof(ArraySegment<string>));
+        }
+
+        [ConditionalTest(TestCondition.DebugBuildOnly, "Codegen is different in release build")]
+        [MethodTestData(typeof(CilGraphTests_Text), "TestTokens_GenericType", BytecodeProviders.Metadata)]
+        public void Test_CilGraph_Tokens_GenericType(MethodBase mi)
+        {
+            const string expected = @".method public hidebysig static void TestTokens_GenericType() cil managed
+{
+ .maxstack  1
+
+          nop          
+          ldtoken      [mscorlib]System.Collections.Generic.List`1
+          call         class [mscorlib]System.Type [mscorlib]System.Type::GetTypeFromHandle(valuetype [mscorlib]System.RuntimeTypeHandle)
+          call         void [mscorlib]System.Console::WriteLine(object)
+          nop          
+          ldtoken      class [mscorlib]System.Collections.Generic.List`1<int32>
+          call         class [mscorlib]System.Type [mscorlib]System.Type::GetTypeFromHandle(valuetype [mscorlib]System.RuntimeTypeHandle)
+          call         void [mscorlib]System.Console::WriteLine(object)
+          nop          
+          ldtoken      [mscorlib]System.ArraySegment`1
+          call         class [mscorlib]System.Type [mscorlib]System.Type::GetTypeFromHandle(valuetype [mscorlib]System.RuntimeTypeHandle)
+          call         void [mscorlib]System.Console::WriteLine(object)
+          nop          
+          ldtoken      valuetype [mscorlib]System.ArraySegment`1<string>
+          call         class [mscorlib]System.Type [mscorlib]System.Type::GetTypeFromHandle(valuetype [mscorlib]System.RuntimeTypeHandle)
+          call         void [mscorlib]System.Console::WriteLine(object)
+          nop          
+          ret          
+}";
+
+            CilGraph graph = CilGraph.Create(mi);
+
+            //Test conversion to string
+            string str = graph.ToText();
+            AssertThat.CilEquals(expected, str);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(CilGraphTests_Text), "TestTokens_GenericType", BytecodeProviders.All)]
+        public void Test_CilGraph_Tokens_GenericType2(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+
+            //Test conversion to string
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new Text[] { 
+                "ldtoken", Text.Any, "System.Collections.Generic.List`1", Text.Any,
+                "ldtoken", Text.Any, "System.Collections.Generic.List`1", Text.Any,
+                "ldtoken", Text.Any, "System.ArraySegment`1", Text.Any,
+                "ldtoken", Text.Any, "System.ArraySegment`1", Text.Any,
+            });
+        }
     }
 }
