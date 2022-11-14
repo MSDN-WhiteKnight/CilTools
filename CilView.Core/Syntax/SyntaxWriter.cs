@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -62,7 +63,19 @@ namespace CilView.Core.Syntax
                 if (types[i].IsNested) continue;
                 if (Utils.StringEquals(types[i].FullName, "<Module>")) continue;
 
-                nodes = SyntaxNode.GetTypeDefSyntax(types[i], true, pars);
+                try
+                {
+                    nodes = SyntaxNode.GetTypeDefSyntax(types[i], true, pars).ToArray();
+                }
+                catch (NotSupportedException ex)
+                {
+                    //don't error out the whole loop if the current type contains unsupported elements
+                    string commentStr = "// Failed to disassemble type " + types[i].FullName + ". "
+                        + ex.GetType().ToString() + ": " + ex.Message;
+                    SyntaxNode cs = SyntaxFactory.CreateFromToken(commentStr, string.Empty, Environment.NewLine);
+                    nodes = new SyntaxNode[] { cs };
+                }
+
                 await WriteSyntaxAsync(nodes, target);
                 await target.WriteLineAsync();
             }
