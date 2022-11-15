@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Reflection.Metadata;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using CilTools.Metadata;
 using CilTools.Reflection;
@@ -437,6 +439,154 @@ namespace CilTools.BytecodeAnalysis.Tests
                 "ldtoken", Text.Any, "System.ArraySegment`1", Text.Any,
                 "ldtoken", Text.Any, "System.ArraySegment`1", Text.Any,
             });
+        }
+
+        static InstructionEncoder EmitMethodBody_TestBlockClose(
+            MetadataBuilder metadata,
+            AssemblyReferenceHandle corlibAssemblyRef)
+        {
+            var codeBuilder = new BlobBuilder();
+            var cfb = new ControlFlowBuilder();
+            var encoder = new InstructionEncoder(codeBuilder, cfb);
+
+            AssemblyReferenceHandle consoleAssemblyRef = AssemblyEmitter.AddAssemblyReference(
+                metadata,
+                "System.Console",
+                new Version(4, 0, 0, 0));
+
+            TypeReferenceHandle systemConsoleTypeRefHandle = metadata.AddTypeReference(
+                consoleAssemblyRef,
+                metadata.GetOrAddString("System"),
+                metadata.GetOrAddString("Console"));
+
+            TypeReferenceHandle environmentTypeRefHandle = metadata.AddTypeReference(
+                corlibAssemblyRef,
+                metadata.GetOrAddString("System"),
+                metadata.GetOrAddString("Environment"));
+
+            var consoleWriteLineSignature = new BlobBuilder();
+
+            new BlobEncoder(consoleWriteLineSignature).
+                MethodSignature().
+                Parameters(1,
+                    returnType => returnType.Void(),
+                    parameters => parameters.AddParameter().Type().String());
+
+            MemberReferenceHandle consoleWriteLineMemberRef = metadata.AddMemberReference(
+                systemConsoleTypeRefHandle,
+                metadata.GetOrAddString("WriteLine"),
+                metadata.GetOrAddBlob(consoleWriteLineSignature));
+
+            var tickCountSignature = new BlobBuilder();
+
+            new BlobEncoder(tickCountSignature).
+                MethodSignature().
+                Parameters(0, returnType => returnType.Type().Int32(), parameters => { });
+
+            MemberReferenceHandle tickCountMemberRef = metadata.AddMemberReference(
+                environmentTypeRefHandle,
+                metadata.GetOrAddString("get_TickCount"),
+                metadata.GetOrAddBlob(tickCountSignature));
+
+            LabelHandle label1 = encoder.DefineLabel();
+            LabelHandle label2 = encoder.DefineLabel();
+            LabelHandle labelTryStart = encoder.DefineLabel();
+            LabelHandle labelTryEnd = encoder.DefineLabel();
+            LabelHandle labelFinallyStart = encoder.DefineLabel();
+            LabelHandle labelFinallyEnd = encoder.DefineLabel();
+
+            // IL_0001: call int32 System.Environment::get_TickCount()
+            encoder.MarkLabel(label1);
+            encoder.Call(tickCountMemberRef);
+
+            //ldc.i4 999
+            encoder.LoadConstantI4(999);
+
+            //ble.s IL_0002
+            encoder.Branch(ILOpCode.Ble_s, label2);
+
+            // ret
+            encoder.OpCode(ILOpCode.Ret);
+
+            //IL_0002: nop
+            encoder.MarkLabel(label2);
+            encoder.OpCode(ILOpCode.Nop);
+
+            //.try
+            encoder.MarkLabel(labelTryStart);
+
+            //call int32 System.Environment::get_TickCount()
+            encoder.Call(tickCountMemberRef);
+
+            // call void System.Console::WriteLine(int32)
+            encoder.Call(consoleWriteLineMemberRef);
+
+            //leave.s IL_0001
+            encoder.Branch(ILOpCode.Leave_s, label1);
+            encoder.MarkLabel(labelTryEnd);
+
+            //finally
+            encoder.MarkLabel(labelFinallyStart);
+
+            //call int32 System.Environment::get_TickCount()
+            encoder.Call(tickCountMemberRef);
+
+            // call void System.Console::WriteLine(int32)
+            encoder.Call(consoleWriteLineMemberRef);
+
+            // endfinnally
+            encoder.OpCode(ILOpCode.Endfinally);
+            encoder.MarkLabel(labelFinallyEnd);
+
+            cfb.AddFinallyRegion(labelTryStart, labelTryEnd, labelFinallyStart, labelFinallyEnd);
+            return encoder;
+        }
+
+        [TestMethod]
+        public void Test_CilGraph_BlockClosesAfterLastInstruction()
+        {
+            //emit test data assembly
+            string methodName = "TestBlockClose";
+            AssemblyEmitter emitter = new AssemblyEmitter("MyAssembly", EmitMethodBody_TestBlockClose, methodName);
+            byte[] bytes = emitter.GetAssemblyBytes();
+            MemoryImage img = new MemoryImage(bytes, "MyAssembly.dll", true);
+            AssemblyReader reader = new AssemblyReader();
+            string str;
+
+            using (reader)
+            {
+                //disassemble method
+                Assembly ass = reader.LoadImage(img);
+                Type t = ass.GetType("MyAssembly.Program");
+                MethodInfo mi = t.GetMethod(methodName);
+                CilGraph graph = CilGraph.Create(mi);
+                str = graph.ToText();
+            }
+
+            //verify output
+            const string expected = @".method public hidebysig static void TestBlockClose() cil managed 
+{
+ .maxstack  8
+
+ IL_0001: call         int32 [System.Runtime]System.Environment::get_TickCount()
+          ldc.i4       999
+          ble.s        IL_0002
+          ret          
+ IL_0002: nop          
+ .try 
+ {
+           call         int32 [System.Runtime]System.Environment::get_TickCount()
+           call         void [System.Console]System.Console::WriteLine(string)
+           leave.s      IL_0001
+ }
+ finally
+ {
+           call         int32 [System.Runtime]System.Environment::get_TickCount()
+           call         void [System.Console]System.Console::WriteLine(string)
+           endfinally   
+ }
+}";
+            AssertThat.AreLexicallyEqual(expected, str);
         }
     }
 }

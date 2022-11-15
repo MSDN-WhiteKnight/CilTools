@@ -263,7 +263,7 @@ namespace CilTools.Tests.Common
         public object Execute(Assembly ass)
         {
             Type t = ass.GetType(this.Name + ".Program");
-            MethodInfo mi = t.GetMethod("TestMethod");
+            MethodInfo mi = t.GetMethod(this.methodName);
             object ret = mi.Invoke(null, new object[] { });
             return ret;
         }

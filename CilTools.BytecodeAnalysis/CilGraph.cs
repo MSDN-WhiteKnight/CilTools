@@ -873,7 +873,31 @@ namespace CilTools.BytecodeAnalysis
                 }
             }// end while
 
-            if (currentpath.Count > 0) throw new CilParserException("Parse error: Not all blocks are closed");
+            if (currentpath.Count > 0)
+            {
+                // Some blocks are still not closed. Find blocks that close after last instruction.
+                uint endOffset = node.Instruction.ByteOffset + node.Instruction.TotalSize;
+                IList<ExceptionBlock> ended_blocks = FindBlockEnds(trys, endOffset, endOffset + 1);
+
+                if (ended_blocks.Count < currentpath.Count)
+                {
+                    throw new CilParserException("Parse error: Not all blocks are closed");
+                }
+
+                for (int i = 0; i < ended_blocks.Count; i++)
+                {
+                    new_node = currentpath[currentpath.Count - 1];
+                    currentpath.RemoveAt(currentpath.Count - 1);
+
+                    if (currentpath.Count > 0)
+                        curr_node = currentpath[currentpath.Count - 1];
+                    else
+                        curr_node = root;
+
+                    curr_node._children.Add(new_node);
+                    new_node._parent = curr_node;                                        
+                }
+            }
 
             return root._children.ToArray();
         }
