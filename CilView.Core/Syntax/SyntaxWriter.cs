@@ -61,8 +61,7 @@ namespace CilView.Core.Syntax
             for (int i = 0; i < types.Length; i++)
             {
                 if (types[i].IsNested) continue;
-                if (Utils.StringEquals(types[i].FullName, "<Module>")) continue;
-
+                
                 try
                 {
                     nodes = SyntaxNode.GetTypeDefSyntax(types[i], true, pars).ToArray();

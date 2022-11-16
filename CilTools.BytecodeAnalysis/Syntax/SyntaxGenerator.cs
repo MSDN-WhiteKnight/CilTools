@@ -586,8 +586,19 @@ namespace CilTools.Syntax
                 content.Add(new GenericSyntax(Environment.NewLine));
             }
 
-            DirectiveSyntax header = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent), "class", content.ToArray());
-            yield return header;
+            int bodyIndent;
+            bool isModuleType = CilAnalysis.IsModuleType(t); //module type holds global fields and functions
+
+            if (!isModuleType)
+            {
+                DirectiveSyntax header = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent), "class", content.ToArray());
+                yield return header;
+                bodyIndent = startIndent + 1;
+            }
+            else
+            {
+                bodyIndent = startIndent;
+            }
 
             //body
             content.Clear();
@@ -616,6 +627,12 @@ namespace CilTools.Syntax
 
             //fields
             FieldInfo[] fields = t.GetFields(ReflectionUtils.AllMembers);
+
+            if (isModuleType && fields.Length > 0)
+            {
+                CommentSyntax cs = CommentSyntax.Create(string.Empty, " *** Global fields ***", null, false);
+                content.Add(cs);
+            }
 
             for (int i = 0; i < fields.Length; i++)
             {
@@ -701,7 +718,7 @@ namespace CilTools.Syntax
                 //field custom attributes
                 try
                 {
-                    SyntaxNode[] arr = GetAttributesSyntax(fields[i], startIndent + 1);
+                    SyntaxNode[] arr = GetAttributesSyntax(fields[i], bodyIndent);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
@@ -714,7 +731,7 @@ namespace CilTools.Syntax
                 {
                     if (ReflectionUtils.IsExpectedException(ex))
                     {
-                        CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                        CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(bodyIndent),
                             "Failed to show field custom attributes. " + ReflectionUtils.GetErrorShortString(ex), null, false);
 
                         inner.Add(cs);
@@ -724,7 +741,7 @@ namespace CilTools.Syntax
                     else throw;
                 }
 
-                DirectiveSyntax field = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1),
+                DirectiveSyntax field = new DirectiveSyntax(SyntaxUtils.GetIndentString(bodyIndent),
                     "field", inner.ToArray());
                 content.Add(field);
             }
@@ -875,29 +892,32 @@ namespace CilTools.Syntax
             if (full)
             {
                 //constructors
-                ConstructorInfo[] constructors;
+                if (!isModuleType)
+                {
+                    ConstructorInfo[] constructors;
 
-                try
-                {
-                    constructors = t.GetConstructors(ReflectionUtils.AllMembers);
-                }
-                catch (Exception ex)
-                {
-                    if (ReflectionUtils.IsExpectedException(ex))
+                    try
                     {
-                        content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
-                            "NOTE: Constructors are not shown.", null, false));
-                        constructors = new ConstructorInfo[0];
+                        constructors = t.GetConstructors(ReflectionUtils.AllMembers);
                     }
-                    else throw;
-                }
+                    catch (Exception ex)
+                    {
+                        if (ReflectionUtils.IsExpectedException(ex))
+                        {
+                            content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                                "NOTE: Constructors are not shown.", null, false));
+                            constructors = new ConstructorInfo[0];
+                        }
+                        else throw;
+                    }
 
-                for (int i = 0; i < constructors.Length; i++)
-                {
-                    CilGraph gr = CilGraph.Create(constructors[i]);
-                    MethodDefSyntax mds = gr.ToSyntaxTreeImpl(disassemblerParams, startIndent + 1);
-                    content.Add(mds);
-                    content.Add(new GenericSyntax(Environment.NewLine));
+                    for (int i = 0; i < constructors.Length; i++)
+                    {
+                        CilGraph gr = CilGraph.Create(constructors[i]);
+                        MethodDefSyntax mds = gr.ToSyntaxTreeImpl(disassemblerParams, startIndent + 1);
+                        content.Add(mds);
+                        content.Add(new GenericSyntax(Environment.NewLine));
+                    }
                 }
 
                 //methods
@@ -911,17 +931,23 @@ namespace CilTools.Syntax
                 {
                     if (ReflectionUtils.IsExpectedException(ex))
                     {
-                        content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                        content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(bodyIndent),
                             "NOTE: Methods are not shown.", null, false));
                         methods = new MethodInfo[0];
                     }
                     else throw;
                 }
 
+                if (isModuleType && methods.Length > 0)
+                {
+                    CommentSyntax cs = CommentSyntax.Create(string.Empty, " *** Global functions ***", null, false);
+                    content.Add(cs);
+                }
+
                 for (int i = 0; i < methods.Length; i++)
                 {
                     CilGraph gr = CilGraph.Create(methods[i]);
-                    MethodDefSyntax mds = gr.ToSyntaxTreeImpl(disassemblerParams, startIndent + 1);
+                    MethodDefSyntax mds = gr.ToSyntaxTreeImpl(disassemblerParams, bodyIndent);
                     content.Add(mds);
                     content.Add(new GenericSyntax(Environment.NewLine));
                 }
@@ -967,16 +993,28 @@ namespace CilTools.Syntax
             else
             {
                 //add comment to indicate that not all members are listed here
-                content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1), "...", null, false));
+                content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(bodyIndent), "...", null, false));
                 content.Add(new GenericSyntax(Environment.NewLine));
             }
 
-            BlockSyntax body = new BlockSyntax(SyntaxUtils.GetIndentString(startIndent),
-                SyntaxNode.EmptyArray, content.ToArray());
+            if (!isModuleType)
+            {
+                // Normal type is printed as block
+                BlockSyntax body = new BlockSyntax(SyntaxUtils.GetIndentString(startIndent),
+                    SyntaxNode.EmptyArray, content.ToArray());
 
-            for (int i = 0; i < body._children.Count; i++) body._children[i]._parent = body;
+                for (int i = 0; i < body._children.Count; i++) body._children[i]._parent = body;
 
-            yield return body;
+                yield return body;
+            }
+            else
+            {
+                // Global fields and functions are just printed at root level
+                for (int i = 0; i < content.Count; i++)
+                {
+                    yield return content[i];
+                }
+            }
         }
     }
 }
