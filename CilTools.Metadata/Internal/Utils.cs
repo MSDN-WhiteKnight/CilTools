@@ -508,5 +508,24 @@ namespace CilTools.Internal
 
             return sb.ToString();
         }
+
+        public static CallingConventions CallingConventionFromSig(Signature sig)
+        {
+            CallingConventions ret = (CallingConventions)0;
+
+            if (sig.CallingConvention == CallingConvention.Vararg)
+            {
+                ret = CallingConventions.VarArgs;
+            }
+            else if (sig.CallingConvention == CallingConvention.Default)
+            {
+                ret = CallingConventions.Standard;
+            }
+
+            if (sig.HasThis) ret |= CallingConventions.HasThis;
+            if (sig.ExplicitThis) ret |= CallingConventions.ExplicitThis;
+
+            return ret;
+        }
     }
 }

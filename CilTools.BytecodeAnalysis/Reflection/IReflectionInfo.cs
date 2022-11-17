@@ -78,6 +78,11 @@ namespace CilTools.Reflection
         public const int VTableEntry = 108;
 
         /// <summary>
+        /// Represents a method signature. (Type: Signature)
+        /// </summary>
+        public const int Signature = 109;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>

@@ -415,6 +415,7 @@ namespace CilTools.BytecodeAnalysis
         {
             List<SyntaxNode> children = new List<SyntaxNode>(50);
             Type t = m.DeclaringType;
+            int sentinelPos = -1;
 
             //we only query parameter types so no need to resolve external references
             ParameterInfo[] pars = ReflectionUtils.GetMethodParams(m, RefResolutionMode.NoResolve);
@@ -459,6 +460,14 @@ namespace CilTools.BytecodeAnalysis
             if (!ReflectionUtils.IsMethodStatic(m))
             {
                 children.Add(new KeywordSyntax("", "instance", " ", KeywordKind.Other));
+            }
+
+            if (m.CallingConvention == CallingConventions.VarArgs)
+            {
+                children.Add(new KeywordSyntax("", "vararg", " ", KeywordKind.Other));
+
+                Signature sig = ReflectionProperties.Get(m, ReflectionProperties.Signature) as Signature;
+                sentinelPos = sig.SentinelPosition;
             }
 
             foreach (SyntaxNode node in rt) children.Add(node);
@@ -509,9 +518,16 @@ namespace CilTools.BytecodeAnalysis
             {
                 if (i >= 1) children.Add(new PunctuationSyntax("",","," "));
 
-                 IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(pars[i].ParameterType);
+                if (i == sentinelPos)
+                {
+                    // Varargs sentinel position (ECMA-335 II.23.2.2 - MethodRefSig)
+                    children.Add(new PunctuationSyntax(string.Empty, "...", " "));
+                    children.Add(new PunctuationSyntax(string.Empty, ",", " "));
+                }
 
-                 foreach(SyntaxNode node in syntax) children.Add(node);
+                IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(pars[i].ParameterType);
+
+                foreach(SyntaxNode node in syntax) children.Add(node);
             }
 
             children.Add(new PunctuationSyntax("",")",""));

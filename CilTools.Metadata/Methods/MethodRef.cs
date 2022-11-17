@@ -145,6 +145,16 @@ namespace CilTools.Metadata.Methods
             }
         }
 
+        public override CallingConventions CallingConvention
+        {
+            get
+            {
+                if (this.sig == null) return base.CallingConvention;
+
+                return Utils.CallingConventionFromSig(this.sig);
+            }
+        }
+
         /// <inheritdoc/>
         public override MethodImplAttributes GetMethodImplementationFlags()
         {
@@ -224,6 +234,7 @@ namespace CilTools.Metadata.Methods
             //Avoids MethodBase.IsStatic that calls .Attributes and resolves implementation
 
             if (id == ReflectionProperties.IsStatic) return !this.sig.HasThis;
+            else if (id == ReflectionProperties.Signature) return this.sig;
             else return null;
         }
 

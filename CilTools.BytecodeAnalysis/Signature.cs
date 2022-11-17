@@ -30,6 +30,7 @@ namespace CilTools.BytecodeAnalysis
         TypeSpec _ReturnType;
         TypeSpec[] _ParamTypes;
         SignatureContext _ctx;
+        int _sentinelPos;
 
         /// <summary>
         /// Initializes a new Signature object representing a stand-alone method signature
@@ -186,11 +187,28 @@ namespace CilTools.BytecodeAnalysis
                 uint paramcount = MetadataReader.ReadCompressed(src);
                 this._ParamTypes = new TypeSpec[paramcount];
                 this._ReturnType = TypeSpec.ReadFromStream(src, ctx, null);
+                int sentinelPos = -1;
 
                 for (int i = 0; i < paramcount; i++)
                 {
-                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, ctx, null);
+                    TypeSpec paramTypeSpec = TypeSpec.ReadFromStream(src, ctx, null);
+
+                    if (paramTypeSpec.ElementType == ElementType.Sentinel)
+                    {
+                        //skip vararg sentinel
+                        sentinelPos = i;
+                        paramTypeSpec = TypeSpec.ReadFromStream(src, ctx, null);
+                    }
+
+                    this._ParamTypes[i] = paramTypeSpec;
                 }
+
+                if (this._conv == CallingConvention.Vararg && sentinelPos == -1)
+                {
+                    sentinelPos = (int)paramcount; //vararg sentinel is after last parameter 
+                }
+
+                this._sentinelPos = sentinelPos;
             }
         }
 
@@ -278,6 +296,8 @@ namespace CilTools.BytecodeAnalysis
         public int GenericArgsCount { get { return this._GenParamCount; } }
 
         internal SignatureContext Context { get { return this._ctx; } }
+
+        internal int SentinelPosition { get { return this._sentinelPos; } }
 
         /// <summary>
         /// Gets the type of parameter with the specified index

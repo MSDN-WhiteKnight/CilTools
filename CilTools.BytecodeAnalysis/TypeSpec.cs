@@ -562,7 +562,14 @@ namespace CilTools.BytecodeAnalysis
         public override Type BaseType => this._Type.BaseType;
 
         /// <inheritdoc/>
-        public override Type UnderlyingSystemType => this._Type.UnderlyingSystemType;
+        public override Type UnderlyingSystemType
+        {
+            get
+            {
+                if (this._Type == null) return null;
+                else return this._Type.UnderlyingSystemType;
+            }
+        }
 
         /// <inheritdoc/>
         public override string Name => this._Type.Name;
@@ -683,6 +690,7 @@ namespace CilTools.BytecodeAnalysis
         /// <inheritdoc/>
         protected override bool IsByRefImpl()
         {
+            if (this._Type == null) return false;
             return this._Type.IsByRef;
         }
 
@@ -785,7 +793,7 @@ namespace CilTools.BytecodeAnalysis
         {
             get
             {
-                if (this._Type.IsByRef) return false;
+                if (this._Type != null && this._Type.IsByRef) return false;
 
                 return this._ElementType == (byte)ElementType.Var ||
                     this._ElementType == (byte)ElementType.MVar;

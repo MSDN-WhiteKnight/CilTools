@@ -251,21 +251,7 @@ namespace CilTools.Metadata.Methods
             {
                 if (this.sig == null) return base.CallingConvention;
 
-                CallingConventions ret = (CallingConventions)0;
-
-                if (this.sig.CallingConvention == BytecodeAnalysis.CallingConvention.Vararg)
-                {
-                    ret = CallingConventions.VarArgs;
-                }
-                else if(this.sig.CallingConvention == BytecodeAnalysis.CallingConvention.Default)
-                {
-                    ret = CallingConventions.Standard;
-                }
-
-                if (this.sig.HasThis) ret |= CallingConventions.HasThis;
-                if (this.sig.ExplicitThis) ret |= CallingConventions.ExplicitThis;
-
-                return ret;
+                return Utils.CallingConventionFromSig(this.sig);
             }
         }
 
@@ -413,6 +399,10 @@ namespace CilTools.Metadata.Methods
                 {
                     return (slot.TableIndex + 1).ToString() + " : " + (slot.SlotIndex + 1).ToString();
                 }
+            }
+            else if (id == ReflectionProperties.Signature)
+            {
+                return this.sig;
             }
             else
             {
