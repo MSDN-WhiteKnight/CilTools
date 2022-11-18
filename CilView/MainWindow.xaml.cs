@@ -30,6 +30,7 @@ namespace CilView
     public partial class MainWindow : Window
     {
         AssemblySource source;
+        HistoryContainer<string> recentFiles = new HistoryContainer<string>();
 
         void SetSource(AssemblySource newval)
         {
@@ -146,6 +147,28 @@ namespace CilView
             }
         }
 
+        void UpdateRecentFilesMenu()
+        {
+            miRecent.Items.Clear();
+            
+            foreach (string item in this.recentFiles.Items)
+            {
+                MenuItem mi = new MenuItem();
+                mi.Header = item;
+                mi.Click += RecentFilesMenu_Click;
+                miRecent.Items.Add(mi);
+            }                        
+        }
+
+        private void RecentFilesMenu_Click(object sender, RoutedEventArgs e)
+        {
+            MenuItem mi = sender as MenuItem;
+
+            if (mi == null) return;
+
+            this.OpenFile(mi.Header.ToString());
+        }
+
         void OpenAssembly(string assemblyPath) 
         {
             ProgressWindow pwnd;
@@ -186,6 +209,9 @@ namespace CilView
         {
             try
             {
+                this.recentFiles.Add(file);
+                this.UpdateRecentFilesMenu();
+
                 string assemblyPath = String.Empty;
 
                 if (file.EndsWith(".csproj", StringComparison.OrdinalIgnoreCase) ||

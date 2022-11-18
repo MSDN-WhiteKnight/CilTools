@@ -113,6 +113,7 @@
     <Compile Include="Build\ProjectGenerator.cs" />
     <Compile Include="Build\ProjectInfo.cs" />
     <Compile Include="Common\Audio.cs" />
+    <Compile Include="Common\HistoryContainer.cs" />
     <Compile Include="Common\WpfUtils.cs" />
     <Compile Include="IlasmAssemblySource.cs" />
     <Compile Include="Exceptions\ExceptionInfo.cs" />

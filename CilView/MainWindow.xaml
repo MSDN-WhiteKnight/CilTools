@@ -10,6 +10,9 @@
                 <MenuItem Header="Open process" Click="bOpenProcess_Click"/>
                 <MenuItem x:Name="miOpenBCL" Header="Open BCL assembly" Click="miOpenBCL_Click"/>
                 <MenuItem x:Name="miOpenCode" Header="Open code" Click="miOpenCode_Click" />
+                <MenuItem x:Name="miRecent" Header="Recent files" >
+                    <MenuItem Header="(none)" IsEnabled="False"/>
+                </MenuItem>
                 <Separator/>
                 <MenuItem x:Name="miExportMethod" Header="Export to file" Click="miExportMethod_Click"/>
                 <MenuItem x:Name="miExportType" Header="Export type to file" Click="miExportType_Click"/>
