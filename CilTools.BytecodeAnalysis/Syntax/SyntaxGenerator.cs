@@ -183,6 +183,26 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
+        internal static bool IsBuiltInAttribute(Type t)
+        {
+            if (string.Equals(t.FullName, "System.Runtime.InteropServices.OptionalAttribute",
+                StringComparison.Ordinal))
+            {
+                //OptionalAttribute is translated to [opt]
+                return true;
+            }
+            else if (string.Equals(t.FullName, "System.SerializableAttribute", StringComparison.Ordinal))
+            {
+                //SerializableAttribute is represented by built-in attribute flag, but runtime reflection still
+                //synthesizes it
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
         internal static void GetAttributeSyntax(object attr, int indent, List<SyntaxNode> ret)
         {
             string content;
@@ -194,12 +214,7 @@ namespace CilTools.Syntax
             {
                 ICustomAttribute ca = (ICustomAttribute)attr;
 
-                if (string.Equals(ca.Constructor.DeclaringType.FullName,
-                    "System.Runtime.InteropServices.OptionalAttribute", StringComparison.Ordinal))
-                {
-                    //OptionalAttribute translated to [opt]
-                    return;
-                }
+                if (IsBuiltInAttribute(ca.Constructor.DeclaringType)) return;
 
                 List<SyntaxNode> children = new List<SyntaxNode>();
                 MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor, inlineTok: false, forceTypeSpec: false);
@@ -225,12 +240,7 @@ namespace CilTools.Syntax
             //from reflection
             Type t = attr.GetType();
 
-            if (string.Equals(t.FullName, "System.Runtime.InteropServices.OptionalAttribute",
-                StringComparison.Ordinal))
-            {
-                //OptionalAttribute translated to [opt]
-                return;
-            }
+            if (IsBuiltInAttribute(t)) return;
 
             ConstructorInfo[] constr = t.GetConstructors();
             string s_attr;
@@ -485,8 +495,9 @@ namespace CilTools.Syntax
                 content.Add(new KeywordSyntax(String.Empty, "sealed", " ", KeywordKind.Other));
             }
 
-            if (t.IsSerializable)
+            if ((t.Attributes & TypeAttributes.Serializable) != 0)
             {
+                //Type.IsSerializable considers base type, but we need a raw flag value here
                 content.Add(new KeywordSyntax(String.Empty, "serializable", " ", KeywordKind.Other));
             }
 

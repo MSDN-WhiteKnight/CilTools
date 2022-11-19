@@ -13,6 +13,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.BytecodeAnalysis.Tests.Syntax
 {
+    [Serializable]
+    public class SerializableTestType
+    {
+        public int A;
+        public byte B;
+    }
+
     [TestClass]
     public class SyntaxNodeTests
     {
@@ -152,6 +159,51 @@ extends [mscorlib]System.Enum
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
             string s = Utils.SyntaxToString(nodes);
             AssertThat.CilEquals(expected, s);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(BytecodeProviders), BytecodeProviders.Reflection)]
+        public void Test_GetTypeDefSyntax_Enum_Reflection(Type t)
+        {
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+
+            AssertThat.IsMatch(s, new Text[] {
+                ".class public auto ansi sealed CilTools.Tests.Common.BytecodeProviders", Text.Any,
+                ".field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders Reflection",
+                " = int32(1)", Text.Any,
+                ".field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders Metadata",
+                " = int32(2)", Text.Any,
+                ".field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders All",
+                " = int32(3)", Text.Any,
+            });
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(SerializableTestType), BytecodeProviders.All)]
+        public void Test_GetTypeDefSyntax_Serializable(Type t)
+        {
+            const string expected = @"
+.class public auto ansi serializable beforefieldinit CilTools.BytecodeAnalysis.Tests.Syntax.SerializableTestType
+extends [mscorlib]System.Object
+{
+ .field public int32 A
+ .field public uint8 B
+
+ //...
+}";
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.CilEquals(expected, s);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(SampleMethods), BytecodeProviders.All)]
+        public void Test_GetTypeDefSyntax_NonSerializable(Type t)
+        {
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+            Assert.IsFalse(s.Contains("serializable"));
         }
     }
 }
