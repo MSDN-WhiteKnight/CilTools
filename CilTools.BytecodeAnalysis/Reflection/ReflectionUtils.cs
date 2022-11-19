@@ -147,6 +147,28 @@ namespace CilTools.Reflection
             else return method.IsStatic;
         }
 
+        public static bool IsEnumType(Type t)
+        {
+            Type baseType = null;
+
+            try
+            {
+                baseType = t.BaseType;
+            }
+            catch (Exception ex)
+            {
+                if (IsExpectedException(ex))
+                {
+                    Diagnostics.OnError(t, new CilErrorEventArgs(ex, "Failed to get base type"));
+                }
+                else throw;
+            }
+
+            if (baseType == null) return false;
+
+            return string.Equals(baseType.FullName, "System.Enum", StringComparison.InvariantCulture);
+        }
+
         public static string GetConstantValueString(Type t, object constant)
         {
             StringBuilder sb = new StringBuilder(100);
@@ -167,6 +189,14 @@ namespace CilTools.Reflection
                     ushort val = Convert.ToUInt16(constant);
                     output.Write("0x");
                     output.Write(val.ToString("X4", CultureInfo.InvariantCulture));
+                    output.Write(')');
+                }
+                else if (IsEnumType(t))
+                {
+                    //use enum underlying numeric type
+                    output.Write(CilAnalysis.GetTypeName(constant.GetType()));
+                    output.Write('(');
+                    output.Write(Convert.ToString(constant, CultureInfo.InvariantCulture));
                     output.Write(')');
                 }
                 else //most of the types...

@@ -131,5 +131,27 @@ extends [CilTools.Tests.Common]CilTools.Tests.Common.DisassemblerSampleType {
                 "}", Text.Any
             });
         }
+
+        [TestMethod]        
+        [TypeTestData(typeof(BytecodeProviders), BytecodeProviders.Metadata)]
+        public void Test_GetTypeDefSyntax_Enum(Type t)
+        {
+            const string expected = @".class public auto ansi sealed CilTools.Tests.Common.BytecodeProviders
+extends [mscorlib]System.Enum
+{
+ .custom instance void [mscorlib]System.FlagsAttribute::.ctor() = ( 01 00 00 00 )
+
+ .field public specialname rtspecialname int32 value__
+ .field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders Reflection = int32(1)
+ .field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders Metadata = int32(2)
+ .field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders All = int32(3)
+
+ //...
+
+}";
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.CilEquals(expected, s);
+        }
     }
 }
