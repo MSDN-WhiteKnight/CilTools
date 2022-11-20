@@ -21,6 +21,14 @@ namespace CilTools.BytecodeAnalysis.Tests
         public string this[int i] { get { return i.ToString(); } }
     }
 
+    public class StaticPropertyTest
+    {
+        public static StaticPropertyTest Value
+        {
+            get { return new StaticPropertyTest(); }
+        }
+    }
+
     [TestClass]
     public class SyntaxTests
     {
@@ -271,6 +279,27 @@ extends [mscorlib]System.Object {
  }
 
  //...
+}";
+
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.CilEquals(expected, s);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(StaticPropertyTest), BytecodeProviders.All)]
+        public void Test_StaticProperty(Type t)
+        {
+            string expected = @".class public auto ansi beforefieldinit CilTools.BytecodeAnalysis.Tests.StaticPropertyTest
+extends [mscorlib]System.Object
+{
+ .property class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest Value()
+ {
+  .get class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest::get_Value()
+ }
+
+ //...
+
 }";
 
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);

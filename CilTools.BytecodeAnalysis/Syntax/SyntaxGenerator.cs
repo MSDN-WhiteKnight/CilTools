@@ -795,12 +795,8 @@ namespace CilTools.Syntax
                 if (props[i].CanWrite) setter = GetPropertyMethod(props[i], "set");
 
                 if (getter != null && getter.IsStatic) isStatic = true;
-
-                if (isStatic)
-                {
-                    inner.Add(new KeywordSyntax(string.Empty, "static", " ", KeywordKind.Other));
-                }
-                else
+                
+                if (!isStatic)
                 {
                     inner.Add(new KeywordSyntax(string.Empty, "instance", " ", KeywordKind.Other));
                 }
