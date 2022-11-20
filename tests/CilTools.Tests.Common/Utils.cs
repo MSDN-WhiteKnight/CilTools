@@ -47,6 +47,15 @@ namespace CilTools.Tests.Common
 #endif
         }
 
+        public static bool IsDebugBuild()
+        {
+#if DEBUG
+            return true;
+#else
+            return false;
+#endif
+        }
+
         public static string GetSampleAppPath()
         {
             AssemblyName an = typeof(object).Assembly.GetName();

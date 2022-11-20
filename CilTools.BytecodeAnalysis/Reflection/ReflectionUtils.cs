@@ -191,6 +191,11 @@ namespace CilTools.Reflection
                     output.Write(val.ToString("X4", CultureInfo.InvariantCulture));
                     output.Write(')');
                 }
+                else if (constant.GetType() == typeof(bool))
+                {
+                    if((bool)constant) output.Write("bool(true)");
+                    else output.Write("bool(false)");
+                }
                 else if (IsEnumType(t))
                 {
                     //use enum underlying numeric type

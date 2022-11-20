@@ -29,6 +29,14 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
     }
 
+    public class ConstantsTest
+    {
+        public const bool Truth = true;
+        public const int One = 1;
+        public const string PlanetName = "Earth";
+        public const object NullValue = null;
+    }
+
     [TestClass]
     public class SyntaxTests
     {
@@ -305,6 +313,23 @@ extends [mscorlib]System.Object
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
             string s = Utils.SyntaxToString(nodes);
             AssertThat.CilEquals(expected, s);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(ConstantsTest), BytecodeProviders.All)]
+        public void Test_Constants(Type t)
+        {
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string s = Utils.SyntaxToString(nodes);
+            
+            AssertThat.IsMatch(s, new Text[] {
+                ".class", Text.Any,"public", Text.Any,"ConstantsTest", Text.Any,"{", Text.Any,
+                ".field public static literal bool Truth = bool(true)", Text.Any,
+                ".field public static literal int32 One = int32(1)", Text.Any,
+                ".field public static literal string PlanetName = \"Earth\"", Text.Any,
+                ".field public static literal object NullValue = nullref", Text.Any,
+                "}", Text.Any
+            });
         }
     }
 }
