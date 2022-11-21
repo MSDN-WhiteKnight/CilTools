@@ -331,5 +331,17 @@ extends [mscorlib]System.Object
                 "}", Text.Any
             });
         }
+
+        [TestMethod]
+        [TypeTestData(typeof(TypeWithProperties), BytecodeProviders.All)]
+        public void Test_PropertyAccessor(Type t)
+        {
+            MethodInfo mi = t.GetProperty("Name").GetGetMethod();
+            CilGraph gr = CilGraph.Create(mi);
+            string s = gr.ToString();
+
+            string expected = ".method public hidebysig specialname instance string get_Name() cil managed";
+            AssertThat.AreLexicallyEqual(expected, s);
+        }
     }
 }

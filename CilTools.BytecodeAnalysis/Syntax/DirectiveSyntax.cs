@@ -120,6 +120,7 @@ namespace CilTools.Syntax
             
             List<SyntaxNode> inner = new List<SyntaxNode>(100);
 
+            // ECMA-335 II.15.4.2 - Predefined attributes on methods
             if (m.IsPublic)
             {
                 inner.Add(new KeywordSyntax(string.Empty, "public", string.Empty, KeywordKind.Other));
@@ -153,6 +154,13 @@ namespace CilTools.Syntax
             if (m.IsVirtual) inner.Add(new KeywordSyntax(" ", "virtual", String.Empty, KeywordKind.Other));
 
             if(m.IsFinal) inner.Add(new KeywordSyntax(" ", "final", String.Empty, KeywordKind.Other));
+
+            if (m.IsSpecialName) inner.Add(new KeywordSyntax(" ", "specialname", String.Empty, KeywordKind.Other));
+
+            if ((m.Attributes & MethodAttributes.RTSpecialName) == MethodAttributes.RTSpecialName)
+            {
+                inner.Add(new KeywordSyntax(" ", "rtspecialname", String.Empty, KeywordKind.Other));
+            }
 
             if (m.IsStatic) inner.Add(new KeywordSyntax(" ", "static", " ", KeywordKind.Other));
             else inner.Add(new KeywordSyntax(" ", "instance", " ", KeywordKind.Other));

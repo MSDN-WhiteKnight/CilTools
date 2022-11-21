@@ -366,7 +366,8 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             CilGraph graph = CilGraph.Create(ci);
             string str = graph.ToText();
-            AssertThat.CilContains(str, ".method private hidebysig static void .cctor() cil managed");
+            string expected = ".method private hidebysig specialname rtspecialname static void .cctor() cil managed";
+            AssertThat.CilContains(str, expected);
         }
 
         [TestMethod]
@@ -378,7 +379,8 @@ namespace CilTools.BytecodeAnalysis.Tests
 
             CilGraph graph = CilGraph.Create(ci);
             string str = graph.ToText();
-            AssertThat.CilContains(str, ".method public hidebysig instance void .ctor() cil managed");
+            string expected = ".method public hidebysig specialname rtspecialname instance void .ctor() cil managed";
+            AssertThat.CilContains(str, expected);
         }
 
         public static void TestTokens_GenericType()
