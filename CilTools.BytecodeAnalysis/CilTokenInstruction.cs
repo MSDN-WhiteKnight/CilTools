@@ -117,7 +117,8 @@ namespace CilTools.BytecodeAnalysis
 
                 if (called_method != null)
                 {
-                    yield return CilAnalysis.GetMethodRefSyntax(called_method, inlineTok: false, forceTypeSpec: false);
+                    yield return CilAnalysis.GetMethodRefSyntax(called_method, inlineTok: false, 
+                        forceTypeSpec: false, skipAssembly: false);
                 }
                 else
                 {
@@ -144,7 +145,7 @@ namespace CilTools.BytecodeAnalysis
                     //append declaring type
                     if (t != null && !CilAnalysis.IsModuleType(t))
                     {
-                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t);
+                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false);
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
                         children.Add(new PunctuationSyntax("", "::", ""));
@@ -169,7 +170,8 @@ namespace CilTools.BytecodeAnalysis
 
                 if (t != null)
                 {
-                    yield return new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntaxAuto(t).ToArray(),t);
+                    IEnumerable<SyntaxNode> referencedTypeNodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false);
+                    yield return new MemberRefSyntax(referencedTypeNodes.ToArray(), t);
                 }
                 else
                 {
@@ -205,12 +207,13 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (mi is TypeSpec)
                     {
-                        yield return new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntaxAuto((Type)mi).ToArray(), mi);
+                        SyntaxNode[] nodes = CilAnalysis.GetTypeSpecSyntaxAuto((Type)mi, skipAssembly: false).ToArray();
+                        yield return new MemberRefSyntax(nodes, mi);
                     }
                     else if (mi is Type)
                     {
                         //use TypeSpec syntax to avoid resolving external references
-                        SyntaxNode[] nodes = CilAnalysis.GetTypeSyntax((Type)mi, isspec: true).ToArray();
+                        SyntaxNode[] nodes = CilAnalysis.GetTypeSyntax((Type)mi, isspec: true, skipAssembly: false).ToArray();
                         yield return new MemberRefSyntax(nodes, mi);
                     }
                     else if (mi is FieldInfo)
@@ -225,7 +228,7 @@ namespace CilTools.BytecodeAnalysis
 
                         children.Add(new GenericSyntax(" "));
 
-                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t);
+                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false);
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
                         children.Add(new PunctuationSyntax("", "::", ""));
@@ -236,7 +239,7 @@ namespace CilTools.BytecodeAnalysis
                     else if (mi is MethodBase)
                     {
                         MethodBase mb = (MethodBase)mi;
-                        yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false);
+                        yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false, skipAssembly: false);
                     }
                     else
                     {

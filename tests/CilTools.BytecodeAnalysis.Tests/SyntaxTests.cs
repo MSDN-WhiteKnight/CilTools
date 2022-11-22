@@ -232,19 +232,19 @@ extends [mscorlib]System.Object {
  .custom instance void [mscorlib]System.Diagnostics.DebuggerBrowsableAttribute::.ctor(valuetype [mscorlib]System.Diagnostics.DebuggerBrowsableState) = ( 01 00 00 00 00 00 00 00 )
 
  .event [mscorlib]System.Action A {
-  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
-  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
+  .addon instance void CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
+  .removeon instance void CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
  }
 
  .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
   .custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 04 00 00 00 00 00 )
-  .addon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
-  .removeon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+  .addon void CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+  .removeon void CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
  }
 
  .event class [mscorlib]System.Action`1<int32> C {
-  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_C(class [mscorlib]System.Action`1<int32>)
-  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_C(class [mscorlib]System.Action`1<int32>)
+  .addon instance void CilTools.Tests.Common.TestData.EventsSample::add_C(class [mscorlib]System.Action`1<int32>)
+  .removeon instance void CilTools.Tests.Common.TestData.EventsSample::remove_C(class [mscorlib]System.Action`1<int32>)
  }
 
  //... 
@@ -271,19 +271,19 @@ extends [mscorlib]System.Object {
  //.custom instance void [mscorlib]System.Diagnostics.DebuggerBrowsableAttribute::.ctor(valuetype [mscorlib]System.Diagnostics.DebuggerBrowsableState)
 
  .event [mscorlib]System.Action A {
-  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
-  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
+  .addon instance void CilTools.Tests.Common.TestData.EventsSample::add_A(class [mscorlib]System.Action)
+  .removeon instance void CilTools.Tests.Common.TestData.EventsSample::remove_A(class [mscorlib]System.Action)
  }
 
  .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
   //.custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)
-  .addon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
-  .removeon void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+  .addon void CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
+  .removeon void CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
  }
 
  .event class [mscorlib]System.Action`1<int32> C {
-  .addon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::add_C(class [mscorlib]System.Action`1<int32>)
-  .removeon instance void [CilTools.Tests.Common]CilTools.Tests.Common.TestData.EventsSample::remove_C(class [mscorlib]System.Action`1<int32>)
+  .addon instance void CilTools.Tests.Common.TestData.EventsSample::add_C(class [mscorlib]System.Action`1<int32>)
+  .removeon instance void CilTools.Tests.Common.TestData.EventsSample::remove_C(class [mscorlib]System.Action`1<int32>)
  }
 
  //...
@@ -303,7 +303,7 @@ extends [mscorlib]System.Object
 {
  .property class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest Value()
  {
-  .get class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest::get_Value()
+  .get class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest CilTools.BytecodeAnalysis.Tests.StaticPropertyTest::get_Value()
  }
 
  //...

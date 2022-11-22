@@ -405,13 +405,15 @@ namespace CilTools.BytecodeAnalysis
                 if (mOverridden.DeclaringType.IsGenericType)
                 {
                     //long form - prefixed with method as inline token form
-                    MemberRefSyntax mrs = CilAnalysis.GetMethodRefSyntax(mOverridden, inlineTok: true, forceTypeSpec: false);
+                    MemberRefSyntax mrs = CilAnalysis.GetMethodRefSyntax(mOverridden, inlineTok: true, 
+                        forceTypeSpec: false, skipAssembly: false);
+
                     list.Add(mrs);
                     list.Add(new GenericSyntax(Environment.NewLine));
                 }
                 else
                 {
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(mOverridden.DeclaringType);
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(mOverridden.DeclaringType, skipAssembly: false);
 
                     foreach (SyntaxNode node in nodes)
                     {
@@ -765,7 +767,7 @@ namespace CilTools.BytecodeAnalysis
 
                         if (t != null)
                         {
-                            IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t);
+                            IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false);
                             foreach (SyntaxNode x in nodes) header_nodes.Add(x);
                         }
 

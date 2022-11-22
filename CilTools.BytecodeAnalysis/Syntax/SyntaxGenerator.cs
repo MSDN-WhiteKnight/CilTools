@@ -63,7 +63,7 @@ namespace CilTools.Syntax
                 {
                     if(i>=1) ret.Add(new PunctuationSyntax(string.Empty, ",", " "));
 
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(constrs[i]);
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(constrs[i], skipAssembly: false);
 
                     foreach (SyntaxNode node in nodes) ret.Add(node);
                 }
@@ -89,7 +89,9 @@ namespace CilTools.Syntax
                     inner.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
                 }
 
-                IEnumerable<SyntaxNode> eventTypeSyntax = CilAnalysis.GetTypeSpecSyntaxAuto(events[i].EventHandlerType);
+                IEnumerable<SyntaxNode> eventTypeSyntax = CilAnalysis.GetTypeSpecSyntaxAuto(
+                    events[i].EventHandlerType, skipAssembly: false);
+
                 inner.Add(new MemberRefSyntax(eventTypeSyntax.ToArray(), events[i].EventHandlerType));
 
                 inner.Add(new IdentifierSyntax(" ", events[i].Name, Environment.NewLine, true, events[i]));
@@ -125,7 +127,8 @@ namespace CilTools.Syntax
 
                 if (adder != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(adder, inlineTok: false, forceTypeSpec: true);
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(adder, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirAdd = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "addon", new SyntaxNode[] { mref });
@@ -138,7 +141,8 @@ namespace CilTools.Syntax
 
                 if (remover != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(remover, inlineTok: false, forceTypeSpec: true);
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(remover, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirRemove = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "removeon", new SyntaxNode[] { mref });
@@ -151,7 +155,8 @@ namespace CilTools.Syntax
 
                 if (raiser != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(raiser, inlineTok: false, forceTypeSpec: true);
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(raiser, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirFire = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "fire", new SyntaxNode[] { mref });
@@ -217,7 +222,10 @@ namespace CilTools.Syntax
                 if (IsBuiltInAttribute(ca.Constructor.DeclaringType)) return;
 
                 List<SyntaxNode> children = new List<SyntaxNode>();
-                MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor, inlineTok: false, forceTypeSpec: false);
+
+                MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor, inlineTok: false, 
+                    forceTypeSpec: false, skipAssembly: false);
+
                 children.Add(mref);
                 children.Add(new PunctuationSyntax(" ", "=", " "));
                 children.Add(new PunctuationSyntax("", "(", " "));
@@ -258,7 +266,10 @@ namespace CilTools.Syntax
                 {
                     //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
                     List<SyntaxNode> children = new List<SyntaxNode>();
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0], inlineTok: false, forceTypeSpec: false);
+
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0], inlineTok: false, 
+                        forceTypeSpec: false, skipAssembly: false);
+
                     children.Add(mref);
                     children.Add(new PunctuationSyntax(" ", "=", " "));
                     children.Add(new PunctuationSyntax("", "(", " "));
@@ -552,7 +563,9 @@ namespace CilTools.Syntax
 
                 try
                 {
-                    content.Add(new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntaxAuto(t.BaseType).ToArray(), t.BaseType));
+                    IEnumerable<SyntaxNode> baseTypeNodes = CilAnalysis.GetTypeSpecSyntaxAuto(t.BaseType, skipAssembly: false);
+                    MemberRefSyntax mrsBaseType = new MemberRefSyntax(baseTypeNodes.ToArray(), t.BaseType);
+                    content.Add(mrsBaseType);
                 }
                 catch (TypeLoadException ex)
                 {
@@ -589,9 +602,8 @@ namespace CilTools.Syntax
                         content.Add(new PunctuationSyntax(String.Empty, ",", Environment.NewLine));
                     }
 
-                    content.Add(
-                        new MemberRefSyntax(CilAnalysis.GetTypeSpecSyntaxAuto(interfaces[i]).ToArray(), interfaces[i])
-                        );
+                    IEnumerable<SyntaxNode> ifNodes = CilAnalysis.GetTypeSpecSyntaxAuto(interfaces[i], skipAssembly: false);
+                    content.Add(new MemberRefSyntax(ifNodes.ToArray(), interfaces[i]));
                 }
 
                 content.Add(new GenericSyntax(Environment.NewLine));
@@ -847,7 +859,8 @@ namespace CilTools.Syntax
                 //property methods
                 if (getter != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(getter, inlineTok: false, forceTypeSpec: true);
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(getter, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirGet = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "get", new SyntaxNode[] { mref });
@@ -858,7 +871,8 @@ namespace CilTools.Syntax
 
                 if (setter != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(setter, inlineTok: false, forceTypeSpec: true);
+                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(setter, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirSet = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "set", new SyntaxNode[] { mref });
@@ -866,6 +880,11 @@ namespace CilTools.Syntax
                     inner.Add(dirSet);
                     inner.Add(new GenericSyntax(Environment.NewLine));
                 }
+
+                // Property method references skip assembly name, because ilasm dies when it encounters syntax like
+                //     .get int32 [MyAssembly]MyType::get_X()
+                // Probably accessors from different assemblies are not supported; ECMA spec is not clear whether
+                // they should be.
 
                 inner.Add(new PunctuationSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "}",
                     Environment.NewLine + Environment.NewLine));

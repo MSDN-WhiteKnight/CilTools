@@ -67,12 +67,10 @@ namespace CilTools.BytecodeAnalysis
                 yield return new KeywordSyntax(" ", "modopt", String.Empty, KeywordKind.Other);
 
             yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
-
-            IEnumerable<SyntaxNode> ts;
-
+            
             if (this._Type != null)
             {
-                ts = CilAnalysis.GetTypeSpecSyntaxAuto(this._Type);
+                IEnumerable<SyntaxNode> ts = CilAnalysis.GetTypeSpecSyntaxAuto(this._Type, skipAssembly: false);
                 foreach (SyntaxNode node in ts) yield return node;
             }
             else

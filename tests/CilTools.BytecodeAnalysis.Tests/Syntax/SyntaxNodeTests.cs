@@ -132,8 +132,8 @@ extends [CilTools.Tests.Common]CilTools.Tests.Common.DisassemblerSampleType {
                 "{", Text.Any,
                 ".property", Text.Any,"instance", Text.Any,"int32", Text.Any, "Capacity()", Text.Any,
                 "{", Text.Any,
-                ".get instance int32 [", Text.Any, "]System.Collections.Generic.List`1::get_Capacity()", Text.Any,
-                ".set instance void [", Text.Any, "]System.Collections.Generic.List`1::set_Capacity(int32)", Text.Any,
+                ".get instance int32 System.Collections.Generic.List`1::get_Capacity()", Text.Any,
+                ".set instance void System.Collections.Generic.List`1::set_Capacity(int32)", Text.Any,
                 "}", Text.Any,
                 "}", Text.Any
             });
