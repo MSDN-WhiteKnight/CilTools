@@ -590,5 +590,17 @@ namespace CilTools.BytecodeAnalysis.Tests
 }";
             AssertThat.AreLexicallyEqual(expected, str);
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestNestedTypes", BytecodeProviders.All)]
+        public void Test_ToString_NestedType(MethodBase mi)
+        {
+            const string expected = ".method public hidebysig static void TestNestedTypes(" +
+                " valuetype [mscorlib]System.Environment/SpecialFolder sf ) cil managed";
+
+            CilGraph graph = CilGraph.Create(mi);
+            string str = graph.ToString();
+            AssertThat.CilEquals(expected, str);
+        }
     }
 }

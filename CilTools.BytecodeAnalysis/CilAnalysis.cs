@@ -268,22 +268,21 @@ namespace CilTools.BytecodeAnalysis
                     }
                 }
 
-                StringBuilder sb = new StringBuilder();
+                //type name itself
 
-                if (!String.IsNullOrEmpty(t.Namespace))
+                if (!string.IsNullOrEmpty(t.Namespace))
                 {
-                    sb.Append(t.Namespace);
-                    sb.Append('.');
+                    yield return new IdentifierSyntax(string.Empty, t.Namespace, string.Empty, true, null);
+                    yield return new PunctuationSyntax(string.Empty, ".", string.Empty);
                 }
 
                 if (t.IsNested && t.DeclaringType != null)
                 {
-                    sb.Append(t.DeclaringType.Name);
-                    sb.Append('/');
+                    yield return new IdentifierSyntax(string.Empty, t.DeclaringType.Name, string.Empty, true, t.DeclaringType);
+                    yield return new PunctuationSyntax(string.Empty, "/", string.Empty);
                 }
-
-                sb.Append(t.Name);
-                yield return new IdentifierSyntax(String.Empty, sb.ToString(), String.Empty, true,t);
+                
+                yield return new IdentifierSyntax(string.Empty, t.Name, string.Empty, true, t);
 
                 if (t.IsGenericType && !isspec)
                 {

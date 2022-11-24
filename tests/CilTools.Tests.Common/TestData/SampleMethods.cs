@@ -226,6 +226,8 @@ namespace CilTools.Tests.Common
         public static void TestByRefTypes(ref DateTime x, ref Attribute y) { }
 
         public static void TestGenericStruct(ArraySegment<int> x) { }
+
+        public static void TestNestedTypes(Environment.SpecialFolder sf) { }
     }
 
     public class MyPoint
