@@ -1,16 +1,14 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.Linq;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
 using System.Text;
 using System.Reflection;
-using System.Reflection.Emit;
-using System.Diagnostics;
 using CilTools.Reflection;
 using CilTools.Syntax;
-using System.IO;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -348,6 +346,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     case '\n': sb.Append("\\n"); break;
                     case '\t': sb.Append("\\t"); break;
+                    case '\\': sb.Append("\\\\"); break;
                     case '"': sb.Append(CharToOctal(c)); break;
 
                     default:
