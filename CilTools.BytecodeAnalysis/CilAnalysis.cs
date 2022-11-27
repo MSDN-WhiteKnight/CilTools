@@ -456,7 +456,10 @@ namespace CilTools.BytecodeAnalysis
             //gets the CIL code of the reference to the specified method
             StringBuilder sb = new StringBuilder(200);
             StringWriter wr = new StringWriter(sb);
-            SyntaxNode node = GetMethodRefSyntax(m, inlineTok: false, forceTypeSpec: false, skipAssembly: false);
+
+            SyntaxNode node = GetMethodRefSyntax(m, inlineTok: false, forceTypeSpec: false, skipAssembly: false, 
+                containingAssembly: null);
+
             node.ToText(wr);            
             wr.Flush();
             return sb.ToString();
@@ -476,7 +479,7 @@ namespace CilTools.BytecodeAnalysis
         }
 
         internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m, bool inlineTok, bool forceTypeSpec, 
-            bool skipAssembly)
+            bool skipAssembly, Assembly containingAssembly)
         {
             List<SyntaxNode> children = new List<SyntaxNode>(50);
             Type t = m.DeclaringType;
@@ -488,8 +491,7 @@ namespace CilTools.BytecodeAnalysis
             MethodInfo mi = m as MethodInfo;
             IEnumerable<SyntaxNode> rt;
             GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
-
-            if (t != null) ctx.ContainingAssembly = t.Assembly;
+            ctx.ContainingAssembly = containingAssembly;
 
             if (inlineTok) 
             {
@@ -553,7 +555,7 @@ namespace CilTools.BytecodeAnalysis
                 // See ECMA-335 II.17 - Defining properties.
                 GetTypeSyntaxContext dtContext = new GetTypeSyntaxContext();
                 dtContext.SkipAssemblyName = skipAssembly;
-                dtContext.ContainingAssembly = t.Assembly;
+                dtContext.ContainingAssembly = containingAssembly;
 
                 if (forceTypeSpec)
                 {

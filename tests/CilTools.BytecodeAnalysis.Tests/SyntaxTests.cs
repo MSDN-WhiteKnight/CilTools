@@ -237,7 +237,7 @@ extends [mscorlib]System.Object {
  }
 
  .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
-  .custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 04 00 00 00 00 00 )
+  .custom instance void CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 04 00 00 00 00 00 )
   .addon void CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
   .removeon void CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
  }
@@ -303,7 +303,7 @@ extends [mscorlib]System.Object
 {
  .property class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest Value()
  {
-  .get class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest CilTools.BytecodeAnalysis.Tests.StaticPropertyTest::get_Value()
+  .get class CilTools.BytecodeAnalysis.Tests.StaticPropertyTest CilTools.BytecodeAnalysis.Tests.StaticPropertyTest::get_Value()
  }
 
  //...

@@ -118,7 +118,7 @@ namespace CilTools.BytecodeAnalysis
                 if (called_method != null)
                 {
                     yield return CilAnalysis.GetMethodRefSyntax(called_method, inlineTok: false, 
-                        forceTypeSpec: false, skipAssembly: false);
+                        forceTypeSpec: false, skipAssembly: false, ReflectionUtils.GetContainingAssembly(this._Method));
                 }
                 else
                 {
@@ -239,7 +239,8 @@ namespace CilTools.BytecodeAnalysis
                     else if (mi is MethodBase)
                     {
                         MethodBase mb = (MethodBase)mi;
-                        yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false, skipAssembly: false);
+                        yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false, 
+                            skipAssembly: false, ReflectionUtils.GetContainingAssembly(this._Method));
                     }
                     else
                     {

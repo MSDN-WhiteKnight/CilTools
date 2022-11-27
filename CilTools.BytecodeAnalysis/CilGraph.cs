@@ -406,7 +406,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     //long form - prefixed with method as inline token form
                     MemberRefSyntax mrs = CilAnalysis.GetMethodRefSyntax(mOverridden, inlineTok: true, 
-                        forceTypeSpec: false, skipAssembly: false);
+                        forceTypeSpec: false, skipAssembly: false, ReflectionUtils.GetContainingAssembly(this._Method));
 
                     list.Add(mrs);
                     list.Add(new GenericSyntax(Environment.NewLine));

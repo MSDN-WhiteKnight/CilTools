@@ -261,7 +261,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             string il = GetDefaultsString(mi);
 
             AssertThat.IsMatch(il, new Text[] { Text.Any, ".param", Text.Any, "[0]", Text.Any, ".custom", Text.Any,
-                "instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)", Text.Any
+                "instance void CilTools.Tests.Common.MyAttribute::.ctor(int32)", Text.Any
             });
         }
 
@@ -270,7 +270,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilGraph_ReturnTypeCustomAttributes2(MethodBase mi)
         {
             const string expected = @".param [0] 
-.custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 E7 03 00 00 00 00 )";
+.custom instance void CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 E7 03 00 00 00 00 )";
 
             string il = GetDefaultsString(mi);
             AssertThat.CilEquals(expected, il);
@@ -291,7 +291,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             string il = GetDefaultsString(mi);
 
             AssertThat.IsMatch(il, new Text[] { Text.Any, ".param", Text.Any, "[1]", Text.Any, ".custom", Text.Any,
-                "instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)", Text.Any
+                "instance void CilTools.Tests.Common.MyAttribute::.ctor(int32)", Text.Any
             });
         }
 
@@ -300,7 +300,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilGraph_ParameterCustomAttributes2(MethodBase mi)
         {
             const string expected = @".param [1]
-.custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 7B 00 00 00 00 00 )";
+.custom instance void CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 7B 00 00 00 00 00 )";
 
             string il = GetDefaultsString(mi);
             AssertThat.CilEquals(expected, il);
