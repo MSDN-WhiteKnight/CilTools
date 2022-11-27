@@ -17,6 +17,32 @@ namespace CilTools.BytecodeAnalysis
     /// </summary>
     public static class CilAnalysis
     {
+        class GetTypeSyntaxContext
+        {
+            public GetTypeSyntaxContext()
+            {
+                this.IsTypeSpec = false;
+                this.SkipAssemblyName = false;
+            }
+
+            public GetTypeSyntaxContext(Assembly ass)
+            {
+                this.IsTypeSpec = false;
+                this.SkipAssemblyName = false;
+                this.ContainingAssembly = ass;
+            }
+
+            public GetTypeSyntaxContext(bool isSpec, bool skipAssembly)
+            {
+                this.IsTypeSpec = isSpec;
+                this.SkipAssemblyName = skipAssembly;
+            }
+
+            public bool IsTypeSpec { get; set; }
+            public bool SkipAssemblyName { get; set; }
+            public Assembly ContainingAssembly { get; set; }
+        }
+
         /// <summary>
         /// Gets the name of .NET type in CIL notation
         /// </summary>
@@ -30,14 +56,21 @@ namespace CilTools.BytecodeAnalysis
 
             StringBuilder sb = new StringBuilder();
             StringWriter wr = new StringWriter(sb);
+            GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
 
-            foreach (SyntaxNode node in CilAnalysis.GetTypeNameSyntax(t)) node.ToText(wr);
+            foreach (SyntaxNode node in CilAnalysis.GetTypeNameSyntax(t, ctx)) node.ToText(wr);
 
             wr.Flush();
             return sb.ToString();
         }
 
         internal static IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t)
+        {
+            GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
+            return GetTypeNameSyntax(t, ctx);
+        }
+
+        static IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t, GetTypeSyntaxContext ctx)
         {
             if(t==null) yield break;
 
@@ -64,7 +97,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
+                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et, ctx);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
@@ -76,7 +109,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
+                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et, ctx);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
@@ -88,7 +121,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et);
+                    IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(et, ctx);
 
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
@@ -135,11 +168,11 @@ namespace CilTools.BytecodeAnalysis
                     yield return new KeywordSyntax(String.Empty, "typedref", String.Empty, KeywordKind.Other);
                 else
                 {
-                    IEnumerable<SyntaxNode> nodes = GetTypeFullNameSyntax(t);
+                    IEnumerable<SyntaxNode> nodes = GetTypeSyntax(t, ctx); //full type name syntax
 
                     foreach (SyntaxNode x in nodes) yield return x;
 
-                    yield break; //GetTypeFullNameSyntax will yield modifiers
+                    yield break; //GetTypeSyntax will yield modifiers
                 }
             }
 
@@ -167,7 +200,8 @@ namespace CilTools.BytecodeAnalysis
 
             StringBuilder sb = new StringBuilder();
             StringWriter wr = new StringWriter(sb);
-            IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(t, isspec: false, skipAssembly: false);
+            GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
+            IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(t, ctx);
 
             foreach (SyntaxNode node in nodes)
             {
@@ -180,10 +214,16 @@ namespace CilTools.BytecodeAnalysis
 
         internal static IEnumerable<SyntaxNode> GetTypeFullNameSyntax(Type t)
         {
-            return CilAnalysis.GetTypeSyntax(t, isspec: false, skipAssembly: false);
+            GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
+            return CilAnalysis.GetTypeSyntax(t,ctx);
         }
 
         internal static IEnumerable<SyntaxNode> GetTypeSyntax(Type t, bool isspec, bool skipAssembly)
+        {
+            return GetTypeSyntax(t, new GetTypeSyntaxContext(isspec, skipAssembly));
+        }
+
+        static IEnumerable<SyntaxNode> GetTypeSyntax(Type t, GetTypeSyntaxContext ctx)
         {
             //converts reflection Type object to Type or TypeSpec CIL assembler syntax
             //(ECMA-335 II.7.1 Types)
@@ -210,7 +250,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, isspec: false, skipAssembly: false);
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, ctx);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
@@ -222,7 +262,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, isspec:false, skipAssembly: false);
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, ctx);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
@@ -234,7 +274,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, isspec: false, skipAssembly: false);
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax(et, ctx);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
@@ -248,13 +288,13 @@ namespace CilTools.BytecodeAnalysis
             }
             else
             {
-                if (!isspec) //for TypeSpec, we omit class/valuetype keyword
+                if (!ctx.IsTypeSpec) //for TypeSpec, we omit class/valuetype keyword
                 {
                     if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);
                     else yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
                 }
 
-                if (!skipAssembly)
+                if (!ctx.SkipAssemblyName)
                 {
                     Assembly ass = t.Assembly;
 
@@ -282,7 +322,7 @@ namespace CilTools.BytecodeAnalysis
                 
                 yield return new IdentifierSyntax(string.Empty, t.Name, string.Empty, true, t);
 
-                if (t.IsGenericType && !isspec)
+                if (t.IsGenericType && !ctx.IsTypeSpec)
                 {
                     yield return new PunctuationSyntax(String.Empty, "<", String.Empty);
 
@@ -383,14 +423,31 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets the syntax for a Type or TypeSpec construct (selects automatically)
         /// </summary>
+        static IEnumerable<SyntaxNode> GetTypeSpecSyntaxAuto(Type t, GetTypeSyntaxContext ctx)
+        {
+            //this is used when we can omit class/valuetype prefix, such as for method calls
+            Debug.Assert(t != null, "GetTypeSpecSyntax: Source type cannot be null");
+
+            GetTypeSyntaxContext ctxNew;
+
+            //for generic types, the TypeSpec syntax is the same as Type
+            if (t.IsGenericType) ctxNew = new GetTypeSyntaxContext(isSpec: false, ctx.SkipAssemblyName);
+            else ctxNew = new GetTypeSyntaxContext(isSpec: true, ctx.SkipAssemblyName);
+
+            return GetTypeSyntax(t, ctxNew);
+        }
+
+        /// <summary>
+        /// Gets the syntax for a Type or TypeSpec construct (selects automatically)
+        /// </summary>
         internal static IEnumerable<SyntaxNode> GetTypeSpecSyntaxAuto(Type t, bool skipAssembly)
         {
             //this is used when we can omit class/valuetype prefix, such as for method calls
             Debug.Assert(t != null, "GetTypeSpecSyntax: Source type cannot be null");
 
-            //for generic types, the TypeSpec syntax is the same as Type
-            if(t.IsGenericType) return CilAnalysis.GetTypeSyntax(t, isspec: false, skipAssembly);
-            else return CilAnalysis.GetTypeSyntax(t, isspec: true, skipAssembly);
+            GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
+            ctx.SkipAssemblyName = skipAssembly;
+            return GetTypeSpecSyntaxAuto(t, ctx);
         }
 
         internal static string MethodRefToString(MethodBase m)
@@ -429,6 +486,9 @@ namespace CilTools.BytecodeAnalysis
 
             MethodInfo mi = m as MethodInfo;
             IEnumerable<SyntaxNode> rt;
+            GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
+
+            if (t != null) ctx.ContainingAssembly = t.Assembly;
 
             if (inlineTok) 
             {
@@ -440,14 +500,14 @@ namespace CilTools.BytecodeAnalysis
             if (mi != null)
             {
                 //standard reflection implementation: return type exposed via MethodInfo
-                rt = CilAnalysis.GetTypeNameSyntax(mi.ReturnType);
+                rt = CilAnalysis.GetTypeNameSyntax(mi.ReturnType, ctx);
             }
             else if (m is ICustomMethod)
             {
                 //CilTools reflection implementation: return type exposed via ICustomMethod
                 Type tReturn = ((ICustomMethod)m).ReturnType;
 
-                if (tReturn != null) rt = CilAnalysis.GetTypeNameSyntax(tReturn);
+                if (tReturn != null) rt = CilAnalysis.GetTypeNameSyntax(tReturn, ctx);
                 else rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
             }
             else if (m is CustomMethod)
@@ -455,7 +515,7 @@ namespace CilTools.BytecodeAnalysis
                 //CilTools reflection implementation: return type exposed via CustomMethod
                 Type tReturn = ((CustomMethod)m).ReturnType;
 
-                if (tReturn != null) rt = CilAnalysis.GetTypeNameSyntax(tReturn);
+                if (tReturn != null) rt = CilAnalysis.GetTypeNameSyntax(tReturn, ctx);
                 else rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
             }
             else
@@ -490,9 +550,19 @@ namespace CilTools.BytecodeAnalysis
                 // call into Type.IsValueType needlessly 
                 // (prevents issues like https://github.com/MSDN-WhiteKnight/CilTools/issues/140).
                 // See ECMA-335 II.17 - Defining properties.
+                GetTypeSyntaxContext dtContext = new GetTypeSyntaxContext();
+                dtContext.SkipAssemblyName = skipAssembly;
+                dtContext.ContainingAssembly = t.Assembly;
 
-                if (forceTypeSpec) syntax = GetTypeSyntax(t, isspec: true, skipAssembly);
-                else syntax = GetTypeSpecSyntaxAuto(t, skipAssembly);
+                if (forceTypeSpec)
+                {
+                    dtContext.IsTypeSpec = true;
+                    syntax = GetTypeSyntax(t, dtContext);
+                }
+                else
+                {
+                    syntax = GetTypeSpecSyntaxAuto(t, dtContext);
+                }
 
                 foreach (SyntaxNode node in syntax) children.Add(node);
                 
@@ -511,7 +581,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (i >= 1) children.Add(new PunctuationSyntax("",","," "));
 
-                    IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(args[i]);
+                    IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(args[i], ctx);
 
                     foreach(SyntaxNode node in syntax) children.Add(node);
                 }
@@ -532,7 +602,7 @@ namespace CilTools.BytecodeAnalysis
                     children.Add(new PunctuationSyntax(string.Empty, ",", " "));
                 }
 
-                IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(pars[i].ParameterType);
+                IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(pars[i].ParameterType, ctx);
 
                 foreach(SyntaxNode node in syntax) children.Add(node);
             }
@@ -546,7 +616,6 @@ namespace CilTools.BytecodeAnalysis
         /// Returns specified method CIL code as string
         /// </summary>
         /// <param name="m">Method for which to retrieve CIL</param>
-        /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
         /// <returns>CIL code string</returns>
         public static string MethodToText(MethodBase m)
         {
