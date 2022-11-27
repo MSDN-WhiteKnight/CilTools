@@ -294,7 +294,7 @@ namespace CilTools.BytecodeAnalysis
                     else yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
                 }
 
-                if (!ctx.SkipAssemblyName)
+                if (!ctx.SkipAssemblyName && !ReflectionUtils.IsTypeInAssembly(t, ctx.ContainingAssembly))
                 {
                     Assembly ass = t.Assembly;
 
@@ -434,6 +434,7 @@ namespace CilTools.BytecodeAnalysis
             if (t.IsGenericType) ctxNew = new GetTypeSyntaxContext(isSpec: false, ctx.SkipAssemblyName);
             else ctxNew = new GetTypeSyntaxContext(isSpec: true, ctx.SkipAssemblyName);
 
+            ctxNew.ContainingAssembly = ctx.ContainingAssembly;
             return GetTypeSyntax(t, ctxNew);
         }
 
