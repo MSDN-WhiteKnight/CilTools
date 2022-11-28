@@ -103,13 +103,20 @@ namespace CilTools.BytecodeAnalysis
         {
             if (target == null) throw new ArgumentNullException("target");
             
-            foreach (SyntaxNode node in this.OperandToSyntax()) node.ToText(target);
+            foreach (SyntaxNode node in this.OperandToSyntax(DisassemblerParams.Default)) node.ToText(target);
 
             target.Flush();
         }
 
-        internal override IEnumerable<SyntaxNode> OperandToSyntax()
+        internal override IEnumerable<SyntaxNode> OperandToSyntax(DisassemblerParams pars)
         {
+            Assembly containingAssembly;
+
+            // If we need to assembly-qualify all types, just pretend that we don't know the
+            // containing assembly.
+            if (pars.AssemblyQualifyAllTypes) containingAssembly = null;
+            else containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
+
             if (ReferencesMethodToken(this.OpCode))
             {
                 //method
@@ -118,7 +125,7 @@ namespace CilTools.BytecodeAnalysis
                 if (called_method != null)
                 {
                     yield return CilAnalysis.GetMethodRefSyntax(called_method, inlineTok: false, 
-                        forceTypeSpec: false, skipAssembly: false, ReflectionUtils.GetContainingAssembly(this._Method));
+                        forceTypeSpec: false, skipAssembly: false, containingAssembly);
                 }
                 else
                 {
@@ -240,7 +247,7 @@ namespace CilTools.BytecodeAnalysis
                     {
                         MethodBase mb = (MethodBase)mi;
                         yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false, 
-                            skipAssembly: false, ReflectionUtils.GetContainingAssembly(this._Method));
+                            skipAssembly: false, containingAssembly);
                     }
                     else
                     {
@@ -325,7 +332,7 @@ namespace CilTools.BytecodeAnalysis
             }
             else
             {
-                IEnumerable<SyntaxNode> nodes = base.OperandToSyntax();
+                IEnumerable<SyntaxNode> nodes = base.OperandToSyntax(pars);
 
                 foreach (SyntaxNode node in nodes) yield return node;
             }

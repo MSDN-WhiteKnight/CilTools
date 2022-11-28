@@ -328,7 +328,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="output">The destination TextWriter</param>
         public void PrintAttributes(TextWriter output)
         {
-            SyntaxNode[] elems = SyntaxGenerator.GetAttributesSyntax(this._Method, 1);
+            SyntaxNode[] elems = SyntaxGenerator.GetAttributesSyntax(this._Method, 1, DisassemblerParams.Default);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -404,9 +404,16 @@ namespace CilTools.BytecodeAnalysis
                 
                 if (mOverridden.DeclaringType.IsGenericType)
                 {
+                    Assembly containingAssembly;
+
+                    // If we need to assembly-qualify all types, just pretend that we don't know the
+                    // containing assembly.
+                    if (disassemblerParams.AssemblyQualifyAllTypes) containingAssembly = null;
+                    else containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
+
                     //long form - prefixed with method as inline token form
                     MemberRefSyntax mrs = CilAnalysis.GetMethodRefSyntax(mOverridden, inlineTok: true, 
-                        forceTypeSpec: false, skipAssembly: false, ReflectionUtils.GetContainingAssembly(this._Method));
+                        forceTypeSpec: false, skipAssembly: false, containingAssembly);
 
                     list.Add(mrs);
                     list.Add(new GenericSyntax(Environment.NewLine));
@@ -860,7 +867,7 @@ namespace CilTools.BytecodeAnalysis
                 
                 //add instruction
                 curr_node._children.Add(
-                    new InstructionSyntax(new String(indent.ToArray()), node){_parent = curr_node}
+                    new InstructionSyntax(new String(indent.ToArray()), node, dpars){_parent = curr_node}
                     );
                 
                 if (node.Next == null) break; //last instruction
@@ -934,7 +941,7 @@ namespace CilTools.BytecodeAnalysis
 
             try
             {
-                arr = SyntaxGenerator.GetAttributesSyntax(this._Method, startIndent + 1);
+                arr = SyntaxGenerator.GetAttributesSyntax(this._Method, startIndent + 1, pars);
 
                 for (int i = 0; i < arr.Length; i++)
                 {

@@ -21,7 +21,7 @@ namespace CilTools.Syntax
         SyntaxNode[] _operationnodes;
         SyntaxNode[] _operandnodes;
 
-        void CreateNodes(string lead, CilGraphNode graphnode)
+        void CreateNodes(string lead, CilGraphNode graphnode, DisassemblerParams pars)
         {
             List<SyntaxNode> labelnodes = new List<SyntaxNode>();
             string pad,pad2;
@@ -79,7 +79,7 @@ namespace CilTools.Syntax
                 else
                 {
                     //print regular instruction operand
-                    IEnumerable<SyntaxNode> syntax = graphnode.Instruction.OperandToSyntax();
+                    IEnumerable<SyntaxNode> syntax = graphnode.Instruction.OperandToSyntax(pars);
 
                     foreach (SyntaxNode item in syntax) operandnodes.Add(item);
 
@@ -96,12 +96,12 @@ namespace CilTools.Syntax
             this._operandnodes = operandnodes.ToArray();
         }
 
-        internal InstructionSyntax(string lead,CilGraphNode graphnode)
+        internal InstructionSyntax(string lead, CilGraphNode graphnode, DisassemblerParams pars)
         {
             if (lead == null) lead = "";
             
             this._node = graphnode;
-            this.CreateNodes(lead, graphnode);
+            this.CreateNodes(lead, graphnode, pars);
         }
 
         /// <inheritdoc/>

@@ -69,7 +69,7 @@ namespace CilTools.BytecodeAnalysis
             //do nothing
         }
 
-        internal override IEnumerable<SyntaxNode> OperandToSyntax()
+        internal override IEnumerable<SyntaxNode> OperandToSyntax(DisassemblerParams pars)
         {
             return SyntaxNode.EmptyArray;
         }
@@ -249,12 +249,12 @@ namespace CilTools.BytecodeAnalysis
         {
             if (target == null) throw new ArgumentNullException("target");
                         
-            foreach (SyntaxNode node in this.OperandToSyntax()) node.ToText(target);
+            foreach (SyntaxNode node in this.OperandToSyntax(DisassemblerParams.Default)) node.ToText(target);
 
             target.Flush();
         }
 
-        internal override IEnumerable<SyntaxNode> OperandToSyntax()
+        internal override IEnumerable<SyntaxNode> OperandToSyntax(DisassemblerParams pars)
         {
             if (typeof(T) == typeof(int))
             {
