@@ -276,7 +276,7 @@ extends [mscorlib]System.Object {
  }
 
  .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
-  //.custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)
+  //.custom instance void CilTools.Tests.Common.MyAttribute::.ctor(int32)
   .addon void CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
   .removeon void CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
  }
