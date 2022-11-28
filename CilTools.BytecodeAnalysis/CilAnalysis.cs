@@ -451,14 +451,14 @@ namespace CilTools.BytecodeAnalysis
             return GetTypeSpecSyntaxAuto(t, ctx);
         }
 
-        internal static string MethodRefToString(MethodBase m)
+        internal static string MethodRefToString(MethodBase m, Assembly containingAssembly)
         {
             //gets the CIL code of the reference to the specified method
             StringBuilder sb = new StringBuilder(200);
             StringWriter wr = new StringWriter(sb);
 
             SyntaxNode node = GetMethodRefSyntax(m, inlineTok: false, forceTypeSpec: false, skipAssembly: false, 
-                containingAssembly: null);
+                containingAssembly);
 
             node.ToText(wr);            
             wr.Flush();

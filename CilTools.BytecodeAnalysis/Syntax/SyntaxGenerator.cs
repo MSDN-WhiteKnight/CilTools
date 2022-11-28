@@ -282,7 +282,7 @@ namespace CilTools.Syntax
                 }
                 else
                 {
-                    s_attr = CilAnalysis.MethodRefToString(constr[0]);
+                    s_attr = CilAnalysis.MethodRefToString(constr[0], containingAssembly);
                     output.Write(".custom ");
                     output.Write(s_attr);
                     output.Flush();
