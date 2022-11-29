@@ -345,15 +345,15 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>        
         public override string ToString()
         {
-            return this.ToString(false);
+            return this.ToString(pointer: false, containingAssembly: null);
         }
 
-        internal string ToString(bool pointer)
+        internal string ToString(bool pointer, Assembly containingAssembly)
         {
             StringBuilder sb_sig = new StringBuilder(100);
             StringWriter wr = new StringWriter(sb_sig);
 
-            foreach (SyntaxNode node in this.ToSyntax(pointer))
+            foreach (SyntaxNode node in this.ToSyntax(pointer, containingAssembly))
             {
                 node.ToText(wr);
             }
@@ -362,7 +362,7 @@ namespace CilTools.BytecodeAnalysis
             return sb_sig.ToString();
         }
 
-        internal IEnumerable<SyntaxNode> ToSyntax(bool pointer)
+        internal IEnumerable<SyntaxNode> ToSyntax(bool pointer, Assembly containingAssembly)
         {
             switch (this._conv)
             {
@@ -391,7 +391,7 @@ namespace CilTools.BytecodeAnalysis
 
             if (this._ExplicitThis) yield return new KeywordSyntax(String.Empty, "explicit", " ", KeywordKind.Other);
 
-            yield return this._ReturnType.ToSyntax();
+            yield return this._ReturnType.ToSyntax(containingAssembly);
 
             if (pointer)
             {
@@ -404,7 +404,7 @@ namespace CilTools.BytecodeAnalysis
             {
                 if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
 
-                yield return this._ParamTypes[i].ToSyntax();
+                yield return this._ParamTypes[i].ToSyntax(containingAssembly);
             }
 
             yield return new PunctuationSyntax(String.Empty, ")", String.Empty);

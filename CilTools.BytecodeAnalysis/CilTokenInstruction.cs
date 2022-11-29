@@ -144,7 +144,7 @@ namespace CilTools.BytecodeAnalysis
                     Type t = fi.DeclaringType;
                     List<SyntaxNode> children=new List<SyntaxNode>();
 
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(fi.FieldType);
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(fi.FieldType, containingAssembly);
                     foreach (SyntaxNode node in nodes) children.Add(node);
 
                     children.Add(new GenericSyntax(" "));
@@ -230,7 +230,7 @@ namespace CilTools.BytecodeAnalysis
                         List<SyntaxNode> children = new List<SyntaxNode>();
                         children.Add(new KeywordSyntax("", "field", " ", KeywordKind.Other));
 
-                        IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(fi.FieldType);
+                        IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(fi.FieldType, containingAssembly);
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
                         children.Add(new GenericSyntax(" "));
@@ -308,7 +308,7 @@ namespace CilTools.BytecodeAnalysis
 
                     if (sg != null)
                     {
-                        IEnumerable<SyntaxNode> nodes = sg.ToSyntax(false);
+                        IEnumerable<SyntaxNode> nodes = sg.ToSyntax(pointer: false, containingAssembly);
                         foreach (SyntaxNode node in nodes) yield return node;
                     }
                     else

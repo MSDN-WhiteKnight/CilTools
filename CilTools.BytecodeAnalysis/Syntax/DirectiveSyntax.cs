@@ -240,9 +240,13 @@ namespace CilTools.Syntax
                 inner.Add(new KeywordSyntax(String.Empty, "vararg", " ", KeywordKind.Other));
             }
 
+            Assembly containingAssembly;
+            containingAssembly = ReflectionUtils.GetContainingAssembly(m);
+
             if (cm.ReturnType != null)
             {
-                inner.Add(new MemberRefSyntax(CilAnalysis.GetTypeNameSyntax(cm.ReturnType).ToArray(), cm.ReturnType));
+                IEnumerable<SyntaxNode> rtNodes = CilAnalysis.GetTypeNameSyntax(cm.ReturnType, containingAssembly);
+                inner.Add(new MemberRefSyntax(rtNodes.ToArray(), cm.ReturnType));
             }
             else
             {
@@ -296,13 +300,13 @@ namespace CilTools.Syntax
 
                 if (pars[i].IsOptional) inner.Add(new GenericSyntax("[opt] "));
 
-                SyntaxNode[] partype = CilAnalysis.GetTypeNameSyntax(pars[i].ParameterType).ToArray();
+                IEnumerable<SyntaxNode> parNodes = CilAnalysis.GetTypeNameSyntax(pars[i].ParameterType, containingAssembly);
 
                 string parname;
                 if (pars[i].Name != null) parname = pars[i].Name;
                 else parname = "par" + (i + 1).ToString();
 
-                inner.Add(new MemberRefSyntax(partype, pars[i].ParameterType));
+                inner.Add(new MemberRefSyntax(parNodes.ToArray(), pars[i].ParameterType));
                 inner.Add(new IdentifierSyntax(" ", parname, String.Empty,false, pars[i]));
             }
 

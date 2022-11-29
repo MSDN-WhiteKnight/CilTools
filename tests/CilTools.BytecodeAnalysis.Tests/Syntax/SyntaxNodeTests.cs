@@ -149,9 +149,9 @@ extends [mscorlib]System.Enum
  .custom instance void [mscorlib]System.FlagsAttribute::.ctor() = ( 01 00 00 00 )
 
  .field public specialname rtspecialname int32 value__
- .field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders Reflection = int32(1)
- .field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders Metadata = int32(2)
- .field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders All = int32(3)
+ .field public static literal valuetype CilTools.Tests.Common.BytecodeProviders Reflection = int32(1)
+ .field public static literal valuetype CilTools.Tests.Common.BytecodeProviders Metadata = int32(2)
+ .field public static literal valuetype CilTools.Tests.Common.BytecodeProviders All = int32(3)
 
  //...
 
@@ -170,11 +170,11 @@ extends [mscorlib]System.Enum
 
             AssertThat.IsMatch(s, new Text[] {
                 ".class public auto ansi sealed CilTools.Tests.Common.BytecodeProviders", Text.Any,
-                ".field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders Reflection",
+                ".field public static literal valuetype CilTools.Tests.Common.BytecodeProviders Reflection",
                 " = int32(1)", Text.Any,
-                ".field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders Metadata",
+                ".field public static literal valuetype CilTools.Tests.Common.BytecodeProviders Metadata",
                 " = int32(2)", Text.Any,
-                ".field public static literal valuetype [CilTools.Tests.Common]CilTools.Tests.Common.BytecodeProviders All",
+                ".field public static literal valuetype CilTools.Tests.Common.BytecodeProviders All",
                 " = int32(3)", Text.Any,
             });
         }

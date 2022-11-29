@@ -64,9 +64,10 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
-        internal static IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t)
+        internal static IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t, Assembly containingAssembly)
         {
             GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
+            ctx.ContainingAssembly = containingAssembly;
             return GetTypeNameSyntax(t, ctx);
         }
 
@@ -283,7 +284,7 @@ namespace CilTools.BytecodeAnalysis
             else if (t is ITypeInfo && ((ITypeInfo)t).IsFunctionPointer)
             {
                 yield return new KeywordSyntax(String.Empty, "method", " ", KeywordKind.Other);
-                IEnumerable<SyntaxNode> nodes = ((ITypeInfo)t).TargetSignature.ToSyntax(true);
+                IEnumerable<SyntaxNode> nodes = ((ITypeInfo)t).TargetSignature.ToSyntax(pointer: true, ctx.ContainingAssembly);
                 foreach (SyntaxNode x in nodes) yield return x;
             }
             else
@@ -331,7 +332,7 @@ namespace CilTools.BytecodeAnalysis
                     {
                         if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
 
-                        IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(args[i]);
+                        IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(args[i], ctx);
 
                         foreach (SyntaxNode node in nodes) yield return node;
                     }

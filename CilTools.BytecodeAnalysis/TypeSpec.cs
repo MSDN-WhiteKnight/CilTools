@@ -898,13 +898,13 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
-        internal MemberRefSyntax ToSyntax()
+        internal MemberRefSyntax ToSyntax(Assembly containingAssembly)
         {
             List<SyntaxNode> ret = new List<SyntaxNode>();
 
             if (this._InnerSpec != null && this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.SzArray)
             {
-                ret.Add(this._InnerSpec.ToSyntax());
+                ret.Add(this._InnerSpec.ToSyntax(containingAssembly));
                 ret.Add(new PunctuationSyntax(String.Empty, "[]", String.Empty));
 
                 if (this._Type != null)
@@ -914,7 +914,7 @@ namespace CilTools.BytecodeAnalysis
             }
             else if (this._InnerSpec != null && this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.Ptr)
             {
-                ret.Add(this._InnerSpec.ToSyntax());
+                ret.Add(this._InnerSpec.ToSyntax(containingAssembly));
                 ret.Add(new PunctuationSyntax(String.Empty, "*", String.Empty));
 
                 if (this._Type != null)
@@ -924,7 +924,7 @@ namespace CilTools.BytecodeAnalysis
             }
             else if (this._Type != null)
             {
-                IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(this);
+                IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(this, containingAssembly);
 
                 foreach (SyntaxNode x in nodes) ret.Add(x);
 

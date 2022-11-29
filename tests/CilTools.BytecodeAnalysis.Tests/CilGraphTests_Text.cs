@@ -220,8 +220,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_CilGraph_Locals(MethodBase mi)
         {
             const string expected = @".maxstack 2
-.locals init (class [CilTools.Tests.Common]CilTools.Tests.Common.MyPoint V_0,
-    class [CilTools.Tests.Common]CilTools.Tests.Common.MyPoint V_1)";
+.locals init (class CilTools.Tests.Common.MyPoint V_0, class CilTools.Tests.Common.MyPoint V_1)";
 
             CilGraph graph = CilGraph.Create(mi);
 

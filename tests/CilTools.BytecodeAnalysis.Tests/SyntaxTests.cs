@@ -301,7 +301,7 @@ extends [mscorlib]System.Object {
             string expected = @".class public auto ansi beforefieldinit CilTools.BytecodeAnalysis.Tests.StaticPropertyTest
 extends [mscorlib]System.Object
 {
- .property class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest Value()
+ .property class CilTools.BytecodeAnalysis.Tests.StaticPropertyTest Value()
  {
   .get class CilTools.BytecodeAnalysis.Tests.StaticPropertyTest CilTools.BytecodeAnalysis.Tests.StaticPropertyTest::get_Value()
  }

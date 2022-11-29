@@ -386,6 +386,13 @@ namespace CilTools.BytecodeAnalysis
                 Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
             }
 
+            Assembly containingAssembly;
+
+            // If we need to assembly-qualify all types, just pretend that we don't know the
+            // containing assembly.
+            if (disassemblerParams.AssemblyQualifyAllTypes) containingAssembly = null;
+            else containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
+
             //.override (ECMA-335 II.10.3.2)
             MethodInfo mOverridden = null;
             try
@@ -404,13 +411,6 @@ namespace CilTools.BytecodeAnalysis
                 
                 if (mOverridden.DeclaringType.IsGenericType)
                 {
-                    Assembly containingAssembly;
-
-                    // If we need to assembly-qualify all types, just pretend that we don't know the
-                    // containing assembly.
-                    if (disassemblerParams.AssemblyQualifyAllTypes) containingAssembly = null;
-                    else containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
-
                     //long form - prefixed with method as inline token form
                     MemberRefSyntax mrs = CilAnalysis.GetMethodRefSyntax(mOverridden, inlineTok: true, 
                         forceTypeSpec: false, skipAssembly: false, containingAssembly);
@@ -516,7 +516,7 @@ namespace CilTools.BytecodeAnalysis
                     }
 
                     LocalVariable local = locals[i];
-                    inner.Add(local.LocalTypeSpec.ToSyntax());
+                    inner.Add(local.LocalTypeSpec.ToSyntax(containingAssembly));
                     inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), String.Empty,false,local));
                 }
 
