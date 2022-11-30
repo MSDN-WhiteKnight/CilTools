@@ -317,8 +317,7 @@ namespace CilTools.BytecodeAnalysis.Tests
         [MethodTestData(typeof(InterfacesSampleType), "CilTools.Tests.Common.TestData.ITest.Foo", BytecodeProviders.All)]
         public void Test_CilGraph_Override(MethodBase mi)
         {
-            const string expected = @".override [CilTools.Tests.Common]CilTools.Tests.Common.TestData.ITest::Foo
- .maxstack 8";
+            const string expected = ".override CilTools.Tests.Common.TestData.ITest::Foo .maxstack 8";
 
             string il = GetHeaderString(mi);
             AssertThat.CilEquals(expected, il);

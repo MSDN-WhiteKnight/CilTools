@@ -18,7 +18,7 @@ namespace CilTools.Syntax
     /// </summary>
     internal static class SyntaxGenerator
     {
-        internal static SyntaxNode[] GetGenericParameterSyntax(Type t)
+        internal static SyntaxNode[] GetGenericParameterSyntax(Type t, Assembly containingAssembly)
         {
             if (!t.IsGenericParameter)
             {
@@ -63,7 +63,8 @@ namespace CilTools.Syntax
                 {
                     if(i>=1) ret.Add(new PunctuationSyntax(string.Empty, ",", " "));
 
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(constrs[i], skipAssembly: false);
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                        constrs[i], skipAssembly: false, containingAssembly);
 
                     foreach (SyntaxNode node in nodes) ret.Add(node);
                 }
@@ -75,7 +76,7 @@ namespace CilTools.Syntax
             return ret.ToArray();
         }
 
-        internal static IEnumerable<SyntaxNode> GetEventsSyntax(Type t, int startIndent)
+        internal static IEnumerable<SyntaxNode> GetEventsSyntax(Type t, int startIndent, Assembly containingAssembly)
         {
             //ECMA_335 II.18 - Defining events
             EventInfo[] events = t.GetEvents(ReflectionUtils.AllMembers);
@@ -90,7 +91,7 @@ namespace CilTools.Syntax
                 }
 
                 IEnumerable<SyntaxNode> eventTypeSyntax = CilAnalysis.GetTypeSpecSyntaxAuto(
-                    events[i].EventHandlerType, skipAssembly: false);
+                    events[i].EventHandlerType, skipAssembly: false, containingAssembly);
 
                 inner.Add(new MemberRefSyntax(eventTypeSyntax.ToArray(), events[i].EventHandlerType));
 
@@ -128,7 +129,7 @@ namespace CilTools.Syntax
                 if (adder != null)
                 {
                     MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(adder, inlineTok: false, 
-                        forceTypeSpec: true, skipAssembly: true, ReflectionUtils.GetContainingAssembly(t));
+                        forceTypeSpec: true, skipAssembly: true, containingAssembly);
 
                     DirectiveSyntax dirAdd = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "addon", new SyntaxNode[] { mref });
@@ -142,7 +143,7 @@ namespace CilTools.Syntax
                 if (remover != null)
                 {
                     MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(remover, inlineTok: false, 
-                        forceTypeSpec: true, skipAssembly: true, ReflectionUtils.GetContainingAssembly(t));
+                        forceTypeSpec: true, skipAssembly: true, containingAssembly);
 
                     DirectiveSyntax dirRemove = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "removeon", new SyntaxNode[] { mref });
@@ -156,7 +157,7 @@ namespace CilTools.Syntax
                 if (raiser != null)
                 {
                     MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(raiser, inlineTok: false, 
-                        forceTypeSpec: true, skipAssembly: true, ReflectionUtils.GetContainingAssembly(t));
+                        forceTypeSpec: true, skipAssembly: true, containingAssembly);
 
                     DirectiveSyntax dirFire = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "fire", new SyntaxNode[] { mref });
@@ -429,6 +430,12 @@ namespace CilTools.Syntax
             DisassemblerParams disassemblerParams, int startIndent)
         {
             List<SyntaxNode> content = new List<SyntaxNode>(10);
+            Assembly containingAssembly;
+
+            // If we need to assembly-qualify all types, just pretend that we don't know the
+            // containing assembly.
+            if (disassemblerParams.AssemblyQualifyAllTypes) containingAssembly = null;
+            else containingAssembly = ReflectionUtils.GetContainingAssembly(t);
 
             //type standard attributes
             if (t.IsInterface)
@@ -550,7 +557,7 @@ namespace CilTools.Syntax
                 {
                     if (i >= 1) content.Add(new PunctuationSyntax(string.Empty, ",", " "));
 
-                    SyntaxNode[] gpSyntax = GetGenericParameterSyntax(targs[i]);
+                    SyntaxNode[] gpSyntax = GetGenericParameterSyntax(targs[i], containingAssembly);
 
                     for (int j = 0; j < gpSyntax.Length; j++)
                     {
@@ -570,7 +577,9 @@ namespace CilTools.Syntax
 
                 try
                 {
-                    IEnumerable<SyntaxNode> baseTypeNodes = CilAnalysis.GetTypeSpecSyntaxAuto(t.BaseType, skipAssembly: false);
+                    IEnumerable<SyntaxNode> baseTypeNodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                        t.BaseType, skipAssembly: false, containingAssembly);
+
                     MemberRefSyntax mrsBaseType = new MemberRefSyntax(baseTypeNodes.ToArray(), t.BaseType);
                     content.Add(mrsBaseType);
                 }
@@ -609,7 +618,9 @@ namespace CilTools.Syntax
                         content.Add(new PunctuationSyntax(String.Empty, ",", Environment.NewLine));
                     }
 
-                    IEnumerable<SyntaxNode> ifNodes = CilAnalysis.GetTypeSpecSyntaxAuto(interfaces[i], skipAssembly: false);
+                    IEnumerable<SyntaxNode> ifNodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                        interfaces[i], skipAssembly: false, containingAssembly);
+
                     content.Add(new MemberRefSyntax(ifNodes.ToArray(), interfaces[i]));
                 }
 
@@ -654,13 +665,7 @@ namespace CilTools.Syntax
             }
 
             content.Add(new GenericSyntax(Environment.NewLine));
-            Assembly containingAssembly;
-
-            // If we need to assembly-qualify all types, just pretend that we don't know the
-            // containing assembly.
-            if (disassemblerParams.AssemblyQualifyAllTypes) containingAssembly = null;
-            else containingAssembly = ReflectionUtils.GetProviderAssembly(t);
-
+            
             //fields
             FieldInfo[] fields = t.GetFields(ReflectionUtils.AllMembers);
 
@@ -907,7 +912,7 @@ namespace CilTools.Syntax
             //events
             try
             {
-                foreach (SyntaxNode node in GetEventsSyntax(t, startIndent))
+                foreach (SyntaxNode node in GetEventsSyntax(t, startIndent, containingAssembly))
                 {
                     content.Add(node);
                 }

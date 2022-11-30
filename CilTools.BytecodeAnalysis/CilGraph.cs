@@ -420,7 +420,8 @@ namespace CilTools.BytecodeAnalysis
                 }
                 else
                 {
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(mOverridden.DeclaringType, skipAssembly: false);
+                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                        mOverridden.DeclaringType, skipAssembly: false, containingAssembly);
 
                     foreach (SyntaxNode node in nodes)
                     {
@@ -617,6 +618,12 @@ namespace CilTools.BytecodeAnalysis
             ParameterInfo[] pars = this._Method.GetParameters();
             ICustomMethod cm = (ICustomMethod)this._Method;
             List<SyntaxNode> ret = new List<SyntaxNode>(100);
+            Assembly containingAssembly;
+
+            // If we need to assembly-qualify all types, just pretend that we don't know the
+            // containing assembly.
+            if (dpars.AssemblyQualifyAllTypes) containingAssembly = null;
+            else containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
 
             //prepare for source code output
             SourceFragment[] fragments=new SourceFragment[0];
@@ -774,7 +781,9 @@ namespace CilTools.BytecodeAnalysis
 
                         if (t != null)
                         {
-                            IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false);
+                            IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                                t, skipAssembly: false, containingAssembly);
+
                             foreach (SyntaxNode x in nodes) header_nodes.Add(x);
                         }
 

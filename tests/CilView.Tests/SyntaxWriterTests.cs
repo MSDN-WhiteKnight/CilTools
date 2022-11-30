@@ -165,10 +165,10 @@ extends [System.Runtime]System.Object
             AssertThat.ContainsMatch(str,
                 ".method public hidebysig static void SquareFoo() cil managed",
                 new Text[] { "{", Text.Any, ".maxstack", Text.Any,
-                    "ldsfld", Text.Any, "int32 [CilTools.Tests.Common]CilTools.Tests.Common.SampleMethods::Foo", Text.Any,
-                    "ldsfld", Text.Any, "int32 [CilTools.Tests.Common]CilTools.Tests.Common.SampleMethods::Foo", Text.Any,
+                    "ldsfld", Text.Any, "int32 CilTools.Tests.Common.SampleMethods::Foo", Text.Any,
+                    "ldsfld", Text.Any, "int32 CilTools.Tests.Common.SampleMethods::Foo", Text.Any,
                     "mul", Text.Any,
-                    "stsfld", Text.Any, "int32 [CilTools.Tests.Common]CilTools.Tests.Common.SampleMethods::Foo", Text.Any,
+                    "stsfld", Text.Any, "int32 CilTools.Tests.Common.SampleMethods::Foo", Text.Any,
                     "ret", Text.Any },
                 "}");
         }

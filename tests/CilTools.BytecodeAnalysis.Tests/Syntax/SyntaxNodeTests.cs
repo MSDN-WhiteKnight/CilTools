@@ -61,7 +61,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
             const string expected = @"
 .class public auto ansi beforefieldinit CilTools.Tests.Common.TestData.InterfacesSampleType
     extends [mscorlib]System.Object
-    implements [CilTools.Tests.Common]CilTools.Tests.Common.TestData.ITest,
+    implements CilTools.Tests.Common.TestData.ITest,
                [mscorlib]System.IComparable { 
 //... }";
 
@@ -86,7 +86,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         {
             const string expected = @"
 .class public auto ansi beforefieldinit CilTools.Tests.Common.DerivedSampleType
-extends [CilTools.Tests.Common]CilTools.Tests.Common.DisassemblerSampleType { 
+extends CilTools.Tests.Common.DisassemblerSampleType { 
     //...
 }";
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());

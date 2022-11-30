@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -28,9 +28,8 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets the value indicating whether this modifier is required or optional
         /// </summary>
-        /// <value>
-        /// 'true' if type users are required to understand this modifier in order to correctly use it, 'false' if the modifier can be ignored
-        /// </value>
+        /// <value> 'true' if type users are required to understand this modifier in order to correctly use it, 
+        /// 'false' if the modifier can be ignored </value>
         /// <remarks>
         /// See ECMA-335 I.9.7 (Metadata extensibility) for more information about required and optional modifiers
         /// </remarks>
@@ -59,28 +58,27 @@ namespace CilTools.BytecodeAnalysis
             return mod + type + ")";
         }
 
-        internal IEnumerable<SyntaxNode> ToSyntax()
+        internal IEnumerable<SyntaxNode> ToSyntax(Assembly containingAssembly)
         {
             if (this._IsRequired) 
-                yield return new KeywordSyntax(" ", "modreq", String.Empty, KeywordKind.Other);
+                yield return new KeywordSyntax(" ", "modreq", string.Empty, KeywordKind.Other);
             else
-                yield return new KeywordSyntax(" ", "modopt", String.Empty, KeywordKind.Other);
+                yield return new KeywordSyntax(" ", "modopt", string.Empty, KeywordKind.Other);
 
-            yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
-            
+            yield return new PunctuationSyntax(string.Empty, "(", string.Empty);
+
             if (this._Type != null)
             {
-                IEnumerable<SyntaxNode> ts = CilAnalysis.GetTypeSpecSyntaxAuto(this._Type, skipAssembly: false);
+                IEnumerable<SyntaxNode> ts = CilAnalysis.GetTypeSpecSyntaxAuto(this._Type, skipAssembly: false, containingAssembly);
+
                 foreach (SyntaxNode node in ts) yield return node;
             }
             else
             {
-                yield return new IdentifierSyntax(
-                    String.Empty, "Type" + _token.ToString("X"), String.Empty, true,null
-                    );
+                yield return new IdentifierSyntax(string.Empty, "Type" + _token.ToString("X"), string.Empty, true, null);
             }
 
-            yield return new PunctuationSyntax(String.Empty, ")", String.Empty);
+            yield return new PunctuationSyntax(string.Empty, ")", string.Empty);
         }
     }
 }

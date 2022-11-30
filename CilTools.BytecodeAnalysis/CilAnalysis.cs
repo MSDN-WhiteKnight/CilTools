@@ -183,7 +183,7 @@ namespace CilTools.BytecodeAnalysis
             {
                 foreach (CustomModifier m in ((ITypeInfo)t).Modifiers)
                 {
-                    foreach (SyntaxNode node in m.ToSyntax()) yield return node;
+                    foreach (SyntaxNode node in m.ToSyntax(ctx.ContainingAssembly)) yield return node;
                 }
             }
         }
@@ -347,7 +347,7 @@ namespace CilTools.BytecodeAnalysis
             {
                 foreach (CustomModifier m in ((ITypeInfo)t).Modifiers)
                 {
-                    foreach (SyntaxNode node in m.ToSyntax()) yield return node;
+                    foreach (SyntaxNode node in m.ToSyntax(ctx.ContainingAssembly)) yield return node;
                 }
             }
         }
@@ -413,7 +413,7 @@ namespace CilTools.BytecodeAnalysis
 
             StringBuilder sb = new StringBuilder();
             StringWriter wr = new StringWriter(sb);
-            IEnumerable<SyntaxNode> nodes = GetTypeSpecSyntaxAuto(t, skipAssembly: false);
+            IEnumerable<SyntaxNode> nodes = GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly: null);
 
             foreach (SyntaxNode node in nodes) node.ToText(wr);
 
@@ -442,13 +442,14 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Gets the syntax for a Type or TypeSpec construct (selects automatically)
         /// </summary>
-        internal static IEnumerable<SyntaxNode> GetTypeSpecSyntaxAuto(Type t, bool skipAssembly)
+        internal static IEnumerable<SyntaxNode> GetTypeSpecSyntaxAuto(Type t, bool skipAssembly, Assembly containingAssembly)
         {
             //this is used when we can omit class/valuetype prefix, such as for method calls
             Debug.Assert(t != null, "GetTypeSpecSyntax: Source type cannot be null");
 
             GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
             ctx.SkipAssemblyName = skipAssembly;
+            ctx.ContainingAssembly = containingAssembly;
             return GetTypeSpecSyntaxAuto(t, ctx);
         }
 

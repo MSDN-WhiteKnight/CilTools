@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
@@ -13,12 +13,11 @@ using CilTools.Syntax;
 
 namespace CilTools.BytecodeAnalysis
 {
-    sealed class CilTokenInstruction:CilInstructionImpl<int>
+    sealed class CilTokenInstruction : CilInstructionImpl<int>
     {
-        public CilTokenInstruction(
-            OpCode opc, int operand, uint operandsize, uint byteoffset = 0, uint ordinalnum = 0, MethodBase mb = null
-            )
-            : base(opc,operand,operandsize, byteoffset, ordinalnum, mb)
+        public CilTokenInstruction(OpCode opc, int operand, uint operandsize, uint byteoffset = 0, 
+            uint ordinalnum = 0, MethodBase mb = null)
+            : base(opc, operand, operandsize, byteoffset, ordinalnum, mb)
         {
             //do nothing
         }
@@ -102,7 +101,7 @@ namespace CilTools.BytecodeAnalysis
         public override void OperandToString(TextWriter target)
         {
             if (target == null) throw new ArgumentNullException("target");
-            
+
             foreach (SyntaxNode node in this.OperandToSyntax(DisassemblerParams.Default)) node.ToText(target);
 
             target.Flush();
@@ -124,14 +123,15 @@ namespace CilTools.BytecodeAnalysis
 
                 if (called_method != null)
                 {
-                    yield return CilAnalysis.GetMethodRefSyntax(called_method, inlineTok: false, 
+                    yield return CilAnalysis.GetMethodRefSyntax(called_method, inlineTok: false,
                         forceTypeSpec: false, skipAssembly: false, containingAssembly);
                 }
                 else
                 {
                     int token = this._operand;
 
-                    yield return new IdentifierSyntax("","UnknownMethod" + token.ToString("X"),"",true,null);
+                    yield return new IdentifierSyntax(string.Empty, "UnknownMethod" + token.ToString("X"), string.Empty, 
+                        ismember: true, target: null);
                 }
             }
             else if (ReferencesFieldToken(this.OpCode))
@@ -142,9 +142,9 @@ namespace CilTools.BytecodeAnalysis
                 if (fi != null)
                 {
                     Type t = fi.DeclaringType;
-                    List<SyntaxNode> children=new List<SyntaxNode>();
-
+                    List<SyntaxNode> children = new List<SyntaxNode>();
                     IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(fi.FieldType, containingAssembly);
+
                     foreach (SyntaxNode node in nodes) children.Add(node);
 
                     children.Add(new GenericSyntax(" "));
@@ -152,22 +152,24 @@ namespace CilTools.BytecodeAnalysis
                     //append declaring type
                     if (t != null && !CilAnalysis.IsModuleType(t))
                     {
-                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false);
+                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly);
+
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
-                        children.Add(new PunctuationSyntax("", "::", ""));
+                        children.Add(new PunctuationSyntax(string.Empty, "::", string.Empty));
                     }
 
                     //append field name
-                    children.Add(new IdentifierSyntax("", fi.Name, "",true,fi));
+                    children.Add(new IdentifierSyntax(string.Empty, fi.Name, string.Empty, true, fi));
 
                     yield return new MemberRefSyntax(children.ToArray(), fi);
                 }
                 else
                 {
                     int token = this._operand;
-                    
-                    yield return new IdentifierSyntax("", "UnknownField" + token.ToString("X"), "", true,null);
+
+                    yield return new IdentifierSyntax(string.Empty, "UnknownField" + token.ToString("X"), string.Empty, 
+                        ismember: true, target: null);
                 }
             }
             else if (ReferencesTypeToken(this.OpCode))
@@ -177,14 +179,17 @@ namespace CilTools.BytecodeAnalysis
 
                 if (t != null)
                 {
-                    IEnumerable<SyntaxNode> referencedTypeNodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false);
+                    IEnumerable<SyntaxNode> referencedTypeNodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                        t, skipAssembly: false, containingAssembly);
+
                     yield return new MemberRefSyntax(referencedTypeNodes.ToArray(), t);
                 }
                 else
                 {
                     int token = this._operand;
-                    
-                    yield return new IdentifierSyntax("", "UnknownType" + token.ToString("X"), "", true,null);
+
+                    yield return new IdentifierSyntax(string.Empty, "UnknownType" + token.ToString("X"), string.Empty, 
+                        ismember: true, target: null);
                 }
             }
             else if (OpCode.Equals(OpCodes.Ldstr))
@@ -196,7 +201,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (stroperand != null)
                 {
-                    yield return LiteralSyntax.CreateFromValue("", stroperand, "");
+                    yield return LiteralSyntax.CreateFromValue(string.Empty, stroperand, string.Empty);
                 }
                 else
                 {
@@ -214,8 +219,10 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (mi is TypeSpec)
                     {
-                        SyntaxNode[] nodes = CilAnalysis.GetTypeSpecSyntaxAuto((Type)mi, skipAssembly: false).ToArray();
-                        yield return new MemberRefSyntax(nodes, mi);
+                        IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                            (Type)mi, skipAssembly: false, containingAssembly);
+
+                        yield return new MemberRefSyntax(nodes.ToArray(), mi);
                     }
                     else if (mi is Type)
                     {
@@ -228,45 +235,49 @@ namespace CilTools.BytecodeAnalysis
                         FieldInfo fi = (FieldInfo)mi;
                         Type t = fi.DeclaringType;
                         List<SyntaxNode> children = new List<SyntaxNode>();
-                        children.Add(new KeywordSyntax("", "field", " ", KeywordKind.Other));
-
+                        children.Add(new KeywordSyntax(string.Empty, "field", " ", KeywordKind.Other));
                         IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(fi.FieldType, containingAssembly);
+
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
+                        //append declaring type
                         children.Add(new GenericSyntax(" "));
+                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly);
 
-                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false);
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
-                        children.Add(new PunctuationSyntax("", "::", ""));
-                        children.Add(new IdentifierSyntax("", fi.Name, "", true, fi));
+                        //append field name
+                        children.Add(new PunctuationSyntax(string.Empty, "::", ""));
+                        children.Add(new IdentifierSyntax(string.Empty, fi.Name, string.Empty, true, fi));
 
                         yield return new MemberRefSyntax(children.ToArray(), fi);
                     }
                     else if (mi is MethodBase)
                     {
                         MethodBase mb = (MethodBase)mi;
-                        yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false, 
+                        yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false,
                             skipAssembly: false, containingAssembly);
                     }
                     else
                     {
-                        yield return new MemberRefSyntax(
-                            new SyntaxNode[] { new IdentifierSyntax("", mi.Name, "", true, mi) },
-                            mi);
+                        SyntaxNode[] nrsNodes = new SyntaxNode[] { 
+                            new IdentifierSyntax(string.Empty, mi.Name, string.Empty, ismember: true, target: mi) 
+                        };
+
+                        yield return new MemberRefSyntax(nrsNodes, mi);
                     }
                 }
                 else
                 {
-                    yield return new IdentifierSyntax(
-                        "", "UnknownMember" + token.ToString("X"), "", true,null
-                        );
+                    yield return new IdentifierSyntax(string.Empty, "UnknownMember" + token.ToString("X"), string.Empty, 
+                        ismember: true, target: null);
                 }
             }
             else if (ReferencesLocal(this.OpCode))
             {
                 //local variable
-                yield return new IdentifierSyntax("", "V_" + this._operand.ToString(), "", false,null);
+                yield return new IdentifierSyntax(string.Empty, "V_" + this._operand.ToString(), string.Empty,
+                    ismember: false, target: null);
             }
             else if (OpCode.Equals(OpCodes.Calli) && this.Method != null)
             {
@@ -309,6 +320,7 @@ namespace CilTools.BytecodeAnalysis
                     if (sg != null)
                     {
                         IEnumerable<SyntaxNode> nodes = sg.ToSyntax(pointer: false, containingAssembly);
+
                         foreach (SyntaxNode node in nodes) yield return node;
                     }
                     else
@@ -326,7 +338,7 @@ namespace CilTools.BytecodeAnalysis
                         target.Write(')');
                         target.Flush();
 
-                        yield return CommentSyntax.Create("", sb.ToString(), null, false);
+                        yield return CommentSyntax.Create(string.Empty, sb.ToString(), trail: null, isRaw: false);
                     }
                 } //end if (sig != null)
             }

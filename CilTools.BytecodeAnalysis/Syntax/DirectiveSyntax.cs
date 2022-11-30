@@ -278,7 +278,7 @@ namespace CilTools.Syntax
                 {
                     if (i >= 1) inner.Add(new PunctuationSyntax(string.Empty, ","," "));
                     
-                    SyntaxNode[] gpSyntax = SyntaxGenerator.GetGenericParameterSyntax(args[i]);
+                    SyntaxNode[] gpSyntax = SyntaxGenerator.GetGenericParameterSyntax(args[i], containingAssembly);
 
                     for (int j = 0; j < gpSyntax.Length; j++)
                     {
