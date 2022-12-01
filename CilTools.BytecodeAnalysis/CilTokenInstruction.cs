@@ -227,8 +227,10 @@ namespace CilTools.BytecodeAnalysis
                     else if (mi is Type)
                     {
                         //use TypeSpec syntax to avoid resolving external references
-                        SyntaxNode[] nodes = CilAnalysis.GetTypeSyntax((Type)mi, isspec: true, skipAssembly: false).ToArray();
-                        yield return new MemberRefSyntax(nodes, mi);
+                        IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax((Type)mi, isspec: true, 
+                            skipAssembly: false, containingAssembly);
+
+                        yield return new MemberRefSyntax(nodes.ToArray(), mi);
                     }
                     else if (mi is FieldInfo)
                     {

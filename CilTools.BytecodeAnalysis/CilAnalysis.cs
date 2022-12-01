@@ -51,8 +51,8 @@ namespace CilTools.BytecodeAnalysis
         /// <remarks>Returns short type name, such as <c>int32</c>, if it exists. Otherwise returns full name.</remarks>
         /// <returns>Short of full type name</returns>
         public static string GetTypeName(Type t)
-        {            
-            if (t == null) throw new ArgumentNullException("t","Source type cannot be null");
+        {
+            if (t == null) throw new ArgumentNullException("t", "Source type cannot be null");
 
             StringBuilder sb = new StringBuilder();
             StringWriter wr = new StringWriter(sb);
@@ -73,7 +73,7 @@ namespace CilTools.BytecodeAnalysis
 
         static IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t, GetTypeSyntaxContext ctx)
         {
-            if(t==null) yield break;
+            if (t == null) yield break;
 
             if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
             {
@@ -127,46 +127,46 @@ namespace CilTools.BytecodeAnalysis
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
-                yield return new PunctuationSyntax(String.Empty, "*", String.Empty);
+                yield return new PunctuationSyntax(string.Empty, "*", string.Empty);
             }
             else
             {
                 if (t.Equals(typeof(void)))
-                    yield return new KeywordSyntax(String.Empty, "void", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(bool)))
-                    yield return new KeywordSyntax(String.Empty, "bool", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "bool", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(int)))
-                    yield return new KeywordSyntax(String.Empty, "int32", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "int32", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(uint)))
-                    yield return new KeywordSyntax(String.Empty, "uint32", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "uint32", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(long)))
-                    yield return new KeywordSyntax(String.Empty, "int64", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "int64", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(ulong)))
-                    yield return new KeywordSyntax(String.Empty, "uint64", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "uint64", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(short)))
-                    yield return new KeywordSyntax(String.Empty, "int16", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "int16", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(ushort)))
-                    yield return new KeywordSyntax(String.Empty, "uint16", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "uint16", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(byte)))
-                    yield return new KeywordSyntax(String.Empty, "uint8", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "uint8", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(sbyte)))
-                    yield return new KeywordSyntax(String.Empty, "int8", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "int8", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(float)))
-                    yield return new KeywordSyntax(String.Empty, "float32", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "float32", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(double)))
-                    yield return new KeywordSyntax(String.Empty, "float64", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "float64", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(string)))
-                    yield return new KeywordSyntax(String.Empty, "string", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "string", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(char)))
-                    yield return new KeywordSyntax(String.Empty, "char", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "char", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(object)))
-                    yield return new KeywordSyntax(String.Empty, "object", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "object", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(IntPtr)))
-                    yield return new KeywordSyntax(String.Empty, "native int", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "native int", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(UIntPtr)))
-                    yield return new KeywordSyntax(String.Empty, "native uint", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "native uint", string.Empty, KeywordKind.Other);
                 else if (t.Equals(typeof(System.TypedReference)))
-                    yield return new KeywordSyntax(String.Empty, "typedref", String.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "typedref", string.Empty, KeywordKind.Other);
                 else
                 {
                     IEnumerable<SyntaxNode> nodes = GetTypeSyntax(t, ctx); //full type name syntax
@@ -195,7 +195,7 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.ArgumentNullException">t is null</exception>
         /// <remarks>Returns fully qualified name, such as <c>class [mscorlib]System.String</c></remarks>
         /// <returns>Full type name</returns>
-        public static string GetTypeFullName(Type t) 
+        public static string GetTypeFullName(Type t)
         {
             if (t == null) throw new ArgumentNullException("t", "Source type cannot be null");
 
@@ -213,15 +213,11 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
-        internal static IEnumerable<SyntaxNode> GetTypeFullNameSyntax(Type t)
+        internal static IEnumerable<SyntaxNode> GetTypeSyntax(Type t, bool isspec, bool skipAssembly, Assembly containingAssembly)
         {
-            GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
-            return CilAnalysis.GetTypeSyntax(t,ctx);
-        }
-
-        internal static IEnumerable<SyntaxNode> GetTypeSyntax(Type t, bool isspec, bool skipAssembly)
-        {
-            return GetTypeSyntax(t, new GetTypeSyntaxContext(isspec, skipAssembly));
+            GetTypeSyntaxContext ctx = new GetTypeSyntaxContext(isspec, skipAssembly);
+            ctx.ContainingAssembly = containingAssembly;
+            return GetTypeSyntax(t, ctx);
         }
 
         static IEnumerable<SyntaxNode> GetTypeSyntax(Type t, GetTypeSyntaxContext ctx)
@@ -236,7 +232,7 @@ namespace CilTools.BytecodeAnalysis
                 if (t.DeclaringMethod == null) prefix = "!";
                 else prefix = "!!";
 
-                if (String.IsNullOrEmpty(t.Name))
+                if (string.IsNullOrEmpty(t.Name))
                 {
                     yield return new GenericSyntax(prefix + t.GenericParameterPosition.ToString());
                 }
@@ -255,7 +251,7 @@ namespace CilTools.BytecodeAnalysis
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
-                yield return new PunctuationSyntax(String.Empty, "&", String.Empty);
+                yield return new PunctuationSyntax(string.Empty, "&", string.Empty);
             }
             else if (t.IsArray && t.GetArrayRank() == 1)
             {
@@ -267,7 +263,7 @@ namespace CilTools.BytecodeAnalysis
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
-                yield return new PunctuationSyntax(String.Empty, "[]", String.Empty);
+                yield return new PunctuationSyntax(string.Empty, "[]", string.Empty);
             }
             else if (t.IsPointer)
             {
@@ -279,11 +275,11 @@ namespace CilTools.BytecodeAnalysis
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
-                yield return new PunctuationSyntax(String.Empty, "*", String.Empty);
+                yield return new PunctuationSyntax(string.Empty, "*", string.Empty);
             }
             else if (t is ITypeInfo && ((ITypeInfo)t).IsFunctionPointer)
             {
-                yield return new KeywordSyntax(String.Empty, "method", " ", KeywordKind.Other);
+                yield return new KeywordSyntax(string.Empty, "method", " ", KeywordKind.Other);
                 IEnumerable<SyntaxNode> nodes = ((ITypeInfo)t).TargetSignature.ToSyntax(pointer: true, ctx.ContainingAssembly);
                 foreach (SyntaxNode x in nodes) yield return x;
             }
@@ -291,8 +287,8 @@ namespace CilTools.BytecodeAnalysis
             {
                 if (!ctx.IsTypeSpec) //for TypeSpec, we omit class/valuetype keyword
                 {
-                    if (t.IsValueType) yield return new KeywordSyntax(String.Empty, "valuetype", " ", KeywordKind.Other);
-                    else yield return new KeywordSyntax(String.Empty, "class", " ", KeywordKind.Other);
+                    if (t.IsValueType) yield return new KeywordSyntax(string.Empty, "valuetype", " ", KeywordKind.Other);
+                    else yield return new KeywordSyntax(string.Empty, "class", " ", KeywordKind.Other);
                 }
 
                 if (!ctx.SkipAssemblyName && !ReflectionUtils.IsTypeInAssembly(t, ctx.ContainingAssembly))
@@ -301,9 +297,9 @@ namespace CilTools.BytecodeAnalysis
 
                     if (ass != null)
                     {
-                        yield return new PunctuationSyntax(String.Empty, "[", String.Empty);
-                        yield return new IdentifierSyntax(String.Empty, ass.GetName().Name, String.Empty, false, ass);
-                        yield return new PunctuationSyntax(String.Empty, "]", String.Empty);
+                        yield return new PunctuationSyntax(string.Empty, "[", string.Empty);
+                        yield return new IdentifierSyntax(string.Empty, ass.GetName().Name, string.Empty, false, ass);
+                        yield return new PunctuationSyntax(string.Empty, "]", string.Empty);
                     }
                 }
 
@@ -320,7 +316,7 @@ namespace CilTools.BytecodeAnalysis
                     yield return new IdentifierSyntax(string.Empty, t.DeclaringType.Name, string.Empty, true, t.DeclaringType);
                     yield return new PunctuationSyntax(string.Empty, "/", string.Empty);
                 }
-                
+
                 yield return new IdentifierSyntax(string.Empty, t.Name, string.Empty, true, t);
 
                 if (t.IsGenericType && !ctx.IsTypeSpec)
@@ -361,7 +357,7 @@ namespace CilTools.BytecodeAnalysis
             else
             {
                 byte[] bytes = BitConverter.GetBytes(c);
-                return "\\" + Convert.ToString(bytes[0], 8).PadLeft(3, '0')+
+                return "\\" + Convert.ToString(bytes[0], 8).PadLeft(3, '0') +
                     "\\" + Convert.ToString(bytes[1], 8).PadLeft(3, '0');
             }
         }
@@ -459,10 +455,10 @@ namespace CilTools.BytecodeAnalysis
             StringBuilder sb = new StringBuilder(200);
             StringWriter wr = new StringWriter(sb);
 
-            SyntaxNode node = GetMethodRefSyntax(m, inlineTok: false, forceTypeSpec: false, skipAssembly: false, 
+            SyntaxNode node = GetMethodRefSyntax(m, inlineTok: false, forceTypeSpec: false, skipAssembly: false,
                 containingAssembly);
 
-            node.ToText(wr);            
+            node.ToText(wr);
             wr.Flush();
             return sb.ToString();
         }
@@ -480,7 +476,7 @@ namespace CilTools.BytecodeAnalysis
             return bytes[0] == 0x01 && bytes[3] == 0x02;
         }
 
-        internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m, bool inlineTok, bool forceTypeSpec, 
+        internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m, bool inlineTok, bool forceTypeSpec,
             bool skipAssembly, Assembly containingAssembly)
         {
             List<SyntaxNode> children = new List<SyntaxNode>(50);
@@ -495,7 +491,7 @@ namespace CilTools.BytecodeAnalysis
             GetTypeSyntaxContext ctx = new GetTypeSyntaxContext();
             ctx.ContainingAssembly = containingAssembly;
 
-            if (inlineTok) 
+            if (inlineTok)
             {
                 //for ldtoken instruction the method reference is preceded by "method" keyword
                 children.Add(new KeywordSyntax("", "method", " ", KeywordKind.Other));
@@ -570,35 +566,35 @@ namespace CilTools.BytecodeAnalysis
                 }
 
                 foreach (SyntaxNode node in syntax) children.Add(node);
-                
-                children.Add(new PunctuationSyntax("","::",""));
+
+                children.Add(new PunctuationSyntax("", "::", ""));
             }
 
             //append name
-            children.Add(new IdentifierSyntax("",m.Name,"",true,m));
+            children.Add(new IdentifierSyntax("", m.Name, "", true, m));
 
             if (m.IsGenericMethod)
             {
-                children.Add(new PunctuationSyntax("","<",""));
+                children.Add(new PunctuationSyntax("", "<", ""));
 
                 Type[] args = m.GetGenericArguments();
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) children.Add(new PunctuationSyntax("",","," "));
+                    if (i >= 1) children.Add(new PunctuationSyntax("", ",", " "));
 
                     IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(args[i], ctx);
 
-                    foreach(SyntaxNode node in syntax) children.Add(node);
+                    foreach (SyntaxNode node in syntax) children.Add(node);
                 }
 
-                children.Add(new PunctuationSyntax("",">",""));
+                children.Add(new PunctuationSyntax("", ">", ""));
             }
 
-            children.Add(new PunctuationSyntax("","(",""));
+            children.Add(new PunctuationSyntax("", "(", ""));
 
             for (int i = 0; i < pars.Length; i++)
             {
-                if (i >= 1) children.Add(new PunctuationSyntax("",","," "));
+                if (i >= 1) children.Add(new PunctuationSyntax("", ",", " "));
 
                 if (i == sentinelPos)
                 {
@@ -609,12 +605,12 @@ namespace CilTools.BytecodeAnalysis
 
                 IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(pars[i].ParameterType, ctx);
 
-                foreach(SyntaxNode node in syntax) children.Add(node);
+                foreach (SyntaxNode node in syntax) children.Add(node);
             }
 
-            children.Add(new PunctuationSyntax("",")",""));
+            children.Add(new PunctuationSyntax("", ")", ""));
 
-            return new MemberRefSyntax(children.ToArray(),m);
+            return new MemberRefSyntax(children.ToArray(), m);
         }
 
         /// <summary>
@@ -637,7 +633,7 @@ namespace CilTools.BytecodeAnalysis
         /// <remarks>Referenced member is a member that appears as an operand of instruction in source method's body. For example, if the source method calls `Foo` method or creates delegate pointing to `Foo`, `Foo` is referenced by the source method.</remarks>
         /// <returns>A collection of referenced methods</returns>
         public static IEnumerable<MethodBase> GetReferencedMethods(MethodBase mb)
-        {                       
+        {
             var coll = GetReferencedMembers(mb, MemberCriteria.External | MemberCriteria.Internal |
                 MemberCriteria.Methods);
 
@@ -679,7 +675,7 @@ namespace CilTools.BytecodeAnalysis
             //detect combinations of flags that can't produce any results
             if ((flags & MemberCriteria.Methods) == 0 && (flags & MemberCriteria.Fields) == 0) return results;
             if ((flags & MemberCriteria.Internal) == 0 && (flags & MemberCriteria.External) == 0) return results;
-            
+
             Assembly ass;
             var ins = CilReader.GetInstructions(mb);
 
@@ -692,10 +688,10 @@ namespace CilTools.BytecodeAnalysis
                     var item = instr.ReferencedMember as MethodBase;
 
                     //if declaring type is null, consider method external (usually the case for methods implemented in native code)
-                    if (item.DeclaringType == null) ass = null; 
+                    if (item.DeclaringType == null) ass = null;
                     else ass = item.DeclaringType.Assembly;
 
-                    if (ass!=null && mb.DeclaringType !=null &&
+                    if (ass != null && mb.DeclaringType != null &&
                         ass.FullName.ToLower().Trim() == mb.DeclaringType.Assembly.FullName.ToLower().Trim())
                     {
                         //internal
@@ -709,7 +705,7 @@ namespace CilTools.BytecodeAnalysis
                 }
                 else if ((flags & MemberCriteria.Fields) != 0 && instr.ReferencedMember is FieldInfo)
                 {
-                    var field = instr.ReferencedMember as FieldInfo;  
+                    var field = instr.ReferencedMember as FieldInfo;
                     ass = field.DeclaringType.Assembly;
 
                     if (ass.FullName.ToLower().Trim() == mb.DeclaringType.Assembly.FullName.ToLower().Trim())
@@ -739,7 +735,7 @@ namespace CilTools.BytecodeAnalysis
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
         /// <returns>A collection of referenced methods</returns>
         public static IEnumerable<MethodBase> GetReferencedMethods(Type t)
-        {     
+        {
             var coll = GetReferencedMembers(t, MemberCriteria.External | MemberCriteria.Internal |
                 MemberCriteria.Methods);
 
@@ -770,7 +766,7 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.ArgumentNullException">Source type is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the type's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
-        public static IEnumerable<MemberInfo> GetReferencedMembers(Type t,MemberCriteria flags)
+        public static IEnumerable<MemberInfo> GetReferencedMembers(Type t, MemberCriteria flags)
         {
             if (t == null) throw new ArgumentNullException("t", "Source type cannot be null");
 
@@ -784,15 +780,15 @@ namespace CilTools.BytecodeAnalysis
             {
                 try
                 {
-                    var coll = GetReferencedMembers(m,flags);
+                    var coll = GetReferencedMembers(m, flags);
 
                     foreach (var item in coll)
-                    {                        
+                    {
                         if (!results.Contains(item)) results.Add(item);
                     }
                 }
                 catch (Exception ex)
-                {      
+                {
                     string error = "Exception occured when trying to get a list of referenced members.";
                     Diagnostics.OnError(m, new CilErrorEventArgs(ex, error));
                 }
@@ -815,7 +811,7 @@ namespace CilTools.BytecodeAnalysis
                     }
                 }
                 catch (Exception ex)
-                {       
+                {
                     string error = "Exception occured when trying to get a list of referenced members.";
                     Diagnostics.OnError(m, new CilErrorEventArgs(ex, error));
                 }
@@ -832,7 +828,7 @@ namespace CilTools.BytecodeAnalysis
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the assembly's methods.</remarks>
         /// <returns>A collection of referenced methods</returns>
         public static IEnumerable<MethodBase> GetReferencedMethods(Assembly ass)
-        {   
+        {
             var coll = GetReferencedMembers(ass, MemberCriteria.External | MemberCriteria.Internal |
                 MemberCriteria.Methods);
 
@@ -863,7 +859,7 @@ namespace CilTools.BytecodeAnalysis
         /// <exception cref="System.ArgumentNullException">Source assembly is null</exception>
         /// <remarks>Referenced member is a member that appears as an operand of instruction in any of the assembly's methods.</remarks>
         /// <returns>A collection of MemberInfo objects</returns>
-        public static IEnumerable<MemberInfo> GetReferencedMembers(Assembly ass,MemberCriteria flags)
+        public static IEnumerable<MemberInfo> GetReferencedMembers(Assembly ass, MemberCriteria flags)
         {
             if (ass == null) throw new ArgumentNullException("ass", "Source assembly cannot be null");
 
