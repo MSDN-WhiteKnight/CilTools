@@ -440,117 +440,117 @@ namespace CilTools.Syntax
             //type standard attributes
             if (t.IsInterface)
             {
-                content.Add(new KeywordSyntax(String.Empty, "interface", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "interface", " ", KeywordKind.Other));
             }
 
             if (t.IsNested)
             {
-                content.Add(new KeywordSyntax(String.Empty, "nested", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "nested", " ", KeywordKind.Other));
 
                 if (t.IsNestedPublic)
                 {
-                    content.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax(string.Empty, "public", " ", KeywordKind.Other));
                 }
                 else if (t.IsNestedAssembly)
                 {
-                    content.Add(new KeywordSyntax(String.Empty, "assembly", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax(string.Empty, "assembly", " ", KeywordKind.Other));
                 }
                 else if (t.IsNestedFamily)
                 {
-                    content.Add(new KeywordSyntax(String.Empty, "family", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax(string.Empty, "family", " ", KeywordKind.Other));
                 }
                 else if (t.IsNestedFamORAssem)
                 {
-                    content.Add(new KeywordSyntax(String.Empty, "famorassem", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax(string.Empty, "famorassem", " ", KeywordKind.Other));
                 }
                 else if (t.IsNestedFamANDAssem)
                 {
-                    content.Add(new KeywordSyntax(String.Empty, "famandassem", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax(string.Empty, "famandassem", " ", KeywordKind.Other));
                 }
                 else
                 {
-                    content.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax(string.Empty, "private", " ", KeywordKind.Other));
                 }
             }
             else
             {
                 if (t.IsPublic)
                 {
-                    content.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax(string.Empty, "public", " ", KeywordKind.Other));
                 }
                 else
                 {
-                    content.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax(string.Empty, "private", " ", KeywordKind.Other));
                 }
             }
 
             if (t.IsAbstract)
             {
-                content.Add(new KeywordSyntax(String.Empty, "abstract", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "abstract", " ", KeywordKind.Other));
             }
 
             if (t.IsAutoLayout)
             {
-                content.Add(new KeywordSyntax(String.Empty, "auto", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "auto", " ", KeywordKind.Other));
             }
             else if (t.IsLayoutSequential)
             {
-                content.Add(new KeywordSyntax(String.Empty, "sequential", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "sequential", " ", KeywordKind.Other));
             }
             else if (t.IsExplicitLayout)
             {
-                content.Add(new KeywordSyntax(String.Empty, "explicit", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "explicit", " ", KeywordKind.Other));
             }
 
             if (t.IsAnsiClass)
             {
-                content.Add(new KeywordSyntax(String.Empty, "ansi", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "ansi", " ", KeywordKind.Other));
             }
             else if (t.IsUnicodeClass)
             {
-                content.Add(new KeywordSyntax(String.Empty, "unicode", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "unicode", " ", KeywordKind.Other));
             }
             else if (t.IsAutoClass)
             {
-                content.Add(new KeywordSyntax(String.Empty, "autochar", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "autochar", " ", KeywordKind.Other));
             }
 
             if (t.IsSealed)
             {
-                content.Add(new KeywordSyntax(String.Empty, "sealed", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "sealed", " ", KeywordKind.Other));
             }
 
             if ((t.Attributes & TypeAttributes.Serializable) != 0)
             {
                 //Type.IsSerializable considers base type, but we need a raw flag value here
-                content.Add(new KeywordSyntax(String.Empty, "serializable", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "serializable", " ", KeywordKind.Other));
             }
 
             if (t.IsSpecialName)
             {
-                content.Add(new KeywordSyntax(String.Empty, "specialname", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
             }
 
             if ((t.Attributes & TypeAttributes.RTSpecialName) != 0)
             {
-                content.Add(new KeywordSyntax(String.Empty, "rtspecialname", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "rtspecialname", " ", KeywordKind.Other));
             }
 
             if ((t.Attributes & TypeAttributes.BeforeFieldInit) != 0)
             {
-                content.Add(new KeywordSyntax(String.Empty, "beforefieldinit", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax(string.Empty, "beforefieldinit", " ", KeywordKind.Other));
             }
 
             //type name
             string tname = "";
             if (!t.IsNested && !String.IsNullOrEmpty(t.Namespace)) tname += t.Namespace + ".";
             tname += t.Name;
-            content.Add(new IdentifierSyntax(String.Empty, tname, String.Empty, true, t));
+            content.Add(new IdentifierSyntax(string.Empty, tname, string.Empty, true, t));
 
             //generic parameters
             if (t.IsGenericType)
             {
-                content.Add(new PunctuationSyntax(String.Empty, "<", String.Empty));
+                content.Add(new PunctuationSyntax(string.Empty, "<", string.Empty));
                 Type[] targs = t.GetGenericArguments();
 
                 for (int i = 0; i < targs.Length; i++)
@@ -565,7 +565,7 @@ namespace CilTools.Syntax
                     }
                 }
 
-                content.Add(new PunctuationSyntax(String.Empty, ">", String.Empty));
+                content.Add(new PunctuationSyntax(string.Empty, ">", string.Empty));
             }
 
             content.Add(new GenericSyntax(Environment.NewLine));
@@ -586,11 +586,10 @@ namespace CilTools.Syntax
                 catch (TypeLoadException ex)
                 {
                     //handle error when base type is not available
-                    content.Add(new IdentifierSyntax(String.Empty, "UnknownType", String.Empty, false, null));
+                    content.Add(new IdentifierSyntax(string.Empty, "UnknownType", string.Empty, 
+                        ismember: false, target: null));
 
-                    Diagnostics.OnError(
-                        t, new CilErrorEventArgs(ex, "Failed to read base type for: " + t.Name)
-                        );
+                    Diagnostics.OnError(t, new CilErrorEventArgs(ex, "Failed to read base type for: " + t.Name));
                 }
                 content.Add(new GenericSyntax(Environment.NewLine));
             }
@@ -604,7 +603,7 @@ namespace CilTools.Syntax
             }
             catch (NotImplementedException ex)
             {
-                Diagnostics.OnError(t, new CilErrorEventArgs(ex, ""));
+                Diagnostics.OnError(t, new CilErrorEventArgs(ex, "Failed to get interfaces."));
             }
 
             if (interfaces != null && interfaces.Length > 0)
@@ -615,7 +614,7 @@ namespace CilTools.Syntax
                 {
                     if (i >= 1)
                     {
-                        content.Add(new PunctuationSyntax(String.Empty, ",", Environment.NewLine));
+                        content.Add(new PunctuationSyntax(string.Empty, ",", Environment.NewLine));
                     }
 
                     IEnumerable<SyntaxNode> ifNodes = CilAnalysis.GetTypeSpecSyntaxAuto(
@@ -658,8 +657,12 @@ namespace CilTools.Syntax
             {
                 if (ReflectionUtils.IsExpectedException(ex))
                 {
-                    content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
-                        "NOTE: Custom attributes are not shown.", null, false));
+                    CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                        "Failed to get custom attributes. " + ReflectionUtils.GetErrorShortString(ex), trail: null, isRaw: false);
+
+                    content.Add(cs);
+                    CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get type custom attributes.");
+                    Diagnostics.OnError(t, ea);
                 }
                 else throw;
             }
@@ -681,63 +684,63 @@ namespace CilTools.Syntax
 
                 if (fields[i].IsPublic)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "public", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax(string.Empty, "public", " ", KeywordKind.Other));
                 }
                 else if (fields[i].IsAssembly)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "assembly", " ", KeywordKind.Other)); //internal
+                    inner.Add(new KeywordSyntax(string.Empty, "assembly", " ", KeywordKind.Other)); //internal
                 }
                 else if (fields[i].IsFamily)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "family", " ", KeywordKind.Other)); //protected
+                    inner.Add(new KeywordSyntax(string.Empty, "family", " ", KeywordKind.Other)); //protected
                 }
                 else if (fields[i].IsFamilyOrAssembly)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "famorassem", " ", KeywordKind.Other)); //protected internal
+                    inner.Add(new KeywordSyntax(string.Empty, "famorassem", " ", KeywordKind.Other)); //protected internal
                 }
                 else if (fields[i].IsFamilyAndAssembly)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "famandassem", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax(string.Empty, "famandassem", " ", KeywordKind.Other));
                 }
                 else
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "private", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax(string.Empty, "private", " ", KeywordKind.Other));
                 }
 
                 if (fields[i].IsStatic)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "static", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax(string.Empty, "static", " ", KeywordKind.Other));
                 }
 
                 if (fields[i].IsInitOnly)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "initonly", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax(string.Empty, "initonly", " ", KeywordKind.Other));
                 }
 
                 if (fields[i].IsLiteral)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "literal", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax(string.Empty, "literal", " ", KeywordKind.Other));
                 }
 
                 if (fields[i].IsNotSerialized)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "notserialized", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax(string.Empty, "notserialized", " ", KeywordKind.Other));
                 }
 
                 if (fields[i].IsSpecialName)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "specialname", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
                 }
 
                 if ((fields[i].Attributes & FieldAttributes.RTSpecialName) != 0)
                 {
-                    inner.Add(new KeywordSyntax(String.Empty, "rtspecialname", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax(string.Empty, "rtspecialname", " ", KeywordKind.Other));
                 }
 
                 SyntaxNode[] ftNodes = CilAnalysis.GetTypeNameSyntax(fields[i].FieldType, containingAssembly).ToArray();
                 inner.Add(new MemberRefSyntax(ftNodes, fields[i].FieldType));
 
-                inner.Add(new IdentifierSyntax(" ", fields[i].Name, String.Empty, true, fields[i]));
+                inner.Add(new IdentifierSyntax(" ", fields[i].Name, string.Empty, true, fields[i]));
 
                 object constval = DBNull.Value;
 
@@ -771,10 +774,6 @@ namespace CilTools.Syntax
                 {
                     if (ReflectionUtils.IsExpectedException(ex))
                     {
-                        CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(bodyIndent),
-                            "Failed to show field custom attributes. " + ReflectionUtils.GetErrorShortString(ex), null, false);
-
-                        inner.Add(cs);
                         CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get field custom attributes.");
                         Diagnostics.OnError(t, ea);
                     }
@@ -800,8 +799,13 @@ namespace CilTools.Syntax
                 if (ReflectionUtils.IsExpectedException(ex))
                 {
                     props = new PropertyInfo[0];
-                    content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
-                        "NOTE: Properties are not shown." + Environment.NewLine, null, false));
+
+                    CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                        "Failed to get properties. " + ReflectionUtils.GetErrorShortString(ex), trail: null, isRaw: false);
+
+                    content.Add(cs);
+                    CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get properties.");
+                    Diagnostics.OnError(t, ea);
                 }
                 else throw;
             }
@@ -866,8 +870,8 @@ namespace CilTools.Syntax
                 {
                     if (ReflectionUtils.IsExpectedException(ex))
                     {
-                        inner.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 2),
-                            "NOTE: Custom attributes are not shown.", null, false));
+                        CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get property custom attributes.");
+                        Diagnostics.OnError(t, ea);
                     }
                     else throw;
                 }
@@ -922,7 +926,7 @@ namespace CilTools.Syntax
                 if (ReflectionUtils.IsExpectedException(ex))
                 {
                     CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
-                        "Failed to show events. " + ReflectionUtils.GetErrorShortString(ex), null, false);
+                        "Failed to get events. " + ReflectionUtils.GetErrorShortString(ex), trail: null, isRaw: false);
 
                     content.Add(cs);
                     CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get events.");
@@ -946,8 +950,14 @@ namespace CilTools.Syntax
                     {
                         if (ReflectionUtils.IsExpectedException(ex))
                         {
-                            content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
-                                "NOTE: Constructors are not shown.", null, false));
+                            string errorStr = "Failed to get constructors. " + ReflectionUtils.GetErrorShortString(ex);
+
+                            CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                                errorStr, trail: null, isRaw: false);
+
+                            content.Add(cs);
+                            CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get constructors.");
+                            Diagnostics.OnError(t, ea);
                             constructors = new ConstructorInfo[0];
                         }
                         else throw;
@@ -973,8 +983,14 @@ namespace CilTools.Syntax
                 {
                     if (ReflectionUtils.IsExpectedException(ex))
                     {
-                        content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(bodyIndent),
-                            "NOTE: Methods are not shown.", null, false));
+                        string errorStr = "Failed to get methods. " + ReflectionUtils.GetErrorShortString(ex);
+
+                        CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(bodyIndent),
+                            errorStr, trail: null, isRaw: false);
+
+                        content.Add(cs);
+                        CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get methods.");
+                        Diagnostics.OnError(t, ea);
                         methods = new MethodInfo[0];
                     }
                     else throw;
@@ -1012,8 +1028,14 @@ namespace CilTools.Syntax
                     {
                         if (ReflectionUtils.IsExpectedException(ex))
                         {
-                            content.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
-                                "NOTE: Nested types are not shown.", null, false));
+                            string errorStr = "Failed to get nested types. " + ReflectionUtils.GetErrorShortString(ex);
+
+                            CommentSyntax cs = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
+                                errorStr, trail: null, isRaw: false);
+
+                            content.Add(cs);
+                            CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get nested types.");
+                            Diagnostics.OnError(t, ea);
                         }
                         else throw;
                     }
