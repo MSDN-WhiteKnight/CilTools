@@ -343,5 +343,21 @@ extends [mscorlib]System.Object
             string expected = ".method public hidebysig specialname instance string get_Name() cil managed";
             AssertThat.AreLexicallyEqual(expected, s);
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestTokens", BytecodeProviders.All)]
+        public void Test_Types_SkipAssemblyName(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".method public hidebysig static void TestTokens() cil managed", Text.Any,
+                //external type name is assembly-qualified
+                "ldtoken", Text.Whitespace, "[", Text.Any, "]System.Int32", Text.Any,
+                //type from the same assembly is not assembly-qualified
+                "ldtoken", Text.Whitespace, "CilTools.Tests.Common.SampleMethods", Text.Any,
+            });
+        }
     }
 }
