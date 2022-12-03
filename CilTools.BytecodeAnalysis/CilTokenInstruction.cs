@@ -249,7 +249,7 @@ namespace CilTools.BytecodeAnalysis
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
                         //append field name
-                        children.Add(new PunctuationSyntax(string.Empty, "::", ""));
+                        children.Add(new PunctuationSyntax(string.Empty, "::", string.Empty));
                         children.Add(new IdentifierSyntax(string.Empty, fi.Name, string.Empty, true, fi));
 
                         yield return new MemberRefSyntax(children.ToArray(), fi);

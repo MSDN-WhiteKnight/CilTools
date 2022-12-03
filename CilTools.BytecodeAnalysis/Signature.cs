@@ -1,11 +1,11 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
-using System.Text;
+using System.IO;
 using System.Reflection;
+using System.Text;
 using CilTools.Reflection;
 using CilTools.Syntax;
 
@@ -14,7 +14,7 @@ namespace CilTools.BytecodeAnalysis
     /// <summary>
     /// Encapsulates function's return type, calling convention and parameter types
     /// </summary>
-    public class Signature 
+    public class Signature
     {
         const int CALLCONV_MASK = 0x0F; //bitmask to extract calling convention from first byte of signature
         const int MFLAG_HASTHIS = 0x20; //instance
@@ -46,7 +46,7 @@ namespace CilTools.BytecodeAnalysis
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
-                        
+
             ModuleWrapper mwr = new ModuleWrapper(module);
             Initialize(data, SignatureContext.FromResolver(mwr));
         }
@@ -92,8 +92,8 @@ namespace CilTools.BytecodeAnalysis
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
 
             GenericContext gctx = GenericContext.FromMember(member);
-            SignatureContext ctx = new SignatureContext(resolver, gctx, null);
-            Initialize(data, ctx);
+            SignatureContext ctx = new SignatureContext(resolver, gctx, genericDefinition: null);
+            this.Initialize(data, ctx);
         }
 
         /// <summary>
@@ -115,7 +115,7 @@ namespace CilTools.BytecodeAnalysis
             if (src == null) throw new ArgumentNullException("src", "Source stream cannot be null");
 
             GenericContext gctx = GenericContext.FromMember(member);
-            SignatureContext ctx = new SignatureContext(resolver, gctx, null);
+            SignatureContext ctx = new SignatureContext(resolver, gctx, genericDefinition: null);
             this.Initialize(src, ctx);
         }
 
@@ -136,7 +136,7 @@ namespace CilTools.BytecodeAnalysis
         /// </remarks>
         /// <exception cref="ArgumentNullException">Source array or signature context is null</exception>
         /// <exception cref="ArgumentException">Source array is empty</exception>
-        public static Signature ReadFromArray(byte[] data, SignatureContext ctx) 
+        public static Signature ReadFromArray(byte[] data, SignatureContext ctx)
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
@@ -153,8 +153,6 @@ namespace CilTools.BytecodeAnalysis
         void Initialize(Stream src, SignatureContext ctx)
         {
             this._ctx = ctx;
-            ITokenResolver resolver = ctx.TokenResolver;
-            MemberInfo member = ctx.GenericContext.GetDeclaringMember();
             byte b = MetadataReader.ReadByte(src); //calling convention & method flags
             int conv = b & CALLCONV_MASK;
             this._conv = (CallingConvention)conv;
@@ -173,7 +171,7 @@ namespace CilTools.BytecodeAnalysis
 
                 for (int i = 0; i < genparams; i++)
                 {
-                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, ctx, null);
+                    this._ParamTypes[i] = TypeSpec.ReadFromStream(src, ctx, parentGenericDefinition: null);
                 }
             }
             else
@@ -186,18 +184,18 @@ namespace CilTools.BytecodeAnalysis
 
                 uint paramcount = MetadataReader.ReadCompressed(src);
                 this._ParamTypes = new TypeSpec[paramcount];
-                this._ReturnType = TypeSpec.ReadFromStream(src, ctx, null);
+                this._ReturnType = TypeSpec.ReadFromStream(src, ctx, parentGenericDefinition: null);
                 int sentinelPos = -1;
 
                 for (int i = 0; i < paramcount; i++)
                 {
-                    TypeSpec paramTypeSpec = TypeSpec.ReadFromStream(src, ctx, null);
+                    TypeSpec paramTypeSpec = TypeSpec.ReadFromStream(src, ctx, parentGenericDefinition: null);
 
                     if (paramTypeSpec.ElementType == ElementType.Sentinel)
                     {
                         //skip vararg sentinel
                         sentinelPos = i;
-                        paramTypeSpec = TypeSpec.ReadFromStream(src, ctx, null);
+                        paramTypeSpec = TypeSpec.ReadFromStream(src, ctx, parentGenericDefinition: null);
                     }
 
                     this._ParamTypes[i] = paramTypeSpec;
@@ -245,9 +243,10 @@ namespace CilTools.BytecodeAnalysis
         {
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) throw new ArgumentException("Source array cannot be empty", "data");
+
             MemoryStream ms = new MemoryStream(data);
             GenericContext gctx = GenericContext.FromMember(member);
-            SignatureContext ctx = new SignatureContext(resolver, gctx, null);
+            SignatureContext ctx = new SignatureContext(resolver, gctx, genericDefinition: null);
 
             using (ms)
             {
@@ -255,7 +254,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (b != 0x6) throw new InvalidDataException("Invalid field signature");
 
-                return TypeSpec.ReadFromStream(ms, ctx, null);
+                return TypeSpec.ReadFromStream(ms, ctx, parentGenericDefinition: null);
             }
         }
 
@@ -367,47 +366,47 @@ namespace CilTools.BytecodeAnalysis
             switch (this._conv)
             {
                 case CallingConvention.CDecl:
-                    yield return new KeywordSyntax(String.Empty, "unmanaged"," ", KeywordKind.Other);
-                    yield return new KeywordSyntax(String.Empty, "cdecl", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "cdecl", " ", KeywordKind.Other);
                     break;
                 case CallingConvention.StdCall:
-                    yield return new KeywordSyntax(String.Empty, "unmanaged", " ", KeywordKind.Other);
-                    yield return new KeywordSyntax(String.Empty, "stdcall", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "stdcall", " ", KeywordKind.Other);
                     break;
                 case CallingConvention.ThisCall:
-                    yield return new KeywordSyntax(String.Empty, "unmanaged", " ", KeywordKind.Other);
-                    yield return new KeywordSyntax(String.Empty, "thiscall", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "thiscall", " ", KeywordKind.Other);
                     break;
                 case CallingConvention.FastCall:
-                    yield return new KeywordSyntax(String.Empty, "unmanaged", " ", KeywordKind.Other);
-                    yield return new KeywordSyntax(String.Empty, "fastcall", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "unmanaged", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "fastcall", " ", KeywordKind.Other);
                     break;
                 case CallingConvention.Vararg:
-                    yield return new KeywordSyntax(String.Empty, "vararg", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax(string.Empty, "vararg", " ", KeywordKind.Other);
                     break;
             }
 
-            if (this._HasThis) yield return new KeywordSyntax(String.Empty, "instance", " ", KeywordKind.Other);
+            if (this._HasThis) yield return new KeywordSyntax(string.Empty, "instance", " ", KeywordKind.Other);
 
-            if (this._ExplicitThis) yield return new KeywordSyntax(String.Empty, "explicit", " ", KeywordKind.Other);
+            if (this._ExplicitThis) yield return new KeywordSyntax(string.Empty, "explicit", " ", KeywordKind.Other);
 
             yield return this._ReturnType.ToSyntax(containingAssembly);
 
             if (pointer)
             {
-                yield return new PunctuationSyntax(" ", "*", String.Empty);
-                yield return new PunctuationSyntax(String.Empty, "(", String.Empty);
+                yield return new PunctuationSyntax(" ", "*", string.Empty);
+                yield return new PunctuationSyntax(string.Empty, "(", string.Empty);
             }
-            else yield return new PunctuationSyntax(" ", "(", String.Empty);
-            
+            else yield return new PunctuationSyntax(" ", "(", string.Empty);
+
             for (int i = 0; i < this._ParamTypes.Length; i++)
             {
-                if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
+                if (i >= 1) yield return new PunctuationSyntax(string.Empty, ",", " ");
 
                 yield return this._ParamTypes[i].ToSyntax(containingAssembly);
             }
 
-            yield return new PunctuationSyntax(String.Empty, ")", String.Empty);
+            yield return new PunctuationSyntax(string.Empty, ")", string.Empty);
         }
     }
 }

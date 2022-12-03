@@ -1,14 +1,14 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
 using System.Collections.Generic;
+using System.IO;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Text;
 using CilTools.Reflection;
 using CilTools.SourceCode;
 using CilTools.Syntax;
@@ -19,7 +19,12 @@ namespace CilTools.BytecodeAnalysis
     /// Represents a CIL graph, a graph that reflects a flow of control between CIL instructions in the method
     /// </summary>
     /// <remarks>
-    /// <para>CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges representing how control flows between them when runtime executes method. The root of the graph is the first instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) and, if it's a jump instruction, a reference to the branch target (an instruction that would be executed if the condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, a string that identify it. The last instruction of the method has null as its next instruction reference.</para>
+    /// <para>CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges 
+    /// representing how control flows between them when runtime executes method. The root of the graph is the first 
+    /// instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) 
+    /// and, if it's a jump instruction, a reference to the branch target (an instruction that would be executed if the 
+    /// condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, 
+    /// a string that identify it. The last instruction of the method has null as its next instruction reference.</para>
     /// <para>Use <see cref="CilGraph.Create"/> method to create CIL graph for a method.</para>
     /// </remarks>
     public class CilGraph
@@ -66,7 +71,7 @@ namespace CilTools.BytecodeAnalysis
         static HashSet<ExceptionBlock> FindDistinctTryBlocks(IList<ExceptionBlock> list)
         {
             if (list == null) throw new ArgumentNullException("list");
-            HashSet<ExceptionBlock> set = new HashSet<ExceptionBlock>(new TryBlockComparer());           
+            HashSet<ExceptionBlock> set = new HashSet<ExceptionBlock>(new TryBlockComparer());
 
             foreach (var block in list)
             {
@@ -127,7 +132,7 @@ namespace CilTools.BytecodeAnalysis
             List<CilInstruction> instructions;
             List<int> labels = new List<int>();
             m = (MethodBase)CustomMethod.PrepareMethod(m);
-            
+
             if (ReflectionUtils.IsMethodWithoutBody(m))
             {
                 //If method is abstract, PInvoke or provided by runtime, it does not have CIL method body by design,
@@ -136,7 +141,7 @@ namespace CilTools.BytecodeAnalysis
             }
 
             instructions = CilReader.GetInstructions(m).ToList();
-            
+
             List<CilGraphNodeMutable> nodes = new List<CilGraphNodeMutable>(instructions.Count);
             CilGraphNode[] targets;
 
@@ -297,7 +302,7 @@ namespace CilTools.BytecodeAnalysis
         /// Gets a method for which this graph is built
         /// </summary>
         public MethodBase Method { get { return this._Method; } }
-        
+
 
         /// <summary>
         /// Writes the signature of the method represented by this graph into the specified TextWriter
@@ -307,7 +312,7 @@ namespace CilTools.BytecodeAnalysis
         {
             DirectiveSyntax.FromMethodSignature(this._Method, string.Empty).ToText(output);
         }
-        
+
         /// <summary>
         /// Writes default parameter values of the method represented by this graph into the specified TextWriter
         /// </summary>
@@ -408,11 +413,11 @@ namespace CilTools.BytecodeAnalysis
             if (mOverridden != null)
             {
                 List<SyntaxNode> list = new List<SyntaxNode>();
-                
+
                 if (mOverridden.DeclaringType.IsGenericType)
                 {
                     //long form - prefixed with method as inline token form
-                    MemberRefSyntax mrs = CilAnalysis.GetMethodRefSyntax(mOverridden, inlineTok: true, 
+                    MemberRefSyntax mrs = CilAnalysis.GetMethodRefSyntax(mOverridden, inlineTok: true,
                         forceTypeSpec: false, skipAssembly: false, containingAssembly);
 
                     list.Add(mrs);
@@ -432,7 +437,7 @@ namespace CilTools.BytecodeAnalysis
                     list.Add(new IdentifierSyntax(string.Empty, mOverridden.Name, Environment.NewLine,
                         true, mOverridden));
                 }
-                
+
                 DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1),
                     "override", list.ToArray());
                 ret.Add(dir);
@@ -467,7 +472,7 @@ namespace CilTools.BytecodeAnalysis
                     if (bytecode != null)
                     {
                         CommentSyntax comment = CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
-                            " Code size: " + bytecode.Length.ToString(CultureInfo.InvariantCulture), 
+                            " Code size: " + bytecode.Length.ToString(CultureInfo.InvariantCulture),
                             Environment.NewLine, false);
                         ret.Add(comment);
                     }
@@ -480,15 +485,15 @@ namespace CilTools.BytecodeAnalysis
 
             if (ReflectionUtils.IsEntryPoint(this._Method))
             {
-                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent+1), "entrypoint", 
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "entrypoint",
                     new SyntaxNode[] { new GenericSyntax(Environment.NewLine) });
                 ret.Add(dir);
             }
 
             if (has_maxstack)
             {
-                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "maxstack", 
-                    new SyntaxNode[] { new GenericSyntax(" "+maxstack.ToString()+Environment.NewLine) });
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "maxstack",
+                    new SyntaxNode[] { new GenericSyntax(" " + maxstack.ToString() + Environment.NewLine) });
                 ret.Add(dir);
             }
 
@@ -501,29 +506,29 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (cm.InitLocals)
                     {
-                        inner.Add(new KeywordSyntax(" ", "init", string.Empty, 
+                        inner.Add(new KeywordSyntax(" ", "init", string.Empty,
                             KeywordKind.Other));
                     }
                 }
 
-                inner.Add(new PunctuationSyntax(" ", "(", String.Empty));
+                inner.Add(new PunctuationSyntax(" ", "(", string.Empty));
 
                 for (int i = 0; i < locals.Length; i++)
                 {
                     if (i >= 1)
                     {
-                        inner.Add(new PunctuationSyntax(string.Empty, ",", 
+                        inner.Add(new PunctuationSyntax(string.Empty, ",",
                             "\r\n" + SyntaxUtils.GetIndentString(startIndent + 4)));
                     }
 
                     LocalVariable local = locals[i];
                     inner.Add(local.LocalTypeSpec.ToSyntax(containingAssembly));
-                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), String.Empty,false,local));
+                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), string.Empty, false, local));
                 }
 
-                inner.Add(new PunctuationSyntax(String.Empty, ")", Environment.NewLine));
+                inner.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
 
-                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), 
+                DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1),
                     "locals", inner.ToArray());
 
                 ret.Add(dir);
@@ -546,9 +551,9 @@ namespace CilTools.BytecodeAnalysis
         /// <para>Method header contains information such as maximum stack size and local variable types.</para>
         /// </remarks>
         public void Print(
-            TextWriter output = null, 
-            bool IncludeSignature = false, 
-            bool IncludeDefaults = false, 
+            TextWriter output = null,
+            bool IncludeSignature = false,
+            bool IncludeDefaults = false,
             bool IncludeAttributes = false,
             bool IncludeHeader = false)
         {
@@ -583,7 +588,7 @@ namespace CilTools.BytecodeAnalysis
             {
                 //optional parameters
                 PrintDefaults(output);
-            }            
+            }
 
             //method header           
             if (IncludeHeader)
@@ -605,7 +610,7 @@ namespace CilTools.BytecodeAnalysis
 
             }//endif
 
-            if (IncludeSignature) output.WriteLine("}");            
+            if (IncludeSignature) output.WriteLine("}");
         }
 
         SyntaxNode[] BodyAsSyntaxTree(DisassemblerParams dpars, int startIndent)
@@ -626,12 +631,12 @@ namespace CilTools.BytecodeAnalysis
             else containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
 
             //prepare for source code output
-            SourceFragment[] fragments=new SourceFragment[0];
+            SourceFragment[] fragments = new SourceFragment[0];
             SourceFragment nextFragment = null;
-            int nextFragmentIndex=0;
-            const string commentIndent= "          ";
+            int nextFragmentIndex = 0;
+            const string commentIndent = "          ";
 
-            if (dpars.IncludeSourceCode) 
+            if (dpars.IncludeSourceCode)
             {
                 try
                 {
@@ -653,7 +658,7 @@ namespace CilTools.BytecodeAnalysis
                     fragments = new SourceFragment[] { nextFragment };
                 }
             }
-            
+
             //start disassembling
             try
             {
@@ -664,14 +669,14 @@ namespace CilTools.BytecodeAnalysis
                 string error = "Exception occured when trying to get method header.";
                 Diagnostics.OnError(this, new CilErrorEventArgs(ex, error));
             }
-            
+
             Stack<char> indent = new Stack<char>();
 
             for (int i = 0; i < startIndent; i++) indent.Push(' ');
 
-            BlockSyntax root=new BlockSyntax("",SyntaxNode.EmptyArray,new SyntaxNode[0]);
+            BlockSyntax root = new BlockSyntax(string.Empty, SyntaxNode.EmptyArray, new SyntaxNode[0]);
             List<BlockSyntax> currentpath = new List<BlockSyntax>(20);
-            
+
             BlockSyntax curr_node = root;
             BlockSyntax new_node;
 
@@ -695,28 +700,29 @@ namespace CilTools.BytecodeAnalysis
                     indent.Push(' ');
 
                     DirectiveSyntax dir = new DirectiveSyntax(
-                        new String(indent.ToArray()), "try", SyntaxNode.EmptyArray 
+                        new string(indent.ToArray()), "try", SyntaxNode.EmptyArray
                         );
 
                     curr_node._children.Add(dir);
                     dir._parent = curr_node;
 
-                    new_node = new BlockSyntax(new String(indent.ToArray()),SyntaxNode.EmptyArray,new SyntaxNode[0]);
-                    
+                    new_node = new BlockSyntax(new string(indent.ToArray()), SyntaxNode.EmptyArray, new SyntaxNode[0]);
+
                     currentpath.Add(new_node);
                     curr_node = new_node;
                 }
 
                 for (int i = 0; i < distinct_ends.Count; i++)
                 {
-                    if (currentpath.Count == 0) {
+                    if (currentpath.Count == 0)
+                    {
                         throw new CilParserException("Parse error: Unexpected block end");
                     }
 
                     new_node = currentpath[currentpath.Count - 1];
-                                        
+
                     currentpath.RemoveAt(currentpath.Count - 1);
-                                        
+
                     if (currentpath.Count > 0)
                         curr_node = currentpath[currentpath.Count - 1];
                     else
@@ -737,7 +743,7 @@ namespace CilTools.BytecodeAnalysis
                     }
 
                     new_node = currentpath[currentpath.Count - 1];
-                    
+
                     currentpath.RemoveAt(currentpath.Count - 1);
 
                     if (currentpath.Count > 0)
@@ -747,7 +753,7 @@ namespace CilTools.BytecodeAnalysis
 
                     curr_node._children.Add(new_node);
                     new_node._parent = curr_node;
-                    
+
                     if (indent.Count > 0) indent.Pop();
                 }
 
@@ -757,8 +763,8 @@ namespace CilTools.BytecodeAnalysis
                     indent.Push(' ');
 
                     new_node = new BlockSyntax(
-                        new String(indent.ToArray()),
-                        new SyntaxNode[] { new KeywordSyntax("", "filter", "", KeywordKind.Other) }, 
+                        new string(indent.ToArray()),
+                        new SyntaxNode[] { new KeywordSyntax(string.Empty, "filter", string.Empty, KeywordKind.Other) },
                         new SyntaxNode[0]);
 
                     currentpath.Add(new_node);
@@ -777,7 +783,7 @@ namespace CilTools.BytecodeAnalysis
                         Type t = block.CatchType;
 
                         List<SyntaxNode> header_nodes = new List<SyntaxNode>();
-                        header_nodes.Add(new KeywordSyntax("", "catch", " ", KeywordKind.Other));
+                        header_nodes.Add(new KeywordSyntax(string.Empty, "catch", " ", KeywordKind.Other));
 
                         if (t != null)
                         {
@@ -788,8 +794,8 @@ namespace CilTools.BytecodeAnalysis
                         }
 
                         new_node = new BlockSyntax(
-                            new String(indent.ToArray()), 
-                            header_nodes.ToArray(), 
+                            new string(indent.ToArray()),
+                            header_nodes.ToArray(),
                             new SyntaxNode[0]);
 
                         currentpath.Add(new_node);
@@ -798,7 +804,7 @@ namespace CilTools.BytecodeAnalysis
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Filter) != 0)
                     {
                         if (indent.Count > 0) indent.Pop();
-                        
+
                         if (currentpath.Count == 0)
                         {
                             throw new CilParserException("Parse error: Unexpected block end");
@@ -815,16 +821,16 @@ namespace CilTools.BytecodeAnalysis
 
                         curr_node._children.Add(new_node);
                         new_node._parent = curr_node;
-                        
-                        new_node = new BlockSyntax(new String(indent.ToArray()), SyntaxNode.EmptyArray, new SyntaxNode[0]);
+
+                        new_node = new BlockSyntax(new string(indent.ToArray()), SyntaxNode.EmptyArray, new SyntaxNode[0]);
                         currentpath.Add(new_node);
                         curr_node = new_node;
                     }
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Finally) != 0)
                     {
                         new_node = new BlockSyntax(
-                            new String(indent.ToArray()),
-                            new SyntaxNode[] { new KeywordSyntax("", "finally", "", KeywordKind.Other) }, 
+                            new string(indent.ToArray()),
+                            new SyntaxNode[] { new KeywordSyntax(string.Empty, "finally", string.Empty, KeywordKind.Other) },
                             new SyntaxNode[0]);
 
                         currentpath.Add(new_node);
@@ -833,8 +839,8 @@ namespace CilTools.BytecodeAnalysis
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Fault) != 0)
                     {
                         new_node = new BlockSyntax(
-                            new String(indent.ToArray()),
-                            new SyntaxNode[] { new KeywordSyntax("", "fault", "", KeywordKind.Other) }, 
+                            new string(indent.ToArray()),
+                            new SyntaxNode[] { new KeywordSyntax(string.Empty, "fault", string.Empty, KeywordKind.Other) },
                             new SyntaxNode[0]);
 
                         currentpath.Add(new_node);
@@ -843,7 +849,7 @@ namespace CilTools.BytecodeAnalysis
                 }
 
                 //add source code if needed
-                if (nextFragment != null && node.Instruction.ByteOffset >= nextFragment.CilStart) 
+                if (nextFragment != null && node.Instruction.ByteOffset >= nextFragment.CilStart)
                 {
                     string fragmentCode = nextFragment.Text;
                     string[] fragmentCodeArr = SourceUtils.SplitSourceCodeFragment(fragmentCode);
@@ -861,24 +867,24 @@ namespace CilTools.BytecodeAnalysis
 
                         curr_node._children.Add(cs);
                     }
-                    
+
                     nextFragmentIndex++;
 
                     if (nextFragmentIndex < fragments.Length)
                     {
                         nextFragment = fragments[nextFragmentIndex];
                     }
-                    else 
+                    else
                     {
                         nextFragment = null;//last fragment
                     }
                 }
-                
+
                 //add instruction
                 curr_node._children.Add(
-                    new InstructionSyntax(new String(indent.ToArray()), node, dpars){_parent = curr_node}
+                    new InstructionSyntax(new string(indent.ToArray()), node, dpars) { _parent = curr_node }
                     );
-                
+
                 if (node.Next == null) break; //last instruction
                 else node = node.Next;
 
@@ -913,7 +919,7 @@ namespace CilTools.BytecodeAnalysis
                         curr_node = root;
 
                     curr_node._children.Add(new_node);
-                    new_node._parent = curr_node;                                        
+                    new_node._parent = curr_node;
                 }
             }
 
@@ -937,7 +943,7 @@ namespace CilTools.BytecodeAnalysis
         {
             return this.ToSyntaxTreeImpl(pars, 0);
         }
-        
+
         internal MethodDefSyntax ToSyntaxTreeImpl(DisassemblerParams pars, int startIndent)
         {
             if (pars == null) pars = DisassemblerParams.Default;
@@ -959,7 +965,7 @@ namespace CilTools.BytecodeAnalysis
             }
             catch (InvalidOperationException)
             {
-                nodes.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent+1), 
+                nodes.Add(CommentSyntax.Create(SyntaxUtils.GetIndentString(startIndent + 1),
                     "NOTE: Custom attributes are not shown.", null, false));
             }
 
@@ -967,7 +973,7 @@ namespace CilTools.BytecodeAnalysis
 
             for (int i = 0; i < arr.Length; i++)
             {
-                nodes.Add( arr[i]);
+                nodes.Add(arr[i]);
             }
 
             arr = this.HeaderAsSyntax(startIndent, pars);
@@ -1034,7 +1040,7 @@ namespace CilTools.BytecodeAnalysis
         /// <returns>The collection of graph nodes</returns>
         public IEnumerable<CilGraphNode> GetNodes()
         {
-            CilGraphNode node = this._Root;            
+            CilGraphNode node = this._Root;
 
             while (true)
             {
@@ -1099,14 +1105,14 @@ namespace CilTools.BytecodeAnalysis
         /// <remarks>Passing user callback into this method enables you to filter instructions that you want to be emitted 
         /// into target IL generator. 
         /// Return <see langword="true"/> to skip emitting instruction, or <see langword="false"/> to emit instruction.</remarks>
-        public void EmitTo(ILGenerator gen, Func<CilInstruction,bool> callback = null)
+        public void EmitTo(ILGenerator gen, Func<CilInstruction, bool> callback = null)
         {
-            Dictionary<uint,Label> labels=new Dictionary<uint,Label>();
-            Label label;            
+            Dictionary<uint, Label> labels = new Dictionary<uint, Label>();
+            Label label;
             ICustomMethod cm = this._Method as ICustomMethod;
-            IList<ExceptionBlock> trys= cm.GetExceptionBlocks();
+            IList<ExceptionBlock> trys = cm.GetExceptionBlocks();
             LocalVariable[] locals = cm.GetLocalVariables();
-            
+
             //local variables
             if (locals != null)
             {
@@ -1119,7 +1125,7 @@ namespace CilTools.BytecodeAnalysis
                     //DeclareLocal requires runtime type
                     if (localType.UnderlyingSystemType != null) localType = localType.UnderlyingSystemType;
 
-                    gen.DeclareLocal(localType);                    
+                    gen.DeclareLocal(localType);
                 }
             }
 
@@ -1128,11 +1134,11 @@ namespace CilTools.BytecodeAnalysis
             //first stage - create labels
             foreach (CilGraphNode node in nodes)
             {
-                if (!String.IsNullOrEmpty(node.Name))
+                if (!string.IsNullOrEmpty(node.Name))
                 {
                     //if instruction is marked with label, save label in dictionary
                     label = gen.DefineLabel();
-                    labels[node.Instruction.OrdinalNumber] = label;                    
+                    labels[node.Instruction.OrdinalNumber] = label;
                 }
             }
 
@@ -1140,7 +1146,7 @@ namespace CilTools.BytecodeAnalysis
             foreach (CilGraphNode node in nodes)
             {
                 CilInstruction instr = node.Instruction;
-                                
+
                 //exception handling clauses
                 IList<ExceptionBlock> block_starts = FindTryBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
                 IList<ExceptionBlock> filters = FindFilterBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
@@ -1156,8 +1162,8 @@ namespace CilTools.BytecodeAnalysis
 
                 for (int i = 0; i < block_starts.Count; i++)
                 {
-                    gen.BeginExceptionBlock();                    
-                }                
+                    gen.BeginExceptionBlock();
+                }
 
                 for (int i = 0; i < block_ends.Count; i++)
                 {
@@ -1166,7 +1172,7 @@ namespace CilTools.BytecodeAnalysis
 
                 for (int i = 0; i < filters.Count; i++)
                 {
-                    gen.BeginExceptFilterBlock();                    
+                    gen.BeginExceptFilterBlock();
                 }
 
                 var blocks = FindHandlerBlocks(trys, instr.ByteOffset, instr.ByteOffset + instr.TotalSize);
@@ -1183,7 +1189,7 @@ namespace CilTools.BytecodeAnalysis
                         gen.BeginCatchBlock(null);
                     }
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Finally) != 0)
-                    {                        
+                    {
                         gen.BeginFinallyBlock();
                     }
                     else if ((block.Flags & ExceptionHandlingClauseOptions.Fault) != 0)
@@ -1193,16 +1199,16 @@ namespace CilTools.BytecodeAnalysis
                 }
 
                 //labels
-                if (!String.IsNullOrEmpty(node.Name))
+                if (!string.IsNullOrEmpty(node.Name))
                 {
                     //if instruction has label, mark it
                     if (labels.ContainsKey(instr.OrdinalNumber))
                     {
                         label = labels[instr.OrdinalNumber];
-                        gen.MarkLabel(label);                        
+                        gen.MarkLabel(label);
                     }
                 }
-                                
+
                 //user callback
                 bool should_skip = false;
 
@@ -1259,7 +1265,7 @@ namespace CilTools.BytecodeAnalysis
                         {
                             if (labels.ContainsKey(swtargets[i].Instruction.OrdinalNumber))
                             {
-                                swlabels[i] = labels[swtargets[i].Instruction.OrdinalNumber];                                
+                                swlabels[i] = labels[swtargets[i].Instruction.OrdinalNumber];
                             }
                             else throw new CilParserException("Cannot find label for switch instruction");
                         }

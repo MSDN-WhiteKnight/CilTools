@@ -321,19 +321,19 @@ namespace CilTools.BytecodeAnalysis
 
                 if (t.IsGenericType && !ctx.IsTypeSpec)
                 {
-                    yield return new PunctuationSyntax(String.Empty, "<", String.Empty);
+                    yield return new PunctuationSyntax(string.Empty, "<", string.Empty);
 
                     Type[] args = t.GetGenericArguments();
                     for (int i = 0; i < args.Length; i++)
                     {
-                        if (i >= 1) yield return new PunctuationSyntax(String.Empty, ",", " ");
+                        if (i >= 1) yield return new PunctuationSyntax(string.Empty, ",", " ");
 
                         IEnumerable<SyntaxNode> nodes = GetTypeNameSyntax(args[i], ctx);
 
                         foreach (SyntaxNode node in nodes) yield return node;
                     }
 
-                    yield return new PunctuationSyntax(String.Empty, ">", String.Empty);
+                    yield return new PunctuationSyntax(string.Empty, ">", string.Empty);
                 }
             }
 
@@ -494,7 +494,7 @@ namespace CilTools.BytecodeAnalysis
             if (inlineTok)
             {
                 //for ldtoken instruction the method reference is preceded by "method" keyword
-                children.Add(new KeywordSyntax("", "method", " ", KeywordKind.Other));
+                children.Add(new KeywordSyntax(string.Empty, "method", " ", KeywordKind.Other));
             }
 
             //append return type
@@ -509,7 +509,7 @@ namespace CilTools.BytecodeAnalysis
                 Type tReturn = ((ICustomMethod)m).ReturnType;
 
                 if (tReturn != null) rt = CilAnalysis.GetTypeNameSyntax(tReturn, ctx);
-                else rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
+                else rt = new SyntaxNode[] { new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other) };
             }
             else if (m is CustomMethod)
             {
@@ -517,22 +517,22 @@ namespace CilTools.BytecodeAnalysis
                 Type tReturn = ((CustomMethod)m).ReturnType;
 
                 if (tReturn != null) rt = CilAnalysis.GetTypeNameSyntax(tReturn, ctx);
-                else rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
+                else rt = new SyntaxNode[] { new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other) };
             }
             else
             {
                 //we append return type here even for constructors
-                rt = new SyntaxNode[] { new KeywordSyntax("", "void", "", KeywordKind.Other) };
+                rt = new SyntaxNode[] { new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other) };
             }
 
             if (!ReflectionUtils.IsMethodStatic(m))
             {
-                children.Add(new KeywordSyntax("", "instance", " ", KeywordKind.Other));
+                children.Add(new KeywordSyntax(string.Empty, "instance", " ", KeywordKind.Other));
             }
 
             if (m.CallingConvention == CallingConventions.VarArgs)
             {
-                children.Add(new KeywordSyntax("", "vararg", " ", KeywordKind.Other));
+                children.Add(new KeywordSyntax(string.Empty, "vararg", " ", KeywordKind.Other));
 
                 Signature sig = ReflectionProperties.Get(m, ReflectionProperties.Signature) as Signature;
                 sentinelPos = sig.SentinelPosition;
@@ -567,34 +567,34 @@ namespace CilTools.BytecodeAnalysis
 
                 foreach (SyntaxNode node in syntax) children.Add(node);
 
-                children.Add(new PunctuationSyntax("", "::", ""));
+                children.Add(new PunctuationSyntax(string.Empty, "::", string.Empty));
             }
 
             //append name
-            children.Add(new IdentifierSyntax("", m.Name, "", true, m));
+            children.Add(new IdentifierSyntax(string.Empty, m.Name, string.Empty, true, m));
 
             if (m.IsGenericMethod)
             {
-                children.Add(new PunctuationSyntax("", "<", ""));
+                children.Add(new PunctuationSyntax(string.Empty, "<", string.Empty));
 
                 Type[] args = m.GetGenericArguments();
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) children.Add(new PunctuationSyntax("", ",", " "));
+                    if (i >= 1) children.Add(new PunctuationSyntax(string.Empty, ",", " "));
 
                     IEnumerable<SyntaxNode> syntax = CilAnalysis.GetTypeNameSyntax(args[i], ctx);
 
                     foreach (SyntaxNode node in syntax) children.Add(node);
                 }
 
-                children.Add(new PunctuationSyntax("", ">", ""));
+                children.Add(new PunctuationSyntax(string.Empty, ">", string.Empty));
             }
 
-            children.Add(new PunctuationSyntax("", "(", ""));
+            children.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
 
             for (int i = 0; i < pars.Length; i++)
             {
-                if (i >= 1) children.Add(new PunctuationSyntax("", ",", " "));
+                if (i >= 1) children.Add(new PunctuationSyntax(string.Empty, ",", " "));
 
                 if (i == sentinelPos)
                 {
@@ -608,7 +608,7 @@ namespace CilTools.BytecodeAnalysis
                 foreach (SyntaxNode node in syntax) children.Add(node);
             }
 
-            children.Add(new PunctuationSyntax("", ")", ""));
+            children.Add(new PunctuationSyntax(string.Empty, ")", string.Empty));
 
             return new MemberRefSyntax(children.ToArray(), m);
         }
@@ -878,8 +878,7 @@ namespace CilTools.BytecodeAnalysis
                     }
                     catch (Exception ex)
                     {
-                        string error = "";
-                        Diagnostics.OnError(item, new CilErrorEventArgs(ex, error));
+                        Diagnostics.OnError(item, new CilErrorEventArgs(ex, string.Empty));
                     }
                 }
             }
