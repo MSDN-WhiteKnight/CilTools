@@ -218,7 +218,7 @@ namespace CilTools.Reflection
         {
             get
             {
-                return "method " + this._sig.ToString(true);
+                return "method " + this._sig.ToString(pointer: true, containingAssembly: null);
             }
         }
 

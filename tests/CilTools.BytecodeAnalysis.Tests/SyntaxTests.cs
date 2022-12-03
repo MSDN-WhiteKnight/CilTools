@@ -237,7 +237,7 @@ extends [mscorlib]System.Object {
  }
 
  .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
-  .custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 04 00 00 00 00 00 )
+  .custom instance void CilTools.Tests.Common.MyAttribute::.ctor(int32) = ( 01 00 04 00 00 00 00 00 )
   .addon void CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
   .removeon void CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
  }
@@ -276,7 +276,7 @@ extends [mscorlib]System.Object {
  }
 
  .event class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs> B {
-  //.custom instance void [CilTools.Tests.Common]CilTools.Tests.Common.MyAttribute::.ctor(int32)
+  //.custom instance void CilTools.Tests.Common.MyAttribute::.ctor(int32)
   .addon void CilTools.Tests.Common.TestData.EventsSample::add_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
   .removeon void CilTools.Tests.Common.TestData.EventsSample::remove_B(class [mscorlib]System.EventHandler`1<class [mscorlib]System.EventArgs>)
  }
@@ -301,9 +301,9 @@ extends [mscorlib]System.Object {
             string expected = @".class public auto ansi beforefieldinit CilTools.BytecodeAnalysis.Tests.StaticPropertyTest
 extends [mscorlib]System.Object
 {
- .property class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest Value()
+ .property class CilTools.BytecodeAnalysis.Tests.StaticPropertyTest Value()
  {
-  .get class [CilTools.BytecodeAnalysis.Tests]CilTools.BytecodeAnalysis.Tests.StaticPropertyTest CilTools.BytecodeAnalysis.Tests.StaticPropertyTest::get_Value()
+  .get class CilTools.BytecodeAnalysis.Tests.StaticPropertyTest CilTools.BytecodeAnalysis.Tests.StaticPropertyTest::get_Value()
  }
 
  //...
@@ -342,6 +342,22 @@ extends [mscorlib]System.Object
 
             string expected = ".method public hidebysig specialname instance string get_Name() cil managed";
             AssertThat.AreLexicallyEqual(expected, s);
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestTokens", BytecodeProviders.All)]
+        public void Test_Types_SkipAssemblyName(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new Text[] {
+                ".method public hidebysig static void TestTokens() cil managed", Text.Any,
+                //external type name is assembly-qualified
+                "ldtoken", Text.Whitespace, "[", Text.Any, "]System.Int32", Text.Any,
+                //type from the same assembly is not assembly-qualified
+                "ldtoken", Text.Whitespace, "CilTools.Tests.Common.SampleMethods", Text.Any,
+            });
         }
     }
 }

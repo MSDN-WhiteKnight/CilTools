@@ -335,7 +335,7 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="target">The destination TextWriter</param>
         public abstract void OperandToString(TextWriter target);
 
-        internal abstract IEnumerable<SyntaxNode> OperandToSyntax();
+        internal abstract IEnumerable<SyntaxNode> OperandToSyntax(DisassemblerParams pars);
         
         /// <summary>
         /// Returns a text representation of this instruction as a line of CIL code
@@ -366,11 +366,7 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
-        /// <summary>
-        /// Gets the instruction syntax
-        /// </summary>
-        /// <returns>The collection of syntax nodes that represent this instruction syntax</returns>
-        public IEnumerable<SyntaxNode> ToSyntax()
+        internal IEnumerable<SyntaxNode> ToSyntax(DisassemblerParams pars)
         {
             int spaces = 10 - this.Name.Length;
 
@@ -378,10 +374,19 @@ namespace CilTools.BytecodeAnalysis
 
             yield return new KeywordSyntax(string.Empty, this.Name, "".PadLeft(spaces + 1), KeywordKind.InstructionName);
 
-            foreach (SyntaxNode node in this.OperandToSyntax())
+            foreach (SyntaxNode node in this.OperandToSyntax(pars))
             {
                 yield return node;
             }
+        }
+
+        /// <summary>
+        /// Gets the instruction syntax
+        /// </summary>
+        /// <returns>The collection of syntax nodes that represent this instruction syntax</returns>
+        public IEnumerable<SyntaxNode> ToSyntax()
+        {
+            return this.ToSyntax(DisassemblerParams.Default);
         }
 
 #if !NETSTANDARD

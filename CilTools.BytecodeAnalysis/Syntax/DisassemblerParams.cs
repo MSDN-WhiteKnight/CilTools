@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -34,6 +34,13 @@ namespace CilTools.Syntax
         /// The bytecode size is added as a comment in the beginning of the method body.
         /// </summary>
         public bool IncludeCodeSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value specifying that disassembler should assembly-qualify type names even when it is not
+        /// required by CIL syntax (that is, when the type is from the assembly being disassembled). For example <c>MyType</c> 
+        /// will be disassembled as <c>[MyAssembly]MyType</c> when disassembling method in MyAssembly.
+        /// </summary>
+        public bool AssemblyQualifyAllTypes { get; set; }
 
         internal static readonly DisassemblerParams Default = new DisassemblerParams();
     }

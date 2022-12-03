@@ -117,6 +117,7 @@ namespace CilTools.Tests.Common
         public static void TestTokens()
         {
             Console.WriteLine(typeof(int));
+            Console.WriteLine(typeof(SampleMethods));
         }
 
         public static bool TestEmptyString(string str)

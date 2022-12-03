@@ -9,6 +9,7 @@ using System.Reflection.Emit;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TextUtils;
@@ -207,7 +208,12 @@ namespace CilTools.BytecodeAnalysis.Tests
         public void Test_Disassembler_Roundtrip(MethodBase m)
         {
             CilGraph graph = CilGraph.Create(m);
-            string code = graph.ToText();
+
+            // We need to assembly-qualify all types, because this CIL is going to be compiled into a different assembly,
+            // so references to types from the same assembly need to be transformed into external ones.
+            DisassemblerParams dpars = new DisassemblerParams();
+            dpars.AssemblyQualifyAllTypes = true;
+            string code = graph.ToSyntaxTree(dpars).ToString();
 
             //compile method from CIL
             MethodBase mAssembled = IlAsm.BuildFunction(code, m.Name);

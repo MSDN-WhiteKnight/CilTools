@@ -1,13 +1,13 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
-using System.IO;
-using System.Diagnostics;
 using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
+using System.Diagnostics;
+using System.IO;
 using System.Globalization;
+using System.Reflection;
+using System.Text;
 using CilTools.Reflection;
 using CilTools.Syntax;
 
@@ -16,7 +16,7 @@ namespace CilTools.BytecodeAnalysis
     /// <summary>
     /// Represents type specification, the set of type information stored in the signature, as defined by ECMA-335
     /// </summary>
-    public class TypeSpec:Type,ITypeInfo //ECMA-335 II.23.2.12 Type
+    public class TypeSpec : Type, ITypeInfo //ECMA-335 II.23.2.12 Type
     {
         //ECMA-335 II.23.1.16 Element types used in signatures
         internal const byte ELEMENT_TYPE_CMOD_REQD = 0x1f;
@@ -76,7 +76,7 @@ namespace CilTools.BytecodeAnalysis
 
             //decode table index
 
-            if(table_index == 2) table_index = 0x1B; //TypeSpec
+            if (table_index == 2) table_index = 0x1B; //TypeSpec
             else if (table_index == 0) table_index = 0x02;//TypeDef
             //TypeRef index is unchanged by encoding
 
@@ -111,8 +111,8 @@ namespace CilTools.BytecodeAnalysis
             using (ms)
             {
                 GenericContext gctx = GenericContext.FromMember(member);
-                SignatureContext ctx = new SignatureContext(resolver, gctx, null);
-                return TypeSpec.ReadFromStream(ms, ctx, null);
+                SignatureContext ctx = new SignatureContext(resolver, gctx, genericDefinition: null);
+                return TypeSpec.ReadFromStream(ms, ctx, parentGenericDefinition: null);
             }
         }
 
@@ -138,13 +138,13 @@ namespace CilTools.BytecodeAnalysis
 
             using (ms)
             {
-                return TypeSpec.ReadFromStream(ms, ctx, null);
+                return TypeSpec.ReadFromStream(ms, ctx, parentGenericDefinition: null);
             }
         }
 
         internal static TypeSpec ReadFromStream(Stream source, ITokenResolver resolver)
         {
-            return TypeSpec.ReadFromStream(source, SignatureContext.FromResolver(resolver), null);
+            return TypeSpec.ReadFromStream(source, SignatureContext.FromResolver(resolver), parentGenericDefinition: null);
         }
 
         internal static TypeSpec ReadFromStream(
@@ -158,7 +158,7 @@ namespace CilTools.BytecodeAnalysis
             CustomModifier mod;
             byte b;
             int typetok;
-            Type t;                       
+            Type t;
             bool found_type;
             bool isbyref = false;
             bool ispinned = false;
@@ -190,10 +190,10 @@ namespace CilTools.BytecodeAnalysis
                         }
                         catch (Exception ex)
                         {
-                            Diagnostics.OnError(null, new CilErrorEventArgs(
-                                ex, "Failed to resolve type token for modopt: 0x" + typetok.ToString("X"))
-                                );
-                            mod = new CustomModifier(false, typetok, null);
+                            CilErrorEventArgs ea = new CilErrorEventArgs(ex,
+                                "Failed to resolve type token for modopt: 0x" + typetok.ToString("X"));
+                            Diagnostics.OnError(sender: null, ea);
+                            mod = new CustomModifier(required: false, typetok, t: null);
                         }
 
                         mods.Add(mod);
@@ -209,11 +209,11 @@ namespace CilTools.BytecodeAnalysis
                         }
                         catch (Exception ex)
                         {
-                            Diagnostics.OnError(
-                                null, 
-                                new CilErrorEventArgs(ex, "Failed to resolve type token for modreq: 0x" + typetok.ToString("X"))
-                                );
-                            mod = new CustomModifier(true, typetok, null);
+                            CilErrorEventArgs ea = new CilErrorEventArgs(ex,
+                                "Failed to resolve type token for modreq: 0x" + typetok.ToString("X"));
+
+                            Diagnostics.OnError(sender: null, ea);
+                            mod = new CustomModifier(required: true, typetok, t: null);
                         }
 
                         mods.Add(mod);
@@ -234,11 +234,11 @@ namespace CilTools.BytecodeAnalysis
             }//end while
 
             //read type
-            typetok = 0;            
-            
+            typetok = 0;
+
             if (_types.ContainsKey(type))
             {
-                restype = _types[type];                
+                restype = _types[type];
             }
             else
             {
@@ -254,13 +254,13 @@ namespace CilTools.BytecodeAnalysis
                         catch (Exception ex)
                         {
                             Diagnostics.OnError(
-                                null, 
+                                null,
                                 new CilErrorEventArgs(ex, "Failed to resolve class token: 0x" + typetok.ToString("X"))
                                 );
 
                             throw new NotSupportedException("The signature contains TypeSpec that cannot be parsed");
                         }
-                        
+
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.ValueType:
                         typetok = DecodeToken(MetadataReader.ReadCompressed(source));
@@ -272,7 +272,7 @@ namespace CilTools.BytecodeAnalysis
                         catch (Exception ex)
                         {
                             Diagnostics.OnError(
-                                null, 
+                                null,
                                 new CilErrorEventArgs(ex, "Failed to resolve valuetype token: 0x" + typetok.ToString("X"))
                                 );
 
@@ -297,15 +297,19 @@ namespace CilTools.BytecodeAnalysis
                         }
 
                         uint numbounds = MetadataReader.ReadCompressed(source);
-                        if (numbounds > 0) throw new NotSupportedException("Parsing array shapes that specify lower bounds is not supported");
+
+                        if (numbounds > 0)
+                        {
+                            throw new NotSupportedException("Parsing array shapes that specify lower bounds is not supported");
+                        }
 
                         if (ts.Type != null) restype = ts.Type.MakeArrayType((int)rank);
-                        
+
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.SzArray:
                         ts = TypeSpec.ReadFromStream(source, ctx, tRetGenericDefinition);
 
-                        if(ts.Type!=null) restype = ts.Type.MakeArrayType();
+                        if (ts.Type != null) restype = ts.Type.MakeArrayType();
 
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.Ptr:
@@ -337,7 +341,7 @@ namespace CilTools.BytecodeAnalysis
                         break;
                     case (byte)CilTools.BytecodeAnalysis.ElementType.GenericInst:
                         genInstElementType = MetadataReader.ReadByte(source);
-                        
+
                         typetok = DecodeToken(MetadataReader.ReadCompressed(source));
                         Type tdef_t;
 
@@ -347,7 +351,7 @@ namespace CilTools.BytecodeAnalysis
                         }
                         catch (Exception ex)
                         {
-                            Diagnostics.OnError(null, new CilErrorEventArgs(ex, 
+                            Diagnostics.OnError(null, new CilErrorEventArgs(ex,
                                 "Failed to resolve generic type definition token: 0x" + typetok.ToString("X")
                                 ));
 
@@ -378,7 +382,7 @@ namespace CilTools.BytecodeAnalysis
             }
 
             TypeSpec ret = new TypeSpec(mods.ToArray(), type, restype, ctx, tRetGenericDefinition, ts, paramnum, ispinned);
-            
+
             if (type == (byte)ElementType.GenericInst)
             {
                 if (genInstElementType == (byte)ElementType.ValueType) ret._isValueType = true;
@@ -414,7 +418,7 @@ namespace CilTools.BytecodeAnalysis
 
             byte et = 0;
             uint genpos = 0;
-            TypeSpec inner=null;
+            TypeSpec inner = null;
 
             //try find primitive type
             foreach (byte key in _types.Keys)
@@ -438,7 +442,7 @@ namespace CilTools.BytecodeAnalysis
                 else if (t.IsArray)
                 {
                     et = (byte)ElementType.Array;
-                    inner = TypeSpec.FromType(t.GetElementType(),false);
+                    inner = TypeSpec.FromType(t.GetElementType(), false);
                 }
                 else if (t.IsPointer)
                 {
@@ -459,8 +463,8 @@ namespace CilTools.BytecodeAnalysis
                 }
             }
 
-            return new TypeSpec(new CustomModifier[0], et, t, SignatureContext.Empty, null, inner, genpos, pinned);
-        }                
+            return new TypeSpec(new CustomModifier[0], et, t, SignatureContext.Empty, tdef: null, inner, genpos, pinned);
+        }
 
         /// <summary>
         /// Gets the element type of this type specification 
@@ -510,11 +514,12 @@ namespace CilTools.BytecodeAnalysis
         {
             CustomModifier[] res = new CustomModifier[this._Modifiers.Length];
             this._Modifiers.CopyTo(res, 0);
-            return res;            
+            return res;
         }
 
         /// <summary>
-        /// Gets the inner type specification if this instance represents an array or pointer type. For other types, the value is null
+        /// Gets the inner type specification if this instance represents an array or pointer type. For other types, 
+        /// the value is null
         /// </summary>
         public TypeSpec InnerTypeSpec { get { return this._InnerSpec; } }
 
@@ -523,8 +528,9 @@ namespace CilTools.BytecodeAnalysis
         /// </summary>
         /// <remarks>
         /// Starting from the version 2.1, the <c>TypeSpec</c> itself extends <c>System.Type</c>, so this property is not needed. 
-        /// Use this object directly when you need an instance of <c>System.Type</c>, or the <see cref="UnderlyingSystemType"/> property 
-        /// if you need the runtime type. This property will be removed in future releases.
+        /// Use this object directly when you need an instance of <c>System.Type</c>, or the 
+        /// <see cref="UnderlyingSystemType"/> property if you need the runtime type. This property will be removed 
+        /// in future releases.
         /// </remarks>
         public Type Type { get { return this; } }
 
@@ -536,7 +542,8 @@ namespace CilTools.BytecodeAnalysis
         internal SignatureContext Context { get { return this._ctx; } }
 
         /// <summary>
-        /// Generic type definition being instantiated, if this TypeSpec is a part of GenericInst signature element, or null otherwise
+        /// Generic type definition being instantiated, if this TypeSpec is a part of GenericInst signature element, 
+        /// or null otherwise
         /// </summary>
         internal Type ParentTypeDefinition { get { return this._tdef; } }
 
@@ -808,13 +815,13 @@ namespace CilTools.BytecodeAnalysis
 
         /// <inheritdoc/>
         public override bool IsGenericTypeDefinition => false;
-        
+
         /// <summary>
         /// Gets the target function signature, if this <c>TypeSpec</c> represents a function pointer. Otherwise, returns null.
         /// </summary>
         public Signature TargetSignature
         {
-            get 
+            get
             {
                 if (this._Type is FunctionPointerType)
                 {
@@ -898,33 +905,33 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
-        internal MemberRefSyntax ToSyntax()
+        internal MemberRefSyntax ToSyntax(Assembly containingAssembly)
         {
             List<SyntaxNode> ret = new List<SyntaxNode>();
 
             if (this._InnerSpec != null && this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.SzArray)
             {
-                ret.Add(this._InnerSpec.ToSyntax());
-                ret.Add(new PunctuationSyntax(String.Empty, "[]", String.Empty));
+                ret.Add(this._InnerSpec.ToSyntax(containingAssembly));
+                ret.Add(new PunctuationSyntax(string.Empty, "[]", string.Empty));
 
                 if (this._Type != null)
                 {
-                    if (this._Type.IsByRef) ret.Add(new PunctuationSyntax(String.Empty, "&", String.Empty));
+                    if (this._Type.IsByRef) ret.Add(new PunctuationSyntax(string.Empty, "&", string.Empty));
                 }
             }
             else if (this._InnerSpec != null && this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.Ptr)
             {
-                ret.Add(this._InnerSpec.ToSyntax());
-                ret.Add(new PunctuationSyntax(String.Empty, "*", String.Empty));
+                ret.Add(this._InnerSpec.ToSyntax(containingAssembly));
+                ret.Add(new PunctuationSyntax(string.Empty, "*", string.Empty));
 
                 if (this._Type != null)
                 {
-                    if (this._Type.IsByRef) ret.Add(new PunctuationSyntax(String.Empty, "&", String.Empty));
+                    if (this._Type.IsByRef) ret.Add(new PunctuationSyntax(string.Empty, "&", string.Empty));
                 }
             }
             else if (this._Type != null)
             {
-                IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(this);
+                IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(this, containingAssembly);
 
                 foreach (SyntaxNode x in nodes) ret.Add(x);
 
@@ -950,7 +957,7 @@ namespace CilTools.BytecodeAnalysis
 
             foreach (CustomModifier mod in this._Modifiers)
             {
-                foreach(SyntaxNode node in mod.ToSyntax()) ret.Add(node);
+                foreach (SyntaxNode node in mod.ToSyntax(containingAssembly)) ret.Add(node);
             }
 
             return new MemberRefSyntax(ret.ToArray(), this._Type);

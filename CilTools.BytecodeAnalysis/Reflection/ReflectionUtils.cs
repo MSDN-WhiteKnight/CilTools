@@ -169,6 +169,50 @@ namespace CilTools.Reflection
             return string.Equals(baseType.FullName, "System.Enum", StringComparison.InvariantCulture);
         }
 
+        public static bool IsTypeInAssembly(Type t, Assembly ass)
+        {
+            if (t == null || ass == null) return false;
+
+            Assembly typeAssembly = t.Assembly;
+
+            if (typeAssembly == null) return false;
+
+            string name1 = typeAssembly.GetName().Name;
+            string name2 = ass.GetName().Name;
+            return string.Equals(name1, name2, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public static Assembly GetContainingAssembly(MemberInfo mi)
+        {
+            if (mi == null) return null;
+
+            if (mi is Type)
+            {
+                Type t = (Type)mi;
+                return t.Assembly;
+            }
+            else
+            {
+                Type t = mi.DeclaringType;
+
+                if (t == null) return null;
+                else return t.Assembly;
+            }
+        }
+
+        public static Assembly GetProviderAssembly(ICustomAttributeProvider provider)
+        {
+            if (provider is MemberInfo)
+            {
+                return GetContainingAssembly((MemberInfo)provider);
+            }
+            else if (provider is Assembly)
+            {
+                return (Assembly)provider;
+            }
+            else return null;
+        }
+
         public static string GetConstantValueString(Type t, object constant)
         {
             StringBuilder sb = new StringBuilder(100);
