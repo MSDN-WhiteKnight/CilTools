@@ -210,6 +210,10 @@ namespace CilTools.Reflection
             {
                 return (Assembly)provider;
             }
+            else if (provider is Module)
+            {
+                return ((Module)provider).Assembly;
+            }
             else return null;
         }
 
