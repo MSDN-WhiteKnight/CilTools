@@ -827,6 +827,7 @@ namespace CilTools.Metadata
 
         public string[] GetReferencedModules()
         {
+            // ECMA-335 II.22.31 0 ModuleRef : 0x1A
             int countModules = this.reader.GetTableRowCount(TableIndex.ModuleRef);
 
             if (countModules == 0)
@@ -834,17 +835,25 @@ namespace CilTools.Metadata
                 return new string[0];
             }
 
-            string[] ret = new string[countModules];
+            List<string> ret = new List<string>(countModules);
 
             for (int i = 1; i <= countModules; i++)
             {
                 ModuleReferenceHandle h = MetadataTokens.ModuleReferenceHandle(i);
+                
+                if (h.IsNil) continue;
+
                 ModuleReference mref = this.reader.GetModuleReference(h);
+
+                // Module name should not be empty according to ECMA spec, but Visual C++ compiler actually
+                // emits empty names for P/Invokes to the same module
+                if (mref.Name.IsNil) continue;
+
                 string name = this.reader.GetString(mref.Name);
-                ret[i - 1] = name;
+                ret.Add(name);
             }
 
-            return ret;
+            return ret.ToArray();
         }
 
         /// <summary>
