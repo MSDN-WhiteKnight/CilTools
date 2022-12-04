@@ -472,8 +472,7 @@ namespace CilTools.BytecodeAnalysis
 
             //First row in TypeDef table represents dummy type for module-level decls
             //(ECMA-335 II.22.37  TypeDef : 0x02 )
-            byte[] bytes = BitConverter.GetBytes(token);
-            return bytes[0] == 0x01 && bytes[3] == 0x02;
+            return token == 0x02000001;
         }
 
         internal static MemberRefSyntax GetMethodRefSyntax(MethodBase m, bool inlineTok, bool forceTypeSpec,
