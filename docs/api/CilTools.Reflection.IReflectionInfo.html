@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Struct CustomModifier
+    <title>Interface IReflectionInfo
    | CIL Tools </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Struct CustomModifier
+    <meta name="title" content="Interface IReflectionInfo
    | CIL Tools ">
     <meta name="generator" content="docfx 2.40.12.0">
     
@@ -68,110 +68,51 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="CilTools.BytecodeAnalysis.CustomModifier">
+            <article class="content wrap" id="_content" data-uid="CilTools.Reflection.IReflectionInfo">
   
   
-  <h1 id="CilTools_BytecodeAnalysis_CustomModifier" data-uid="CilTools.BytecodeAnalysis.CustomModifier" class="text-break">Struct CustomModifier
+  <h1 id="CilTools_Reflection_IReflectionInfo" data-uid="CilTools.Reflection.IReflectionInfo" class="text-break">Interface IReflectionInfo
   </h1>
-  <div class="markdown level0 summary"><p>Represents custom modifier, an object used to associate a special information with the type specification, as defined by ECMA-335</p>
+  <div class="markdown level0 summary"><p>Provides additional information about reflection objects</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.ValueType.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.ValueType.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.BytecodeAnalysis.html">CilTools.BytecodeAnalysis</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Reflection.html">CilTools.Reflection</a></h6>
   <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
-  <h5 id="CilTools_BytecodeAnalysis_CustomModifier_syntax">Syntax</h5>
+  <h5 id="CilTools_Reflection_IReflectionInfo_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public struct CustomModifier</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IReflectionInfo</code></pre>
   </div>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="CilTools_BytecodeAnalysis_CustomModifier_IsRequired_" data-uid="CilTools.BytecodeAnalysis.CustomModifier.IsRequired*"></a>
-  <h4 id="CilTools_BytecodeAnalysis_CustomModifier_IsRequired" data-uid="CilTools.BytecodeAnalysis.CustomModifier.IsRequired">IsRequired</h4>
-  <div class="markdown level1 summary"><p>Gets the value indicating whether this modifier is required or optional</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsRequired { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>'true' if type users are required to understand this modifier in order to correctly use it,
-'false' if the modifier can be ignored</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="CilTools_BytecodeAnalysis_CustomModifier_IsRequired_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>See ECMA-335 I.9.7 (Metadata extensibility) for more information about required and optional modifiers</p>
-</div>
-  
-  
-  <a id="CilTools_BytecodeAnalysis_CustomModifier_ModifierType_" data-uid="CilTools.BytecodeAnalysis.CustomModifier.ModifierType*"></a>
-  <h4 id="CilTools_BytecodeAnalysis_CustomModifier_ModifierType" data-uid="CilTools.BytecodeAnalysis.CustomModifier.ModifierType">ModifierType</h4>
-  <div class="markdown level1 summary"><p>Gets the type of this modifier</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Type ModifierType { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Type</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="CilTools_BytecodeAnalysis_CustomModifier_ToString_" data-uid="CilTools.BytecodeAnalysis.CustomModifier.ToString*"></a>
-  <h4 id="CilTools_BytecodeAnalysis_CustomModifier_ToString" data-uid="CilTools.BytecodeAnalysis.CustomModifier.ToString">ToString()</h4>
-  <div class="markdown level1 summary"><p>Gets the textual representation of this modifier as CIL code</p>
+  <a id="CilTools_Reflection_IReflectionInfo_GetReflectionProperty_" data-uid="CilTools.Reflection.IReflectionInfo.GetReflectionProperty*"></a>
+  <h4 id="CilTools_Reflection_IReflectionInfo_GetReflectionProperty_System_Int32_" data-uid="CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)">GetReflectionProperty(Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets the value of the reflection property with the specified Id</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">object GetReflectionProperty(int id)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">id</span></td>
+        <td><p>Property Id to get</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -182,13 +123,12 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>The property value, or null if property is not supported</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.ToString()</span></div>
 </article>
           </div>
           

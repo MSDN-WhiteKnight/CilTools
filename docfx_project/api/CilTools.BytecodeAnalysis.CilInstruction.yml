@@ -28,6 +28,7 @@ items:
   - CilTools.BytecodeAnalysis.CilInstruction.ReferencedString
   - CilTools.BytecodeAnalysis.CilInstruction.ReferencedType
   - CilTools.BytecodeAnalysis.CilInstruction.ToString
+  - CilTools.BytecodeAnalysis.CilInstruction.ToSyntax
   - CilTools.BytecodeAnalysis.CilInstruction.TotalSize
   langs:
   - csharp
@@ -300,6 +301,35 @@ items:
   modifiers.vb:
   - Public
   - Overrides
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ToSyntax
+  commentId: M:CilTools.BytecodeAnalysis.CilInstruction.ToSyntax
+  id: ToSyntax
+  parent: CilTools.BytecodeAnalysis.CilInstruction
+  langs:
+  - csharp
+  - vb
+  name: ToSyntax()
+  nameWithType: CilInstruction.ToSyntax()
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ToSyntax()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nGets the instruction syntax\n"
+  syntax:
+    content: public IEnumerable<SyntaxNode> ToSyntax()
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+      description: The collection of syntax nodes that represent this instruction syntax
+    content.vb: Public Function ToSyntax As IEnumerable(Of SyntaxNode)
+  overload: CilTools.BytecodeAnalysis.CilInstruction.ToSyntax*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 - uid: CilTools.BytecodeAnalysis.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
   commentId: M:CilTools.BytecodeAnalysis.CilInstruction.EmitTo(System.Reflection.Emit.ILGenerator)
   id: EmitTo(System.Reflection.Emit.ILGenerator)
@@ -1277,6 +1307,101 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
+- uid: CilTools.BytecodeAnalysis.CilInstruction.ToSyntax*
+  commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.ToSyntax
+  isExternal: true
+  name: ToSyntax
+  nameWithType: CilInstruction.ToSyntax
+  fullName: CilTools.BytecodeAnalysis.CilInstruction.ToSyntax
+- uid: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+  commentId: T:System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<SyntaxNode>
+  nameWithType: IEnumerable<SyntaxNode>
+  fullName: System.Collections.Generic.IEnumerable<CilTools.Syntax.SyntaxNode>
+  nameWithType.vb: IEnumerable(Of SyntaxNode)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilTools.Syntax.SyntaxNode)
+  name.vb: IEnumerable(Of SyntaxNode)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
 - uid: CilTools.BytecodeAnalysis.CilInstruction.EmitTo*
   commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.EmitTo
   isExternal: true

@@ -6,6 +6,8 @@ items:
   parent: CilTools.Syntax
   children:
   - CilTools.Syntax.SyntaxNode.#ctor
+  - CilTools.Syntax.SyntaxNode._lead
+  - CilTools.Syntax.SyntaxNode._trail
   - CilTools.Syntax.SyntaxNode.EnumerateChildNodes
   - CilTools.Syntax.SyntaxNode.GetChildNodes
   - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
@@ -28,8 +30,8 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
-  summary: "\nRepresents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent concrete language constructs derive from this class. \n"
-  remarks: "\n<p>\nThe <code>SyntaxNode</code> class instance contains all information required to produce the source code of the corresponding language construct, including whitespaces. \nThe <xref href=\"CilTools.Syntax.SyntaxNode.EnumerateChildNodes\" data-throw-if-not-resolved=\"false\"></xref> method returns all child nodes of this node, or an empty collection if it is a leaf (terminal node). \nSome child nodes may be exposed via specific properties as well. \nThe text representation for non-terminal node is a string concetanation of all its child nodes&apos; text representations. \n</p>\n<p>\nUse <xref href=\"CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree(CilTools.Syntax.DisassemblerParams)\" data-throw-if-not-resolved=\"false\"></xref> method to get the syntax tree for the specified method.\n</p>\n"
+  summary: "\nRepresents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent \nconcrete language constructs derive from this class. "
+  remarks: "\n<p>\nThe <code>SyntaxNode</code> class instance contains all information required to produce the source code of the \ncorresponding language construct, including whitespaces. The <xref href=\"CilTools.Syntax.SyntaxNode.EnumerateChildNodes\" data-throw-if-not-resolved=\"false\"></xref> method returns all \nchild nodes of this node, or an empty collection if it is a leaf (terminal node). \nSome child nodes may be exposed via specific properties as well. \nThe text representation for non-terminal node is a string concetanation of all its child nodes&apos; text representations. \n</p>\n<p>\nUse <xref href=\"CilTools.BytecodeAnalysis.CilGraph.ToSyntaxTree(CilTools.Syntax.DisassemblerParams)\" data-throw-if-not-resolved=\"false\"></xref> method to get the syntax tree for the specified method.\n</p>\n"
   syntax:
     content: public abstract class SyntaxNode
     content.vb: Public MustInherit Class SyntaxNode
@@ -45,6 +47,7 @@ items:
   - CilTools.Syntax.LiteralSyntax
   - CilTools.Syntax.MemberRefSyntax
   - CilTools.Syntax.MethodDefSyntax
+  - CilTools.Syntax.PunctuationSyntax
   inheritedMembers:
   - System.Object.Equals(System.Object)
   - System.Object.Equals(System.Object,System.Object)
@@ -60,6 +63,60 @@ items:
   - Public
   - MustInherit
   - Class
+- uid: CilTools.Syntax.SyntaxNode._lead
+  commentId: F:CilTools.Syntax.SyntaxNode._lead
+  id: _lead
+  parent: CilTools.Syntax.SyntaxNode
+  langs:
+  - csharp
+  - vb
+  name: _lead
+  nameWithType: SyntaxNode._lead
+  fullName: CilTools.Syntax.SyntaxNode._lead
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nWhitespace content at the beginning of this node&apos;s code\n"
+  syntax:
+    content: protected string _lead
+    return:
+      type: System.String
+    content.vb: Protected _lead As String
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilTools.Syntax.SyntaxNode._trail
+  commentId: F:CilTools.Syntax.SyntaxNode._trail
+  id: _trail
+  parent: CilTools.Syntax.SyntaxNode
+  langs:
+  - csharp
+  - vb
+  name: _trail
+  nameWithType: SyntaxNode._trail
+  fullName: CilTools.Syntax.SyntaxNode._trail
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nWhitespace content at the end of this node&apos;s code\n"
+  syntax:
+    content: protected string _trail
+    return:
+      type: System.String
+    content.vb: Protected _trail As String
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
 - uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
   commentId: M:CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
   id: ToText(System.IO.TextWriter)
@@ -310,7 +367,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
   summary: "\nGets whitespace content at the beginning of this node&apos;s code\n"
-  remarks: "\nBesides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace \ncontent, both syntactically meaningful and indentation-only, is stored within one of the adjacent nodes, not in the separate node.\n"
+  remarks: "Besides the whitespace character itself, the returned string may contain line feed or carriage \nreturn characters. For efficiency purposes, the whitespace content, both syntactically meaningful and \nindentation-only, is stored within one of the adjacent nodes, not in the separate node."
   syntax:
     content: public string LeadingWhitespace { get; }
     parameters: []
@@ -342,7 +399,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
   summary: "\nGets whitespace content at the end of this node&apos;s code\n"
-  remarks: "\nBesides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace \ncontent, both syntactically meaningful and indentation-only, is stored within one of the adjacent nodes, not in the separate node.\n"
+  remarks: "Besides the whitespace character itself, the returned string may contain line feed or carriage \nreturn characters. For efficiency purposes, the whitespace content, both syntactically meaningful and \nindentation-only, is stored within one of the adjacent nodes, not in the separate node."
   syntax:
     content: public string TrailingWhitespace { get; }
     parameters: []
@@ -655,6 +712,13 @@ references:
   name: System
   nameWithType: System
   fullName: System
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
 - uid: CilTools.Syntax.SyntaxNode.ToText*
   commentId: Overload:CilTools.Syntax.SyntaxNode.ToText
   isExternal: true
@@ -806,13 +870,6 @@ references:
   name: ToString
   nameWithType: SyntaxNode.ToString
   fullName: CilTools.Syntax.SyntaxNode.ToString
-- uid: System.String
-  commentId: T:System.String
-  parent: System
-  isExternal: true
-  name: String
-  nameWithType: String
-  fullName: System.String
 - uid: CilTools.Syntax.SyntaxNode.GetChildNodes*
   commentId: Overload:CilTools.Syntax.SyntaxNode.GetChildNodes
   isExternal: true

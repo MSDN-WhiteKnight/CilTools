@@ -10,6 +10,7 @@ items:
   - CilTools.SourceCode.SourceDocument.FilePath
   - CilTools.SourceCode.SourceDocument.Fragments
   - CilTools.SourceCode.SourceDocument.Method
+  - CilTools.SourceCode.SourceDocument.SourceLinkMap
   - CilTools.SourceCode.SourceDocument.SymbolsFile
   - CilTools.SourceCode.SourceDocument.SymbolsFileFormat
   langs:
@@ -266,6 +267,37 @@ items:
   modifiers.vb:
   - Public
   - ReadOnly
+- uid: CilTools.SourceCode.SourceDocument.SourceLinkMap
+  commentId: P:CilTools.SourceCode.SourceDocument.SourceLinkMap
+  id: SourceLinkMap
+  parent: CilTools.SourceCode.SourceDocument
+  langs:
+  - csharp
+  - vb
+  name: SourceLinkMap
+  nameWithType: SourceDocument.SourceLinkMap
+  fullName: CilTools.SourceCode.SourceDocument.SourceLinkMap
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.SourceCode
+  summary: "\nGets or sets the Source Link URL map if the source code of this document is located on the remote \nserver. Otherwise, the value of this property is an empty string. Source Link specification: \n<a href=\"https://github.com/dotnet/designs/blob/main/accepted/2020/diagnostics/source-link.md#source-link-json-schema\">https://github.com/dotnet/designs/blob/main/accepted/2020/diagnostics/source-link.md#source-link-json-schema</a>\n"
+  syntax:
+    content: public string SourceLinkMap { get; set; }
+    parameters: []
+    return:
+      type: System.String
+    content.vb: Public Property SourceLinkMap As String
+  overload: CilTools.SourceCode.SourceDocument.SourceLinkMap*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
 references:
 - uid: CilTools.SourceCode
   commentId: N:CilTools.SourceCode
@@ -863,3 +895,9 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
+- uid: CilTools.SourceCode.SourceDocument.SourceLinkMap*
+  commentId: Overload:CilTools.SourceCode.SourceDocument.SourceLinkMap
+  isExternal: true
+  name: SourceLinkMap
+  nameWithType: SourceDocument.SourceLinkMap
+  fullName: CilTools.SourceCode.SourceDocument.SourceLinkMap

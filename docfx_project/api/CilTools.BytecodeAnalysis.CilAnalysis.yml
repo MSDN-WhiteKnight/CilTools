@@ -186,7 +186,6 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
   summary: "\nReturns specified method CIL code as string\n"
-  remarks: The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.
   syntax:
     content: public static string MethodToText(MethodBase m)
     parameters:

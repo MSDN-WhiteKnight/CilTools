@@ -1,0 +1,722 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.ReflectionProperties
+  commentId: T:CilTools.Reflection.ReflectionProperties
+  id: ReflectionProperties
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.ReflectionProperties.CorFlags
+  - CilTools.Reflection.ReflectionProperties.ExplicitlyImplementedMethods
+  - CilTools.Reflection.ReflectionProperties.FileAlignment
+  - CilTools.Reflection.ReflectionProperties.Get(System.Object,System.Int32)
+  - CilTools.Reflection.ReflectionProperties.ImageBase
+  - CilTools.Reflection.ReflectionProperties.InfoText
+  - CilTools.Reflection.ReflectionProperties.IsStatic
+  - CilTools.Reflection.ReflectionProperties.ReferencedModules
+  - CilTools.Reflection.ReflectionProperties.Signature
+  - CilTools.Reflection.ReflectionProperties.StackReserve
+  - CilTools.Reflection.ReflectionProperties.Subsystem
+  - CilTools.Reflection.ReflectionProperties.VTableEntry
+  langs:
+  - csharp
+  - vb
+  name: ReflectionProperties
+  nameWithType: ReflectionProperties
+  fullName: CilTools.Reflection.ReflectionProperties
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nProvides constants for reflection properties used with <xref href=\"CilTools.Reflection.IReflectionInfo\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  syntax:
+    content: public static class ReflectionProperties
+    content.vb: Public Module ReflectionProperties
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: CilTools.Reflection.ReflectionProperties.InfoText
+  commentId: F:CilTools.Reflection.ReflectionProperties.InfoText
+  id: InfoText
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: InfoText
+  nameWithType: ReflectionProperties.InfoText
+  fullName: CilTools.Reflection.ReflectionProperties.InfoText
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the string containing information about object\n"
+  syntax:
+    content: public const int InfoText = 1
+    return:
+      type: System.Int32
+    content.vb: Public Const InfoText As Integer = 1
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.ReferencedModules
+  commentId: F:CilTools.Reflection.ReflectionProperties.ReferencedModules
+  id: ReferencedModules
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: ReferencedModules
+  nameWithType: ReflectionProperties.ReferencedModules
+  fullName: CilTools.Reflection.ReflectionProperties.ReferencedModules
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the array of external modules referenced by assembly (Type: string[])\n"
+  syntax:
+    content: public const int ReferencedModules = 100
+    return:
+      type: System.Int32
+    content.vb: Public Const ReferencedModules As Integer = 100
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.ImageBase
+  commentId: F:CilTools.Reflection.ReflectionProperties.ImageBase
+  id: ImageBase
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: ImageBase
+  nameWithType: ReflectionProperties.ImageBase
+  fullName: CilTools.Reflection.ReflectionProperties.ImageBase
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the preferred base address for the PE image (Type: ulong)\n"
+  syntax:
+    content: public const int ImageBase = 101
+    return:
+      type: System.Int32
+    content.vb: Public Const ImageBase As Integer = 101
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.FileAlignment
+  commentId: F:CilTools.Reflection.ReflectionProperties.FileAlignment
+  id: FileAlignment
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: FileAlignment
+  nameWithType: ReflectionProperties.FileAlignment
+  fullName: CilTools.Reflection.ReflectionProperties.FileAlignment
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the PE image alignment factor, in bytes (Type: int)\n"
+  syntax:
+    content: public const int FileAlignment = 102
+    return:
+      type: System.Int32
+    content.vb: Public Const FileAlignment As Integer = 102
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.StackReserve
+  commentId: F:CilTools.Reflection.ReflectionProperties.StackReserve
+  id: StackReserve
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: StackReserve
+  nameWithType: ReflectionProperties.StackReserve
+  fullName: CilTools.Reflection.ReflectionProperties.StackReserve
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the PE image reserved stack size, in bytes (Type: ulong)\n"
+  syntax:
+    content: public const int StackReserve = 103
+    return:
+      type: System.Int32
+    content.vb: Public Const StackReserve As Integer = 103
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.Subsystem
+  commentId: F:CilTools.Reflection.ReflectionProperties.Subsystem
+  id: Subsystem
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: Subsystem
+  nameWithType: ReflectionProperties.Subsystem
+  fullName: CilTools.Reflection.ReflectionProperties.Subsystem
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the PE image subsystem (Type: int)\n"
+  syntax:
+    content: public const int Subsystem = 104
+    return:
+      type: System.Int32
+    content.vb: Public Const Subsystem As Integer = 104
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.CorFlags
+  commentId: F:CilTools.Reflection.ReflectionProperties.CorFlags
+  id: CorFlags
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: CorFlags
+  nameWithType: ReflectionProperties.CorFlags
+  fullName: CilTools.Reflection.ReflectionProperties.CorFlags
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the PE image runtime flags (Type: int)\n"
+  syntax:
+    content: public const int CorFlags = 105
+    return:
+      type: System.Int32
+    content.vb: Public Const CorFlags As Integer = 105
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.IsStatic
+  commentId: F:CilTools.Reflection.ReflectionProperties.IsStatic
+  id: IsStatic
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: IsStatic
+  nameWithType: ReflectionProperties.IsStatic
+  fullName: CilTools.Reflection.ReflectionProperties.IsStatic
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nIndicates whether the member is static (Type: bool)\n"
+  syntax:
+    content: public const int IsStatic = 106
+    return:
+      type: System.Int32
+    content.vb: Public Const IsStatic As Integer = 106
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.ExplicitlyImplementedMethods
+  commentId: F:CilTools.Reflection.ReflectionProperties.ExplicitlyImplementedMethods
+  id: ExplicitlyImplementedMethods
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: ExplicitlyImplementedMethods
+  nameWithType: ReflectionProperties.ExplicitlyImplementedMethods
+  fullName: CilTools.Reflection.ReflectionProperties.ExplicitlyImplementedMethods
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents interface methods implemented by this method, if this method is an explicit interface\nimplementation. Otherwise, should be an empty array. (Type: MethodInfo[])\n"
+  syntax:
+    content: public const int ExplicitlyImplementedMethods = 107
+    return:
+      type: System.Int32
+    content.vb: Public Const ExplicitlyImplementedMethods As Integer = 107
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.VTableEntry
+  commentId: F:CilTools.Reflection.ReflectionProperties.VTableEntry
+  id: VTableEntry
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: VTableEntry
+  nameWithType: ReflectionProperties.VTableEntry
+  fullName: CilTools.Reflection.ReflectionProperties.VTableEntry
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents the information about VTable entry associated with this method, or an empty \nstring if the method does not have a VTable entry. (Type: string)\n"
+  syntax:
+    content: public const int VTableEntry = 108
+    return:
+      type: System.Int32
+    content.vb: Public Const VTableEntry As Integer = 108
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.Signature
+  commentId: F:CilTools.Reflection.ReflectionProperties.Signature
+  id: Signature
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: Signature
+  nameWithType: ReflectionProperties.Signature
+  fullName: CilTools.Reflection.ReflectionProperties.Signature
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents a method signature. (Type: Signature)\n"
+  syntax:
+    content: public const int Signature = 109
+    return:
+      type: System.Int32
+    content.vb: Public Const Signature As Integer = 109
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.Get(System.Object,System.Int32)
+  commentId: M:CilTools.Reflection.ReflectionProperties.Get(System.Object,System.Int32)
+  id: Get(System.Object,System.Int32)
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: Get(Object, Int32)
+  nameWithType: ReflectionProperties.Get(Object, Int32)
+  fullName: CilTools.Reflection.ReflectionProperties.Get(System.Object, System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the value of the reflection property with the specified Id from the specified object\n"
+  syntax:
+    content: public static object Get(object obj, int id)
+    parameters:
+    - id: obj
+      type: System.Object
+      description: Reflection object to get property
+    - id: id
+      type: System.Int32
+      description: Property Id
+    return:
+      type: System.Object
+      description: The property value, or null if property is not supported
+    content.vb: Public Shared Function Get(obj As Object, id As Integer) As Object
+  overload: CilTools.Reflection.ReflectionProperties.Get*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.Reflection.ReflectionProperties.Get*
+  commentId: Overload:CilTools.Reflection.ReflectionProperties.Get
+  isExternal: true
+  name: Get
+  nameWithType: ReflectionProperties.Get
+  fullName: CilTools.Reflection.ReflectionProperties.Get

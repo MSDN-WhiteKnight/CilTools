@@ -73,7 +73,8 @@
   
   <h1 id="CilTools_Syntax_SyntaxNode" data-uid="CilTools.Syntax.SyntaxNode" class="text-break">Class SyntaxNode
   </h1>
-  <div class="markdown level0 summary"><p>Represents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent concrete language constructs derive from this class.</p>
+  <div class="markdown level0 summary"><p>Represents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent
+concrete language constructs derive from this class.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
@@ -89,6 +90,7 @@
       <div class="level2"><a class="xref" href="CilTools.Syntax.LiteralSyntax.html">LiteralSyntax</a></div>
       <div class="level2"><a class="xref" href="CilTools.Syntax.MemberRefSyntax.html">MemberRefSyntax</a></div>
       <div class="level2"><a class="xref" href="CilTools.Syntax.MethodDefSyntax.html">MethodDefSyntax</a></div>
+      <div class="level2"><a class="xref" href="CilTools.Syntax.PunctuationSyntax.html">PunctuationSyntax</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -119,8 +121,9 @@
   </div>
   <h5 id="CilTools_Syntax_SyntaxNode_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>
-The <code>SyntaxNode</code> class instance contains all information required to produce the source code of the corresponding language construct, including whitespaces. 
-The <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EnumerateChildNodes">EnumerateChildNodes()</a> method returns all child nodes of this node, or an empty collection if it is a leaf (terminal node). 
+The <code>SyntaxNode</code> class instance contains all information required to produce the source code of the 
+corresponding language construct, including whitespaces. The <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EnumerateChildNodes">EnumerateChildNodes()</a> method returns all 
+child nodes of this node, or an empty collection if it is a leaf (terminal node). 
 Some child nodes may be exposed via specific properties as well. 
 The text representation for non-terminal node is a string concetanation of all its child nodes&apos; text representations. 
 </p>
@@ -140,6 +143,58 @@ Use <a class="xref" href="CilTools.BytecodeAnalysis.CilGraph.html#CilTools_Bytec
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">protected SyntaxNode()</code></pre>
   </div>
+  <h3 id="fields">Fields
+  </h3>
+  
+  
+  <h4 id="CilTools_Syntax_SyntaxNode__lead" data-uid="CilTools.Syntax.SyntaxNode._lead">_lead</h4>
+  <div class="markdown level1 summary"><p>Whitespace content at the beginning of this node's code</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected string _lead</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="CilTools_Syntax_SyntaxNode__trail" data-uid="CilTools.Syntax.SyntaxNode._trail">_trail</h4>
+  <div class="markdown level1 summary"><p>Whitespace content at the end of this node's code</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected string _trail</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="properties">Properties
   </h3>
   
@@ -169,8 +224,9 @@ Use <a class="xref" href="CilTools.BytecodeAnalysis.CilGraph.html#CilTools_Bytec
     </tbody>
   </table>
   <h5 id="CilTools_Syntax_SyntaxNode_LeadingWhitespace_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace
-content, both syntactically meaningful and indentation-only, is stored within one of the adjacent nodes, not in the separate node.</p>
+  <div class="markdown level1 remarks"><p>Besides the whitespace character itself, the returned string may contain line feed or carriage
+return characters. For efficiency purposes, the whitespace content, both syntactically meaningful and
+indentation-only, is stored within one of the adjacent nodes, not in the separate node.</p>
 </div>
   
   
@@ -225,8 +281,9 @@ content, both syntactically meaningful and indentation-only, is stored within on
     </tbody>
   </table>
   <h5 id="CilTools_Syntax_SyntaxNode_TrailingWhitespace_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>Besides the whitespace character itself, the returned string may contain line feed or carriage return characters. For efficiency purposes, the whitespace
-content, both syntactically meaningful and indentation-only, is stored within one of the adjacent nodes, not in the separate node.</p>
+  <div class="markdown level1 remarks"><p>Besides the whitespace character itself, the returned string may contain line feed or carriage
+return characters. For efficiency purposes, the whitespace content, both syntactically meaningful and
+indentation-only, is stored within one of the adjacent nodes, not in the separate node.</p>
 </div>
   <h3 id="methods">Methods
   </h3>

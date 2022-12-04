@@ -127,6 +127,34 @@
   </h3>
   
   
+  <a id="CilTools_Syntax_DisassemblerParams_AssemblyQualifyAllTypes_" data-uid="CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes*"></a>
+  <h4 id="CilTools_Syntax_DisassemblerParams_AssemblyQualifyAllTypes" data-uid="CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes">AssemblyQualifyAllTypes</h4>
+  <div class="markdown level1 summary"><p>Gets or sets a value specifying that disassembler should assembly-qualify type names even when it is not
+required by CIL syntax (that is, when the type is from the assembly being disassembled). For example <code>MyType</code>
+will be disassembled as <code>[MyAssembly]MyType</code> when disassembling method in MyAssembly.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool AssemblyQualifyAllTypes { get; set; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="CilTools_Syntax_DisassemblerParams_CodeProvider_" data-uid="CilTools.Syntax.DisassemblerParams.CodeProvider*"></a>
   <h4 id="CilTools_Syntax_DisassemblerParams_CodeProvider" data-uid="CilTools.Syntax.DisassemblerParams.CodeProvider">CodeProvider</h4>
   <div class="markdown level1 summary"><p>Gets or sets an object used to load source code corresponding to disassembled bytecode.

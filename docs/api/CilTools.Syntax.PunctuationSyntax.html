@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class BlockSyntax
+    <title>Class PunctuationSyntax
    | CIL Tools </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class BlockSyntax
+    <meta name="title" content="Class PunctuationSyntax
    | CIL Tools ">
     <meta name="generator" content="docfx 2.40.12.0">
     
@@ -68,19 +68,19 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="CilTools.Syntax.BlockSyntax">
+            <article class="content wrap" id="_content" data-uid="CilTools.Syntax.PunctuationSyntax">
   
   
-  <h1 id="CilTools_Syntax_BlockSyntax" data-uid="CilTools.Syntax.BlockSyntax" class="text-break">Class BlockSyntax
+  <h1 id="CilTools_Syntax_PunctuationSyntax" data-uid="CilTools.Syntax.PunctuationSyntax" class="text-break">Class PunctuationSyntax
   </h1>
-  <div class="markdown level0 summary"><p>Represents the block syntax in the CIL assembler. The block contains child directive and instruction nodes.</p>
+  <div class="markdown level0 summary"><p>Represents the punctuation sign token in CIL assembler</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a></div>
-    <div class="level2"><span class="xref">BlockSyntax</span></div>
+    <div class="level2"><span class="xref">PunctuationSyntax</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -132,26 +132,26 @@
   </div>
   <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Syntax.html">CilTools.Syntax</a></h6>
   <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
-  <h5 id="CilTools_Syntax_BlockSyntax_syntax">Syntax</h5>
+  <h5 id="CilTools_Syntax_PunctuationSyntax_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class BlockSyntax : SyntaxNode</code></pre>
+    <pre><code class="lang-csharp hljs">public class PunctuationSyntax : SyntaxNode</code></pre>
   </div>
-  <h5 id="CilTools_Syntax_BlockSyntax_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>The examples of block syntax are method body or exception handler blocks. The block consists of the optional header, opening curly brace, content nodes
-(directives and statements) and closing curly brace.</p>
+  <h5 id="CilTools_Syntax_PunctuationSyntax_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>Punctuation signs divide other tokens in syntax constructs. Punctuation signs used in CIL are colons,
+braces, angle braces and others.</p>
 </div>
   <h3 id="properties">Properties
   </h3>
   
   
-  <a id="CilTools_Syntax_BlockSyntax_Content_" data-uid="CilTools.Syntax.BlockSyntax.Content*"></a>
-  <h4 id="CilTools_Syntax_BlockSyntax_Content" data-uid="CilTools.Syntax.BlockSyntax.Content">Content</h4>
-  <div class="markdown level1 summary"><p>Returns the collection of the syntax nodes contained within this block (content nodes)</p>
+  <a id="CilTools_Syntax_PunctuationSyntax_Content_" data-uid="CilTools.Syntax.PunctuationSyntax.Content*"></a>
+  <h4 id="CilTools_Syntax_PunctuationSyntax_Content" data-uid="CilTools.Syntax.PunctuationSyntax.Content">Content</h4>
+  <div class="markdown level1 summary"><p>Gets the value of this punctuation sign as string</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;SyntaxNode&gt; Content { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public string Content { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -163,49 +163,17 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>&gt;</td>
+        <td><span class="xref">System.String</span></td>
         <td></td>
       </tr>
     </tbody>
   </table>
-  <h5 id="CilTools_Syntax_BlockSyntax_Content_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The content nodes are located between opening and closing curly braces. They include instructions and directives.</p>
-</div>
-  
-  
-  <a id="CilTools_Syntax_BlockSyntax_HeaderSyntax_" data-uid="CilTools.Syntax.BlockSyntax.HeaderSyntax*"></a>
-  <h4 id="CilTools_Syntax_BlockSyntax_HeaderSyntax" data-uid="CilTools.Syntax.BlockSyntax.HeaderSyntax">HeaderSyntax</h4>
-  <div class="markdown level1 summary"><p>Gets the header syntax of this block, or an empty collection if this block has no header</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;SyntaxNode&gt; HeaderSyntax { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>&gt;</td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="CilTools_Syntax_BlockSyntax_HeaderSyntax_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>For the exception handler blocks, the header represents the exception clause. Other types of blocks does not have headers.</p>
-</div>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="CilTools_Syntax_BlockSyntax_EnumerateChildNodes_" data-uid="CilTools.Syntax.BlockSyntax.EnumerateChildNodes*"></a>
-  <h4 id="CilTools_Syntax_BlockSyntax_EnumerateChildNodes" data-uid="CilTools.Syntax.BlockSyntax.EnumerateChildNodes">EnumerateChildNodes()</h4>
+  <a id="CilTools_Syntax_PunctuationSyntax_EnumerateChildNodes_" data-uid="CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes*"></a>
+  <h4 id="CilTools_Syntax_PunctuationSyntax_EnumerateChildNodes" data-uid="CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes">EnumerateChildNodes()</h4>
   <div class="markdown level1 summary"><p>Enumerates child nodes of this node. For the leaf node, returns an empty collection.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
@@ -233,8 +201,8 @@
   <div><a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EnumerateChildNodes">SyntaxNode.EnumerateChildNodes()</a></div>
   
   
-  <a id="CilTools_Syntax_BlockSyntax_ToText_" data-uid="CilTools.Syntax.BlockSyntax.ToText*"></a>
-  <h4 id="CilTools_Syntax_BlockSyntax_ToText_System_IO_TextWriter_" data-uid="CilTools.Syntax.BlockSyntax.ToText(System.IO.TextWriter)">ToText(TextWriter)</h4>
+  <a id="CilTools_Syntax_PunctuationSyntax_ToText_" data-uid="CilTools.Syntax.PunctuationSyntax.ToText*"></a>
+  <h4 id="CilTools_Syntax_PunctuationSyntax_ToText_System_IO_TextWriter_" data-uid="CilTools.Syntax.PunctuationSyntax.ToText(System.IO.TextWriter)">ToText(TextWriter)</h4>
   <div class="markdown level1 summary"><p>Writes text representation of this node into the specified TextWriter</p>
 </div>
   <div class="markdown level1 conceptual"></div>

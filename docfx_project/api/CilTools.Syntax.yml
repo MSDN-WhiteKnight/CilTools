@@ -7,6 +7,7 @@ items:
   - CilTools.Syntax.BlockSyntax
   - CilTools.Syntax.CommentSyntax
   - CilTools.Syntax.DirectiveSyntax
+  - CilTools.Syntax.Disassembler
   - CilTools.Syntax.DisassemblerParams
   - CilTools.Syntax.IdentifierSyntax
   - CilTools.Syntax.InstructionSyntax
@@ -15,6 +16,7 @@ items:
   - CilTools.Syntax.LiteralSyntax
   - CilTools.Syntax.MemberRefSyntax
   - CilTools.Syntax.MethodDefSyntax
+  - CilTools.Syntax.PunctuationSyntax
   - CilTools.Syntax.SyntaxFactory
   - CilTools.Syntax.SyntaxNode
   langs:
@@ -47,6 +49,12 @@ references:
   name: DirectiveSyntax
   nameWithType: DirectiveSyntax
   fullName: CilTools.Syntax.DirectiveSyntax
+- uid: CilTools.Syntax.Disassembler
+  commentId: T:CilTools.Syntax.Disassembler
+  isExternal: true
+  name: Disassembler
+  nameWithType: Disassembler
+  fullName: CilTools.Syntax.Disassembler
 - uid: CilTools.Syntax.DisassemblerParams
   commentId: T:CilTools.Syntax.DisassemblerParams
   parent: CilTools.Syntax
@@ -98,6 +106,12 @@ references:
   name: MethodDefSyntax
   nameWithType: MethodDefSyntax
   fullName: CilTools.Syntax.MethodDefSyntax
+- uid: CilTools.Syntax.PunctuationSyntax
+  commentId: T:CilTools.Syntax.PunctuationSyntax
+  isExternal: true
+  name: PunctuationSyntax
+  nameWithType: PunctuationSyntax
+  fullName: CilTools.Syntax.PunctuationSyntax
 - uid: CilTools.Syntax.SyntaxFactory
   commentId: T:CilTools.Syntax.SyntaxFactory
   isExternal: true

@@ -1789,7 +1789,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
-  summary: "\nGets the inner type specification if this instance represents an array or pointer type. For other types, the value is null\n"
+  summary: "\nGets the inner type specification if this instance represents an array or pointer type. For other types, \nthe value is null\n"
   syntax:
     content: public TypeSpec InnerTypeSpec { get; }
     parameters: []
@@ -1821,7 +1821,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
   summary: "\nGets the type which this type specification represents (deprecated)\n"
-  remarks: "\nStarting from the version 2.1, the <code>TypeSpec</code> itself extends <code>System.Type</code>, so this property is not needed. \nUse this object directly when you need an instance of <code>System.Type</code>, or the <xref href=\"CilTools.BytecodeAnalysis.TypeSpec.UnderlyingSystemType\" data-throw-if-not-resolved=\"false\"></xref> property \nif you need the runtime type. This property will be removed in future releases.\n"
+  remarks: "\nStarting from the version 2.1, the <code>TypeSpec</code> itself extends <code>System.Type</code>, so this property is not needed. \nUse this object directly when you need an instance of <code>System.Type</code>, or the \n<xref href=\"CilTools.BytecodeAnalysis.TypeSpec.UnderlyingSystemType\" data-throw-if-not-resolved=\"false\"></xref> property if you need the runtime type. This property will be removed \nin future releases.\n"
   syntax:
     content: public Type Type { get; }
     parameters: []

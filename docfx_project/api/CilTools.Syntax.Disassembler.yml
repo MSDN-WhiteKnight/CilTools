@@ -1,21 +1,17 @@
 ### YamlMime:ManagedReference
 items:
-- uid: CilTools.Syntax.DisassemblerParams
-  commentId: T:CilTools.Syntax.DisassemblerParams
-  id: DisassemblerParams
+- uid: CilTools.Syntax.Disassembler
+  commentId: T:CilTools.Syntax.Disassembler
+  id: Disassembler
   parent: CilTools.Syntax
   children:
-  - CilTools.Syntax.DisassemblerParams.#ctor
-  - CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes
-  - CilTools.Syntax.DisassemblerParams.CodeProvider
-  - CilTools.Syntax.DisassemblerParams.IncludeCodeSize
-  - CilTools.Syntax.DisassemblerParams.IncludeSourceCode
+  - CilTools.Syntax.Disassembler.GetAssemblyManifestSyntaxNodes(System.Reflection.Assembly)
   langs:
   - csharp
   - vb
-  name: DisassemblerParams
-  nameWithType: DisassemblerParams
-  fullName: CilTools.Syntax.DisassemblerParams
+  name: Disassembler
+  nameWithType: Disassembler
+  fullName: CilTools.Syntax.Disassembler
   type: Class
   source:
     path: CilTools.BytecodeAnalysis
@@ -23,10 +19,10 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
-  summary: "\nContains parameters that control how the disassembling operation works\n"
+  summary: "\nProvides static methods that return syntax trees for disassembled CIL assembler code\n"
   syntax:
-    content: public class DisassemblerParams
-    content.vb: Public Class DisassemblerParams
+    content: public static class Disassembler
+    content.vb: Public Module Disassembler
   inheritance:
   - System.Object
   inheritedMembers:
@@ -39,160 +35,44 @@ items:
   - System.Object.MemberwiseClone
   modifiers.csharp:
   - public
+  - static
   - class
   modifiers.vb:
   - Public
-  - Class
-- uid: CilTools.Syntax.DisassemblerParams.#ctor
-  commentId: M:CilTools.Syntax.DisassemblerParams.#ctor
-  id: '#ctor'
-  parent: CilTools.Syntax.DisassemblerParams
+  - Module
+- uid: CilTools.Syntax.Disassembler.GetAssemblyManifestSyntaxNodes(System.Reflection.Assembly)
+  commentId: M:CilTools.Syntax.Disassembler.GetAssemblyManifestSyntaxNodes(System.Reflection.Assembly)
+  id: GetAssemblyManifestSyntaxNodes(System.Reflection.Assembly)
+  parent: CilTools.Syntax.Disassembler
   langs:
   - csharp
   - vb
-  name: DisassemblerParams()
-  nameWithType: DisassemblerParams.DisassemblerParams()
-  fullName: CilTools.Syntax.DisassemblerParams.DisassemblerParams()
-  type: Constructor
+  name: GetAssemblyManifestSyntaxNodes(Assembly)
+  nameWithType: Disassembler.GetAssemblyManifestSyntaxNodes(Assembly)
+  fullName: CilTools.Syntax.Disassembler.GetAssemblyManifestSyntaxNodes(System.Reflection.Assembly)
+  type: Method
   source:
     path: CilTools.BytecodeAnalysis
     isExternal: true
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
+  summary: "\nGets the collection of syntax nodes that make up an assembly manifest of the specified assembly\n"
   syntax:
-    content: public DisassemblerParams()
-    content.vb: Public Sub New
-  overload: CilTools.Syntax.DisassemblerParams.#ctor*
-  modifiers.csharp:
-  - public
-  modifiers.vb:
-  - Public
-- uid: CilTools.Syntax.DisassemblerParams.CodeProvider
-  commentId: P:CilTools.Syntax.DisassemblerParams.CodeProvider
-  id: CodeProvider
-  parent: CilTools.Syntax.DisassemblerParams
-  langs:
-  - csharp
-  - vb
-  name: CodeProvider
-  nameWithType: DisassemblerParams.CodeProvider
-  fullName: CilTools.Syntax.DisassemblerParams.CodeProvider
-  type: Property
-  source:
-    path: CilTools.BytecodeAnalysis
-    isExternal: true
-  assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
-  summary: "\nGets or sets an object used to load source code corresponding to disassembled bytecode. \nCould be null if <xref href=\"CilTools.Syntax.DisassemblerParams.IncludeSourceCode\" data-throw-if-not-resolved=\"false\"></xref> property is set to false.\n"
-  syntax:
-    content: public SourceCodeProvider CodeProvider { get; set; }
-    parameters: []
+    content: public static IEnumerable<SyntaxNode> GetAssemblyManifestSyntaxNodes(Assembly ass)
+    parameters:
+    - id: ass
+      type: System.Reflection.Assembly
     return:
-      type: CilTools.SourceCode.SourceCodeProvider
-    content.vb: Public Property CodeProvider As SourceCodeProvider
-  overload: CilTools.Syntax.DisassemblerParams.CodeProvider*
+      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+    content.vb: Public Shared Function GetAssemblyManifestSyntaxNodes(ass As Assembly) As IEnumerable(Of SyntaxNode)
+  overload: CilTools.Syntax.Disassembler.GetAssemblyManifestSyntaxNodes*
   modifiers.csharp:
   - public
-  - get
-  - set
+  - static
   modifiers.vb:
   - Public
-- uid: CilTools.Syntax.DisassemblerParams.IncludeSourceCode
-  commentId: P:CilTools.Syntax.DisassemblerParams.IncludeSourceCode
-  id: IncludeSourceCode
-  parent: CilTools.Syntax.DisassemblerParams
-  langs:
-  - csharp
-  - vb
-  name: IncludeSourceCode
-  nameWithType: DisassemblerParams.IncludeSourceCode
-  fullName: CilTools.Syntax.DisassemblerParams.IncludeSourceCode
-  type: Property
-  source:
-    path: CilTools.BytecodeAnalysis
-    isExternal: true
-  assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
-  summary: "\nGets or sets a value specifying that disassembler should include source code in its output. \nThe source code is added as a comment before the CIL fragment it is corresponding to.\n"
-  remarks: "\nThe <xref href=\"CilTools.Syntax.DisassemblerParams.CodeProvider\" data-throw-if-not-resolved=\"false\"></xref> property should be set to a valid <xref href=\"CilTools.SourceCode.SourceCodeProvider\" data-throw-if-not-resolved=\"false\"></xref> implementation \nif this property is set to true.\n"
-  syntax:
-    content: public bool IncludeSourceCode { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: Public Property IncludeSourceCode As Boolean
-  overload: CilTools.Syntax.DisassemblerParams.IncludeSourceCode*
-  modifiers.csharp:
-  - public
-  - get
-  - set
-  modifiers.vb:
-  - Public
-- uid: CilTools.Syntax.DisassemblerParams.IncludeCodeSize
-  commentId: P:CilTools.Syntax.DisassemblerParams.IncludeCodeSize
-  id: IncludeCodeSize
-  parent: CilTools.Syntax.DisassemblerParams
-  langs:
-  - csharp
-  - vb
-  name: IncludeCodeSize
-  nameWithType: DisassemblerParams.IncludeCodeSize
-  fullName: CilTools.Syntax.DisassemblerParams.IncludeCodeSize
-  type: Property
-  source:
-    path: CilTools.BytecodeAnalysis
-    isExternal: true
-  assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
-  summary: "\nGets or sets a value specifying that disassembler should include method&apos;s bytecode size in its output. \nThe bytecode size is added as a comment in the beginning of the method body.\n"
-  syntax:
-    content: public bool IncludeCodeSize { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: Public Property IncludeCodeSize As Boolean
-  overload: CilTools.Syntax.DisassemblerParams.IncludeCodeSize*
-  modifiers.csharp:
-  - public
-  - get
-  - set
-  modifiers.vb:
-  - Public
-- uid: CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes
-  commentId: P:CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes
-  id: AssemblyQualifyAllTypes
-  parent: CilTools.Syntax.DisassemblerParams
-  langs:
-  - csharp
-  - vb
-  name: AssemblyQualifyAllTypes
-  nameWithType: DisassemblerParams.AssemblyQualifyAllTypes
-  fullName: CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes
-  type: Property
-  source:
-    path: CilTools.BytecodeAnalysis
-    isExternal: true
-  assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
-  summary: "\nGets or sets a value specifying that disassembler should assembly-qualify type names even when it is not\nrequired by CIL syntax (that is, when the type is from the assembly being disassembled). For example <code>MyType</code> \nwill be disassembled as <code>[MyAssembly]MyType</code> when disassembling method in MyAssembly.\n"
-  syntax:
-    content: public bool AssemblyQualifyAllTypes { get; set; }
-    parameters: []
-    return:
-      type: System.Boolean
-    content.vb: Public Property AssemblyQualifyAllTypes As Boolean
-  overload: CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes*
-  modifiers.csharp:
-  - public
-  - get
-  - set
-  modifiers.vb:
-  - Public
+  - Shared
 references:
 - uid: CilTools.Syntax
   commentId: N:CilTools.Syntax
@@ -492,53 +372,111 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: CilTools.Syntax.DisassemblerParams.#ctor*
-  commentId: Overload:CilTools.Syntax.DisassemblerParams.#ctor
+- uid: CilTools.Syntax.Disassembler.GetAssemblyManifestSyntaxNodes*
+  commentId: Overload:CilTools.Syntax.Disassembler.GetAssemblyManifestSyntaxNodes
   isExternal: true
-  name: DisassemblerParams
-  nameWithType: DisassemblerParams.DisassemblerParams
-  fullName: CilTools.Syntax.DisassemblerParams.DisassemblerParams
-- uid: CilTools.Syntax.DisassemblerParams.CodeProvider*
-  commentId: Overload:CilTools.Syntax.DisassemblerParams.CodeProvider
+  name: GetAssemblyManifestSyntaxNodes
+  nameWithType: Disassembler.GetAssemblyManifestSyntaxNodes
+  fullName: CilTools.Syntax.Disassembler.GetAssemblyManifestSyntaxNodes
+- uid: System.Reflection.Assembly
+  commentId: T:System.Reflection.Assembly
+  parent: System.Reflection
   isExternal: true
-  name: CodeProvider
-  nameWithType: DisassemblerParams.CodeProvider
-  fullName: CilTools.Syntax.DisassemblerParams.CodeProvider
-- uid: CilTools.SourceCode.SourceCodeProvider
-  commentId: T:CilTools.SourceCode.SourceCodeProvider
-  parent: CilTools.SourceCode
+  name: Assembly
+  nameWithType: Assembly
+  fullName: System.Reflection.Assembly
+- uid: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+  commentId: T:System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<SyntaxNode>
+  nameWithType: IEnumerable<SyntaxNode>
+  fullName: System.Collections.Generic.IEnumerable<CilTools.Syntax.SyntaxNode>
+  nameWithType.vb: IEnumerable(Of SyntaxNode)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilTools.Syntax.SyntaxNode)
+  name.vb: IEnumerable(Of SyntaxNode)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Reflection
+  commentId: N:System.Reflection
   isExternal: true
-  name: SourceCodeProvider
-  nameWithType: SourceCodeProvider
-  fullName: CilTools.SourceCode.SourceCodeProvider
-- uid: CilTools.SourceCode
-  commentId: N:CilTools.SourceCode
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
   isExternal: true
-  name: CilTools.SourceCode
-  nameWithType: CilTools.SourceCode
-  fullName: CilTools.SourceCode
-- uid: CilTools.Syntax.DisassemblerParams.IncludeSourceCode*
-  commentId: Overload:CilTools.Syntax.DisassemblerParams.IncludeSourceCode
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
   isExternal: true
-  name: IncludeSourceCode
-  nameWithType: DisassemblerParams.IncludeSourceCode
-  fullName: CilTools.Syntax.DisassemblerParams.IncludeSourceCode
-- uid: System.Boolean
-  commentId: T:System.Boolean
-  parent: System
-  isExternal: true
-  name: Boolean
-  nameWithType: Boolean
-  fullName: System.Boolean
-- uid: CilTools.Syntax.DisassemblerParams.IncludeCodeSize*
-  commentId: Overload:CilTools.Syntax.DisassemblerParams.IncludeCodeSize
-  isExternal: true
-  name: IncludeCodeSize
-  nameWithType: DisassemblerParams.IncludeCodeSize
-  fullName: CilTools.Syntax.DisassemblerParams.IncludeCodeSize
-- uid: CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes*
-  commentId: Overload:CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes
-  isExternal: true
-  name: AssemblyQualifyAllTypes
-  nameWithType: DisassemblerParams.AssemblyQualifyAllTypes
-  fullName: CilTools.Syntax.DisassemblerParams.AssemblyQualifyAllTypes
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic

@@ -17,12 +17,14 @@ items:
   - CilTools.Runtime.DynamicMethodsAssembly.FullName
   - CilTools.Runtime.DynamicMethodsAssembly.GetExportedTypes
   - CilTools.Runtime.DynamicMethodsAssembly.GetName
+  - CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies
   - CilTools.Runtime.DynamicMethodsAssembly.GetType(System.String)
   - CilTools.Runtime.DynamicMethodsAssembly.GetType(System.String,System.Boolean)
   - CilTools.Runtime.DynamicMethodsAssembly.GetType(System.String,System.Boolean,System.Boolean)
   - CilTools.Runtime.DynamicMethodsAssembly.GetTypes
   - CilTools.Runtime.DynamicMethodsAssembly.IsDynamic
   - CilTools.Runtime.DynamicMethodsAssembly.Location
+  - CilTools.Runtime.DynamicMethodsAssembly.ManifestModule
   - CilTools.Runtime.DynamicMethodsAssembly.ReflectionOnly
   - CilTools.Runtime.DynamicMethodsAssembly.Target
   langs:
@@ -107,7 +109,6 @@ items:
   - System.Reflection.Assembly.GetFiles
   - System.Reflection.Assembly.GetFiles(System.Boolean)
   - System.Reflection.Assembly.GetManifestResourceNames
-  - System.Reflection.Assembly.GetReferencedAssemblies
   - System.Reflection.Assembly.GetManifestResourceInfo(System.String)
   - System.Reflection.Assembly.ToString
   - System.Reflection.Assembly.EscapedCodeBase
@@ -116,7 +117,6 @@ items:
   - System.Reflection.Assembly.PermissionSet
   - System.Reflection.Assembly.IsFullyTrusted
   - System.Reflection.Assembly.SecurityRuleSet
-  - System.Reflection.Assembly.ManifestModule
   - System.Reflection.Assembly.CustomAttributes
   - System.Reflection.Assembly.Modules
   - System.Reflection.Assembly.ImageRuntimeVersion
@@ -454,6 +454,38 @@ items:
     content.vb: Public Overrides Function GetExportedTypes As Type()
   overridden: System.Reflection.Assembly.GetExportedTypes
   overload: CilTools.Runtime.DynamicMethodsAssembly.GetExportedTypes*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies
+  commentId: M:CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies
+  id: GetReferencedAssemblies
+  parent: CilTools.Runtime.DynamicMethodsAssembly
+  langs:
+  - csharp
+  - vb
+  name: GetReferencedAssemblies()
+  nameWithType: DynamicMethodsAssembly.GetReferencedAssemblies()
+  fullName: CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies()
+  type: Method
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets an array of assembly names for assemblies referenced by this assembly\n"
+  syntax:
+    content: public override AssemblyName[] GetReferencedAssemblies()
+    return:
+      type: System.Reflection.AssemblyName[]
+      description: This implementation always returns an empty array
+    content.vb: Public Overrides Function GetReferencedAssemblies As AssemblyName()
+  overridden: System.Reflection.Assembly.GetReferencedAssemblies
+  overload: CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies*
   modifiers.csharp:
   - public
   - override
@@ -817,6 +849,41 @@ items:
     content.vb: Public Overrides ReadOnly Property EntryPoint As MethodInfo
   overridden: System.Reflection.Assembly.EntryPoint
   overload: CilTools.Runtime.DynamicMethodsAssembly.EntryPoint*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
+  - ReadOnly
+- uid: CilTools.Runtime.DynamicMethodsAssembly.ManifestModule
+  commentId: P:CilTools.Runtime.DynamicMethodsAssembly.ManifestModule
+  id: ManifestModule
+  parent: CilTools.Runtime.DynamicMethodsAssembly
+  langs:
+  - csharp
+  - vb
+  name: ManifestModule
+  nameWithType: DynamicMethodsAssembly.ManifestModule
+  fullName: CilTools.Runtime.DynamicMethodsAssembly.ManifestModule
+  type: Property
+  source:
+    path: CilTools.Runtime
+    isExternal: true
+  assemblies:
+  - CilTools.Runtime
+  namespace: CilTools.Runtime
+  summary: "\nGets a module that contains the assembly manifest\n"
+  syntax:
+    content: public override Module ManifestModule { get; }
+    parameters: []
+    return:
+      type: System.Reflection.Module
+      description: This implementation always returns null
+    content.vb: 'Public Overrides ReadOnly Property ManifestModule As '
+  overridden: System.Reflection.Assembly.ManifestModule
+  overload: CilTools.Runtime.DynamicMethodsAssembly.ManifestModule*
   modifiers.csharp:
   - public
   - override
@@ -3531,37 +3598,6 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: System.Reflection.Assembly.GetReferencedAssemblies
-  commentId: M:System.Reflection.Assembly.GetReferencedAssemblies
-  parent: System.Reflection.Assembly
-  isExternal: true
-  name: GetReferencedAssemblies()
-  nameWithType: Assembly.GetReferencedAssemblies()
-  fullName: System.Reflection.Assembly.GetReferencedAssemblies()
-  spec.csharp:
-  - uid: System.Reflection.Assembly.GetReferencedAssemblies
-    name: GetReferencedAssemblies
-    nameWithType: Assembly.GetReferencedAssemblies
-    fullName: System.Reflection.Assembly.GetReferencedAssemblies
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
-  spec.vb:
-  - uid: System.Reflection.Assembly.GetReferencedAssemblies
-    name: GetReferencedAssemblies
-    nameWithType: Assembly.GetReferencedAssemblies
-    fullName: System.Reflection.Assembly.GetReferencedAssemblies
-    isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - name: )
-    nameWithType: )
-    fullName: )
 - uid: System.Reflection.Assembly.GetManifestResourceInfo(System.String)
   commentId: M:System.Reflection.Assembly.GetManifestResourceInfo(System.String)
   parent: System.Reflection.Assembly
@@ -3676,13 +3712,6 @@ references:
   name: SecurityRuleSet
   nameWithType: Assembly.SecurityRuleSet
   fullName: System.Reflection.Assembly.SecurityRuleSet
-- uid: System.Reflection.Assembly.ManifestModule
-  commentId: P:System.Reflection.Assembly.ManifestModule
-  parent: System.Reflection.Assembly
-  isExternal: true
-  name: ManifestModule
-  nameWithType: Assembly.ManifestModule
-  fullName: System.Reflection.Assembly.ManifestModule
 - uid: System.Reflection.Assembly.CustomAttributes
   commentId: P:System.Reflection.Assembly.CustomAttributes
   parent: System.Reflection.Assembly
@@ -4641,6 +4670,69 @@ references:
   name: GetExportedTypes
   nameWithType: DynamicMethodsAssembly.GetExportedTypes
   fullName: CilTools.Runtime.DynamicMethodsAssembly.GetExportedTypes
+- uid: System.Reflection.Assembly.GetReferencedAssemblies
+  commentId: M:System.Reflection.Assembly.GetReferencedAssemblies
+  parent: System.Reflection.Assembly
+  isExternal: true
+  name: GetReferencedAssemblies()
+  nameWithType: Assembly.GetReferencedAssemblies()
+  fullName: System.Reflection.Assembly.GetReferencedAssemblies()
+  spec.csharp:
+  - uid: System.Reflection.Assembly.GetReferencedAssemblies
+    name: GetReferencedAssemblies
+    nameWithType: Assembly.GetReferencedAssemblies
+    fullName: System.Reflection.Assembly.GetReferencedAssemblies
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Reflection.Assembly.GetReferencedAssemblies
+    name: GetReferencedAssemblies
+    nameWithType: Assembly.GetReferencedAssemblies
+    fullName: System.Reflection.Assembly.GetReferencedAssemblies
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies*
+  commentId: Overload:CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies
+  isExternal: true
+  name: GetReferencedAssemblies
+  nameWithType: DynamicMethodsAssembly.GetReferencedAssemblies
+  fullName: CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies
+- uid: System.Reflection.AssemblyName[]
+  isExternal: true
+  name: AssemblyName[]
+  nameWithType: AssemblyName[]
+  fullName: System.Reflection.AssemblyName[]
+  nameWithType.vb: AssemblyName()
+  fullName.vb: System.Reflection.AssemblyName()
+  name.vb: AssemblyName()
+  spec.csharp:
+  - uid: System.Reflection.AssemblyName
+    name: AssemblyName
+    nameWithType: AssemblyName
+    fullName: System.Reflection.AssemblyName
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Reflection.AssemblyName
+    name: AssemblyName
+    nameWithType: AssemblyName
+    fullName: System.Reflection.AssemblyName
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
 - uid: CilTools.Runtime.DynamicMethodsAssembly.Dispose*
   commentId: Overload:CilTools.Runtime.DynamicMethodsAssembly.Dispose
   isExternal: true
@@ -4838,3 +4930,23 @@ references:
   name: MethodInfo
   nameWithType: MethodInfo
   fullName: System.Reflection.MethodInfo
+- uid: System.Reflection.Assembly.ManifestModule
+  commentId: P:System.Reflection.Assembly.ManifestModule
+  parent: System.Reflection.Assembly
+  isExternal: true
+  name: ManifestModule
+  nameWithType: Assembly.ManifestModule
+  fullName: System.Reflection.Assembly.ManifestModule
+- uid: CilTools.Runtime.DynamicMethodsAssembly.ManifestModule*
+  commentId: Overload:CilTools.Runtime.DynamicMethodsAssembly.ManifestModule
+  isExternal: true
+  name: ManifestModule
+  nameWithType: DynamicMethodsAssembly.ManifestModule
+  fullName: CilTools.Runtime.DynamicMethodsAssembly.ManifestModule
+- uid: System.Reflection.Module
+  commentId: T:System.Reflection.Module
+  parent: System.Reflection
+  isExternal: true
+  name: Module
+  nameWithType: Module
+  fullName: System.Reflection.Module

@@ -547,7 +547,6 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="IncludeAttributes">Indicates that custom attributes should be included in the output</param>
         /// <param name="IncludeHeader">Indicates that method header should be included in the output</param>
         /// <remarks>
-        /// <para>The CIL code produced by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid  input for CIL assembler.</para>
         /// <para>Method header contains information such as maximum stack size and local variable types.</para>
         /// </remarks>
         public void Print(
@@ -1002,7 +1001,6 @@ namespace CilTools.BytecodeAnalysis
         /// <summary>
         /// Returns CIL code corresponding to this graph as a string
         /// </summary>
-        /// <remarks>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
         /// <returns>A string of CIL code</returns>
         public string ToText()
         {

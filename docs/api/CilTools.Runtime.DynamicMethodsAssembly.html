@@ -249,9 +249,6 @@
       <span class="xref">System.Reflection.Assembly.GetManifestResourceNames()</span>
     </div>
     <div>
-      <span class="xref">System.Reflection.Assembly.GetReferencedAssemblies()</span>
-    </div>
-    <div>
       <span class="xref">System.Reflection.Assembly.GetManifestResourceInfo(System.String)</span>
     </div>
     <div>
@@ -274,9 +271,6 @@
     </div>
     <div>
       <span class="xref">System.Reflection.Assembly.SecurityRuleSet</span>
-    </div>
-    <div>
-      <span class="xref">System.Reflection.Assembly.ManifestModule</span>
     </div>
     <div>
       <span class="xref">System.Reflection.Assembly.CustomAttributes</span>
@@ -669,6 +663,35 @@ them multiple times.</p>
   <div><span class="xref">System.Reflection.Assembly.Location</span></div>
   
   
+  <a id="CilTools_Runtime_DynamicMethodsAssembly_ManifestModule_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.ManifestModule*"></a>
+  <h4 id="CilTools_Runtime_DynamicMethodsAssembly_ManifestModule" data-uid="CilTools.Runtime.DynamicMethodsAssembly.ManifestModule">ManifestModule</h4>
+  <div class="markdown level1 summary"><p>Gets a module that contains the assembly manifest</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override Module ManifestModule { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.Module</span></td>
+        <td><p>This implementation always returns null</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.ManifestModule</span></div>
+  
+  
   <a id="CilTools_Runtime_DynamicMethodsAssembly_ReflectionOnly_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.ReflectionOnly*"></a>
   <h4 id="CilTools_Runtime_DynamicMethodsAssembly_ReflectionOnly" data-uid="CilTools.Runtime.DynamicMethodsAssembly.ReflectionOnly">ReflectionOnly</h4>
   <div class="markdown level1 summary"><p>Gets a boolean value indicating whether this assembly was loaded into the reflection-only context.</p>
@@ -826,6 +849,35 @@ parameter set to true.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Reflection.Assembly.GetName()</span></div>
+  
+  
+  <a id="CilTools_Runtime_DynamicMethodsAssembly_GetReferencedAssemblies_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies*"></a>
+  <h4 id="CilTools_Runtime_DynamicMethodsAssembly_GetReferencedAssemblies" data-uid="CilTools.Runtime.DynamicMethodsAssembly.GetReferencedAssemblies">GetReferencedAssemblies()</h4>
+  <div class="markdown level1 summary"><p>Gets an array of assembly names for assemblies referenced by this assembly</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override AssemblyName[] GetReferencedAssemblies()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Reflection.AssemblyName</span>[]</td>
+        <td><p>This implementation always returns an empty array</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><span class="xref">System.Reflection.Assembly.GetReferencedAssemblies()</span></div>
   
   
   <a id="CilTools_Runtime_DynamicMethodsAssembly_GetType_" data-uid="CilTools.Runtime.DynamicMethodsAssembly.GetType*"></a>

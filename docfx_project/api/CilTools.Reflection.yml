@@ -12,11 +12,15 @@ items:
   - CilTools.Reflection.GenericParamType
   - CilTools.Reflection.ICustomAttribute
   - CilTools.Reflection.ICustomMethod
+  - CilTools.Reflection.IParamsProvider
+  - CilTools.Reflection.IReflectionInfo
   - CilTools.Reflection.ITokenResolver
   - CilTools.Reflection.ITypeInfo
   - CilTools.Reflection.LocalVariable
   - CilTools.Reflection.MemoryImage
   - CilTools.Reflection.PInvokeParams
+  - CilTools.Reflection.ReflectionProperties
+  - CilTools.Reflection.RefResolutionMode
   - CilTools.Reflection.SignatureContext
   langs:
   - csharp
@@ -81,6 +85,24 @@ references:
   name: ICustomMethod
   nameWithType: ICustomMethod
   fullName: CilTools.Reflection.ICustomMethod
+- uid: CilTools.Reflection.IParamsProvider
+  commentId: T:CilTools.Reflection.IParamsProvider
+  isExternal: true
+  name: IParamsProvider
+  nameWithType: IParamsProvider
+  fullName: CilTools.Reflection.IParamsProvider
+- uid: CilTools.Reflection.IReflectionInfo
+  commentId: T:CilTools.Reflection.IReflectionInfo
+  isExternal: true
+  name: IReflectionInfo
+  nameWithType: IReflectionInfo
+  fullName: CilTools.Reflection.IReflectionInfo
+- uid: CilTools.Reflection.ReflectionProperties
+  commentId: T:CilTools.Reflection.ReflectionProperties
+  isExternal: true
+  name: ReflectionProperties
+  nameWithType: ReflectionProperties
+  fullName: CilTools.Reflection.ReflectionProperties
 - uid: CilTools.Reflection.ITokenResolver
   commentId: T:CilTools.Reflection.ITokenResolver
   parent: CilTools.Reflection
@@ -115,6 +137,13 @@ references:
   name: PInvokeParams
   nameWithType: PInvokeParams
   fullName: CilTools.Reflection.PInvokeParams
+- uid: CilTools.Reflection.RefResolutionMode
+  commentId: T:CilTools.Reflection.RefResolutionMode
+  parent: CilTools.Reflection
+  isExternal: true
+  name: RefResolutionMode
+  nameWithType: RefResolutionMode
+  fullName: CilTools.Reflection.RefResolutionMode
 - uid: CilTools.Reflection.SignatureContext
   commentId: T:CilTools.Reflection.SignatureContext
   parent: CilTools.Reflection

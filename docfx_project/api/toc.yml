@@ -65,6 +65,10 @@
     name: ICustomAttribute
   - uid: CilTools.Reflection.ICustomMethod
     name: ICustomMethod
+  - uid: CilTools.Reflection.IParamsProvider
+    name: IParamsProvider
+  - uid: CilTools.Reflection.IReflectionInfo
+    name: IReflectionInfo
   - uid: CilTools.Reflection.ITokenResolver
     name: ITokenResolver
   - uid: CilTools.Reflection.ITypeInfo
@@ -75,6 +79,10 @@
     name: MemoryImage
   - uid: CilTools.Reflection.PInvokeParams
     name: PInvokeParams
+  - uid: CilTools.Reflection.ReflectionProperties
+    name: ReflectionProperties
+  - uid: CilTools.Reflection.RefResolutionMode
+    name: RefResolutionMode
   - uid: CilTools.Reflection.SignatureContext
     name: SignatureContext
 - uid: CilTools.Runtime
@@ -114,6 +122,8 @@
     name: CommentSyntax
   - uid: CilTools.Syntax.DirectiveSyntax
     name: DirectiveSyntax
+  - uid: CilTools.Syntax.Disassembler
+    name: Disassembler
   - uid: CilTools.Syntax.DisassemblerParams
     name: DisassemblerParams
   - uid: CilTools.Syntax.IdentifierSyntax
@@ -130,6 +140,8 @@
     name: MemberRefSyntax
   - uid: CilTools.Syntax.MethodDefSyntax
     name: MethodDefSyntax
+  - uid: CilTools.Syntax.PunctuationSyntax
+    name: PunctuationSyntax
   - uid: CilTools.Syntax.SyntaxFactory
     name: SyntaxFactory
   - uid: CilTools.Syntax.SyntaxNode

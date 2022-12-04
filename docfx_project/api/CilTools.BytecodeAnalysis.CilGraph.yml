@@ -35,7 +35,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
   summary: "\nRepresents a CIL graph, a graph that reflects a flow of control between CIL instructions in the method\n"
-  remarks: "\n<p>CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges representing how control flows between them when runtime executes method. The root of the graph is the first instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) and, if it&apos;s a jump instruction, a reference to the branch target (an instruction that would be executed if the condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, a string that identify it. The last instruction of the method has null as its next instruction reference.</p>\n<p>Use <xref href=\"CilTools.BytecodeAnalysis.CilGraph.Create(System.Reflection.MethodBase)\" data-throw-if-not-resolved=\"false\"></xref> method to create CIL graph for a method.</p>\n"
+  remarks: "\n<p>CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges \nrepresenting how control flows between them when runtime executes method. The root of the graph is the first \ninstruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) \nand, if it&apos;s a jump instruction, a reference to the branch target (an instruction that would be executed if the \ncondition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, \na string that identify it. The last instruction of the method has null as its next instruction reference.</p>\n<p>Use <xref href=\"CilTools.BytecodeAnalysis.CilGraph.Create(System.Reflection.MethodBase)\" data-throw-if-not-resolved=\"false\"></xref> method to create CIL graph for a method.</p>\n"
   syntax:
     content: public class CilGraph
     content.vb: Public Class CilGraph
@@ -232,7 +232,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
   summary: "\nWrites the CIL code corresponding to this graph into the specified TextWriter, optionally including signature, \ndefault parameter values, attributes and method header\n"
-  remarks: "\n<p>The CIL code produced by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid  input for CIL assembler.</p>\n<p>Method header contains information such as maximum stack size and local variable types.</p>\n"
+  remarks: "\n<p>Method header contains information such as maximum stack size and local variable types.</p>\n"
   syntax:
     content: public void Print(TextWriter output = null, bool IncludeSignature = false, bool IncludeDefaults = false, bool IncludeAttributes = false, bool IncludeHeader = false)
     parameters:
@@ -336,7 +336,6 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
   summary: "\nReturns CIL code corresponding to this graph as a string\n"
-  remarks: The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.
   syntax:
     content: public string ToText()
     return:

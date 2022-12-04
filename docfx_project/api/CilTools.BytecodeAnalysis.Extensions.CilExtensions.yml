@@ -115,7 +115,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis.Extensions
   summary: "\nReturns this method&apos;s CIL code as string\n"
-  remarks: Alias for <xref href="CilTools.BytecodeAnalysis.CilAnalysis.MethodToText(System.Reflection.MethodBase)" data-throw-if-not-resolved="false"></xref> method. The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.
+  remarks: Alias for <xref href="CilTools.BytecodeAnalysis.CilAnalysis.MethodToText(System.Reflection.MethodBase)" data-throw-if-not-resolved="false"></xref> method.
   syntax:
     content: public static string GetCilText(this MethodBase m)
     parameters:

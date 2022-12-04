@@ -30,6 +30,8 @@ items:
   - System.Object
   - CilTools.Syntax.SyntaxNode
   inheritedMembers:
+  - CilTools.Syntax.SyntaxNode._lead
+  - CilTools.Syntax.SyntaxNode._trail
   - CilTools.Syntax.SyntaxNode.ToString
   - CilTools.Syntax.SyntaxNode.GetChildNodes
   - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
@@ -134,6 +136,20 @@ references:
   name: SyntaxNode
   nameWithType: SyntaxNode
   fullName: CilTools.Syntax.SyntaxNode
+- uid: CilTools.Syntax.SyntaxNode._lead
+  commentId: F:CilTools.Syntax.SyntaxNode._lead
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: _lead
+  nameWithType: SyntaxNode._lead
+  fullName: CilTools.Syntax.SyntaxNode._lead
+- uid: CilTools.Syntax.SyntaxNode._trail
+  commentId: F:CilTools.Syntax.SyntaxNode._trail
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: _trail
+  nameWithType: SyntaxNode._trail
+  fullName: CilTools.Syntax.SyntaxNode._trail
 - uid: CilTools.Syntax.SyntaxNode.ToString
   commentId: M:CilTools.Syntax.SyntaxNode.ToString
   parent: CilTools.Syntax.SyntaxNode

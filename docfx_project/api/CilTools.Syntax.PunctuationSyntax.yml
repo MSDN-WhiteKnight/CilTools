@@ -1,20 +1,19 @@
 ### YamlMime:ManagedReference
 items:
-- uid: CilTools.Syntax.KeywordSyntax
-  commentId: T:CilTools.Syntax.KeywordSyntax
-  id: KeywordSyntax
+- uid: CilTools.Syntax.PunctuationSyntax
+  commentId: T:CilTools.Syntax.PunctuationSyntax
+  id: PunctuationSyntax
   parent: CilTools.Syntax
   children:
-  - CilTools.Syntax.KeywordSyntax.Content
-  - CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
-  - CilTools.Syntax.KeywordSyntax.Kind
-  - CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)
+  - CilTools.Syntax.PunctuationSyntax.Content
+  - CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes
+  - CilTools.Syntax.PunctuationSyntax.ToText(System.IO.TextWriter)
   langs:
   - csharp
   - vb
-  name: KeywordSyntax
-  nameWithType: KeywordSyntax
-  fullName: CilTools.Syntax.KeywordSyntax
+  name: PunctuationSyntax
+  nameWithType: PunctuationSyntax
+  fullName: CilTools.Syntax.PunctuationSyntax
   type: Class
   source:
     path: CilTools.BytecodeAnalysis
@@ -22,12 +21,12 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
-  summary: "\nRepresents the keyword token in CIL assembler. \n"
-  remarks: "\nThe keyword is a special sequence of characters that can&apos;t be used as identifier. \nThe list of keywords is predefined by specification. \nThe keyword could represent the directive name, access modifier, instruction name \nor other special syntactic element.\n"
+  summary: "\nRepresents the punctuation sign token in CIL assembler\n"
+  remarks: "\nPunctuation signs divide other tokens in syntax constructs. Punctuation signs used in CIL are colons, \nbraces, angle braces and others. \n"
   syntax:
-    content: 'public class KeywordSyntax : SyntaxNode'
+    content: 'public class PunctuationSyntax : SyntaxNode'
     content.vb: >-
-      Public Class KeywordSyntax
+      Public Class PunctuationSyntax
           Inherits SyntaxNode
   inheritance:
   - System.Object
@@ -54,16 +53,16 @@ items:
   modifiers.vb:
   - Public
   - Class
-- uid: CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)
-  commentId: M:CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)
+- uid: CilTools.Syntax.PunctuationSyntax.ToText(System.IO.TextWriter)
+  commentId: M:CilTools.Syntax.PunctuationSyntax.ToText(System.IO.TextWriter)
   id: ToText(System.IO.TextWriter)
-  parent: CilTools.Syntax.KeywordSyntax
+  parent: CilTools.Syntax.PunctuationSyntax
   langs:
   - csharp
   - vb
   name: ToText(TextWriter)
-  nameWithType: KeywordSyntax.ToText(TextWriter)
-  fullName: CilTools.Syntax.KeywordSyntax.ToText(System.IO.TextWriter)
+  nameWithType: PunctuationSyntax.ToText(TextWriter)
+  fullName: CilTools.Syntax.PunctuationSyntax.ToText(System.IO.TextWriter)
   type: Method
   source:
     path: CilTools.BytecodeAnalysis
@@ -79,23 +78,23 @@ items:
       type: System.IO.TextWriter
     content.vb: Public Overrides Sub ToText(target As TextWriter)
   overridden: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
-  overload: CilTools.Syntax.KeywordSyntax.ToText*
+  overload: CilTools.Syntax.PunctuationSyntax.ToText*
   modifiers.csharp:
   - public
   - override
   modifiers.vb:
   - Public
   - Overrides
-- uid: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
-  commentId: M:CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
+- uid: CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes
+  commentId: M:CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes
   id: EnumerateChildNodes
-  parent: CilTools.Syntax.KeywordSyntax
+  parent: CilTools.Syntax.PunctuationSyntax
   langs:
   - csharp
   - vb
   name: EnumerateChildNodes()
-  nameWithType: KeywordSyntax.EnumerateChildNodes()
-  fullName: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes()
+  nameWithType: PunctuationSyntax.EnumerateChildNodes()
+  fullName: CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes()
   type: Method
   source:
     path: CilTools.BytecodeAnalysis
@@ -111,23 +110,23 @@ items:
       description: The collection of child syntax nodes
     content.vb: Public Overrides Function EnumerateChildNodes As IEnumerable(Of SyntaxNode)
   overridden: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
-  overload: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes*
+  overload: CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes*
   modifiers.csharp:
   - public
   - override
   modifiers.vb:
   - Public
   - Overrides
-- uid: CilTools.Syntax.KeywordSyntax.Content
-  commentId: P:CilTools.Syntax.KeywordSyntax.Content
+- uid: CilTools.Syntax.PunctuationSyntax.Content
+  commentId: P:CilTools.Syntax.PunctuationSyntax.Content
   id: Content
-  parent: CilTools.Syntax.KeywordSyntax
+  parent: CilTools.Syntax.PunctuationSyntax
   langs:
   - csharp
   - vb
   name: Content
-  nameWithType: KeywordSyntax.Content
-  fullName: CilTools.Syntax.KeywordSyntax.Content
+  nameWithType: PunctuationSyntax.Content
+  fullName: CilTools.Syntax.PunctuationSyntax.Content
   type: Property
   source:
     path: CilTools.BytecodeAnalysis
@@ -135,45 +134,14 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
-  summary: "\nGets the value of this keyword as string\n"
+  summary: "\nGets the value of this punctuation sign as string\n"
   syntax:
     content: public string Content { get; }
     parameters: []
     return:
       type: System.String
     content.vb: Public ReadOnly Property Content As String
-  overload: CilTools.Syntax.KeywordSyntax.Content*
-  modifiers.csharp:
-  - public
-  - get
-  modifiers.vb:
-  - Public
-  - ReadOnly
-- uid: CilTools.Syntax.KeywordSyntax.Kind
-  commentId: P:CilTools.Syntax.KeywordSyntax.Kind
-  id: Kind
-  parent: CilTools.Syntax.KeywordSyntax
-  langs:
-  - csharp
-  - vb
-  name: Kind
-  nameWithType: KeywordSyntax.Kind
-  fullName: CilTools.Syntax.KeywordSyntax.Kind
-  type: Property
-  source:
-    path: CilTools.BytecodeAnalysis
-    isExternal: true
-  assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
-  summary: "\nGets the keyword kind\n"
-  syntax:
-    content: public KeywordKind Kind { get; }
-    parameters: []
-    return:
-      type: CilTools.Syntax.KeywordKind
-    content.vb: Public ReadOnly Property Kind As KeywordKind
-  overload: CilTools.Syntax.KeywordSyntax.Kind*
+  overload: CilTools.Syntax.PunctuationSyntax.Content*
   modifiers.csharp:
   - public
   - get
@@ -707,12 +675,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: CilTools.Syntax.KeywordSyntax.ToText*
-  commentId: Overload:CilTools.Syntax.KeywordSyntax.ToText
+- uid: CilTools.Syntax.PunctuationSyntax.ToText*
+  commentId: Overload:CilTools.Syntax.PunctuationSyntax.ToText
   isExternal: true
   name: ToText
-  nameWithType: KeywordSyntax.ToText
-  fullName: CilTools.Syntax.KeywordSyntax.ToText
+  nameWithType: PunctuationSyntax.ToText
+  fullName: CilTools.Syntax.PunctuationSyntax.ToText
 - uid: System.IO.TextWriter
   commentId: T:System.IO.TextWriter
   parent: System.IO
@@ -757,12 +725,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes*
-  commentId: Overload:CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
+- uid: CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes*
+  commentId: Overload:CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes
   isExternal: true
   name: EnumerateChildNodes
-  nameWithType: KeywordSyntax.EnumerateChildNodes
-  fullName: CilTools.Syntax.KeywordSyntax.EnumerateChildNodes
+  nameWithType: PunctuationSyntax.EnumerateChildNodes
+  fullName: CilTools.Syntax.PunctuationSyntax.EnumerateChildNodes
 - uid: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
   commentId: T:System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
   parent: System.Collections.Generic
@@ -852,12 +820,12 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
-- uid: CilTools.Syntax.KeywordSyntax.Content*
-  commentId: Overload:CilTools.Syntax.KeywordSyntax.Content
+- uid: CilTools.Syntax.PunctuationSyntax.Content*
+  commentId: Overload:CilTools.Syntax.PunctuationSyntax.Content
   isExternal: true
   name: Content
-  nameWithType: KeywordSyntax.Content
-  fullName: CilTools.Syntax.KeywordSyntax.Content
+  nameWithType: PunctuationSyntax.Content
+  fullName: CilTools.Syntax.PunctuationSyntax.Content
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -865,16 +833,3 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
-- uid: CilTools.Syntax.KeywordSyntax.Kind*
-  commentId: Overload:CilTools.Syntax.KeywordSyntax.Kind
-  isExternal: true
-  name: Kind
-  nameWithType: KeywordSyntax.Kind
-  fullName: CilTools.Syntax.KeywordSyntax.Kind
-- uid: CilTools.Syntax.KeywordKind
-  commentId: T:CilTools.Syntax.KeywordKind
-  parent: CilTools.Syntax
-  isExternal: true
-  name: KeywordKind
-  nameWithType: KeywordKind
-  fullName: CilTools.Syntax.KeywordKind

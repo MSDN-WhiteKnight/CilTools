@@ -109,7 +109,12 @@
     <pre><code class="lang-csharp hljs">public class CilGraph</code></pre>
   </div>
   <h5 id="CilTools_BytecodeAnalysis_CilGraph_remarks"><strong>Remarks</strong></h5>
-  <div class="markdown level0 remarks"><p>CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges representing how control flows between them when runtime executes method. The root of the graph is the first instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) and, if it&apos;s a jump instruction, a reference to the branch target (an instruction that would be executed if the condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, a string that identify it. The last instruction of the method has null as its next instruction reference.</p>
+  <div class="markdown level0 remarks"><p>CIL graph is a directed graph with nodes representing CIL instructions withing method body and edges 
+representing how control flows between them when runtime executes method. The root of the graph is the first 
+instruction of the method. Each node stores a reference to the next instruction (which is usually executed after it) 
+and, if it&apos;s a jump instruction, a reference to the branch target (an instruction that would be executed if the 
+condition for the jump is met). For convenience, each instruction serving as branch target is assigned a label, 
+a string that identify it. The last instruction of the method has null as its next instruction reference.</p>
 <p>Use <a class="xref" href="CilTools.BytecodeAnalysis.CilGraph.html#CilTools_BytecodeAnalysis_CilGraph_Create_System_Reflection_MethodBase_">Create(MethodBase)</a> method to create CIL graph for a method.</p>
 </div>
   <h3 id="properties">Properties
@@ -430,8 +435,7 @@ default parameter values, attributes and method header</p>
     </tbody>
   </table>
   <h5 id="CilTools_BytecodeAnalysis_CilGraph_Print_System_IO_TextWriter_System_Boolean_System_Boolean_System_Boolean_System_Boolean__remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The CIL code produced by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid  input for CIL assembler.</p>
-<p>Method header contains information such as maximum stack size and local variable types.</p>
+  <div class="markdown level1 remarks"><p>Method header contains information such as maximum stack size and local variable types.</p>
 </div>
   
   
@@ -679,9 +683,6 @@ default parameter values, attributes and method header</p>
       </tr>
     </tbody>
   </table>
-  <h5 id="CilTools_BytecodeAnalysis_CilGraph_ToText_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</p>
-</div>
 </article>
           </div>
           

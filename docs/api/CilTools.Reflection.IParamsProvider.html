@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Struct CustomModifier
+    <title>Interface IParamsProvider
    | CIL Tools </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Struct CustomModifier
+    <meta name="title" content="Interface IParamsProvider
    | CIL Tools ">
     <meta name="generator" content="docfx 2.40.12.0">
     
@@ -68,110 +68,59 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="CilTools.BytecodeAnalysis.CustomModifier">
+            <article class="content wrap" id="_content" data-uid="CilTools.Reflection.IParamsProvider">
   
   
-  <h1 id="CilTools_BytecodeAnalysis_CustomModifier" data-uid="CilTools.BytecodeAnalysis.CustomModifier" class="text-break">Struct CustomModifier
+  <h1 id="CilTools_Reflection_IParamsProvider" data-uid="CilTools.Reflection.IParamsProvider" class="text-break">Interface IParamsProvider
   </h1>
-  <div class="markdown level0 summary"><p>Represents custom modifier, an object used to associate a special information with the type specification, as defined by ECMA-335</p>
+  <div class="markdown level0 summary"><p>Represents an object that can provide information about method parameters</p>
 </div>
   <div class="markdown level0 conceptual"></div>
-  <div class="inheritedMembers">
-    <h5>Inherited Members</h5>
-    <div>
-      <span class="xref">System.ValueType.Equals(System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.ValueType.GetHashCode()</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
-    </div>
-    <div>
-      <span class="xref">System.Object.GetType()</span>
-    </div>
-  </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.BytecodeAnalysis.html">CilTools.BytecodeAnalysis</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Reflection.html">CilTools.Reflection</a></h6>
   <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
-  <h5 id="CilTools_BytecodeAnalysis_CustomModifier_syntax">Syntax</h5>
+  <h5 id="CilTools_Reflection_IParamsProvider_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public struct CustomModifier</code></pre>
+    <pre><code class="lang-csharp hljs">public interface IParamsProvider</code></pre>
   </div>
-  <h3 id="properties">Properties
-  </h3>
-  
-  
-  <a id="CilTools_BytecodeAnalysis_CustomModifier_IsRequired_" data-uid="CilTools.BytecodeAnalysis.CustomModifier.IsRequired*"></a>
-  <h4 id="CilTools_BytecodeAnalysis_CustomModifier_IsRequired" data-uid="CilTools.BytecodeAnalysis.CustomModifier.IsRequired">IsRequired</h4>
-  <div class="markdown level1 summary"><p>Gets the value indicating whether this modifier is required or optional</p>
+  <h5 id="CilTools_Reflection_IParamsProvider_remarks"><strong>Remarks</strong></h5>
+  <div class="markdown level0 remarks"><p>External methods in .NET assemblies are referenced using a signature that contains information about their
+parameter types, but does not contain other information, such as parameter names. Getting that information
+requires resolving a reference and loading the actual implementation pointed by it, which can fail if the
+containing assembly is not available. In some cases we only need to query parameter types and
+don't need to resolve external references. This interface solves this problem by allowing our code to call
+<code>GetParameters(RefResolutionMode.NoResolve)</code> in these cases.</p>
 </div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public bool IsRequired { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Boolean</span></td>
-        <td><p>'true' if type users are required to understand this modifier in order to correctly use it,
-'false' if the modifier can be ignored</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 id="CilTools_BytecodeAnalysis_CustomModifier_IsRequired_remarks">Remarks</h5>
-  <div class="markdown level1 remarks"><p>See ECMA-335 I.9.7 (Metadata extensibility) for more information about required and optional modifiers</p>
-</div>
-  
-  
-  <a id="CilTools_BytecodeAnalysis_CustomModifier_ModifierType_" data-uid="CilTools.BytecodeAnalysis.CustomModifier.ModifierType*"></a>
-  <h4 id="CilTools_BytecodeAnalysis_CustomModifier_ModifierType" data-uid="CilTools.BytecodeAnalysis.CustomModifier.ModifierType">ModifierType</h4>
-  <div class="markdown level1 summary"><p>Gets the type of this modifier</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public Type ModifierType { get; }</code></pre>
-  </div>
-  <h5 class="propertyValue">Property Value</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Type</span></td>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
   <h3 id="methods">Methods
   </h3>
   
   
-  <a id="CilTools_BytecodeAnalysis_CustomModifier_ToString_" data-uid="CilTools.BytecodeAnalysis.CustomModifier.ToString*"></a>
-  <h4 id="CilTools_BytecodeAnalysis_CustomModifier_ToString" data-uid="CilTools.BytecodeAnalysis.CustomModifier.ToString">ToString()</h4>
-  <div class="markdown level1 summary"><p>Gets the textual representation of this modifier as CIL code</p>
+  <a id="CilTools_Reflection_IParamsProvider_GetParameters_" data-uid="CilTools.Reflection.IParamsProvider.GetParameters*"></a>
+  <h4 id="CilTools_Reflection_IParamsProvider_GetParameters_CilTools_Reflection_RefResolutionMode_" data-uid="CilTools.Reflection.IParamsProvider.GetParameters(CilTools.Reflection.RefResolutionMode)">GetParameters(RefResolutionMode)</h4>
+  <div class="markdown level1 summary"><p>Gets parameters for the current method using the specified external references resolution mode</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public override string ToString()</code></pre>
+    <pre><code class="lang-csharp hljs">ParameterInfo[] GetParameters(RefResolutionMode refResolutionMode)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Reflection.RefResolutionMode.html">RefResolutionMode</a></td>
+        <td><span class="parametername">refResolutionMode</span></td>
+        <td><p>External references resolution mode to use</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -182,13 +131,13 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td></td>
+        <td><span class="xref">System.Reflection.ParameterInfo</span>[]</td>
+        <td><p>An array of <span class="xref">System.Reflection.ParameterInfo</span> containing information that matches the signature
+of the current method</p>
+</td>
       </tr>
     </tbody>
   </table>
-  <h5 class="overrides">Overrides</h5>
-  <div><span class="xref">System.ValueType.ToString()</span></div>
 </article>
           </div>
           

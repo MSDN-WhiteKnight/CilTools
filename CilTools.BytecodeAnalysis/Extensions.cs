@@ -1,12 +1,12 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Reflection;
 using System.Reflection.Emit;
-using System.Diagnostics;
 
 namespace CilTools.BytecodeAnalysis.Extensions
 {
@@ -29,7 +29,7 @@ namespace CilTools.BytecodeAnalysis.Extensions
         /// Returns this method's CIL code as string
         /// </summary>
         /// <param name="m">Method for which to retrieve CIL</param>
-        /// <remarks>Alias for <see cref="CilAnalysis.MethodToText"/> method. The CIL code returned by this API is intended mainly for reading, not compiling. It is not guaranteed to be a valid input for CIL assembler.</remarks>
+        /// <remarks>Alias for <see cref="CilAnalysis.MethodToText"/> method.</remarks>
         /// <returns>CIL code string</returns>
         public static string GetCilText(this MethodBase m)
         {

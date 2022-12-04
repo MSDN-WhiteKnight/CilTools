@@ -1,0 +1,107 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.IParamsProvider
+  commentId: T:CilTools.Reflection.IParamsProvider
+  id: IParamsProvider
+  parent: CilTools.Reflection
+  children:
+  - CilTools.Reflection.IParamsProvider.GetParameters(CilTools.Reflection.RefResolutionMode)
+  langs:
+  - csharp
+  - vb
+  name: IParamsProvider
+  nameWithType: IParamsProvider
+  fullName: CilTools.Reflection.IParamsProvider
+  type: Interface
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents an object that can provide information about method parameters\n"
+  remarks: "\nExternal methods in .NET assemblies are referenced using a signature that contains information about their \nparameter types, but does not contain other information, such as parameter names. Getting that information\nrequires resolving a reference and loading the actual implementation pointed by it, which can fail if the \ncontaining assembly is not available. In some cases we only need to query parameter types and\ndon&apos;t need to resolve external references. This interface solves this problem by allowing our code to call \n<code>GetParameters(RefResolutionMode.NoResolve)</code> in these cases.\n"
+  syntax:
+    content: public interface IParamsProvider
+    content.vb: Public Interface IParamsProvider
+  modifiers.csharp:
+  - public
+  - interface
+  modifiers.vb:
+  - Public
+  - Interface
+- uid: CilTools.Reflection.IParamsProvider.GetParameters(CilTools.Reflection.RefResolutionMode)
+  commentId: M:CilTools.Reflection.IParamsProvider.GetParameters(CilTools.Reflection.RefResolutionMode)
+  id: GetParameters(CilTools.Reflection.RefResolutionMode)
+  parent: CilTools.Reflection.IParamsProvider
+  langs:
+  - csharp
+  - vb
+  name: GetParameters(RefResolutionMode)
+  nameWithType: IParamsProvider.GetParameters(RefResolutionMode)
+  fullName: CilTools.Reflection.IParamsProvider.GetParameters(CilTools.Reflection.RefResolutionMode)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets parameters for the current method using the specified external references resolution mode\n"
+  syntax:
+    content: ParameterInfo[] GetParameters(RefResolutionMode refResolutionMode)
+    parameters:
+    - id: refResolutionMode
+      type: CilTools.Reflection.RefResolutionMode
+      description: External references resolution mode to use
+    return:
+      type: System.Reflection.ParameterInfo[]
+      description: "An array of <xref href=\"System.Reflection.ParameterInfo\" data-throw-if-not-resolved=\"false\"></xref> containing information that matches the signature \nof the current method"
+    content.vb: Function GetParameters(refResolutionMode As RefResolutionMode) As ParameterInfo()
+  overload: CilTools.Reflection.IParamsProvider.GetParameters*
+references:
+- uid: CilTools.Reflection
+  commentId: N:CilTools.Reflection
+  isExternal: true
+  name: CilTools.Reflection
+  nameWithType: CilTools.Reflection
+  fullName: CilTools.Reflection
+- uid: CilTools.Reflection.IParamsProvider.GetParameters*
+  commentId: Overload:CilTools.Reflection.IParamsProvider.GetParameters
+  isExternal: true
+  name: GetParameters
+  nameWithType: IParamsProvider.GetParameters
+  fullName: CilTools.Reflection.IParamsProvider.GetParameters
+- uid: CilTools.Reflection.RefResolutionMode
+  commentId: T:CilTools.Reflection.RefResolutionMode
+  parent: CilTools.Reflection
+  isExternal: true
+  name: RefResolutionMode
+  nameWithType: RefResolutionMode
+  fullName: CilTools.Reflection.RefResolutionMode
+- uid: System.Reflection.ParameterInfo[]
+  isExternal: true
+  name: ParameterInfo[]
+  nameWithType: ParameterInfo[]
+  fullName: System.Reflection.ParameterInfo[]
+  nameWithType.vb: ParameterInfo()
+  fullName.vb: System.Reflection.ParameterInfo()
+  name.vb: ParameterInfo()
+  spec.csharp:
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    nameWithType: ParameterInfo
+    fullName: System.Reflection.ParameterInfo
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Reflection.ParameterInfo
+    name: ParameterInfo
+    nameWithType: ParameterInfo
+    fullName: System.Reflection.ParameterInfo
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()

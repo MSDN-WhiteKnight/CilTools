@@ -92,7 +92,7 @@ items:
     parameters: []
     return:
       type: System.Boolean
-      description: "\n&apos;true&apos; if type users are required to understand this modifier in order to correctly use it, &apos;false&apos; if the modifier can be ignored\n"
+      description: "&apos;true&apos; if type users are required to understand this modifier in order to correctly use it, \n&apos;false&apos; if the modifier can be ignored "
     content.vb: Public ReadOnly Property IsRequired As Boolean
   overload: CilTools.BytecodeAnalysis.CustomModifier.IsRequired*
   modifiers.csharp:

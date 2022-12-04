@@ -157,7 +157,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.SourceCode
-  summary: "\nGets or sets the starting byte offset of CIL bytecode corresponding to this fragment \n"
+  summary: "\nGets or sets the ending byte offset of CIL bytecode corresponding to this fragment \n"
   syntax:
     content: public int CilEnd { get; set; }
     parameters: []

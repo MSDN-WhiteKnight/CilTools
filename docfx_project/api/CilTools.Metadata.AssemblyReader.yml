@@ -12,6 +12,7 @@ items:
   - CilTools.Metadata.AssemblyReader.Load(System.String)
   - CilTools.Metadata.AssemblyReader.LoadFrom(System.String)
   - CilTools.Metadata.AssemblyReader.LoadImage(CilTools.Reflection.MemoryImage)
+  - CilTools.Metadata.AssemblyReader.ResolveExternalRefs
   - CilTools.Metadata.AssemblyReader.RuntimeDirectory
   langs:
   - csharp
@@ -255,6 +256,38 @@ items:
   overload: CilTools.Metadata.AssemblyReader.#ctor*
   modifiers.csharp:
   - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.ResolveExternalRefs
+  commentId: P:CilTools.Metadata.AssemblyReader.ResolveExternalRefs
+  id: ResolveExternalRefs
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: ResolveExternalRefs
+  nameWithType: AssemblyReader.ResolveExternalRefs
+  fullName: CilTools.Metadata.AssemblyReader.ResolveExternalRefs
+  type: Property
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nGets or sets the value indicating that assembly reader should resolve external assembly references \nwhen loading types. The default value is <code>true</code>.\n"
+  remarks: "\nThis property indicates that resolving external references is allowed, however, if some API is \nexplicitly invoked with the <xref href=\"CilTools.Reflection.RefResolutionMode.NoResolve\" data-throw-if-not-resolved=\"false\"></xref> option, the resolution \nwill not be performed.\n"
+  syntax:
+    content: public bool ResolveExternalRefs { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property ResolveExternalRefs As Boolean
+  overload: CilTools.Metadata.AssemblyReader.ResolveExternalRefs*
+  modifiers.csharp:
+  - public
+  - get
+  - set
   modifiers.vb:
   - Public
 - uid: CilTools.Metadata.AssemblyReader.RuntimeDirectory
@@ -731,6 +764,19 @@ references:
   name: AssemblyReader
   nameWithType: AssemblyReader.AssemblyReader
   fullName: CilTools.Metadata.AssemblyReader.AssemblyReader
+- uid: CilTools.Metadata.AssemblyReader.ResolveExternalRefs*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.ResolveExternalRefs
+  isExternal: true
+  name: ResolveExternalRefs
+  nameWithType: AssemblyReader.ResolveExternalRefs
+  fullName: CilTools.Metadata.AssemblyReader.ResolveExternalRefs
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
 - uid: CilTools.Metadata.AssemblyReader.RuntimeDirectory*
   commentId: Overload:CilTools.Metadata.AssemblyReader.RuntimeDirectory
   isExternal: true
