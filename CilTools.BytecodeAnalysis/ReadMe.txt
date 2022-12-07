@@ -185,3 +185,28 @@ v2.0
 - Fix TypeSpec.IsGenericParameter for byrefs 
 - Fix ldtoken syntax for methods
 - Fix string literal escaping in disassembler to use ECMA-335 rules
+
+2.5
+- Add IReflectionInfo interface to enable custom properties on reflection objects (implemented by classes in CilTools.Metadata)
+- Add CilInstruction.ToSyntax()
+- Add Disassembler.GetAssemblyManifestSyntaxNodes
+- Add IParamsProvider interface (enables getting method parameters without resolving external assembly references, implemented by classes in CilTools.Metadata)
+- Support parameters and return type custom attributes
+- Support field custom attributes
+- Support `.override` and `.vtentry` directives
+- Support events in type disassembler
+- Support vararg sentinel (...) in method signatures
+- Support `specialname` and `rtspecialname` attributes on methods
+- Skip assembly name for types in the same assembly
+- Escape special characters in identifiers
+- Escape slash in string literals 
+- Fix base type syntax in GetTypeDefSyntax
+- Fix TypeSpec.IsValueType for byref target types and generics
+- Fix extra whitepaces after directive names
+- Fix constructors to have void return type in disassembled CIL
+- Fix ldtoken syntax for types
+- Fix CilParserException when exception handler block closes after the last instruction in the method body
+- Fix literal syntax for enum and boolean types
+- Fix `serializable` attribute handling
+- Fix type name representation in syntax API (now namespace is handled as a separate identifier token)
+- Fix detection of `<Module>` type (global fields and functions)
