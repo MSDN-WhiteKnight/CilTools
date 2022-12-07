@@ -91,6 +91,36 @@ Changelog
 - Fix `ldtoken` syntax for methods
 - Fix string literal escaping in disassembler to use ECMA-335 rules
 
+2.5
+
+- Add Source Link support for Portable PDB symbols
+- Add source code syntax highlighting
+- Add instruction info
+- Add IL syntax highlighting in SourceViewWindow
+- Add support for viewing assembly manifest and **Export assembly to file** menu command
+- Add **Recent files** menu
+- Add HTML help
+- Change default filter in Open File dialog to include all supported file types (instead of only .dll and .exe)
+- Disable formatted view for .il files larger then 1 MB
+- Support viewing separate types from .il files
+- Load .il files in background
+- Support parameters and return type custom attributes
+- Support field custom attributes
+- Support `.override` and `.vtentry` directives
+- Support events in type disassembler
+- Support vararg sentinel (...) in method signatures
+- Support `specialname` and `rtspecialname` attributes on methods
+- Skip assembly name for types in the same assembly
+- Escape special characters in identifiers
+- Escape slash in string literals 
+- Fix base type syntax in GetTypeDefSyntax
+- Fix extra whitepaces after directive names
+- Fix constructors to have void return type in disassembled CIL
+- Fix ldtoken syntax for types
+- Fix CilParserException when exception handler block closes after the last instruction in the method body
+- Fix literal syntax for enum and boolean types
+- Fix `serializable` attribute handling
+
 ---------------------------------------------
 
 Copyright (c) 2022,  MSDN.WhiteKnight
