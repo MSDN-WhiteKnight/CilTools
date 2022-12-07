@@ -22,3 +22,6 @@ Requirements: .NET Framework 4.5+
 
 2.4
 - Update custom method implementations to derive from MethodInfo/ConstructorInfo and implement ICustomMethod
+
+2.5
+- Implement GetReferencedAssemblies and ManifestModule on DynamicMethodsAssembly
