@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 
@@ -13,10 +14,11 @@ namespace CilView.UI.Dialogs
     /// </summary>
     public partial class HtmlViewWindow : Window
     {
-        public HtmlViewWindow(string url)
+        public HtmlViewWindow(string filepath)
         {
             InitializeComponent();
-            this.content.Navigate(url);
+            string content = File.ReadAllText(filepath);
+            this.content.NavigateToString(content);
         }
 
         private void bClose_Click(object sender, RoutedEventArgs e)
