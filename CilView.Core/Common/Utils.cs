@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
@@ -194,6 +195,15 @@ namespace CilView.Common
                 return true;
             }
             else return false;
+        }
+
+        public static string ReadEmbeddedResource(Assembly assembly, string nspace, string name)
+        {
+            using (Stream stream = assembly.GetManifestResourceStream(nspace + "." + name))
+            using (StreamReader reader = new StreamReader(stream))
+            {
+                return reader.ReadToEnd();
+            }
         }
     }
 }

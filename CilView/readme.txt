@@ -121,6 +121,10 @@ Changelog
 - Fix literal syntax for enum and boolean types
 - Fix `serializable` attribute handling
 
+2.5.0.2
+
+- Fix help when running from directory with non-latin characters in path
+
 ---------------------------------------------
 
 Copyright (c) 2022,  MSDN.WhiteKnight

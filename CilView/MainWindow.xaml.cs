@@ -757,10 +757,9 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
         {
             try
             {
-                string dir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-                string path = Path.Combine(dir, "manual.html");
-                
-                HtmlViewWindow wnd = new HtmlViewWindow(path);
+                Type t = typeof(MainWindow);
+                string content = Utils.ReadEmbeddedResource(t.Assembly, t.Namespace, "manual.html");
+                HtmlViewWindow wnd = new HtmlViewWindow(content);
                 wnd.Owner = this;
                 wnd.Title = "CIL View Help";
                 wnd.Show();
