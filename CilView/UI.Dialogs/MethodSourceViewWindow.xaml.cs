@@ -10,8 +10,8 @@ using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Input;
 using CilTools.SourceCode;
+using CilTools.Syntax;
 using CilView.Common;
-using CilView.Core.Syntax;
 using CilView.SourceCode;
 
 namespace CilView.UI.Dialogs

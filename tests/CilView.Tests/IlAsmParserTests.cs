@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Syntax;
+using CilTools.Syntax.Tokens;
 using CilTools.Tests.Common;
 using CilView.Core.DocumentModel;
 using CilView.Core.Syntax;
@@ -96,10 +97,25 @@ namespace CilView.Tests
             Assert.AreEqual("{ }\n", blockItems[18].ToString());
         }
 
+        public const string Data_MultilineString =
+            @".method public hidebysig static float64 CalcSum(float64 x, float64 y) cil managed {
+ .maxstack 2
+ .locals init (float64 V_0)
+
+          nop
+          ldarg.0
+          ldarg.1
+          add
+          stloc.0
+          br.s         IL_0001
+ IL_0001: ldloc.0
+          ret
+}";
+
         [TestMethod]
         [DataRow(".class public Foo { } .class public Bar { }")]
         [DataRow(".class public A { .method static void B (int32 x) cil managed { nop } }")]
-        [DataRow(TokenReaderTests.Data_MultilineString, DisplayName = "Test_TokensToInitialTree_Roundtrip(Data_MultilineString)")]
+        [DataRow(Data_MultilineString, DisplayName = "Test_TokensToInitialTree_Roundtrip(Data_MultilineString)")]
         public void Test_TokensToInitialTree_Roundtrip(string il)
         {
             SyntaxNode[] tokens = SyntaxReader.ReadAllNodes(il);
@@ -221,7 +237,7 @@ namespace CilView.Tests
         [TestMethod]
         [DataRow(".class public Foo { } .class public Bar { }")]
         [DataRow(".class public A { .method static void B (int32 x) cil managed { nop } }")]
-        [DataRow(TokenReaderTests.Data_MultilineString, DisplayName = "Test_IlAsmParser_Roundtrip(Data_MultilineString)")]
+        [DataRow(Data_MultilineString, DisplayName = "Test_IlAsmParser_Roundtrip(Data_MultilineString)")]
         [DataRow(Data_EscapedNames, DisplayName = "Test_IlAsmParser_Roundtrip(Data_EscapedNames)")]
         [DataRow(".class public System.ValueTuple`2<T1,T2> { }")]
         public void Test_IlAsmParser_Roundtrip(string il)

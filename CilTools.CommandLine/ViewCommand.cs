@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using CilTools.Syntax;
+using CilTools.Syntax.Tokens;
 using CilView.Core;
 using CilView.Core.Documentation;
-using CilView.Core.Syntax;
 
 namespace CilTools.CommandLine
 {

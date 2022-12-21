@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CilTools.Syntax;
+using CilTools.Syntax.Tokens;
 using CilView.Core.Syntax;
 using CilView.SourceCode.Common;
 using CilView.SourceCode.VisualBasic;
@@ -40,6 +42,16 @@ namespace CilView.SourceCode
             }
         }
 
+        static bool IsWhitespace(string str)
+        {
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (!char.IsWhiteSpace(str[i])) return false;
+            }
+
+            return true;
+        }
+
         public static SourceToken[] ParseTokens(string src, SyntaxTokenDefinition[] definitions, 
             TokenClassifier classifier)
         {
@@ -52,7 +64,7 @@ namespace CilView.SourceCode
             string leadingWhitespace;
             int i = 0;
 
-            if (SyntaxReader.IsWhitespace(tokens[0]))
+            if (IsWhitespace(tokens[0]))
             {
                 leadingWhitespace = tokens[0];
                 i = 1;
@@ -71,7 +83,7 @@ namespace CilView.SourceCode
                     ret.Add(SourceToken.CreateFromString(tokens[i], leadingWhitespace, string.Empty, classifier));
                     break;
                 }
-                else if (SyntaxReader.IsWhitespace(tokens[i + 1]))
+                else if (IsWhitespace(tokens[i + 1]))
                 {
                     ret.Add(SourceToken.CreateFromString(tokens[i], leadingWhitespace, tokens[i + 1], classifier));
                     i += 2;

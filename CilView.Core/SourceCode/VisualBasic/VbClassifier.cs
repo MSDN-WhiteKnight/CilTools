@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using CilView.Core.Syntax;
+using CilTools.Syntax;
 
 namespace CilView.SourceCode.VisualBasic
 {

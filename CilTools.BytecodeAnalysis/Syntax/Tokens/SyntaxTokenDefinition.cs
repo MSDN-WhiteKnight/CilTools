@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace CilView.Core.Syntax
+namespace CilTools.Syntax.Tokens
 {
     /// <summary>
     /// A base class for classes that define logic for reading specific kinds of tokens from a string
@@ -14,7 +14,7 @@ namespace CilView.Core.Syntax
     {
         static SyntaxTokenDefinition[] ilasmTokens = null;
 
-        public static SyntaxTokenDefinition[] IlasmTokens
+        public static IEnumerable<SyntaxTokenDefinition> IlasmTokens
         {
             get
             {
@@ -27,7 +27,7 @@ namespace CilView.Core.Syntax
                     };
                 }
 
-                return ilasmTokens;
+                foreach (SyntaxTokenDefinition item in ilasmTokens) yield return item;
             }
         }
 
@@ -51,7 +51,7 @@ namespace CilView.Core.Syntax
     /// <summary>
     /// Ilasm DottedName token (ECMA-335 II.5.2 - Basic syntax categories).
     /// </summary>
-    internal class NameToken : SyntaxTokenDefinition
+    public class NameToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.Name;
 
@@ -72,7 +72,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class PunctuationToken : SyntaxTokenDefinition
+    public class PunctuationToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.Punctuation;
 
@@ -104,7 +104,15 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class WhitespaceToken : SyntaxTokenDefinition
+    /// <summary>
+    /// Represents a whitespace that separates tokens.
+    /// </summary>
+    /// <remarks>
+    /// Whitespaces are not actually tokens, but they are still included there as the tokenizer needs to preserve them 
+    /// when separating tokens so later we could produce <see cref="SyntaxNode"/> instances with Leading/TrailingWhitespace
+    /// properties set.
+    /// </remarks>
+    public class WhitespaceToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.Whitespace;
 
@@ -121,7 +129,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class NumericLiteralToken : SyntaxTokenDefinition
+    public class NumericLiteralToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.NumericLiteral;
 
@@ -139,7 +147,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class DoubleQuotLiteralToken : SyntaxTokenDefinition
+    public class DoubleQuotLiteralToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.DoubleQuotLiteral;
 
@@ -164,7 +172,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class SingleQuotLiteralToken : SyntaxTokenDefinition
+    public class SingleQuotLiteralToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.SingleQuotLiteral;
 
@@ -189,7 +197,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class MultilineCommentToken : SyntaxTokenDefinition
+    public class MultilineCommentToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.MultilineComment;
 
@@ -212,7 +220,7 @@ namespace CilView.Core.Syntax
         }
     }
 
-    internal class CommentToken : SyntaxTokenDefinition
+    public class CommentToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.MultilineComment;
 

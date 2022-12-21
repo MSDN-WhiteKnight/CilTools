@@ -3,23 +3,27 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
-namespace CilView.Core.Syntax
+namespace CilTools.Syntax.Tokens
 {
+    /// <summary>
+    /// Reads raw tokens from a string using the specified collection of token definitions
+    /// </summary>
     public class TokenReader
     {
         char[] _source;
         int _pos = 0;
         SyntaxTokenDefinition[] tokens;
 
-        public TokenReader(string src, SyntaxTokenDefinition[] tokenDefinitions)
+        public TokenReader(string src, IEnumerable<SyntaxTokenDefinition> tokenDefinitions)
         {
             this._source = src.ToCharArray();
-            this.tokens = tokenDefinitions;
+            this.tokens = tokenDefinitions.ToArray();
         }
 
-        public string ReadToken()
+        string ReadToken()
         {
             if (_pos >= _source.Length) return string.Empty;
 
@@ -93,7 +97,7 @@ namespace CilView.Core.Syntax
             return ret;
         }
 
-        internal char PeekChar()
+        public char PeekChar()
         {
             if (_pos >= _source.Length) return (char)0;
             else return _source[_pos];

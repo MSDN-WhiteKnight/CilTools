@@ -8,10 +8,10 @@ using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Metadata;
+using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.TestData;
 using CilView.SourceCode;
-using CilView.Core.Syntax;
 
 namespace CilView.Tests.SourceCode
 {

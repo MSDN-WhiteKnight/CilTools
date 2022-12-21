@@ -5,13 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CilTools.Syntax;
 
-namespace CilView.Core.Syntax
+namespace CilTools.Syntax.Tokens
 {
+    /// <summary>
+    /// Reads tokens from a string and transforms them into corresponding <see cref="SyntaxNode"/> instances
+    /// </summary>
     public static class SyntaxReader
     {
-        internal static bool IsWhitespace(string str)
+        static bool IsWhitespace(string str)
         {
             for (int i = 0; i < str.Length; i++)
             {

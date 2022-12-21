@@ -6,11 +6,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using CilTools.Syntax;
+using CilTools.Syntax.Tokens;
 using CilTools.Tests.Common;
-using CilView.Core.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace CilView.Tests
+namespace CilTools.BytecodeAnalysis.Tests.Syntax
 {
     [TestClass]
     public class SyntaxReaderTests

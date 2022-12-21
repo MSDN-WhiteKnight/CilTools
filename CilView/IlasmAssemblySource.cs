@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Text;
 using CilTools.Runtime;
 using CilTools.Syntax;
+using CilTools.Syntax.Tokens;
 using CilView.Core.DocumentModel;
 using CilView.Core.Syntax;
 

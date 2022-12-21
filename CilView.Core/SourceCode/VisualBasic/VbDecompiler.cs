@@ -6,8 +6,8 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using CilTools.Reflection;
+using CilTools.Syntax;
 using CilView.Common;
-using CilView.Core.Syntax;
 
 namespace CilView.SourceCode.VisualBasic
 {

@@ -5,10 +5,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilView.SourceCode;
 using CilView.SourceCode.VisualBasic;
-using CilView.Core.Syntax;
 
 namespace CilView.Tests.SourceCode
 {
