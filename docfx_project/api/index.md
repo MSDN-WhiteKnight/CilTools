@@ -12,4 +12,6 @@ CIL Tools has following namespaces:
 
 <xref:CilTools.Runtime>
 
+<xref:CilTools.SourceCode>
+
 <xref:CilTools.Syntax>
