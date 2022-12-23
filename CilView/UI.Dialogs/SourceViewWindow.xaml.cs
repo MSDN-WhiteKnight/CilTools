@@ -63,8 +63,8 @@ namespace CilView.UI.Dialogs
             //source text
             string ext = Path.GetExtension(f.Document.FilePath);
 
-            SourceToken[] tokens = TokenParser.ParseTokens(f.Text, TokenParser.GetDefinitions(ext), 
-                TokenClassifier.Create(ext));
+            SourceToken[] tokens = TokenParser.ParseTokens(f.Text, TokenParser.GetDefinitions(ext),
+                TokenClassifierHelpers.Create(ext));
 
             fdSource.Document = SourceVisualization.VisualizeTokens(tokens, string.Empty, string.Empty);
 

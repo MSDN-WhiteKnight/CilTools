@@ -5,9 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CilTools.Syntax;
 using CilTools.Syntax.Tokens;
-using CilView.Core.Syntax;
 using CilView.SourceCode.Common;
 using CilView.SourceCode.VisualBasic;
 

@@ -5,15 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CilTools.Syntax;
-using CilView.Core.Syntax;
+using CilTools.Syntax.Tokens;
 using CilView.SourceCode.VisualBasic;
 
 namespace CilView.SourceCode
 {
-    public abstract class TokenClassifier
+    public static class TokenClassifierHelpers
     {
-        public abstract TokenKind GetKind(string token);
-
         public static TokenClassifier Create(string ext)
         {
             if (ext == null) ext = string.Empty;
@@ -34,7 +32,7 @@ namespace CilView.SourceCode
             }
         }
 
-        protected static TokenKind GetKindCommon(string token)
+        public static TokenKind GetKindCommon(string token)
         {
             //common logic for C-like languages
             if (token.Length == 0) return TokenKind.Unknown;

@@ -51,7 +51,7 @@ namespace CilTools.Syntax.Tokens
     /// <summary>
     /// Ilasm DottedName token (ECMA-335 II.5.2 - Basic syntax categories).
     /// </summary>
-    public class NameToken : SyntaxTokenDefinition
+    class NameToken : SyntaxTokenDefinition
     {
         public override TokenKind Kind => TokenKind.Name;
 

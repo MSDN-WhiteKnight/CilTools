@@ -80,10 +80,10 @@ namespace CilView.Tests.SourceCode
         [TestMethod]
         public void Test_TokenClassifier_Create()
         {
-            Assert.IsTrue(TokenClassifier.Create(".cs") is CsharpClassifier);
-            Assert.IsTrue(TokenClassifier.Create(".vb") is VbClassifier);
-            Assert.IsTrue(TokenClassifier.Create(".cpp") is CppClassifier);
-            Assert.IsTrue(TokenClassifier.Create(".text") is CsharpClassifier);
+            Assert.IsTrue(TokenClassifierHelpers.Create(".cs") is CsharpClassifier);
+            Assert.IsTrue(TokenClassifierHelpers.Create(".vb") is VbClassifier);
+            Assert.IsTrue(TokenClassifierHelpers.Create(".cpp") is CppClassifier);
+            Assert.IsTrue(TokenClassifierHelpers.Create(".text") is CsharpClassifier);
         }
     }
 }

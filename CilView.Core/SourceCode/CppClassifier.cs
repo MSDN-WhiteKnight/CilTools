@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CilTools.Syntax;
+using CilTools.Syntax.Tokens;
 
 namespace CilView.SourceCode
 {
@@ -43,7 +44,7 @@ namespace CilView.SourceCode
                 if (IsKeyword(token)) return TokenKind.Keyword;
                 else return TokenKind.Name;
             }
-            else return GetKindCommon(token);
+            else return TokenClassifierHelpers.GetKindCommon(token);
         }
     }
 }

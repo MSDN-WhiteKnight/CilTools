@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CilTools.Syntax;
+using CilTools.Syntax.Tokens;
 
 namespace CilView.SourceCode.VisualBasic
 {
