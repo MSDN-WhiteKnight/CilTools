@@ -26,5 +26,5 @@ using System.Windows;
     // в приложении или в каких-либо словарях ресурсов для конкретной темы)
 )]
 
-[assembly: AssemblyVersion("2.5.0.2")]
-[assembly: AssemblyFileVersion("2.5.0.2")]
+[assembly: AssemblyVersion("2.6.0.0")]
+[assembly: AssemblyFileVersion("2.6.0.0")]
