@@ -36,6 +36,50 @@ namespace CilTools.BytecodeAnalysis.Tests
         }
 
         [TestMethod]
+        public void Test_Parse_EndsWithComment()
+        {
+            string s = "    add //adds two values";
+            CilInstruction instr = CilInstruction.Parse(s);
+            Assert.AreEqual("add", instr.Name);
+            Assert.IsNull(instr.Operand);
+        }
+
+        [TestMethod]
+        public void Test_Parse_WithLabel()
+        {
+            string s = "IL_0001: ldc.i4 0x1F";
+            CilInstruction instr = CilInstruction.Parse(s);
+            Assert.AreEqual("ldc.i4", instr.Name);
+            Assert.AreEqual(0x1F, instr.Operand);
+        }
+
+        [TestMethod]
+        public void Test_Parse_StartsWithComment()
+        {
+            string s = "/*load floating point value*/ ldc.r4 1.23";
+            CilInstruction instr = CilInstruction.Parse(s);
+            Assert.AreEqual(OpCodes.Ldc_R4, instr.OpCode);
+            Assert.AreEqual(1.23f, instr.Operand);
+        }
+
+        [DataTestMethod]
+        [DataRow(" ")]
+        [DataRow("//some comment")]
+        [DataRow("LABEL:")]
+        public void Test_Parse_Null(string s)
+        {
+            CilInstruction instr = CilInstruction.Parse(s);
+            Assert.IsNull(instr);
+        }
+
+        [TestMethod]
+        public void Test_Parse_Invalid()
+        {
+            string s = "public static";
+            AssertThat.Throws<NotSupportedException>(() => CilInstruction.Parse(s));
+        }
+
+        [TestMethod]
         [MethodTestData(typeof(SampleMethods), "PrintHelloWorld", BytecodeProviders.All)]
         public void Test_CilInstruction_ToString(MethodBase mi)
         {

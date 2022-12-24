@@ -4,12 +4,14 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
+using System.Linq;
+using System.Globalization;
 using System.Reflection;
 using System.Reflection.Emit;
+using System.Text;
 using CilTools.Reflection;
 using CilTools.Syntax;
+using CilTools.Syntax.Tokens;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -539,151 +541,102 @@ namespace CilTools.BytecodeAnalysis
         }
 
         /// <summary>
-        /// Converts CIL instruction textual representation into the corresponding CilInstruction object
+        /// Converts CIL instruction textual representation into the corresponding <see cref="CilInstruction"/> object
         /// </summary>
         /// <param name="str">The line of CIL code representing instruction</param>
-        /// <returns>CilInstruction object for the specified string</returns>
+        /// <returns>
+        /// The instruction object for the specified string, or <c>null</c> when the specified string does not contain
+        /// the instruction or the instruction can't be parsed
+        /// </returns>
+        /// <exception cref="ArgumentNullException"><paramref name="str"/> is <c>null</c></exception>
+        /// <exception cref="ArgumentException"><paramref name="str"/> is an empty string</exception>
+        /// <exception cref="NotSupportedException">The instruction name is invalid</exception>
         public static CilInstruction Parse(string str)
         {
-            if (String.IsNullOrEmpty(str)) throw new ArgumentException("str parameter can't be null or empty string");
+            if (str == null) throw new ArgumentNullException("str");
+            if (str == string.Empty) throw new ArgumentException("str parameter can't be empty string");
 
             CilInstruction res = null;
+            TokenReader reader = new TokenReader(str, SyntaxTokenDefinition.IlasmTokens);
+            string[] tokens = reader.ReadAll().ToArray();
+            
+            if (tokens.Length == 0) return null;
 
-            List<string> tokens = new List<string>(10);
-            StringBuilder curr_token = new StringBuilder(100);
-            bool IsInComment = false;
-            bool IsInLiteral = false;
-            bool IsInToken = false;
-            char c;
-            char c_next;
+            int label_pos = -1;
 
-            for (int i = 0; i < str.Length; i++)
+            //find label
+            for (int i = 0; i < tokens.Length; i++)
             {
-                c = str[i];
-                if (i + 1 < str.Length) c_next = str[i + 1];
-                else c_next = (char)0;
-
-                if (!IsInToken && !IsInLiteral && !IsInComment &&
-                    (Char.IsLetterOrDigit(c) || Char.IsPunctuation(c) || Char.IsSymbol(c))
-                    && c != '/')
+                if (tokens[i].EndsWith(":"))
                 {
-                    //start new token
-                    IsInToken = true;
-
-                    if (c == '"') IsInLiteral = true;
-                    else IsInLiteral = false;
-
-                    curr_token = new StringBuilder(100);
-                    curr_token.Append(c);
-                    continue;
+                    label_pos = i;
+                    break;
                 }
-
-                if (IsInToken && !IsInLiteral && Char.IsWhiteSpace(c))
+                else
                 {
-                    //end token
-                    IsInToken = false;
-                    tokens.Add(curr_token.ToString());
-                    curr_token = new StringBuilder(100);
-                    continue;
+                    SyntaxNode node = SyntaxFactory.CreateFromToken(tokens[i], string.Empty, string.Empty);
+
+                    //the first keyword is instruction name, we should not search labels after it
+                    if (node is KeywordSyntax) break; 
                 }
-
-                if (IsInToken && !IsInLiteral &&
-                    (c == ':' && c_next != ':')
-                    )
-                {
-                    //end token
-                    curr_token.Append(c);
-                    IsInToken = false;
-                    tokens.Add(curr_token.ToString());
-                    curr_token = new StringBuilder(100);
-                    continue;
-                }
-
-                if (IsInToken && !IsInLiteral && c == '/' && (c_next == '/' || c_next == '*'))
-                {
-                    //end token
-                    IsInToken = false;
-                    tokens.Add(curr_token.ToString());
-                    curr_token = new StringBuilder(100);
-
-                    //start comment
-                    IsInComment = true;
-                    continue;
-                }
-
-                if (IsInToken && IsInLiteral && c == '"' && str[i - 1] != '\\')
-                {
-                    //end token
-                    curr_token.Append(c);
-                    IsInToken = false;
-                    IsInLiteral = false;
-                    tokens.Add(curr_token.ToString());
-                    curr_token = new StringBuilder(100);
-                    continue;
-                }
-
-                if (!IsInComment && !IsInToken && !IsInLiteral && c == '/' && (c_next == '/' || c_next == '*'))
-                {
-                    //start comment
-                    IsInComment = true;
-                    continue;
-                }
-
-                if (IsInComment && c == '/' && str[i - 1] == '*')
-                {
-                    //end comment
-                    IsInComment = false;
-                    continue;
-                }
-
-                if (IsInToken && !IsInLiteral && (Char.IsLetterOrDigit(c) || Char.IsPunctuation(c) || Char.IsSymbol(c)))
-                {
-                    //append new char to the token
-                    curr_token.Append(c);
-                }
-
-                if (IsInToken && IsInLiteral && !(c == '"' && str[i - 1] != '\\'))
-                {
-                    //append new char to the token
-                    curr_token.Append(c);
-                }
-            }//end for
-
-            if (IsInToken)
-            {
-                tokens.Add(curr_token.ToString());
             }
 
-            if (tokens.Count == 0) return null;
-            int args_start;
+            int opname_pos = -1;
+            string opname = string.Empty;
+            int start_pos;
 
-            string opname = tokens[0].Trim();
-            args_start = 1;
-            if (opname[opname.Length - 1] == ':')
+            if (label_pos < 0) start_pos = 0;
+            else start_pos = label_pos + 1;
+
+            //find operation name
+            for (int i = start_pos; i < tokens.Length; i++)
             {
-                //skip label
-                if (tokens.Count == 1) return null;
-                opname = tokens[1].Trim();
-                args_start = 2;
+                SyntaxNode node = SyntaxFactory.CreateFromToken(tokens[i], string.Empty, string.Empty);
+
+                if (node is KeywordSyntax)
+                {
+                    opname_pos = i;
+                    opname = tokens[i];
+                    break;
+                }
             }
 
-            string args = "";
+            if (opname_pos < 0) return null;
 
-            for (int j = args_start; j < tokens.Count; j++) args += tokens[j];
+            int args_start = opname_pos + 1;
+
+            //find first operand token
+            for (int i = opname_pos + 1; i < tokens.Length; i++)
+            {
+                if (tokens[i].Trim().Length == 0) continue;
+
+                SyntaxNode node = SyntaxFactory.CreateFromToken(tokens[i], string.Empty, string.Empty);
+
+                if (!(node is CommentSyntax))
+                {
+                    args_start = i;
+                    break;
+                }                
+            }
+
+            //build CilInstruction object
+            string args = string.Empty;
+
+            for (int j = args_start; j < tokens.Length; j++) args += tokens[j];
 
             args = args.Trim();
 
             OpCode op = FindOpCode(opname);
             uint opsize = CilReader.GetOperandSize(op);
+            NumberStyles numstyle = NumberStyles.Integer;
 
-            var numstyle = System.Globalization.NumberStyles.Integer;
             if (args.StartsWith("0x"))
             {
-                numstyle = System.Globalization.NumberStyles.HexNumber;
+                numstyle = NumberStyles.HexNumber;
                 args = args.Substring(2);
             }
 
-            var fmt = System.Globalization.CultureInfo.InvariantCulture;
+            CultureInfo fmt = CultureInfo.InvariantCulture;
 
             sbyte byteval;
             short shortval;
@@ -694,7 +647,6 @@ namespace CilTools.BytecodeAnalysis
 
             switch (opsize)
             {
-
                 case 0:
                     res = new CilInstructionImpl(op, 0, 0, null);
                     break;
@@ -715,7 +667,7 @@ namespace CilTools.BytecodeAnalysis
                 case 4:
                     if (op.OperandType == System.Reflection.Emit.OperandType.ShortInlineR)
                     {
-                        if (Single.TryParse(args, out floatval))
+                        if (float.TryParse(args, NumberStyles.Any, fmt, out floatval))
                         {
                             res = new CilInstructionImpl<float>(op, floatval, opsize, 0, 0, null);
                         }
@@ -732,7 +684,7 @@ namespace CilTools.BytecodeAnalysis
                 case 8:
                     if (op.OperandType == System.Reflection.Emit.OperandType.InlineR)
                     {
-                        if (Double.TryParse(args, out doubleval))
+                        if (double.TryParse(args, NumberStyles.Any, fmt, out doubleval))
                         {
                             res = new CilInstructionImpl<double>(op, doubleval, opsize, 0, 0, null);
                         }
