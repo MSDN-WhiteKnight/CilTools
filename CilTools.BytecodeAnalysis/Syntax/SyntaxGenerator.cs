@@ -101,7 +101,7 @@ namespace CilTools.Syntax
                 //custom attributes
                 try
                 {
-                    SyntaxNode[] arr = GetAttributesSyntax(events[i], startIndent + 2, DisassemblerParams.Default);
+                    SyntaxNode[] arr = GetAttributesSyntax(events[i], startIndent + 2, containingAssembly);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
@@ -176,16 +176,10 @@ namespace CilTools.Syntax
             }//end for
         }
 
-        internal static SyntaxNode[] GetAttributesSyntax(ICustomAttributeProvider m, int indent, DisassemblerParams pars)
+        internal static SyntaxNode[] GetAttributesSyntax(ICustomAttributeProvider m, int indent, Assembly containingAssembly)
         {
             object[] attrs = m.GetCustomAttributes(false);
             List<SyntaxNode> ret = new List<SyntaxNode>(attrs.Length);
-            Assembly containingAssembly;
-
-            // If we need to assembly-qualify all types, just pretend that we don't know the
-            // containing assembly.
-            if (pars.AssemblyQualifyAllTypes) containingAssembly = null;
-            else containingAssembly = ReflectionUtils.GetProviderAssembly(m);
             
             for (int i = 0; i < attrs.Length; i++)
             {
@@ -309,11 +303,10 @@ namespace CilTools.Syntax
             }
         }
 
-        internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m, int startIndent)
+        internal static SyntaxNode[] GetDefaultsSyntax(MethodBase m, int startIndent, Assembly containingAssembly)
         {
             ParameterInfo[] pars = m.GetParameters();
             List<SyntaxNode> ret = new List<SyntaxNode>(pars.Length);
-            Assembly containingAssembly = ReflectionUtils.GetContainingAssembly(m);
 
             // Return type custom attributes
             ICustomAttributeProvider provider = null;
@@ -646,7 +639,7 @@ namespace CilTools.Syntax
             //custom attributes
             try
             {
-                SyntaxNode[] arr = GetAttributesSyntax(t, startIndent + 1, disassemblerParams);
+                SyntaxNode[] arr = GetAttributesSyntax(t, startIndent + 1, containingAssembly);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
@@ -761,7 +754,7 @@ namespace CilTools.Syntax
                 //field custom attributes
                 try
                 {
-                    SyntaxNode[] arr = GetAttributesSyntax(fields[i], bodyIndent, disassemblerParams);
+                    SyntaxNode[] arr = GetAttributesSyntax(fields[i], bodyIndent, containingAssembly);
 
                     for (int j = 0; j < arr.Length; j++)
                     {
@@ -859,7 +852,7 @@ namespace CilTools.Syntax
                 //property custom attributes
                 try
                 {
-                    SyntaxNode[] arr = GetAttributesSyntax(props[i], startIndent + 2, disassemblerParams);
+                    SyntaxNode[] arr = GetAttributesSyntax(props[i], startIndent + 2, containingAssembly);
 
                     for (int j = 0; j < arr.Length; j++)
                     {

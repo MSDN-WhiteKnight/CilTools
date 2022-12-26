@@ -202,7 +202,7 @@ namespace CilTools.Syntax
 
             try
             {
-                arr = SyntaxGenerator.GetAttributesSyntax(ass, 2, DisassemblerParams.Default);
+                arr = SyntaxGenerator.GetAttributesSyntax(ass, 2, ass);
             }
             catch (Exception ex)
             {
@@ -300,7 +300,7 @@ namespace CilTools.Syntax
                 // Module custom attributes
                 try
                 {
-                    arr = SyntaxGenerator.GetAttributesSyntax(module, 0, DisassemblerParams.Default);
+                    arr = SyntaxGenerator.GetAttributesSyntax(module, 0, ass);
                 }
                 catch (Exception ex)
                 {

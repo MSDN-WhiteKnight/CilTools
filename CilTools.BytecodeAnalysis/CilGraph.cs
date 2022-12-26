@@ -319,7 +319,8 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="output">The destination TextWriter</param>
         public void PrintDefaults(TextWriter output)
         {
-            SyntaxNode[] elems = SyntaxGenerator.GetDefaultsSyntax(this._Method, 0);
+            Assembly containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
+            SyntaxNode[] elems = SyntaxGenerator.GetDefaultsSyntax(this._Method, 0, containingAssembly);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -333,7 +334,8 @@ namespace CilTools.BytecodeAnalysis
         /// <param name="output">The destination TextWriter</param>
         public void PrintAttributes(TextWriter output)
         {
-            SyntaxNode[] elems = SyntaxGenerator.GetAttributesSyntax(this._Method, 1, DisassemblerParams.Default);
+            Assembly containingAssembly = ReflectionUtils.GetProviderAssembly(this._Method);
+            SyntaxNode[] elems = SyntaxGenerator.GetAttributesSyntax(this._Method, 1, containingAssembly);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -952,10 +954,16 @@ namespace CilTools.BytecodeAnalysis
 
             List<SyntaxNode> nodes = new List<SyntaxNode>(100);
             SyntaxNode[] arr;
+            Assembly containingAssembly;
+
+            // If we need to assembly-qualify all types, just pretend that we don't know the
+            // containing assembly.
+            if (pars.AssemblyQualifyAllTypes) containingAssembly = null;
+            else containingAssembly = ReflectionUtils.GetProviderAssembly(this._Method);
 
             try
             {
-                arr = SyntaxGenerator.GetAttributesSyntax(this._Method, startIndent + 1, pars);
+                arr = SyntaxGenerator.GetAttributesSyntax(this._Method, startIndent + 1, containingAssembly);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
@@ -968,7 +976,7 @@ namespace CilTools.BytecodeAnalysis
                     "NOTE: Custom attributes are not shown.", null, false));
             }
 
-            arr = SyntaxGenerator.GetDefaultsSyntax(this._Method, startIndent);
+            arr = SyntaxGenerator.GetDefaultsSyntax(this._Method, startIndent, containingAssembly);
 
             for (int i = 0; i < arr.Length; i++)
             {
