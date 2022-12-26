@@ -6,6 +6,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Text;
 using CilTools.BytecodeAnalysis;
+using CilTools.Syntax.Generation;
 
 namespace CilTools.Syntax
 {

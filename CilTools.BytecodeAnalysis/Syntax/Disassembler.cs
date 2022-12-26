@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+using CilTools.Syntax.Generation;
 
 namespace CilTools.Syntax
 {

@@ -11,7 +11,7 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 
-namespace CilTools.Syntax
+namespace CilTools.Syntax.Generation
 {
     /// <summary>
     /// Provides internal static helpers that produce sequences of syntax nodes

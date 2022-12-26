@@ -12,6 +12,7 @@ using System.Text;
 using CilTools.Reflection;
 using CilTools.SourceCode;
 using CilTools.Syntax;
+using CilTools.Syntax.Generation;
 
 namespace CilTools.BytecodeAnalysis
 {

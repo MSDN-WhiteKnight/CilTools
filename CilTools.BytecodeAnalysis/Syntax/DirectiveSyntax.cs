@@ -9,6 +9,7 @@ using System.Text;
 using System.Linq;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+using CilTools.Syntax.Generation;
 
 namespace CilTools.Syntax
 {
