@@ -103,6 +103,7 @@ namespace CilTools.Syntax
             DirectiveSyntax ds;
             string str;
             CommentSyntax cs;
+            SyntaxGenerator gen = new SyntaxGenerator(ass);
 
             // Module references
             string[] modules = (string[])ReflectionProperties.Get(ass, ReflectionProperties.ReferencedModules);
@@ -203,7 +204,7 @@ namespace CilTools.Syntax
 
             try
             {
-                arr = SyntaxGenerator.GetAttributesSyntax(ass, 2, ass);
+                arr = gen.GetAttributesSyntax(ass, 2);
             }
             catch (Exception ex)
             {
@@ -301,7 +302,7 @@ namespace CilTools.Syntax
                 // Module custom attributes
                 try
                 {
-                    arr = SyntaxGenerator.GetAttributesSyntax(module, 0, ass);
+                    arr = gen.GetAttributesSyntax(module, 0);
                 }
                 catch (Exception ex)
                 {

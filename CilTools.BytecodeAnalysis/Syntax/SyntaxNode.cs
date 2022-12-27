@@ -115,7 +115,7 @@ namespace CilTools.Syntax
         {
             if (t == null) throw new ArgumentNullException("t");
 
-            return SyntaxGenerator.GetTypeDefSyntaxImpl(t, false, DisassemblerParams.Default, 0);
+            return SyntaxGenerator.GetTypeDefSyntax(t, false, DisassemblerParams.Default, 0);
         }
 
         /// <summary>
@@ -135,7 +135,7 @@ namespace CilTools.Syntax
         {
             if (t == null) throw new ArgumentNullException("t");
             
-            return SyntaxGenerator.GetTypeDefSyntaxImpl(t, full, disassemblerParams, 0);
+            return SyntaxGenerator.GetTypeDefSyntax(t, full, disassemblerParams, 0);
         }
     }
 }

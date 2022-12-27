@@ -321,7 +321,8 @@ namespace CilTools.BytecodeAnalysis
         public void PrintDefaults(TextWriter output)
         {
             Assembly containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
-            SyntaxNode[] elems = SyntaxGenerator.GetDefaultsSyntax(this._Method, 0, containingAssembly);
+            SyntaxGenerator gen = new SyntaxGenerator(containingAssembly);
+            SyntaxNode[] elems = gen.GetDefaultsSyntax(this._Method, 0);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -336,7 +337,8 @@ namespace CilTools.BytecodeAnalysis
         public void PrintAttributes(TextWriter output)
         {
             Assembly containingAssembly = ReflectionUtils.GetProviderAssembly(this._Method);
-            SyntaxNode[] elems = SyntaxGenerator.GetAttributesSyntax(this._Method, 1, containingAssembly);
+            SyntaxGenerator gen = new SyntaxGenerator(containingAssembly);
+            SyntaxNode[] elems = gen.GetAttributesSyntax(this._Method, 1);
 
             for (int i = 0; i < elems.Length; i++)
             {
@@ -962,9 +964,11 @@ namespace CilTools.BytecodeAnalysis
             if (pars.AssemblyQualifyAllTypes) containingAssembly = null;
             else containingAssembly = ReflectionUtils.GetProviderAssembly(this._Method);
 
+            SyntaxGenerator gen = new SyntaxGenerator(containingAssembly);
+
             try
             {
-                arr = SyntaxGenerator.GetAttributesSyntax(this._Method, startIndent + 1, containingAssembly);
+                arr = gen.GetAttributesSyntax(this._Method, startIndent + 1);
 
                 for (int i = 0; i < arr.Length; i++)
                 {
@@ -977,7 +981,7 @@ namespace CilTools.BytecodeAnalysis
                     "NOTE: Custom attributes are not shown.", null, false));
             }
 
-            arr = SyntaxGenerator.GetDefaultsSyntax(this._Method, startIndent, containingAssembly);
+            arr = gen.GetDefaultsSyntax(this._Method, startIndent);
 
             for (int i = 0; i < arr.Length; i++)
             {

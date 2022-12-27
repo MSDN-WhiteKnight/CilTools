@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
@@ -19,12 +19,12 @@ namespace CilTools.Syntax
     /// <remarks>
     /// The directive provides meta-information, such as the method's signature or the declarations of local variables.
     /// </remarks>
-    public class DirectiveSyntax:SyntaxNode
+    public class DirectiveSyntax : SyntaxNode
     {
         string _name;
         KeywordSyntax _namesyntax;
         SyntaxNode[] _content;
-        
+
         /// <summary>
         /// Gets the name of this directive
         /// </summary>
@@ -45,9 +45,9 @@ namespace CilTools.Syntax
         /// <summary>
         /// Gets the text representation of this directive's content
         /// </summary>
-        public string ContentString 
-        { 
-            get 
+        public string ContentString
+        {
+            get
             {
                 if (this._content.Length == 0) return String.Empty;
 
@@ -55,18 +55,18 @@ namespace CilTools.Syntax
                 StringWriter wr = new StringWriter(sb);
                 this.WriteContent(wr);
                 return sb.ToString();
-            } 
+            }
         }
 
         /// <summary>
         /// Gets the collection of nodes that represent this directive's content
         /// </summary>
-        public IEnumerable<SyntaxNode> ContentSyntax 
-        { 
-            get 
+        public IEnumerable<SyntaxNode> ContentSyntax
+        {
+            get
             {
                 for (int i = 0; i < this._content.Length; i++) yield return this._content[i];
-            } 
+            }
         }
 
         internal DirectiveSyntax(string lead, string name, SyntaxNode[] content)
@@ -76,11 +76,11 @@ namespace CilTools.Syntax
 
             if (content.Length > 0)
             {
-                this._namesyntax = new KeywordSyntax(lead, "." + name, " ",KeywordKind.DirectiveName);
+                this._namesyntax = new KeywordSyntax(lead, "." + name, " ", KeywordKind.DirectiveName);
             }
             else
             {
-                this._namesyntax = new KeywordSyntax(lead, "." + name, Environment.NewLine,KeywordKind.DirectiveName);
+                this._namesyntax = new KeywordSyntax(lead, "." + name, Environment.NewLine, KeywordKind.DirectiveName);
             }
 
             this._name = name;
@@ -96,7 +96,7 @@ namespace CilTools.Syntax
             if (target == null) throw new ArgumentNullException("target");
 
             this._namesyntax.ToText(target);
-            
+
             if (this._content.Length > 0)
             {
                 this.WriteContent(target);
@@ -118,7 +118,7 @@ namespace CilTools.Syntax
         {
             ICustomMethod cm = (ICustomMethod)m;
             ParameterInfo[] pars = m.GetParameters();
-            
+
             List<SyntaxNode> inner = new List<SyntaxNode>(100);
 
             // ECMA-335 II.15.4.2 - Predefined attributes on methods
@@ -143,24 +143,24 @@ namespace CilTools.Syntax
                 inner.Add(new KeywordSyntax(string.Empty, "famorassem", string.Empty, KeywordKind.Other)); //protected internal
             }
 
-            if (m.IsHideBySig) inner.Add(new KeywordSyntax(" ", "hidebysig", String.Empty, KeywordKind.Other));
+            if (m.IsHideBySig) inner.Add(new KeywordSyntax(" ", "hidebysig", string.Empty, KeywordKind.Other));
 
-            if (m.IsAbstract) inner.Add(new KeywordSyntax(" ", "abstract", String.Empty, KeywordKind.Other));
+            if (m.IsAbstract) inner.Add(new KeywordSyntax(" ", "abstract", string.Empty, KeywordKind.Other));
 
             if ((m.Attributes & MethodAttributes.NewSlot) == MethodAttributes.NewSlot)
             {
-                inner.Add(new KeywordSyntax(" ", "newslot", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "newslot", string.Empty, KeywordKind.Other));
             }
 
-            if (m.IsVirtual) inner.Add(new KeywordSyntax(" ", "virtual", String.Empty, KeywordKind.Other));
+            if (m.IsVirtual) inner.Add(new KeywordSyntax(" ", "virtual", string.Empty, KeywordKind.Other));
 
-            if(m.IsFinal) inner.Add(new KeywordSyntax(" ", "final", String.Empty, KeywordKind.Other));
+            if (m.IsFinal) inner.Add(new KeywordSyntax(" ", "final", string.Empty, KeywordKind.Other));
 
-            if (m.IsSpecialName) inner.Add(new KeywordSyntax(" ", "specialname", String.Empty, KeywordKind.Other));
+            if (m.IsSpecialName) inner.Add(new KeywordSyntax(" ", "specialname", string.Empty, KeywordKind.Other));
 
             if ((m.Attributes & MethodAttributes.RTSpecialName) == MethodAttributes.RTSpecialName)
             {
-                inner.Add(new KeywordSyntax(" ", "rtspecialname", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "rtspecialname", string.Empty, KeywordKind.Other));
             }
 
             if (m.IsStatic) inner.Add(new KeywordSyntax(" ", "static", " ", KeywordKind.Other));
@@ -168,77 +168,77 @@ namespace CilTools.Syntax
 
             if ((m.Attributes & MethodAttributes.PinvokeImpl) != 0)
             {
-                inner.Add(new KeywordSyntax(String.Empty, "pinvokeimpl", String.Empty, KeywordKind.Other));
-                inner.Add(new PunctuationSyntax(String.Empty, "(", String.Empty));
+                inner.Add(new KeywordSyntax(string.Empty, "pinvokeimpl", string.Empty, KeywordKind.Other));
+                inner.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
 
                 PInvokeParams ppars = cm.GetPInvokeParams();
 
                 if (ppars != null)
                 {
-                    inner.Add(LiteralSyntax.CreateFromValue(String.Empty, ppars.ModuleName, " "));
+                    inner.Add(LiteralSyntax.CreateFromValue(string.Empty, ppars.ModuleName, " "));
 
-                    if (!String.IsNullOrEmpty(ppars.FunctionName) &&
-                        !String.Equals(ppars.FunctionName, m.Name, StringComparison.InvariantCulture))
+                    if (!string.IsNullOrEmpty(ppars.FunctionName) &&
+                        !string.Equals(ppars.FunctionName, m.Name, StringComparison.InvariantCulture))
                     {
-                        inner.Add(new KeywordSyntax(String.Empty, "as", " ", KeywordKind.Other));
+                        inner.Add(new KeywordSyntax(string.Empty, "as", " ", KeywordKind.Other));
                         inner.Add(LiteralSyntax.CreateFromValue(string.Empty, ppars.FunctionName, " "));
                     }
 
                     if (ppars.SetLastError)
                     {
-                        inner.Add(new KeywordSyntax(String.Empty, "lasterr", " ", KeywordKind.Other));
+                        inner.Add(new KeywordSyntax(string.Empty, "lasterr", " ", KeywordKind.Other));
                     }
 
                     if (ppars.ExactSpelling)
                     {
-                        inner.Add(new KeywordSyntax(String.Empty, "nomangle", " ", KeywordKind.Other));
+                        inner.Add(new KeywordSyntax(string.Empty, "nomangle", " ", KeywordKind.Other));
                     }
 
                     switch (ppars.CallingConvention)
                     {
                         case System.Runtime.InteropServices.CallingConvention.Cdecl:
-                            inner.Add(new KeywordSyntax(String.Empty, "cdecl", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax(string.Empty, "cdecl", " ", KeywordKind.Other));
                             break;
                         case System.Runtime.InteropServices.CallingConvention.Winapi:
-                            inner.Add(new KeywordSyntax(String.Empty, "platformapi", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax(string.Empty, "platformapi", " ", KeywordKind.Other));
                             break;
                         case System.Runtime.InteropServices.CallingConvention.StdCall:
-                            inner.Add(new KeywordSyntax(String.Empty, "stdcall", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax(string.Empty, "stdcall", " ", KeywordKind.Other));
                             break;
                         case System.Runtime.InteropServices.CallingConvention.FastCall:
-                            inner.Add(new KeywordSyntax(String.Empty, "fastcall", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax(string.Empty, "fastcall", " ", KeywordKind.Other));
                             break;
                         case System.Runtime.InteropServices.CallingConvention.ThisCall:
-                            inner.Add(new KeywordSyntax(String.Empty, "thiscall", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax(string.Empty, "thiscall", " ", KeywordKind.Other));
                             break;
                     }
 
                     switch (ppars.CharSet)
                     {
                         case System.Runtime.InteropServices.CharSet.Ansi:
-                            inner.Add(new KeywordSyntax(String.Empty, "ansi", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax(string.Empty, "ansi", " ", KeywordKind.Other));
                             break;
                         case System.Runtime.InteropServices.CharSet.Unicode:
-                            inner.Add(new KeywordSyntax(String.Empty, "unicode", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax(string.Empty, "unicode", " ", KeywordKind.Other));
                             break;
                     }
 
                     if (ppars.BestFitMapping.HasValue)
                     {
-                        inner.Add(new KeywordSyntax(String.Empty, "bestfit", String.Empty, KeywordKind.Other));
-                        inner.Add(new PunctuationSyntax(String.Empty, ":", String.Empty));
+                        inner.Add(new KeywordSyntax(string.Empty, "bestfit", string.Empty, KeywordKind.Other));
+                        inner.Add(new PunctuationSyntax(string.Empty, ":", string.Empty));
 
-                        if(ppars.BestFitMapping.Value) inner.Add(new GenericSyntax("on"));
+                        if (ppars.BestFitMapping.Value) inner.Add(new GenericSyntax("on"));
                         else inner.Add(new GenericSyntax("off"));
                     }
                 }
 
-                inner.Add(new PunctuationSyntax(String.Empty, ")", " "));
+                inner.Add(new PunctuationSyntax(string.Empty, ")", " "));
             }
 
             if (m.CallingConvention == CallingConventions.VarArgs)
             {
-                inner.Add(new KeywordSyntax(String.Empty, "vararg", " ", KeywordKind.Other));
+                inner.Add(new KeywordSyntax(string.Empty, "vararg", " ", KeywordKind.Other));
             }
 
             Assembly containingAssembly;
@@ -255,11 +255,11 @@ namespace CilTools.Syntax
                 inner.Add(new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other));
             }
 
-            inner.Add(new IdentifierSyntax(" ", m.Name, String.Empty, true,m));
+            inner.Add(new IdentifierSyntax(" ", m.Name, string.Empty, true, m));
 
             if (m.IsGenericMethod)
             {
-                inner.Add(new PunctuationSyntax(String.Empty,"<",String.Empty));
+                inner.Add(new PunctuationSyntax(string.Empty, "<", string.Empty));
 
                 Type[] args;
 
@@ -277,9 +277,10 @@ namespace CilTools.Syntax
 
                 for (int i = 0; i < args.Length; i++)
                 {
-                    if (i >= 1) inner.Add(new PunctuationSyntax(string.Empty, ","," "));
-                    
-                    SyntaxNode[] gpSyntax = SyntaxGenerator.GetGenericParameterSyntax(args[i], containingAssembly);
+                    if (i >= 1) inner.Add(new PunctuationSyntax(string.Empty, ",", " "));
+
+                    SyntaxGenerator gen = new SyntaxGenerator(containingAssembly);
+                    SyntaxNode[] gpSyntax = gen.GetGenericParameterSyntax(args[i]);
 
                     for (int j = 0; j < gpSyntax.Length; j++)
                     {
@@ -287,10 +288,10 @@ namespace CilTools.Syntax
                     }
                 }
 
-                inner.Add(new PunctuationSyntax(String.Empty, ">", String.Empty));
+                inner.Add(new PunctuationSyntax(string.Empty, ">", string.Empty));
             }
 
-            inner.Add(new PunctuationSyntax(String.Empty, "(", String.Empty));
+            inner.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
 
             for (int i = 0; i < pars.Length; i++)
             {
@@ -308,11 +309,11 @@ namespace CilTools.Syntax
                 else parname = "par" + (i + 1).ToString();
 
                 inner.Add(new MemberRefSyntax(parNodes.ToArray(), pars[i].ParameterType));
-                inner.Add(new IdentifierSyntax(" ", parname, String.Empty,false, pars[i]));
+                inner.Add(new IdentifierSyntax(" ", parname, string.Empty, false, pars[i]));
             }
 
             if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine + lead));
-            inner.Add(new PunctuationSyntax(String.Empty, ")", String.Empty));
+            inner.Add(new PunctuationSyntax(string.Empty, ")", string.Empty));
 
             //ECMA-335 II.15.4.3 - Implementation attributes of methods
             MethodImplAttributes mia = (MethodImplAttributes)0;
@@ -323,51 +324,51 @@ namespace CilTools.Syntax
             //Code implementation attributes
             if ((mia & MethodImplAttributes.Runtime) == MethodImplAttributes.Runtime)
             {
-                inner.Add(new KeywordSyntax(" ", "runtime", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "runtime", string.Empty, KeywordKind.Other));
             }
             else if ((mia & MethodImplAttributes.Native) == MethodImplAttributes.Native)
             {
-                inner.Add(new KeywordSyntax(" ", "native", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "native", string.Empty, KeywordKind.Other));
             }
             else
             {
-                inner.Add(new KeywordSyntax(" ", "cil", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "cil", string.Empty, KeywordKind.Other));
             }
 
             //managed or unmanaged
             if ((mia & MethodImplAttributes.Unmanaged) == MethodImplAttributes.Unmanaged)
             {
-                inner.Add(new KeywordSyntax(" ", "unmanaged", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "unmanaged", string.Empty, KeywordKind.Other));
             }
             else
             {
-                inner.Add(new KeywordSyntax(" ", "managed", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "managed", string.Empty, KeywordKind.Other));
             }
 
             //implementation flags
             if ((mia & MethodImplAttributes.ForwardRef) == MethodImplAttributes.ForwardRef)
             {
-                inner.Add(new KeywordSyntax(" ", "forwardref", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "forwardref", string.Empty, KeywordKind.Other));
             }
 
             if ((mia & MethodImplAttributes.InternalCall) == MethodImplAttributes.InternalCall)
             {
-                inner.Add(new KeywordSyntax(" ", "internalcall", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "internalcall", string.Empty, KeywordKind.Other));
             }
 
             if ((mia & MethodImplAttributes.NoInlining) == MethodImplAttributes.NoInlining)
             {
-                inner.Add(new KeywordSyntax(" ", "noinlining", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "noinlining", string.Empty, KeywordKind.Other));
             }
 
             if ((mia & MethodImplAttributes.NoOptimization) == MethodImplAttributes.NoOptimization)
             {
-                inner.Add(new KeywordSyntax(" ", "nooptimization", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "nooptimization", string.Empty, KeywordKind.Other));
             }
 
             if ((mia & MethodImplAttributes.Synchronized) == MethodImplAttributes.Synchronized)
             {
-                inner.Add(new KeywordSyntax(" ", "synchronized", String.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax(" ", "synchronized", string.Empty, KeywordKind.Other));
             }
 
             inner.Add(new GenericSyntax(Environment.NewLine));
