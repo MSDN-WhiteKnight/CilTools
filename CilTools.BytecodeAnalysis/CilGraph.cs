@@ -624,9 +624,7 @@ namespace CilTools.BytecodeAnalysis
 
             int n_iter = 0;
             IList<ExceptionBlock> trys = new List<ExceptionBlock>();
-            ParameterInfo[] pars = this._Method.GetParameters();
             ICustomMethod cm = (ICustomMethod)this._Method;
-            List<SyntaxNode> ret = new List<SyntaxNode>(100);
             Assembly containingAssembly;
 
             // If we need to assembly-qualify all types, just pretend that we don't know the
