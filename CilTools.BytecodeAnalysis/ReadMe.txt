@@ -45,19 +45,19 @@ ldc.i4.1
 stloc.0
 ldc.i4.2
 stloc.1
-ldstr "Hello, World"
-call void [mscorlib]System.Console::WriteLine(string)
+ldstr      "Hello, World"
+call       void [mscorlib]System.Console::WriteLine(string)
 nop
-ldstr "{0} + {1} = {2}"
+ldstr      "{0} \053 {1} \075 {2}"
 ldloc.0
-box [mscorlib]System.Int32
+box        [mscorlib]System.Int32
 ldloc.1
-box [mscorlib]System.Int32
+box        [mscorlib]System.Int32
 ldloc.0
 ldloc.1
 add
-box [mscorlib]System.Int32
-call void [mscorlib]System.Console::WriteLine(string, System.Object, System.Object, System.Object)
+box        [mscorlib]System.Int32
+call       void [mscorlib]System.Console::WriteLine(string, object, object, object)
 nop
 ret
 */
