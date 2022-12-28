@@ -140,8 +140,8 @@ namespace CilTools.Syntax.Generation
 
                 if (adder != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(adder, inlineTok: false, 
-                        forceTypeSpec: true, skipAssembly: true, this.containingAssembly);
+                    MemberRefSyntax mref = this.GetMethodRefSyntax(adder, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirAdd = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "addon", new SyntaxNode[] { mref });
@@ -154,8 +154,8 @@ namespace CilTools.Syntax.Generation
 
                 if (remover != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(remover, inlineTok: false, 
-                        forceTypeSpec: true, skipAssembly: true, this.containingAssembly);
+                    MemberRefSyntax mref = this.GetMethodRefSyntax(remover, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirRemove = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "removeon", new SyntaxNode[] { mref });
@@ -168,8 +168,8 @@ namespace CilTools.Syntax.Generation
 
                 if (raiser != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(raiser, inlineTok: false, 
-                        forceTypeSpec: true, skipAssembly: true, this.containingAssembly);
+                    MemberRefSyntax mref = this.GetMethodRefSyntax(raiser, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirFire = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "fire", new SyntaxNode[] { mref });
@@ -236,8 +236,8 @@ namespace CilTools.Syntax.Generation
 
                 List<SyntaxNode> children = new List<SyntaxNode>();
 
-                MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(ca.Constructor, inlineTok: false, 
-                    forceTypeSpec: false, skipAssembly: false, this.containingAssembly);
+                MemberRefSyntax mref = this.GetMethodRefSyntax(ca.Constructor, inlineTok: false, 
+                    forceTypeSpec: false, skipAssembly: false);
 
                 children.Add(mref);
                 children.Add(new PunctuationSyntax(" ", "=", " "));
@@ -280,8 +280,8 @@ namespace CilTools.Syntax.Generation
                     //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
                     List<SyntaxNode> children = new List<SyntaxNode>();
 
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(constr[0], inlineTok: false, 
-                        forceTypeSpec: false, skipAssembly: false, this.containingAssembly);
+                    MemberRefSyntax mref = this.GetMethodRefSyntax(constr[0], inlineTok: false, 
+                        forceTypeSpec: false, skipAssembly: false);
 
                     children.Add(mref);
                     children.Add(new PunctuationSyntax(" ", "=", " "));
@@ -294,7 +294,7 @@ namespace CilTools.Syntax.Generation
                 }
                 else
                 {
-                    s_attr = CilAnalysis.MethodRefToString(constr[0], this.containingAssembly);
+                    s_attr = this.MethodRefToString(constr[0]);
                     output.Write(".custom ");
                     output.Write(s_attr);
                     output.Flush();
@@ -429,6 +429,156 @@ namespace CilTools.Syntax.Generation
             }
 
             return null;
+        }
+
+        internal MemberRefSyntax GetMethodRefSyntax(MethodBase m, bool inlineTok, bool forceTypeSpec,
+            bool skipAssembly)
+        {
+            List<SyntaxNode> children = new List<SyntaxNode>(50);
+            Type t = m.DeclaringType;
+            int sentinelPos = -1;
+
+            //we only query parameter types so no need to resolve external references
+            ParameterInfo[] pars = ReflectionUtils.GetMethodParams(m, RefResolutionMode.NoResolve);
+
+            MethodInfo mi = m as MethodInfo;
+            IEnumerable<SyntaxNode> rt;
+            TypeSyntaxGenerator gen = new TypeSyntaxGenerator();
+            gen.ContainingAssembly = this.containingAssembly;
+
+            if (inlineTok)
+            {
+                //for ldtoken instruction the method reference is preceded by "method" keyword
+                children.Add(new KeywordSyntax(string.Empty, "method", " ", KeywordKind.Other));
+            }
+
+            //append return type
+            if (mi != null)
+            {
+                //standard reflection implementation: return type exposed via MethodInfo
+                rt = gen.GetTypeNameSyntax(mi.ReturnType);
+            }
+            else if (m is ICustomMethod)
+            {
+                //CilTools reflection implementation: return type exposed via ICustomMethod
+                Type tReturn = ((ICustomMethod)m).ReturnType;
+
+                if (tReturn != null) rt = gen.GetTypeNameSyntax(tReturn);
+                else rt = new SyntaxNode[] { new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other) };
+            }
+            else if (m is CustomMethod)
+            {
+                //CilTools reflection implementation: return type exposed via CustomMethod
+                Type tReturn = ((CustomMethod)m).ReturnType;
+
+                if (tReturn != null) rt = gen.GetTypeNameSyntax(tReturn);
+                else rt = new SyntaxNode[] { new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other) };
+            }
+            else
+            {
+                //we append return type here even for constructors
+                rt = new SyntaxNode[] { new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other) };
+            }
+
+            if (!ReflectionUtils.IsMethodStatic(m))
+            {
+                children.Add(new KeywordSyntax(string.Empty, "instance", " ", KeywordKind.Other));
+            }
+
+            if (m.CallingConvention == CallingConventions.VarArgs)
+            {
+                children.Add(new KeywordSyntax(string.Empty, "vararg", " ", KeywordKind.Other));
+
+                Signature sig = ReflectionProperties.Get(m, ReflectionProperties.Signature) as Signature;
+                sentinelPos = sig.SentinelPosition;
+            }
+
+            foreach (SyntaxNode node in rt) children.Add(node);
+
+            children.Add(new GenericSyntax(" "));
+
+            //append declaring type
+            if (t != null && !CilAnalysis.IsModuleType(t))
+            {
+                IEnumerable<SyntaxNode> syntax;
+
+                // When method reference is used for property/event accessors, TypeSpec syntax is forced, so we don't 
+                // call into Type.IsValueType needlessly 
+                // (prevents issues like https://github.com/MSDN-WhiteKnight/CilTools/issues/140).
+                // See ECMA-335 II.17 - Defining properties.
+                TypeSyntaxGenerator dtGen = new TypeSyntaxGenerator();
+                dtGen.SkipAssemblyName = skipAssembly;
+                dtGen.ContainingAssembly = this.containingAssembly;
+
+                if (forceTypeSpec)
+                {
+                    dtGen.IsTypeSpec = true;
+                    syntax = dtGen.GetTypeSyntax(t);
+                }
+                else
+                {
+                    syntax = dtGen.GetTypeSpecSyntaxAuto(t);
+                }
+
+                foreach (SyntaxNode node in syntax) children.Add(node);
+
+                children.Add(new PunctuationSyntax(string.Empty, "::", string.Empty));
+            }
+
+            //append name
+            children.Add(new IdentifierSyntax(string.Empty, m.Name, string.Empty, true, m));
+
+            if (m.IsGenericMethod)
+            {
+                children.Add(new PunctuationSyntax(string.Empty, "<", string.Empty));
+
+                Type[] args = m.GetGenericArguments();
+                for (int i = 0; i < args.Length; i++)
+                {
+                    if (i >= 1) children.Add(new PunctuationSyntax(string.Empty, ",", " "));
+
+                    IEnumerable<SyntaxNode> syntax = gen.GetTypeNameSyntax(args[i]);
+
+                    foreach (SyntaxNode node in syntax) children.Add(node);
+                }
+
+                children.Add(new PunctuationSyntax(string.Empty, ">", string.Empty));
+            }
+
+            children.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
+
+            for (int i = 0; i < pars.Length; i++)
+            {
+                if (i >= 1) children.Add(new PunctuationSyntax(string.Empty, ",", " "));
+
+                if (i == sentinelPos)
+                {
+                    // Varargs sentinel position (ECMA-335 II.23.2.2 - MethodRefSig)
+                    children.Add(new PunctuationSyntax(string.Empty, "...", " "));
+                    children.Add(new PunctuationSyntax(string.Empty, ",", " "));
+                }
+
+                IEnumerable<SyntaxNode> syntax = gen.GetTypeNameSyntax(pars[i].ParameterType);
+
+                foreach (SyntaxNode node in syntax) children.Add(node);
+            }
+
+            children.Add(new PunctuationSyntax(string.Empty, ")", string.Empty));
+
+            return new MemberRefSyntax(children.ToArray(), m);
+        }
+
+        string MethodRefToString(MethodBase m)
+        {
+            //gets the CIL code of the reference to the specified method
+            StringBuilder sb = new StringBuilder(200);
+            StringWriter wr = new StringWriter(sb);
+
+            SyntaxNode node = this.GetMethodRefSyntax(m, inlineTok: false, forceTypeSpec: false, skipAssembly: false);
+
+            node.ToText(wr);
+            wr.Flush();
+            return sb.ToString();
         }
 
         internal static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t, bool full,
@@ -892,8 +1042,8 @@ namespace CilTools.Syntax.Generation
                 //property methods
                 if (getter != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(getter, inlineTok: false, 
-                        forceTypeSpec: true, skipAssembly: true, this.containingAssembly);
+                    MemberRefSyntax mref = this.GetMethodRefSyntax(getter, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirGet = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "get", new SyntaxNode[] { mref });
@@ -904,8 +1054,8 @@ namespace CilTools.Syntax.Generation
 
                 if (setter != null)
                 {
-                    MemberRefSyntax mref = CilAnalysis.GetMethodRefSyntax(setter, inlineTok: false, 
-                        forceTypeSpec: true, skipAssembly: true, this.containingAssembly);
+                    MemberRefSyntax mref = this.GetMethodRefSyntax(setter, inlineTok: false, 
+                        forceTypeSpec: true, skipAssembly: true);
 
                     DirectiveSyntax dirSet = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 2),
                         "set", new SyntaxNode[] { mref });

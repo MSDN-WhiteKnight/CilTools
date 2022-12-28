@@ -422,8 +422,10 @@ namespace CilTools.BytecodeAnalysis
                 if (mOverridden.DeclaringType.IsGenericType)
                 {
                     //long form - prefixed with method as inline token form
-                    MemberRefSyntax mrs = CilAnalysis.GetMethodRefSyntax(mOverridden, inlineTok: true,
-                        forceTypeSpec: false, skipAssembly: false, containingAssembly);
+                    SyntaxGenerator gen = new SyntaxGenerator(containingAssembly);
+
+                    MemberRefSyntax mrs = gen.GetMethodRefSyntax(mOverridden, inlineTok: true,
+                        forceTypeSpec: false, skipAssembly: false);
 
                     list.Add(mrs);
                     list.Add(new GenericSyntax(Environment.NewLine));

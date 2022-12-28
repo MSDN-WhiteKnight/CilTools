@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using CilTools.Reflection;
 using CilTools.Syntax;
+using CilTools.Syntax.Generation;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -116,6 +117,8 @@ namespace CilTools.BytecodeAnalysis
             if (pars.AssemblyQualifyAllTypes) containingAssembly = null;
             else containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
 
+            SyntaxGenerator gen = new SyntaxGenerator(containingAssembly);
+
             if (ReferencesMethodToken(this.OpCode))
             {
                 //method
@@ -123,8 +126,8 @@ namespace CilTools.BytecodeAnalysis
 
                 if (called_method != null)
                 {
-                    yield return CilAnalysis.GetMethodRefSyntax(called_method, inlineTok: false,
-                        forceTypeSpec: false, skipAssembly: false, containingAssembly);
+                    yield return gen.GetMethodRefSyntax(called_method, inlineTok: false,
+                        forceTypeSpec: false, skipAssembly: false);
                 }
                 else
                 {
@@ -257,8 +260,8 @@ namespace CilTools.BytecodeAnalysis
                     else if (mi is MethodBase)
                     {
                         MethodBase mb = (MethodBase)mi;
-                        yield return CilAnalysis.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false,
-                            skipAssembly: false, containingAssembly);
+                        yield return gen.GetMethodRefSyntax(mb, inlineTok: true, forceTypeSpec: false,
+                            skipAssembly: false);
                     }
                     else
                     {
