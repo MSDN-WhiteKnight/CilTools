@@ -265,5 +265,17 @@ namespace CilTools.Reflection
             string content = sb.ToString();
             return content;
         }
+
+        internal static bool IsModuleType(Type t)
+        {
+            int token = 0;
+
+            try { token = t.MetadataToken; }
+            catch (InvalidOperationException) { return false; }
+
+            //First row in TypeDef table represents dummy type for module-level decls
+            //(ECMA-335 II.22.37  TypeDef : 0x02 )
+            return token == 0x02000001;
+        }
     }
 }

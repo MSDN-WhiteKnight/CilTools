@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using CilTools.Reflection;
 using CilTools.Syntax;
+using CilTools.Syntax.Generation;
 
 namespace CilTools.BytecodeAnalysis
 {
@@ -931,7 +932,8 @@ namespace CilTools.BytecodeAnalysis
             }
             else if (this._Type != null)
             {
-                IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(this, containingAssembly);
+                TypeSyntaxGenerator tgen = new TypeSyntaxGenerator(containingAssembly);
+                IEnumerable<SyntaxNode> nodes = tgen.GetTypeNameSyntax(this);
 
                 foreach (SyntaxNode x in nodes) ret.Add(x);
 

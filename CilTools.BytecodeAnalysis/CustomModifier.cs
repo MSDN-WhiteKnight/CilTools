@@ -6,11 +6,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using CilTools.Syntax;
+using CilTools.Syntax.Generation;
 
 namespace CilTools.BytecodeAnalysis
 {
     /// <summary>
-    /// Represents custom modifier, an object used to associate a special information with the type specification, as defined by ECMA-335
+    /// Represents custom modifier, an object used to associate a special information with the type specification, 
+    /// as defined by ECMA-335
     /// </summary>
     public struct CustomModifier //ECMA-335 II.23.2.7 CustomMod
     {
@@ -52,7 +54,7 @@ namespace CilTools.BytecodeAnalysis
             if (this._IsRequired) mod = "modreq(";
             else mod = "modopt(";
 
-            if (this._Type != null) type = CilAnalysis.GetTypeSpecString(this._Type);
+            if (this._Type != null) type = TypeSyntaxGenerator.GetTypeSpecString(this._Type);
             else type = "Type" + _token.ToString("X");
 
             return mod + type + ")";
@@ -69,7 +71,8 @@ namespace CilTools.BytecodeAnalysis
 
             if (this._Type != null)
             {
-                IEnumerable<SyntaxNode> ts = CilAnalysis.GetTypeSpecSyntaxAuto(this._Type, skipAssembly: false, containingAssembly);
+                IEnumerable<SyntaxNode> ts = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(this._Type, 
+                    skipAssembly: false, containingAssembly);
 
                 foreach (SyntaxNode node in ts) yield return node;
             }

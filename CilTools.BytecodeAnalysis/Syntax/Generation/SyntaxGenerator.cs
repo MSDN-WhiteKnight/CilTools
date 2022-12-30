@@ -75,7 +75,7 @@ namespace CilTools.Syntax.Generation
                 {
                     if(i>=1) ret.Add(new PunctuationSyntax(string.Empty, ",", " "));
 
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                    IEnumerable<SyntaxNode> nodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(
                         constrs[i], skipAssembly: false, this.containingAssembly);
 
                     foreach (SyntaxNode node in nodes) ret.Add(node);
@@ -102,7 +102,7 @@ namespace CilTools.Syntax.Generation
                     inner.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
                 }
 
-                IEnumerable<SyntaxNode> eventTypeSyntax = CilAnalysis.GetTypeSpecSyntaxAuto(
+                IEnumerable<SyntaxNode> eventTypeSyntax = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(
                     events[i].EventHandlerType, skipAssembly: false, this.containingAssembly);
 
                 inner.Add(new MemberRefSyntax(eventTypeSyntax.ToArray(), events[i].EventHandlerType));
@@ -306,7 +306,7 @@ namespace CilTools.Syntax.Generation
             else
             {
                 output.Write(".custom ");
-                s_attr = CilAnalysis.GetTypeSpecString(t);
+                s_attr = TypeSyntaxGenerator.GetTypeSpecString(t);
                 output.Write(s_attr);
                 output.Flush();
                 content = sb.ToString();
@@ -498,7 +498,7 @@ namespace CilTools.Syntax.Generation
             children.Add(new GenericSyntax(" "));
 
             //append declaring type
-            if (t != null && !CilAnalysis.IsModuleType(t))
+            if (t != null && !ReflectionUtils.IsModuleType(t))
             {
                 IEnumerable<SyntaxNode> syntax;
 
@@ -740,7 +740,7 @@ namespace CilTools.Syntax.Generation
 
                 try
                 {
-                    IEnumerable<SyntaxNode> baseTypeNodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                    IEnumerable<SyntaxNode> baseTypeNodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(
                         t.BaseType, skipAssembly: false, this.containingAssembly);
 
                     MemberRefSyntax mrsBaseType = new MemberRefSyntax(baseTypeNodes.ToArray(), t.BaseType);
@@ -780,7 +780,7 @@ namespace CilTools.Syntax.Generation
                         content.Add(new PunctuationSyntax(string.Empty, ",", Environment.NewLine));
                     }
 
-                    IEnumerable<SyntaxNode> ifNodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                    IEnumerable<SyntaxNode> ifNodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(
                         interfaces[i], skipAssembly: false, this.containingAssembly);
 
                     content.Add(new MemberRefSyntax(ifNodes.ToArray(), interfaces[i]));
@@ -790,7 +790,7 @@ namespace CilTools.Syntax.Generation
             }
 
             int bodyIndent;
-            bool isModuleType = CilAnalysis.IsModuleType(t); //module type holds global fields and functions
+            bool isModuleType = ReflectionUtils.IsModuleType(t); //module type holds global fields and functions
 
             if (!isModuleType)
             {
@@ -833,6 +833,7 @@ namespace CilTools.Syntax.Generation
             content.Add(new GenericSyntax(Environment.NewLine));
             
             //fields
+            TypeSyntaxGenerator tgen = new TypeSyntaxGenerator(this.containingAssembly);
             FieldInfo[] fields = t.GetFields(ReflectionUtils.AllMembers);
 
             if (isModuleType && fields.Length > 0)
@@ -900,7 +901,7 @@ namespace CilTools.Syntax.Generation
                     inner.Add(new KeywordSyntax(string.Empty, "rtspecialname", " ", KeywordKind.Other));
                 }
 
-                SyntaxNode[] ftNodes = CilAnalysis.GetTypeNameSyntax(fields[i].FieldType, this.containingAssembly).ToArray();
+                SyntaxNode[] ftNodes = tgen.GetTypeNameSyntax(fields[i].FieldType).ToArray();
                 inner.Add(new MemberRefSyntax(ftNodes, fields[i].FieldType));
 
                 inner.Add(new IdentifierSyntax(" ", fields[i].Name, string.Empty, true, fields[i]));
@@ -997,7 +998,7 @@ namespace CilTools.Syntax.Generation
                     inner.Add(new KeywordSyntax(string.Empty, "instance", " ", KeywordKind.Other));
                 }
 
-                SyntaxNode[] ptNodes = CilAnalysis.GetTypeNameSyntax(props[i].PropertyType, this.containingAssembly).ToArray();
+                SyntaxNode[] ptNodes = tgen.GetTypeNameSyntax(props[i].PropertyType).ToArray();
                 inner.Add(new MemberRefSyntax(ptNodes, props[i].PropertyType));
 
                 inner.Add(new IdentifierSyntax(" ", props[i].Name, string.Empty, true, props[i]));
@@ -1012,7 +1013,7 @@ namespace CilTools.Syntax.Generation
                 {
                     if (j >= 1) inner.Add(new PunctuationSyntax(string.Empty, ",", " "));
 
-                    SyntaxNode[] partype = CilAnalysis.GetTypeNameSyntax(pars[j].ParameterType, this.containingAssembly).ToArray();
+                    SyntaxNode[] partype = tgen.GetTypeNameSyntax(pars[j].ParameterType).ToArray();
                     inner.Add(new MemberRefSyntax(partype, pars[j].ParameterType));
                 }
 

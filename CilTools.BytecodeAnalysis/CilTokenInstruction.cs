@@ -118,6 +118,7 @@ namespace CilTools.BytecodeAnalysis
             else containingAssembly = ReflectionUtils.GetContainingAssembly(this._Method);
 
             SyntaxGenerator gen = new SyntaxGenerator(containingAssembly);
+            TypeSyntaxGenerator tgen = new TypeSyntaxGenerator(containingAssembly);
 
             if (ReferencesMethodToken(this.OpCode))
             {
@@ -146,16 +147,16 @@ namespace CilTools.BytecodeAnalysis
                 {
                     Type t = fi.DeclaringType;
                     List<SyntaxNode> children = new List<SyntaxNode>();
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(fi.FieldType, containingAssembly);
+                    IEnumerable<SyntaxNode> nodes = tgen.GetTypeNameSyntax(fi.FieldType);
 
                     foreach (SyntaxNode node in nodes) children.Add(node);
 
                     children.Add(new GenericSyntax(" "));
 
                     //append declaring type
-                    if (t != null && !CilAnalysis.IsModuleType(t))
+                    if (t != null && !ReflectionUtils.IsModuleType(t))
                     {
-                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly);
+                        nodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly);
 
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
@@ -182,7 +183,7 @@ namespace CilTools.BytecodeAnalysis
 
                 if (t != null)
                 {
-                    IEnumerable<SyntaxNode> referencedTypeNodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                    IEnumerable<SyntaxNode> referencedTypeNodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(
                         t, skipAssembly: false, containingAssembly);
 
                     yield return new MemberRefSyntax(referencedTypeNodes.ToArray(), t);
@@ -222,7 +223,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     if (mi is TypeSpec)
                     {
-                        IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                        IEnumerable<SyntaxNode> nodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(
                             (Type)mi, skipAssembly: false, containingAssembly);
 
                         yield return new MemberRefSyntax(nodes.ToArray(), mi);
@@ -230,8 +231,9 @@ namespace CilTools.BytecodeAnalysis
                     else if (mi is Type)
                     {
                         //use TypeSpec syntax to avoid resolving external references
-                        IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSyntax((Type)mi, isspec: true, 
-                            skipAssembly: false, containingAssembly);
+                        TypeSyntaxGenerator tgTypeSpec = new TypeSyntaxGenerator(isSpec: true, skipAssembly: false);
+                        tgTypeSpec.ContainingAssembly = containingAssembly;
+                        IEnumerable<SyntaxNode> nodes = tgTypeSpec.GetTypeSyntax((Type)mi);
 
                         yield return new MemberRefSyntax(nodes.ToArray(), mi);
                     }
@@ -241,13 +243,13 @@ namespace CilTools.BytecodeAnalysis
                         Type t = fi.DeclaringType;
                         List<SyntaxNode> children = new List<SyntaxNode>();
                         children.Add(new KeywordSyntax(string.Empty, "field", " ", KeywordKind.Other));
-                        IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeNameSyntax(fi.FieldType, containingAssembly);
+                        IEnumerable<SyntaxNode> nodes = tgen.GetTypeNameSyntax(fi.FieldType);
 
                         foreach (SyntaxNode node in nodes) children.Add(node);
 
                         //append declaring type
                         children.Add(new GenericSyntax(" "));
-                        nodes = CilAnalysis.GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly);
+                        nodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly);
 
                         foreach (SyntaxNode node in nodes) children.Add(node);
 

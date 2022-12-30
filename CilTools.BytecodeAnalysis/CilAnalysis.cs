@@ -3,11 +3,9 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Reflection;
-using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Syntax.Generation;
 
@@ -39,12 +37,6 @@ namespace CilTools.BytecodeAnalysis
             return sb.ToString();
         }
 
-        internal static IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t, Assembly containingAssembly)
-        {
-            TypeSyntaxGenerator gen = new TypeSyntaxGenerator(containingAssembly);
-            return gen.GetTypeNameSyntax(t);
-        }
-        
         /// <summary>
         /// Gets the full name of .NET type in CIL notation
         /// </summary>
@@ -68,13 +60,6 @@ namespace CilTools.BytecodeAnalysis
 
             wr.Flush();
             return sb.ToString();
-        }
-
-        internal static IEnumerable<SyntaxNode> GetTypeSyntax(Type t, bool isspec, bool skipAssembly, Assembly containingAssembly)
-        {
-            TypeSyntaxGenerator gen = new TypeSyntaxGenerator(isspec, skipAssembly);
-            gen.ContainingAssembly = containingAssembly;
-            return gen.GetTypeSyntax(t);
         }
         
         static string CharToOctal(char c)
@@ -130,49 +115,7 @@ namespace CilTools.BytecodeAnalysis
 
             return sb.ToString();
         }
-
-        internal static string GetTypeSpecString(Type t)
-        {
-            //this is used when we can omit class/valuetype prefix, such as for method calls
-            Debug.Assert(t != null, "GetTypeSpecString: Source type cannot be null");
-
-            StringBuilder sb = new StringBuilder();
-            StringWriter wr = new StringWriter(sb);
-            IEnumerable<SyntaxNode> nodes = GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly: null);
-
-            foreach (SyntaxNode node in nodes) node.ToText(wr);
-
-            wr.Flush();
-            return sb.ToString();
-        }
         
-        /// <summary>
-        /// Gets the syntax for a Type or TypeSpec construct (selects automatically)
-        /// </summary>
-        internal static IEnumerable<SyntaxNode> GetTypeSpecSyntaxAuto(Type t, bool skipAssembly, Assembly containingAssembly)
-        {
-            //this is used when we can omit class/valuetype prefix, such as for method calls
-            Debug.Assert(t != null, "GetTypeSpecSyntaxAuto: Source type cannot be null");
-
-            TypeSyntaxGenerator gen = new TypeSyntaxGenerator();
-            gen.SkipAssemblyName = skipAssembly;
-            gen.ContainingAssembly = containingAssembly;
-                        
-            return gen.GetTypeSpecSyntaxAuto(t);
-        }
-        
-        internal static bool IsModuleType(Type t)
-        {
-            int token = 0;
-
-            try { token = t.MetadataToken; }
-            catch (InvalidOperationException) { return false; }
-
-            //First row in TypeDef table represents dummy type for module-level decls
-            //(ECMA-335 II.22.37  TypeDef : 0x02 )
-            return token == 0x02000001;
-        }
-
         /// <summary>
         /// Returns specified method CIL code as string
         /// </summary>

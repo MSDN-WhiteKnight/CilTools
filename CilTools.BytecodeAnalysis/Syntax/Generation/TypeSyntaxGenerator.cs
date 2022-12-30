@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
@@ -38,6 +39,36 @@ namespace CilTools.Syntax.Generation
         public bool IsTypeSpec { get; set; }
         public bool SkipAssemblyName { get; set; }
         public Assembly ContainingAssembly { get; set; }
+
+        /// <summary>
+        /// Gets the syntax for a Type or TypeSpec construct (selects automatically)
+        /// </summary>
+        internal static IEnumerable<SyntaxNode> GetTypeSpecSyntaxAuto(Type t, bool skipAssembly, Assembly containingAssembly)
+        {
+            //this is used when we can omit class/valuetype prefix, such as for method calls
+            Debug.Assert(t != null, "GetTypeSpecSyntaxAuto: Source type cannot be null");
+
+            TypeSyntaxGenerator gen = new TypeSyntaxGenerator();
+            gen.SkipAssemblyName = skipAssembly;
+            gen.ContainingAssembly = containingAssembly;
+
+            return gen.GetTypeSpecSyntaxAuto(t);
+        }
+
+        internal static string GetTypeSpecString(Type t)
+        {
+            //this is used when we can omit class/valuetype prefix, such as for method calls
+            Debug.Assert(t != null, "GetTypeSpecString: Source type cannot be null");
+
+            StringBuilder sb = new StringBuilder();
+            StringWriter wr = new StringWriter(sb);
+            IEnumerable<SyntaxNode> nodes = GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly: null);
+
+            foreach (SyntaxNode node in nodes) node.ToText(wr);
+
+            wr.Flush();
+            return sb.ToString();
+        }
 
         public IEnumerable<SyntaxNode> GetTypeSyntax(Type t)
         {

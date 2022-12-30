@@ -432,7 +432,7 @@ namespace CilTools.BytecodeAnalysis
                 }
                 else
                 {
-                    IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                    IEnumerable<SyntaxNode> nodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(
                         mOverridden.DeclaringType, skipAssembly: false, containingAssembly);
 
                     foreach (SyntaxNode node in nodes)
@@ -791,7 +791,7 @@ namespace CilTools.BytecodeAnalysis
 
                         if (t != null)
                         {
-                            IEnumerable<SyntaxNode> nodes = CilAnalysis.GetTypeSpecSyntaxAuto(
+                            IEnumerable<SyntaxNode> nodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(
                                 t, skipAssembly: false, containingAssembly);
 
                             foreach (SyntaxNode x in nodes) header_nodes.Add(x);
