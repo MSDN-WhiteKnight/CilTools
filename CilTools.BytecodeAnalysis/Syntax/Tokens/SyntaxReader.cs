@@ -9,7 +9,7 @@ using System.Text;
 namespace CilTools.Syntax.Tokens
 {
     /// <summary>
-    /// Reads tokens from a string and transforms them into corresponding <see cref="SyntaxNode"/> instances
+    /// Reads CIL assembler tokens from a string and transforms them into corresponding <see cref="SyntaxNode"/> instances
     /// </summary>
     public static class SyntaxReader
     {
@@ -23,6 +23,11 @@ namespace CilTools.Syntax.Tokens
             return true;
         }
 
+        /// <summary>
+        /// Reads all tokens from the specified string
+        /// </summary>
+        /// <param name="src">Input string</param>
+        /// <returns>Array of syntax nodes that contain tokens</returns>
         public static SyntaxNode[] ReadAllNodes(string src)
         {
             List<SyntaxNode> nodes = new List<SyntaxNode>();

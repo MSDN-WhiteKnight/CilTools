@@ -17,6 +17,11 @@ namespace CilTools.Syntax.Tokens
         int _pos = 0;
         SyntaxTokenDefinition[] tokens;
 
+        /// <summary>
+        /// Creates a new instance of the token reader
+        /// </summary>
+        /// <param name="src">Source string</param>
+        /// <param name="tokenDefinitions">Collection of token definitions to use</param>
         public TokenReader(string src, IEnumerable<SyntaxTokenDefinition> tokenDefinitions)
         {
             this._source = src.ToCharArray();
@@ -78,6 +83,10 @@ namespace CilTools.Syntax.Tokens
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Reads all tokens from the current instance
+        /// </summary>
+        /// <returns>Collection of strings that contain tokens</returns>
         public IEnumerable<string> ReadAll() 
         {
             while (true)
@@ -97,6 +106,10 @@ namespace CilTools.Syntax.Tokens
             return ret;
         }
 
+        /// <summary>
+        /// Gets a next character in this token reader without advancing a current position
+        /// </summary>
+        /// <returns>Next character in the current position, or zero if the end of string is reached.</returns>
         public char PeekChar()
         {
             if (_pos >= _source.Length) return (char)0;

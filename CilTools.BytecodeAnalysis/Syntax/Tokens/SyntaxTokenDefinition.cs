@@ -10,10 +10,18 @@ namespace CilTools.Syntax.Tokens
     /// <summary>
     /// A base class for classes that define logic for reading specific kinds of tokens from a string
     /// </summary>
+    /// <remarks>
+    /// Derived classes could use <see cref="TokenReader.PeekChar"/> to check the next character at the reader's 
+    /// current position, but should not advance the reader's position by reading characters from it.
+    /// </remarks>
     public abstract class SyntaxTokenDefinition
     {
         static SyntaxTokenDefinition[] ilasmTokens = null;
 
+        /// <summary>
+        /// Provides a collection of token definitions for the CIL assembler grammar 
+        /// (ECMA-335 II.5.2 - Basic syntax categories).
+        /// </summary>
         public static IEnumerable<SyntaxTokenDefinition> IlasmTokens
         {
             get
@@ -43,13 +51,29 @@ namespace CilTools.Syntax.Tokens
             return !IsEscaped(str, i - 1);
         }
 
+        /// <summary>
+        /// Gets the token kind for this token definition
+        /// </summary>
         public abstract TokenKind Kind { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether the current position of the <see cref="TokenReader"/> contains a sequence 
+        /// of characters valid as the token start
+        /// </summary>
+        /// <param name="reader">A token reader to test</param>
         public abstract bool HasStart(TokenReader reader);
+
+        /// <summary>
+        /// Gets a value indicating whether the current position of the <see cref="TokenReader"/> contains a sequence 
+        /// of characters valid as a continuation of the specified token
+        /// </summary>
+        /// <param name="prevPart">A part of token previously read from a token reader</param>
+        /// <param name="reader">A token reader to test</param>
         public abstract bool HasContinuation(string prevPart, TokenReader reader);
     }
 
     /// <summary>
-    /// Ilasm DottedName token (ECMA-335 II.5.2 - Basic syntax categories).
+    /// Ilasm DottedName token (ECMA-335 II.5.3 - Identifiers).
     /// </summary>
     class NameToken : SyntaxTokenDefinition
     {
@@ -72,8 +96,12 @@ namespace CilTools.Syntax.Tokens
         }
     }
 
+    /// <summary>
+    /// Represents a token definition for a punctuation token
+    /// </summary>
     public class PunctuationToken : SyntaxTokenDefinition
     {
+        /// <inheritdoc/>
         public override TokenKind Kind => TokenKind.Punctuation;
 
         static bool IsPunctuation(char c)
@@ -81,6 +109,7 @@ namespace CilTools.Syntax.Tokens
             return (char.IsPunctuation(c) || char.IsSymbol(c)) && c != '\'' && c != '"';
         }
 
+        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
@@ -97,6 +126,7 @@ namespace CilTools.Syntax.Tokens
             }
         }
 
+        /// <inheritdoc/>
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
             if (prevPart.Length >= 1) return false;
@@ -114,14 +144,17 @@ namespace CilTools.Syntax.Tokens
     /// </remarks>
     public class WhitespaceToken : SyntaxTokenDefinition
     {
+        /// <inheritdoc/>
         public override TokenKind Kind => TokenKind.Whitespace;
 
+        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
             return char.IsWhiteSpace(c);
         }
 
+        /// <inheritdoc/>
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
             char c = reader.PeekChar();
@@ -129,10 +162,15 @@ namespace CilTools.Syntax.Tokens
         }
     }
 
+    /// <summary>
+    /// Represents a token definition for a numeric literal token (integer of floating point)
+    /// </summary>
     public class NumericLiteralToken : SyntaxTokenDefinition
     {
+        /// <inheritdoc/>
         public override TokenKind Kind => TokenKind.NumericLiteral;
 
+        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
@@ -140,6 +178,7 @@ namespace CilTools.Syntax.Tokens
             return char.IsDigit(c);
         }
 
+        /// <inheritdoc/>
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
             char c = reader.PeekChar();
@@ -147,16 +186,22 @@ namespace CilTools.Syntax.Tokens
         }
     }
 
+    /// <summary>
+    /// Represents a token definition for double-quoted text literal (<c>"Hello, world"</c>)
+    /// </summary>
     public class DoubleQuotLiteralToken : SyntaxTokenDefinition
     {
+        /// <inheritdoc/>
         public override TokenKind Kind => TokenKind.DoubleQuotLiteral;
 
+        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
             return c == '"';
         }
 
+        /// <inheritdoc/>
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
             if (prevPart.Length <= 1) return true;
@@ -172,16 +217,22 @@ namespace CilTools.Syntax.Tokens
         }
     }
 
+    /// <summary>
+    /// Represents a token definition for single-quoted text literal (<c>'x'</c>)
+    /// </summary>
     public class SingleQuotLiteralToken : SyntaxTokenDefinition
     {
+        /// <inheritdoc/>
         public override TokenKind Kind => TokenKind.SingleQuotLiteral;
 
+        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
             return c == '\'';
         }
 
+        /// <inheritdoc/>
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
             if (prevPart.Length <= 1) return true;
@@ -197,19 +248,24 @@ namespace CilTools.Syntax.Tokens
         }
     }
 
+    /// <summary>
+    /// Represents a token definition for a multiline comment (<c>/*Hello, world*/</c>)
+    /// </summary>
     public class MultilineCommentToken : SyntaxTokenDefinition
     {
+        /// <inheritdoc/>
         public override TokenKind Kind => TokenKind.MultilineComment;
 
+        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
-            /**/
             char[] chars = reader.PeekChars(2);
             if (chars.Length < 2) return false;
 
             return chars[0] == '/' && chars[1] == '*';
         }
 
+        /// <inheritdoc/>
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
             if (prevPart.Length <= 2) return true;
@@ -220,19 +276,24 @@ namespace CilTools.Syntax.Tokens
         }
     }
 
+    /// <summary>
+    /// Represents a token definition for a single line comment (<c>// Hello, world</c>)
+    /// </summary>
     public class CommentToken : SyntaxTokenDefinition
     {
+        /// <inheritdoc/>
         public override TokenKind Kind => TokenKind.MultilineComment;
 
+        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
-            //
             char[] chars = reader.PeekChars(2);
             if (chars.Length < 2) return false;
 
             return chars[0] == '/' && chars[1] == '/';
         }
 
+        /// <inheritdoc/>
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
             if (prevPart.Length < 2) return true;

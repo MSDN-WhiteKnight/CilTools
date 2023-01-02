@@ -10,10 +10,16 @@ using CilTools.Syntax.Generation;
 
 namespace CilTools.Syntax
 {
-    /// <summary>
-    /// Represents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent 
-    /// concrete language constructs derive from this class. </summary>
+    /// <summary> 
+    /// Provides a base class for nodes in the syntax tree. Classes that represent concrete language constructs 
+    /// derive from this class. 
+    /// </summary>
     /// <remarks>
+    /// <para>
+    /// This assembly provides syntax node implementations for a Common Intermediate Language (CIL) assembler grammar 
+    /// (ECMA-335 specification, part II). They are used by the disassembler to return a parsed representation of the 
+    /// produced code.
+    /// </para>
     /// <para>
     /// The <c>SyntaxNode</c> class instance contains all information required to produce the source code of the 
     /// corresponding language construct, including whitespaces. The <see cref="EnumerateChildNodes"/> method returns all 
