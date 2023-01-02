@@ -277,5 +277,25 @@ namespace CilTools.Reflection
             //(ECMA-335 II.22.37  TypeDef : 0x02 )
             return token == 0x02000001;
         }
+
+        internal static bool IsBuiltInAttribute(Type t)
+        {
+            if (string.Equals(t.FullName, "System.Runtime.InteropServices.OptionalAttribute",
+                StringComparison.Ordinal))
+            {
+                //OptionalAttribute is translated to [opt]
+                return true;
+            }
+            else if (string.Equals(t.FullName, "System.SerializableAttribute", StringComparison.Ordinal))
+            {
+                //SerializableAttribute is represented by built-in attribute flag, but runtime reflection still
+                //synthesizes it
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 }

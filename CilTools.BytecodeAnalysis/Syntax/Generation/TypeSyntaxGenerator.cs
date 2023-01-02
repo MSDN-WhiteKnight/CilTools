@@ -137,8 +137,8 @@ namespace CilTools.Syntax.Generation
             {
                 if (!this.IsTypeSpec) //for TypeSpec, we omit class/valuetype keyword
                 {
-                    if (t.IsValueType) yield return new KeywordSyntax(string.Empty, "valuetype", " ", KeywordKind.Other);
-                    else yield return new KeywordSyntax(string.Empty, "class", " ", KeywordKind.Other);
+                    if (t.IsValueType) yield return new KeywordSyntax("valuetype", " ");
+                    else yield return new KeywordSyntax("class", " ");
                 }
 
                 if (!this.SkipAssemblyName && !ReflectionUtils.IsTypeInAssembly(t, this.ContainingAssembly))
@@ -259,41 +259,41 @@ namespace CilTools.Syntax.Generation
             else
             {
                 if (t.Equals(typeof(void)))
-                    yield return new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("void", string.Empty);
                 else if (t.Equals(typeof(bool)))
-                    yield return new KeywordSyntax(string.Empty, "bool", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("bool", string.Empty);
                 else if (t.Equals(typeof(int)))
-                    yield return new KeywordSyntax(string.Empty, "int32", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("int32", string.Empty);
                 else if (t.Equals(typeof(uint)))
-                    yield return new KeywordSyntax(string.Empty, "uint32", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("uint32", string.Empty);
                 else if (t.Equals(typeof(long)))
-                    yield return new KeywordSyntax(string.Empty, "int64", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("int64", string.Empty);
                 else if (t.Equals(typeof(ulong)))
-                    yield return new KeywordSyntax(string.Empty, "uint64", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("uint64", string.Empty);
                 else if (t.Equals(typeof(short)))
-                    yield return new KeywordSyntax(string.Empty, "int16", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("int16", string.Empty);
                 else if (t.Equals(typeof(ushort)))
-                    yield return new KeywordSyntax(string.Empty, "uint16", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("uint16", string.Empty);
                 else if (t.Equals(typeof(byte)))
-                    yield return new KeywordSyntax(string.Empty, "uint8", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("uint8", string.Empty);
                 else if (t.Equals(typeof(sbyte)))
-                    yield return new KeywordSyntax(string.Empty, "int8", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("int8", string.Empty);
                 else if (t.Equals(typeof(float)))
-                    yield return new KeywordSyntax(string.Empty, "float32", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("float32", string.Empty);
                 else if (t.Equals(typeof(double)))
-                    yield return new KeywordSyntax(string.Empty, "float64", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("float64", string.Empty);
                 else if (t.Equals(typeof(string)))
-                    yield return new KeywordSyntax(string.Empty, "string", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("string", string.Empty);
                 else if (t.Equals(typeof(char)))
-                    yield return new KeywordSyntax(string.Empty, "char", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("char", string.Empty);
                 else if (t.Equals(typeof(object)))
-                    yield return new KeywordSyntax(string.Empty, "object", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("object", string.Empty);
                 else if (t.Equals(typeof(IntPtr)))
-                    yield return new KeywordSyntax(string.Empty, "native int", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("native int", string.Empty);
                 else if (t.Equals(typeof(UIntPtr)))
-                    yield return new KeywordSyntax(string.Empty, "native uint", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("native uint", string.Empty);
                 else if (t.Equals(typeof(TypedReference)))
-                    yield return new KeywordSyntax(string.Empty, "typedref", string.Empty, KeywordKind.Other);
+                    yield return new KeywordSyntax("typedref", string.Empty);
                 else
                 {
                     IEnumerable<SyntaxNode> nodes = this.GetTypeSyntax(t); //full type name syntax

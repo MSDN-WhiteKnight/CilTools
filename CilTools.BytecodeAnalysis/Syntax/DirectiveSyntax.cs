@@ -124,23 +124,23 @@ namespace CilTools.Syntax
             // ECMA-335 II.15.4.2 - Predefined attributes on methods
             if (m.IsPublic)
             {
-                inner.Add(new KeywordSyntax(string.Empty, "public", string.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax("public", string.Empty));
             }
             else if (m.IsPrivate)
             {
-                inner.Add(new KeywordSyntax(string.Empty, "private", string.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax("private", string.Empty));
             }
             else if (m.IsAssembly)
             {
-                inner.Add(new KeywordSyntax(string.Empty, "assembly", string.Empty, KeywordKind.Other)); //internal
+                inner.Add(new KeywordSyntax("assembly", string.Empty)); //internal
             }
             else if (m.IsFamily)
             {
-                inner.Add(new KeywordSyntax(string.Empty, "family", string.Empty, KeywordKind.Other)); //protected
+                inner.Add(new KeywordSyntax("family", string.Empty)); //protected
             }
             else
             {
-                inner.Add(new KeywordSyntax(string.Empty, "famorassem", string.Empty, KeywordKind.Other)); //protected internal
+                inner.Add(new KeywordSyntax("famorassem", string.Empty)); //protected internal
             }
 
             if (m.IsHideBySig) inner.Add(new KeywordSyntax(" ", "hidebysig", string.Empty, KeywordKind.Other));
@@ -168,7 +168,7 @@ namespace CilTools.Syntax
 
             if ((m.Attributes & MethodAttributes.PinvokeImpl) != 0)
             {
-                inner.Add(new KeywordSyntax(string.Empty, "pinvokeimpl", string.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax("pinvokeimpl", string.Empty));
                 inner.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
 
                 PInvokeParams ppars = cm.GetPInvokeParams();
@@ -180,52 +180,52 @@ namespace CilTools.Syntax
                     if (!string.IsNullOrEmpty(ppars.FunctionName) &&
                         !string.Equals(ppars.FunctionName, m.Name, StringComparison.InvariantCulture))
                     {
-                        inner.Add(new KeywordSyntax(string.Empty, "as", " ", KeywordKind.Other));
+                        inner.Add(new KeywordSyntax("as", " "));
                         inner.Add(LiteralSyntax.CreateFromValue(string.Empty, ppars.FunctionName, " "));
                     }
 
                     if (ppars.SetLastError)
                     {
-                        inner.Add(new KeywordSyntax(string.Empty, "lasterr", " ", KeywordKind.Other));
+                        inner.Add(new KeywordSyntax("lasterr", " "));
                     }
 
                     if (ppars.ExactSpelling)
                     {
-                        inner.Add(new KeywordSyntax(string.Empty, "nomangle", " ", KeywordKind.Other));
+                        inner.Add(new KeywordSyntax("nomangle", " "));
                     }
 
                     switch (ppars.CallingConvention)
                     {
                         case System.Runtime.InteropServices.CallingConvention.Cdecl:
-                            inner.Add(new KeywordSyntax(string.Empty, "cdecl", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax("cdecl", " "));
                             break;
                         case System.Runtime.InteropServices.CallingConvention.Winapi:
-                            inner.Add(new KeywordSyntax(string.Empty, "platformapi", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax("platformapi", " "));
                             break;
                         case System.Runtime.InteropServices.CallingConvention.StdCall:
-                            inner.Add(new KeywordSyntax(string.Empty, "stdcall", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax("stdcall", " "));
                             break;
                         case System.Runtime.InteropServices.CallingConvention.FastCall:
-                            inner.Add(new KeywordSyntax(string.Empty, "fastcall", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax("fastcall", " "));
                             break;
                         case System.Runtime.InteropServices.CallingConvention.ThisCall:
-                            inner.Add(new KeywordSyntax(string.Empty, "thiscall", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax("thiscall", " "));
                             break;
                     }
 
                     switch (ppars.CharSet)
                     {
                         case System.Runtime.InteropServices.CharSet.Ansi:
-                            inner.Add(new KeywordSyntax(string.Empty, "ansi", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax("ansi", " "));
                             break;
                         case System.Runtime.InteropServices.CharSet.Unicode:
-                            inner.Add(new KeywordSyntax(string.Empty, "unicode", " ", KeywordKind.Other));
+                            inner.Add(new KeywordSyntax("unicode", " "));
                             break;
                     }
 
                     if (ppars.BestFitMapping.HasValue)
                     {
-                        inner.Add(new KeywordSyntax(string.Empty, "bestfit", string.Empty, KeywordKind.Other));
+                        inner.Add(new KeywordSyntax("bestfit", string.Empty));
                         inner.Add(new PunctuationSyntax(string.Empty, ":", string.Empty));
 
                         if (ppars.BestFitMapping.Value) inner.Add(new GenericSyntax("on"));
@@ -238,7 +238,7 @@ namespace CilTools.Syntax
 
             if (m.CallingConvention == CallingConventions.VarArgs)
             {
-                inner.Add(new KeywordSyntax(string.Empty, "vararg", " ", KeywordKind.Other));
+                inner.Add(new KeywordSyntax("vararg", " "));
             }
 
             Assembly containingAssembly = ReflectionUtils.GetContainingAssembly(m);
@@ -252,7 +252,7 @@ namespace CilTools.Syntax
             else
             {
                 //we append return type here even for constructors
-                inner.Add(new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other));
+                inner.Add(new KeywordSyntax("void", string.Empty));
             }
 
             inner.Add(new IdentifierSyntax(" ", m.Name, string.Empty, true, m));

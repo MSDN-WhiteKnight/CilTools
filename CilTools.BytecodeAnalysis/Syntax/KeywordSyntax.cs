@@ -1,13 +1,10 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Reflection;
-using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
@@ -37,13 +34,23 @@ namespace CilTools.Syntax
 
         internal KeywordSyntax(string lead, string content, string trail, KeywordKind kind)
         {
-            if (lead == null) lead = "";
-            if (trail == null) trail = "";
+            if (lead == null) lead = string.Empty;
+            if (trail == null) trail = string.Empty;
 
             this._lead = lead;
             this._content = content;
             this._trail = trail;
             this._kind = kind;
+        }
+
+        internal KeywordSyntax(string content, string trail)
+        {
+            if (trail == null) trail = string.Empty;
+
+            this._lead = string.Empty;
+            this._content = content;
+            this._trail = trail;
+            this._kind = KeywordKind.Other;
         }
 
         /// <inheritdoc/>

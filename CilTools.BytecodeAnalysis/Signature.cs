@@ -366,29 +366,29 @@ namespace CilTools.BytecodeAnalysis
             switch (this._conv)
             {
                 case CallingConvention.CDecl:
-                    yield return new KeywordSyntax(string.Empty, "unmanaged", " ", KeywordKind.Other);
-                    yield return new KeywordSyntax(string.Empty, "cdecl", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax("unmanaged", " ");
+                    yield return new KeywordSyntax("cdecl", " ");
                     break;
                 case CallingConvention.StdCall:
-                    yield return new KeywordSyntax(string.Empty, "unmanaged", " ", KeywordKind.Other);
-                    yield return new KeywordSyntax(string.Empty, "stdcall", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax("unmanaged", " ");
+                    yield return new KeywordSyntax("stdcall", " ");
                     break;
                 case CallingConvention.ThisCall:
-                    yield return new KeywordSyntax(string.Empty, "unmanaged", " ", KeywordKind.Other);
-                    yield return new KeywordSyntax(string.Empty, "thiscall", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax("unmanaged", " ");
+                    yield return new KeywordSyntax("thiscall", " ");
                     break;
                 case CallingConvention.FastCall:
-                    yield return new KeywordSyntax(string.Empty, "unmanaged", " ", KeywordKind.Other);
-                    yield return new KeywordSyntax(string.Empty, "fastcall", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax("unmanaged", " ");
+                    yield return new KeywordSyntax("fastcall", " ");
                     break;
                 case CallingConvention.Vararg:
-                    yield return new KeywordSyntax(string.Empty, "vararg", " ", KeywordKind.Other);
+                    yield return new KeywordSyntax("vararg", " ");
                     break;
             }
 
-            if (this._HasThis) yield return new KeywordSyntax(string.Empty, "instance", " ", KeywordKind.Other);
+            if (this._HasThis) yield return new KeywordSyntax("instance", " ");
 
-            if (this._ExplicitThis) yield return new KeywordSyntax(string.Empty, "explicit", " ", KeywordKind.Other);
+            if (this._ExplicitThis) yield return new KeywordSyntax("explicit", " ");
 
             yield return this._ReturnType.ToSyntax(containingAssembly);
 

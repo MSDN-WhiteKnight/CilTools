@@ -113,7 +113,7 @@ namespace CilTools.Syntax
                 for (int i = 0; i < modules.Length; i++)
                 {
                     content = new SyntaxNode[] {
-                        new KeywordSyntax(string.Empty, "extern", " ", KeywordKind.Other),
+                        new KeywordSyntax("extern", " "),
                         new IdentifierSyntax(string.Empty, modules[i], Environment.NewLine, false, null)
                     };
 
@@ -133,7 +133,7 @@ namespace CilTools.Syntax
                 for (int i = 0; i < refs.Length; i++)
                 {
                     content = new SyntaxNode[] {
-                        new KeywordSyntax(string.Empty, "extern", " ", KeywordKind.Other),
+                        new KeywordSyntax("extern", " "),
                         new IdentifierSyntax(string.Empty, refs[i].Name, Environment.NewLine, false, null)
                     };
 
@@ -239,7 +239,7 @@ namespace CilTools.Syntax
                 string algStr = "0x" + ((uint)an.HashAlgorithm).ToString("X", CultureInfo.InvariantCulture);
 
                 content = new SyntaxNode[] {
-                    new KeywordSyntax(string.Empty, "algorithm", " ", KeywordKind.Other),
+                    new KeywordSyntax("algorithm", " "),
                     new GenericSyntax(algStr + " "),
                     CommentSyntax.Create(string.Empty, an.HashAlgorithm.ToString(), null, false)
                 };
@@ -342,7 +342,7 @@ namespace CilTools.Syntax
                     int fileAlign = (int)val;
                     str = "0x" + fileAlign.ToString("X", CultureInfo.InvariantCulture);
 
-                    content = new SyntaxNode[] { new KeywordSyntax(string.Empty, "alignment", " ", KeywordKind.Other),
+                    content = new SyntaxNode[] { new KeywordSyntax("alignment", " "),
                         new GenericSyntax(str + Environment.NewLine) };
 
                     yield return new DirectiveSyntax(string.Empty, "file", content);

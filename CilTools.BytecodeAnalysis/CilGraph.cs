@@ -768,7 +768,7 @@ namespace CilTools.BytecodeAnalysis
 
                     new_node = new BlockSyntax(
                         new string(indent.ToArray()),
-                        new SyntaxNode[] { new KeywordSyntax(string.Empty, "filter", string.Empty, KeywordKind.Other) },
+                        new SyntaxNode[] { new KeywordSyntax("filter", string.Empty) },
                         new SyntaxNode[0]);
 
                     currentpath.Add(new_node);
@@ -787,7 +787,7 @@ namespace CilTools.BytecodeAnalysis
                         Type t = block.CatchType;
 
                         List<SyntaxNode> header_nodes = new List<SyntaxNode>();
-                        header_nodes.Add(new KeywordSyntax(string.Empty, "catch", " ", KeywordKind.Other));
+                        header_nodes.Add(new KeywordSyntax("catch", " "));
 
                         if (t != null)
                         {
@@ -834,7 +834,7 @@ namespace CilTools.BytecodeAnalysis
                     {
                         new_node = new BlockSyntax(
                             new string(indent.ToArray()),
-                            new SyntaxNode[] { new KeywordSyntax(string.Empty, "finally", string.Empty, KeywordKind.Other) },
+                            new SyntaxNode[] { new KeywordSyntax("finally", string.Empty) },
                             new SyntaxNode[0]);
 
                         currentpath.Add(new_node);
@@ -844,7 +844,7 @@ namespace CilTools.BytecodeAnalysis
                     {
                         new_node = new BlockSyntax(
                             new string(indent.ToArray()),
-                            new SyntaxNode[] { new KeywordSyntax(string.Empty, "fault", string.Empty, KeywordKind.Other) },
+                            new SyntaxNode[] { new KeywordSyntax("fault", string.Empty) },
                             new SyntaxNode[0]);
 
                         currentpath.Add(new_node);

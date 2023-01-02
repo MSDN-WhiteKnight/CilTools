@@ -30,6 +30,11 @@ namespace CilTools.Syntax.Generation
             this.containingAssembly = ass;
         }
 
+        static PunctuationSyntax NewPunctuation(string content)
+        {
+            return new PunctuationSyntax(string.Empty, content, string.Empty);
+        }
+
         internal SyntaxNode[] GetGenericParameterSyntax(Type t)
         {
             if (!t.IsGenericParameter)
@@ -53,23 +58,23 @@ namespace CilTools.Syntax.Generation
 
             if ((t.GenericParameterAttributes & GenericParameterAttributes.ReferenceTypeConstraint) != 0)
             {
-                ret.Add(new KeywordSyntax(string.Empty, "class", " ", KeywordKind.Other));
+                ret.Add(new KeywordSyntax("class", " "));
             }
             else if((t.GenericParameterAttributes & GenericParameterAttributes.NotNullableValueTypeConstraint) != 0)
             {
-                ret.Add(new KeywordSyntax(string.Empty, "valuetype", " ", KeywordKind.Other));
+                ret.Add(new KeywordSyntax("valuetype", " "));
             }
 
             if ((t.GenericParameterAttributes & GenericParameterAttributes.DefaultConstructorConstraint) != 0)
             {
-                ret.Add(new KeywordSyntax(string.Empty, ".ctor", " ", KeywordKind.Other));
+                ret.Add(new KeywordSyntax(".ctor", " "));
             }
 
             Type[] constrs = t.GetGenericParameterConstraints();
 
             if (constrs.Length > 0)
             {
-                ret.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
+                ret.Add(NewPunctuation("("));
 
                 for (int i = 0; i < constrs.Length; i++)
                 {
@@ -99,7 +104,7 @@ namespace CilTools.Syntax.Generation
 
                 if (events[i].IsSpecialName)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("specialname", " "));
                 }
 
                 IEnumerable<SyntaxNode> eventTypeSyntax = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(
@@ -200,27 +205,7 @@ namespace CilTools.Syntax.Generation
 
             return ret.ToArray();
         }
-
-        internal static bool IsBuiltInAttribute(Type t)
-        {
-            if (string.Equals(t.FullName, "System.Runtime.InteropServices.OptionalAttribute",
-                StringComparison.Ordinal))
-            {
-                //OptionalAttribute is translated to [opt]
-                return true;
-            }
-            else if (string.Equals(t.FullName, "System.SerializableAttribute", StringComparison.Ordinal))
-            {
-                //SerializableAttribute is represented by built-in attribute flag, but runtime reflection still
-                //synthesizes it
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
+        
         internal void GetAttributeSyntax(object attr, int indent, List<SyntaxNode> ret)
         {
             string content;
@@ -232,7 +217,7 @@ namespace CilTools.Syntax.Generation
             {
                 ICustomAttribute ca = (ICustomAttribute)attr;
 
-                if (IsBuiltInAttribute(ca.Constructor.DeclaringType)) return;
+                if (ReflectionUtils.IsBuiltInAttribute(ca.Constructor.DeclaringType)) return;
 
                 List<SyntaxNode> children = new List<SyntaxNode>();
 
@@ -251,7 +236,7 @@ namespace CilTools.Syntax.Generation
                 }
 
                 children.Add(new GenericSyntax(sb.ToString()));
-                children.Add(new PunctuationSyntax("", ")", Environment.NewLine));
+                children.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
 
                 DirectiveSyntax dir = new DirectiveSyntax(strIndent, "custom", children.ToArray());
                 ret.Add(dir);
@@ -261,7 +246,7 @@ namespace CilTools.Syntax.Generation
             //from reflection
             Type t = attr.GetType();
 
-            if (IsBuiltInAttribute(t)) return;
+            if (ReflectionUtils.IsBuiltInAttribute(t)) return;
 
             ConstructorInfo[] constr = t.GetConstructors();
             string s_attr;
@@ -449,7 +434,7 @@ namespace CilTools.Syntax.Generation
             if (inlineTok)
             {
                 //for ldtoken instruction the method reference is preceded by "method" keyword
-                children.Add(new KeywordSyntax(string.Empty, "method", " ", KeywordKind.Other));
+                children.Add(new KeywordSyntax("method", " "));
             }
 
             //append return type
@@ -464,7 +449,7 @@ namespace CilTools.Syntax.Generation
                 Type tReturn = ((ICustomMethod)m).ReturnType;
 
                 if (tReturn != null) rt = gen.GetTypeNameSyntax(tReturn);
-                else rt = new SyntaxNode[] { new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other) };
+                else rt = new SyntaxNode[] { new KeywordSyntax("void", string.Empty) };
             }
             else if (m is CustomMethod)
             {
@@ -472,22 +457,22 @@ namespace CilTools.Syntax.Generation
                 Type tReturn = ((CustomMethod)m).ReturnType;
 
                 if (tReturn != null) rt = gen.GetTypeNameSyntax(tReturn);
-                else rt = new SyntaxNode[] { new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other) };
+                else rt = new SyntaxNode[] { new KeywordSyntax("void", string.Empty) };
             }
             else
             {
                 //we append return type here even for constructors
-                rt = new SyntaxNode[] { new KeywordSyntax(string.Empty, "void", string.Empty, KeywordKind.Other) };
+                rt = new SyntaxNode[] { new KeywordSyntax("void", string.Empty) };
             }
 
             if (!ReflectionUtils.IsMethodStatic(m))
             {
-                children.Add(new KeywordSyntax(string.Empty, "instance", " ", KeywordKind.Other));
+                children.Add(new KeywordSyntax("instance", " "));
             }
 
             if (m.CallingConvention == CallingConventions.VarArgs)
             {
-                children.Add(new KeywordSyntax(string.Empty, "vararg", " ", KeywordKind.Other));
+                children.Add(new KeywordSyntax("vararg", " "));
 
                 Signature sig = ReflectionProperties.Get(m, ReflectionProperties.Signature) as Signature;
                 sentinelPos = sig.SentinelPosition;
@@ -522,7 +507,7 @@ namespace CilTools.Syntax.Generation
 
                 foreach (SyntaxNode node in syntax) children.Add(node);
 
-                children.Add(new PunctuationSyntax(string.Empty, "::", string.Empty));
+                children.Add(NewPunctuation("::"));
             }
 
             //append name
@@ -530,7 +515,7 @@ namespace CilTools.Syntax.Generation
 
             if (m.IsGenericMethod)
             {
-                children.Add(new PunctuationSyntax(string.Empty, "<", string.Empty));
+                children.Add(NewPunctuation("<"));
 
                 Type[] args = m.GetGenericArguments();
                 for (int i = 0; i < args.Length; i++)
@@ -542,10 +527,10 @@ namespace CilTools.Syntax.Generation
                     foreach (SyntaxNode node in syntax) children.Add(node);
                 }
 
-                children.Add(new PunctuationSyntax(string.Empty, ">", string.Empty));
+                children.Add(NewPunctuation(">"));
             }
 
-            children.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
+            children.Add(NewPunctuation("("));
 
             for (int i = 0; i < pars.Length; i++)
             {
@@ -563,7 +548,7 @@ namespace CilTools.Syntax.Generation
                 foreach (SyntaxNode node in syntax) children.Add(node);
             }
 
-            children.Add(new PunctuationSyntax(string.Empty, ")", string.Empty));
+            children.Add(NewPunctuation(")"));
 
             return new MemberRefSyntax(children.ToArray(), m);
         }
@@ -603,105 +588,105 @@ namespace CilTools.Syntax.Generation
             //type standard attributes
             if (t.IsInterface)
             {
-                content.Add(new KeywordSyntax(string.Empty, "interface", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("interface", " "));
             }
 
             if (t.IsNested)
             {
-                content.Add(new KeywordSyntax(string.Empty, "nested", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("nested", " "));
 
                 if (t.IsNestedPublic)
                 {
-                    content.Add(new KeywordSyntax(string.Empty, "public", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax("public", " "));
                 }
                 else if (t.IsNestedAssembly)
                 {
-                    content.Add(new KeywordSyntax(string.Empty, "assembly", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax("assembly", " "));
                 }
                 else if (t.IsNestedFamily)
                 {
-                    content.Add(new KeywordSyntax(string.Empty, "family", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax("family", " "));
                 }
                 else if (t.IsNestedFamORAssem)
                 {
-                    content.Add(new KeywordSyntax(string.Empty, "famorassem", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax("famorassem", " "));
                 }
                 else if (t.IsNestedFamANDAssem)
                 {
-                    content.Add(new KeywordSyntax(string.Empty, "famandassem", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax("famandassem", " "));
                 }
                 else
                 {
-                    content.Add(new KeywordSyntax(string.Empty, "private", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax("private", " "));
                 }
             }
             else
             {
                 if (t.IsPublic)
                 {
-                    content.Add(new KeywordSyntax(string.Empty, "public", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax("public", " "));
                 }
                 else
                 {
-                    content.Add(new KeywordSyntax(string.Empty, "private", " ", KeywordKind.Other));
+                    content.Add(new KeywordSyntax("private", " "));
                 }
             }
 
             if (t.IsAbstract)
             {
-                content.Add(new KeywordSyntax(string.Empty, "abstract", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("abstract", " "));
             }
 
             if (t.IsAutoLayout)
             {
-                content.Add(new KeywordSyntax(string.Empty, "auto", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("auto", " "));
             }
             else if (t.IsLayoutSequential)
             {
-                content.Add(new KeywordSyntax(string.Empty, "sequential", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("sequential", " "));
             }
             else if (t.IsExplicitLayout)
             {
-                content.Add(new KeywordSyntax(string.Empty, "explicit", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("explicit", " "));
             }
 
             if (t.IsAnsiClass)
             {
-                content.Add(new KeywordSyntax(string.Empty, "ansi", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("ansi", " "));
             }
             else if (t.IsUnicodeClass)
             {
-                content.Add(new KeywordSyntax(string.Empty, "unicode", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("unicode", " "));
             }
             else if (t.IsAutoClass)
             {
-                content.Add(new KeywordSyntax(string.Empty, "autochar", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("autochar", " "));
             }
 
             if (t.IsSealed)
             {
-                content.Add(new KeywordSyntax(string.Empty, "sealed", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("sealed", " "));
             }
 
             if ((t.Attributes & TypeAttributes.Serializable) != 0)
             {
                 //Type.IsSerializable considers base type, but we need a raw flag value here
-                content.Add(new KeywordSyntax(string.Empty, "serializable", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("serializable", " "));
             }
 
             if (t.IsSpecialName)
             {
-                content.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("specialname", " "));
             }
 
             if ((t.Attributes & TypeAttributes.RTSpecialName) != 0)
             {
-                content.Add(new KeywordSyntax(string.Empty, "rtspecialname", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("rtspecialname", " "));
             }
 
             if ((t.Attributes & TypeAttributes.BeforeFieldInit) != 0)
             {
-                content.Add(new KeywordSyntax(string.Empty, "beforefieldinit", " ", KeywordKind.Other));
+                content.Add(new KeywordSyntax("beforefieldinit", " "));
             }
 
             //type name
@@ -713,7 +698,7 @@ namespace CilTools.Syntax.Generation
             //generic parameters
             if (t.IsGenericType)
             {
-                content.Add(new PunctuationSyntax(string.Empty, "<", string.Empty));
+                content.Add(NewPunctuation("<"));
                 Type[] targs = t.GetGenericArguments();
 
                 for (int i = 0; i < targs.Length; i++)
@@ -728,7 +713,7 @@ namespace CilTools.Syntax.Generation
                     }
                 }
 
-                content.Add(new PunctuationSyntax(string.Empty, ">", string.Empty));
+                content.Add(NewPunctuation(">"));
             }
 
             content.Add(new GenericSyntax(Environment.NewLine));
@@ -848,57 +833,57 @@ namespace CilTools.Syntax.Generation
 
                 if (fields[i].IsPublic)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "public", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("public", " "));
                 }
                 else if (fields[i].IsAssembly)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "assembly", " ", KeywordKind.Other)); //internal
+                    inner.Add(new KeywordSyntax("assembly", " ")); //internal
                 }
                 else if (fields[i].IsFamily)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "family", " ", KeywordKind.Other)); //protected
+                    inner.Add(new KeywordSyntax("family", " ")); //protected
                 }
                 else if (fields[i].IsFamilyOrAssembly)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "famorassem", " ", KeywordKind.Other)); //protected internal
+                    inner.Add(new KeywordSyntax("famorassem", " ")); //protected internal
                 }
                 else if (fields[i].IsFamilyAndAssembly)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "famandassem", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("famandassem", " "));
                 }
                 else
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "private", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("private", " "));
                 }
 
                 if (fields[i].IsStatic)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "static", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("static", " "));
                 }
 
                 if (fields[i].IsInitOnly)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "initonly", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("initonly", " "));
                 }
 
                 if (fields[i].IsLiteral)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "literal", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("literal", " "));
                 }
 
                 if (fields[i].IsNotSerialized)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "notserialized", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("notserialized", " "));
                 }
 
                 if (fields[i].IsSpecialName)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("specialname", " "));
                 }
 
                 if ((fields[i].Attributes & FieldAttributes.RTSpecialName) != 0)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "rtspecialname", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("rtspecialname", " "));
                 }
 
                 SyntaxNode[] ftNodes = tgen.GetTypeNameSyntax(fields[i].FieldType).ToArray();
@@ -983,7 +968,7 @@ namespace CilTools.Syntax.Generation
 
                 if (props[i].IsSpecialName)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "specialname", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("specialname", " "));
                 }
 
                 bool isStatic = false;
@@ -995,7 +980,7 @@ namespace CilTools.Syntax.Generation
                 
                 if (!isStatic)
                 {
-                    inner.Add(new KeywordSyntax(string.Empty, "instance", " ", KeywordKind.Other));
+                    inner.Add(new KeywordSyntax("instance", " "));
                 }
 
                 SyntaxNode[] ptNodes = tgen.GetTypeNameSyntax(props[i].PropertyType).ToArray();
@@ -1007,7 +992,7 @@ namespace CilTools.Syntax.Generation
                 ParameterInfo[] pars = props[i].GetIndexParameters();
                 if (pars == null) pars = new ParameterInfo[0];
 
-                inner.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
+                inner.Add(NewPunctuation("("));
 
                 for (int j = 0; j < pars.Length; j++)
                 {
