@@ -8,7 +8,7 @@ using System.Text;
 using CilTools.Syntax;
 using CilTools.Syntax.Tokens;
 
-namespace CilView.SourceCode
+namespace CilTools.SourceCode.Common
 {
     /// <summary>
     /// Represents a smallest lexical unit of a source text 

@@ -4,10 +4,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CilTools.SourceCode.Common;
 using CilTools.Syntax;
 using CilTools.Syntax.Tokens;
 
-namespace CilView.SourceCode
+namespace CilTools.SourceCode.Cpp
 {
     public class CppClassifier : TokenClassifier
     {
@@ -44,7 +45,7 @@ namespace CilView.SourceCode
                 if (IsKeyword(token)) return TokenKind.Keyword;
                 else return TokenKind.Name;
             }
-            else return TokenClassifierHelpers.GetKindCommon(token);
+            else return SourceCodeUtils.GetKindCommon(token);
         }
     }
 }

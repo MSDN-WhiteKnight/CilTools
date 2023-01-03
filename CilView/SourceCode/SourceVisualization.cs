@@ -7,6 +7,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
+using CilTools.SourceCode.Common;
 using CilTools.Syntax;
 
 namespace CilView.SourceCode

@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using CilTools.Reflection;
+using CilTools.SourceCode.Common;
 using CilTools.Syntax;
 using CilView.Common;
 

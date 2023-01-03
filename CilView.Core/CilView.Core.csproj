@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
+    <ProjectReference Include="..\CilTools.SourceCode\CilTools.SourceCode.csproj" />
   </ItemGroup>
 
 </Project>

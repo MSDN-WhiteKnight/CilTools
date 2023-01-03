@@ -5,10 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CilTools.SourceCode.Common;
+using CilTools.SourceCode.CSharp;
+using CilTools.SourceCode.Cpp;
+using CilTools.SourceCode.VisualBasic;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
-using CilView.SourceCode;
-using CilView.SourceCode.VisualBasic;
 
 namespace CilView.Tests.SourceCode
 {
@@ -80,10 +82,10 @@ namespace CilView.Tests.SourceCode
         [TestMethod]
         public void Test_TokenClassifier_Create()
         {
-            Assert.IsTrue(TokenClassifierHelpers.Create(".cs") is CsharpClassifier);
-            Assert.IsTrue(TokenClassifierHelpers.Create(".vb") is VbClassifier);
-            Assert.IsTrue(TokenClassifierHelpers.Create(".cpp") is CppClassifier);
-            Assert.IsTrue(TokenClassifierHelpers.Create(".text") is CsharpClassifier);
+            Assert.IsTrue(SourceCodeUtils.CreateClassifier(".cs") is CsharpClassifier);
+            Assert.IsTrue(SourceCodeUtils.CreateClassifier(".vb") is VbClassifier);
+            Assert.IsTrue(SourceCodeUtils.CreateClassifier(".cpp") is CppClassifier);
+            Assert.IsTrue(SourceCodeUtils.CreateClassifier(".text") is CsharpClassifier);
         }
     }
 }

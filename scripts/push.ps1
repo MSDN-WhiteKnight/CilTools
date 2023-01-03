@@ -1,5 +1,5 @@
 # Publish nuget packages
-$ver = "2.5.0"
+$ver = "2.6.0"
 $src = "nuget.org2"
 
 $Env:Path += ";C:\Distr\Microsoft\nuget 4.1\"
@@ -7,6 +7,7 @@ $Env:Path += ";C:\Distr\Microsoft\nuget 4.1\"
 nuget push "..\CilTools.BytecodeAnalysis\bin\Release\CilTools.BytecodeAnalysis.$ver.nupkg" -src $src
 nuget push "..\CilTools.Metadata\bin\Release\CilTools.Metadata.$ver.nupkg" -src $src
 nuget push "..\CilTools.Runtime\pkg\CilTools.Runtime.$ver.nupkg" -src $src
+nuget push "..\CilTools.SourceCode\bin\Release\CilTools.SourceCode.$ver.nupkg" -src $src
 nuget push "..\CilTools.CommandLine\bin\Release\CilTools.CommandLine.$ver.nupkg" -src $src
 
 echo "Finished"

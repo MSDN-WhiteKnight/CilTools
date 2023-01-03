@@ -8,6 +8,7 @@ using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Metadata;
+using CilTools.SourceCode.Common;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.TestData;

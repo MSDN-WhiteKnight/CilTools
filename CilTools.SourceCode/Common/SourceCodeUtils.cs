@@ -1,24 +1,61 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CilTools.SourceCode.CSharp;
+using CilTools.SourceCode.Cpp;
+using CilTools.SourceCode.VisualBasic;
 using CilTools.Syntax;
 using CilTools.Syntax.Tokens;
-using CilView.SourceCode.VisualBasic;
 
-namespace CilView.SourceCode
+namespace CilTools.SourceCode.Common
 {
-    public static class TokenClassifierHelpers
+    public static class SourceCodeUtils
     {
-        public static TokenClassifier Create(string ext)
+        static readonly SyntaxTokenDefinition[] s_vbDefinitions = new SyntaxTokenDefinition[] {
+            new CommonNameToken(), new PunctuationToken(), new WhitespaceToken(), new NumericLiteralToken(),
+            new DoubleQuotLiteralToken(), new VbCommentToken()
+        };
+
+        static readonly SyntaxTokenDefinition[] s_clikeDefinitions = new SyntaxTokenDefinition[] {
+            new CommonNameToken(), new PunctuationToken(), new WhitespaceToken(), new NumericLiteralToken(),
+            new DoubleQuotLiteralToken(), new SingleQuotLiteralToken(), new CommentToken(),
+            new MultilineCommentToken()
+        };
+
+        public static IEnumerable<SyntaxTokenDefinition> GetTokenDefinitions(string ext)
+        {
+            if (ext == null) ext = string.Empty;
+
+            ext = ext.Trim();
+            SyntaxTokenDefinition[] ret;
+
+            if (ext.Equals(".vb", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = s_vbDefinitions;
+            }
+            else
+            {
+                ret = s_clikeDefinitions; //C-like
+            }
+
+            foreach (SyntaxTokenDefinition item in ret) yield return item;
+        }
+
+        static bool IsCppExtension(string ext)
+        {
+            return ext == ".cpp" || ext == ".c" || ext == ".h" || ext == string.Empty;
+        }
+
+        public static TokenClassifier CreateClassifier(string ext)
         {
             if (ext == null) ext = string.Empty;
 
             ext = ext.Trim();
 
-            if (Decompiler.IsCppExtension(ext))
+            if (IsCppExtension(ext))
             {
                 return new CppClassifier();
             }
@@ -32,7 +69,7 @@ namespace CilView.SourceCode
             }
         }
 
-        public static TokenKind GetKindCommon(string token)
+        internal static TokenKind GetKindCommon(string token)
         {
             //common logic for C-like languages
             if (token.Length == 0) return TokenKind.Unknown;

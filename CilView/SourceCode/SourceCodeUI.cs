@@ -9,8 +9,8 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using CilTools.SourceCode;
+using CilTools.SourceCode.Common;
 using CilView.Common;
-using CilView.Core.Syntax;
 using CilView.UI.Dialogs;
 
 namespace CilView.SourceCode

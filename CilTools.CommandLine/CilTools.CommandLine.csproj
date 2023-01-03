@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
     <ProjectReference Include="..\CilTools.Metadata\CilTools.Metadata.csproj" />
+    <ProjectReference Include="..\CilTools.SourceCode\CilTools.SourceCode.csproj" />
     <ProjectReference Include="..\CilView.Core\CilView.Core.csproj" />
   </ItemGroup>
 

@@ -7,7 +7,7 @@ using System.Text;
 using CilTools.Syntax;
 using CilTools.Syntax.Tokens;
 
-namespace CilView.SourceCode.VisualBasic
+namespace CilTools.SourceCode.VisualBasic
 {
     public class VbClassifier : TokenClassifier
     {

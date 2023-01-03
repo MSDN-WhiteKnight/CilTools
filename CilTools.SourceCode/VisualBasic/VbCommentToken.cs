@@ -7,26 +7,24 @@ using System.Text;
 using CilTools.Syntax;
 using CilTools.Syntax.Tokens;
 
-namespace CilView.SourceCode.Common
+namespace CilTools.SourceCode.VisualBasic
 {
-    /// <summary>
-    /// Defines a name (identifier or keyword) token common to multiple programming languages
-    /// </summary>
-    internal class CommonNameToken : SyntaxTokenDefinition
+    internal class VbCommentToken : SyntaxTokenDefinition
     {
-        public override TokenKind Kind => TokenKind.Name;
+        public override TokenKind Kind => TokenKind.Comment;
 
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
-
-            return char.IsLetter(c) || c == '_';
+            return c == '\'';
         }
 
         public override bool HasContinuation(string prevPart, TokenReader reader)
         {
+            if (prevPart.Length < 2) return true;
+
             char c = reader.PeekChar();
-            return char.IsLetterOrDigit(c) || c == '_';
+            return !(c == '\n' || c == '\r');
         }
     }
 }

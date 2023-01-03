@@ -15,8 +15,9 @@ $outputDir = ".\obj\"
 $fileList = "CilTools.BytecodeAnalysis.dll",
             "CilTools.BytecodeAnalysis.xml",
             "CilTools.Metadata.dll",
-            "CilTools.Metadata.xml",            
-            "CilView.Core.dll",                        
+            "CilTools.Metadata.xml",
+            "CilTools.SourceCode.dll",
+            "CilView.Core.dll",
             "cil.dll",
             "cil.runtimeconfig.json",
             "cil.deps.json"

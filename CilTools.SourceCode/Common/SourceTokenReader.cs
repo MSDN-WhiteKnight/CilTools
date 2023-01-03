@@ -1,45 +1,16 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CilTools.Syntax.Tokens;
-using CilView.SourceCode.Common;
-using CilView.SourceCode.VisualBasic;
 
-namespace CilView.SourceCode
+namespace CilTools.SourceCode.Common
 {
-    public static class TokenParser
+    public static class SourceTokenReader
     {
-        static readonly SyntaxTokenDefinition[] s_vbDefinitions = new SyntaxTokenDefinition[] {
-            new CommonNameToken(), new PunctuationToken(), new WhitespaceToken(), new NumericLiteralToken(),
-            new DoubleQuotLiteralToken(), new VbCommentToken()
-        };
-
-        static readonly SyntaxTokenDefinition[] s_clikeDefinitions = new SyntaxTokenDefinition[] {
-            new CommonNameToken(), new PunctuationToken(), new WhitespaceToken(), new NumericLiteralToken(),
-            new DoubleQuotLiteralToken(), new SingleQuotLiteralToken(), new CommentToken(),
-            new MultilineCommentToken()
-        };
-
-        public static SyntaxTokenDefinition[] GetDefinitions(string ext)
-        {
-            if (ext == null) ext = string.Empty;
-
-            ext = ext.Trim();
-
-            if (ext.Equals(".vb", StringComparison.OrdinalIgnoreCase))
-            {
-                return s_vbDefinitions;
-            }
-            else
-            {
-                return s_clikeDefinitions; //C-like
-            }
-        }
-
         static bool IsWhitespace(string str)
         {
             for (int i = 0; i < str.Length; i++)
@@ -50,7 +21,7 @@ namespace CilView.SourceCode
             return true;
         }
 
-        public static SourceToken[] ParseTokens(string src, SyntaxTokenDefinition[] definitions, 
+        public static SourceToken[] ReadAllTokens(string src, IEnumerable<SyntaxTokenDefinition> definitions, 
             TokenClassifier classifier)
         {
             List<SourceToken> ret = new List<SourceToken>();

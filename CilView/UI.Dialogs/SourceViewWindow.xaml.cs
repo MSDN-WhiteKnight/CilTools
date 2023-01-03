@@ -10,6 +10,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using CilTools.SourceCode;
+using CilTools.SourceCode.Common;
 using CilTools.Syntax;
 using CilView.Common;
 using CilView.SourceCode;
@@ -63,8 +64,8 @@ namespace CilView.UI.Dialogs
             //source text
             string ext = Path.GetExtension(f.Document.FilePath);
 
-            SourceToken[] tokens = TokenParser.ParseTokens(f.Text, TokenParser.GetDefinitions(ext),
-                TokenClassifierHelpers.Create(ext));
+            SourceToken[] tokens = SourceTokenReader.ReadAllTokens(f.Text, SourceCodeUtils.GetTokenDefinitions(ext),
+                SourceCodeUtils.CreateClassifier(ext));
 
             fdSource.Document = SourceVisualization.VisualizeTokens(tokens, string.Empty, string.Empty);
 
