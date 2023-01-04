@@ -46,7 +46,7 @@ namespace CilView.SourceCode
 
             public override IEnumerable<SyntaxNode> EnumerateChildNodes()
             {
-                return new SyntaxNode[0];
+                return SyntaxNode.EmptyArray;
             }
 
             public override void ToText(TextWriter target)

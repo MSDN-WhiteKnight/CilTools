@@ -47,7 +47,10 @@ namespace CilTools.Syntax
 
         internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
 
-        internal static readonly SyntaxNode[] EmptyArray = new SyntaxNode[] { };
+        /// <summary>
+        /// Gets an empty array of syntax nodes
+        /// </summary>
+        public static readonly SyntaxNode[] EmptyArray = new SyntaxNode[0];
         
         /// <summary>
         /// Writes text representation of this node into the specified TextWriter

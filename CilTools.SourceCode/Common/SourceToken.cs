@@ -65,7 +65,7 @@ namespace CilTools.SourceCode.Common
 
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
-            return new SyntaxNode[0];
+            return SyntaxNode.EmptyArray;
         }
     }
 }

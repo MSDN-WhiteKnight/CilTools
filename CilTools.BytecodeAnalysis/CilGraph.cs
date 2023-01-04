@@ -622,7 +622,7 @@ namespace CilTools.BytecodeAnalysis
         SyntaxNode[] BodyAsSyntaxTree(DisassemblerParams dpars, int startIndent)
         {
             CilGraphNode node = this._Root;
-            if (node == null) return new SyntaxNode[] { };
+            if (node == null) return SyntaxNode.EmptyArray;
 
             int n_iter = 0;
             IList<ExceptionBlock> trys = new List<ExceptionBlock>();
@@ -678,7 +678,7 @@ namespace CilTools.BytecodeAnalysis
 
             for (int i = 0; i < startIndent; i++) indent.Push(' ');
 
-            BlockSyntax root = new BlockSyntax(string.Empty, SyntaxNode.EmptyArray, new SyntaxNode[0]);
+            BlockSyntax root = new BlockSyntax(string.Empty, SyntaxNode.EmptyArray, SyntaxNode.EmptyArray);
             List<BlockSyntax> currentpath = new List<BlockSyntax>(20);
 
             BlockSyntax curr_node = root;
@@ -710,7 +710,7 @@ namespace CilTools.BytecodeAnalysis
                     curr_node._children.Add(dir);
                     dir._parent = curr_node;
 
-                    new_node = new BlockSyntax(new string(indent.ToArray()), SyntaxNode.EmptyArray, new SyntaxNode[0]);
+                    new_node = new BlockSyntax(new string(indent.ToArray()), SyntaxNode.EmptyArray, SyntaxNode.EmptyArray);
 
                     currentpath.Add(new_node);
                     curr_node = new_node;
@@ -769,7 +769,7 @@ namespace CilTools.BytecodeAnalysis
                     new_node = new BlockSyntax(
                         new string(indent.ToArray()),
                         new SyntaxNode[] { new KeywordSyntax("filter", string.Empty) },
-                        new SyntaxNode[0]);
+                        SyntaxNode.EmptyArray);
 
                     currentpath.Add(new_node);
                     curr_node = new_node;
@@ -800,7 +800,7 @@ namespace CilTools.BytecodeAnalysis
                         new_node = new BlockSyntax(
                             new string(indent.ToArray()),
                             header_nodes.ToArray(),
-                            new SyntaxNode[0]);
+                            SyntaxNode.EmptyArray);
 
                         currentpath.Add(new_node);
                         curr_node = new_node;
@@ -826,7 +826,7 @@ namespace CilTools.BytecodeAnalysis
                         curr_node._children.Add(new_node);
                         new_node._parent = curr_node;
 
-                        new_node = new BlockSyntax(new string(indent.ToArray()), SyntaxNode.EmptyArray, new SyntaxNode[0]);
+                        new_node = new BlockSyntax(new string(indent.ToArray()), SyntaxNode.EmptyArray, SyntaxNode.EmptyArray);
                         currentpath.Add(new_node);
                         curr_node = new_node;
                     }
@@ -835,7 +835,7 @@ namespace CilTools.BytecodeAnalysis
                         new_node = new BlockSyntax(
                             new string(indent.ToArray()),
                             new SyntaxNode[] { new KeywordSyntax("finally", string.Empty) },
-                            new SyntaxNode[0]);
+                            SyntaxNode.EmptyArray);
 
                         currentpath.Add(new_node);
                         curr_node = new_node;
@@ -845,7 +845,7 @@ namespace CilTools.BytecodeAnalysis
                         new_node = new BlockSyntax(
                             new string(indent.ToArray()),
                             new SyntaxNode[] { new KeywordSyntax("fault", string.Empty) },
-                            new SyntaxNode[0]);
+                            SyntaxNode.EmptyArray);
 
                         currentpath.Add(new_node);
                         curr_node = new_node;

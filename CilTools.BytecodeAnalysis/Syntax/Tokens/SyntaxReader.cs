@@ -33,7 +33,7 @@ namespace CilTools.Syntax.Tokens
             List<SyntaxNode> nodes = new List<SyntaxNode>();
             TokenReader reader = new TokenReader(src, SyntaxTokenDefinition.IlasmTokens);
             string[] tokens = reader.ReadAll().ToArray();
-            if (tokens.Length == 0) return new SyntaxNode[0];
+            if (tokens.Length == 0) return SyntaxNode.EmptyArray;
 
             string leadingWhitespace;
             int i = 0;

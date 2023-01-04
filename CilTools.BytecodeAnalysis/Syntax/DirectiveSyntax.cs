@@ -72,7 +72,7 @@ namespace CilTools.Syntax
         internal DirectiveSyntax(string lead, string name, SyntaxNode[] content)
         {
             if (lead == null) lead = "";
-            if (content == null) content = new SyntaxNode[0];
+            if (content == null) content = SyntaxNode.EmptyArray;
 
             if (content.Length > 0)
             {
