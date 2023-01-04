@@ -164,27 +164,45 @@ namespace CilTools.Tests.Common
             Assert.IsTrue(res, mes);
         }
 
-        static void IsCorrectRecusive(SyntaxNode node,SyntaxNode parent, int c)
+        static void IsCorrectRecursive(SyntaxNode node, SyntaxNode parent, int c)
         {
             if (c > 100000)
             {
-                Assert.Fail("Recursion is too deep in AssertThat.IsCorrectRecusive");
+                Assert.Fail("Recursion is too deep in AssertThat.IsCorrectRecursive");
             }
 
             Assert.IsNotNull(node.Parent, "Parent node should not be null");
             Assert.AreSame(parent, node.Parent);
+            StringBuilder sb = new StringBuilder(1000);
+            StringWriter wr = new StringWriter(sb);
+            int n_children = 0;
 
             foreach (SyntaxNode child in node.EnumerateChildNodes())
             {
-                IsCorrectRecusive(child, node, c+1);
+                child.ToText(wr);
+                n_children++;
+
+                //validate child node
+                IsCorrectRecursive(child, node, c + 1);
             }
+
+            if (n_children > 0)
+            {
+                //if it's not a token, verify that node's text value is a concatenation of child nodes' text values
+                string str = sb.ToString();
+                AssertThat.AreEqual(node.ToString(), str);
+            }
+
+            //verify that leading and trailing whitespace actually consist of whitespace only (or empty)
+            AssertThat.AllMatch(node.LeadingWhitespace.ToCharArray(), (x) => char.IsWhiteSpace(x));
+            AssertThat.AllMatch(node.TrailingWhitespace.ToCharArray(), (x) => char.IsWhiteSpace(x));
         }
 
         public static void IsSyntaxTreeCorrect(SyntaxNode root)
         {
             foreach (SyntaxNode child in root.EnumerateChildNodes())
             {
-                IsCorrectRecusive(child,root, 0);
+                IsCorrectRecursive(child,root, 0);
             }
         }
 
@@ -227,6 +245,58 @@ namespace CilTools.Tests.Common
             }
         }
 
+        static string CreateDiff(string expected, string actual, string funcName)
+        {
+            StringDiff diff = StringDiff.GetDiff(expected, actual);
+            Debug.WriteLine(funcName + " diff:");
+            Debug.WriteLine(diff.Visualize());
+            string diffDescr = diff.ToString();
+
+            string path = Utils.GetRandomFilePath("diff", 5, "html");
+            FileStream fs = File.Open(path, FileMode.CreateNew, FileAccess.Write);
+            StreamWriter wr = new StreamWriter(fs);
+
+            using (wr)
+            {
+                diff.VisualizeHTML(wr, funcName);
+            }
+
+            return diffDescr;
+        }
+
+        /// <summary>
+        /// Asserts that two specified strings are equal (using ordinal comparison). If they are not equal, prints diff 
+        /// between strings into debug output.
+        /// </summary>
+        public static void AreEqual(string expected, string actual)
+        {
+            if (string.Equals(expected, actual, StringComparison.Ordinal)) return;
+
+            if (expected == null || actual == null)
+            {
+                Assert.AreEqual(expected, actual);
+            }
+
+            // If strings are not equal, show diff
+            string diffDescr = string.Empty;
+
+            try
+            {
+                diffDescr = CreateDiff(expected, actual, "AssertThat.AreEqual");
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error in CreateDiff:");
+                Debug.WriteLine(ex.ToString());
+            }
+
+            string mes = string.Format(
+                "AssertThat.AreEqual failed. Expected: \n{0}\nActual: \n{1}\n{2}",
+                expected, actual, diffDescr);
+
+            Fail(mes);
+        }
+
         /// <summary>
         /// Asserts that two specified strings consist of the same lexical element sequences 
         /// (that is, they are equal after all adjacent whitespace character sequences are replaced with a single whitespace).
@@ -254,23 +324,11 @@ namespace CilTools.Tests.Common
 
                 try
                 {
-                    StringDiff diff = StringDiff.GetDiff(s1, s2);
-                    Debug.WriteLine("AssertThat.AreLexicallyEqual diff:");
-                    Debug.WriteLine(diff.Visualize());
-                    diffDescr = diff.ToString();
-
-                    string path = Utils.GetRandomFilePath("diff", 5, "html");
-                    FileStream fs = File.Open(path, FileMode.CreateNew, FileAccess.Write);
-                    StreamWriter wr = new StreamWriter(fs);
-
-                    using (wr)
-                    {
-                        diff.VisualizeHTML(wr, "AssertThat.AreLexicallyEqual");
-                    }
+                    diffDescr = CreateDiff(s1, s2, "AssertThat.AreLexicallyEqual");
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("Error in GetDiff:");
+                    Debug.WriteLine("Error in CreateDiff:");
                     Debug.WriteLine(ex.ToString());
                 }
 
