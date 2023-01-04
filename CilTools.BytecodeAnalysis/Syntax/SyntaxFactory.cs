@@ -8,10 +8,22 @@ using System.Text;
 namespace CilTools.Syntax
 {
     /// <summary>
-    /// Provides static methods that create new instances of <see cref="SyntaxNode"/> class
+    /// Provides a base class for classes that create new instances of <see cref="SyntaxNode"/>
     /// </summary>
-    public static class SyntaxFactory
+    public abstract class SyntaxFactory
     {
+        /// <summary>
+        /// Creates a new syntax node
+        /// </summary>
+        /// <param name="content">The source code of the node</param>
+        /// <param name="leadingWhitespace">
+        /// String containing whitespace characters that precede the node in the source document
+        /// </param>
+        /// <param name="trailingWhitespace">
+        /// String containing whitespace characters that follow the node in the source document
+        /// </param>
+        public abstract SyntaxNode CreateNode(string content, string leadingWhitespace, string trailingWhitespace);
+
         internal static string Strip(string input, int startOffset, int endOffset)
         {
             int len = input.Length - startOffset - endOffset;

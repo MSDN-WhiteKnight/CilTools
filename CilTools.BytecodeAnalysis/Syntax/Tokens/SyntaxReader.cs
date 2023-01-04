@@ -9,7 +9,7 @@ using System.Text;
 namespace CilTools.Syntax.Tokens
 {
     /// <summary>
-    /// Reads CIL assembler tokens from a string and transforms them into corresponding <see cref="SyntaxNode"/> instances
+    /// Reads tokens from a string and transforms them into corresponding <see cref="SyntaxNode"/> instances
     /// </summary>
     public static class SyntaxReader
     {
@@ -24,14 +24,21 @@ namespace CilTools.Syntax.Tokens
         }
 
         /// <summary>
-        /// Reads all tokens from the specified string
+        /// Reads all tokens from the specified string using the specified collection of token definitions and syntax factory
         /// </summary>
         /// <param name="src">Input string</param>
+        /// <param name="tokenDefinitions">
+        /// Collection of token definitions that will be used to split the input string into a sequence of tokens
+        /// </param>
+        /// <param name="factory">
+        /// Syntax factory object that will be used to create new <see cref="SyntaxNode"/> instances
+        /// </param>
         /// <returns>Array of syntax nodes that contain tokens</returns>
-        public static SyntaxNode[] ReadAllNodes(string src)
+        public static SyntaxNode[] ReadAllNodes(string src, IEnumerable<SyntaxTokenDefinition> tokenDefinitions, 
+            SyntaxFactory factory)
         {
             List<SyntaxNode> nodes = new List<SyntaxNode>();
-            TokenReader reader = new TokenReader(src, SyntaxTokenDefinition.IlasmTokens);
+            TokenReader reader = new TokenReader(src, tokenDefinitions);
             string[] tokens = reader.ReadAll().ToArray();
             if (tokens.Length == 0) return SyntaxNode.EmptyArray;
 
@@ -54,17 +61,17 @@ namespace CilTools.Syntax.Tokens
 
                 if (i + 1 >= tokens.Length)
                 {
-                    nodes.Add(SyntaxFactory.CreateFromToken(tokens[i], leadingWhitespace, string.Empty));
+                    nodes.Add(factory.CreateNode(tokens[i], leadingWhitespace, string.Empty));
                     break;
                 }
                 else if (IsWhitespace(tokens[i + 1]))
                 {
-                    nodes.Add(SyntaxFactory.CreateFromToken(tokens[i], leadingWhitespace, tokens[i + 1]));
+                    nodes.Add(factory.CreateNode(tokens[i], leadingWhitespace, tokens[i + 1]));
                     i += 2;
                 }
                 else
-                {                    
-                    nodes.Add(SyntaxFactory.CreateFromToken(tokens[i], leadingWhitespace, string.Empty));
+                {
+                    nodes.Add(factory.CreateNode(tokens[i], leadingWhitespace, string.Empty));
                     i++;
                 }
 
@@ -72,6 +79,16 @@ namespace CilTools.Syntax.Tokens
             }
 
             return nodes.ToArray();
+        }
+
+        /// <summary>
+        /// Reads all CIL assembler tokens from the specified string
+        /// </summary>
+        /// <param name="src">Input string</param>
+        /// <returns>Array of syntax nodes that contain tokens</returns>
+        public static SyntaxNode[] ReadAllNodes(string src)
+        {
+            return ReadAllNodes(src, SyntaxTokenDefinition.IlasmTokens, IlasmTokenFactory.Value);
         }
     }
 }
