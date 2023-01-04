@@ -1,11 +1,10 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
 using System.Collections.Generic;
 using System.Text;
-using CilTools.BytecodeAnalysis;
 
 namespace CilTools.Syntax
 {
@@ -13,18 +12,18 @@ namespace CilTools.Syntax
     /// Represents the block syntax in the CIL assembler. The block contains child directive and instruction nodes.
     /// </summary>
     /// <remarks>
-    /// The examples of block syntax are method body or exception handler blocks. The block consists of the optional header, opening curly brace, content nodes 
-    /// (directives and statements) and closing curly brace.
+    /// The examples of block syntax are method body or exception handler blocks. The block consists of the optional header, 
+    /// opening curly brace, content nodes (directives and statements) and closing curly brace.
     /// </remarks>
-    public class BlockSyntax:SyntaxNode
+    public class BlockSyntax : SyntaxNode
     {
         string _indent;
         SyntaxNode[] _header;
-        internal List<SyntaxNode> _children;
-        
+        List<SyntaxNode> _children;
+
         internal BlockSyntax(string indent, SyntaxNode[] header, SyntaxNode[] children)
         {
-            if (indent == null) indent = "";
+            if (indent == null) indent = string.Empty;
             if (header == null) header = SyntaxNode.EmptySyntax;
 
             this._indent = indent;
@@ -32,6 +31,8 @@ namespace CilTools.Syntax
             this._children = new List<SyntaxNode>(children);
 
             for (int i = 0; i < this._header.Length; i++) this._header[i]._parent = this;
+
+            for (int i = 0; i < this._children.Count; i++) this._children[i]._parent = this;
         }
 
         /// <summary>
@@ -56,9 +57,9 @@ namespace CilTools.Syntax
         /// </remarks>
         public IEnumerable<SyntaxNode> Content
         {
-            get 
+            get
             {
-                for(int i=0;i<_children.Count;i++)
+                for (int i = 0; i < _children.Count; i++)
                 {
                     yield return _children[i];
                 }
@@ -106,9 +107,9 @@ namespace CilTools.Syntax
                     yield return _header[i];
                 }
 
-                yield return new PunctuationSyntax(Environment.NewLine + this._indent, "{", Environment.NewLine) 
-                { 
-                    _parent = this 
+                yield return new PunctuationSyntax(Environment.NewLine + this._indent, "{", Environment.NewLine)
+                {
+                    _parent = this
                 };
             }
             else
@@ -128,6 +129,12 @@ namespace CilTools.Syntax
             {
                 _parent = this
             };
+        }
+
+        internal void AddChildNode(SyntaxNode node)
+        {
+            this._children.Add(node);
+            node._parent = this;
         }
     }
 }

@@ -19,6 +19,8 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         static void VerifyAssemblyManifest(IEnumerable<SyntaxNode> nodes, string ver)
         {
             //syntax tree
+            AssertThat.IsSyntaxTreeCorrect(nodes);
+
             AssertThat.HasOnlyOneMatch(nodes, (x) =>
             {
                 return x is DirectiveSyntax && (x as DirectiveSyntax).Name == "assembly" &&

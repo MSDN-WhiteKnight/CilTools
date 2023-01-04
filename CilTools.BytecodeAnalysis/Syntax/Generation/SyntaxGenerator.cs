@@ -1215,9 +1215,7 @@ namespace CilTools.Syntax.Generation
                 // Normal type is printed as block
                 BlockSyntax body = new BlockSyntax(SyntaxUtils.GetIndentString(startIndent),
                     SyntaxNode.EmptyArray, content.ToArray());
-
-                for (int i = 0; i < body._children.Count; i++) body._children[i]._parent = body;
-
+                
                 yield return body;
             }
             else

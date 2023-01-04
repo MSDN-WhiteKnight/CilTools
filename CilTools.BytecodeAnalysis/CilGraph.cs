@@ -707,8 +707,7 @@ namespace CilTools.BytecodeAnalysis
                         new string(indent.ToArray()), "try", SyntaxNode.EmptyArray
                         );
 
-                    curr_node._children.Add(dir);
-                    dir._parent = curr_node;
+                    curr_node.AddChildNode(dir);
 
                     new_node = new BlockSyntax(new string(indent.ToArray()), SyntaxNode.EmptyArray, SyntaxNode.EmptyArray);
 
@@ -732,8 +731,7 @@ namespace CilTools.BytecodeAnalysis
                     else
                         curr_node = root;
 
-                    curr_node._children.Add(new_node);
-                    new_node._parent = curr_node;
+                    curr_node.AddChildNode(new_node);
 
                     if (indent.Count > 0) indent.Pop();
                 }
@@ -755,8 +753,7 @@ namespace CilTools.BytecodeAnalysis
                     else
                         curr_node = root;
 
-                    curr_node._children.Add(new_node);
-                    new_node._parent = curr_node;
+                    curr_node.AddChildNode(new_node);
 
                     if (indent.Count > 0) indent.Pop();
                 }
@@ -823,8 +820,7 @@ namespace CilTools.BytecodeAnalysis
                         else
                             curr_node = root;
 
-                        curr_node._children.Add(new_node);
-                        new_node._parent = curr_node;
+                        curr_node.AddChildNode(new_node);
 
                         new_node = new BlockSyntax(new string(indent.ToArray()), SyntaxNode.EmptyArray, SyntaxNode.EmptyArray);
                         currentpath.Add(new_node);
@@ -869,7 +865,7 @@ namespace CilTools.BytecodeAnalysis
                         if (i == 0) cs = CommentSyntax.Create(Environment.NewLine + lead, fragmentCodeArr[i], null, false);
                         else cs = CommentSyntax.Create(lead, fragmentCodeArr[i], null, false);
 
-                        curr_node._children.Add(cs);
+                        curr_node.AddChildNode(cs);
                     }
 
                     nextFragmentIndex++;
@@ -885,9 +881,7 @@ namespace CilTools.BytecodeAnalysis
                 }
 
                 //add instruction
-                curr_node._children.Add(
-                    new InstructionSyntax(new string(indent.ToArray()), node, dpars) { _parent = curr_node }
-                    );
+                curr_node.AddChildNode(new InstructionSyntax(new string(indent.ToArray()), node, dpars));
 
                 if (node.Next == null) break; //last instruction
                 else node = node.Next;
@@ -922,12 +916,11 @@ namespace CilTools.BytecodeAnalysis
                     else
                         curr_node = root;
 
-                    curr_node._children.Add(new_node);
-                    new_node._parent = curr_node;
+                    curr_node.AddChildNode(new_node);
                 }
             }
 
-            return root._children.ToArray();
+            return root.Content.ToArray();
         }
 
         /// <summary>
@@ -1005,9 +998,7 @@ namespace CilTools.BytecodeAnalysis
             }
 
             BlockSyntax body = new BlockSyntax(strIndent, SyntaxNode.EmptyArray, nodes.ToArray());
-
-            for (int i = 0; i < body._children.Count; i++) body._children[i]._parent = body;
-
+            
             return new MethodDefSyntax(sig, body);
         }
 

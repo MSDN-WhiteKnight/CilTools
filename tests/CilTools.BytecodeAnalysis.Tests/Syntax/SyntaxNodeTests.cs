@@ -28,6 +28,8 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         public void Test_GetTypeDefSyntax_Short(Type t)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
             SyntaxTestsCore.SampleMethods_AssertTypeSyntax(s);
         }
@@ -37,6 +39,8 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         public void Test_GetTypeDefSyntax_Full(Type t)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, true, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
 
             AssertThat.IsMatch(s, new Text[] {
@@ -56,6 +60,8 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         public void Test_GetTypeDefSyntax_Interfaces(Type t)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
 
             const string expected = @"
@@ -75,6 +81,8 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         {
             string corelib = typeof(object).Assembly.GetName().Name;
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
             Assert.IsTrue(s.Contains("extends ["+ corelib + "]System.Object"));
         }
@@ -90,6 +98,8 @@ extends CilTools.Tests.Common.DisassemblerSampleType {
     //...
 }";
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
             AssertThat.CilEquals(expected, s);
         }
@@ -99,6 +109,8 @@ extends CilTools.Tests.Common.DisassemblerSampleType {
         public void Test_GetTypeDefSyntax_Interface(Type t)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
             Assert.IsFalse(s.Contains("extends"));
         }
@@ -108,6 +120,8 @@ extends CilTools.Tests.Common.DisassemblerSampleType {
         public void Test_GetTypeDefSyntax_Fields(Type t)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
             
             AssertThat.IsMatch(s, new Text[] {
@@ -125,6 +139,8 @@ extends CilTools.Tests.Common.DisassemblerSampleType {
         public void Test_GetTypeDefSyntax_Properties_GenericType(Type t)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
 
             AssertThat.IsMatch(s, new Text[] {
@@ -157,6 +173,8 @@ extends [mscorlib]System.Enum
 
 }";
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
             AssertThat.CilEquals(expected, s);
         }
@@ -166,6 +184,8 @@ extends [mscorlib]System.Enum
         public void Test_GetTypeDefSyntax_Enum_Reflection(Type t)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
 
             AssertThat.IsMatch(s, new Text[] {
@@ -193,6 +213,8 @@ extends [mscorlib]System.Object
  //...
 }";
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
             AssertThat.CilEquals(expected, s);
         }
@@ -202,6 +224,8 @@ extends [mscorlib]System.Object
         public void Test_GetTypeDefSyntax_NonSerializable(Type t)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
             string s = Utils.SyntaxToString(nodes);
             Assert.IsFalse(s.Contains("serializable"));
         }
