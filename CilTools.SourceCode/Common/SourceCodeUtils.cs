@@ -3,6 +3,7 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using CilTools.SourceCode.CSharp;
 using CilTools.SourceCode.Cpp;
@@ -24,6 +25,15 @@ namespace CilTools.SourceCode.Common
             new DoubleQuotLiteralToken(), new SingleQuotLiteralToken(), new CommentToken(),
             new MultilineCommentToken()
         };
+
+        static readonly SourceTokenFactory s_csFactory = new SourceTokenFactory(
+            new CSharpClassifier(), SourceLanguage.CSharp);
+
+        static readonly SourceTokenFactory s_cppFactory = new SourceTokenFactory(
+            new CppClassifier(), SourceLanguage.Cpp);
+
+        static readonly SourceTokenFactory s_vbFactory = new SourceTokenFactory(
+            new VbClassifier(), SourceLanguage.VisualBasic);
 
         public static IEnumerable<SyntaxTokenDefinition> GetTokenDefinitions(string ext)
         {
@@ -49,7 +59,7 @@ namespace CilTools.SourceCode.Common
             return ext == ".cpp" || ext == ".c" || ext == ".h" || ext == string.Empty;
         }
 
-        public static TokenClassifier CreateClassifier(string ext)
+        public static SourceTokenFactory GetFactory(string ext)
         {
             if (ext == null) ext = string.Empty;
 
@@ -57,16 +67,33 @@ namespace CilTools.SourceCode.Common
 
             if (IsCppExtension(ext))
             {
-                return new CppClassifier();
+                return s_cppFactory;
             }
             else if (ext.Equals(".vb", StringComparison.OrdinalIgnoreCase))
             {
-                return new VbClassifier();
+                return s_vbFactory;
             }
             else
             {
-                return new CsharpClassifier();
+                return s_csFactory;
             }
+        }
+
+        public static SourceTokenFactory GetFactory(SourceLanguage lang)
+        {
+            switch (lang)
+            {
+                case SourceLanguage.CSharp: return s_csFactory;
+                case SourceLanguage.Cpp: return s_cppFactory;
+                case SourceLanguage.VisualBasic: return s_vbFactory;
+                default:throw new ArgumentException("Unknown source language: " + lang.ToString());
+            }
+        }
+
+        public static SourceToken[] ReadAllTokens(string src, IEnumerable<SyntaxTokenDefinition> definitions,
+            SourceTokenFactory factory)
+        {
+            return SyntaxReader.ReadAllNodes(src, definitions, factory).Cast<SourceToken>().ToArray();
         }
 
         internal static TokenKind GetKindCommon(string token)

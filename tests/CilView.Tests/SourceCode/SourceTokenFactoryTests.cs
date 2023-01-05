@@ -1,21 +1,18 @@
 ﻿/* CIL Tools
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.SourceCode.Common;
-using CilTools.SourceCode.CSharp;
-using CilTools.SourceCode.Cpp;
-using CilTools.SourceCode.VisualBasic;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
 
 namespace CilView.Tests.SourceCode
 {
     [TestClass]
-    public class TokenClassifierTests
+    public class SourceTokenFactoryTests
     {
         [TestMethod]
         [DataRow("class", TokenKind.Keyword)]
@@ -30,11 +27,12 @@ namespace CilView.Tests.SourceCode
         [DataRow("array", TokenKind.Name)]
         [DataRow("_var", TokenKind.Name)]
         [DataRow("\"//Comment\"", TokenKind.DoubleQuotLiteral)]
-        public void Test_CsharpClassifier(string token, TokenKind expected)
+        public void Test_Csharp(string token, TokenKind expected)
         {
-            CsharpClassifier classifier = new CsharpClassifier();
-            TokenKind actual = classifier.GetKind(token);
-            Assert.AreEqual(expected, actual);
+            SourceTokenFactory factory = SourceCodeUtils.GetFactory(SourceLanguage.CSharp);
+            SourceToken st = (SourceToken)factory.CreateNode(token, string.Empty, string.Empty);
+            Assert.AreEqual(expected, st.Kind);
+            Assert.AreEqual(token, st.Content);
         }
 
         [TestMethod]
@@ -50,11 +48,12 @@ namespace CilView.Tests.SourceCode
         [DataRow("array", TokenKind.Keyword)]
         [DataRow("_var", TokenKind.Name)]
         [DataRow("\"//Comment\"", TokenKind.DoubleQuotLiteral)]
-        public void Test_CppClassifier(string token, TokenKind expected)
+        public void Test_Cpp(string token, TokenKind expected)
         {
-            CppClassifier classifier = new CppClassifier();
-            TokenKind actual = classifier.GetKind(token);
-            Assert.AreEqual(expected, actual);
+            SourceTokenFactory factory = SourceCodeUtils.GetFactory(SourceLanguage.Cpp);
+            SourceToken st = (SourceToken)factory.CreateNode(token, string.Empty, string.Empty);
+            Assert.AreEqual(expected, st.Kind);
+            Assert.AreEqual(token, st.Content);
         }
 
         [TestMethod]
@@ -72,20 +71,21 @@ namespace CilView.Tests.SourceCode
         [DataRow("If", TokenKind.Keyword)]
         [DataRow("FOR", TokenKind.Keyword)]
         [DataRow("#If", TokenKind.Keyword)]
-        public void Test_VbClassifier(string token, TokenKind expected)
+        public void Test_VisualBasic(string token, TokenKind expected)
         {
-            VbClassifier classifier = new VbClassifier();
-            TokenKind actual = classifier.GetKind(token);
-            Assert.AreEqual(expected, actual);
+            SourceTokenFactory factory = SourceCodeUtils.GetFactory(SourceLanguage.VisualBasic);
+            SourceToken st = (SourceToken)factory.CreateNode(token, string.Empty, string.Empty);
+            Assert.AreEqual(expected, st.Kind);
+            Assert.AreEqual(token, st.Content);
         }
 
         [TestMethod]
-        public void Test_TokenClassifier_Create()
+        public void Test_GetFactory()
         {
-            Assert.IsTrue(SourceCodeUtils.CreateClassifier(".cs") is CsharpClassifier);
-            Assert.IsTrue(SourceCodeUtils.CreateClassifier(".vb") is VbClassifier);
-            Assert.IsTrue(SourceCodeUtils.CreateClassifier(".cpp") is CppClassifier);
-            Assert.IsTrue(SourceCodeUtils.CreateClassifier(".text") is CsharpClassifier);
+            Assert.AreEqual(SourceLanguage.CSharp, SourceCodeUtils.GetFactory(".cs").Language);
+            Assert.AreEqual(SourceLanguage.VisualBasic, SourceCodeUtils.GetFactory(".vb").Language);
+            Assert.AreEqual(SourceLanguage.Cpp, SourceCodeUtils.GetFactory(".cpp").Language);
+            Assert.AreEqual(SourceLanguage.CSharp, SourceCodeUtils.GetFactory(".text").Language);
         }
     }
 }

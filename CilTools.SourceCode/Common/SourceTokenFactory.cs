@@ -9,13 +9,20 @@ using CilTools.Syntax.Tokens;
 
 namespace CilTools.SourceCode.Common
 {
-    class SourceTokenFactory : SyntaxFactory
+    public class SourceTokenFactory : SyntaxFactory
     {
         TokenClassifier classifier;
+        SourceLanguage language;
 
-        public SourceTokenFactory(TokenClassifier tc)
+        internal SourceTokenFactory(TokenClassifier tc, SourceLanguage lang)
         {
             this.classifier = tc;
+            this.language = lang;
+        }
+
+        public SourceLanguage Language
+        {
+            get { return this.language; }
         }
 
         public override SyntaxNode CreateNode(string content, string leadingWhitespace, string trailingWhitespace)

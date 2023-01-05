@@ -70,8 +70,8 @@ namespace CilView.UI.Dialogs
                 sb.Append('}');
             }
 
-            SourceToken[] bodyTokens = SourceTokenReader.ReadAllTokens(sb.ToString(), SourceCodeUtils.GetTokenDefinitions(ext),
-                SourceCodeUtils.CreateClassifier(ext));
+            SourceToken[] bodyTokens = SourceCodeUtils.ReadAllTokens(sb.ToString(), SourceCodeUtils.GetTokenDefinitions(ext),
+                SourceCodeUtils.GetFactory(ext));
 
             List<SourceToken> tokens = new List<SourceToken>(sigTokens.Length + bodyTokens.Length + 1);
             tokens.AddRange(sigTokens);

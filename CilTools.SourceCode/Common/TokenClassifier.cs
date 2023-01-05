@@ -1,9 +1,10 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
+using CilTools.Syntax;
 
-namespace CilTools.Syntax.Tokens
+namespace CilTools.SourceCode.Common
 {
     /// <summary>
     /// Provides a base class for classes that define logic for determining the <see cref="TokenKind"/> of a given token
@@ -12,7 +13,7 @@ namespace CilTools.Syntax.Tokens
     /// Token classifiers are used mainly to enable syntax highlighting in "Show source" UI. Classes derived from this class 
     /// define the classification logic specific to a given programming language.
     /// </remarks>
-    public abstract class TokenClassifier
+    internal abstract class TokenClassifier
     {
         /// <summary>
         /// Gets a token kind for the specified token string

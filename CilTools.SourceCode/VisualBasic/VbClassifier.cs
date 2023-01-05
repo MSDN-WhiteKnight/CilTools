@@ -4,12 +4,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CilTools.SourceCode.Common;
 using CilTools.Syntax;
 using CilTools.Syntax.Tokens;
 
 namespace CilTools.SourceCode.VisualBasic
 {
-    public class VbClassifier : TokenClassifier
+    internal class VbClassifier : TokenClassifier
     {
         //https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/keywords/
         static readonly HashSet<string> keywords = new HashSet<string>(new string[] {

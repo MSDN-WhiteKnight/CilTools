@@ -1,14 +1,11 @@
 ﻿/* CIL Tools
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.SourceCode.Common;
-using CilTools.SourceCode.CSharp;
-using CilTools.SourceCode.Cpp;
-using CilTools.SourceCode.VisualBasic;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
 
@@ -18,11 +15,11 @@ namespace CilView.Tests.SourceCode
     public class SourceTokenTests
     {
         [TestMethod]
-        public void Test_ParseTokens_Class()
+        public void Test_ReadAllTokens_Class()
         {
             string src = "public static class Foo { } /*Fizz Buzz*/";
-            SourceToken[] tokens = SourceTokenReader.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"), 
-                new CsharpClassifier());
+            SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"), 
+                SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
 
             Assert.AreEqual(7, tokens.Length);
 
@@ -70,11 +67,11 @@ namespace CilView.Tests.SourceCode
         }
 
         [TestMethod]
-        public void Test_ParseTokens_NumericLiteral()
+        public void Test_ReadAllTokens_NumericLiteral()
         {
             string src = "int x=1; float y=2.3; // Comment";
-            SourceToken[] tokens = SourceTokenReader.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"), 
-                new CsharpClassifier());
+            SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
+                SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
             Assert.AreEqual(11, tokens.Length);
 
             Assert.AreEqual(TokenKind.Keyword, tokens[0].Kind);
@@ -145,11 +142,11 @@ namespace CilView.Tests.SourceCode
         }
 
         [TestMethod]
-        public void Test_ParseTokens_DottedIdentifiers()
+        public void Test_ReadAllTokens_DottedIdentifiers()
         {
             string src = "Foo.Bar";
-            SourceToken[] tokens = SourceTokenReader.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"), 
-                new CsharpClassifier());
+            SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
+                SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
 
             Assert.AreEqual(3, tokens.Length);
 
@@ -173,11 +170,11 @@ namespace CilView.Tests.SourceCode
         }
 
         [TestMethod]
-        public void Test_ParseTokens_VbComment()
+        public void Test_ReadAllTokens_VbComment()
         {
             string src = "Foo'Comment\nBar";
-            SourceToken[] tokens = SourceTokenReader.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".vb"), 
-                new VbClassifier());
+            SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".vb"),
+                SourceCodeUtils.GetFactory(SourceLanguage.VisualBasic));
 
             Assert.AreEqual(3, tokens.Length);
 
@@ -207,11 +204,11 @@ namespace CilView.Tests.SourceCode
         [DataRow(@"string s1=""\"""";string s2=""\\"";char c1='\'';char c2='\\';Foo();")]
         [DataRow("Bar(\"//Comment\");")]
         [DataRow("Foo.Bar")]
-        public void Test_ParseTokens_Roundtrip(string src)
+        public void Test_ReadAllTokens_Roundtrip(string src)
         {
             //c#
-            SourceToken[] tokens = SourceTokenReader.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"), 
-                new CsharpClassifier());
+            SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
+                SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < tokens.Length; i++)
@@ -222,8 +219,8 @@ namespace CilView.Tests.SourceCode
             Assert.AreEqual(src, sb.ToString(), "Parsed C# source does not match input string");
 
             //c++
-            tokens = SourceTokenReader.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cpp"), 
-                new CppClassifier());
+            tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cpp"),
+                SourceCodeUtils.GetFactory(SourceLanguage.Cpp));
             sb = new StringBuilder();
 
             for (int i = 0; i < tokens.Length; i++)

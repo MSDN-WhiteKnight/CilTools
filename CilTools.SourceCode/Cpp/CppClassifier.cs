@@ -10,7 +10,7 @@ using CilTools.Syntax.Tokens;
 
 namespace CilTools.SourceCode.Cpp
 {
-    public class CppClassifier : TokenClassifier
+    internal class CppClassifier : TokenClassifier
     {
         //https://docs.microsoft.com/en-us/cpp/cpp/keywords-cpp?view=msvc-170
         static readonly HashSet<string> keywords = new HashSet<string>(new string[] {
