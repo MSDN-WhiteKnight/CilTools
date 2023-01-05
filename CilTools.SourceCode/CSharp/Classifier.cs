@@ -10,7 +10,7 @@ using CilTools.Syntax.Tokens;
 
 namespace CilTools.SourceCode.CSharp
 {
-    public class CsharpClassifier : TokenClassifier
+    public class CSharpClassifier : TokenClassifier
     {
         //https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/
         static readonly HashSet<string> keywords = new HashSet<string>(new string[] {
