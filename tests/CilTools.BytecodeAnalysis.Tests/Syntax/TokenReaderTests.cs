@@ -14,6 +14,21 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
     public class TokenReaderTests
     {
         [TestMethod]
+        public void Test_PeekString()
+        {
+            string s = "abcd";
+            TokenReader reader = new TokenReader(s, SyntaxTokenDefinition.IlasmTokens);
+            string res;
+
+            res = reader.PeekString(2);
+            Assert.AreEqual("ab", res);
+            res = reader.PeekString(4);
+            Assert.AreEqual("abcd", res);
+            res = reader.PeekString(5);
+            Assert.AreEqual("abcd", res);
+        }
+
+        [TestMethod]
         public void Test_TokenReader_ReadAll()
         {
             string s = "int i=1*2/0.5; /*число*/ string s1 = \"Hello, world\";/*string2*/ char c='\\'';";

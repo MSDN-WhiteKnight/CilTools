@@ -124,7 +124,7 @@ namespace CilTools.Syntax.Tokens
 
         internal char[] PeekChars(int n)
         {
-            if (_pos + n >= _source.Length) return new char[0];
+            if (_pos + n > _source.Length) return new char[0];
 
             char[] ret = new char[n];
 
@@ -134,6 +134,29 @@ namespace CilTools.Syntax.Tokens
             }
 
             return ret;
+        }
+
+        /// <summary>
+        /// Gets a specified number of next characters in this token reader without advancing a current position
+        /// </summary>
+        /// <param name="n">Number of characters to peek</param>
+        /// <returns>
+        /// String containing <c>n</c> next characters, or an empty string when the end of string is reached.
+        /// </returns>
+        public string PeekString(int n)
+        {
+            if (_pos >= _source.Length) return string.Empty;
+
+            if (_pos + n > _source.Length) n = _source.Length - _pos;
+
+            StringBuilder sb = new StringBuilder(n);
+
+            for (int i = 0; i < n; i++)
+            {
+                sb.Append(_source[_pos + i]);
+            }
+
+            return sb.ToString();
         }
     }
 }
