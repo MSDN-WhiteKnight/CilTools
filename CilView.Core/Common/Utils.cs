@@ -23,6 +23,12 @@ namespace CilView.Common
             return String.Equals(left, right, StringComparison.InvariantCultureIgnoreCase);
         }
 
+        public static bool StringStartsWith(string str, string start)
+        {
+            if (str == null) return false;
+            else return str.StartsWith(start, StringComparison.InvariantCulture);
+        }
+
         public static bool PathEquals(string left, string right)
         {
             if (left == null)
