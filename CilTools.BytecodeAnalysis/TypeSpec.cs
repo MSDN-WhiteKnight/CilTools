@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Globalization;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using CilTools.Reflection;
 using CilTools.Syntax;
@@ -972,6 +973,16 @@ namespace CilTools.BytecodeAnalysis
         public bool IsFunctionPointer
         {
             get { return this._ElementType == (byte)ElementType.FnPtr; }
+        }
+
+        /// <inheritdoc/>
+        public override StructLayoutAttribute StructLayoutAttribute
+        {
+            get
+            {
+                if (this._Type != null) return this._Type.StructLayoutAttribute;
+                else return base.StructLayoutAttribute;
+            }
         }
 
         /// <inheritdoc/>

@@ -5,9 +5,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
+using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TestData;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -674,6 +676,40 @@ namespace CilTools.Metadata.Tests
             AssertThat.HasOnlyOneMatch(members, x => x is EventInfo && x.Name == "A");
             AssertThat.HasOnlyOneMatch(members, x => x is EventInfo && x.Name == "B");
             AssertThat.HasOnlyOneMatch(members, x => x is EventInfo && x.Name == "C");
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(SampleType), BytecodeProviders.Metadata)]
+        public void Test_StructLayoutAttribute_Auto(Type t)
+        {
+            Assert.AreEqual(TypeAttributes.AutoLayout, t.Attributes & TypeAttributes.LayoutMask);
+            StructLayoutAttribute sla = t.StructLayoutAttribute;
+            Assert.AreEqual(LayoutKind.Auto, sla.Value);
+            Assert.AreEqual(CharSet.Ansi, sla.CharSet);
+            Assert.AreEqual(0, sla.Pack);
+            Assert.AreEqual(0, sla.Size);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(SequentialStructSample), BytecodeProviders.Metadata)]
+        public void Test_StructLayoutAttribute_Sequential(Type t)
+        {
+            Assert.AreEqual(TypeAttributes.SequentialLayout, t.Attributes & TypeAttributes.LayoutMask);
+            StructLayoutAttribute sla = t.StructLayoutAttribute;
+            Assert.AreEqual(LayoutKind.Sequential, sla.Value);
+            Assert.AreEqual(2, sla.Pack);
+            Assert.AreEqual(4, sla.Size);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(ExplicitStructSample), BytecodeProviders.Metadata)]
+        public void Test_StructLayoutAttribute_Explicit(Type t)
+        {
+            Assert.AreEqual(TypeAttributes.ExplicitLayout, t.Attributes & TypeAttributes.LayoutMask);
+            StructLayoutAttribute sla = t.StructLayoutAttribute;
+            Assert.AreEqual(LayoutKind.Explicit, sla.Value);
+            Assert.AreEqual(1, sla.Pack);
+            Assert.AreEqual(8, sla.Size);
         }
     }
 }

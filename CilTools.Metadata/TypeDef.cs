@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
@@ -699,6 +700,35 @@ namespace CilTools.Metadata
                 if (ht.IsNil) return null;
 
                 return this.assembly.GetTypeDefinition(ht);
+            }
+        }
+
+        public override StructLayoutAttribute StructLayoutAttribute
+        {
+            get
+            {
+                LayoutKind lk = 0;
+
+                switch (type.Attributes & TypeAttributes.LayoutMask)
+                {
+                    case TypeAttributes.AutoLayout: lk = LayoutKind.Auto; break;
+                    case TypeAttributes.SequentialLayout: lk = LayoutKind.Sequential; break;
+                    case TypeAttributes.ExplicitLayout: lk = LayoutKind.Explicit; break;
+                }
+
+                var ret = new System.Runtime.InteropServices.StructLayoutAttribute(lk);
+
+                switch (type.Attributes & TypeAttributes.StringFormatMask)
+                {
+                    case TypeAttributes.UnicodeClass: ret.CharSet = CharSet.Unicode; break;
+                    case TypeAttributes.AnsiClass: ret.CharSet = CharSet.Ansi; break;
+                    default: ret.CharSet = CharSet.Auto; break;
+                }
+                
+                TypeLayout tl = this.type.GetLayout();
+                ret.Pack = tl.PackingSize;
+                ret.Size = tl.Size;
+                return ret;
             }
         }
 
