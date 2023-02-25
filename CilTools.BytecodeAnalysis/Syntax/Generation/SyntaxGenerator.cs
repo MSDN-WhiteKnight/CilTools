@@ -7,6 +7,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
@@ -788,8 +789,42 @@ namespace CilTools.Syntax.Generation
                 bodyIndent = startIndent;
             }
 
-            //body
+            //body (ECMA 335 II.10.2 - Body of a type definition)
             content.Clear();
+
+            //struct layout 
+            StructLayoutAttribute sla = null;
+
+            try
+            {
+                sla = t.StructLayoutAttribute;
+            }
+            catch (Exception ex)
+            {
+                if (ReflectionUtils.IsExpectedException(ex))
+                {
+                    CilErrorEventArgs ea = new CilErrorEventArgs(ex, "Failed to get struct layout.");
+                    Diagnostics.OnError(t, ea);
+                }
+                else throw;
+            }
+
+            if (sla != null && sla.Value != LayoutKind.Auto && (sla.Size != 0 || sla.Pack != 0))
+            {
+                //It is unclear whether layout attributes are supported for auto layout or not,
+                //but runtime reflection sometimes returns bogus values that aren't actually 
+                //present in metadata, so we skip it
+
+                LiteralSyntax ls = LiteralSyntax.CreateFromValue(string.Empty, sla.Pack, Environment.NewLine);
+                DirectiveSyntax ds = new DirectiveSyntax(SyntaxUtils.GetIndentString(bodyIndent),
+                    "pack", new SyntaxNode[] { ls });
+                content.Add(ds);
+
+                ls = LiteralSyntax.CreateFromValue(string.Empty, sla.Size, Environment.NewLine);
+                ds = new DirectiveSyntax(SyntaxUtils.GetIndentString(bodyIndent),
+                    "size", new SyntaxNode[] { ls });
+                content.Add(ds);
+            }
 
             //custom attributes
             try

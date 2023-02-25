@@ -229,5 +229,42 @@ extends [mscorlib]System.Object
             string s = Utils.SyntaxToString(nodes);
             Assert.IsFalse(s.Contains("serializable"));
         }
+
+        [TestMethod]
+        [TypeTestData(typeof(SequentialStructSample), BytecodeProviders.All)]
+        public void Test_GetTypeDefSyntax_SequentialStruct(Type t)
+        {
+            const string expected = @"
+.class public sequential ansi sealed beforefieldinit CilTools.Tests.Common.TestData.SequentialStructSample
+extends [mscorlib]System.ValueType {
+ .pack 2
+ .size 4
+ .field public int32 x
+ //... 
+}";
+
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.CilEquals(expected, s);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(ExplicitStructSample), BytecodeProviders.All)]
+        public void Test_GetTypeDefSyntax_ExplicitStruct(Type t)
+        {
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
+            string s = Utils.SyntaxToString(nodes);
+
+            AssertThat.IsMatch(s, new Text[] {
+                ".class", Text.Any, "explicit", Text.Any, "ExplicitStructSample", Text.Any,
+                "{", Text.Any,
+                ".pack 1", Text.Any, ".size 8", Text.Any,
+                "}", Text.Any
+            });
+        }
     }
 }

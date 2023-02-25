@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Diagnostics;
 using CilTools.BytecodeAnalysis;
@@ -212,6 +213,8 @@ namespace CilTools.Runtime
                 return TypeName;
             }
         }
+
+        public override StructLayoutAttribute StructLayoutAttribute => null;
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
