@@ -199,7 +199,7 @@ namespace CilTools.Tests.Common
 
         public static void TestEscaping()
         {
-            Console.WriteLine("\"English - Русский - Ελληνικά - Español\r\n\tąęėšų,.\\\"");
+            Console.WriteLine("\"English - Русский - Ελληνικά - Español\r\n\tąęėšų,.\\x<y+z\"");
         }
 
         public static void TestMethodRefGenericParameter()

@@ -101,7 +101,7 @@ namespace CilTools.BytecodeAnalysis
                     case '"': sb.Append(CharToOctal(c)); break;
 
                     default:
-                        if (char.IsLetterOrDigit(c) || char.IsPunctuation(c) || c == ' ')
+                        if (char.IsLetterOrDigit(c) || char.IsPunctuation(c) || char.IsSymbol(c) || c == ' ')
                         {
                             sb.Append(c);
                         }

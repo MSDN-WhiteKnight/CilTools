@@ -184,7 +184,7 @@ namespace CilTools.BytecodeAnalysis.Tests
             AssertThat.IsMatch(str, new Text[] {
                 ".method", Text.Any,"TestEscaping", Text.Any,
                 "ldstr", Text.Any,
-                "\"\\042English - Русский - Ελληνικά - Español\\015\\n\\tąęėšų,.\\\\\\042\"", Text.Any,
+                "\"\\042English - Русский - Ελληνικά - Español\\015\\n\\tąęėšų,.\\\\x<y+z\\042\"", Text.Any,
                 });
         }
 
