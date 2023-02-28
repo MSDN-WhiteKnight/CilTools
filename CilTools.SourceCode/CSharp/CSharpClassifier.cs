@@ -39,6 +39,11 @@ namespace CilTools.SourceCode.CSharp
                 if (IsKeyword(token)) return TokenKind.Keyword;
                 else return TokenKind.Name;
             }
+            else if (token.Length >= 3)
+            {
+                if (token[0] == '@' && token[1] == '"') return TokenKind.DoubleQuotLiteral;
+                else return SourceCodeUtils.GetKindCommon(token);
+            }
             else return SourceCodeUtils.GetKindCommon(token);
         }
     }

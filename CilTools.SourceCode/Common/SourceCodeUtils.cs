@@ -26,6 +26,12 @@ namespace CilTools.SourceCode.Common
             new MultilineCommentToken()
         };
 
+        static readonly SyntaxTokenDefinition[] s_csharpDefinitions = new SyntaxTokenDefinition[] {
+            new CommonNameToken(), new CSharpVerbatimLiteralToken(), new PunctuationToken(), new WhitespaceToken(), 
+            new NumericLiteralToken(), new DoubleQuotLiteralToken(), new SingleQuotLiteralToken(), new CommentToken(),
+            new MultilineCommentToken()
+        };
+
         static readonly SourceTokenFactory s_csFactory = new SourceTokenFactory(
             new CSharpClassifier(), SourceLanguage.CSharp);
 
@@ -42,7 +48,11 @@ namespace CilTools.SourceCode.Common
             ext = ext.Trim();
             SyntaxTokenDefinition[] ret;
 
-            if (ext.Equals(".vb", StringComparison.OrdinalIgnoreCase))
+            if (ext.Equals(".cs", StringComparison.OrdinalIgnoreCase))
+            {
+                ret = s_csharpDefinitions;
+            }
+            else if (ext.Equals(".vb", StringComparison.OrdinalIgnoreCase))
             {
                 ret = s_vbDefinitions;
             }

@@ -198,6 +198,58 @@ namespace CilView.Tests.SourceCode
         }
 
         [TestMethod]
+        public void Test_ReadAllTokens_VerbatimLiteral()
+        {
+            string src = "s = @\"Verbatim\\\"\"\nLiteral\";";
+            SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
+                SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
+
+            Assert.AreEqual(4, tokens.Length);
+
+            Assert.AreEqual(TokenKind.Name, tokens[0].Kind);
+            Assert.AreEqual("s", tokens[0].Content);
+            Assert.AreEqual(string.Empty, tokens[0].LeadingWhitespace);
+            Assert.AreEqual(" ", tokens[0].TrailingWhitespace);
+            Assert.AreEqual("s ", tokens[0].ToString());
+
+            Assert.AreEqual(TokenKind.Punctuation, tokens[1].Kind);
+            Assert.AreEqual("=", tokens[1].Content);
+            Assert.AreEqual(string.Empty, tokens[1].LeadingWhitespace);
+            Assert.AreEqual(" ", tokens[1].TrailingWhitespace);
+            Assert.AreEqual("= ", tokens[1].ToString());
+
+            Assert.AreEqual(TokenKind.DoubleQuotLiteral, tokens[2].Kind);
+            Assert.AreEqual("@\"Verbatim\\\"\"\nLiteral\"", tokens[2].Content);
+            Assert.AreEqual(string.Empty, tokens[2].LeadingWhitespace);
+            Assert.AreEqual(string.Empty, tokens[2].TrailingWhitespace);
+
+            Assert.AreEqual(TokenKind.Punctuation, tokens[3].Kind);
+            Assert.AreEqual(";", tokens[3].Content);
+            Assert.AreEqual(string.Empty, tokens[3].LeadingWhitespace);
+            Assert.AreEqual(string.Empty, tokens[3].TrailingWhitespace);
+            Assert.AreEqual(";", tokens[3].ToString());
+        }
+
+        [TestMethod]
+        public void Test_ReadAllTokens_VerbatimLiteral_Empty()
+        {
+            string src = "@\"\"+\"@\"";
+            SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
+                SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
+
+            Assert.AreEqual(3, tokens.Length);
+
+            Assert.AreEqual(TokenKind.DoubleQuotLiteral, tokens[0].Kind);
+            Assert.AreEqual("@\"\"", tokens[0].Content);
+
+            Assert.AreEqual(TokenKind.Punctuation, tokens[1].Kind);
+            Assert.AreEqual("+", tokens[1].Content);
+
+            Assert.AreEqual(TokenKind.DoubleQuotLiteral, tokens[2].Kind);
+            Assert.AreEqual("\"@\"", tokens[2].Content);
+        }
+
+        [TestMethod]
         [DataRow("public static class Foo { } /*Fizz Buzz*/")]
         [DataRow("int x=1; float y=2.3; // Comment")]
         [DataRow("int i=1*2/0.5; /*число*/ string s1 = \"Hello, world\";/*string2*/ char c='\\'';")]
