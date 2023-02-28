@@ -12,7 +12,7 @@ namespace CilTools.SourceCode.CSharp
     /// <summary>
     /// Represents a token definition for verbatim string literal (<c>@"Hello, world"</c>)
     /// </summary>
-    public class CSharpVerbatimLiteralToken : SyntaxTokenDefinition
+    class CSharpVerbatimLiteralToken : SyntaxTokenDefinition
     {
         /// <inheritdoc/>
         public override TokenKind Kind => TokenKind.DoubleQuotLiteral;
