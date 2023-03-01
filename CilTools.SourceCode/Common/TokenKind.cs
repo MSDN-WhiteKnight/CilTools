@@ -1,9 +1,9 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 
-namespace CilTools.Syntax
+namespace CilTools.SourceCode.Common
 {
     /// <summary>
     /// Represents the kind of token, a lexical element in the formal language grammar.
@@ -63,15 +63,7 @@ namespace CilTools.Syntax
         /// <summary>
         /// Multiline comment token (/*...*/)
         /// </summary>
-        MultilineComment,
-
-        /// <summary>
-        /// <para>Whitespace sequence that separates tokens.</para>
-        /// <para>Whitespaces are not actually tokens, but they are still included there as the tokenizer needs to preserve them 
-        /// when separating tokens so later we could produce <see cref="SyntaxNode"/> instances with Leading/TrailingWhitespace
-        /// properties set.</para>
-        /// </summary>
-        Whitespace
+        MultilineComment
     }
 
     // Keyword, TypeName and FunctionName tokens are represented as Name at token parsing stage.
