@@ -15,9 +15,6 @@ namespace CilTools.SourceCode.CSharp
     class CSharpVerbatimLiteralToken : SyntaxTokenDefinition
     {
         /// <inheritdoc/>
-        public override TokenKind Kind => TokenKind.DoubleQuotLiteral;
-
-        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
             string s = reader.PeekString(2);

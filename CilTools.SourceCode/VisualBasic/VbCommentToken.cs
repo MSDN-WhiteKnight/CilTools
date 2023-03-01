@@ -11,8 +11,6 @@ namespace CilTools.SourceCode.VisualBasic
 {
     internal class VbCommentToken : SyntaxTokenDefinition
     {
-        public override TokenKind Kind => TokenKind.Comment;
-
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();

@@ -52,11 +52,6 @@ namespace CilTools.Syntax.Tokens
         }
 
         /// <summary>
-        /// Gets the token kind for this token definition
-        /// </summary>
-        public abstract TokenKind Kind { get; }
-
-        /// <summary>
         /// Gets a value indicating whether the current position of the <see cref="TokenReader"/> contains a sequence 
         /// of characters valid as the token start
         /// </summary>
@@ -77,8 +72,6 @@ namespace CilTools.Syntax.Tokens
     /// </summary>
     class NameToken : SyntaxTokenDefinition
     {
-        public override TokenKind Kind => TokenKind.Name;
-
         static readonly HashSet<char> validChars = new HashSet<char>(new char[] { '.', '_', '$', '@', '`', '?' });
 
         public override bool HasStart(TokenReader reader)
@@ -101,9 +94,6 @@ namespace CilTools.Syntax.Tokens
     /// </summary>
     public class PunctuationToken : SyntaxTokenDefinition
     {
-        /// <inheritdoc/>
-        public override TokenKind Kind => TokenKind.Punctuation;
-
         static bool IsPunctuation(char c)
         {
             return (char.IsPunctuation(c) || char.IsSymbol(c)) && c != '\'' && c != '"';
@@ -145,9 +135,6 @@ namespace CilTools.Syntax.Tokens
     public class WhitespaceToken : SyntaxTokenDefinition
     {
         /// <inheritdoc/>
-        public override TokenKind Kind => TokenKind.Whitespace;
-
-        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
@@ -167,9 +154,6 @@ namespace CilTools.Syntax.Tokens
     /// </summary>
     public class NumericLiteralToken : SyntaxTokenDefinition
     {
-        /// <inheritdoc/>
-        public override TokenKind Kind => TokenKind.NumericLiteral;
-
         /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
@@ -191,9 +175,6 @@ namespace CilTools.Syntax.Tokens
     /// </summary>
     public class DoubleQuotLiteralToken : SyntaxTokenDefinition
     {
-        /// <inheritdoc/>
-        public override TokenKind Kind => TokenKind.DoubleQuotLiteral;
-
         /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
@@ -223,9 +204,6 @@ namespace CilTools.Syntax.Tokens
     public class SingleQuotLiteralToken : SyntaxTokenDefinition
     {
         /// <inheritdoc/>
-        public override TokenKind Kind => TokenKind.SingleQuotLiteral;
-
-        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
@@ -254,9 +232,6 @@ namespace CilTools.Syntax.Tokens
     public class MultilineCommentToken : SyntaxTokenDefinition
     {
         /// <inheritdoc/>
-        public override TokenKind Kind => TokenKind.MultilineComment;
-
-        /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {
             char[] chars = reader.PeekChars(2);
@@ -281,9 +256,6 @@ namespace CilTools.Syntax.Tokens
     /// </summary>
     public class CommentToken : SyntaxTokenDefinition
     {
-        /// <inheritdoc/>
-        public override TokenKind Kind => TokenKind.MultilineComment;
-
         /// <inheritdoc/>
         public override bool HasStart(TokenReader reader)
         {

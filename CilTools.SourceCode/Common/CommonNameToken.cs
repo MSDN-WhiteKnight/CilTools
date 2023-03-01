@@ -14,8 +14,6 @@ namespace CilTools.SourceCode.Common
     /// </summary>
     internal class CommonNameToken : SyntaxTokenDefinition
     {
-        public override TokenKind Kind => TokenKind.Name;
-
         public override bool HasStart(TokenReader reader)
         {
             char c = reader.PeekChar();
