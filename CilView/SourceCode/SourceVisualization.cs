@@ -25,6 +25,7 @@ namespace CilView.SourceCode
                 case TokenKind.TypeName: r.Foreground = CilVisualization.IdentifierBrush; break;
                 case TokenKind.DoubleQuotLiteral: r.Foreground = Brushes.Red;break;
                 case TokenKind.SingleQuotLiteral: r.Foreground = Brushes.Red; break;
+                case TokenKind.SpecialTextLiteral: r.Foreground = Brushes.Red; break;
                 case TokenKind.Comment: r.Foreground = Brushes.Green; break;
                 case TokenKind.MultilineComment: r.Foreground = Brushes.Green; break;
             }

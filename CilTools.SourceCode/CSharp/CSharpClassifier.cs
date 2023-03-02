@@ -41,7 +41,8 @@ namespace CilTools.SourceCode.CSharp
             }
             else if (token.Length >= 3)
             {
-                if (token[0] == '@' && token[1] == '"') return TokenKind.DoubleQuotLiteral;
+                //verbatim string literal
+                if (token[0] == '@' && token[1] == '"') return TokenKind.SpecialTextLiteral;
                 else return SourceCodeUtils.GetKindCommon(token);
             }
             else return SourceCodeUtils.GetKindCommon(token);

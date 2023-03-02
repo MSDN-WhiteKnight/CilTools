@@ -218,7 +218,7 @@ namespace CilView.Tests.SourceCode
             Assert.AreEqual(" ", tokens[1].TrailingWhitespace);
             Assert.AreEqual("= ", tokens[1].ToString());
 
-            Assert.AreEqual(TokenKind.DoubleQuotLiteral, tokens[2].Kind);
+            Assert.AreEqual(TokenKind.SpecialTextLiteral, tokens[2].Kind);
             Assert.AreEqual("@\"Verbatim\\\"\"\nLiteral\"", tokens[2].Content);
             Assert.AreEqual(string.Empty, tokens[2].LeadingWhitespace);
             Assert.AreEqual(string.Empty, tokens[2].TrailingWhitespace);
@@ -239,7 +239,7 @@ namespace CilView.Tests.SourceCode
 
             Assert.AreEqual(3, tokens.Length);
 
-            Assert.AreEqual(TokenKind.DoubleQuotLiteral, tokens[0].Kind);
+            Assert.AreEqual(TokenKind.SpecialTextLiteral, tokens[0].Kind);
             Assert.AreEqual("@\"\"", tokens[0].Content);
 
             Assert.AreEqual(TokenKind.Punctuation, tokens[1].Kind);

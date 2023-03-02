@@ -27,7 +27,7 @@ namespace CilView.Tests.SourceCode
         [DataRow("array", TokenKind.Name)]
         [DataRow("_var", TokenKind.Name)]
         [DataRow("\"//Comment\"", TokenKind.DoubleQuotLiteral)]
-        [DataRow("@\"Verbatim literal\"", TokenKind.DoubleQuotLiteral)]
+        [DataRow("@\"Verbatim literal\"", TokenKind.SpecialTextLiteral)]
         public void Test_Csharp(string token, TokenKind expected)
         {
             SourceTokenFactory factory = SourceCodeUtils.GetFactory(SourceLanguage.CSharp);

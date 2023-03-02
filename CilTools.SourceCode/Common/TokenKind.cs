@@ -51,17 +51,22 @@ namespace CilTools.SourceCode.Common
         DoubleQuotLiteral,
 
         /// <summary>
+        /// Text literal with a special syntax, such as verbatim string literal in C#
+        /// </summary>
+        SpecialTextLiteral,
+
+        /// <summary>
         /// Literal token of numeric type (integer or floating-point)
         /// </summary>
         NumericLiteral,
 
         /// <summary>
-        /// Single-line comment token (//...)
+        /// Single-line comment token
         /// </summary>
         Comment,
 
         /// <summary>
-        /// Multiline comment token (/*...*/)
+        /// Multiline comment token
         /// </summary>
         MultilineComment
     }

@@ -75,6 +75,7 @@ namespace CilTools.CommandLine
                         case TokenKind.TypeName: Console.ForegroundColor = ConsoleColor.Cyan; break;
                         case TokenKind.DoubleQuotLiteral: Console.ForegroundColor = ConsoleColor.Red; break;
                         case TokenKind.SingleQuotLiteral: Console.ForegroundColor = ConsoleColor.Red; break;
+                        case TokenKind.SpecialTextLiteral: Console.ForegroundColor = ConsoleColor.Red; break;
                         case TokenKind.Comment: Console.ForegroundColor = ConsoleColor.Green; break;
                         case TokenKind.MultilineComment: Console.ForegroundColor = ConsoleColor.Green; break;
                     }
