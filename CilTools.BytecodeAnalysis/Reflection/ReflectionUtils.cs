@@ -216,56 +216,7 @@ namespace CilTools.Reflection
             }
             else return null;
         }
-
-        public static string GetConstantValueString(Type t, object constant)
-        {
-            StringBuilder sb = new StringBuilder(100);
-            StringWriter output = new StringWriter(sb);
-
-            if (constant != null)
-            {
-                if (constant.GetType() == typeof(string))
-                {
-                    output.Write('"');
-                    output.Write(CilAnalysis.EscapeString(constant.ToString()));
-                    output.Write('"');
-                }
-                else if (constant.GetType() == typeof(char))
-                {
-                    output.Write("char");
-                    output.Write('(');
-                    ushort val = Convert.ToUInt16(constant);
-                    output.Write("0x");
-                    output.Write(val.ToString("X4", CultureInfo.InvariantCulture));
-                    output.Write(')');
-                }
-                else if (constant.GetType() == typeof(bool))
-                {
-                    if((bool)constant) output.Write("bool(true)");
-                    else output.Write("bool(false)");
-                }
-                else if (IsEnumType(t))
-                {
-                    //use enum underlying numeric type
-                    output.Write(CilAnalysis.GetTypeName(constant.GetType()));
-                    output.Write('(');
-                    output.Write(Convert.ToString(constant, CultureInfo.InvariantCulture));
-                    output.Write(')');
-                }
-                else //most of the types...
-                {
-                    output.Write(CilAnalysis.GetTypeName(t));
-                    output.Write('(');
-                    output.Write(Convert.ToString(constant, CultureInfo.InvariantCulture));
-                    output.Write(')');
-                }
-            }
-            else output.Write("nullref");
-            output.Flush();
-            string content = sb.ToString();
-            return content;
-        }
-
+        
         internal static bool IsModuleType(Type t)
         {
             int token = 0;

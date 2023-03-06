@@ -301,6 +301,64 @@ namespace CilTools.Syntax.Generation
             }
         }
 
+        static SyntaxNode[] GetConstantValueSyntax(Type t, object constant)
+        {
+            if (constant == null)
+            {
+                return new SyntaxNode[] { new KeywordSyntax("nullref", string.Empty) };
+            }
+
+            List<SyntaxNode> output = new List<SyntaxNode>();
+
+            if (constant.GetType() == typeof(string))
+            {
+                output.Add(LiteralSyntax.CreateFromValue(string.Empty, constant.ToString(), string.Empty));
+            }
+            else if (constant.GetType() == typeof(char))
+            {
+                output.Add(new KeywordSyntax("char", string.Empty));
+                output.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
+                ushort val = Convert.ToUInt16(constant);
+                string raw = "0x" + val.ToString("X4", CultureInfo.InvariantCulture);
+                output.Add(new GenericSyntax(raw));
+                output.Add(new PunctuationSyntax(string.Empty, ")", string.Empty));
+            }
+            else if (constant.GetType() == typeof(bool))
+            {
+                output.Add(new KeywordSyntax("bool", string.Empty));
+                output.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
+
+                if ((bool)constant) output.Add(new KeywordSyntax("true", string.Empty));
+                else output.Add(new KeywordSyntax("false", string.Empty));
+
+                output.Add(new PunctuationSyntax(string.Empty, ")", string.Empty));
+            }
+            else //most of the types...
+            {
+                Type constType;
+
+                if (ReflectionUtils.IsEnumType(t))
+                {
+                    constType = constant.GetType(); //use enum underlying numeric type
+                }
+                else
+                {
+                    constType = t;
+                }
+
+                TypeSyntaxGenerator gen = new TypeSyntaxGenerator();
+                IEnumerable<SyntaxNode> syntax = gen.GetTypeNameSyntax(constType);
+
+                foreach (SyntaxNode node in syntax) output.Add(node);
+
+                output.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
+                output.Add(LiteralSyntax.CreateFromValue(string.Empty, constant, string.Empty));
+                output.Add(new PunctuationSyntax(string.Empty, ")", string.Empty));
+            }
+
+            return output.ToArray();
+        }
+
         internal SyntaxNode[] GetDefaultsSyntax(MethodBase m, int startIndent)
         {
             ParameterInfo[] pars = m.GetParameters();
@@ -362,30 +420,23 @@ namespace CilTools.Syntax.Generation
 
                 if ((pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value) || attrs.Length > 0)
                 {
-                    StringBuilder sb = new StringBuilder(100);
-                    StringWriter output = new StringWriter(sb);
-                    output.Write(' ');
-                    output.Write('[');
-                    output.Write((i + 1).ToString());
-                    output.Write(']');
-
+                    List<SyntaxNode> dirNodes = new List<SyntaxNode>();
+                    dirNodes.Add(new PunctuationSyntax(" ", "[", string.Empty));
+                    dirNodes.Add(LiteralSyntax.CreateFromValue(string.Empty, i + 1, string.Empty));
+                    dirNodes.Add(new PunctuationSyntax(string.Empty, "]", string.Empty));
+                    
                     if (pars[i].IsOptional && pars[i].RawDefaultValue != DBNull.Value)
                     {
-                        output.Write(" = ");
+                        dirNodes.Add(new PunctuationSyntax(" ", "=", " "));
+                        SyntaxNode[] valSyntax = GetConstantValueSyntax(pars[i].ParameterType, pars[i].RawDefaultValue);
 
-                        string valstr = ReflectionUtils.GetConstantValueString(pars[i].ParameterType, pars[i].RawDefaultValue);
-                        output.WriteLine(valstr);
-                    }
-                    else
-                    {
-                        output.WriteLine();
+                        foreach (SyntaxNode node in valSyntax) dirNodes.Add(node);
                     }
 
-                    output.Flush();
-
-                    string content = sb.ToString();
+                    dirNodes.Add(new GenericSyntax(Environment.NewLine));
+                    
                     DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "param",
-                        new SyntaxNode[] { new GenericSyntax(content) });
+                        dirNodes.ToArray());
                     ret.Add(dir);
 
                     // Parameter custom attributes
@@ -935,9 +986,10 @@ namespace CilTools.Syntax.Generation
 
                 if (constval != DBNull.Value)
                 {
-                    string valstr = ReflectionUtils.GetConstantValueString(fields[i].FieldType, constval);
                     inner.Add(new PunctuationSyntax(" ", "=", " "));
-                    inner.Add(new GenericSyntax(valstr));
+                    SyntaxNode[] valSyntax = GetConstantValueSyntax(fields[i].FieldType, constval);
+
+                    foreach (SyntaxNode node in valSyntax) inner.Add(node);
                 }
 
                 inner.Add(new GenericSyntax(Environment.NewLine));
