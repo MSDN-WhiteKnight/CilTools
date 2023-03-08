@@ -134,7 +134,10 @@ namespace CilTools.Metadata
 
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetConstructors(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         public override Type GetElementType()

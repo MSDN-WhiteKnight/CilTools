@@ -1180,7 +1180,7 @@ namespace CilTools.Syntax.Generation
 
                     try
                     {
-                        constructors = t.GetConstructors(ReflectionUtils.AllMembers);
+                        constructors = t.GetConstructors(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
                     }
                     catch (Exception ex)
                     {
@@ -1213,7 +1213,7 @@ namespace CilTools.Syntax.Generation
 
                 try
                 {
-                    methods = t.GetMethods(ReflectionUtils.AllMembers);
+                    methods = t.GetMethods(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
                 }
                 catch (Exception ex)
                 {

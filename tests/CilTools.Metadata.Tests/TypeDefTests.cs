@@ -344,7 +344,17 @@ namespace CilTools.Metadata.Tests
                     "}", Text.Any});
             }
         }
-        
+
+        static void AssertSampleTypeMethods(MethodInfo[] methods)
+        {
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "PublicStaticMethod");
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "PublicInstanceMethod");
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "PrivateStaticMethod");
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "PrivateInstanceMethod");
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "get_PublicProperty");
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "set_PublicProperty");
+        }
+
         [TestMethod]
         public void Test_GetMethods_All()
         {
@@ -354,18 +364,45 @@ namespace CilTools.Metadata.Tests
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
                 Type t = ass.GetType(SampleTypeName);
-                MethodInfo[] members = t.GetMethods(Utils.AllMembers());
-                Assert.IsTrue(members.Length == 6);
+                MethodInfo[] methods = t.GetMethods(Utils.AllMembers());
 
-                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PublicStaticMethod");
-                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PublicInstanceMethod");
-                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PrivateStaticMethod");
-                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "PrivateInstanceMethod");
-                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "get_PublicProperty");
-                AssertThat.HasOnlyOneMatch(members,(x) => x.Name == "set_PublicProperty");
+                Assert.AreEqual(12, methods.Length);
+                AssertSampleTypeMethods(methods);
+                AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "Equals");
             }
         }
-        
+
+        [TestMethod]
+        public void Test_GetMethods_DeclaredOnly()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+            Type t = ass.GetType(SampleTypeName);
+            MethodInfo[] methods = t.GetMethods(Utils.AllMembers() | BindingFlags.DeclaredOnly);
+
+            Assert.AreEqual(6, methods.Length);
+            AssertSampleTypeMethods(methods);
+            AssertThat.HasNoMatches(methods, (x) => x.Name == "Equals");
+        }
+
+        [TestMethod]
+        public void Test_GetMethods_InheritedVirtuals()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(System.IO.FileStream).Assembly.Location);
+            Type t = ass.GetType(typeof(System.IO.FileStream).FullName);
+            MethodInfo[] methods = t.GetMethods(Utils.AllMembers());
+
+            AssertThat.HasAtLeastOneMatch(methods, (x) => x.Name == "CopyTo");
+            AssertThat.HasAtLeastOneMatch(methods, (x) => x.Name == "Read");
+            AssertThat.HasAtLeastOneMatch(methods, (x) => x.Name == "Write");
+            AssertThat.HasAtLeastOneMatch(methods, (x) => x.Name == "Dispose");
+
+            //ensure that overridden virtual methods are not duplicated
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "ReadByte");
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "WriteByte");
+        }
+
         [TestMethod]
         public void Test_GetMethods_Public()
         {
@@ -418,6 +455,31 @@ namespace CilTools.Metadata.Tests
                 Assert.AreEqual(".ctor", members[0].Name);
                 Assert.IsFalse(members[0].IsStatic);
             }
+        }
+
+        [TestMethod]
+        public void Test_GetConstructors_Inherited()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Type t = ass.GetType(typeof(SampleMethods).FullName);
+            ConstructorInfo[] ctors = t.GetConstructors(Utils.AllMembers());
+
+            Assert.AreEqual(2, ctors.Length);
+            AssertThat.HasOnlyOneMatch(ctors, (x) => x.Name == ".cctor");
+            AssertThat.HasOnlyOneMatch(ctors, (x) => x.Name == ".ctor"); //inherited from Object
+        }
+
+        [TestMethod]
+        public void Test_GetConstructors_DeclaredOnly()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Type t = ass.GetType(typeof(SampleMethods).FullName);
+            ConstructorInfo[] ctors = t.GetConstructors(Utils.AllMembers() | BindingFlags.DeclaredOnly);
+
+            Assert.AreEqual(1, ctors.Length);
+            AssertThat.HasOnlyOneMatch(ctors, (x) => x.Name == ".cctor");
         }
 
         [TestMethod]

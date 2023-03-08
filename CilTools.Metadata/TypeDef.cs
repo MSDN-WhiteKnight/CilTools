@@ -183,16 +183,31 @@ namespace CilTools.Metadata
 
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
-            List<ConstructorInfo> members = new List<ConstructorInfo>();
+            HashSet<ConstructorInfo> members = new HashSet<ConstructorInfo>(MemberComparer.Instance);
             MethodBase m;
 
+            // Get constructors defined in this type
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
             {
                 m = this.assembly.GetMethodDefinition(mdefh);
+
                 if (m is ConstructorInfo && IsMemberMatching(m, bindingAttr)) members.Add((ConstructorInfo)m);
             }
-            
-            return members.ToArray();
+
+            // Get constructors inherited from base type
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                ConstructorInfo[] inherited = this.BaseType.GetConstructors(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (!Utils.IsInheritable(inherited[i])) continue;
+
+                    members.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(members);
         }
 
         public override Type GetElementType()
@@ -492,16 +507,31 @@ namespace CilTools.Metadata
 
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
-            List<MethodInfo> members = new List<MethodInfo>();
+            HashSet<MethodInfo> members = new HashSet<MethodInfo>(MemberComparer.Instance);
             MethodBase m;
 
+            // Get methods defined in this type
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
             {
                 m = this.assembly.GetMethodDefinition(mdefh);
+
                 if (m is MethodInfo && IsMemberMatching(m, bindingAttr)) members.Add((MethodInfo)m);
             }
-            
-            return members.ToArray();
+
+            // Get methods inherited from base type
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                MethodInfo[] inherited = this.BaseType.GetMethods(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (!Utils.IsInheritable(inherited[i])) continue;
+
+                    members.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(members);
         }
 
         public override Type GetNestedType(string name, BindingFlags bindingAttr)
