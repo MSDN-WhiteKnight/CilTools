@@ -393,7 +393,9 @@ namespace CilTools.Metadata
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
-            List<MemberInfo> members = new List<MemberInfo>();
+            HashSet<MemberInfo> members = new HashSet<MemberInfo>(MemberComparer.Instance);
+            
+            // Get members defined in this type
             MemberInfo m;
 
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
@@ -435,7 +437,20 @@ namespace CilTools.Metadata
                 members.Add(events[i]);
             }
 
-            return members.ToArray();
+            // Get members inherited from base type
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                MemberInfo[] inherited = this.BaseType.GetMembers(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (!Utils.IsInheritable(inherited[i])) continue;
+
+                    members.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(members);
         }
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,

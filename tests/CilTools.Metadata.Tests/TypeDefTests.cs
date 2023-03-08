@@ -75,6 +75,30 @@ namespace CilTools.Metadata.Tests
             }
         }
 
+        static void AssertSampleTypeMembers(MemberInfo[] members)
+        {
+            AssertThat.HasOnlyOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "PublicStaticMethod");
+            AssertThat.HasOnlyOneMatch(members,
+                (x) => x is MethodBase && x.Name == "PublicInstanceMethod");
+            AssertThat.HasOnlyOneMatch(members,
+                (x) => x is MethodBase && x.Name == "PrivateStaticMethod");
+            AssertThat.HasOnlyOneMatch(members,
+                (x) => x is MethodBase && x.Name == "PrivateInstanceMethod");
+
+            AssertThat.HasOnlyOneMatch(members,
+                (x) => x is FieldInfo && x.Name == "PublicStaticField");
+            AssertThat.HasOnlyOneMatch(members,
+                (x) => x is FieldInfo && x.Name == "PublicInstanceField");
+            AssertThat.HasOnlyOneMatch(members,
+                (x) => x is FieldInfo && x.Name == "PrivateStaticField");
+            AssertThat.HasOnlyOneMatch(members,
+                (x) => x is FieldInfo && x.Name == "PrivateInstanceField");
+
+            AssertThat.HasOnlyOneMatch(members,
+                (x) => x is PropertyInfo && x.Name == "PublicProperty");
+        }
+
         [TestMethod]
         public void Test_GetMembers_All()
         {
@@ -86,29 +110,91 @@ namespace CilTools.Metadata.Tests
                 Type t = ass.GetType(SampleTypeName);
                 MemberInfo[] members = t.GetMembers(Utils.AllMembers());
 
-                AssertThat.HasOnlyOneMatch(members,
-                    (x) => x is MethodBase && x.Name == "PublicStaticMethod");
-                AssertThat.HasOnlyOneMatch(members,
-                    (x) => x is MethodBase && x.Name == "PublicInstanceMethod");
-                AssertThat.HasOnlyOneMatch(members,
-                    (x) => x is MethodBase && x.Name == "PrivateStaticMethod");
-                AssertThat.HasOnlyOneMatch(members,
-                    (x) => x is MethodBase && x.Name == "PrivateInstanceMethod");
-
-                AssertThat.HasOnlyOneMatch(members,
-                    (x) => x is FieldInfo && x.Name == "PublicStaticField");
-                AssertThat.HasOnlyOneMatch(members,
-                    (x) => x is FieldInfo && x.Name == "PublicInstanceField");
-                AssertThat.HasOnlyOneMatch(members,
-                    (x) => x is FieldInfo && x.Name == "PrivateStaticField");
-                AssertThat.HasOnlyOneMatch(members,
-                    (x) => x is FieldInfo && x.Name == "PrivateInstanceField");
-
-                AssertThat.HasOnlyOneMatch(members, 
-                    (x) => x is PropertyInfo && x.Name == "PublicProperty");
+                AssertSampleTypeMembers(members);
             }
         }
 
+        [TestMethod]
+        public void Test_GetMembers_Inherited()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+            Type t = ass.GetType(SampleTypeName);
+            MemberInfo[] members = t.GetMembers(Utils.AllMembers());
+
+            AssertThat.HasOnlyOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "Equals");
+
+            AssertThat.HasOnlyOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "GetHashCode");
+
+            AssertThat.HasOnlyOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "ToString");
+
+            AssertThat.HasOnlyOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "GetType");
+
+            AssertThat.HasOnlyOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "Finalize");
+        }
+
+        [TestMethod]
+        public void Test_GetMembers_InheritedVirtuals()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(System.IO.FileStream).Assembly.Location);
+            Type t = ass.GetType(typeof(System.IO.FileStream).FullName);
+            MemberInfo[] members = t.GetMembers(Utils.AllMembers());
+
+            AssertThat.HasAtLeastOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "CopyTo");
+
+            AssertThat.HasAtLeastOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "Read");
+
+            AssertThat.HasAtLeastOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "Write");
+
+            AssertThat.HasAtLeastOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "Dispose");
+
+            //ensure that overridden virtual members are not duplicated
+            AssertThat.HasOnlyOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "ReadByte");
+
+            AssertThat.HasOnlyOneMatch(members,
+                    (x) => x is MethodBase && x.Name == "WriteByte");
+
+            AssertThat.HasOnlyOneMatch(members,
+                    (x) => x is PropertyInfo && x.Name == "Length");
+        }
+
+        [TestMethod]
+        public void Test_GetMembers_DeclaredOnly()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
+            Type t = ass.GetType(SampleTypeName);
+            MemberInfo[] members = t.GetMembers(Utils.AllMembers() | BindingFlags.DeclaredOnly);
+
+            AssertSampleTypeMembers(members);
+            
+            AssertThat.HasNoMatches(members,
+                    (x) => x is MethodBase && x.Name == "Equals");
+
+            AssertThat.HasNoMatches(members,
+                    (x) => x is MethodBase && x.Name == "GetHashCode");
+
+            AssertThat.HasNoMatches(members,
+                    (x) => x is MethodBase && x.Name == "ToString");
+
+            AssertThat.HasNoMatches(members,
+                    (x) => x is MethodBase && x.Name == "GetType");
+
+            AssertThat.HasNoMatches(members,
+                    (x) => x is MethodBase && x.Name == "Finalize");
+        }
+        
         [TestMethod]
         public void Test_GetMembers_Public()
         {

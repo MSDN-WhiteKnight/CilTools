@@ -179,7 +179,10 @@ namespace CilTools.Metadata
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
-            return new MemberInfo[0];
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetMembers(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,

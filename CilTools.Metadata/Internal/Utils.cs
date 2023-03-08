@@ -527,5 +527,30 @@ namespace CilTools.Internal
 
             return ret;
         }
+
+        public static bool IsInheritable(MemberInfo member)
+        {
+            //private and static members cannot be inherited
+
+            if (member is MethodBase)
+            {
+                MethodBase mb = (MethodBase)member;
+
+                if (mb.IsPrivate || mb.IsStatic) return false;
+                else return true;
+            }
+            else if (member is FieldInfo)
+            {
+                FieldInfo fi = (FieldInfo)member;
+
+                if (fi.IsPrivate || fi.IsStatic) return false;
+                else return true;
+            }
+            else if (member is Type)
+            {
+                return false; //nested types cannot be inherited
+            }
+            else return true;
+        }
     }
 }
