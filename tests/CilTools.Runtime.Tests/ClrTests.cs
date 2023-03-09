@@ -117,8 +117,7 @@ namespace CilTools.Runtime.Tests
         }
         */
 
-        [LongTest]
-        public void Test_DynamicAssembly_Method()
+        static Type GetTestDynamicType()
         {
             ClrAssemblyReader reader = GetReader();
 
@@ -126,8 +125,15 @@ namespace CilTools.Runtime.Tests
             ClrModule module = runtime.Modules.Where(x => x.IsDynamic == true).First();
             ClrAssemblyInfo ass = reader.Read(module);
 
+            //get type
+            return ass.GetType("MyDynamicType");
+        }
+
+        [LongTest]
+        public void Test_DynamicAssembly_Method()
+        {
             //get method
-            Type t = ass.GetType("MyDynamicType");
+            Type t = GetTestDynamicType();
             MethodBase mb = (MethodBase)(t.GetMember("Method2")[0]);
 
             Assert.AreEqual(MemberTypes.Method, mb.MemberType);
@@ -208,14 +214,8 @@ namespace CilTools.Runtime.Tests
         [LongTest]
         public void Test_Constructor()
         {
-            ClrAssemblyReader reader = GetReader();
-
-            //get dynamic assembly
-            ClrModule module = runtime.Modules.Where(x => x.IsDynamic == true).First();
-            ClrAssemblyInfo ass = reader.Read(module);
-
             //get constructor
-            Type t = ass.GetType("MyDynamicType");
+            Type t = GetTestDynamicType();
             MethodBase m = (MethodBase)(t.GetMember(".ctor",Utils.AllMembers())[0]);
 
             Assert.AreEqual(".ctor", m.Name);
@@ -226,22 +226,51 @@ namespace CilTools.Runtime.Tests
         [LongTest]
         public void Test_DynamicAssembly_Field()
         {
-            ClrAssemblyReader reader = GetReader();
-
-            //get dynamic assembly
-            ClrModule module = runtime.Modules.Where(x => x.IsDynamic == true).First();
-            ClrAssemblyInfo ass = reader.Read(module);
+            Type t = GetTestDynamicType();
 
             //get field
-            Type t = ass.GetType("MyDynamicType");
-
-            FieldInfo fi = t.GetField(
-                "number",
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static
-                );
+            FieldInfo fi = t.GetField("number",
+                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static);
 
             Assert.IsNotNull(fi, "MyDynamicType should have field 'number'");
             Assert.AreEqual(fi.FieldType.Name, "Int32");
+        }
+
+        [LongTest]
+        public void Test_ClrTypeInfo_GetMembers()
+        {
+            Type t = GetTestDynamicType();
+
+            //inherited
+            MemberInfo[] members = t.GetMembers(Utils.AllMembers());
+            AssertThat.HasOnlyOneMatch(members, (x) => x is MethodInfo && x.Name == "Method2");            
+            AssertThat.HasOnlyOneMatch(members, (x) => x is FieldInfo && x.Name == "number");
+            AssertThat.HasOnlyOneMatch(members, (x) => x is ConstructorInfo && x.Name == ".ctor");
+            AssertThat.HasOnlyOneMatch(members, (x) => x is MethodInfo && x.Name == "Equals");
+
+            //declared only
+            members = t.GetMembers(Utils.AllMembers() | BindingFlags.DeclaredOnly);
+            Assert.AreEqual(3, members.Length);
+            AssertThat.HasOnlyOneMatch(members, (x) => x is MethodInfo && x.Name == "Method2");            
+            AssertThat.HasOnlyOneMatch(members, (x) => x is FieldInfo && x.Name == "number");
+            AssertThat.HasOnlyOneMatch(members, (x) => x is ConstructorInfo && x.Name == ".ctor");
+            AssertThat.HasNoMatches(members, (x) => x is MethodInfo && x.Name == "Equals");
+        }
+
+        [LongTest]
+        public void Test_ClrTypeInfo_GetMethods()
+        {
+            Type t = GetTestDynamicType();
+
+            //inherited
+            MethodInfo[] methods = t.GetMethods(Utils.AllMembers());
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "Method2");
+            AssertThat.HasOnlyOneMatch(methods, (x) => x.Name == "Equals");
+
+            //declared only
+            methods = t.GetMethods(Utils.AllMembers() | BindingFlags.DeclaredOnly);
+            Assert.AreEqual(1, methods.Length);
+            Assert.AreEqual("Method2", methods[0].Name);
         }
 
         [LongTest]
