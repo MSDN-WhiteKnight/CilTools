@@ -193,12 +193,10 @@ namespace CilTools.Runtime
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
-            int cap = this.type.Fields.Count + this.type.Fields.Count + this.type.ThreadStaticFields.Count;
+            int cap = this.type.Fields.Count + this.type.StaticFields.Count + this.type.ThreadStaticFields.Count;
             List<ClrField> clrFields = new List<ClrField>(cap);
-            List<FieldInfo> fields = new List<FieldInfo>();
+            List<FieldInfo> fields = new List<FieldInfo>(cap);
             FieldInfo fi;
-            bool access_match;
-            bool sem_match;
 
             foreach (var f in this.type.Fields)
             {
@@ -225,17 +223,8 @@ namespace CilTools.Runtime
                     fi = new ClrFieldInfo(clrFields[i], this);
                     this.assembly.SetMemberByToken(token, fi);
                 }
-
-                access_match = false;
-                sem_match = false;
-
-                if (bindingAttr.HasFlag(BindingFlags.Public) && fi.IsPublic) access_match = true;
-                else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !fi.IsPublic) access_match = true;
-
-                if (bindingAttr.HasFlag(BindingFlags.Static) && fi.IsStatic) sem_match = true;
-                else if (bindingAttr.HasFlag(BindingFlags.Instance) && !fi.IsStatic) sem_match = true;
-
-                if (access_match && sem_match) fields.Add(fi);
+                
+                if (IsMemberMatching(fi, bindingAttr)) fields.Add(fi);
             }
 
             return fields.ToArray();

@@ -260,17 +260,29 @@ namespace CilTools.Metadata
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
-            List<FieldInfo> members = new List<FieldInfo>();
-            MemberInfo m;
+            HashSet<FieldInfo> fields = new HashSet<FieldInfo>(MemberComparer.Instance);
+            FieldInfo f;
 
+            // Get fields defined in this type
             foreach (FieldDefinitionHandle hfield in this.type.GetFields())
             {
                 FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
-                m = new FieldDef(field, hfield, this.assembly,null);
-                if (IsMemberMatching(m, bindingAttr)) members.Add((FieldInfo)m);
+                f = new FieldDef(field, hfield, this.assembly, null);
+                if (IsMemberMatching(f, bindingAttr)) fields.Add((FieldInfo)f);
             }
 
-            return members.ToArray();
+            // Get fields inherited from base type
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                FieldInfo[] inherited = this.BaseType.GetFields(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (Utils.IsInheritable(inherited[i])) fields.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(fields);
         }
 
         public override Type GetInterface(string name, bool ignoreCase)

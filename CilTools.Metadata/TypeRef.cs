@@ -162,7 +162,10 @@ namespace CilTools.Metadata
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
-            return new FieldInfo[0];
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetFields(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         public override Type GetInterface(string name, bool ignoreCase)

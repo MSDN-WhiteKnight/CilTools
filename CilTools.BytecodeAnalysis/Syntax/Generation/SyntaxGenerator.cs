@@ -905,7 +905,7 @@ namespace CilTools.Syntax.Generation
             
             //fields
             TypeSyntaxGenerator tgen = new TypeSyntaxGenerator(this.containingAssembly);
-            FieldInfo[] fields = t.GetFields(ReflectionUtils.AllMembers);
+            FieldInfo[] fields = t.GetFields(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
 
             if (isModuleType && fields.Length > 0)
             {

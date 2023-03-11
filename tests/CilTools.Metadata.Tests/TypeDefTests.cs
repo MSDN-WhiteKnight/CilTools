@@ -41,6 +41,11 @@ namespace CilTools.Metadata.Tests
         private void PrivateInstanceMethod() { }
     }
 
+    public class DerivedSampleType : SampleType
+    {
+        public int x;
+    }
+
     public class TypeWithStaticCtor
     {
         static TypeWithStaticCtor() { }
@@ -858,6 +863,50 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual(LayoutKind.Explicit, sla.Value);
             Assert.AreEqual(1, sla.Pack);
             Assert.AreEqual(8, sla.Size);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(SampleType), BytecodeProviders.Metadata)]
+        public void Test_GetFields_All(Type t)
+        {
+            FieldInfo[] fields = t.GetFields(Utils.AllMembers());
+
+            AssertThat.HasOnlyOneMatch(fields, (x) => x.Name == "PublicStaticField");
+            AssertThat.HasOnlyOneMatch(fields, (x) => x.Name == "PublicInstanceField");
+            AssertThat.HasOnlyOneMatch(fields, (x) => x.Name == "PrivateStaticField");
+            AssertThat.HasOnlyOneMatch(fields, (x) => x.Name == "PrivateInstanceField");
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(SampleType), BytecodeProviders.Metadata)]
+        public void Test_GetFields_Public(Type t)
+        {
+            FieldInfo[] fields = t.GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.Instance);
+
+            Assert.AreEqual(2, fields.Length);
+            AssertThat.HasOnlyOneMatch(fields, (x) => x.Name == "PublicStaticField");
+            AssertThat.HasOnlyOneMatch(fields, (x) => x.Name == "PublicInstanceField");
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(DerivedSampleType), BytecodeProviders.Metadata)]
+        public void Test_GetFields_Inherited(Type t)
+        {
+            FieldInfo[] fields = t.GetFields(Utils.AllMembers());
+
+            Assert.AreEqual(2, fields.Length);
+            AssertThat.HasOnlyOneMatch(fields, (x) => x.Name == "PublicInstanceField");
+            AssertThat.HasOnlyOneMatch(fields, (x) => x.Name == "x");
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(DerivedSampleType), BytecodeProviders.Metadata)]
+        public void Test_GetFields_DeclaredOnly(Type t)
+        {
+            FieldInfo[] fields = t.GetFields(Utils.AllMembers() | BindingFlags.DeclaredOnly);
+
+            Assert.AreEqual(1, fields.Length);
+            Assert.AreEqual("x", fields[0].Name);
         }
     }
 }
