@@ -571,8 +571,29 @@ namespace CilTools.Metadata
             //we can cache them all the time, because attributes filtering is not implemented anyway
             if (this.properties == null) this.properties = this.LoadProperties();
 
-            if (bindingAttr != BindingFlags.Default) return this.properties;
-            else return new PropertyInfo[0];
+            if (bindingAttr == BindingFlags.Default) return new PropertyInfo[0];
+            else if (bindingAttr.HasFlag(BindingFlags.DeclaredOnly)) return this.properties;
+
+            HashSet<PropertyInfo> props = new HashSet<PropertyInfo>(MemberComparer.Instance);
+
+            // Properties defined in this type
+            for (int i = 0; i < this.properties.Length; i++)
+            {
+                props.Add(this.properties[i]);
+            }
+
+            // Inherited properties
+            if (this.BaseType != null)
+            {
+                PropertyInfo[] inherited = this.BaseType.GetProperties(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (Utils.IsInheritable(inherited[i])) props.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(props);
         }
 
         protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType,

@@ -217,7 +217,10 @@ namespace CilTools.Metadata
 
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
         {
-            throw new NotSupportedException("This type implementation does not support properties");
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetProperties(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType,

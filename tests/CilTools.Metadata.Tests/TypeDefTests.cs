@@ -44,6 +44,8 @@ namespace CilTools.Metadata.Tests
     public class DerivedSampleType : SampleType
     {
         public int x;
+
+        public int X { get { return this.x; } }
     }
 
     public class TypeWithStaticCtor
@@ -321,9 +323,31 @@ namespace CilTools.Metadata.Tests
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
                 Type t = ass.GetType(SampleTypeName);
                 PropertyInfo[] props = t.GetProperties(Utils.AllMembers());
+                Assert.AreEqual(1, props.Length);
                 PropertyInfo p = props[0];
                 Assert.AreEqual("PublicProperty", p.Name);
             }
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(DerivedSampleType), BytecodeProviders.Metadata)]
+        public void Test_GetProperties_Inherited(Type t)
+        {
+            PropertyInfo[] props = t.GetProperties(Utils.AllMembers());
+
+            Assert.AreEqual(2, props.Length);
+            AssertThat.HasAtLeastOneMatch(props, (p) => p.Name == "X");
+            AssertThat.HasAtLeastOneMatch(props, (p) => p.Name == "PublicProperty");
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(DerivedSampleType), BytecodeProviders.Metadata)]
+        public void Test_GetProperties_DeclaredOnly(Type t)
+        {
+            PropertyInfo[] props = t.GetProperties(Utils.AllMembers() | BindingFlags.DeclaredOnly);
+
+            Assert.AreEqual(1, props.Length);
+            AssertThat.HasAtLeastOneMatch(props, (p) => p.Name == "X");
         }
 
         [TestMethod]

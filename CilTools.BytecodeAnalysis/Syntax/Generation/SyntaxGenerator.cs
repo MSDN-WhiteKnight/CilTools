@@ -1028,7 +1028,7 @@ namespace CilTools.Syntax.Generation
 
             try
             {
-                props = t.GetProperties(ReflectionUtils.AllMembers);
+                props = t.GetProperties(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
             }
             catch (Exception ex)
             {
