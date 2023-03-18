@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
@@ -247,6 +248,20 @@ namespace CilTools.Reflection
             {
                 return false;
             }
+        }
+
+        internal static bool HasPublicInstanceFields(Type t)
+        {
+            return t.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly).Length > 0;
+        }
+
+        internal static bool HasPublicWritableInstanceProperties(Type t)
+        {
+            PropertyInfo[] props = t.GetProperties(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+
+            if (props.Length == 0) return false;
+            
+            return props.Where((x) => x.CanWrite).Count() > 0;
         }
     }
 }

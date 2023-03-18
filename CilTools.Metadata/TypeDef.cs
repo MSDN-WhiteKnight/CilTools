@@ -231,17 +231,29 @@ namespace CilTools.Metadata
 
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
-            List<EventInfo> members = new List<EventInfo>();
+            HashSet<EventInfo> events = new HashSet<EventInfo>(MemberComparer.Instance);
             EventInfo m;
 
+            // Get events defined in this type
             foreach (EventDefinitionHandle he in this.type.GetEvents())
             {
                 EventDefinition e = this.assembly.MetadataReader.GetEventDefinition(he);
                 m = new EventDef(e, he, this.assembly, this);
-                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+                if (IsMemberMatching(m, bindingAttr)) events.Add(m);
             }
 
-            return members.ToArray();
+            // Get inherited events
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                EventInfo[] inherited = this.BaseType.GetEvents(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (Utils.IsInheritable(inherited[i])) events.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(events);
         }
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
@@ -457,11 +469,11 @@ namespace CilTools.Metadata
             }
 
             //events
-            EventInfo[] events = this.GetEvents(bindingAttr);
-
-            for (int i = 0; i < events.Length; i++)
+            foreach (EventDefinitionHandle he in this.type.GetEvents())
             {
-                members.Add(events[i]);
+                EventDefinition e = this.assembly.MetadataReader.GetEventDefinition(he);
+                m = new EventDef(e, he, this.assembly, this);
+                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
             }
 
             // Get members inherited from base type

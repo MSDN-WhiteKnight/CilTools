@@ -97,7 +97,7 @@ namespace CilTools.Syntax.Generation
         internal IEnumerable<SyntaxNode> GetEventsSyntax(Type t, int startIndent)
         {
             //ECMA_335 II.18 - Defining events
-            EventInfo[] events = t.GetEvents(ReflectionUtils.AllMembers);
+            EventInfo[] events = t.GetEvents(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
             
             for (int i = 0; i < events.Length; i++)
             {
@@ -258,10 +258,8 @@ namespace CilTools.Syntax.Generation
             {
                 int parcount = constr[0].GetParameters().Length;
 
-                if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
-                    t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
-                    Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
-                    )
+                if (parcount == 0 && !ReflectionUtils.HasPublicInstanceFields(t) && 
+                    !ReflectionUtils.HasPublicWritableInstanceProperties(t))
                 {
                     //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
                     List<SyntaxNode> children = new List<SyntaxNode>();

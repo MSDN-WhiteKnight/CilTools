@@ -822,6 +822,29 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        [TypeTestData(typeof(EventsSampleDerived), BytecodeProviders.Metadata)]
+        public void Test_GetEvents_Inherited(Type t)
+        {
+            EventInfo[] events = t.GetEvents(Utils.AllMembers());
+
+            Assert.AreEqual(4, events.Length);
+            AssertThat.HasOnlyOneMatch(events, e => e.Name == "A");
+            AssertThat.HasOnlyOneMatch(events, e => e.Name == "B");
+            AssertThat.HasOnlyOneMatch(events, e => e.Name == "C");
+            AssertThat.HasOnlyOneMatch(events, e => e.Name == "D");
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(EventsSampleDerived), BytecodeProviders.Metadata)]
+        public void Test_GetEvents_DeclaredOnly(Type t)
+        {
+            EventInfo[] events = t.GetEvents(Utils.AllMembers() | BindingFlags.DeclaredOnly);
+
+            Assert.AreEqual(1, events.Length);
+            Assert.AreEqual("D", events[0].Name);
+        }
+
+        [TestMethod]
         public void Test_GetEvent()
         {
             AssemblyReader reader = ReaderFactory.GetReader();

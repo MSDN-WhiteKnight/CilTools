@@ -152,7 +152,10 @@ namespace CilTools.Metadata
 
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
-            throw new NotSupportedException("This type implementation does not support events");
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetEvents(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
