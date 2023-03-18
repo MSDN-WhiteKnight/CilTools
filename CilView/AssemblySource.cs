@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
 using CilTools.Runtime;
+using CilView.Common;
 
 namespace CilView
 {
@@ -97,9 +98,7 @@ namespace CilView
         public static ObservableCollection<MethodBase> LoadMethods(Type t)
         {
             List<MethodBase> ret = new List<MethodBase>();
-            MemberInfo[] members = t.GetMembers(
-                BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance
-                );
+            MemberInfo[] members = t.GetMembers(Utils.AllMembers | BindingFlags.DeclaredOnly);
 
             foreach (MemberInfo member in members)
             {

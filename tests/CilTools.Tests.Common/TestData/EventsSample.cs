@@ -27,4 +27,14 @@ namespace CilTools.Tests.Common.TestData
             C += null;
         }
     }
+
+    public class EventsSampleDerived : EventsSample
+    {
+        public event Action<string> D;
+
+        public void Dummy2()
+        {
+            D("Hello");
+        }
+    }
 }

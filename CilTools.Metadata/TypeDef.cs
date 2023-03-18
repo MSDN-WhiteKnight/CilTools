@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -183,16 +183,31 @@ namespace CilTools.Metadata
 
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
-            List<ConstructorInfo> members = new List<ConstructorInfo>();
+            HashSet<ConstructorInfo> members = new HashSet<ConstructorInfo>(MemberComparer.Instance);
             MethodBase m;
 
+            // Get constructors defined in this type
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
             {
                 m = this.assembly.GetMethodDefinition(mdefh);
+
                 if (m is ConstructorInfo && IsMemberMatching(m, bindingAttr)) members.Add((ConstructorInfo)m);
             }
-            
-            return members.ToArray();
+
+            // Get constructors inherited from base type
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                ConstructorInfo[] inherited = this.BaseType.GetConstructors(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (!Utils.IsInheritable(inherited[i])) continue;
+
+                    members.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(members);
         }
 
         public override Type GetElementType()
@@ -216,17 +231,29 @@ namespace CilTools.Metadata
 
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
-            List<EventInfo> members = new List<EventInfo>();
+            HashSet<EventInfo> events = new HashSet<EventInfo>(MemberComparer.Instance);
             EventInfo m;
 
+            // Get events defined in this type
             foreach (EventDefinitionHandle he in this.type.GetEvents())
             {
                 EventDefinition e = this.assembly.MetadataReader.GetEventDefinition(he);
                 m = new EventDef(e, he, this.assembly, this);
-                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
+                if (IsMemberMatching(m, bindingAttr)) events.Add(m);
             }
 
-            return members.ToArray();
+            // Get inherited events
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                EventInfo[] inherited = this.BaseType.GetEvents(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (Utils.IsInheritable(inherited[i])) events.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(events);
         }
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
@@ -245,17 +272,29 @@ namespace CilTools.Metadata
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
-            List<FieldInfo> members = new List<FieldInfo>();
-            MemberInfo m;
+            HashSet<FieldInfo> fields = new HashSet<FieldInfo>(MemberComparer.Instance);
+            FieldInfo f;
 
+            // Get fields defined in this type
             foreach (FieldDefinitionHandle hfield in this.type.GetFields())
             {
                 FieldDefinition field = this.assembly.MetadataReader.GetFieldDefinition(hfield);
-                m = new FieldDef(field, hfield, this.assembly,null);
-                if (IsMemberMatching(m, bindingAttr)) members.Add((FieldInfo)m);
+                f = new FieldDef(field, hfield, this.assembly, null);
+                if (IsMemberMatching(f, bindingAttr)) fields.Add((FieldInfo)f);
             }
 
-            return members.ToArray();
+            // Get fields inherited from base type
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                FieldInfo[] inherited = this.BaseType.GetFields(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (Utils.IsInheritable(inherited[i])) fields.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(fields);
         }
 
         public override Type GetInterface(string name, bool ignoreCase)
@@ -393,7 +432,9 @@ namespace CilTools.Metadata
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
-            List<MemberInfo> members = new List<MemberInfo>();
+            HashSet<MemberInfo> members = new HashSet<MemberInfo>(MemberComparer.Instance);
+            
+            // Get members defined in this type
             MemberInfo m;
 
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
@@ -428,14 +469,27 @@ namespace CilTools.Metadata
             }
 
             //events
-            EventInfo[] events = this.GetEvents(bindingAttr);
-
-            for (int i = 0; i < events.Length; i++)
+            foreach (EventDefinitionHandle he in this.type.GetEvents())
             {
-                members.Add(events[i]);
+                EventDefinition e = this.assembly.MetadataReader.GetEventDefinition(he);
+                m = new EventDef(e, he, this.assembly, this);
+                if (IsMemberMatching(m, bindingAttr)) members.Add(m);
             }
 
-            return members.ToArray();
+            // Get members inherited from base type
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                MemberInfo[] inherited = this.BaseType.GetMembers(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (!Utils.IsInheritable(inherited[i])) continue;
+
+                    members.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(members);
         }
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,
@@ -477,16 +531,31 @@ namespace CilTools.Metadata
 
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
-            List<MethodInfo> members = new List<MethodInfo>();
+            HashSet<MethodInfo> members = new HashSet<MethodInfo>(MemberComparer.Instance);
             MethodBase m;
 
+            // Get methods defined in this type
             foreach (MethodDefinitionHandle mdefh in this.type.GetMethods())
             {
                 m = this.assembly.GetMethodDefinition(mdefh);
+
                 if (m is MethodInfo && IsMemberMatching(m, bindingAttr)) members.Add((MethodInfo)m);
             }
-            
-            return members.ToArray();
+
+            // Get methods inherited from base type
+            if (!bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && this.BaseType != null)
+            {
+                MethodInfo[] inherited = this.BaseType.GetMethods(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (!Utils.IsInheritable(inherited[i])) continue;
+
+                    members.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(members);
         }
 
         public override Type GetNestedType(string name, BindingFlags bindingAttr)
@@ -514,8 +583,29 @@ namespace CilTools.Metadata
             //we can cache them all the time, because attributes filtering is not implemented anyway
             if (this.properties == null) this.properties = this.LoadProperties();
 
-            if (bindingAttr != BindingFlags.Default) return this.properties;
-            else return new PropertyInfo[0];
+            if (bindingAttr == BindingFlags.Default) return new PropertyInfo[0];
+            else if (bindingAttr.HasFlag(BindingFlags.DeclaredOnly)) return this.properties;
+
+            HashSet<PropertyInfo> props = new HashSet<PropertyInfo>(MemberComparer.Instance);
+
+            // Properties defined in this type
+            for (int i = 0; i < this.properties.Length; i++)
+            {
+                props.Add(this.properties[i]);
+            }
+
+            // Inherited properties
+            if (this.BaseType != null)
+            {
+                PropertyInfo[] inherited = this.BaseType.GetProperties(bindingAttr);
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    if (Utils.IsInheritable(inherited[i])) props.Add(inherited[i]);
+                }
+            }
+
+            return System.Linq.Enumerable.ToArray(props);
         }
 
         protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType,

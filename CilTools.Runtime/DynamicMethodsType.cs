@@ -113,7 +113,17 @@ namespace CilTools.Runtime
 
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            if (!bindingAttr.HasFlag(BindingFlags.Public)) return new MethodInfo[0];
+            if (!bindingAttr.HasFlag(BindingFlags.Static)) return new MethodInfo[0];
+
+            List<MethodInfo> ret = new List<MethodInfo>();
+
+            foreach (MethodBase m in this.owner.EnumerateMethods())
+            {
+                if(m is MethodInfo) ret.Add((MethodInfo)m);
+            }
+
+            return ret.ToArray();
         }
 
         public override Type GetNestedType(string name, BindingFlags bindingAttr)

@@ -126,7 +126,33 @@ namespace CilTools.Runtime
 
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            List<ConstructorInfo> ctors = new List<ConstructorInfo>(this.type.Methods.Count);
+
+            foreach (ClrMethod m in this.type.Methods)
+            {
+                if (!m.IsConstructor && !m.IsClassConstructor) continue;
+
+                if (bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && m.Type != null)
+                {
+                    if (!StrEquals(m.Type.Name, this.type.Name)) continue; //skip inherited ctors
+                }
+
+                int token = (int)m.MetadataToken;
+                MethodBase mb = this.assembly.ResolveMethod(token);
+
+                if (mb == null)
+                {
+                    mb = ClrMethodInfo.CreateMethod(m, this);
+                    this.assembly.SetMemberByToken((int)m.MetadataToken, mb);
+                }
+
+                if (mb is ConstructorInfo && IsMemberMatching(mb, bindingAttr))
+                {
+                    ctors.Add((ConstructorInfo)mb);
+                }
+            }
+
+            return ctors.ToArray();
         }
 
         public override Type GetElementType()
@@ -167,12 +193,10 @@ namespace CilTools.Runtime
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
-            int cap = this.type.Fields.Count + this.type.Fields.Count + this.type.ThreadStaticFields.Count;
+            int cap = this.type.Fields.Count + this.type.StaticFields.Count + this.type.ThreadStaticFields.Count;
             List<ClrField> clrFields = new List<ClrField>(cap);
-            List<FieldInfo> fields = new List<FieldInfo>();
+            List<FieldInfo> fields = new List<FieldInfo>(cap);
             FieldInfo fi;
-            bool access_match;
-            bool sem_match;
 
             foreach (var f in this.type.Fields)
             {
@@ -199,17 +223,8 @@ namespace CilTools.Runtime
                     fi = new ClrFieldInfo(clrFields[i], this);
                     this.assembly.SetMemberByToken(token, fi);
                 }
-
-                access_match = false;
-                sem_match = false;
-
-                if (bindingAttr.HasFlag(BindingFlags.Public) && fi.IsPublic) access_match = true;
-                else if (bindingAttr.HasFlag(BindingFlags.NonPublic) && !fi.IsPublic) access_match = true;
-
-                if (bindingAttr.HasFlag(BindingFlags.Static) && fi.IsStatic) sem_match = true;
-                else if (bindingAttr.HasFlag(BindingFlags.Instance) && !fi.IsStatic) sem_match = true;
-
-                if (access_match && sem_match) fields.Add(fi);
+                
+                if (IsMemberMatching(fi, bindingAttr)) fields.Add(fi);
             }
 
             return fields.ToArray();
@@ -289,23 +304,18 @@ namespace CilTools.Runtime
                 members.Add(fields[i]);
             }
 
-            foreach (ClrMethod m in this.type.Methods)
+            MethodInfo[] methods = this.GetMethods(bindingAttr);
+
+            for (int i = 0; i < methods.Length; i++)
             {
-                if (m.Type != null)
-                {
-                    if (!StrEquals(m.Type.Name,this.type.Name)) continue; //skip inherited methods
-                }
+                members.Add(methods[i]);
+            }
 
-                int token = (int)m.MetadataToken;
-                MethodBase mb = this.assembly.ResolveMethod(token);
+            ConstructorInfo[] ctors = this.GetConstructors(bindingAttr);
 
-                if (mb == null) 
-                {
-                    mb = ClrMethodInfo.CreateMethod(m, this);
-                    this.assembly.SetMemberByToken((int)m.MetadataToken, mb);
-                }
-
-                if (IsMemberMatching(mb, bindingAttr)) members.Add(mb);
+            for (int i = 0; i < ctors.Length; i++)
+            {
+                members.Add(ctors[i]);
             }
 
             return members.ToArray();
@@ -319,7 +329,33 @@ namespace CilTools.Runtime
 
         public override MethodInfo[] GetMethods(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            List<MethodInfo> methods = new List<MethodInfo>(this.type.Methods.Count);
+
+            foreach (ClrMethod m in this.type.Methods)
+            {
+                if (m.IsConstructor || m.IsClassConstructor) continue;
+
+                if (bindingAttr.HasFlag(BindingFlags.DeclaredOnly) && m.Type != null)
+                {
+                    if (!StrEquals(m.Type.Name, this.type.Name)) continue; //skip inherited methods
+                }
+
+                int token = (int)m.MetadataToken;
+                MethodBase mb = this.assembly.ResolveMethod(token);
+
+                if (mb == null)
+                {
+                    mb = ClrMethodInfo.CreateMethod(m, this);
+                    this.assembly.SetMemberByToken((int)m.MetadataToken, mb);
+                }
+
+                if (mb is MethodInfo && IsMemberMatching(mb, bindingAttr))
+                {
+                    methods.Add((MethodInfo)mb);
+                }
+            }
+
+            return methods.ToArray();
         }
 
         public override Type GetNestedType(string name, BindingFlags bindingAttr)

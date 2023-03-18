@@ -107,10 +107,17 @@ namespace CilView.Common
             return sb.ToString();
         }
 
+        public static BindingFlags AllMembers
+        {
+            get 
+            {
+                return BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Static | BindingFlags.Instance; 
+            }
+        }
+
         public static MemberInfo[] GetAllMembers(Type t)
         {
-            return t.GetMembers(BindingFlags.Public|BindingFlags.NonPublic|BindingFlags.Static|
-                BindingFlags.Instance);
+            return t.GetMembers(AllMembers);
         }
 
         public static bool IsMethodAndNotConstructor(MemberInfo m)

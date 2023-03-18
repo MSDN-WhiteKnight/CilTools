@@ -176,5 +176,33 @@ namespace CilTools.Tests.Common
 
             return sb.ToString();
         }
+
+        public static string MemberToString(MemberInfo member)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            if (member is MethodBase)
+            {
+                MethodBase mb = (MethodBase)member;
+                sb.Append(mb.Name);
+                sb.Append('(');
+
+                ParameterInfo[] pars = mb.GetParameters();
+
+                for (int i = 0; i < pars.Length; i++)
+                {
+                    if (i >= 1) sb.Append(',');
+                    sb.Append(pars[i].ParameterType.Name);
+                }
+
+                sb.Append(')');
+            }
+            else
+            {
+                sb.Append(member.Name);
+            }
+
+            return sb.ToString();
+        }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -134,7 +134,10 @@ namespace CilTools.Metadata
 
         public override ConstructorInfo[] GetConstructors(BindingFlags bindingAttr)
         {
-            throw new NotImplementedException();
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetConstructors(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         public override Type GetElementType()
@@ -149,7 +152,10 @@ namespace CilTools.Metadata
 
         public override EventInfo[] GetEvents(BindingFlags bindingAttr)
         {
-            throw new NotSupportedException("This type implementation does not support events");
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetEvents(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         public override FieldInfo GetField(string name, BindingFlags bindingAttr)
@@ -159,7 +165,10 @@ namespace CilTools.Metadata
 
         public override FieldInfo[] GetFields(BindingFlags bindingAttr)
         {
-            return new FieldInfo[0];
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetFields(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         public override Type GetInterface(string name, bool ignoreCase)
@@ -179,7 +188,10 @@ namespace CilTools.Metadata
 
         public override MemberInfo[] GetMembers(BindingFlags bindingAttr)
         {
-            return new MemberInfo[0];
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetMembers(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         protected override MethodInfo GetMethodImpl(string name, BindingFlags bindingAttr, Binder binder,
@@ -208,7 +220,10 @@ namespace CilTools.Metadata
 
         public override PropertyInfo[] GetProperties(BindingFlags bindingAttr)
         {
-            throw new NotSupportedException("This type implementation does not support properties");
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetProperties(bindingAttr);
+            else throw new TypeLoadException("Failed to load referenced type");
         }
 
         protected override PropertyInfo GetPropertyImpl(string name, BindingFlags bindingAttr, Binder binder, Type returnType,

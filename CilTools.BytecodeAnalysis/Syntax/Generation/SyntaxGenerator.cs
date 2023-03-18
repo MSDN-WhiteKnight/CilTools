@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -97,7 +97,7 @@ namespace CilTools.Syntax.Generation
         internal IEnumerable<SyntaxNode> GetEventsSyntax(Type t, int startIndent)
         {
             //ECMA_335 II.18 - Defining events
-            EventInfo[] events = t.GetEvents(ReflectionUtils.AllMembers);
+            EventInfo[] events = t.GetEvents(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
             
             for (int i = 0; i < events.Length; i++)
             {
@@ -258,10 +258,8 @@ namespace CilTools.Syntax.Generation
             {
                 int parcount = constr[0].GetParameters().Length;
 
-                if (parcount == 0 && t.GetFields(BindingFlags.Public & BindingFlags.Instance).Length == 0 &&
-                    t.GetProperties(BindingFlags.Public | BindingFlags.Instance).
-                    Where((x) => x.DeclaringType != typeof(Attribute) && x.CanWrite == true).Count() == 0
-                    )
+                if (parcount == 0 && !ReflectionUtils.HasPublicInstanceFields(t) && 
+                    !ReflectionUtils.HasPublicWritableInstanceProperties(t))
                 {
                     //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
                     List<SyntaxNode> children = new List<SyntaxNode>();
@@ -905,7 +903,7 @@ namespace CilTools.Syntax.Generation
             
             //fields
             TypeSyntaxGenerator tgen = new TypeSyntaxGenerator(this.containingAssembly);
-            FieldInfo[] fields = t.GetFields(ReflectionUtils.AllMembers);
+            FieldInfo[] fields = t.GetFields(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
 
             if (isModuleType && fields.Length > 0)
             {
@@ -1028,7 +1026,7 @@ namespace CilTools.Syntax.Generation
 
             try
             {
-                props = t.GetProperties(ReflectionUtils.AllMembers);
+                props = t.GetProperties(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
             }
             catch (Exception ex)
             {
@@ -1180,7 +1178,7 @@ namespace CilTools.Syntax.Generation
 
                     try
                     {
-                        constructors = t.GetConstructors(ReflectionUtils.AllMembers);
+                        constructors = t.GetConstructors(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
                     }
                     catch (Exception ex)
                     {
@@ -1213,7 +1211,7 @@ namespace CilTools.Syntax.Generation
 
                 try
                 {
-                    methods = t.GetMethods(ReflectionUtils.AllMembers);
+                    methods = t.GetMethods(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
                 }
                 catch (Exception ex)
                 {
