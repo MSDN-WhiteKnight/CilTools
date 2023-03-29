@@ -552,5 +552,15 @@ namespace CilTools.Internal
             }
             else return true;
         }
+
+        public static bool IsCoreAssembly(Assembly ass)
+        {
+            if (ass == null) return false;
+
+            string name = ass.GetName().Name;
+
+            return StrEquals(name, "mscorlib") || StrEquals(name, "netstandard") || StrEquals(name, "System.Runtime")
+                || StrEquals(name, "System.Private.CoreLib");
+        }
     }
 }

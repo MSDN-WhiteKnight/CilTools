@@ -955,5 +955,20 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual(1, fields.Length);
             Assert.AreEqual("x", fields[0].Name);
         }
+
+        [TestMethod]
+        [WorkItem(151)]
+        [TypeTestData(typeof(SequentialStructSample), BytecodeProviders.Metadata)]
+        public void Test_IsValueType_Struct(Type t)
+        {
+            Assert.IsTrue(t.IsValueType);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(SampleMethods), BytecodeProviders.Metadata)]
+        public void Test_IsValueType_Class(Type t)
+        {
+            Assert.IsFalse(t.IsValueType);
+        }
     }
 }

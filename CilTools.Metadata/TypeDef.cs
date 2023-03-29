@@ -845,6 +845,18 @@ namespace CilTools.Metadata
             return false;
         }
 
+        protected override bool IsValueTypeImpl()
+        {
+            // Overridden to return correct result when inspected type's corelib does not match current runtime corelib
+            // (https://github.com/MSDN-WhiteKnight/CilTools/issues/151).
+            Type bt = this.BaseType;
+
+            if (bt == null) return false;
+
+            return (Utils.StrEquals(bt.FullName, "System.ValueType") || Utils.StrEquals(bt.FullName, "System.Enum")) &&
+                Utils.IsCoreAssembly(bt.Assembly);
+        }
+
         public override string ToString()
         {
             //check if disposed
