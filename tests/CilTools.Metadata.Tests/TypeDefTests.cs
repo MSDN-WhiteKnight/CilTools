@@ -970,5 +970,23 @@ namespace CilTools.Metadata.Tests
         {
             Assert.IsFalse(t.IsValueType);
         }
+
+        [TestMethod]
+        [TypeTestData(typeof(BytecodeProviders), BytecodeProviders.Metadata)]
+        public void Test_IsEnum(Type t)
+        {
+            Assert.IsTrue(t.IsEnum);
+            Assert.IsTrue(t.IsValueType);
+            Assert.IsFalse(t.IsClass);
+            Assert.IsFalse(t.IsInterface);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(Attribute), BytecodeProviders.Metadata)]
+        public void Test_IsEnum_Negative(Type t)
+        {
+            Assert.IsFalse(t.IsEnum);            
+            Assert.IsTrue(t.IsClass);
+        }
     }
 }

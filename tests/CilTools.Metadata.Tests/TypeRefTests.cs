@@ -94,6 +94,16 @@ namespace CilTools.Metadata.Tests
             Assert.IsFalse(t.IsValueType);
             Assert.IsTrue(t.IsInterface);
         }
+
+        [TestMethod]
+        public void Test_IsEnum()
+        {
+            Type t = TypeRefTests_Data.GetTypeRef(typeof(AttributeTargets).FullName);
+            Assert.IsTrue(t.IsEnum);
+
+            t = TypeRefTests_Data.GetTypeRef(typeof(Console).FullName);
+            Assert.IsFalse(t.IsEnum);
+        }
     }
 
     public class TypeRefTests_Data

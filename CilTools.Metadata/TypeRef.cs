@@ -383,6 +383,19 @@ namespace CilTools.Metadata
             }
         }
 
+        public override bool IsEnum
+        {
+            get
+            {
+                // Overridden to return correct result when inspected type's corelib does not match current runtime corelib
+                Type bt = this.BaseType;
+
+                if (bt == null) return false;
+
+                return Utils.StrEquals(bt.FullName, "System.Enum") && Utils.IsCoreAssembly(bt.Assembly);
+            }
+        }
+
         public override bool IsAssignableFrom(Type c)
         {
             if (c.IsInterface || this.IsInterface)

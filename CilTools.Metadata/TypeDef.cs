@@ -765,6 +765,19 @@ namespace CilTools.Metadata
 
         public override bool IsGenericTypeDefinition => this.IsGenericType;
 
+        public override bool IsEnum
+        {
+            get
+            {
+                // Overridden to return correct result when inspected type's corelib does not match current runtime corelib
+                Type bt = this.BaseType;
+
+                if (bt == null) return false;
+
+                return Utils.StrEquals(bt.FullName, "System.Enum") && Utils.IsCoreAssembly(bt.Assembly);
+            }
+        }
+
         public override Type[] GetGenericArguments()
         {
             GenericParameterHandleCollection hcoll = type.GetGenericParameters();
