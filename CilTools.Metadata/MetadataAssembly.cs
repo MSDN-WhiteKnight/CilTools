@@ -207,6 +207,21 @@ namespace CilTools.Metadata
             }
         }
 
+        void ThrowIfOutOfRange(EntityHandle eh)
+        {
+            TableIndex ti;
+
+            if (MetadataTokens.TryGetTableIndex(eh.Kind, out ti))
+            {
+                int rowCount = this.reader.GetTableRowCount(ti);
+                int rowNumber = MetadataTokens.GetRowNumber(eh);
+
+                // Throw ArgumentOutOfRangeException to mirror Module.ResolveX behaviour.
+                // MetadataReader throws misleading BadImageFormatException in this case.
+                if (rowNumber > rowCount) throw new ArgumentOutOfRangeException("metadataToken");
+            }
+        }
+
         Type ResolveTypeImpl(int metadataToken, Type[] genericTypeArguments, Type[] genericMethodArguments) 
         {
             if (this.reader == null) return null;
@@ -215,6 +230,7 @@ namespace CilTools.Metadata
 
             if (eh.IsNil) return null;
 
+            ThrowIfOutOfRange(eh);
             Type ret;
 
             if (genericTypeArguments == null && genericMethodArguments == null)
@@ -282,6 +298,7 @@ namespace CilTools.Metadata
 
             if (eh.IsNil) return null;
 
+            ThrowIfOutOfRange(eh);
             MethodBase m = null;
 
             if (genericTypeArguments == null && genericMethodArguments == null)
@@ -346,6 +363,7 @@ namespace CilTools.Metadata
             EntityHandle eh = MetadataTokens.EntityHandle(metadataToken);
             if (eh.IsNil) return null;
 
+            ThrowIfOutOfRange(eh);
             MethodBase declaringMethod = null;
             FieldInfo ret;
 

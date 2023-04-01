@@ -119,5 +119,67 @@ namespace CilTools.Metadata.Tests
 
             Assert.AreEqual(0x0001, subsystem); //ILONLY
         }
+
+        [TestMethod]
+        public void Test_ResolveMethod()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            ITokenResolver resolver = (ITokenResolver)ass;
+
+            MethodInfo mi = typeof(SampleMethods).GetMethod("PrintHelloWorld");
+
+            //valid
+            MethodBase miResolved = resolver.ResolveMethod(mi.MetadataToken);
+            Assert.AreEqual(mi.Name, miResolved.Name);
+            Assert.AreEqual(mi.MetadataToken, miResolved.MetadataToken);
+
+            //invalid
+            Assert.IsNull(resolver.ResolveMethod(0));
+            Assert.IsNull(resolver.ResolveMethod(0x4000001)); //Field
+            AssertThat.Throws<ArgumentOutOfRangeException>(() => resolver.ResolveMethod(0x6FFFFFF)); //MethodDef
+            AssertThat.Throws<ArgumentOutOfRangeException>(() => resolver.ResolveMethod(0xAFFFFFF)); //MemberRef
+        }
+
+        [TestMethod]
+        public void Test_ResolveField()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            ITokenResolver resolver = (ITokenResolver)ass;
+
+            FieldInfo fi = typeof(SampleMethods).GetField("Foo");
+
+            //valid
+            FieldInfo fiResolved = resolver.ResolveField(fi.MetadataToken);
+            Assert.AreEqual(fi.Name, fiResolved.Name);
+            Assert.AreEqual(fi.MetadataToken, fiResolved.MetadataToken);
+
+            //invalid
+            Assert.IsNull(resolver.ResolveField(0));
+            Assert.IsNull(resolver.ResolveField(0x6000001)); //MethodDef
+            AssertThat.Throws<ArgumentOutOfRangeException>(() => resolver.ResolveField(0x4FFFFFF)); //Field
+            AssertThat.Throws<ArgumentOutOfRangeException>(() => resolver.ResolveField(0xAFFFFFF)); //MemberRef
+        }
+
+        [TestMethod]
+        public void Test_ResolveType()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            ITokenResolver resolver = (ITokenResolver)ass;
+            
+            //valid
+            Type tResolved = resolver.ResolveType(typeof(SampleMethods).MetadataToken);
+            Assert.AreEqual(typeof(SampleMethods).FullName, tResolved.FullName);
+            Assert.AreEqual(typeof(SampleMethods).MetadataToken, tResolved.MetadataToken);
+
+            //invalid
+            Assert.IsNull(resolver.ResolveType(0));
+            Assert.IsNull(resolver.ResolveType(0x6000001)); //MethodDef
+            AssertThat.Throws<ArgumentOutOfRangeException>(() => resolver.ResolveType(0x2FFFFFF)); //TypeDef
+            AssertThat.Throws<ArgumentOutOfRangeException>(() => resolver.ResolveType(0x1FFFFFF)); //TypeRef
+            AssertThat.Throws<ArgumentOutOfRangeException>(() => resolver.ResolveType(0x1BFFFFFF)); //TypeSpec
+        }
     }
 }
