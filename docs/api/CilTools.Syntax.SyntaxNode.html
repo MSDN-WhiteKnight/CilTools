@@ -73,14 +73,15 @@
   
   <h1 id="CilTools_Syntax_SyntaxNode" data-uid="CilTools.Syntax.SyntaxNode" class="text-break">Class SyntaxNode
   </h1>
-  <div class="markdown level0 summary"><p>Represents node in the syntax tree of Common Intermediate Language (CIL) assembler code. Classes that represent
-concrete language constructs derive from this class.</p>
+  <div class="markdown level0 summary"><p>Provides a base class for nodes in the syntax tree. Classes that represent concrete language constructs
+derive from this class.</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">SyntaxNode</span></div>
+      <div class="level2"><a class="xref" href="CilTools.SourceCode.Common.SourceToken.html">SourceToken</a></div>
       <div class="level2"><a class="xref" href="CilTools.Syntax.BlockSyntax.html">BlockSyntax</a></div>
       <div class="level2"><a class="xref" href="CilTools.Syntax.CommentSyntax.html">CommentSyntax</a></div>
       <div class="level2"><a class="xref" href="CilTools.Syntax.DirectiveSyntax.html">DirectiveSyntax</a></div>
@@ -121,6 +122,11 @@ concrete language constructs derive from this class.</p>
   </div>
   <h5 id="CilTools_Syntax_SyntaxNode_remarks"><strong>Remarks</strong></h5>
   <div class="markdown level0 remarks"><p>
+This assembly provides syntax node implementations for a Common Intermediate Language (CIL) assembler grammar 
+(ECMA-335 specification, part II). They are used by the disassembler to return a parsed representation of the 
+produced code.
+</p>
+<p>
 The <code>SyntaxNode</code> class instance contains all information required to produce the source code of the 
 corresponding language construct, including whitespaces. The <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EnumerateChildNodes">EnumerateChildNodes()</a> method returns all 
 child nodes of this node, or an empty collection if it is a leaf (terminal node). 
@@ -191,6 +197,31 @@ Use <a class="xref" href="CilTools.BytecodeAnalysis.CilGraph.html#CilTools_Bytec
     <tbody>
       <tr>
         <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="CilTools_Syntax_SyntaxNode_EmptyArray" data-uid="CilTools.Syntax.SyntaxNode.EmptyArray">EmptyArray</h4>
+  <div class="markdown level1 summary"><p>Gets an empty array of syntax nodes</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static readonly SyntaxNode[] EmptyArray</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>[]</td>
         <td></td>
       </tr>
     </tbody>

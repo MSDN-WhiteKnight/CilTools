@@ -1,0 +1,596 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Syntax.Tokens.CommentToken
+  commentId: T:CilTools.Syntax.Tokens.CommentToken
+  id: CommentToken
+  parent: CilTools.Syntax.Tokens
+  children:
+  - CilTools.Syntax.Tokens.CommentToken.#ctor
+  - CilTools.Syntax.Tokens.CommentToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  - CilTools.Syntax.Tokens.CommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  langs:
+  - csharp
+  - vb
+  name: CommentToken
+  nameWithType: CommentToken
+  fullName: CilTools.Syntax.Tokens.CommentToken
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nRepresents a token definition for a single line comment (<code>// Hello, world</code>)\n"
+  syntax:
+    content: 'public class CommentToken : SyntaxTokenDefinition'
+    content.vb: >-
+      Public Class CommentToken
+
+          Inherits SyntaxTokenDefinition
+  inheritance:
+  - System.Object
+  - CilTools.Syntax.Tokens.SyntaxTokenDefinition
+  inheritedMembers:
+  - CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Syntax.Tokens.CommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  commentId: M:CilTools.Syntax.Tokens.CommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  id: HasStart(CilTools.Syntax.Tokens.TokenReader)
+  parent: CilTools.Syntax.Tokens.CommentToken
+  langs:
+  - csharp
+  - vb
+  name: HasStart(TokenReader)
+  nameWithType: CommentToken.HasStart(TokenReader)
+  fullName: CilTools.Syntax.Tokens.CommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nGets a value indicating whether the current position of the <xref href=\"CilTools.Syntax.Tokens.TokenReader\" data-throw-if-not-resolved=\"false\"></xref> contains a sequence \nof characters valid as the token start\n"
+  syntax:
+    content: public override bool HasStart(TokenReader reader)
+    parameters:
+    - id: reader
+      type: CilTools.Syntax.Tokens.TokenReader
+      description: A token reader to test
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function HasStart(reader As TokenReader) As Boolean
+  overridden: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  overload: CilTools.Syntax.Tokens.CommentToken.HasStart*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Syntax.Tokens.CommentToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  commentId: M:CilTools.Syntax.Tokens.CommentToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  id: HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  parent: CilTools.Syntax.Tokens.CommentToken
+  langs:
+  - csharp
+  - vb
+  name: HasContinuation(String, TokenReader)
+  nameWithType: CommentToken.HasContinuation(String, TokenReader)
+  fullName: CilTools.Syntax.Tokens.CommentToken.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nGets a value indicating whether the current position of the <xref href=\"CilTools.Syntax.Tokens.TokenReader\" data-throw-if-not-resolved=\"false\"></xref> contains a sequence \nof characters valid as a continuation of the specified token\n"
+  syntax:
+    content: public override bool HasContinuation(string prevPart, TokenReader reader)
+    parameters:
+    - id: prevPart
+      type: System.String
+      description: A part of token previously read from a token reader
+    - id: reader
+      type: CilTools.Syntax.Tokens.TokenReader
+      description: A token reader to test
+    return:
+      type: System.Boolean
+    content.vb: Public Overrides Function HasContinuation(prevPart As String, reader As TokenReader) As Boolean
+  overridden: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  overload: CilTools.Syntax.Tokens.CommentToken.HasContinuation*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Syntax.Tokens.CommentToken.#ctor
+  commentId: M:CilTools.Syntax.Tokens.CommentToken.#ctor
+  id: '#ctor'
+  parent: CilTools.Syntax.Tokens.CommentToken
+  langs:
+  - csharp
+  - vb
+  name: CommentToken()
+  nameWithType: CommentToken.CommentToken()
+  fullName: CilTools.Syntax.Tokens.CommentToken.CommentToken()
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  syntax:
+    content: public CommentToken()
+    content.vb: Public Sub New
+  overload: CilTools.Syntax.Tokens.CommentToken.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: CilTools.Syntax.Tokens
+  commentId: N:CilTools.Syntax.Tokens
+  isExternal: true
+  name: CilTools.Syntax.Tokens
+  nameWithType: CilTools.Syntax.Tokens
+  fullName: CilTools.Syntax.Tokens
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+  commentId: T:CilTools.Syntax.Tokens.SyntaxTokenDefinition
+  parent: CilTools.Syntax.Tokens
+  isExternal: true
+  name: SyntaxTokenDefinition
+  nameWithType: SyntaxTokenDefinition
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens
+  commentId: P:CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens
+  parent: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+  isExternal: true
+  name: IlasmTokens
+  nameWithType: SyntaxTokenDefinition.IlasmTokens
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  commentId: M:CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  parent: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+  isExternal: true
+  name: HasStart(TokenReader)
+  nameWithType: SyntaxTokenDefinition.HasStart(TokenReader)
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  spec.csharp:
+  - uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart(CilTools.Syntax.Tokens.TokenReader)
+    name: HasStart
+    nameWithType: SyntaxTokenDefinition.HasStart
+    fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Syntax.Tokens.TokenReader
+    name: TokenReader
+    nameWithType: TokenReader
+    fullName: CilTools.Syntax.Tokens.TokenReader
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart(CilTools.Syntax.Tokens.TokenReader)
+    name: HasStart
+    nameWithType: SyntaxTokenDefinition.HasStart
+    fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Syntax.Tokens.TokenReader
+    name: TokenReader
+    nameWithType: TokenReader
+    fullName: CilTools.Syntax.Tokens.TokenReader
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.Tokens.CommentToken.HasStart*
+  commentId: Overload:CilTools.Syntax.Tokens.CommentToken.HasStart
+  isExternal: true
+  name: HasStart
+  nameWithType: CommentToken.HasStart
+  fullName: CilTools.Syntax.Tokens.CommentToken.HasStart
+- uid: CilTools.Syntax.Tokens.TokenReader
+  commentId: T:CilTools.Syntax.Tokens.TokenReader
+  parent: CilTools.Syntax.Tokens
+  isExternal: true
+  name: TokenReader
+  nameWithType: TokenReader
+  fullName: CilTools.Syntax.Tokens.TokenReader
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  commentId: M:CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  parent: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+  isExternal: true
+  name: HasContinuation(String, TokenReader)
+  nameWithType: SyntaxTokenDefinition.HasContinuation(String, TokenReader)
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  spec.csharp:
+  - uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+    name: HasContinuation
+    nameWithType: SyntaxTokenDefinition.HasContinuation
+    fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Syntax.Tokens.TokenReader
+    name: TokenReader
+    nameWithType: TokenReader
+    fullName: CilTools.Syntax.Tokens.TokenReader
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+    name: HasContinuation
+    nameWithType: SyntaxTokenDefinition.HasContinuation
+    fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Syntax.Tokens.TokenReader
+    name: TokenReader
+    nameWithType: TokenReader
+    fullName: CilTools.Syntax.Tokens.TokenReader
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.Tokens.CommentToken.HasContinuation*
+  commentId: Overload:CilTools.Syntax.Tokens.CommentToken.HasContinuation
+  isExternal: true
+  name: HasContinuation
+  nameWithType: CommentToken.HasContinuation
+  fullName: CilTools.Syntax.Tokens.CommentToken.HasContinuation
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.Syntax.Tokens.CommentToken.#ctor*
+  commentId: Overload:CilTools.Syntax.Tokens.CommentToken.#ctor
+  isExternal: true
+  name: CommentToken
+  nameWithType: CommentToken.CommentToken
+  fullName: CilTools.Syntax.Tokens.CommentToken.CommentToken

@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net35</TargetFrameworks>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseFile>license.txt</PackageLicenseFile>
     <PackageIcon>IL.png</PackageIcon>
     <PackageTags>dotnet dotnet-standard dotnet-framework code-analysis text-processing lexical-analysis tokens</PackageTags>

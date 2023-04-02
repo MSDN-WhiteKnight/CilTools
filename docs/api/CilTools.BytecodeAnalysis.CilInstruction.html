@@ -839,7 +839,7 @@
   
   <a id="CilTools_BytecodeAnalysis_CilInstruction_Parse_" data-uid="CilTools.BytecodeAnalysis.CilInstruction.Parse*"></a>
   <h4 id="CilTools_BytecodeAnalysis_CilInstruction_Parse_System_String_" data-uid="CilTools.BytecodeAnalysis.CilInstruction.Parse(System.String)">Parse(String)</h4>
-  <div class="markdown level1 summary"><p>Converts CIL instruction textual representation into the corresponding CilInstruction object</p>
+  <div class="markdown level1 summary"><p>Converts CIL instruction textual representation into the corresponding <a class="xref" href="CilTools.BytecodeAnalysis.CilInstruction.html">CilInstruction</a> object</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
@@ -875,7 +875,34 @@
     <tbody>
       <tr>
         <td><a class="xref" href="CilTools.BytecodeAnalysis.CilInstruction.html">CilInstruction</a></td>
-        <td><p>CilInstruction object for the specified string</p>
+        <td><p>The instruction object for the specified string, or <code>null</code> when the specified string does not contain
+the instruction or the instruction can't be parsed</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="exceptions">Exceptions</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Condition</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.ArgumentNullException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">str</code> is <code>null</code></p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.ArgumentException</span></td>
+        <td><p><code data-dev-comment-type="paramref" class="paramref">str</code> is an empty string</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.NotSupportedException</span></td>
+        <td><p>The instruction name is invalid</p>
 </td>
       </tr>
     </tbody>

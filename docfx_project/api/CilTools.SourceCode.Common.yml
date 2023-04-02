@@ -1,0 +1,60 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.SourceCode.Common
+  commentId: N:CilTools.SourceCode.Common
+  id: CilTools.SourceCode.Common
+  children:
+  - CilTools.SourceCode.Common.SourceCodeUtils
+  - CilTools.SourceCode.Common.SourceLanguage
+  - CilTools.SourceCode.Common.SourceToken
+  - CilTools.SourceCode.Common.SourceTokenFactory
+  - CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: CilTools.SourceCode.Common
+  nameWithType: CilTools.SourceCode.Common
+  fullName: CilTools.SourceCode.Common
+  type: Namespace
+  assemblies:
+  - CilTools.SourceCode
+references:
+- uid: CilTools.SourceCode.Common.SourceCodeUtils
+  commentId: T:CilTools.SourceCode.Common.SourceCodeUtils
+  isExternal: true
+  name: SourceCodeUtils
+  nameWithType: SourceCodeUtils
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils
+- uid: CilTools.SourceCode.Common.SourceLanguage
+  commentId: T:CilTools.SourceCode.Common.SourceLanguage
+  parent: CilTools.SourceCode.Common
+  isExternal: true
+  name: SourceLanguage
+  nameWithType: SourceLanguage
+  fullName: CilTools.SourceCode.Common.SourceLanguage
+- uid: CilTools.SourceCode.Common.SourceToken
+  commentId: T:CilTools.SourceCode.Common.SourceToken
+  isExternal: true
+  name: SourceToken
+  nameWithType: SourceToken
+  fullName: CilTools.SourceCode.Common.SourceToken
+- uid: CilTools.SourceCode.Common.SourceTokenFactory
+  commentId: T:CilTools.SourceCode.Common.SourceTokenFactory
+  parent: CilTools.SourceCode.Common
+  isExternal: true
+  name: SourceTokenFactory
+  nameWithType: SourceTokenFactory
+  fullName: CilTools.SourceCode.Common.SourceTokenFactory
+- uid: CilTools.SourceCode.Common.TokenKind
+  commentId: T:CilTools.SourceCode.Common.TokenKind
+  parent: CilTools.SourceCode.Common
+  isExternal: true
+  name: TokenKind
+  nameWithType: TokenKind
+  fullName: CilTools.SourceCode.Common.TokenKind
+- uid: CilTools.SourceCode.Common
+  commentId: N:CilTools.SourceCode.Common
+  isExternal: true
+  name: CilTools.SourceCode.Common
+  nameWithType: CilTools.SourceCode.Common
+  fullName: CilTools.SourceCode.Common

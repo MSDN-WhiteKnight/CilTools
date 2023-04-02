@@ -114,6 +114,7 @@ references:
   fullName: CilTools.Syntax.PunctuationSyntax
 - uid: CilTools.Syntax.SyntaxFactory
   commentId: T:CilTools.Syntax.SyntaxFactory
+  parent: CilTools.Syntax
   isExternal: true
   name: SyntaxFactory
   nameWithType: SyntaxFactory

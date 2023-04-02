@@ -27,6 +27,7 @@ items:
     content: 'public class MemberRefSyntax : SyntaxNode'
     content.vb: >-
       Public Class MemberRefSyntax
+
           Inherits SyntaxNode
   inheritance:
   - System.Object
@@ -34,6 +35,7 @@ items:
   inheritedMembers:
   - CilTools.Syntax.SyntaxNode._lead
   - CilTools.Syntax.SyntaxNode._trail
+  - CilTools.Syntax.SyntaxNode.EmptyArray
   - CilTools.Syntax.SyntaxNode.ToString
   - CilTools.Syntax.SyntaxNode.GetChildNodes
   - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
@@ -183,6 +185,13 @@ references:
   name: _trail
   nameWithType: SyntaxNode._trail
   fullName: CilTools.Syntax.SyntaxNode._trail
+- uid: CilTools.Syntax.SyntaxNode.EmptyArray
+  commentId: F:CilTools.Syntax.SyntaxNode.EmptyArray
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: EmptyArray
+  nameWithType: SyntaxNode.EmptyArray
+  fullName: CilTools.Syntax.SyntaxNode.EmptyArray
 - uid: CilTools.Syntax.SyntaxNode.ToString
   commentId: M:CilTools.Syntax.SyntaxNode.ToString
   parent: CilTools.Syntax.SyntaxNode

@@ -5,10 +5,24 @@ using System;
 
 namespace CilTools.SourceCode.Common
 {
+    /// <summary>
+    /// Represents a programming language of the source code
+    /// </summary>
     public enum SourceLanguage
     {
+        /// <summary>
+        /// C#
+        /// </summary>
         CSharp = 1,
+
+        /// <summary>
+        /// C++
+        /// </summary>
         Cpp = 2,
+
+        /// <summary>
+        /// Visual Basic
+        /// </summary>
         VisualBasic = 3
     }
 }

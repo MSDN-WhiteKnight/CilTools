@@ -73,13 +73,14 @@
   
   <h1 id="CilTools_Syntax_SyntaxFactory" data-uid="CilTools.Syntax.SyntaxFactory" class="text-break">Class SyntaxFactory
   </h1>
-  <div class="markdown level0 summary"><p>Provides static methods that create new instances of <a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a> class</p>
+  <div class="markdown level0 summary"><p>Provides a base class for classes that create new instances of <a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a></p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
     <div class="level1"><span class="xref">SyntaxFactory</span></div>
+      <div class="level2"><a class="xref" href="CilTools.SourceCode.Common.SourceTokenFactory.html">SourceTokenFactory</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -109,7 +110,19 @@
   <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
   <h5 id="CilTools_Syntax_SyntaxFactory_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public static class SyntaxFactory</code></pre>
+    <pre><code class="lang-csharp hljs">public abstract class SyntaxFactory</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="CilTools_Syntax_SyntaxFactory__ctor_" data-uid="CilTools.Syntax.SyntaxFactory.#ctor*"></a>
+  <h4 id="CilTools_Syntax_SyntaxFactory__ctor" data-uid="CilTools.Syntax.SyntaxFactory.#ctor">SyntaxFactory()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SyntaxFactory()</code></pre>
   </div>
   <h3 id="methods">Methods
   </h3>
@@ -192,6 +205,62 @@ strings or null values. Otherwise, the behaviour is undefined.</p>
         <td><span class="xref">System.ArgumentException</span></td>
         <td><p>Token string is empty</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Syntax_SyntaxFactory_CreateNode_" data-uid="CilTools.Syntax.SyntaxFactory.CreateNode*"></a>
+  <h4 id="CilTools_Syntax_SyntaxFactory_CreateNode_System_String_System_String_System_String_" data-uid="CilTools.Syntax.SyntaxFactory.CreateNode(System.String,System.String,System.String)">CreateNode(String, String, String)</h4>
+  <div class="markdown level1 summary"><p>Creates a new syntax node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public abstract SyntaxNode CreateNode(string content, string leadingWhitespace, string trailingWhitespace)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">content</span></td>
+        <td><p>The source code of the node</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">leadingWhitespace</span></td>
+        <td><p>String containing whitespace characters that precede the node in the source document</p>
+</td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">trailingWhitespace</span></td>
+        <td><p>String containing whitespace characters that follow the node in the source document</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

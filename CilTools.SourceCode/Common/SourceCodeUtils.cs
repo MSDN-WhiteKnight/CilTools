@@ -13,6 +13,9 @@ using CilTools.Syntax.Tokens;
 
 namespace CilTools.SourceCode.Common
 {
+    /// <summary>
+    /// Provides static methods that assist in working with source code
+    /// </summary>
     public static class SourceCodeUtils
     {
         static readonly SyntaxTokenDefinition[] s_vbDefinitions = new SyntaxTokenDefinition[] {
@@ -41,6 +44,10 @@ namespace CilTools.SourceCode.Common
         static readonly SourceTokenFactory s_vbFactory = new SourceTokenFactory(
             new VbClassifier(), SourceLanguage.VisualBasic);
 
+        /// <summary>
+        /// Gets a collection of token definitions that can be used to tokenize a source file with the specified extension
+        /// </summary>
+        /// <param name="ext">Source file extension with a leading dot (for example, <c>.cs</c> for C#)</param>
         public static IEnumerable<SyntaxTokenDefinition> GetTokenDefinitions(string ext)
         {
             if (ext == null) ext = string.Empty;
@@ -69,6 +76,10 @@ namespace CilTools.SourceCode.Common
             return ext == ".cpp" || ext == ".c" || ext == ".h" || ext == string.Empty;
         }
 
+        /// <summary>
+        /// Gets a syntax factory that creates tokens for the specified language (defined by source file extension)
+        /// </summary>
+        /// <param name="ext">Source file extension with a leading dot (for example, <c>.cs</c> for C#)</param>
         public static SourceTokenFactory GetFactory(string ext)
         {
             if (ext == null) ext = string.Empty;
@@ -89,6 +100,9 @@ namespace CilTools.SourceCode.Common
             }
         }
 
+        /// <summary>
+        /// Gets a syntax factory that creates tokens for the specified language
+        /// </summary>
         public static SourceTokenFactory GetFactory(SourceLanguage lang)
         {
             switch (lang)
@@ -100,6 +114,17 @@ namespace CilTools.SourceCode.Common
             }
         }
 
+        /// <summary>
+        /// Reads all tokens from the specified string using the specified collection of token definitions and syntax factory
+        /// </summary>
+        /// <param name="src">Input string</param>
+        /// <param name="definitions">
+        /// Collection of token definitions that will be used to split the input string into a sequence of tokens
+        /// </param>
+        /// <param name="factory">
+        /// Syntax factory object that will be used to create new <see cref="SyntaxNode"/> instances
+        /// </param>
+        /// <returns>Array of syntax nodes that contain tokens</returns>
         public static SourceToken[] ReadAllTokens(string src, IEnumerable<SyntaxTokenDefinition> definitions,
             SourceTokenFactory factory)
         {

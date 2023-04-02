@@ -21,7 +21,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
-  summary: "\nRepresents custom modifier, an object used to associate a special information with the type specification, as defined by ECMA-335\n"
+  summary: "\nRepresents custom modifier, an object used to associate a special information with the type specification, \nas defined by ECMA-335\n"
   syntax:
     content: public struct CustomModifier
     content.vb: Public Structure CustomModifier

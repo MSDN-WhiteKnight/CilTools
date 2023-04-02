@@ -125,6 +125,14 @@ Changelog
 
 - Fix help when running from directory with non-latin characters in path
 
+2.6
+
+- Add support for .pack and .size directives
+- Add support for C# verbatim strings in source viewer
+- Use .NET Core runtime directory for .NET Standard 2.1 targeting assemblies when navigating to methods from BCL types
+- Update disassembler to not escape math symbols in string literals
+- Fix syntax highlighting for constant values
+
 ---------------------------------------------
 
 Copyright (c) 2022,  MSDN.WhiteKnight

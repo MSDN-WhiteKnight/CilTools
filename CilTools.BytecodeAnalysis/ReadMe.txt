@@ -210,3 +210,10 @@ v2.0
 - Fix `serializable` attribute handling
 - Fix type name representation in syntax API (now namespace is handled as a separate identifier token)
 - Fix detection of `<Module>` type (global fields and functions)
+
+2.6
+- Add new CilTools.Syntax.Tokens API for converting text into sequence of tokens
+- Add support for .pack and .size directives
+- Expose constant values as LiteralSyntax instead of GenericSyntax in Syntax API
+- Update disassembler to not escape math symbols in string literals
+- Fix CilInstruction.Parse to use invariant culture when parsing floating point values

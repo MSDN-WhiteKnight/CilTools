@@ -2623,6 +2623,18 @@ references:
   commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray
   fullName: CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray
   nameWithType: TypeSpec.ReadFromArray
+- uid: CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+  name: StructLayoutAttribute
+  href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_StructLayoutAttribute
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+  nameWithType: TypeSpec.StructLayoutAttribute
+- uid: CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute*
+  name: StructLayoutAttribute
+  href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_StructLayoutAttribute_
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+  nameWithType: TypeSpec.StructLayoutAttribute
 - uid: CilTools.BytecodeAnalysis.TypeSpec.TargetSignature
   name: TargetSignature
   href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_TargetSignature
@@ -6757,6 +6769,267 @@ references:
   commentId: N:CilTools.SourceCode
   fullName: CilTools.SourceCode
   nameWithType: CilTools.SourceCode
+- uid: CilTools.SourceCode.Common
+  name: CilTools.SourceCode.Common
+  href: api/CilTools.SourceCode.Common.html
+  commentId: N:CilTools.SourceCode.Common
+  fullName: CilTools.SourceCode.Common
+  nameWithType: CilTools.SourceCode.Common
+- uid: CilTools.SourceCode.Common.SourceCodeUtils
+  name: SourceCodeUtils
+  href: api/CilTools.SourceCode.Common.SourceCodeUtils.html
+  commentId: T:CilTools.SourceCode.Common.SourceCodeUtils
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils
+  nameWithType: SourceCodeUtils
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(CilTools.SourceCode.Common.SourceLanguage)
+  name: GetFactory(SourceLanguage)
+  href: api/CilTools.SourceCode.Common.SourceCodeUtils.html#CilTools_SourceCode_Common_SourceCodeUtils_GetFactory_CilTools_SourceCode_Common_SourceLanguage_
+  commentId: M:CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(CilTools.SourceCode.Common.SourceLanguage)
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(CilTools.SourceCode.Common.SourceLanguage)
+  nameWithType: SourceCodeUtils.GetFactory(SourceLanguage)
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(System.String)
+  name: GetFactory(String)
+  href: api/CilTools.SourceCode.Common.SourceCodeUtils.html#CilTools_SourceCode_Common_SourceCodeUtils_GetFactory_System_String_
+  commentId: M:CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(System.String)
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(System.String)
+  nameWithType: SourceCodeUtils.GetFactory(String)
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory*
+  name: GetFactory
+  href: api/CilTools.SourceCode.Common.SourceCodeUtils.html#CilTools_SourceCode_Common_SourceCodeUtils_GetFactory_
+  commentId: Overload:CilTools.SourceCode.Common.SourceCodeUtils.GetFactory
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory
+  nameWithType: SourceCodeUtils.GetFactory
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions(System.String)
+  name: GetTokenDefinitions(String)
+  href: api/CilTools.SourceCode.Common.SourceCodeUtils.html#CilTools_SourceCode_Common_SourceCodeUtils_GetTokenDefinitions_System_String_
+  commentId: M:CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions(System.String)
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions(System.String)
+  nameWithType: SourceCodeUtils.GetTokenDefinitions(String)
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions*
+  name: GetTokenDefinitions
+  href: api/CilTools.SourceCode.Common.SourceCodeUtils.html#CilTools_SourceCode_Common_SourceCodeUtils_GetTokenDefinitions_
+  commentId: Overload:CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions
+  nameWithType: SourceCodeUtils.GetTokenDefinitions
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition},CilTools.SourceCode.Common.SourceTokenFactory)
+  name: ReadAllTokens(String, IEnumerable<SyntaxTokenDefinition>, SourceTokenFactory)
+  href: api/CilTools.SourceCode.Common.SourceCodeUtils.html#CilTools_SourceCode_Common_SourceCodeUtils_ReadAllTokens_System_String_System_Collections_Generic_IEnumerable_CilTools_Syntax_Tokens_SyntaxTokenDefinition__CilTools_SourceCode_Common_SourceTokenFactory_
+  commentId: M:CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition},CilTools.SourceCode.Common.SourceTokenFactory)
+  name.vb: ReadAllTokens(String, IEnumerable(Of SyntaxTokenDefinition), SourceTokenFactory)
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens(System.String, System.Collections.Generic.IEnumerable<CilTools.Syntax.Tokens.SyntaxTokenDefinition>, CilTools.SourceCode.Common.SourceTokenFactory)
+  fullName.vb: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens(System.String, System.Collections.Generic.IEnumerable(Of CilTools.Syntax.Tokens.SyntaxTokenDefinition), CilTools.SourceCode.Common.SourceTokenFactory)
+  nameWithType: SourceCodeUtils.ReadAllTokens(String, IEnumerable<SyntaxTokenDefinition>, SourceTokenFactory)
+  nameWithType.vb: SourceCodeUtils.ReadAllTokens(String, IEnumerable(Of SyntaxTokenDefinition), SourceTokenFactory)
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens*
+  name: ReadAllTokens
+  href: api/CilTools.SourceCode.Common.SourceCodeUtils.html#CilTools_SourceCode_Common_SourceCodeUtils_ReadAllTokens_
+  commentId: Overload:CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens
+  nameWithType: SourceCodeUtils.ReadAllTokens
+- uid: CilTools.SourceCode.Common.SourceLanguage
+  name: SourceLanguage
+  href: api/CilTools.SourceCode.Common.SourceLanguage.html
+  commentId: T:CilTools.SourceCode.Common.SourceLanguage
+  fullName: CilTools.SourceCode.Common.SourceLanguage
+  nameWithType: SourceLanguage
+- uid: CilTools.SourceCode.Common.SourceLanguage.Cpp
+  name: Cpp
+  href: api/CilTools.SourceCode.Common.SourceLanguage.html#CilTools_SourceCode_Common_SourceLanguage_Cpp
+  commentId: F:CilTools.SourceCode.Common.SourceLanguage.Cpp
+  fullName: CilTools.SourceCode.Common.SourceLanguage.Cpp
+  nameWithType: SourceLanguage.Cpp
+- uid: CilTools.SourceCode.Common.SourceLanguage.CSharp
+  name: CSharp
+  href: api/CilTools.SourceCode.Common.SourceLanguage.html#CilTools_SourceCode_Common_SourceLanguage_CSharp
+  commentId: F:CilTools.SourceCode.Common.SourceLanguage.CSharp
+  fullName: CilTools.SourceCode.Common.SourceLanguage.CSharp
+  nameWithType: SourceLanguage.CSharp
+- uid: CilTools.SourceCode.Common.SourceLanguage.VisualBasic
+  name: VisualBasic
+  href: api/CilTools.SourceCode.Common.SourceLanguage.html#CilTools_SourceCode_Common_SourceLanguage_VisualBasic
+  commentId: F:CilTools.SourceCode.Common.SourceLanguage.VisualBasic
+  fullName: CilTools.SourceCode.Common.SourceLanguage.VisualBasic
+  nameWithType: SourceLanguage.VisualBasic
+- uid: CilTools.SourceCode.Common.SourceToken
+  name: SourceToken
+  href: api/CilTools.SourceCode.Common.SourceToken.html
+  commentId: T:CilTools.SourceCode.Common.SourceToken
+  fullName: CilTools.SourceCode.Common.SourceToken
+  nameWithType: SourceToken
+- uid: CilTools.SourceCode.Common.SourceToken.#ctor(System.String,CilTools.SourceCode.Common.TokenKind)
+  name: SourceToken(String, TokenKind)
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken__ctor_System_String_CilTools_SourceCode_Common_TokenKind_
+  commentId: M:CilTools.SourceCode.Common.SourceToken.#ctor(System.String,CilTools.SourceCode.Common.TokenKind)
+  fullName: CilTools.SourceCode.Common.SourceToken.SourceToken(System.String, CilTools.SourceCode.Common.TokenKind)
+  nameWithType: SourceToken.SourceToken(String, TokenKind)
+- uid: CilTools.SourceCode.Common.SourceToken.#ctor(System.String,CilTools.SourceCode.Common.TokenKind,System.String,System.String)
+  name: SourceToken(String, TokenKind, String, String)
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken__ctor_System_String_CilTools_SourceCode_Common_TokenKind_System_String_System_String_
+  commentId: M:CilTools.SourceCode.Common.SourceToken.#ctor(System.String,CilTools.SourceCode.Common.TokenKind,System.String,System.String)
+  fullName: CilTools.SourceCode.Common.SourceToken.SourceToken(System.String, CilTools.SourceCode.Common.TokenKind, System.String, System.String)
+  nameWithType: SourceToken.SourceToken(String, TokenKind, String, String)
+- uid: CilTools.SourceCode.Common.SourceToken.#ctor*
+  name: SourceToken
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken__ctor_
+  commentId: Overload:CilTools.SourceCode.Common.SourceToken.#ctor
+  fullName: CilTools.SourceCode.Common.SourceToken.SourceToken
+  nameWithType: SourceToken.SourceToken
+- uid: CilTools.SourceCode.Common.SourceToken.Content
+  name: Content
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_Content
+  commentId: P:CilTools.SourceCode.Common.SourceToken.Content
+  fullName: CilTools.SourceCode.Common.SourceToken.Content
+  nameWithType: SourceToken.Content
+- uid: CilTools.SourceCode.Common.SourceToken.Content*
+  name: Content
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_Content_
+  commentId: Overload:CilTools.SourceCode.Common.SourceToken.Content
+  fullName: CilTools.SourceCode.Common.SourceToken.Content
+  nameWithType: SourceToken.Content
+- uid: CilTools.SourceCode.Common.SourceToken.EnumerateChildNodes
+  name: EnumerateChildNodes()
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_EnumerateChildNodes
+  commentId: M:CilTools.SourceCode.Common.SourceToken.EnumerateChildNodes
+  fullName: CilTools.SourceCode.Common.SourceToken.EnumerateChildNodes()
+  nameWithType: SourceToken.EnumerateChildNodes()
+- uid: CilTools.SourceCode.Common.SourceToken.EnumerateChildNodes*
+  name: EnumerateChildNodes
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_EnumerateChildNodes_
+  commentId: Overload:CilTools.SourceCode.Common.SourceToken.EnumerateChildNodes
+  fullName: CilTools.SourceCode.Common.SourceToken.EnumerateChildNodes
+  nameWithType: SourceToken.EnumerateChildNodes
+- uid: CilTools.SourceCode.Common.SourceToken.Kind
+  name: Kind
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_Kind
+  commentId: P:CilTools.SourceCode.Common.SourceToken.Kind
+  fullName: CilTools.SourceCode.Common.SourceToken.Kind
+  nameWithType: SourceToken.Kind
+- uid: CilTools.SourceCode.Common.SourceToken.Kind*
+  name: Kind
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_Kind_
+  commentId: Overload:CilTools.SourceCode.Common.SourceToken.Kind
+  fullName: CilTools.SourceCode.Common.SourceToken.Kind
+  nameWithType: SourceToken.Kind
+- uid: CilTools.SourceCode.Common.SourceToken.ToText(System.IO.TextWriter)
+  name: ToText(TextWriter)
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_ToText_System_IO_TextWriter_
+  commentId: M:CilTools.SourceCode.Common.SourceToken.ToText(System.IO.TextWriter)
+  fullName: CilTools.SourceCode.Common.SourceToken.ToText(System.IO.TextWriter)
+  nameWithType: SourceToken.ToText(TextWriter)
+- uid: CilTools.SourceCode.Common.SourceToken.ToText*
+  name: ToText
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_ToText_
+  commentId: Overload:CilTools.SourceCode.Common.SourceToken.ToText
+  fullName: CilTools.SourceCode.Common.SourceToken.ToText
+  nameWithType: SourceToken.ToText
+- uid: CilTools.SourceCode.Common.SourceTokenFactory
+  name: SourceTokenFactory
+  href: api/CilTools.SourceCode.Common.SourceTokenFactory.html
+  commentId: T:CilTools.SourceCode.Common.SourceTokenFactory
+  fullName: CilTools.SourceCode.Common.SourceTokenFactory
+  nameWithType: SourceTokenFactory
+- uid: CilTools.SourceCode.Common.SourceTokenFactory.CreateNode(System.String,System.String,System.String)
+  name: CreateNode(String, String, String)
+  href: api/CilTools.SourceCode.Common.SourceTokenFactory.html#CilTools_SourceCode_Common_SourceTokenFactory_CreateNode_System_String_System_String_System_String_
+  commentId: M:CilTools.SourceCode.Common.SourceTokenFactory.CreateNode(System.String,System.String,System.String)
+  fullName: CilTools.SourceCode.Common.SourceTokenFactory.CreateNode(System.String, System.String, System.String)
+  nameWithType: SourceTokenFactory.CreateNode(String, String, String)
+- uid: CilTools.SourceCode.Common.SourceTokenFactory.CreateNode*
+  name: CreateNode
+  href: api/CilTools.SourceCode.Common.SourceTokenFactory.html#CilTools_SourceCode_Common_SourceTokenFactory_CreateNode_
+  commentId: Overload:CilTools.SourceCode.Common.SourceTokenFactory.CreateNode
+  fullName: CilTools.SourceCode.Common.SourceTokenFactory.CreateNode
+  nameWithType: SourceTokenFactory.CreateNode
+- uid: CilTools.SourceCode.Common.SourceTokenFactory.Language
+  name: Language
+  href: api/CilTools.SourceCode.Common.SourceTokenFactory.html#CilTools_SourceCode_Common_SourceTokenFactory_Language
+  commentId: P:CilTools.SourceCode.Common.SourceTokenFactory.Language
+  fullName: CilTools.SourceCode.Common.SourceTokenFactory.Language
+  nameWithType: SourceTokenFactory.Language
+- uid: CilTools.SourceCode.Common.SourceTokenFactory.Language*
+  name: Language
+  href: api/CilTools.SourceCode.Common.SourceTokenFactory.html#CilTools_SourceCode_Common_SourceTokenFactory_Language_
+  commentId: Overload:CilTools.SourceCode.Common.SourceTokenFactory.Language
+  fullName: CilTools.SourceCode.Common.SourceTokenFactory.Language
+  nameWithType: SourceTokenFactory.Language
+- uid: CilTools.SourceCode.Common.TokenKind
+  name: TokenKind
+  href: api/CilTools.SourceCode.Common.TokenKind.html
+  commentId: T:CilTools.SourceCode.Common.TokenKind
+  fullName: CilTools.SourceCode.Common.TokenKind
+  nameWithType: TokenKind
+- uid: CilTools.SourceCode.Common.TokenKind.Comment
+  name: Comment
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_Comment
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Comment
+  fullName: CilTools.SourceCode.Common.TokenKind.Comment
+  nameWithType: TokenKind.Comment
+- uid: CilTools.SourceCode.Common.TokenKind.DoubleQuotLiteral
+  name: DoubleQuotLiteral
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_DoubleQuotLiteral
+  commentId: F:CilTools.SourceCode.Common.TokenKind.DoubleQuotLiteral
+  fullName: CilTools.SourceCode.Common.TokenKind.DoubleQuotLiteral
+  nameWithType: TokenKind.DoubleQuotLiteral
+- uid: CilTools.SourceCode.Common.TokenKind.FunctionName
+  name: FunctionName
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_FunctionName
+  commentId: F:CilTools.SourceCode.Common.TokenKind.FunctionName
+  fullName: CilTools.SourceCode.Common.TokenKind.FunctionName
+  nameWithType: TokenKind.FunctionName
+- uid: CilTools.SourceCode.Common.TokenKind.Keyword
+  name: Keyword
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_Keyword
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Keyword
+  fullName: CilTools.SourceCode.Common.TokenKind.Keyword
+  nameWithType: TokenKind.Keyword
+- uid: CilTools.SourceCode.Common.TokenKind.MultilineComment
+  name: MultilineComment
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_MultilineComment
+  commentId: F:CilTools.SourceCode.Common.TokenKind.MultilineComment
+  fullName: CilTools.SourceCode.Common.TokenKind.MultilineComment
+  nameWithType: TokenKind.MultilineComment
+- uid: CilTools.SourceCode.Common.TokenKind.Name
+  name: Name
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_Name
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Name
+  fullName: CilTools.SourceCode.Common.TokenKind.Name
+  nameWithType: TokenKind.Name
+- uid: CilTools.SourceCode.Common.TokenKind.NumericLiteral
+  name: NumericLiteral
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_NumericLiteral
+  commentId: F:CilTools.SourceCode.Common.TokenKind.NumericLiteral
+  fullName: CilTools.SourceCode.Common.TokenKind.NumericLiteral
+  nameWithType: TokenKind.NumericLiteral
+- uid: CilTools.SourceCode.Common.TokenKind.Punctuation
+  name: Punctuation
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_Punctuation
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Punctuation
+  fullName: CilTools.SourceCode.Common.TokenKind.Punctuation
+  nameWithType: TokenKind.Punctuation
+- uid: CilTools.SourceCode.Common.TokenKind.SingleQuotLiteral
+  name: SingleQuotLiteral
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_SingleQuotLiteral
+  commentId: F:CilTools.SourceCode.Common.TokenKind.SingleQuotLiteral
+  fullName: CilTools.SourceCode.Common.TokenKind.SingleQuotLiteral
+  nameWithType: TokenKind.SingleQuotLiteral
+- uid: CilTools.SourceCode.Common.TokenKind.SpecialTextLiteral
+  name: SpecialTextLiteral
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_SpecialTextLiteral
+  commentId: F:CilTools.SourceCode.Common.TokenKind.SpecialTextLiteral
+  fullName: CilTools.SourceCode.Common.TokenKind.SpecialTextLiteral
+  nameWithType: TokenKind.SpecialTextLiteral
+- uid: CilTools.SourceCode.Common.TokenKind.TypeName
+  name: TypeName
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_TypeName
+  commentId: F:CilTools.SourceCode.Common.TokenKind.TypeName
+  fullName: CilTools.SourceCode.Common.TokenKind.TypeName
+  nameWithType: TokenKind.TypeName
+- uid: CilTools.SourceCode.Common.TokenKind.Unknown
+  name: Unknown
+  href: api/CilTools.SourceCode.Common.TokenKind.html#CilTools_SourceCode_Common_TokenKind_Unknown
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Unknown
+  fullName: CilTools.SourceCode.Common.TokenKind.Unknown
+  nameWithType: TokenKind.Unknown
 - uid: CilTools.SourceCode.FragmentBase
   name: FragmentBase
   href: api/CilTools.SourceCode.FragmentBase.html
@@ -7777,6 +8050,18 @@ references:
   commentId: T:CilTools.Syntax.SyntaxFactory
   fullName: CilTools.Syntax.SyntaxFactory
   nameWithType: SyntaxFactory
+- uid: CilTools.Syntax.SyntaxFactory.#ctor
+  name: SyntaxFactory()
+  href: api/CilTools.Syntax.SyntaxFactory.html#CilTools_Syntax_SyntaxFactory__ctor
+  commentId: M:CilTools.Syntax.SyntaxFactory.#ctor
+  fullName: CilTools.Syntax.SyntaxFactory.SyntaxFactory()
+  nameWithType: SyntaxFactory.SyntaxFactory()
+- uid: CilTools.Syntax.SyntaxFactory.#ctor*
+  name: SyntaxFactory
+  href: api/CilTools.Syntax.SyntaxFactory.html#CilTools_Syntax_SyntaxFactory__ctor_
+  commentId: Overload:CilTools.Syntax.SyntaxFactory.#ctor
+  fullName: CilTools.Syntax.SyntaxFactory.SyntaxFactory
+  nameWithType: SyntaxFactory.SyntaxFactory
 - uid: CilTools.Syntax.SyntaxFactory.CreateFromToken(System.String,System.String,System.String)
   name: CreateFromToken(String, String, String)
   href: api/CilTools.Syntax.SyntaxFactory.html#CilTools_Syntax_SyntaxFactory_CreateFromToken_System_String_System_String_System_String_
@@ -7789,6 +8074,18 @@ references:
   commentId: Overload:CilTools.Syntax.SyntaxFactory.CreateFromToken
   fullName: CilTools.Syntax.SyntaxFactory.CreateFromToken
   nameWithType: SyntaxFactory.CreateFromToken
+- uid: CilTools.Syntax.SyntaxFactory.CreateNode(System.String,System.String,System.String)
+  name: CreateNode(String, String, String)
+  href: api/CilTools.Syntax.SyntaxFactory.html#CilTools_Syntax_SyntaxFactory_CreateNode_System_String_System_String_System_String_
+  commentId: M:CilTools.Syntax.SyntaxFactory.CreateNode(System.String,System.String,System.String)
+  fullName: CilTools.Syntax.SyntaxFactory.CreateNode(System.String, System.String, System.String)
+  nameWithType: SyntaxFactory.CreateNode(String, String, String)
+- uid: CilTools.Syntax.SyntaxFactory.CreateNode*
+  name: CreateNode
+  href: api/CilTools.Syntax.SyntaxFactory.html#CilTools_Syntax_SyntaxFactory_CreateNode_
+  commentId: Overload:CilTools.Syntax.SyntaxFactory.CreateNode
+  fullName: CilTools.Syntax.SyntaxFactory.CreateNode
+  nameWithType: SyntaxFactory.CreateNode
 - uid: CilTools.Syntax.SyntaxNode
   name: SyntaxNode
   href: api/CilTools.Syntax.SyntaxNode.html
@@ -7819,6 +8116,12 @@ references:
   commentId: F:CilTools.Syntax.SyntaxNode._trail
   fullName: CilTools.Syntax.SyntaxNode._trail
   nameWithType: SyntaxNode._trail
+- uid: CilTools.Syntax.SyntaxNode.EmptyArray
+  name: EmptyArray
+  href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EmptyArray
+  commentId: F:CilTools.Syntax.SyntaxNode.EmptyArray
+  fullName: CilTools.Syntax.SyntaxNode.EmptyArray
+  nameWithType: SyntaxNode.EmptyArray
 - uid: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
   name: EnumerateChildNodes()
   href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EnumerateChildNodes
@@ -7921,3 +8224,441 @@ references:
   commentId: Overload:CilTools.Syntax.SyntaxNode.TrailingWhitespace
   fullName: CilTools.Syntax.SyntaxNode.TrailingWhitespace
   nameWithType: SyntaxNode.TrailingWhitespace
+- uid: CilTools.Syntax.Tokens
+  name: CilTools.Syntax.Tokens
+  href: api/CilTools.Syntax.Tokens.html
+  commentId: N:CilTools.Syntax.Tokens
+  fullName: CilTools.Syntax.Tokens
+  nameWithType: CilTools.Syntax.Tokens
+- uid: CilTools.Syntax.Tokens.CommentToken
+  name: CommentToken
+  href: api/CilTools.Syntax.Tokens.CommentToken.html
+  commentId: T:CilTools.Syntax.Tokens.CommentToken
+  fullName: CilTools.Syntax.Tokens.CommentToken
+  nameWithType: CommentToken
+- uid: CilTools.Syntax.Tokens.CommentToken.#ctor
+  name: CommentToken()
+  href: api/CilTools.Syntax.Tokens.CommentToken.html#CilTools_Syntax_Tokens_CommentToken__ctor
+  commentId: M:CilTools.Syntax.Tokens.CommentToken.#ctor
+  fullName: CilTools.Syntax.Tokens.CommentToken.CommentToken()
+  nameWithType: CommentToken.CommentToken()
+- uid: CilTools.Syntax.Tokens.CommentToken.#ctor*
+  name: CommentToken
+  href: api/CilTools.Syntax.Tokens.CommentToken.html#CilTools_Syntax_Tokens_CommentToken__ctor_
+  commentId: Overload:CilTools.Syntax.Tokens.CommentToken.#ctor
+  fullName: CilTools.Syntax.Tokens.CommentToken.CommentToken
+  nameWithType: CommentToken.CommentToken
+- uid: CilTools.Syntax.Tokens.CommentToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  name: HasContinuation(String, TokenReader)
+  href: api/CilTools.Syntax.Tokens.CommentToken.html#CilTools_Syntax_Tokens_CommentToken_HasContinuation_System_String_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.CommentToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.CommentToken.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: CommentToken.HasContinuation(String, TokenReader)
+- uid: CilTools.Syntax.Tokens.CommentToken.HasContinuation*
+  name: HasContinuation
+  href: api/CilTools.Syntax.Tokens.CommentToken.html#CilTools_Syntax_Tokens_CommentToken_HasContinuation_
+  commentId: Overload:CilTools.Syntax.Tokens.CommentToken.HasContinuation
+  fullName: CilTools.Syntax.Tokens.CommentToken.HasContinuation
+  nameWithType: CommentToken.HasContinuation
+- uid: CilTools.Syntax.Tokens.CommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  name: HasStart(TokenReader)
+  href: api/CilTools.Syntax.Tokens.CommentToken.html#CilTools_Syntax_Tokens_CommentToken_HasStart_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.CommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.CommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: CommentToken.HasStart(TokenReader)
+- uid: CilTools.Syntax.Tokens.CommentToken.HasStart*
+  name: HasStart
+  href: api/CilTools.Syntax.Tokens.CommentToken.html#CilTools_Syntax_Tokens_CommentToken_HasStart_
+  commentId: Overload:CilTools.Syntax.Tokens.CommentToken.HasStart
+  fullName: CilTools.Syntax.Tokens.CommentToken.HasStart
+  nameWithType: CommentToken.HasStart
+- uid: CilTools.Syntax.Tokens.DoubleQuotLiteralToken
+  name: DoubleQuotLiteralToken
+  href: api/CilTools.Syntax.Tokens.DoubleQuotLiteralToken.html
+  commentId: T:CilTools.Syntax.Tokens.DoubleQuotLiteralToken
+  fullName: CilTools.Syntax.Tokens.DoubleQuotLiteralToken
+  nameWithType: DoubleQuotLiteralToken
+- uid: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.#ctor
+  name: DoubleQuotLiteralToken()
+  href: api/CilTools.Syntax.Tokens.DoubleQuotLiteralToken.html#CilTools_Syntax_Tokens_DoubleQuotLiteralToken__ctor
+  commentId: M:CilTools.Syntax.Tokens.DoubleQuotLiteralToken.#ctor
+  fullName: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.DoubleQuotLiteralToken()
+  nameWithType: DoubleQuotLiteralToken.DoubleQuotLiteralToken()
+- uid: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.#ctor*
+  name: DoubleQuotLiteralToken
+  href: api/CilTools.Syntax.Tokens.DoubleQuotLiteralToken.html#CilTools_Syntax_Tokens_DoubleQuotLiteralToken__ctor_
+  commentId: Overload:CilTools.Syntax.Tokens.DoubleQuotLiteralToken.#ctor
+  fullName: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.DoubleQuotLiteralToken
+  nameWithType: DoubleQuotLiteralToken.DoubleQuotLiteralToken
+- uid: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  name: HasContinuation(String, TokenReader)
+  href: api/CilTools.Syntax.Tokens.DoubleQuotLiteralToken.html#CilTools_Syntax_Tokens_DoubleQuotLiteralToken_HasContinuation_System_String_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: DoubleQuotLiteralToken.HasContinuation(String, TokenReader)
+- uid: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasContinuation*
+  name: HasContinuation
+  href: api/CilTools.Syntax.Tokens.DoubleQuotLiteralToken.html#CilTools_Syntax_Tokens_DoubleQuotLiteralToken_HasContinuation_
+  commentId: Overload:CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasContinuation
+  fullName: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasContinuation
+  nameWithType: DoubleQuotLiteralToken.HasContinuation
+- uid: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  name: HasStart(TokenReader)
+  href: api/CilTools.Syntax.Tokens.DoubleQuotLiteralToken.html#CilTools_Syntax_Tokens_DoubleQuotLiteralToken_HasStart_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: DoubleQuotLiteralToken.HasStart(TokenReader)
+- uid: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasStart*
+  name: HasStart
+  href: api/CilTools.Syntax.Tokens.DoubleQuotLiteralToken.html#CilTools_Syntax_Tokens_DoubleQuotLiteralToken_HasStart_
+  commentId: Overload:CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasStart
+  fullName: CilTools.Syntax.Tokens.DoubleQuotLiteralToken.HasStart
+  nameWithType: DoubleQuotLiteralToken.HasStart
+- uid: CilTools.Syntax.Tokens.MultilineCommentToken
+  name: MultilineCommentToken
+  href: api/CilTools.Syntax.Tokens.MultilineCommentToken.html
+  commentId: T:CilTools.Syntax.Tokens.MultilineCommentToken
+  fullName: CilTools.Syntax.Tokens.MultilineCommentToken
+  nameWithType: MultilineCommentToken
+- uid: CilTools.Syntax.Tokens.MultilineCommentToken.#ctor
+  name: MultilineCommentToken()
+  href: api/CilTools.Syntax.Tokens.MultilineCommentToken.html#CilTools_Syntax_Tokens_MultilineCommentToken__ctor
+  commentId: M:CilTools.Syntax.Tokens.MultilineCommentToken.#ctor
+  fullName: CilTools.Syntax.Tokens.MultilineCommentToken.MultilineCommentToken()
+  nameWithType: MultilineCommentToken.MultilineCommentToken()
+- uid: CilTools.Syntax.Tokens.MultilineCommentToken.#ctor*
+  name: MultilineCommentToken
+  href: api/CilTools.Syntax.Tokens.MultilineCommentToken.html#CilTools_Syntax_Tokens_MultilineCommentToken__ctor_
+  commentId: Overload:CilTools.Syntax.Tokens.MultilineCommentToken.#ctor
+  fullName: CilTools.Syntax.Tokens.MultilineCommentToken.MultilineCommentToken
+  nameWithType: MultilineCommentToken.MultilineCommentToken
+- uid: CilTools.Syntax.Tokens.MultilineCommentToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  name: HasContinuation(String, TokenReader)
+  href: api/CilTools.Syntax.Tokens.MultilineCommentToken.html#CilTools_Syntax_Tokens_MultilineCommentToken_HasContinuation_System_String_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.MultilineCommentToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.MultilineCommentToken.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: MultilineCommentToken.HasContinuation(String, TokenReader)
+- uid: CilTools.Syntax.Tokens.MultilineCommentToken.HasContinuation*
+  name: HasContinuation
+  href: api/CilTools.Syntax.Tokens.MultilineCommentToken.html#CilTools_Syntax_Tokens_MultilineCommentToken_HasContinuation_
+  commentId: Overload:CilTools.Syntax.Tokens.MultilineCommentToken.HasContinuation
+  fullName: CilTools.Syntax.Tokens.MultilineCommentToken.HasContinuation
+  nameWithType: MultilineCommentToken.HasContinuation
+- uid: CilTools.Syntax.Tokens.MultilineCommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  name: HasStart(TokenReader)
+  href: api/CilTools.Syntax.Tokens.MultilineCommentToken.html#CilTools_Syntax_Tokens_MultilineCommentToken_HasStart_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.MultilineCommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.MultilineCommentToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: MultilineCommentToken.HasStart(TokenReader)
+- uid: CilTools.Syntax.Tokens.MultilineCommentToken.HasStart*
+  name: HasStart
+  href: api/CilTools.Syntax.Tokens.MultilineCommentToken.html#CilTools_Syntax_Tokens_MultilineCommentToken_HasStart_
+  commentId: Overload:CilTools.Syntax.Tokens.MultilineCommentToken.HasStart
+  fullName: CilTools.Syntax.Tokens.MultilineCommentToken.HasStart
+  nameWithType: MultilineCommentToken.HasStart
+- uid: CilTools.Syntax.Tokens.NumericLiteralToken
+  name: NumericLiteralToken
+  href: api/CilTools.Syntax.Tokens.NumericLiteralToken.html
+  commentId: T:CilTools.Syntax.Tokens.NumericLiteralToken
+  fullName: CilTools.Syntax.Tokens.NumericLiteralToken
+  nameWithType: NumericLiteralToken
+- uid: CilTools.Syntax.Tokens.NumericLiteralToken.#ctor
+  name: NumericLiteralToken()
+  href: api/CilTools.Syntax.Tokens.NumericLiteralToken.html#CilTools_Syntax_Tokens_NumericLiteralToken__ctor
+  commentId: M:CilTools.Syntax.Tokens.NumericLiteralToken.#ctor
+  fullName: CilTools.Syntax.Tokens.NumericLiteralToken.NumericLiteralToken()
+  nameWithType: NumericLiteralToken.NumericLiteralToken()
+- uid: CilTools.Syntax.Tokens.NumericLiteralToken.#ctor*
+  name: NumericLiteralToken
+  href: api/CilTools.Syntax.Tokens.NumericLiteralToken.html#CilTools_Syntax_Tokens_NumericLiteralToken__ctor_
+  commentId: Overload:CilTools.Syntax.Tokens.NumericLiteralToken.#ctor
+  fullName: CilTools.Syntax.Tokens.NumericLiteralToken.NumericLiteralToken
+  nameWithType: NumericLiteralToken.NumericLiteralToken
+- uid: CilTools.Syntax.Tokens.NumericLiteralToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  name: HasContinuation(String, TokenReader)
+  href: api/CilTools.Syntax.Tokens.NumericLiteralToken.html#CilTools_Syntax_Tokens_NumericLiteralToken_HasContinuation_System_String_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.NumericLiteralToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.NumericLiteralToken.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: NumericLiteralToken.HasContinuation(String, TokenReader)
+- uid: CilTools.Syntax.Tokens.NumericLiteralToken.HasContinuation*
+  name: HasContinuation
+  href: api/CilTools.Syntax.Tokens.NumericLiteralToken.html#CilTools_Syntax_Tokens_NumericLiteralToken_HasContinuation_
+  commentId: Overload:CilTools.Syntax.Tokens.NumericLiteralToken.HasContinuation
+  fullName: CilTools.Syntax.Tokens.NumericLiteralToken.HasContinuation
+  nameWithType: NumericLiteralToken.HasContinuation
+- uid: CilTools.Syntax.Tokens.NumericLiteralToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  name: HasStart(TokenReader)
+  href: api/CilTools.Syntax.Tokens.NumericLiteralToken.html#CilTools_Syntax_Tokens_NumericLiteralToken_HasStart_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.NumericLiteralToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.NumericLiteralToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: NumericLiteralToken.HasStart(TokenReader)
+- uid: CilTools.Syntax.Tokens.NumericLiteralToken.HasStart*
+  name: HasStart
+  href: api/CilTools.Syntax.Tokens.NumericLiteralToken.html#CilTools_Syntax_Tokens_NumericLiteralToken_HasStart_
+  commentId: Overload:CilTools.Syntax.Tokens.NumericLiteralToken.HasStart
+  fullName: CilTools.Syntax.Tokens.NumericLiteralToken.HasStart
+  nameWithType: NumericLiteralToken.HasStart
+- uid: CilTools.Syntax.Tokens.PunctuationToken
+  name: PunctuationToken
+  href: api/CilTools.Syntax.Tokens.PunctuationToken.html
+  commentId: T:CilTools.Syntax.Tokens.PunctuationToken
+  fullName: CilTools.Syntax.Tokens.PunctuationToken
+  nameWithType: PunctuationToken
+- uid: CilTools.Syntax.Tokens.PunctuationToken.#ctor
+  name: PunctuationToken()
+  href: api/CilTools.Syntax.Tokens.PunctuationToken.html#CilTools_Syntax_Tokens_PunctuationToken__ctor
+  commentId: M:CilTools.Syntax.Tokens.PunctuationToken.#ctor
+  fullName: CilTools.Syntax.Tokens.PunctuationToken.PunctuationToken()
+  nameWithType: PunctuationToken.PunctuationToken()
+- uid: CilTools.Syntax.Tokens.PunctuationToken.#ctor*
+  name: PunctuationToken
+  href: api/CilTools.Syntax.Tokens.PunctuationToken.html#CilTools_Syntax_Tokens_PunctuationToken__ctor_
+  commentId: Overload:CilTools.Syntax.Tokens.PunctuationToken.#ctor
+  fullName: CilTools.Syntax.Tokens.PunctuationToken.PunctuationToken
+  nameWithType: PunctuationToken.PunctuationToken
+- uid: CilTools.Syntax.Tokens.PunctuationToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  name: HasContinuation(String, TokenReader)
+  href: api/CilTools.Syntax.Tokens.PunctuationToken.html#CilTools_Syntax_Tokens_PunctuationToken_HasContinuation_System_String_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.PunctuationToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.PunctuationToken.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: PunctuationToken.HasContinuation(String, TokenReader)
+- uid: CilTools.Syntax.Tokens.PunctuationToken.HasContinuation*
+  name: HasContinuation
+  href: api/CilTools.Syntax.Tokens.PunctuationToken.html#CilTools_Syntax_Tokens_PunctuationToken_HasContinuation_
+  commentId: Overload:CilTools.Syntax.Tokens.PunctuationToken.HasContinuation
+  fullName: CilTools.Syntax.Tokens.PunctuationToken.HasContinuation
+  nameWithType: PunctuationToken.HasContinuation
+- uid: CilTools.Syntax.Tokens.PunctuationToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  name: HasStart(TokenReader)
+  href: api/CilTools.Syntax.Tokens.PunctuationToken.html#CilTools_Syntax_Tokens_PunctuationToken_HasStart_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.PunctuationToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.PunctuationToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: PunctuationToken.HasStart(TokenReader)
+- uid: CilTools.Syntax.Tokens.PunctuationToken.HasStart*
+  name: HasStart
+  href: api/CilTools.Syntax.Tokens.PunctuationToken.html#CilTools_Syntax_Tokens_PunctuationToken_HasStart_
+  commentId: Overload:CilTools.Syntax.Tokens.PunctuationToken.HasStart
+  fullName: CilTools.Syntax.Tokens.PunctuationToken.HasStart
+  nameWithType: PunctuationToken.HasStart
+- uid: CilTools.Syntax.Tokens.SingleQuotLiteralToken
+  name: SingleQuotLiteralToken
+  href: api/CilTools.Syntax.Tokens.SingleQuotLiteralToken.html
+  commentId: T:CilTools.Syntax.Tokens.SingleQuotLiteralToken
+  fullName: CilTools.Syntax.Tokens.SingleQuotLiteralToken
+  nameWithType: SingleQuotLiteralToken
+- uid: CilTools.Syntax.Tokens.SingleQuotLiteralToken.#ctor
+  name: SingleQuotLiteralToken()
+  href: api/CilTools.Syntax.Tokens.SingleQuotLiteralToken.html#CilTools_Syntax_Tokens_SingleQuotLiteralToken__ctor
+  commentId: M:CilTools.Syntax.Tokens.SingleQuotLiteralToken.#ctor
+  fullName: CilTools.Syntax.Tokens.SingleQuotLiteralToken.SingleQuotLiteralToken()
+  nameWithType: SingleQuotLiteralToken.SingleQuotLiteralToken()
+- uid: CilTools.Syntax.Tokens.SingleQuotLiteralToken.#ctor*
+  name: SingleQuotLiteralToken
+  href: api/CilTools.Syntax.Tokens.SingleQuotLiteralToken.html#CilTools_Syntax_Tokens_SingleQuotLiteralToken__ctor_
+  commentId: Overload:CilTools.Syntax.Tokens.SingleQuotLiteralToken.#ctor
+  fullName: CilTools.Syntax.Tokens.SingleQuotLiteralToken.SingleQuotLiteralToken
+  nameWithType: SingleQuotLiteralToken.SingleQuotLiteralToken
+- uid: CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  name: HasContinuation(String, TokenReader)
+  href: api/CilTools.Syntax.Tokens.SingleQuotLiteralToken.html#CilTools_Syntax_Tokens_SingleQuotLiteralToken_HasContinuation_System_String_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: SingleQuotLiteralToken.HasContinuation(String, TokenReader)
+- uid: CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasContinuation*
+  name: HasContinuation
+  href: api/CilTools.Syntax.Tokens.SingleQuotLiteralToken.html#CilTools_Syntax_Tokens_SingleQuotLiteralToken_HasContinuation_
+  commentId: Overload:CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasContinuation
+  fullName: CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasContinuation
+  nameWithType: SingleQuotLiteralToken.HasContinuation
+- uid: CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  name: HasStart(TokenReader)
+  href: api/CilTools.Syntax.Tokens.SingleQuotLiteralToken.html#CilTools_Syntax_Tokens_SingleQuotLiteralToken_HasStart_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: SingleQuotLiteralToken.HasStart(TokenReader)
+- uid: CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasStart*
+  name: HasStart
+  href: api/CilTools.Syntax.Tokens.SingleQuotLiteralToken.html#CilTools_Syntax_Tokens_SingleQuotLiteralToken_HasStart_
+  commentId: Overload:CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasStart
+  fullName: CilTools.Syntax.Tokens.SingleQuotLiteralToken.HasStart
+  nameWithType: SingleQuotLiteralToken.HasStart
+- uid: CilTools.Syntax.Tokens.SyntaxReader
+  name: SyntaxReader
+  href: api/CilTools.Syntax.Tokens.SyntaxReader.html
+  commentId: T:CilTools.Syntax.Tokens.SyntaxReader
+  fullName: CilTools.Syntax.Tokens.SyntaxReader
+  nameWithType: SyntaxReader
+- uid: CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes(System.String)
+  name: ReadAllNodes(String)
+  href: api/CilTools.Syntax.Tokens.SyntaxReader.html#CilTools_Syntax_Tokens_SyntaxReader_ReadAllNodes_System_String_
+  commentId: M:CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes(System.String)
+  fullName: CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes(System.String)
+  nameWithType: SyntaxReader.ReadAllNodes(String)
+- uid: CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition},CilTools.Syntax.SyntaxFactory)
+  name: ReadAllNodes(String, IEnumerable<SyntaxTokenDefinition>, SyntaxFactory)
+  href: api/CilTools.Syntax.Tokens.SyntaxReader.html#CilTools_Syntax_Tokens_SyntaxReader_ReadAllNodes_System_String_System_Collections_Generic_IEnumerable_CilTools_Syntax_Tokens_SyntaxTokenDefinition__CilTools_Syntax_SyntaxFactory_
+  commentId: M:CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition},CilTools.Syntax.SyntaxFactory)
+  name.vb: ReadAllNodes(String, IEnumerable(Of SyntaxTokenDefinition), SyntaxFactory)
+  fullName: CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes(System.String, System.Collections.Generic.IEnumerable<CilTools.Syntax.Tokens.SyntaxTokenDefinition>, CilTools.Syntax.SyntaxFactory)
+  fullName.vb: CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes(System.String, System.Collections.Generic.IEnumerable(Of CilTools.Syntax.Tokens.SyntaxTokenDefinition), CilTools.Syntax.SyntaxFactory)
+  nameWithType: SyntaxReader.ReadAllNodes(String, IEnumerable<SyntaxTokenDefinition>, SyntaxFactory)
+  nameWithType.vb: SyntaxReader.ReadAllNodes(String, IEnumerable(Of SyntaxTokenDefinition), SyntaxFactory)
+- uid: CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes*
+  name: ReadAllNodes
+  href: api/CilTools.Syntax.Tokens.SyntaxReader.html#CilTools_Syntax_Tokens_SyntaxReader_ReadAllNodes_
+  commentId: Overload:CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes
+  fullName: CilTools.Syntax.Tokens.SyntaxReader.ReadAllNodes
+  nameWithType: SyntaxReader.ReadAllNodes
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+  name: SyntaxTokenDefinition
+  href: api/CilTools.Syntax.Tokens.SyntaxTokenDefinition.html
+  commentId: T:CilTools.Syntax.Tokens.SyntaxTokenDefinition
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+  nameWithType: SyntaxTokenDefinition
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.#ctor
+  name: SyntaxTokenDefinition()
+  href: api/CilTools.Syntax.Tokens.SyntaxTokenDefinition.html#CilTools_Syntax_Tokens_SyntaxTokenDefinition__ctor
+  commentId: M:CilTools.Syntax.Tokens.SyntaxTokenDefinition.#ctor
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.SyntaxTokenDefinition()
+  nameWithType: SyntaxTokenDefinition.SyntaxTokenDefinition()
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.#ctor*
+  name: SyntaxTokenDefinition
+  href: api/CilTools.Syntax.Tokens.SyntaxTokenDefinition.html#CilTools_Syntax_Tokens_SyntaxTokenDefinition__ctor_
+  commentId: Overload:CilTools.Syntax.Tokens.SyntaxTokenDefinition.#ctor
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.SyntaxTokenDefinition
+  nameWithType: SyntaxTokenDefinition.SyntaxTokenDefinition
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  name: HasContinuation(String, TokenReader)
+  href: api/CilTools.Syntax.Tokens.SyntaxTokenDefinition.html#CilTools_Syntax_Tokens_SyntaxTokenDefinition_HasContinuation_System_String_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: SyntaxTokenDefinition.HasContinuation(String, TokenReader)
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation*
+  name: HasContinuation
+  href: api/CilTools.Syntax.Tokens.SyntaxTokenDefinition.html#CilTools_Syntax_Tokens_SyntaxTokenDefinition_HasContinuation_
+  commentId: Overload:CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasContinuation
+  nameWithType: SyntaxTokenDefinition.HasContinuation
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  name: HasStart(TokenReader)
+  href: api/CilTools.Syntax.Tokens.SyntaxTokenDefinition.html#CilTools_Syntax_Tokens_SyntaxTokenDefinition_HasStart_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: SyntaxTokenDefinition.HasStart(TokenReader)
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart*
+  name: HasStart
+  href: api/CilTools.Syntax.Tokens.SyntaxTokenDefinition.html#CilTools_Syntax_Tokens_SyntaxTokenDefinition_HasStart_
+  commentId: Overload:CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.HasStart
+  nameWithType: SyntaxTokenDefinition.HasStart
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens
+  name: IlasmTokens
+  href: api/CilTools.Syntax.Tokens.SyntaxTokenDefinition.html#CilTools_Syntax_Tokens_SyntaxTokenDefinition_IlasmTokens
+  commentId: P:CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens
+  nameWithType: SyntaxTokenDefinition.IlasmTokens
+- uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens*
+  name: IlasmTokens
+  href: api/CilTools.Syntax.Tokens.SyntaxTokenDefinition.html#CilTools_Syntax_Tokens_SyntaxTokenDefinition_IlasmTokens_
+  commentId: Overload:CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens
+  fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition.IlasmTokens
+  nameWithType: SyntaxTokenDefinition.IlasmTokens
+- uid: CilTools.Syntax.Tokens.TokenReader
+  name: TokenReader
+  href: api/CilTools.Syntax.Tokens.TokenReader.html
+  commentId: T:CilTools.Syntax.Tokens.TokenReader
+  fullName: CilTools.Syntax.Tokens.TokenReader
+  nameWithType: TokenReader
+- uid: CilTools.Syntax.Tokens.TokenReader.#ctor(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition})
+  name: TokenReader(String, IEnumerable<SyntaxTokenDefinition>)
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader__ctor_System_String_System_Collections_Generic_IEnumerable_CilTools_Syntax_Tokens_SyntaxTokenDefinition__
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.#ctor(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition})
+  name.vb: TokenReader(String, IEnumerable(Of SyntaxTokenDefinition))
+  fullName: CilTools.Syntax.Tokens.TokenReader.TokenReader(System.String, System.Collections.Generic.IEnumerable<CilTools.Syntax.Tokens.SyntaxTokenDefinition>)
+  fullName.vb: CilTools.Syntax.Tokens.TokenReader.TokenReader(System.String, System.Collections.Generic.IEnumerable(Of CilTools.Syntax.Tokens.SyntaxTokenDefinition))
+  nameWithType: TokenReader.TokenReader(String, IEnumerable<SyntaxTokenDefinition>)
+  nameWithType.vb: TokenReader.TokenReader(String, IEnumerable(Of SyntaxTokenDefinition))
+- uid: CilTools.Syntax.Tokens.TokenReader.#ctor*
+  name: TokenReader
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader__ctor_
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.#ctor
+  fullName: CilTools.Syntax.Tokens.TokenReader.TokenReader
+  nameWithType: TokenReader.TokenReader
+- uid: CilTools.Syntax.Tokens.TokenReader.PeekChar
+  name: PeekChar()
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_PeekChar
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.PeekChar
+  fullName: CilTools.Syntax.Tokens.TokenReader.PeekChar()
+  nameWithType: TokenReader.PeekChar()
+- uid: CilTools.Syntax.Tokens.TokenReader.PeekChar*
+  name: PeekChar
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_PeekChar_
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.PeekChar
+  fullName: CilTools.Syntax.Tokens.TokenReader.PeekChar
+  nameWithType: TokenReader.PeekChar
+- uid: CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
+  name: PeekString(Int32)
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_PeekString_System_Int32_
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
+  fullName: CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
+  nameWithType: TokenReader.PeekString(Int32)
+- uid: CilTools.Syntax.Tokens.TokenReader.PeekString*
+  name: PeekString
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_PeekString_
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.PeekString
+  fullName: CilTools.Syntax.Tokens.TokenReader.PeekString
+  nameWithType: TokenReader.PeekString
+- uid: CilTools.Syntax.Tokens.TokenReader.ReadAll
+  name: ReadAll()
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_ReadAll
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.ReadAll
+  fullName: CilTools.Syntax.Tokens.TokenReader.ReadAll()
+  nameWithType: TokenReader.ReadAll()
+- uid: CilTools.Syntax.Tokens.TokenReader.ReadAll*
+  name: ReadAll
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_ReadAll_
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.ReadAll
+  fullName: CilTools.Syntax.Tokens.TokenReader.ReadAll
+  nameWithType: TokenReader.ReadAll
+- uid: CilTools.Syntax.Tokens.WhitespaceToken
+  name: WhitespaceToken
+  href: api/CilTools.Syntax.Tokens.WhitespaceToken.html
+  commentId: T:CilTools.Syntax.Tokens.WhitespaceToken
+  fullName: CilTools.Syntax.Tokens.WhitespaceToken
+  nameWithType: WhitespaceToken
+- uid: CilTools.Syntax.Tokens.WhitespaceToken.#ctor
+  name: WhitespaceToken()
+  href: api/CilTools.Syntax.Tokens.WhitespaceToken.html#CilTools_Syntax_Tokens_WhitespaceToken__ctor
+  commentId: M:CilTools.Syntax.Tokens.WhitespaceToken.#ctor
+  fullName: CilTools.Syntax.Tokens.WhitespaceToken.WhitespaceToken()
+  nameWithType: WhitespaceToken.WhitespaceToken()
+- uid: CilTools.Syntax.Tokens.WhitespaceToken.#ctor*
+  name: WhitespaceToken
+  href: api/CilTools.Syntax.Tokens.WhitespaceToken.html#CilTools_Syntax_Tokens_WhitespaceToken__ctor_
+  commentId: Overload:CilTools.Syntax.Tokens.WhitespaceToken.#ctor
+  fullName: CilTools.Syntax.Tokens.WhitespaceToken.WhitespaceToken
+  nameWithType: WhitespaceToken.WhitespaceToken
+- uid: CilTools.Syntax.Tokens.WhitespaceToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  name: HasContinuation(String, TokenReader)
+  href: api/CilTools.Syntax.Tokens.WhitespaceToken.html#CilTools_Syntax_Tokens_WhitespaceToken_HasContinuation_System_String_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.WhitespaceToken.HasContinuation(System.String,CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.WhitespaceToken.HasContinuation(System.String, CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: WhitespaceToken.HasContinuation(String, TokenReader)
+- uid: CilTools.Syntax.Tokens.WhitespaceToken.HasContinuation*
+  name: HasContinuation
+  href: api/CilTools.Syntax.Tokens.WhitespaceToken.html#CilTools_Syntax_Tokens_WhitespaceToken_HasContinuation_
+  commentId: Overload:CilTools.Syntax.Tokens.WhitespaceToken.HasContinuation
+  fullName: CilTools.Syntax.Tokens.WhitespaceToken.HasContinuation
+  nameWithType: WhitespaceToken.HasContinuation
+- uid: CilTools.Syntax.Tokens.WhitespaceToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  name: HasStart(TokenReader)
+  href: api/CilTools.Syntax.Tokens.WhitespaceToken.html#CilTools_Syntax_Tokens_WhitespaceToken_HasStart_CilTools_Syntax_Tokens_TokenReader_
+  commentId: M:CilTools.Syntax.Tokens.WhitespaceToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  fullName: CilTools.Syntax.Tokens.WhitespaceToken.HasStart(CilTools.Syntax.Tokens.TokenReader)
+  nameWithType: WhitespaceToken.HasStart(TokenReader)
+- uid: CilTools.Syntax.Tokens.WhitespaceToken.HasStart*
+  name: HasStart
+  href: api/CilTools.Syntax.Tokens.WhitespaceToken.html#CilTools_Syntax_Tokens_WhitespaceToken_HasStart_
+  commentId: Overload:CilTools.Syntax.Tokens.WhitespaceToken.HasStart
+  fullName: CilTools.Syntax.Tokens.WhitespaceToken.HasStart
+  nameWithType: WhitespaceToken.HasStart

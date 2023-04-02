@@ -1,0 +1,643 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.SourceCode.Common.SourceCodeUtils
+  commentId: T:CilTools.SourceCode.Common.SourceCodeUtils
+  id: SourceCodeUtils
+  parent: CilTools.SourceCode.Common
+  children:
+  - CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(CilTools.SourceCode.Common.SourceLanguage)
+  - CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(System.String)
+  - CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions(System.String)
+  - CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition},CilTools.SourceCode.Common.SourceTokenFactory)
+  langs:
+  - csharp
+  - vb
+  name: SourceCodeUtils
+  nameWithType: SourceCodeUtils
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils
+  type: Class
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nProvides static methods that assist in working with source code\n"
+  syntax:
+    content: public static class SourceCodeUtils
+    content.vb: Public Module SourceCodeUtils
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - static
+  - class
+  modifiers.vb:
+  - Public
+  - Module
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions(System.String)
+  commentId: M:CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions(System.String)
+  id: GetTokenDefinitions(System.String)
+  parent: CilTools.SourceCode.Common.SourceCodeUtils
+  langs:
+  - csharp
+  - vb
+  name: GetTokenDefinitions(String)
+  nameWithType: SourceCodeUtils.GetTokenDefinitions(String)
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions(System.String)
+  type: Method
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nGets a collection of token definitions that can be used to tokenize a source file with the specified extension\n"
+  syntax:
+    content: public static IEnumerable<SyntaxTokenDefinition> GetTokenDefinitions(string ext)
+    parameters:
+    - id: ext
+      type: System.String
+      description: Source file extension with a leading dot (for example, <code>.cs</code> for C#)
+    return:
+      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition}
+    content.vb: Public Shared Function GetTokenDefinitions(ext As String) As IEnumerable(Of SyntaxTokenDefinition)
+  overload: CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(System.String)
+  commentId: M:CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(System.String)
+  id: GetFactory(System.String)
+  parent: CilTools.SourceCode.Common.SourceCodeUtils
+  langs:
+  - csharp
+  - vb
+  name: GetFactory(String)
+  nameWithType: SourceCodeUtils.GetFactory(String)
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(System.String)
+  type: Method
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nGets a syntax factory that creates tokens for the specified language (defined by source file extension)\n"
+  syntax:
+    content: public static SourceTokenFactory GetFactory(string ext)
+    parameters:
+    - id: ext
+      type: System.String
+      description: Source file extension with a leading dot (for example, <code>.cs</code> for C#)
+    return:
+      type: CilTools.SourceCode.Common.SourceTokenFactory
+    content.vb: Public Shared Function GetFactory(ext As String) As SourceTokenFactory
+  overload: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(CilTools.SourceCode.Common.SourceLanguage)
+  commentId: M:CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(CilTools.SourceCode.Common.SourceLanguage)
+  id: GetFactory(CilTools.SourceCode.Common.SourceLanguage)
+  parent: CilTools.SourceCode.Common.SourceCodeUtils
+  langs:
+  - csharp
+  - vb
+  name: GetFactory(SourceLanguage)
+  nameWithType: SourceCodeUtils.GetFactory(SourceLanguage)
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory(CilTools.SourceCode.Common.SourceLanguage)
+  type: Method
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nGets a syntax factory that creates tokens for the specified language\n"
+  syntax:
+    content: public static SourceTokenFactory GetFactory(SourceLanguage lang)
+    parameters:
+    - id: lang
+      type: CilTools.SourceCode.Common.SourceLanguage
+    return:
+      type: CilTools.SourceCode.Common.SourceTokenFactory
+    content.vb: Public Shared Function GetFactory(lang As SourceLanguage) As SourceTokenFactory
+  overload: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition},CilTools.SourceCode.Common.SourceTokenFactory)
+  commentId: M:CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition},CilTools.SourceCode.Common.SourceTokenFactory)
+  id: ReadAllTokens(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition},CilTools.SourceCode.Common.SourceTokenFactory)
+  parent: CilTools.SourceCode.Common.SourceCodeUtils
+  langs:
+  - csharp
+  - vb
+  name: ReadAllTokens(String, IEnumerable<SyntaxTokenDefinition>, SourceTokenFactory)
+  nameWithType: SourceCodeUtils.ReadAllTokens(String, IEnumerable<SyntaxTokenDefinition>, SourceTokenFactory)
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens(System.String, System.Collections.Generic.IEnumerable<CilTools.Syntax.Tokens.SyntaxTokenDefinition>, CilTools.SourceCode.Common.SourceTokenFactory)
+  type: Method
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nReads all tokens from the specified string using the specified collection of token definitions and syntax factory\n"
+  syntax:
+    content: public static SourceToken[] ReadAllTokens(string src, IEnumerable<SyntaxTokenDefinition> definitions, SourceTokenFactory factory)
+    parameters:
+    - id: src
+      type: System.String
+      description: Input string
+    - id: definitions
+      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition}
+      description: "\nCollection of token definitions that will be used to split the input string into a sequence of tokens\n"
+    - id: factory
+      type: CilTools.SourceCode.Common.SourceTokenFactory
+      description: "\nSyntax factory object that will be used to create new <xref href=\"CilTools.Syntax.SyntaxNode\" data-throw-if-not-resolved=\"false\"></xref> instances\n"
+    return:
+      type: CilTools.SourceCode.Common.SourceToken[]
+      description: Array of syntax nodes that contain tokens
+    content.vb: Public Shared Function ReadAllTokens(src As String, definitions As IEnumerable(Of SyntaxTokenDefinition), factory As SourceTokenFactory) As SourceToken()
+  overload: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens*
+  nameWithType.vb: SourceCodeUtils.ReadAllTokens(String, IEnumerable(Of SyntaxTokenDefinition), SourceTokenFactory)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens(System.String, System.Collections.Generic.IEnumerable(Of CilTools.Syntax.Tokens.SyntaxTokenDefinition), CilTools.SourceCode.Common.SourceTokenFactory)
+  name.vb: ReadAllTokens(String, IEnumerable(Of SyntaxTokenDefinition), SourceTokenFactory)
+references:
+- uid: CilTools.SourceCode.Common
+  commentId: N:CilTools.SourceCode.Common
+  isExternal: true
+  name: CilTools.SourceCode.Common
+  nameWithType: CilTools.SourceCode.Common
+  fullName: CilTools.SourceCode.Common
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions*
+  commentId: Overload:CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions
+  isExternal: true
+  name: GetTokenDefinitions
+  nameWithType: SourceCodeUtils.GetTokenDefinitions
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetTokenDefinitions
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition}
+  commentId: T:System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<SyntaxTokenDefinition>
+  nameWithType: IEnumerable<SyntaxTokenDefinition>
+  fullName: System.Collections.Generic.IEnumerable<CilTools.Syntax.Tokens.SyntaxTokenDefinition>
+  nameWithType.vb: IEnumerable(Of SyntaxTokenDefinition)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilTools.Syntax.Tokens.SyntaxTokenDefinition)
+  name.vb: IEnumerable(Of SyntaxTokenDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+    name: SyntaxTokenDefinition
+    nameWithType: SyntaxTokenDefinition
+    fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+    name: SyntaxTokenDefinition
+    nameWithType: SyntaxTokenDefinition
+    fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory*
+  commentId: Overload:CilTools.SourceCode.Common.SourceCodeUtils.GetFactory
+  isExternal: true
+  name: GetFactory
+  nameWithType: SourceCodeUtils.GetFactory
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.GetFactory
+- uid: CilTools.SourceCode.Common.SourceTokenFactory
+  commentId: T:CilTools.SourceCode.Common.SourceTokenFactory
+  parent: CilTools.SourceCode.Common
+  isExternal: true
+  name: SourceTokenFactory
+  nameWithType: SourceTokenFactory
+  fullName: CilTools.SourceCode.Common.SourceTokenFactory
+- uid: CilTools.SourceCode.Common.SourceLanguage
+  commentId: T:CilTools.SourceCode.Common.SourceLanguage
+  parent: CilTools.SourceCode.Common
+  isExternal: true
+  name: SourceLanguage
+  nameWithType: SourceLanguage
+  fullName: CilTools.SourceCode.Common.SourceLanguage
+- uid: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens*
+  commentId: Overload:CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens
+  isExternal: true
+  name: ReadAllTokens
+  nameWithType: SourceCodeUtils.ReadAllTokens
+  fullName: CilTools.SourceCode.Common.SourceCodeUtils.ReadAllTokens
+- uid: CilTools.SourceCode.Common.SourceToken[]
+  isExternal: true
+  name: SourceToken[]
+  nameWithType: SourceToken[]
+  fullName: CilTools.SourceCode.Common.SourceToken[]
+  nameWithType.vb: SourceToken()
+  fullName.vb: CilTools.SourceCode.Common.SourceToken()
+  name.vb: SourceToken()
+  spec.csharp:
+  - uid: CilTools.SourceCode.Common.SourceToken
+    name: SourceToken
+    nameWithType: SourceToken
+    fullName: CilTools.SourceCode.Common.SourceToken
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: CilTools.SourceCode.Common.SourceToken
+    name: SourceToken
+    nameWithType: SourceToken
+    fullName: CilTools.SourceCode.Common.SourceToken
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()

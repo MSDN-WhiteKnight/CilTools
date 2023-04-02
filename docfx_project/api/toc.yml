@@ -113,6 +113,19 @@
     name: SourceDocument
   - uid: CilTools.SourceCode.SourceFragment
     name: SourceFragment
+- uid: CilTools.SourceCode.Common
+  name: CilTools.SourceCode.Common
+  items:
+  - uid: CilTools.SourceCode.Common.SourceCodeUtils
+    name: SourceCodeUtils
+  - uid: CilTools.SourceCode.Common.SourceLanguage
+    name: SourceLanguage
+  - uid: CilTools.SourceCode.Common.SourceToken
+    name: SourceToken
+  - uid: CilTools.SourceCode.Common.SourceTokenFactory
+    name: SourceTokenFactory
+  - uid: CilTools.SourceCode.Common.TokenKind
+    name: TokenKind
 - uid: CilTools.Syntax
   name: CilTools.Syntax
   items:
@@ -146,3 +159,26 @@
     name: SyntaxFactory
   - uid: CilTools.Syntax.SyntaxNode
     name: SyntaxNode
+- uid: CilTools.Syntax.Tokens
+  name: CilTools.Syntax.Tokens
+  items:
+  - uid: CilTools.Syntax.Tokens.CommentToken
+    name: CommentToken
+  - uid: CilTools.Syntax.Tokens.DoubleQuotLiteralToken
+    name: DoubleQuotLiteralToken
+  - uid: CilTools.Syntax.Tokens.MultilineCommentToken
+    name: MultilineCommentToken
+  - uid: CilTools.Syntax.Tokens.NumericLiteralToken
+    name: NumericLiteralToken
+  - uid: CilTools.Syntax.Tokens.PunctuationToken
+    name: PunctuationToken
+  - uid: CilTools.Syntax.Tokens.SingleQuotLiteralToken
+    name: SingleQuotLiteralToken
+  - uid: CilTools.Syntax.Tokens.SyntaxReader
+    name: SyntaxReader
+  - uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+    name: SyntaxTokenDefinition
+  - uid: CilTools.Syntax.Tokens.TokenReader
+    name: TokenReader
+  - uid: CilTools.Syntax.Tokens.WhitespaceToken
+    name: WhitespaceToken

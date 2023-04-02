@@ -23,7 +23,7 @@ items:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
   summary: "\nRepresents bitwise flags that define what kinds of members are requested \n"
-  remarks: External members are members defined in different assembly then the method which references them, not to be confused with `external` keyword in C#. Internal members are members defined in the same assembly as referencing method, similarly, not to be confused with `internal` keyword or `InternalCall` attribute.  If you specify a combination of flags that does not match anything (i.e., if you define neither external nor internal members, or neither methods nor fields) when requesting referenced members, empty collection is returned.
+  remarks: "External members are members defined in different assembly then the method which references them, not to be \nconfused with `external` keyword in C#. Internal members are members defined in the same assembly as referencing method, \nsimilarly, not to be confused with `internal` keyword or `InternalCall` attribute.  If you specify a combination of flags \nthat does not match anything (i.e., if you define neither external nor internal members, or neither methods nor fields) \nwhen requesting referenced members, empty collection is returned."
   syntax:
     content: >-
       [Flags]

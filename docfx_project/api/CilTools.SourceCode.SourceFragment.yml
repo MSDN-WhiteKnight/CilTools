@@ -28,6 +28,7 @@ items:
     content: 'public class SourceFragment : FragmentBase'
     content.vb: >-
       Public Class SourceFragment
+
           Inherits FragmentBase
   inheritance:
   - System.Object

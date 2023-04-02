@@ -5,7 +5,9 @@ items:
   id: SyntaxFactory
   parent: CilTools.Syntax
   children:
+  - CilTools.Syntax.SyntaxFactory.#ctor
   - CilTools.Syntax.SyntaxFactory.CreateFromToken(System.String,System.String,System.String)
+  - CilTools.Syntax.SyntaxFactory.CreateNode(System.String,System.String,System.String)
   langs:
   - csharp
   - vb
@@ -19,12 +21,14 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.Syntax
-  summary: "\nProvides static methods that create new instances of <xref href=\"CilTools.Syntax.SyntaxNode\" data-throw-if-not-resolved=\"false\"></xref> class\n"
+  summary: "\nProvides a base class for classes that create new instances of <xref href=\"CilTools.Syntax.SyntaxNode\" data-throw-if-not-resolved=\"false\"></xref>\n"
   syntax:
-    content: public static class SyntaxFactory
-    content.vb: Public Module SyntaxFactory
+    content: public abstract class SyntaxFactory
+    content.vb: Public MustInherit Class SyntaxFactory
   inheritance:
   - System.Object
+  derivedClasses:
+  - CilTools.SourceCode.Common.SourceTokenFactory
   inheritedMembers:
   - System.Object.ToString
   - System.Object.Equals(System.Object)
@@ -35,11 +39,52 @@ items:
   - System.Object.MemberwiseClone
   modifiers.csharp:
   - public
-  - static
+  - abstract
   - class
   modifiers.vb:
   - Public
-  - Module
+  - MustInherit
+  - Class
+- uid: CilTools.Syntax.SyntaxFactory.CreateNode(System.String,System.String,System.String)
+  commentId: M:CilTools.Syntax.SyntaxFactory.CreateNode(System.String,System.String,System.String)
+  id: CreateNode(System.String,System.String,System.String)
+  parent: CilTools.Syntax.SyntaxFactory
+  langs:
+  - csharp
+  - vb
+  name: CreateNode(String, String, String)
+  nameWithType: SyntaxFactory.CreateNode(String, String, String)
+  fullName: CilTools.Syntax.SyntaxFactory.CreateNode(System.String, System.String, System.String)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nCreates a new syntax node\n"
+  syntax:
+    content: public abstract SyntaxNode CreateNode(string content, string leadingWhitespace, string trailingWhitespace)
+    parameters:
+    - id: content
+      type: System.String
+      description: The source code of the node
+    - id: leadingWhitespace
+      type: System.String
+      description: "\nString containing whitespace characters that precede the node in the source document\n"
+    - id: trailingWhitespace
+      type: System.String
+      description: "\nString containing whitespace characters that follow the node in the source document\n"
+    return:
+      type: CilTools.Syntax.SyntaxNode
+    content.vb: Public MustOverride Function CreateNode(content As String, leadingWhitespace As String, trailingWhitespace As String) As SyntaxNode
+  overload: CilTools.Syntax.SyntaxFactory.CreateNode*
+  modifiers.csharp:
+  - public
+  - abstract
+  modifiers.vb:
+  - Public
+  - MustOverride
 - uid: CilTools.Syntax.SyntaxFactory.CreateFromToken(System.String,System.String,System.String)
   commentId: M:CilTools.Syntax.SyntaxFactory.CreateFromToken(System.String,System.String,System.String)
   id: CreateFromToken(System.String,System.String,System.String)
@@ -88,6 +133,31 @@ items:
   modifiers.vb:
   - Public
   - Shared
+- uid: CilTools.Syntax.SyntaxFactory.#ctor
+  commentId: M:CilTools.Syntax.SyntaxFactory.#ctor
+  id: '#ctor'
+  parent: CilTools.Syntax.SyntaxFactory
+  langs:
+  - csharp
+  - vb
+  name: SyntaxFactory()
+  nameWithType: SyntaxFactory.SyntaxFactory()
+  fullName: CilTools.Syntax.SyntaxFactory.SyntaxFactory()
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  syntax:
+    content: protected SyntaxFactory()
+    content.vb: Protected Sub New
+  overload: CilTools.Syntax.SyntaxFactory.#ctor*
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
 references:
 - uid: CilTools.Syntax
   commentId: N:CilTools.Syntax
@@ -387,18 +457,12 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: CilTools.Syntax.SyntaxFactory.CreateFromToken*
-  commentId: Overload:CilTools.Syntax.SyntaxFactory.CreateFromToken
+- uid: CilTools.Syntax.SyntaxFactory.CreateNode*
+  commentId: Overload:CilTools.Syntax.SyntaxFactory.CreateNode
   isExternal: true
-  name: CreateFromToken
-  nameWithType: SyntaxFactory.CreateFromToken
-  fullName: CilTools.Syntax.SyntaxFactory.CreateFromToken
-- uid: System.ArgumentNullException
-  commentId: T:System.ArgumentNullException
-  isExternal: true
-- uid: System.ArgumentException
-  commentId: T:System.ArgumentException
-  isExternal: true
+  name: CreateNode
+  nameWithType: SyntaxFactory.CreateNode
+  fullName: CilTools.Syntax.SyntaxFactory.CreateNode
 - uid: System.String
   commentId: T:System.String
   parent: System
@@ -413,3 +477,21 @@ references:
   name: SyntaxNode
   nameWithType: SyntaxNode
   fullName: CilTools.Syntax.SyntaxNode
+- uid: CilTools.Syntax.SyntaxFactory.CreateFromToken*
+  commentId: Overload:CilTools.Syntax.SyntaxFactory.CreateFromToken
+  isExternal: true
+  name: CreateFromToken
+  nameWithType: SyntaxFactory.CreateFromToken
+  fullName: CilTools.Syntax.SyntaxFactory.CreateFromToken
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+- uid: CilTools.Syntax.SyntaxFactory.#ctor*
+  commentId: Overload:CilTools.Syntax.SyntaxFactory.#ctor
+  isExternal: true
+  name: SyntaxFactory
+  nameWithType: SyntaxFactory.SyntaxFactory
+  fullName: CilTools.Syntax.SyntaxFactory.SyntaxFactory

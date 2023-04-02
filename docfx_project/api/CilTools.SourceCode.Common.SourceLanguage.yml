@@ -1,0 +1,131 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.SourceCode.Common.SourceLanguage
+  commentId: T:CilTools.SourceCode.Common.SourceLanguage
+  id: SourceLanguage
+  parent: CilTools.SourceCode.Common
+  children:
+  - CilTools.SourceCode.Common.SourceLanguage.Cpp
+  - CilTools.SourceCode.Common.SourceLanguage.CSharp
+  - CilTools.SourceCode.Common.SourceLanguage.VisualBasic
+  langs:
+  - csharp
+  - vb
+  name: SourceLanguage
+  nameWithType: SourceLanguage
+  fullName: CilTools.SourceCode.Common.SourceLanguage
+  type: Enum
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nRepresents a programming language of the source code\n"
+  syntax:
+    content: public enum SourceLanguage
+    content.vb: Public Enum SourceLanguage
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilTools.SourceCode.Common.SourceLanguage.CSharp
+  commentId: F:CilTools.SourceCode.Common.SourceLanguage.CSharp
+  id: CSharp
+  parent: CilTools.SourceCode.Common.SourceLanguage
+  langs:
+  - csharp
+  - vb
+  name: CSharp
+  nameWithType: SourceLanguage.CSharp
+  fullName: CilTools.SourceCode.Common.SourceLanguage.CSharp
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nC#\n"
+  syntax:
+    content: CSharp = 1
+    return:
+      type: CilTools.SourceCode.Common.SourceLanguage
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.SourceLanguage.Cpp
+  commentId: F:CilTools.SourceCode.Common.SourceLanguage.Cpp
+  id: Cpp
+  parent: CilTools.SourceCode.Common.SourceLanguage
+  langs:
+  - csharp
+  - vb
+  name: Cpp
+  nameWithType: SourceLanguage.Cpp
+  fullName: CilTools.SourceCode.Common.SourceLanguage.Cpp
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nC++\n"
+  syntax:
+    content: Cpp = 2
+    return:
+      type: CilTools.SourceCode.Common.SourceLanguage
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.SourceLanguage.VisualBasic
+  commentId: F:CilTools.SourceCode.Common.SourceLanguage.VisualBasic
+  id: VisualBasic
+  parent: CilTools.SourceCode.Common.SourceLanguage
+  langs:
+  - csharp
+  - vb
+  name: VisualBasic
+  nameWithType: SourceLanguage.VisualBasic
+  fullName: CilTools.SourceCode.Common.SourceLanguage.VisualBasic
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nVisual Basic\n"
+  syntax:
+    content: VisualBasic = 3
+    return:
+      type: CilTools.SourceCode.Common.SourceLanguage
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilTools.SourceCode.Common
+  commentId: N:CilTools.SourceCode.Common
+  isExternal: true
+  name: CilTools.SourceCode.Common
+  nameWithType: CilTools.SourceCode.Common
+  fullName: CilTools.SourceCode.Common
+- uid: CilTools.SourceCode.Common.SourceLanguage
+  commentId: T:CilTools.SourceCode.Common.SourceLanguage
+  parent: CilTools.SourceCode.Common
+  isExternal: true
+  name: SourceLanguage
+  nameWithType: SourceLanguage
+  fullName: CilTools.SourceCode.Common.SourceLanguage

@@ -13,6 +13,10 @@
 		    {
           "files": ["CilTools.Runtime.dll"],          
           "src": "../CilTools.Runtime/bin/Debug"
+        },
+        {
+          "files": ["CilTools.SourceCode.dll"],          
+          "src": "../CilTools.SourceCode/bin/Debug/net35"
         }
       ],
       "dest": "api",

@@ -68,6 +68,7 @@ items:
   - CilTools.BytecodeAnalysis.TypeSpec.Namespace
   - CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   - CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte[],CilTools.Reflection.SignatureContext)
+  - CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
   - CilTools.BytecodeAnalysis.TypeSpec.TargetSignature
   - CilTools.BytecodeAnalysis.TypeSpec.ToString
   - CilTools.BytecodeAnalysis.TypeSpec.Type
@@ -90,7 +91,9 @@ items:
     content: 'public class TypeSpec : Type, ICustomAttributeProvider, _MemberInfo, _Type, IReflect, ITypeInfo'
     content.vb: >-
       Public Class TypeSpec
+
           Inherits Type
+
           Implements ICustomAttributeProvider, _MemberInfo, _Type, IReflect, ITypeInfo
   inheritance:
   - System.Object
@@ -186,7 +189,6 @@ items:
   - System.Type.System#Runtime#InteropServices#_Type#Invoke(System.UInt32,System.Guid@,System.UInt32,System.Int16,System.IntPtr,System.IntPtr,System.IntPtr,System.IntPtr)
   - System.Type.MemberType
   - System.Type.ReflectedType
-  - System.Type.StructLayoutAttribute
   - System.Type.DefaultBinder
   - System.Type.TypeHandle
   - System.Type.TypeInitializer
@@ -2459,6 +2461,39 @@ items:
   - get
   modifiers.vb:
   - Public
+  - ReadOnly
+- uid: CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+  commentId: P:CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+  id: StructLayoutAttribute
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: StructLayoutAttribute
+  nameWithType: TypeSpec.StructLayoutAttribute
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  syntax:
+    content: public override StructLayoutAttribute StructLayoutAttribute { get; }
+    parameters: []
+    return:
+      type: System.Runtime.InteropServices.StructLayoutAttribute
+    content.vb: Public Overrides ReadOnly Property StructLayoutAttribute As StructLayoutAttribute
+  overridden: System.Type.StructLayoutAttribute
+  overload: CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute*
+  modifiers.csharp:
+  - public
+  - override
+  - get
+  modifiers.vb:
+  - Public
+  - Overrides
   - ReadOnly
 - uid: CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes
   commentId: P:CilTools.BytecodeAnalysis.TypeSpec.GenericParameterAttributes
@@ -7380,13 +7415,6 @@ references:
   name: ReflectedType
   nameWithType: Type.ReflectedType
   fullName: System.Type.ReflectedType
-- uid: System.Type.StructLayoutAttribute
-  commentId: P:System.Type.StructLayoutAttribute
-  parent: System.Type
-  isExternal: true
-  name: StructLayoutAttribute
-  nameWithType: Type.StructLayoutAttribute
-  fullName: System.Type.StructLayoutAttribute
 - uid: System.Type.DefaultBinder
   commentId: P:System.Type.DefaultBinder
   parent: System.Type
@@ -11539,6 +11567,26 @@ references:
   name: IsFunctionPointer
   nameWithType: ITypeInfo.IsFunctionPointer
   fullName: CilTools.Reflection.ITypeInfo.IsFunctionPointer
+- uid: System.Type.StructLayoutAttribute
+  commentId: P:System.Type.StructLayoutAttribute
+  parent: System.Type
+  isExternal: true
+  name: StructLayoutAttribute
+  nameWithType: Type.StructLayoutAttribute
+  fullName: System.Type.StructLayoutAttribute
+- uid: CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+  isExternal: true
+  name: StructLayoutAttribute
+  nameWithType: TypeSpec.StructLayoutAttribute
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.StructLayoutAttribute
+- uid: System.Runtime.InteropServices.StructLayoutAttribute
+  commentId: T:System.Runtime.InteropServices.StructLayoutAttribute
+  parent: System.Runtime.InteropServices
+  isExternal: true
+  name: StructLayoutAttribute
+  nameWithType: StructLayoutAttribute
+  fullName: System.Runtime.InteropServices.StructLayoutAttribute
 - uid: System.Type.GenericParameterAttributes
   commentId: P:System.Type.GenericParameterAttributes
   parent: System.Type

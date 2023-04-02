@@ -377,7 +377,7 @@ items:
   assemblies:
   - CilTools.BytecodeAnalysis
   namespace: CilTools.BytecodeAnalysis
-  summary: "\nConverts CIL instruction textual representation into the corresponding CilInstruction object\n"
+  summary: "\nConverts CIL instruction textual representation into the corresponding <xref href=\"CilTools.BytecodeAnalysis.CilInstruction\" data-throw-if-not-resolved=\"false\"></xref> object\n"
   syntax:
     content: public static CilInstruction Parse(string str)
     parameters:
@@ -386,9 +386,19 @@ items:
       description: The line of CIL code representing instruction
     return:
       type: CilTools.BytecodeAnalysis.CilInstruction
-      description: CilInstruction object for the specified string
+      description: "\nThe instruction object for the specified string, or <code>null</code> when the specified string does not contain\nthe instruction or the instruction can&apos;t be parsed\n"
     content.vb: Public Shared Function Parse(str As String) As CilInstruction
   overload: CilTools.BytecodeAnalysis.CilInstruction.Parse*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: <code data-dev-comment-type="paramref" class="paramref">str</code> is <code>null</code>
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: <code data-dev-comment-type="paramref" class="paramref">str</code> is an empty string
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: The instruction name is invalid
   modifiers.csharp:
   - public
   - static
@@ -1421,6 +1431,15 @@ references:
   name: Parse
   nameWithType: CilInstruction.Parse
   fullName: CilTools.BytecodeAnalysis.CilInstruction.Parse
+- uid: System.ArgumentNullException
+  commentId: T:System.ArgumentNullException
+  isExternal: true
+- uid: System.ArgumentException
+  commentId: T:System.ArgumentException
+  isExternal: true
+- uid: System.NotSupportedException
+  commentId: T:System.NotSupportedException
+  isExternal: true
 - uid: CilTools.BytecodeAnalysis.CilInstruction.Method*
   commentId: Overload:CilTools.BytecodeAnalysis.CilInstruction.Method
   isExternal: true

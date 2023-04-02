@@ -1,0 +1,392 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.SourceCode.Common.TokenKind
+  commentId: T:CilTools.SourceCode.Common.TokenKind
+  id: TokenKind
+  parent: CilTools.SourceCode.Common
+  children:
+  - CilTools.SourceCode.Common.TokenKind.Comment
+  - CilTools.SourceCode.Common.TokenKind.DoubleQuotLiteral
+  - CilTools.SourceCode.Common.TokenKind.FunctionName
+  - CilTools.SourceCode.Common.TokenKind.Keyword
+  - CilTools.SourceCode.Common.TokenKind.MultilineComment
+  - CilTools.SourceCode.Common.TokenKind.Name
+  - CilTools.SourceCode.Common.TokenKind.NumericLiteral
+  - CilTools.SourceCode.Common.TokenKind.Punctuation
+  - CilTools.SourceCode.Common.TokenKind.SingleQuotLiteral
+  - CilTools.SourceCode.Common.TokenKind.SpecialTextLiteral
+  - CilTools.SourceCode.Common.TokenKind.TypeName
+  - CilTools.SourceCode.Common.TokenKind.Unknown
+  langs:
+  - csharp
+  - vb
+  name: TokenKind
+  nameWithType: TokenKind
+  fullName: CilTools.SourceCode.Common.TokenKind
+  type: Enum
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nRepresents the kind of token, a lexical element in the formal language grammar.\n"
+  syntax:
+    content: public enum TokenKind
+    content.vb: Public Enum TokenKind
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilTools.SourceCode.Common.TokenKind.Unknown
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Unknown
+  id: Unknown
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: Unknown
+  nameWithType: TokenKind.Unknown
+  fullName: CilTools.SourceCode.Common.TokenKind.Unknown
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nUnknown token\n"
+  syntax:
+    content: Unknown = 0
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.Name
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Name
+  id: Name
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: Name
+  nameWithType: TokenKind.Name
+  fullName: CilTools.SourceCode.Common.TokenKind.Name
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nUncategorized identifier token (keyword or name of function/type/variable etc.)\n"
+  syntax:
+    content: Name = 1
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.TypeName
+  commentId: F:CilTools.SourceCode.Common.TokenKind.TypeName
+  id: TypeName
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: TypeName
+  nameWithType: TokenKind.TypeName
+  fullName: CilTools.SourceCode.Common.TokenKind.TypeName
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nIdentifier token that represents a type name\n"
+  syntax:
+    content: TypeName = 2
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.FunctionName
+  commentId: F:CilTools.SourceCode.Common.TokenKind.FunctionName
+  id: FunctionName
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: FunctionName
+  nameWithType: TokenKind.FunctionName
+  fullName: CilTools.SourceCode.Common.TokenKind.FunctionName
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nIdentifier token that represents a function name\n"
+  syntax:
+    content: FunctionName = 3
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.Keyword
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Keyword
+  id: Keyword
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: Keyword
+  nameWithType: TokenKind.Keyword
+  fullName: CilTools.SourceCode.Common.TokenKind.Keyword
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nKeyword token\n"
+  syntax:
+    content: Keyword = 4
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.Punctuation
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Punctuation
+  id: Punctuation
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: Punctuation
+  nameWithType: TokenKind.Punctuation
+  fullName: CilTools.SourceCode.Common.TokenKind.Punctuation
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nPunctuation sign token\n"
+  syntax:
+    content: Punctuation = 5
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.SingleQuotLiteral
+  commentId: F:CilTools.SourceCode.Common.TokenKind.SingleQuotLiteral
+  id: SingleQuotLiteral
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: SingleQuotLiteral
+  nameWithType: TokenKind.SingleQuotLiteral
+  fullName: CilTools.SourceCode.Common.TokenKind.SingleQuotLiteral
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nSingle-quoted text literal token (&apos;foo&apos;)\n"
+  syntax:
+    content: SingleQuotLiteral = 6
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.DoubleQuotLiteral
+  commentId: F:CilTools.SourceCode.Common.TokenKind.DoubleQuotLiteral
+  id: DoubleQuotLiteral
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: DoubleQuotLiteral
+  nameWithType: TokenKind.DoubleQuotLiteral
+  fullName: CilTools.SourceCode.Common.TokenKind.DoubleQuotLiteral
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nDouble-quoted text literal token (&quot;foo&quot;)\n"
+  syntax:
+    content: DoubleQuotLiteral = 7
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.SpecialTextLiteral
+  commentId: F:CilTools.SourceCode.Common.TokenKind.SpecialTextLiteral
+  id: SpecialTextLiteral
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: SpecialTextLiteral
+  nameWithType: TokenKind.SpecialTextLiteral
+  fullName: CilTools.SourceCode.Common.TokenKind.SpecialTextLiteral
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nText literal with a special syntax, such as verbatim string literal in C#\n"
+  syntax:
+    content: SpecialTextLiteral = 8
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.NumericLiteral
+  commentId: F:CilTools.SourceCode.Common.TokenKind.NumericLiteral
+  id: NumericLiteral
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: NumericLiteral
+  nameWithType: TokenKind.NumericLiteral
+  fullName: CilTools.SourceCode.Common.TokenKind.NumericLiteral
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nLiteral token of numeric type (integer or floating-point)\n"
+  syntax:
+    content: NumericLiteral = 9
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.Comment
+  commentId: F:CilTools.SourceCode.Common.TokenKind.Comment
+  id: Comment
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: Comment
+  nameWithType: TokenKind.Comment
+  fullName: CilTools.SourceCode.Common.TokenKind.Comment
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nSingle-line comment token\n"
+  syntax:
+    content: Comment = 10
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.SourceCode.Common.TokenKind.MultilineComment
+  commentId: F:CilTools.SourceCode.Common.TokenKind.MultilineComment
+  id: MultilineComment
+  parent: CilTools.SourceCode.Common.TokenKind
+  langs:
+  - csharp
+  - vb
+  name: MultilineComment
+  nameWithType: TokenKind.MultilineComment
+  fullName: CilTools.SourceCode.Common.TokenKind.MultilineComment
+  type: Field
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nMultiline comment token\n"
+  syntax:
+    content: MultilineComment = 11
+    return:
+      type: CilTools.SourceCode.Common.TokenKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilTools.SourceCode.Common
+  commentId: N:CilTools.SourceCode.Common
+  isExternal: true
+  name: CilTools.SourceCode.Common
+  nameWithType: CilTools.SourceCode.Common
+  fullName: CilTools.SourceCode.Common
+- uid: CilTools.SourceCode.Common.TokenKind
+  commentId: T:CilTools.SourceCode.Common.TokenKind
+  parent: CilTools.SourceCode.Common
+  isExternal: true
+  name: TokenKind
+  nameWithType: TokenKind
+  fullName: CilTools.SourceCode.Common.TokenKind

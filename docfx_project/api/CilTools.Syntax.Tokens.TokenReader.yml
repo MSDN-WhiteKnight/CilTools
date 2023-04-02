@@ -1,0 +1,648 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Syntax.Tokens.TokenReader
+  commentId: T:CilTools.Syntax.Tokens.TokenReader
+  id: TokenReader
+  parent: CilTools.Syntax.Tokens
+  children:
+  - CilTools.Syntax.Tokens.TokenReader.#ctor(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition})
+  - CilTools.Syntax.Tokens.TokenReader.PeekChar
+  - CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
+  - CilTools.Syntax.Tokens.TokenReader.ReadAll
+  langs:
+  - csharp
+  - vb
+  name: TokenReader
+  nameWithType: TokenReader
+  fullName: CilTools.Syntax.Tokens.TokenReader
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nReads raw tokens from a string using the specified collection of token definitions\n"
+  syntax:
+    content: public class TokenReader
+    content.vb: Public Class TokenReader
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Syntax.Tokens.TokenReader.#ctor(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition})
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.#ctor(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition})
+  id: '#ctor(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition})'
+  parent: CilTools.Syntax.Tokens.TokenReader
+  langs:
+  - csharp
+  - vb
+  name: TokenReader(String, IEnumerable<SyntaxTokenDefinition>)
+  nameWithType: TokenReader.TokenReader(String, IEnumerable<SyntaxTokenDefinition>)
+  fullName: CilTools.Syntax.Tokens.TokenReader.TokenReader(System.String, System.Collections.Generic.IEnumerable<CilTools.Syntax.Tokens.SyntaxTokenDefinition>)
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nCreates a new instance of the token reader\n"
+  syntax:
+    content: public TokenReader(string src, IEnumerable<SyntaxTokenDefinition> tokenDefinitions)
+    parameters:
+    - id: src
+      type: System.String
+      description: Source string
+    - id: tokenDefinitions
+      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition}
+      description: Collection of token definitions to use
+    content.vb: Public Sub New(src As String, tokenDefinitions As IEnumerable(Of SyntaxTokenDefinition))
+  overload: CilTools.Syntax.Tokens.TokenReader.#ctor*
+  nameWithType.vb: TokenReader.TokenReader(String, IEnumerable(Of SyntaxTokenDefinition))
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CilTools.Syntax.Tokens.TokenReader.TokenReader(System.String, System.Collections.Generic.IEnumerable(Of CilTools.Syntax.Tokens.SyntaxTokenDefinition))
+  name.vb: TokenReader(String, IEnumerable(Of SyntaxTokenDefinition))
+- uid: CilTools.Syntax.Tokens.TokenReader.ReadAll
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.ReadAll
+  id: ReadAll
+  parent: CilTools.Syntax.Tokens.TokenReader
+  langs:
+  - csharp
+  - vb
+  name: ReadAll()
+  nameWithType: TokenReader.ReadAll()
+  fullName: CilTools.Syntax.Tokens.TokenReader.ReadAll()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nReads all tokens from the current instance\n"
+  syntax:
+    content: public IEnumerable<string> ReadAll()
+    return:
+      type: System.Collections.Generic.IEnumerable{System.String}
+      description: Collection of strings that contain tokens
+    content.vb: Public Function ReadAll As IEnumerable(Of String)
+  overload: CilTools.Syntax.Tokens.TokenReader.ReadAll*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Syntax.Tokens.TokenReader.PeekChar
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.PeekChar
+  id: PeekChar
+  parent: CilTools.Syntax.Tokens.TokenReader
+  langs:
+  - csharp
+  - vb
+  name: PeekChar()
+  nameWithType: TokenReader.PeekChar()
+  fullName: CilTools.Syntax.Tokens.TokenReader.PeekChar()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nGets a next character in this token reader without advancing a current position\n"
+  syntax:
+    content: public char PeekChar()
+    return:
+      type: System.Char
+      description: Next character in the current position, or zero if the end of string is reached.
+    content.vb: Public Function PeekChar As Char
+  overload: CilTools.Syntax.Tokens.TokenReader.PeekChar*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
+  id: PeekString(System.Int32)
+  parent: CilTools.Syntax.Tokens.TokenReader
+  langs:
+  - csharp
+  - vb
+  name: PeekString(Int32)
+  nameWithType: TokenReader.PeekString(Int32)
+  fullName: CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nGets a specified number of next characters in this token reader without advancing a current position\n"
+  syntax:
+    content: public string PeekString(int n)
+    parameters:
+    - id: n
+      type: System.Int32
+      description: Number of characters to peek
+    return:
+      type: System.String
+      description: "\nString containing <code>n</code> next characters, or an empty string when the end of string is reached.\n"
+    content.vb: Public Function PeekString(n As Integer) As String
+  overload: CilTools.Syntax.Tokens.TokenReader.PeekString*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: CilTools.Syntax.Tokens
+  commentId: N:CilTools.Syntax.Tokens
+  isExternal: true
+  name: CilTools.Syntax.Tokens
+  nameWithType: CilTools.Syntax.Tokens
+  fullName: CilTools.Syntax.Tokens
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Syntax.Tokens.TokenReader.#ctor*
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.#ctor
+  isExternal: true
+  name: TokenReader
+  nameWithType: TokenReader.TokenReader
+  fullName: CilTools.Syntax.Tokens.TokenReader.TokenReader
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition}
+  commentId: T:System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<SyntaxTokenDefinition>
+  nameWithType: IEnumerable<SyntaxTokenDefinition>
+  fullName: System.Collections.Generic.IEnumerable<CilTools.Syntax.Tokens.SyntaxTokenDefinition>
+  nameWithType.vb: IEnumerable(Of SyntaxTokenDefinition)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of CilTools.Syntax.Tokens.SyntaxTokenDefinition)
+  name.vb: IEnumerable(Of SyntaxTokenDefinition)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+    name: SyntaxTokenDefinition
+    nameWithType: SyntaxTokenDefinition
+    fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+    name: SyntaxTokenDefinition
+    nameWithType: SyntaxTokenDefinition
+    fullName: CilTools.Syntax.Tokens.SyntaxTokenDefinition
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
+- uid: CilTools.Syntax.Tokens.TokenReader.ReadAll*
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.ReadAll
+  isExternal: true
+  name: ReadAll
+  nameWithType: TokenReader.ReadAll
+  fullName: CilTools.Syntax.Tokens.TokenReader.ReadAll
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<String>
+  nameWithType: IEnumerable<String>
+  fullName: System.Collections.Generic.IEnumerable<System.String>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.Tokens.TokenReader.PeekChar*
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.PeekChar
+  isExternal: true
+  name: PeekChar
+  nameWithType: TokenReader.PeekChar
+  fullName: CilTools.Syntax.Tokens.TokenReader.PeekChar
+- uid: System.Char
+  commentId: T:System.Char
+  parent: System
+  isExternal: true
+  name: Char
+  nameWithType: Char
+  fullName: System.Char
+- uid: CilTools.Syntax.Tokens.TokenReader.PeekString*
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.PeekString
+  isExternal: true
+  name: PeekString
+  nameWithType: TokenReader.PeekString
+  fullName: CilTools.Syntax.Tokens.TokenReader.PeekString
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32

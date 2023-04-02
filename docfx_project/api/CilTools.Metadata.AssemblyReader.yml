@@ -33,6 +33,7 @@ items:
     content: 'public sealed class AssemblyReader : IDisposable'
     content.vb: >-
       Public NotInheritable Class AssemblyReader
+
           Implements IDisposable
   inheritance:
   - System.Object
