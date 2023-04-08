@@ -2,16 +2,23 @@
 
 CIL Tools has following namespaces:
 
-<xref:CilTools.BytecodeAnalysis>
+**CilTools.BytecodeAnalysis.dll**
 
-<xref:CilTools.BytecodeAnalysis.Extensions>
+- <xref:CilTools.BytecodeAnalysis>
+- <xref:CilTools.BytecodeAnalysis.Extensions>
+- <xref:CilTools.Reflection>
+- <xref:CilTools.SourceCode>
+- <xref:CilTools.Syntax>
+- <xref:CilTools.Syntax.Tokens>
 
-<xref:CilTools.Metadata>
+**CilTools.Metadata.dll**
 
-<xref:CilTools.Reflection>
+- <xref:CilTools.Metadata>
 
-<xref:CilTools.Runtime>
+**CilTools.Runtime.dll**
 
-<xref:CilTools.SourceCode>
+- <xref:CilTools.Runtime>
 
-<xref:CilTools.Syntax>
+**CilTools.SourceCode.dll**
+
+- <xref:CilTools.SourceCode.Common>
