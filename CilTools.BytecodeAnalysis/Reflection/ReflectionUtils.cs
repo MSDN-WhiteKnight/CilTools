@@ -24,6 +24,15 @@ namespace CilTools.Reflection
             get { return BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic; }
         }
 
+        public static BindingFlags AllDeclared
+        {
+            get 
+            { 
+                return BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | 
+                    BindingFlags.NonPublic | BindingFlags.DeclaredOnly; 
+            }
+        }
+
         public static bool IsExpectedException(Exception ex)
         {
             //check expected exception types that can pop up due to reflection APIs being not 

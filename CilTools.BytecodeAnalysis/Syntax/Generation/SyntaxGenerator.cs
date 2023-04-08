@@ -456,7 +456,7 @@ namespace CilTools.Syntax.Generation
             //CilTools.Metadata does not implement GetGetMethod/GetSetMethod currently,
             //so we lookup accessors via well-known name patterns
             string methodName = accName + "_" + p.Name;
-            MemberInfo[] members = t.GetMember(methodName, ReflectionUtils.AllMembers);
+            MemberInfo[] members = t.GetMember(methodName, ReflectionUtils.AllDeclared);
 
             for (int i = 0; i < members.Length; i++)
             {

@@ -266,5 +266,29 @@ extends [mscorlib]System.ValueType {
                 "}", Text.Any
             });
         }
+
+        [TestMethod]
+        [WorkItem(153)]
+        [TypeTestData(typeof(PropertySampleType), BytecodeProviders.All)]
+        public void Test_GetTypeDefSyntax_PropertyOnDerivedClass(Type t)
+        {
+            const string expected = @"
+.class public auto ansi beforefieldinit CilTools.Tests.Common.PropertySampleType
+extends [CilTools.BytecodeAnalysis]CilTools.Syntax.SyntaxFactory {
+
+ .property instance int32 X()
+ {
+  .get instance int32 CilTools.Tests.Common.PropertySampleType::get_X()
+ }
+
+ //... 
+}";
+
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
+            string s = Utils.SyntaxToString(nodes);
+            AssertThat.AreLexicallyEqual(expected, s);           
+        }
     }
 }

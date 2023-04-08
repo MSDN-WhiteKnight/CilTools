@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using CilTools.Syntax;
 
 namespace CilTools.Tests.Common
 {
@@ -18,4 +19,14 @@ namespace CilTools.Tests.Common
     }
 
     public class DerivedSampleType : DisassemblerSampleType { }
+
+    public class PropertySampleType : SyntaxFactory
+    {
+        public int X { get { return 0; } }
+
+        public override SyntaxNode CreateNode(string content, string leadingWhitespace, string trailingWhitespace)
+        {
+            throw new NotImplementedException();
+        }
+    }
 }
