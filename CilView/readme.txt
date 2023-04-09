@@ -133,6 +133,9 @@ Changelog
 - Update disassembler to not escape math symbols in string literals
 - Fix syntax highlighting for constant values
 
+2.6.1
+- Fix TypeLoadException when disassembling property on a type derived from external non-BCL assembly
+
 ---------------------------------------------
 
-Copyright (c) 2022,  MSDN.WhiteKnight
+Copyright (c) 2023,  MSDN.WhiteKnight

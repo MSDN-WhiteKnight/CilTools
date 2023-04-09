@@ -1,11 +1,11 @@
 <Project>
  <PropertyGroup>
-   <Version>2.6.0</Version>
-   <FileVersion>2.6.0.0</FileVersion>
+   <Version>2.6.1</Version>
+   <FileVersion>2.6.1.0</FileVersion>
    <Authors>MSDN-WhiteKnight</Authors>
    <Company>CIL Tools</Company>
    <Product>CIL Tools</Product>
-   <Copyright>Copyright (c) 2022, MSDN.WhiteKnight</Copyright>
+   <Copyright>Copyright (c) 2023, MSDN.WhiteKnight</Copyright>
    <PackageProjectUrl>https://github.com/MSDN-WhiteKnight/CilTools</PackageProjectUrl>
    <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
  </PropertyGroup>

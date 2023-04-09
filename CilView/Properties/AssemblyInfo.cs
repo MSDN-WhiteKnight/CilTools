@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System.Reflection;
 using System.Resources;
@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("CIL Tools")]
 [assembly: AssemblyProduct("CIL Tools")]
-[assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight 2022")]
+[assembly: AssemblyCopyright("Copyright © MSDN.WhiteKnight 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -26,5 +26,5 @@ using System.Windows;
     // в приложении или в каких-либо словарях ресурсов для конкретной темы)
 )]
 
-[assembly: AssemblyVersion("2.6.0.0")]
-[assembly: AssemblyFileVersion("2.6.0.0")]
+[assembly: AssemblyVersion("2.6.1.0")]
+[assembly: AssemblyFileVersion("2.6.1.0")]

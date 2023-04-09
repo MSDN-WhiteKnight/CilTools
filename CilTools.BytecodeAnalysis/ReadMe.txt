@@ -1,5 +1,5 @@
 ﻿*** CilTools.BytecodeAnalysis library ***
-Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
 License: BSD 2.0
 
 CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
@@ -217,3 +217,6 @@ v2.0
 - Expose constant values as LiteralSyntax instead of GenericSyntax in Syntax API
 - Update disassembler to not escape math symbols in string literals
 - Fix CilInstruction.Parse to use invariant culture when parsing floating point values
+
+2.6.1
+- Fix TypeLoadException in SyntaxNode.GetTypeDefSyntax when disassembling property on a type derived from external non-BCL assembly
