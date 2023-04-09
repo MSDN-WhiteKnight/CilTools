@@ -73,9 +73,7 @@ items:
     content: 'public class ComplexType : Type, ICustomAttributeProvider, _MemberInfo, _Type, IReflect'
     content.vb: >-
       Public Class ComplexType
-
           Inherits Type
-
           Implements ICustomAttributeProvider, _MemberInfo, _Type, IReflect
   inheritance:
   - System.Object

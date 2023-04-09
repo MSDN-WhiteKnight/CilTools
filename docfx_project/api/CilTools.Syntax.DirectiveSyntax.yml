@@ -30,7 +30,6 @@ items:
     content: 'public class DirectiveSyntax : SyntaxNode'
     content.vb: >-
       Public Class DirectiveSyntax
-
           Inherits SyntaxNode
   inheritance:
   - System.Object

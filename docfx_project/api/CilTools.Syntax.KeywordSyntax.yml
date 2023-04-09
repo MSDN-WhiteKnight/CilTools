@@ -28,7 +28,6 @@ items:
     content: 'public class KeywordSyntax : SyntaxNode'
     content.vb: >-
       Public Class KeywordSyntax
-
           Inherits SyntaxNode
   inheritance:
   - System.Object

@@ -28,7 +28,6 @@ items:
     content: 'public class BlockSyntax : SyntaxNode'
     content.vb: >-
       Public Class BlockSyntax
-
           Inherits SyntaxNode
   inheritance:
   - System.Object

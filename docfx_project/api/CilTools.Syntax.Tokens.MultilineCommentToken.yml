@@ -26,7 +26,6 @@ items:
     content: 'public class MultilineCommentToken : SyntaxTokenDefinition'
     content.vb: >-
       Public Class MultilineCommentToken
-
           Inherits SyntaxTokenDefinition
   inheritance:
   - System.Object

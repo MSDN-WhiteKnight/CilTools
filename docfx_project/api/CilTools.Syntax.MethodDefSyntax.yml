@@ -28,7 +28,6 @@ items:
     content: 'public class MethodDefSyntax : SyntaxNode'
     content.vb: >-
       Public Class MethodDefSyntax
-
           Inherits SyntaxNode
   inheritance:
   - System.Object

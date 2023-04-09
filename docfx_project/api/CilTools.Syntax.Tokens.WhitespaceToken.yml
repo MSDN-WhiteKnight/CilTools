@@ -27,7 +27,6 @@ items:
     content: 'public class WhitespaceToken : SyntaxTokenDefinition'
     content.vb: >-
       Public Class WhitespaceToken
-
           Inherits SyntaxTokenDefinition
   inheritance:
   - System.Object

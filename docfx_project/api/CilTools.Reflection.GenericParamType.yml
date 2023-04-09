@@ -75,9 +75,7 @@ items:
     content: 'public class GenericParamType : Type, ICustomAttributeProvider, _MemberInfo, _Type, IReflect'
     content.vb: >-
       Public Class GenericParamType
-
           Inherits Type
-
           Implements ICustomAttributeProvider, _MemberInfo, _Type, IReflect
   inheritance:
   - System.Object

@@ -30,7 +30,6 @@ items:
     content: 'public class CilErrorEventArgs : EventArgs'
     content.vb: >-
       Public Class CilErrorEventArgs
-
           Inherits EventArgs
   inheritance:
   - System.Object

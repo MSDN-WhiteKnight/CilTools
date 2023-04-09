@@ -91,9 +91,7 @@ items:
     content: 'public class TypeSpec : Type, ICustomAttributeProvider, _MemberInfo, _Type, IReflect, ITypeInfo'
     content.vb: >-
       Public Class TypeSpec
-
           Inherits Type
-
           Implements ICustomAttributeProvider, _MemberInfo, _Type, IReflect, ITypeInfo
   inheritance:
   - System.Object

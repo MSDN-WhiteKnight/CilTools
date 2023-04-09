@@ -31,7 +31,6 @@ items:
     content: 'public class SourceDocument : FragmentBase'
     content.vb: >-
       Public Class SourceDocument
-
           Inherits FragmentBase
   inheritance:
   - System.Object

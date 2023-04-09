@@ -34,7 +34,6 @@ items:
     content: 'public class InstructionSyntax : SyntaxNode'
     content.vb: >-
       Public Class InstructionSyntax
-
           Inherits SyntaxNode
   inheritance:
   - System.Object

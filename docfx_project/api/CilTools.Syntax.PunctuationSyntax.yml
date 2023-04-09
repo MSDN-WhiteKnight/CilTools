@@ -27,7 +27,6 @@ items:
     content: 'public class PunctuationSyntax : SyntaxNode'
     content.vb: >-
       Public Class PunctuationSyntax
-
           Inherits SyntaxNode
   inheritance:
   - System.Object

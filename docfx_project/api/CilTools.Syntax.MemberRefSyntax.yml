@@ -27,7 +27,6 @@ items:
     content: 'public class MemberRefSyntax : SyntaxNode'
     content.vb: >-
       Public Class MemberRefSyntax
-
           Inherits SyntaxNode
   inheritance:
   - System.Object

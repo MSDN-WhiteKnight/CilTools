@@ -39,9 +39,7 @@ items:
     content: 'public abstract class CustomMethod : MethodInfo, ICustomAttributeProvider, _MemberInfo, _MethodBase, _MethodInfo, ICustomMethod'
     content.vb: >-
       Public MustInherit Class CustomMethod
-
           Inherits MethodInfo
-
           Implements ICustomAttributeProvider, _MemberInfo, _MethodBase, _MethodInfo, ICustomMethod
   inheritance:
   - System.Object
