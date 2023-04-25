@@ -28,6 +28,22 @@ namespace CilTools.Syntax.Tokens
             this.tokens = tokenDefinitions.ToArray();
         }
 
+        /// <summary>
+        /// Gets the position in the source string at which the next token would be read
+        /// </summary>
+        public int Position
+        {
+            get { return this._pos; }
+        }
+
+        /// <summary>
+        /// Gets the number of characters in the source string
+        /// </summary>
+        public int Length
+        {
+            get { return this._source.Length; }
+        }
+
         string ReadToken()
         {
             if (_pos >= _source.Length) return string.Empty;
@@ -47,7 +63,7 @@ namespace CilTools.Syntax.Tokens
             if (currentToken == null)
             {
                 //unknown token
-                System.Diagnostics.Debug.Assert(false, "Unknown token at " + this._pos.ToString());
+                System.Diagnostics.Debug.WriteLine("Unknown token at " + this._pos.ToString());
 
                 while (true)
                 {
@@ -116,9 +132,15 @@ namespace CilTools.Syntax.Tokens
             else return _source[_pos];
         }
 
-        internal char GetPreviousChar(int offset)
+        /// <summary>
+        /// Gets a character at the specified offset before the current position in this token reader. Offset 0 means current 
+        /// position, offset 1 means character immediately before current position, etc. Does not change the current position.
+        /// </summary>
+        /// <param name="offset">The offset of the character to return</param>
+        /// <returns>Previous character at the specified offset, or zero if it is outside of the source string bounds.</returns>
+        public char GetPreviousChar(int offset)
         {
-            if (_pos - offset < 0) return (char)0;
+            if (_pos - offset < 0 || _pos - offset >= _source.Length) return (char)0;
             else return _source[_pos - offset];
         }
 
@@ -157,6 +179,14 @@ namespace CilTools.Syntax.Tokens
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Gets the full source string used by this reader
+        /// </summary>
+        public string GetSourceString()
+        {
+            return new string(this._source);
         }
     }
 }
