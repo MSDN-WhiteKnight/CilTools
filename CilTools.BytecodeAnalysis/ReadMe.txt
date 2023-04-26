@@ -220,3 +220,6 @@ v2.0
 
 2.6.1
 - Fix TypeLoadException in SyntaxNode.GetTypeDefSyntax when disassembling property on a type derived from external non-BCL assembly
+
+2.7
+- Add more public APIs to TokenReader (Position, Length, GetPreviousChar, GetSourceString)

@@ -2,7 +2,7 @@
 <package >
   <metadata>
     <id>CilTools.Runtime</id>
-    <version>2.6.1</version>
+    <version>2.7.0</version>
     <authors>MSDN-WhiteKnight</authors>
     <owners>MSDN-WhiteKnight</owners>
     <title>CilTools.Runtime</title>
@@ -15,7 +15,7 @@
     <copyright>Copyright (c) 2023, MSDN.WhiteKnight</copyright>
     <tags>dotnet cil msil bytecode diagnostics clrmd process</tags>
     <dependencies>
-	    <dependency id="CilTools.BytecodeAnalysis" version="2.6.1" />
+	    <dependency id="CilTools.BytecodeAnalysis" version="2.7.0" />
 	    <dependency id="Microsoft.Diagnostics.Runtime" version="1.1.61812" />
     </dependencies>    
   </metadata>
