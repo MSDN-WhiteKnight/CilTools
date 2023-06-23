@@ -31,7 +31,7 @@ namespace CilTools.Syntax
             this._content = content;
             this._member = m;
 
-            for (int i = 0; i < this._content.Length; i++) this._content[i]._parent = this;
+            for (int i = 0; i < this._content.Length; i++) this._content[i].SetParent(this);
         }
 
         /// <inheritdoc/>

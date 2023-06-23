@@ -84,10 +84,10 @@ namespace CilTools.Syntax
             }
 
             this._name = name;
-            this._namesyntax._parent = this;
+            this._namesyntax.SetParent(this);
             this._content = content;
 
-            for (int i = 0; i < this._content.Length; i++) this._content[i]._parent = this;
+            for (int i = 0; i < this._content.Length; i++) this._content[i].SetParent(this);
         }
 
         /// <inheritdoc/>

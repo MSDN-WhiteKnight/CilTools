@@ -43,7 +43,10 @@ namespace CilTools.Syntax
         /// </summary>
         protected string _trail = string.Empty;
 
-        internal SyntaxNode _parent;
+        /// <summary>
+        /// Parent node for this node, or <c>null</c> if this node is root or not included in syntax tree
+        /// </summary>
+        protected SyntaxNode _parent;
 
         internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
 
@@ -145,6 +148,11 @@ namespace CilTools.Syntax
             if (t == null) throw new ArgumentNullException("t");
             
             return SyntaxGenerator.GetTypeDefSyntax(t, full, disassemblerParams, 0);
+        }
+
+        internal void SetParent(SyntaxNode parent)
+        {
+            this._parent = parent;
         }
     }
 }

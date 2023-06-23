@@ -29,10 +29,13 @@ namespace CilTools.Syntax
             //label and operation nodes
             if (!String.IsNullOrEmpty(graphnode.Name))
             {
-                labelnodes.Add(
-                    new IdentifierSyntax(lead + " ", graphnode.Name, String.Empty, false,null) { _parent = this }
-                    );
-                labelnodes.Add(new PunctuationSyntax(String.Empty, ":", " ") { _parent = this });
+                IdentifierSyntax idSyntax = new IdentifierSyntax(lead + " ", graphnode.Name, string.Empty, false, null);
+                idSyntax.SetParent(this);
+                labelnodes.Add(idSyntax);
+
+                PunctuationSyntax pSyntax = new PunctuationSyntax(string.Empty, ":", " ");
+                pSyntax.SetParent(this);
+                labelnodes.Add(pSyntax);
                 pad = "";
             }
             else pad = lead+"".PadLeft(10, ' ');
@@ -45,18 +48,20 @@ namespace CilTools.Syntax
             pad2 = "".PadLeft(len);
 
             List<SyntaxNode> operationnodes = new List<SyntaxNode>();
-            operationnodes.Add(new KeywordSyntax(pad, name, pad2, KeywordKind.InstructionName) { _parent = this });
+            KeywordSyntax kSyntax = new KeywordSyntax(pad, name, pad2, KeywordKind.InstructionName);
+            kSyntax.SetParent(this);
+            operationnodes.Add(kSyntax);
 
             //operand nodes
             List<SyntaxNode> operandnodes = new List<SyntaxNode>();
             
             if (graphnode.BranchTarget != null) //if instruction itself targets branch, append its label
             {
-                operandnodes.Add( 
-                    new IdentifierSyntax(
-                        String.Empty, this._node.BranchTarget.Name, Environment.NewLine, false,null
-                        ) {  _parent = this }
-                    );
+                IdentifierSyntax idSyntax = new IdentifierSyntax(string.Empty, this._node.BranchTarget.Name,
+                    Environment.NewLine, ismember: false, target: null);
+
+                idSyntax.SetParent(this);
+                operandnodes.Add(idSyntax);
             }
             else
             {
@@ -89,7 +94,7 @@ namespace CilTools.Syntax
 
             if (operandnodes.Count == 0) operationnodes.Add(new GenericSyntax(Environment.NewLine));
 
-            for (int i = 0; i < operandnodes.Count; i++) operandnodes[i]._parent = this;
+            for (int i = 0; i < operandnodes.Count; i++) operandnodes[i].SetParent(this);
             
             this._labelnodes = labelnodes.ToArray();
             this._operationnodes = operationnodes.ToArray();

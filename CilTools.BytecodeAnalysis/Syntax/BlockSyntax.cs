@@ -30,9 +30,9 @@ namespace CilTools.Syntax
             this._header = header;
             this._children = new List<SyntaxNode>(children);
 
-            for (int i = 0; i < this._header.Length; i++) this._header[i]._parent = this;
+            for (int i = 0; i < this._header.Length; i++) this._header[i].SetParent(this);
 
-            for (int i = 0; i < this._children.Count; i++) this._children[i]._parent = this;
+            for (int i = 0; i < this._children.Count; i++) this._children[i].SetParent(this);
         }
 
         /// <summary>
@@ -98,26 +98,28 @@ namespace CilTools.Syntax
         /// <inheritdoc/>
         public override IEnumerable<SyntaxNode> EnumerateChildNodes()
         {
+            PunctuationSyntax ps;
+
             if (this._header.Length > 0)
             {
-                yield return new GenericSyntax(this._indent) { _parent = this };
+                GenericSyntax gs = new GenericSyntax(this._indent);
+                gs.SetParent(this);
+                yield return gs;
 
                 for (int i = 0; i < _header.Length; i++)
                 {
                     yield return _header[i];
                 }
 
-                yield return new PunctuationSyntax(Environment.NewLine + this._indent, "{", Environment.NewLine)
-                {
-                    _parent = this
-                };
+                ps = new PunctuationSyntax(Environment.NewLine + this._indent, "{", Environment.NewLine);
+                ps.SetParent(this);
+                yield return ps;
             }
             else
             {
-                yield return new PunctuationSyntax(this._indent, "{", Environment.NewLine)
-                {
-                    _parent = this
-                };
+                ps = new PunctuationSyntax(this._indent, "{", Environment.NewLine);
+                ps.SetParent(this);
+                yield return ps;
             }
 
             for (int i = 0; i < _children.Count; i++)
@@ -125,16 +127,15 @@ namespace CilTools.Syntax
                 yield return _children[i];
             }
 
-            yield return new PunctuationSyntax(this._indent, "}", Environment.NewLine)
-            {
-                _parent = this
-            };
+            ps = new PunctuationSyntax(this._indent, "}", Environment.NewLine);
+            ps.SetParent(this);
+            yield return ps;
         }
 
         internal void AddChildNode(SyntaxNode node)
         {
             this._children.Add(node);
-            node._parent = this;
+            node.SetParent(this);
         }
     }
 }

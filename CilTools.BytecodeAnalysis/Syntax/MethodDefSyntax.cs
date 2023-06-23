@@ -43,8 +43,8 @@ namespace CilTools.Syntax
         {
             this._sig = sig;
             this._body = body;
-            this._sig._parent = this;
-            this._body._parent = this;
+            this._sig.SetParent(this);
+            this._body.SetParent(this);
         }
 
         /// <inheritdoc/>
