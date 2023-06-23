@@ -1,12 +1,12 @@
 <Project>
  <PropertyGroup>
-   <Version>2.7.0</Version>
-   <FileVersion>2.7.0.0</FileVersion>
+   <Version>2.8.0</Version>
+   <FileVersion>2.8.0.0</FileVersion>
    <Authors>MSDN-WhiteKnight</Authors>
    <Company>CIL Tools</Company>
    <Product>CIL Tools</Product>
    <Copyright>Copyright (c) 2023, MSDN.WhiteKnight</Copyright>
-   <PackageProjectUrl>https://github.com/MSDN-WhiteKnight/CilTools</PackageProjectUrl>
-   <RepositoryUrl>https://github.com/MSDN-WhiteKnight/CilTools</RepositoryUrl>
+   <PackageProjectUrl>https://gitflic.ru/project/smallsoft/ciltools</PackageProjectUrl>
+   <RepositoryUrl>https://gitflic.ru/project/smallsoft/ciltools</RepositoryUrl>
  </PropertyGroup>
 </Project>

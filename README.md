@@ -2,9 +2,9 @@
 
 ![logo](https://msdn-whiteknight.github.io/CilTools/images/IL.png)
 
-**License:** [BSD 2.0](LICENSE)
+**License:** [BSD 2.0](https://gitflic.ru/project/smallsoft/ciltools/blob?file=LICENSE&branch=master)
 
-[Documentation](https://msdn-whiteknight.github.io/CilTools/) | [Examples](Examples/)
+[Documentation](https://msdn-whiteknight.github.io/CilTools/) | [Examples](https://gitflic.ru/project/smallsoft/ciltools/file?file=Examples&branch=master)
 
 CIL tools is a set of software to work with Common Intermediate Language in .NET:
 
@@ -113,7 +113,7 @@ Install as global .NET tool:
 
     dotnet tool install --global CilTools.CommandLine
     
-For more information see [readme file](./CilTools.CommandLine/).
+For more information see [readme file](https://github.com/MSDN-WhiteKnight/CilTools/blob/master/CilTools.CommandLine/readme.md).
 
 ## CilView
 
@@ -127,4 +127,4 @@ A windows application to display CIL code of methods in the given assembly file 
 
 ---
 
-Copyright (c) 2022,  MSDN.WhiteKnight
+Copyright (c) 2023,  MSDN.WhiteKnight
