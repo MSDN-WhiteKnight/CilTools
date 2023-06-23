@@ -123,7 +123,7 @@ For more information see [readme file](https://github.com/MSDN-WhiteKnight/CilTo
 
 A windows application to display CIL code of methods in the given assembly file or process. Supports syntax highlighting and navigating to method code by clicking on its reference.
 
-![cilview](docfx_project/images/cilview.png)
+![cilview](https://raw.githubusercontent.com/MSDN-WhiteKnight/CilTools/master/docfx_project/images/cilview.png)
 
 ---
 

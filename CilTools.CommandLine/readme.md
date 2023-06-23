@@ -1,4 +1,4 @@
-﻿# CIL Tools command line
+# CIL Tools command line
 
 Command line tool to view disassembled CIL code of methods in .NET assemblies.
 
