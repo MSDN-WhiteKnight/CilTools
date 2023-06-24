@@ -128,7 +128,14 @@ namespace CilTools.SourceCode.Common
         public static SourceToken[] ReadAllTokens(string src, IEnumerable<SyntaxTokenDefinition> definitions,
             SourceTokenFactory factory)
         {
-            return SyntaxReader.ReadAllNodes(src, definitions, factory).Cast<SourceToken>().ToArray();
+            SourceToken[] tokens = SyntaxReader.ReadAllNodes(src, definitions, factory).Cast<SourceToken>().ToArray();
+
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                tokens[i].OrdinalNumber = i;
+            }
+
+            return tokens;
         }
 
         internal static TokenKind GetKindCommon(string token)
@@ -195,6 +202,17 @@ namespace CilTools.SourceCode.Common
             else
             {
                 return TokenKind.Unknown;
+            }
+        }
+
+        internal static string GetSourceLanguageName(SourceLanguage lang)
+        {
+            switch (lang)
+            {
+                case SourceLanguage.CSharp: return "cs";
+                case SourceLanguage.Cpp: return "cpp";
+                case SourceLanguage.VisualBasic: return "vb";
+                default: return string.Empty;
             }
         }
     }

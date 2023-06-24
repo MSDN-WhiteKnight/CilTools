@@ -1,12 +1,11 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using CilTools.Syntax;
-using CilTools.Syntax.Tokens;
 
 namespace CilTools.SourceCode.Common
 {
@@ -17,6 +16,8 @@ namespace CilTools.SourceCode.Common
     {
         TokenKind _kind;
         string _content;
+        string _lang;
+        int _ordinal;
         
         /// <summary>
         /// Creates a new source token instance
@@ -27,6 +28,7 @@ namespace CilTools.SourceCode.Common
             this._content = content;
             this._lead = string.Empty;
             this._trail = string.Empty;
+            this._lang = string.Empty;
         }
 
         /// <summary>
@@ -38,6 +40,7 @@ namespace CilTools.SourceCode.Common
             this._content = content;
             this._lead = leadingWhitespace;
             this._trail = trailingWhitespace;
+            this._lang = string.Empty;
         }
         
         internal static SourceToken CreateFromString(string tokenString, string leadingWhitespace, 
@@ -65,6 +68,28 @@ namespace CilTools.SourceCode.Common
         public string Content
         {
             get { return this._content; }
+        }
+
+        /// <summary>
+        /// Gets or sets the programming language name for the document this token is included in
+        /// </summary>
+        public string Language
+        {
+            get { return this._lang; }
+            set { this._lang = value; }
+        }
+
+        /// <summary>
+        /// Gets or sets the ordinal number of this token in a sequence of tokens. The value is undefined if this token is not 
+        /// included in a sequence of tokens.
+        /// </summary>
+        /// <remarks>
+        /// This property could be useful to find previous/next token in a sequence of tokens parsed from a source text
+        /// </remarks>
+        public int OrdinalNumber
+        {
+            get { return this._ordinal; }
+            set { this._ordinal = value; }
         }
         
         /// <inheritdoc/>

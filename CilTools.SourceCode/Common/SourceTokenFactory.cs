@@ -36,7 +36,9 @@ namespace CilTools.SourceCode.Common
         /// </summary>
         public override SyntaxNode CreateNode(string content, string leadingWhitespace, string trailingWhitespace)
         {
-            return SourceToken.CreateFromString(content, leadingWhitespace, trailingWhitespace, this.classifier);
+            SourceToken ret = SourceToken.CreateFromString(content, leadingWhitespace, trailingWhitespace, this.classifier);
+            ret.Language = SourceCodeUtils.GetSourceLanguageName(this.language);
+            return ret;
         }
     }
 }

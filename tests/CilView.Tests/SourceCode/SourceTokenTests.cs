@@ -14,6 +14,14 @@ namespace CilView.Tests.SourceCode
     [TestClass]
     public class SourceTokenTests
     {
+        static void VerifySourceTokens(SourceToken[] tokens)
+        {
+            for (int i = 0; i < tokens.Length; i++)
+            {
+                Assert.AreEqual(i, tokens[i].OrdinalNumber);
+            }
+        }
+
         [TestMethod]
         public void Test_ReadAllTokens_Class()
         {
@@ -21,6 +29,7 @@ namespace CilView.Tests.SourceCode
             SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"), 
                 SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
 
+            VerifySourceTokens(tokens);
             Assert.AreEqual(7, tokens.Length);
 
             Assert.AreEqual(TokenKind.Keyword, tokens[0].Kind);
@@ -72,6 +81,8 @@ namespace CilView.Tests.SourceCode
             string src = "int x=1; float y=2.3; // Comment";
             SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
                 SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
+
+            VerifySourceTokens(tokens);
             Assert.AreEqual(11, tokens.Length);
 
             Assert.AreEqual(TokenKind.Keyword, tokens[0].Kind);
@@ -148,6 +159,7 @@ namespace CilView.Tests.SourceCode
             SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
                 SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
 
+            VerifySourceTokens(tokens);
             Assert.AreEqual(3, tokens.Length);
 
             Assert.AreEqual(TokenKind.Name, tokens[0].Kind);
@@ -176,6 +188,7 @@ namespace CilView.Tests.SourceCode
             SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".vb"),
                 SourceCodeUtils.GetFactory(SourceLanguage.VisualBasic));
 
+            VerifySourceTokens(tokens);
             Assert.AreEqual(3, tokens.Length);
 
             Assert.AreEqual(TokenKind.Name, tokens[0].Kind);
@@ -204,6 +217,7 @@ namespace CilView.Tests.SourceCode
             SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
                 SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
 
+            VerifySourceTokens(tokens);
             Assert.AreEqual(4, tokens.Length);
 
             Assert.AreEqual(TokenKind.Name, tokens[0].Kind);
@@ -237,6 +251,7 @@ namespace CilView.Tests.SourceCode
             SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
                 SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
 
+            VerifySourceTokens(tokens);
             Assert.AreEqual(3, tokens.Length);
 
             Assert.AreEqual(TokenKind.SpecialTextLiteral, tokens[0].Kind);
@@ -261,6 +276,8 @@ namespace CilView.Tests.SourceCode
             //c#
             SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cs"),
                 SourceCodeUtils.GetFactory(SourceLanguage.CSharp));
+
+            VerifySourceTokens(tokens);
             StringBuilder sb = new StringBuilder();
 
             for (int i = 0; i < tokens.Length; i++)
@@ -273,6 +290,8 @@ namespace CilView.Tests.SourceCode
             //c++
             tokens = SourceCodeUtils.ReadAllTokens(src, SourceCodeUtils.GetTokenDefinitions(".cpp"),
                 SourceCodeUtils.GetFactory(SourceLanguage.Cpp));
+
+            VerifySourceTokens(tokens);
             sb = new StringBuilder();
 
             for (int i = 0; i < tokens.Length; i++)

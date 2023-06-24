@@ -34,6 +34,7 @@ namespace CilView.Tests.SourceCode
             SourceToken st = (SourceToken)factory.CreateNode(token, string.Empty, string.Empty);
             Assert.AreEqual(expected, st.Kind);
             Assert.AreEqual(token, st.Content);
+            Assert.AreEqual("cs", st.Language);
         }
 
         [TestMethod]
@@ -55,6 +56,7 @@ namespace CilView.Tests.SourceCode
             SourceToken st = (SourceToken)factory.CreateNode(token, string.Empty, string.Empty);
             Assert.AreEqual(expected, st.Kind);
             Assert.AreEqual(token, st.Content);
+            Assert.AreEqual("cpp", st.Language);
         }
 
         [TestMethod]
@@ -78,6 +80,7 @@ namespace CilView.Tests.SourceCode
             SourceToken st = (SourceToken)factory.CreateNode(token, string.Empty, string.Empty);
             Assert.AreEqual(expected, st.Kind);
             Assert.AreEqual(token, st.Content);
+            Assert.AreEqual("vb", st.Language);
         }
 
         [TestMethod]
