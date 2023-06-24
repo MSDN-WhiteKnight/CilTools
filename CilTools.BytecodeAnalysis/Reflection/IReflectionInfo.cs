@@ -83,6 +83,16 @@ namespace CilTools.Reflection
         public const int Signature = 109;
 
         /// <summary>
+        /// Represents a Relative Virtual Address (RVA) of a field mapped to an executable image memory block. (Type: int)
+        /// </summary>
+        public const int FieldRva = 110;
+
+        /// <summary>
+        /// Represents a byte array containing RVA field's value. (Type: byte[])
+        /// </summary>
+        public const int RvaFieldValue = 111;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>

@@ -1,19 +1,23 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
+using System.Collections.Immutable;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
+using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class FieldDef : FieldInfo
+    class FieldDef : FieldInfo, IReflectionInfo
     {
         FieldDefinition field;
         FieldDefinitionHandle hfield;
@@ -188,6 +192,55 @@ namespace CilTools.Metadata
             if (ch.IsNil) return DBNull.Value;
 
             return GetConstantValue(owner.MetadataReader, ch);
+        }
+
+        int GetRVA()
+        {
+            if (this.field.Attributes.HasFlag(FieldAttributes.HasFieldRVA))
+            {
+                return this.field.GetRelativeVirtualAddress();
+            }
+            else return 0;
+        }
+
+        byte[] GetRVABytes()
+        {
+            // Get byte array that contains field value, for fields that are mapped to static memory block 
+            // at the specified address in PE image (RVA fields)
+
+            if (!this.field.Attributes.HasFlag(FieldAttributes.HasFieldRVA)) return new byte[0];
+
+            int rva = this.field.GetRelativeVirtualAddress();
+            int size;
+
+            if (this.FieldType is TypeSpec)
+            {
+                TypeSpec ts = (TypeSpec)this.FieldType;
+
+                switch (ts.ElementType)
+                {
+                    case ElementType.I4: size = 4;break;
+                    case ElementType.U4: size = 4; break;
+                    case ElementType.I8: size = 8; break;
+                    case ElementType.U8: size = 8; break;
+                    default: return new byte[0];
+                }
+            }
+            else return new byte[0];
+
+            PEMemoryBlock block = this.owner.PEReader.GetSectionData(rva);
+
+            if(block.Length < size) return new byte[0];
+
+            ImmutableArray<byte> data = block.GetContent(0, size);
+            return ImmutableArrayExtensions.ToArray(data);
+        }
+
+        public object GetReflectionProperty(int id)
+        {
+            if (id == ReflectionProperties.FieldRva) return this.GetRVA();
+            else if (id == ReflectionProperties.RvaFieldValue) return this.GetRVABytes();
+            else return null;
         }
     }
 }
