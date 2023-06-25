@@ -904,6 +904,8 @@ namespace CilTools.Syntax.Generation
             //fields
             TypeSyntaxGenerator tgen = new TypeSyntaxGenerator(this.containingAssembly);
             FieldInfo[] fields = t.GetFields(ReflectionUtils.AllMembers | BindingFlags.DeclaredOnly);
+            List<string> rva_labels = new List<string>(fields.Length);
+            List<byte[]> rva_arrays = new List<byte[]>(fields.Length);
 
             if (isModuleType && fields.Length > 0)
             {
@@ -973,8 +975,29 @@ namespace CilTools.Syntax.Generation
                 SyntaxNode[] ftNodes = tgen.GetTypeNameSyntax(fields[i].FieldType).ToArray();
                 inner.Add(new MemberRefSyntax(ftNodes, fields[i].FieldType));
 
+                // Field name
                 inner.Add(new IdentifierSyntax(" ", fields[i].Name, string.Empty, true, fields[i]));
 
+                // RVA field data label
+                if ((fields[i].Attributes & FieldAttributes.HasFieldRVA) != 0)
+                {
+                    object val = ReflectionProperties.Get(fields[i], ReflectionProperties.FieldRva);
+
+                    if (val != null)
+                    {
+                        int rva = (int)val;
+                        inner.Add(new KeywordSyntax(" ", "at", " ", KeywordKind.Other));
+                        string label = "I_" + rva.ToString("X", CultureInfo.InvariantCulture);
+                        inner.Add(new IdentifierSyntax(string.Empty, label, string.Empty, ismember: false, target: null));
+                        rva_labels.Add(label);
+                        byte[] arr = ReflectionProperties.Get(fields[i], ReflectionProperties.RvaFieldValue) as byte[];
+
+                        if (arr == null) rva_arrays.Add(new byte[0]);
+                        else rva_arrays.Add(arr);
+                    }
+                }
+
+                // Constant value
                 object constval = DBNull.Value;
 
                 try { constval = fields[i].GetRawConstantValue(); }
@@ -1310,6 +1333,25 @@ namespace CilTools.Syntax.Generation
                 {
                     yield return content[i];
                 }
+            }
+
+            if (rva_labels.Count > 0) yield return new GenericSyntax(Environment.NewLine);
+
+            // RVA field values
+            for (int i = 0; i < rva_labels.Count; i++)
+            {
+                List<SyntaxNode> nodes = new List<SyntaxNode>();
+                nodes.Add(new KeywordSyntax("cil", " "));
+                nodes.Add(new IdentifierSyntax(string.Empty, rva_labels[i], " ", ismember: false, target: null));
+                nodes.Add(new PunctuationSyntax(string.Empty, "=", " "));
+                nodes.Add(new KeywordSyntax("bytearray", " "));
+                nodes.Add(new PunctuationSyntax(string.Empty, "(", " "));
+
+                string val_str = Disassembler.ArrayBytesToString(rva_arrays[i]);
+                nodes.Add(new GenericSyntax(val_str));
+
+                nodes.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
+                yield return new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent), "data", nodes.ToArray());
             }
         }
     }

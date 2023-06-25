@@ -32,6 +32,14 @@ namespace CilTools.Syntax
             target.Flush();
         }
 
+        internal static string ArrayBytesToString(byte[] arr)
+        {
+            StringBuilder sb = new StringBuilder(arr.Length * 3);
+            StringWriter wr = new StringWriter(sb);
+            ArrayBytesToText(arr, wr);
+            return sb.ToString();
+        }
+
         static CommentSyntax OnReflectionError(object sender, string msg, Exception ex)
         {
             CommentSyntax cs = CommentSyntax.Create(string.Empty,
