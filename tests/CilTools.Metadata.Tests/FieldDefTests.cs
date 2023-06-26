@@ -58,5 +58,23 @@ namespace CilTools.Metadata.Tests
 
             Assert.AreEqual(0, attrs.Length);
         }
+
+        [TestMethod]
+        [TypeTestData(typeof(ExplicitStructSample), BytecodeProviders.Metadata)]
+        public void Test_FieldOffset(Type t)
+        {
+            FieldInfo fi = t.GetField("x");
+            int offset = (int)ReflectionProperties.Get(fi, ReflectionProperties.FieldOffset);
+            Assert.AreEqual(1, offset);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(FieldsSampleType), BytecodeProviders.Metadata)]
+        public void Test_FieldOffset_Negative(Type t)
+        {
+            FieldInfo fi = t.GetField("y");
+            int offset = (int)ReflectionProperties.Get(fi, ReflectionProperties.FieldOffset);
+            Assert.AreEqual(-1, offset);
+        }
     }
 }

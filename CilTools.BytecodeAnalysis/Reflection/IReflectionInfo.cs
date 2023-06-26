@@ -93,6 +93,12 @@ namespace CilTools.Reflection
         public const int RvaFieldValue = 111;
 
         /// <summary>
+        /// Represents a field offset from the beginning of the structure, for structures with explicit layout. 
+        /// Returns -1 when field offset is not available. (Type: int)
+        /// </summary>
+        public const int FieldOffset = 112;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>

@@ -251,9 +251,13 @@ namespace CilTools.Metadata
 
         public object GetReflectionProperty(int id)
         {
-            if (id == ReflectionProperties.FieldRva) return this.GetRVA();
-            else if (id == ReflectionProperties.RvaFieldValue) return this.GetRVABytes();
-            else return null;
+            switch (id)
+            {
+                case ReflectionProperties.FieldRva: return this.GetRVA();
+                case ReflectionProperties.RvaFieldValue: return this.GetRVABytes();
+                case ReflectionProperties.FieldOffset: return this.field.GetOffset();
+                default: return null;
+            }
         }
     }
 }

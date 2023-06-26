@@ -251,7 +251,7 @@ extends [mscorlib]System.ValueType {
         }
 
         [TestMethod]
-        [TypeTestData(typeof(ExplicitStructSample), BytecodeProviders.All)]
+        [TypeTestData(typeof(ExplicitStructSample), BytecodeProviders.Reflection)]
         public void Test_GetTypeDefSyntax_ExplicitStruct(Type t)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
@@ -265,6 +265,29 @@ extends [mscorlib]System.ValueType {
                 ".pack 1", Text.Any, ".size 8", Text.Any,
                 "}", Text.Any
             });
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(ExplicitStructSample), BytecodeProviders.Metadata)]
+        public void Test_GetTypeDefSyntax_ExplicitStruct_FieldOffset(Type t)
+        {
+            const string expected = @"
+.class public explicit ansi sealed beforefieldinit CilTools.Tests.Common.TestData.ExplicitStructSample
+extends [mscorlib]System.ValueType {
+ .pack 1
+ .size 8
+
+ .field [1] public int32 x
+
+ //...
+
+}";
+
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
+            string s = Utils.SyntaxToString(nodes);
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
+            AssertThat.CilEquals(expected, s);
         }
 
         [TestMethod]

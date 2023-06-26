@@ -917,6 +917,23 @@ namespace CilTools.Syntax.Generation
             {
                 List<SyntaxNode> inner = new List<SyntaxNode>(10);
 
+                // Offset
+                if (t.IsExplicitLayout)
+                {
+                    object val = ReflectionProperties.Get(fields[i], ReflectionProperties.FieldOffset);
+                    int offset = -1;
+
+                    if (val != null) offset = (int)val;
+
+                    if (offset >= 0)
+                    {
+                        inner.Add(new PunctuationSyntax(string.Empty, "[", string.Empty));
+                        inner.Add(LiteralSyntax.CreateFromValue(string.Empty, offset, string.Empty));
+                        inner.Add(new PunctuationSyntax(string.Empty, "]", " "));
+                    }
+                }
+
+                // Standard attributes
                 if (fields[i].IsPublic)
                 {
                     inner.Add(new KeywordSyntax("public", " "));
