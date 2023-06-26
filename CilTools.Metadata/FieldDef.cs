@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using System.Reflection.PortableExecutable;
+using System.Runtime.InteropServices;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
@@ -219,10 +220,22 @@ namespace CilTools.Metadata
 
                 switch (ts.ElementType)
                 {
+                    case ElementType.Boolean: size = 1;break;
+                    case ElementType.I1: size = 1; break;
+                    case ElementType.U1: size = 1; break;
+                    case ElementType.I2: size = 2; break;
+                    case ElementType.U2: size = 2; break;
                     case ElementType.I4: size = 4;break;
                     case ElementType.U4: size = 4; break;
                     case ElementType.I8: size = 8; break;
                     case ElementType.U8: size = 8; break;
+                    case ElementType.ValueType:
+                        StructLayoutAttribute sla = ts.StructLayoutAttribute;
+
+                        if (sla != null) size = sla.Size;
+                        else return new byte[0];
+
+                        break;
                     default: return new byte[0];
                 }
             }
