@@ -255,7 +255,9 @@ namespace CilTools.Syntax
                 inner.Add(new KeywordSyntax("void", string.Empty));
             }
 
-            inner.Add(new IdentifierSyntax(" ", m.Name, string.Empty, IdentifierKind.Member, m));
+            IdentifierSyntax idMethodName = new IdentifierSyntax(" ", m.Name, string.Empty, IdentifierKind.Member, m);
+            idMethodName.SetAdditionalInfo(IsDefinitionTag, true);
+            inner.Add(idMethodName);
 
             if (m.IsGenericMethod)
             {

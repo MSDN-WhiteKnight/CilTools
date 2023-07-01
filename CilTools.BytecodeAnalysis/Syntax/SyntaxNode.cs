@@ -48,6 +48,10 @@ namespace CilTools.Syntax
         /// </summary>
         protected SyntaxNode _parent;
 
+        Dictionary<string, object> _tags;
+
+        internal const string IsDefinitionTag = "IsDefinition";
+
         internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
 
         /// <summary>
@@ -153,6 +157,29 @@ namespace CilTools.Syntax
         internal void SetParent(SyntaxNode parent)
         {
             this._parent = parent;
+        }
+
+        /// <summary>
+        /// Gets an additional implementation-defined information about this node
+        /// </summary>
+        /// <returns>The requested value, or <c>null</c> if it is not set</returns>
+        public object GetAdditionalInfo(string name)
+        {
+            if (this._tags == null) return null;
+
+            object ret;
+            if (this._tags.TryGetValue(name, out ret)) return ret;
+            else return null;
+        }
+
+        /// <summary>
+        /// Sets an additional implementation-defined information about this node
+        /// </summary>
+        public void SetAdditionalInfo(string name, object val)
+        {
+            if (this._tags == null) this._tags = new Dictionary<string, object>();
+
+            this._tags[name] = val;
         }
     }
 }

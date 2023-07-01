@@ -53,10 +53,30 @@ namespace CilTools.Syntax
         /// <summary>
         /// Gets the assembly member represented by this identifier
         /// </summary>
-        /// /// <value>
+        /// <value>
         /// The reference to the target member, or <c>null</c> if the target item is unknown or not a member
         /// </value>
         public MemberInfo TargetMember { get { return this._target as MemberInfo; } }
+
+        /// <summary>
+        /// Gets a boolean value indicating whether this node represents a code location where the identified entity is
+        /// originally defined, not where is is referenced.
+        /// </summary>
+        /// <remarks>
+        /// For example, in <c>.method public void Foo()</c>, Foo is a definition, while in <c>call void C::Foo()</c> 
+        /// it is a reference. This property enables code navigation services to detect which identifier is a 
+        /// target location for navigation.
+        /// </remarks>
+        public bool IsDefinition
+        {
+            get 
+            {
+                object val = this.GetAdditionalInfo("IsDefinition");
+
+                if (val != null) return (bool)val;
+                else return false;
+            }
+        }
 
         internal IdentifierSyntax(string lead, string content, string trail, IdentifierKind kind, object target)
         {

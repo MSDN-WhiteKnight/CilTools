@@ -33,6 +33,7 @@ namespace CilTools.Syntax
                     IdentifierKind.Label, graphnode.Instruction);
 
                 idSyntax.SetParent(this);
+                idSyntax.SetAdditionalInfo(IsDefinitionTag, true);
                 labelnodes.Add(idSyntax);
 
                 PunctuationSyntax pSyntax = new PunctuationSyntax(string.Empty, ":", " ");

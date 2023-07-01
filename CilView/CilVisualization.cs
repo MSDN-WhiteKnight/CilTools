@@ -281,7 +281,7 @@ namespace CilView
                     lnk.Click += ctx.navigation;
                     target.Inlines.Add(lnk);
                 }
-                else if (id.TargetItem is CilInstruction && ctx.navigation != null)
+                else if (id.TargetItem is CilInstruction && !id.IsDefinition && ctx.navigation != null)
                 {
                     //if target is instruction (label), enable navigation functionality
                     r.Text = node.ToString();
