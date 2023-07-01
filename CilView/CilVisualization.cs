@@ -281,6 +281,17 @@ namespace CilView
                     lnk.Click += ctx.navigation;
                     target.Inlines.Add(lnk);
                 }
+                else if (id.TargetItem is CilInstruction && ctx.navigation != null)
+                {
+                    //if target is instruction (label), enable navigation functionality
+                    r.Text = node.ToString();
+                    Hyperlink lnk = new Hyperlink(r);
+                    lnk.TextDecorations = new TextDecorationCollection(); //remove underline
+                    lnk.Foreground = Brushes.Black;
+                    lnk.Tag = id.TargetItem;
+                    lnk.Click += ctx.navigation;
+                    target.Inlines.Add(lnk);
+                }
                 else
                 {
                     if (id.IsMemberName) r.Foreground = IdentifierBrush;

@@ -105,6 +105,14 @@ namespace CilView.UI.Controls
                     start = frame.ILOffset;
                     end = frame.ILOffsetEnd;
                 }
+                else if (elem.Tag is CilInstruction)
+                {
+                    //from label hyperlink
+                    CilInstruction instr = (CilInstruction)elem.Tag;
+                    mb = instr.Method;
+                    start = (int)instr.ByteOffset;
+                    end = (int)(instr.ByteOffset + instr.TotalSize);
+                }
 
                 if (mb == null) return;
 

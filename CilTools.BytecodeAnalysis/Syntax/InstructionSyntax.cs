@@ -30,7 +30,7 @@ namespace CilTools.Syntax
             if (!string.IsNullOrEmpty(graphnode.Name))
             {
                 IdentifierSyntax idSyntax = new IdentifierSyntax(lead + " ", graphnode.Name, string.Empty, 
-                    IdentifierKind.Label);
+                    IdentifierKind.Label, graphnode.Instruction);
 
                 idSyntax.SetParent(this);
                 labelnodes.Add(idSyntax);
@@ -60,7 +60,7 @@ namespace CilTools.Syntax
             if (graphnode.BranchTarget != null) //if instruction itself targets branch, append its label
             {
                 IdentifierSyntax idSyntax = new IdentifierSyntax(string.Empty, this._node.BranchTarget.Name,
-                    Environment.NewLine, IdentifierKind.Label);
+                    Environment.NewLine, IdentifierKind.Label, this._node.BranchTarget.Instruction);
 
                 idSyntax.SetParent(this);
                 operandnodes.Add(idSyntax);
@@ -77,7 +77,10 @@ namespace CilTools.Syntax
                     {
                         if (i >= 1) operandnodes.Add(new PunctuationSyntax(string.Empty, ",", string.Empty));
 
-                        operandnodes.Add(new IdentifierSyntax(swtargets[i].Name, IdentifierKind.Label));
+                        IdentifierSyntax labelIdSyntax = new IdentifierSyntax(string.Empty, swtargets[i].Name, 
+                            string.Empty, IdentifierKind.Label, swtargets[i].Instruction);
+
+                        operandnodes.Add(labelIdSyntax);
                     }
 
                     operandnodes.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
