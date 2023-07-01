@@ -75,7 +75,7 @@ namespace CilTools.Syntax
                 }
                 else
                 {
-                    return new IdentifierSyntax(leadingWhitespace, tokenString, trailingWhitespace, false, null);
+                    return new IdentifierSyntax(leadingWhitespace, tokenString, trailingWhitespace, IdentifierKind.Other);
                 }
             }
             else if (char.IsDigit(tokenString[0]))
@@ -114,7 +114,7 @@ namespace CilTools.Syntax
                         trailingWhitespace);
                 }
 
-                return new IdentifierSyntax(leadingWhitespace, tokenString, trailingWhitespace, false, null);
+                return new IdentifierSyntax(leadingWhitespace, tokenString, trailingWhitespace, IdentifierKind.Other);
             }
             else if (tokenString[0] == '/')
             {

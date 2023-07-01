@@ -78,7 +78,8 @@ namespace CilTools.BytecodeAnalysis
             }
             else
             {
-                yield return new IdentifierSyntax(string.Empty, "Type" + _token.ToString("X"), string.Empty, true, null);
+                yield return new IdentifierSyntax(string.Empty, "Type" + _token.ToString("X"), string.Empty,
+                    IdentifierKind.Member);
             }
 
             yield return new PunctuationSyntax(string.Empty, ")", string.Empty);

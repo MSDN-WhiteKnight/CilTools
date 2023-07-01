@@ -442,7 +442,7 @@ namespace CilTools.BytecodeAnalysis
 
                     list.Add(new PunctuationSyntax(string.Empty, "::", string.Empty));
                     list.Add(new IdentifierSyntax(string.Empty, mOverridden.Name, Environment.NewLine,
-                        true, mOverridden));
+                        IdentifierKind.Member, mOverridden));
                 }
 
                 DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1),
@@ -530,7 +530,9 @@ namespace CilTools.BytecodeAnalysis
 
                     LocalVariable local = locals[i];
                     inner.Add(local.LocalTypeSpec.ToSyntax(containingAssembly));
-                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), string.Empty, false, local));
+
+                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), string.Empty, 
+                        IdentifierKind.Other, local));
                 }
 
                 inner.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));

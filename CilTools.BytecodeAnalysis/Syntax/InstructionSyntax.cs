@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
@@ -27,16 +27,18 @@ namespace CilTools.Syntax
             string pad,pad2;
 
             //label and operation nodes
-            if (!String.IsNullOrEmpty(graphnode.Name))
+            if (!string.IsNullOrEmpty(graphnode.Name))
             {
-                IdentifierSyntax idSyntax = new IdentifierSyntax(lead + " ", graphnode.Name, string.Empty, false, null);
+                IdentifierSyntax idSyntax = new IdentifierSyntax(lead + " ", graphnode.Name, string.Empty, 
+                    IdentifierKind.Label);
+
                 idSyntax.SetParent(this);
                 labelnodes.Add(idSyntax);
 
                 PunctuationSyntax pSyntax = new PunctuationSyntax(string.Empty, ":", " ");
                 pSyntax.SetParent(this);
                 labelnodes.Add(pSyntax);
-                pad = "";
+                pad = string.Empty;
             }
             else pad = lead+"".PadLeft(10, ' ');
 
@@ -58,7 +60,7 @@ namespace CilTools.Syntax
             if (graphnode.BranchTarget != null) //if instruction itself targets branch, append its label
             {
                 IdentifierSyntax idSyntax = new IdentifierSyntax(string.Empty, this._node.BranchTarget.Name,
-                    Environment.NewLine, ismember: false, target: null);
+                    Environment.NewLine, IdentifierKind.Label);
 
                 idSyntax.SetParent(this);
                 operandnodes.Add(idSyntax);
@@ -69,17 +71,16 @@ namespace CilTools.Syntax
 
                 if (swtargets.Length > 0) //append switch target list
                 {
-                    operandnodes.Add(new PunctuationSyntax(String.Empty, "(", String.Empty));
+                    operandnodes.Add(new PunctuationSyntax(string.Empty, "(", string.Empty));
 
                     for (int i = 0; i < swtargets.Length; i++)
                     {
-                        if (i >= 1) operandnodes.Add(new PunctuationSyntax(String.Empty, ",", String.Empty));
-                        operandnodes.Add(
-                            new IdentifierSyntax(String.Empty, swtargets[i].Name, String.Empty, false,null)
-                            );
+                        if (i >= 1) operandnodes.Add(new PunctuationSyntax(string.Empty, ",", string.Empty));
+
+                        operandnodes.Add(new IdentifierSyntax(swtargets[i].Name, IdentifierKind.Label));
                     }
 
-                    operandnodes.Add(new PunctuationSyntax(String.Empty, ")", Environment.NewLine));
+                    operandnodes.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
                 }
                 else
                 {

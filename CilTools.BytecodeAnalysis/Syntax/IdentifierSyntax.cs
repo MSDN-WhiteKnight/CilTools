@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
@@ -20,7 +20,7 @@ namespace CilTools.Syntax
     public class IdentifierSyntax : SyntaxNode
     {
         string _content;
-        bool _ismember;
+        IdentifierKind _kind;
         object _target = null;
         string _contentEscaped;
 
@@ -32,7 +32,7 @@ namespace CilTools.Syntax
         /// <summary>
         /// Gets the value indicating whether this identifier represents assembly member name
         /// </summary>
-        public bool IsMemberName { get { return this._ismember; } }
+        public bool IsMemberName { get { return this._kind == IdentifierKind.Member; } }
 
         /// <summary>
         /// Gets the item (such as assembly, member or variable) that this identifier represents
@@ -43,6 +43,14 @@ namespace CilTools.Syntax
         public object TargetItem { get { return this._target; } }
 
         /// <summary>
+        /// Gets the kind of entity identified by this node
+        /// </summary>
+        public IdentifierKind Kind
+        {
+            get { return this._kind; }
+        }
+
+        /// <summary>
         /// Gets the assembly member represented by this identifier
         /// </summary>
         /// /// <value>
@@ -50,16 +58,38 @@ namespace CilTools.Syntax
         /// </value>
         public MemberInfo TargetMember { get { return this._target as MemberInfo; } }
 
-        internal IdentifierSyntax(string lead, string content, string trail, bool ismember,object target)
+        internal IdentifierSyntax(string lead, string content, string trail, IdentifierKind kind, object target)
         {
-            if (lead == null) lead = "";
-            if (trail == null) trail = "";
+            if (lead == null) lead = string.Empty;
+            if (trail == null) trail = string.Empty;
+
             this._lead = lead;
             this._content = content;
             this._trail = trail;
-            this._ismember = ismember;
             this._target = target;
             this._contentEscaped = SyntaxUtils.EscapeIdentifier(content);
+            this._kind = kind;
+        }
+
+        internal IdentifierSyntax(string lead, string content, string trail, IdentifierKind kind)
+        {
+            if (lead == null) lead = string.Empty;
+            if (trail == null) trail = string.Empty;
+
+            this._lead = lead;
+            this._content = content;
+            this._trail = trail;
+            this._contentEscaped = SyntaxUtils.EscapeIdentifier(content);
+            this._kind = kind;
+        }
+
+        internal IdentifierSyntax(string content, IdentifierKind kind)
+        {
+            this._lead = string.Empty;
+            this._content = content;
+            this._trail = string.Empty;
+            this._contentEscaped = SyntaxUtils.EscapeIdentifier(content);
+            this._kind = kind;
         }
 
         /// <summary>
@@ -85,5 +115,26 @@ namespace CilTools.Syntax
         {
             return SyntaxNode.EmptyArray;
         }
+    }
+
+    /// <summary>
+    /// Represents the kind of entity identified <see cref="IdentifierSyntax"/> node.
+    /// </summary>
+    public enum IdentifierKind
+    {
+        /// <summary>
+        /// Unclassifed
+        /// </summary>
+        Other = 0, 
+
+        /// <summary>
+        /// Assembly member (type, method, etc.)
+        /// </summary>
+        Member = 1,
+
+        /// <summary>
+        /// Instruction label
+        /// </summary>
+        Label
     }
 }

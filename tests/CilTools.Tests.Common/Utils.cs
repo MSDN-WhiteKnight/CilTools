@@ -204,5 +204,27 @@ namespace CilTools.Tests.Common
 
             return sb.ToString();
         }
+
+        static void VisitSyntaxTreeRecursive(SyntaxNode node, Action<SyntaxNode> action, int depth)
+        {
+            if (depth > 9999)
+            {
+                throw new Exception("Recursion is too deep in VisitSyntaxTreeRecursive");
+            }
+
+            foreach (SyntaxNode child in node.EnumerateChildNodes())
+            {
+                action(child);
+                VisitSyntaxTreeRecursive(child, action, depth + 1);
+            }
+        }
+
+        /// <summary>
+        /// Calls the specified delegate for every node in the specified syntax tree
+        /// </summary>
+        public static void VisitSyntaxTree(SyntaxNode root, Action<SyntaxNode> action)
+        {
+            VisitSyntaxTreeRecursive(root, action, 0);
+        }
     }
 }

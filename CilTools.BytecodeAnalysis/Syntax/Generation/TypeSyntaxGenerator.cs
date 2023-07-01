@@ -148,7 +148,10 @@ namespace CilTools.Syntax.Generation
                     if (ass != null)
                     {
                         yield return new PunctuationSyntax(string.Empty, "[", string.Empty);
-                        yield return new IdentifierSyntax(string.Empty, ass.GetName().Name, string.Empty, false, ass);
+
+                        yield return new IdentifierSyntax(string.Empty, ass.GetName().Name, string.Empty, 
+                            IdentifierKind.Other, ass);
+
                         yield return new PunctuationSyntax(string.Empty, "]", string.Empty);
                     }
                 }
@@ -157,17 +160,19 @@ namespace CilTools.Syntax.Generation
 
                 if (!string.IsNullOrEmpty(t.Namespace))
                 {
-                    yield return new IdentifierSyntax(string.Empty, t.Namespace, string.Empty, true, null);
+                    yield return new IdentifierSyntax(string.Empty, t.Namespace, string.Empty, IdentifierKind.Member, null);
                     yield return new PunctuationSyntax(string.Empty, ".", string.Empty);
                 }
 
                 if (t.IsNested && t.DeclaringType != null)
                 {
-                    yield return new IdentifierSyntax(string.Empty, t.DeclaringType.Name, string.Empty, true, t.DeclaringType);
+                    yield return new IdentifierSyntax(string.Empty, t.DeclaringType.Name, string.Empty, 
+                        IdentifierKind.Member, t.DeclaringType);
+
                     yield return new PunctuationSyntax(string.Empty, "/", string.Empty);
                 }
 
-                yield return new IdentifierSyntax(string.Empty, t.Name, string.Empty, true, t);
+                yield return new IdentifierSyntax(string.Empty, t.Name, string.Empty, IdentifierKind.Member, t);
 
                 if (t.IsGenericType && !this.IsTypeSpec)
                 {

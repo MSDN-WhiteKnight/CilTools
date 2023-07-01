@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
@@ -261,7 +261,8 @@ namespace CilTools.BytecodeAnalysis
                 if (ReferencesLocal(this.OpCode))
                 {
                     //local variable
-                    yield return new IdentifierSyntax("", "V_" + this.Operand.ToString(), "", false,null);
+                    yield return new IdentifierSyntax(string.Empty, "V_" + this.Operand.ToString(), 
+                        string.Empty, IdentifierKind.Other);
                 }
                 else if (ReferencesParam(this.OpCode) && this.Method != null)
                 {
@@ -270,19 +271,20 @@ namespace CilTools.BytecodeAnalysis
 
                     if (par != null)
                     {
-                        if (String.IsNullOrEmpty(par.Name))
+                        if (string.IsNullOrEmpty(par.Name))
                         {
-                            yield return new IdentifierSyntax("", "par" + (par.Position + 1).ToString(), "", false,par);
+                            yield return new IdentifierSyntax(string.Empty, "par" + (par.Position + 1).ToString(), string.Empty,
+                                IdentifierKind.Other, par);
                         }
                         else
                         {
-                            yield return new IdentifierSyntax("", par.Name, "", false,par);
+                            yield return new IdentifierSyntax(string.Empty, par.Name, string.Empty, IdentifierKind.Other, par);
                         }
-
                     }
                     else
                     {
-                        yield return new IdentifierSyntax("", "par" + this.Operand.ToString(), "", false,null);
+                        yield return new IdentifierSyntax(string.Empty, "par" + this.Operand.ToString(), string.Empty, 
+                            IdentifierKind.Other);
                     }
                 }
                 else
@@ -308,7 +310,8 @@ namespace CilTools.BytecodeAnalysis
             else if (typeof(T) == typeof(sbyte) && ReferencesLocal(this.OpCode))
             {
                 //local variable
-                yield return new IdentifierSyntax("", "V_" + this.Operand.ToString(), "", false,null);
+                yield return new IdentifierSyntax(string.Empty, "V_" + this.Operand.ToString(), string.Empty, 
+                    IdentifierKind.Other);
             }
             else if (typeof(T) == typeof(sbyte) && ReferencesParam(this.OpCode) && this.Method != null)
             {
@@ -317,21 +320,20 @@ namespace CilTools.BytecodeAnalysis
 
                 if (par != null)
                 {
-                    if (String.IsNullOrEmpty(par.Name))
+                    if (string.IsNullOrEmpty(par.Name))
                     {
-                        yield return new IdentifierSyntax(
-                            "", "par" + (par.Position + 1).ToString(), "", false,par
-                            );
+                        yield return new IdentifierSyntax(string.Empty, "par" + (par.Position + 1).ToString(), string.Empty, 
+                            IdentifierKind.Other, par);
                     }
                     else
                     {
-                        yield return new IdentifierSyntax("", par.Name, "", false,par);
+                        yield return new IdentifierSyntax(string.Empty, par.Name, string.Empty, IdentifierKind.Other, par);
                     }
-
                 }
                 else
                 {
-                    yield return new IdentifierSyntax("", "par" + this.Operand.ToString(), "", false,null);
+                    yield return new IdentifierSyntax(string.Empty, "par" + this.Operand.ToString(), string.Empty, 
+                        IdentifierKind.Other);
                 }
             }
             else

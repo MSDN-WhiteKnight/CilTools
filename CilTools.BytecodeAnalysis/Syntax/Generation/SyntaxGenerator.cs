@@ -41,7 +41,7 @@ namespace CilTools.Syntax.Generation
             if (!t.IsGenericParameter)
             {
                 return new SyntaxNode[]{
-                    new IdentifierSyntax(string.Empty, CilAnalysis.GetTypeName(t), string.Empty, false, null) 
+                    new IdentifierSyntax(string.Empty, CilAnalysis.GetTypeName(t), string.Empty, IdentifierKind.Other) 
                 };
             }
 
@@ -90,7 +90,7 @@ namespace CilTools.Syntax.Generation
                 ret.Add(new PunctuationSyntax(string.Empty, ")", " "));
             }
 
-            ret.Add(new IdentifierSyntax(string.Empty, t.Name, string.Empty, false, null));
+            ret.Add(new IdentifierSyntax(string.Empty, t.Name, string.Empty, IdentifierKind.Other));
             return ret.ToArray();
         }
 
@@ -113,7 +113,7 @@ namespace CilTools.Syntax.Generation
 
                 inner.Add(new MemberRefSyntax(eventTypeSyntax.ToArray(), events[i].EventHandlerType));
 
-                inner.Add(new IdentifierSyntax(" ", events[i].Name, Environment.NewLine, true, events[i]));
+                inner.Add(new IdentifierSyntax(" ", events[i].Name, Environment.NewLine, IdentifierKind.Member, events[i]));
                 inner.Add(new PunctuationSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "{", Environment.NewLine));
 
                 //custom attributes
@@ -561,7 +561,7 @@ namespace CilTools.Syntax.Generation
             }
 
             //append name
-            children.Add(new IdentifierSyntax(string.Empty, m.Name, string.Empty, true, m));
+            children.Add(new IdentifierSyntax(string.Empty, m.Name, string.Empty, IdentifierKind.Member, m));
 
             if (m.IsGenericMethod)
             {
@@ -743,7 +743,7 @@ namespace CilTools.Syntax.Generation
             string tname = "";
             if (!t.IsNested && !string.IsNullOrEmpty(t.Namespace)) tname += t.Namespace + ".";
             tname += t.Name;
-            content.Add(new IdentifierSyntax(string.Empty, tname, string.Empty, true, t));
+            content.Add(new IdentifierSyntax(string.Empty, tname, string.Empty, IdentifierKind.Member, t));
 
             //generic parameters
             if (t.IsGenericType)
@@ -784,8 +784,7 @@ namespace CilTools.Syntax.Generation
                 catch (TypeLoadException ex)
                 {
                     //handle error when base type is not available
-                    content.Add(new IdentifierSyntax(string.Empty, "UnknownType", string.Empty, 
-                        ismember: false, target: null));
+                    content.Add(new IdentifierSyntax(string.Empty, "UnknownType", string.Empty, IdentifierKind.Other));
 
                     Diagnostics.OnError(t, new CilErrorEventArgs(ex, "Failed to read base type for: " + t.Name));
                 }
@@ -993,7 +992,7 @@ namespace CilTools.Syntax.Generation
                 inner.Add(new MemberRefSyntax(ftNodes, fields[i].FieldType));
 
                 // Field name
-                inner.Add(new IdentifierSyntax(" ", fields[i].Name, string.Empty, true, fields[i]));
+                inner.Add(new IdentifierSyntax(" ", fields[i].Name, string.Empty, IdentifierKind.Member, fields[i]));
 
                 // RVA field data label
                 if ((fields[i].Attributes & FieldAttributes.HasFieldRVA) != 0)
@@ -1005,7 +1004,7 @@ namespace CilTools.Syntax.Generation
                         int rva = (int)val;
                         inner.Add(new KeywordSyntax(" ", "at", " ", KeywordKind.Other));
                         string label = "I_" + rva.ToString("X", CultureInfo.InvariantCulture);
-                        inner.Add(new IdentifierSyntax(string.Empty, label, string.Empty, ismember: false, target: null));
+                        inner.Add(new IdentifierSyntax(string.Empty, label, string.Empty, IdentifierKind.Other));
                         rva_labels.Add(label);
                         byte[] arr = ReflectionProperties.Get(fields[i], ReflectionProperties.RvaFieldValue) as byte[];
 
@@ -1111,7 +1110,7 @@ namespace CilTools.Syntax.Generation
                 SyntaxNode[] ptNodes = tgen.GetTypeNameSyntax(props[i].PropertyType).ToArray();
                 inner.Add(new MemberRefSyntax(ptNodes, props[i].PropertyType));
 
-                inner.Add(new IdentifierSyntax(" ", props[i].Name, string.Empty, true, props[i]));
+                inner.Add(new IdentifierSyntax(" ", props[i].Name, string.Empty, IdentifierKind.Member, props[i]));
 
                 //index parameters
                 ParameterInfo[] pars = props[i].GetIndexParameters();
@@ -1359,7 +1358,7 @@ namespace CilTools.Syntax.Generation
             {
                 List<SyntaxNode> nodes = new List<SyntaxNode>();
                 nodes.Add(new KeywordSyntax("cil", " "));
-                nodes.Add(new IdentifierSyntax(string.Empty, rva_labels[i], " ", ismember: false, target: null));
+                nodes.Add(new IdentifierSyntax(string.Empty, rva_labels[i], " ", IdentifierKind.Other));
                 nodes.Add(new PunctuationSyntax(string.Empty, "=", " "));
                 nodes.Add(new KeywordSyntax("bytearray", " "));
                 nodes.Add(new PunctuationSyntax(string.Empty, "(", " "));

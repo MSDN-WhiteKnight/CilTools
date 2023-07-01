@@ -481,5 +481,22 @@ namespace CilTools.BytecodeAnalysis.Tests
                 "PointerTest syntax tree should contain a single '.locals' directive with 'int32*' variable"
                 );
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "PrintTenNumbers", BytecodeProviders.All)]
+        public void Test_CilGraph_Labels(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            MethodDefSyntax mds = graph.ToSyntaxTree();
+            AssertThat.IsSyntaxTreeCorrect(mds);
+
+            int n_labels = 0;
+
+            Utils.VisitSyntaxTree(mds, (node) => {
+                if (node is IdentifierSyntax && ((IdentifierSyntax)node).Kind == IdentifierKind.Label) n_labels++;
+            });
+
+            Assert.IsTrue(n_labels > 0);
+        }
     }
 }

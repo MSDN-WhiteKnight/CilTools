@@ -122,7 +122,7 @@ namespace CilTools.Syntax
                 {
                     content = new SyntaxNode[] {
                         new KeywordSyntax("extern", " "),
-                        new IdentifierSyntax(string.Empty, modules[i], Environment.NewLine, false, null)
+                        new IdentifierSyntax(string.Empty, modules[i], Environment.NewLine, IdentifierKind.Other)
                     };
 
                     yield return new DirectiveSyntax(string.Empty, "module", content);
@@ -142,7 +142,7 @@ namespace CilTools.Syntax
                 {
                     content = new SyntaxNode[] {
                         new KeywordSyntax("extern", " "),
-                        new IdentifierSyntax(string.Empty, refs[i].Name, Environment.NewLine, false, null)
+                        new IdentifierSyntax(string.Empty, refs[i].Name, Environment.NewLine, IdentifierKind.Other)
                     };
 
                     refsSyntax.Add(new DirectiveSyntax(string.Empty, "assembly", content));
@@ -201,7 +201,7 @@ namespace CilTools.Syntax
             AssemblyName an = ass.GetName();
 
             content = new SyntaxNode[] {
-                new IdentifierSyntax(string.Empty, an.Name, Environment.NewLine, false, null)
+                new IdentifierSyntax(string.Empty, an.Name, Environment.NewLine, IdentifierKind.Other)
             };
 
             yield return new DirectiveSyntax(string.Empty, "assembly", content);
@@ -299,7 +299,7 @@ namespace CilTools.Syntax
             if (module != null)
             {
                 content = new SyntaxNode[] {
-                    new IdentifierSyntax(string.Empty, module.Name, Environment.NewLine, false, null)
+                    new IdentifierSyntax(string.Empty, module.Name, Environment.NewLine, IdentifierKind.Other)
                 };
 
                 yield return new DirectiveSyntax(string.Empty, "module", content);

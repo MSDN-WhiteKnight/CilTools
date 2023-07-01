@@ -135,7 +135,7 @@ namespace CilTools.BytecodeAnalysis
                     int token = this._operand;
 
                     yield return new IdentifierSyntax(string.Empty, "UnknownMethod" + token.ToString("X"), string.Empty, 
-                        ismember: true, target: null);
+                        IdentifierKind.Member);
                 }
             }
             else if (ReferencesFieldToken(this.OpCode))
@@ -164,7 +164,7 @@ namespace CilTools.BytecodeAnalysis
                     }
 
                     //append field name
-                    children.Add(new IdentifierSyntax(string.Empty, fi.Name, string.Empty, true, fi));
+                    children.Add(new IdentifierSyntax(string.Empty, fi.Name, string.Empty, IdentifierKind.Member, fi));
 
                     yield return new MemberRefSyntax(children.ToArray(), fi);
                 }
@@ -172,8 +172,8 @@ namespace CilTools.BytecodeAnalysis
                 {
                     int token = this._operand;
 
-                    yield return new IdentifierSyntax(string.Empty, "UnknownField" + token.ToString("X"), string.Empty, 
-                        ismember: true, target: null);
+                    yield return new IdentifierSyntax(string.Empty, "UnknownField" + token.ToString("X"), string.Empty,
+                        IdentifierKind.Member);
                 }
             }
             else if (ReferencesTypeToken(this.OpCode))
@@ -192,8 +192,8 @@ namespace CilTools.BytecodeAnalysis
                 {
                     int token = this._operand;
 
-                    yield return new IdentifierSyntax(string.Empty, "UnknownType" + token.ToString("X"), string.Empty, 
-                        ismember: true, target: null);
+                    yield return new IdentifierSyntax(string.Empty, "UnknownType" + token.ToString("X"), string.Empty,
+                        IdentifierKind.Member);
                 }
             }
             else if (OpCode.Equals(OpCodes.Ldstr))
@@ -255,7 +255,7 @@ namespace CilTools.BytecodeAnalysis
 
                         //append field name
                         children.Add(new PunctuationSyntax(string.Empty, "::", string.Empty));
-                        children.Add(new IdentifierSyntax(string.Empty, fi.Name, string.Empty, true, fi));
+                        children.Add(new IdentifierSyntax(string.Empty, fi.Name, string.Empty, IdentifierKind.Member, fi));
 
                         yield return new MemberRefSyntax(children.ToArray(), fi);
                     }
@@ -268,7 +268,7 @@ namespace CilTools.BytecodeAnalysis
                     else
                     {
                         SyntaxNode[] nrsNodes = new SyntaxNode[] { 
-                            new IdentifierSyntax(string.Empty, mi.Name, string.Empty, ismember: true, target: mi) 
+                            new IdentifierSyntax(string.Empty, mi.Name, string.Empty, IdentifierKind.Member, target: mi) 
                         };
 
                         yield return new MemberRefSyntax(nrsNodes, mi);
@@ -276,15 +276,15 @@ namespace CilTools.BytecodeAnalysis
                 }
                 else
                 {
-                    yield return new IdentifierSyntax(string.Empty, "UnknownMember" + token.ToString("X"), string.Empty, 
-                        ismember: true, target: null);
+                    yield return new IdentifierSyntax(string.Empty, "UnknownMember" + token.ToString("X"), string.Empty,
+                        IdentifierKind.Member);
                 }
             }
             else if (ReferencesLocal(this.OpCode))
             {
                 //local variable
                 yield return new IdentifierSyntax(string.Empty, "V_" + this._operand.ToString(), string.Empty,
-                    ismember: false, target: null);
+                    IdentifierKind.Other);
             }
             else if (OpCode.Equals(OpCodes.Calli) && this.Method != null)
             {

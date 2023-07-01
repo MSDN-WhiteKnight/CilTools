@@ -255,7 +255,7 @@ namespace CilTools.Syntax
                 inner.Add(new KeywordSyntax("void", string.Empty));
             }
 
-            inner.Add(new IdentifierSyntax(" ", m.Name, string.Empty, true, m));
+            inner.Add(new IdentifierSyntax(" ", m.Name, string.Empty, IdentifierKind.Member, m));
 
             if (m.IsGenericMethod)
             {
@@ -309,7 +309,7 @@ namespace CilTools.Syntax
                 else parname = "par" + (i + 1).ToString();
 
                 inner.Add(new MemberRefSyntax(parNodes.ToArray(), pars[i].ParameterType));
-                inner.Add(new IdentifierSyntax(" ", parname, string.Empty, false, pars[i]));
+                inner.Add(new IdentifierSyntax(" ", parname, string.Empty, IdentifierKind.Other, pars[i]));
             }
 
             if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine + lead));
