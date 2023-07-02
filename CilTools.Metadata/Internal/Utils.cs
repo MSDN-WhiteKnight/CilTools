@@ -562,5 +562,10 @@ namespace CilTools.Internal
             return StrEquals(name, "mscorlib") || StrEquals(name, "netstandard") || StrEquals(name, "System.Runtime")
                 || StrEquals(name, "System.Private.CoreLib");
         }
+
+        public static bool IsCoreType(Type t, string fullName)
+        {
+            return StrEquals(t.FullName, fullName) && IsCoreAssembly(t.Assembly);
+        }
     }
 }

@@ -4,15 +4,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TestData;
 using CilTools.Tests.Common.TextUtils;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace CilTools.Metadata.Tests
 {
@@ -52,6 +54,12 @@ namespace CilTools.Metadata.Tests
     {
         static TypeWithStaticCtor() { }
     }
+
+    [My(444)]
+    public class CustomAttrsTestType { }
+
+    [Category("Unicorns")]
+    public class AttrInheritanceTestType : CustomAttrsTestType { }
 
     [TestClass]
     public class TypeDefTests
@@ -987,6 +995,32 @@ namespace CilTools.Metadata.Tests
         {
             Assert.IsFalse(t.IsEnum);            
             Assert.IsTrue(t.IsClass);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(SampleType), BytecodeProviders.Metadata)]
+        public void Test_GetCustomAttributes_Empty(Type t)
+        {
+            object[] attrs = t.GetCustomAttributes(false);
+            Assert.AreEqual(0, attrs.Length);
+            attrs = t.GetCustomAttributes(true);
+            Assert.AreEqual(0, attrs.Length);
+        }
+
+        static void VerifyCustomAtrribute(object attr, string expectedType)
+        {
+            Assert.AreEqual(expectedType, ((ICustomAttribute)attr).Constructor.DeclaringType.FullName);
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(AttrInheritanceTestType), BytecodeProviders.Metadata)]
+        public void Test_GetCustomAttributes_Inherit(Type t)
+        {
+            object[] attrs = t.GetCustomAttributes(true);
+
+            Assert.AreEqual(2, attrs.Length);
+            VerifyCustomAtrribute(attrs[0], "System.ComponentModel.CategoryAttribute");
+            VerifyCustomAtrribute(attrs[1], "CilTools.Tests.Common.MyAttribute");
         }
     }
 }

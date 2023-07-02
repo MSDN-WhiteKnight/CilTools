@@ -702,8 +702,32 @@ namespace CilTools.Metadata
             //this is needed to emulate GetCustomAttributesData for .NET Framework 3.5
 
             CustomAttributeHandleCollection coll = this.type.GetCustomAttributes();
+            object[] declared = Utils.ReadCustomAttributes(coll, this, this.assembly);
+
+            if (!inherit) return declared;
+
+            //merge inherited and declared
+            List<object> ret = new List<object>(coll.Count);
+
+            for (int i = 0; i < declared.Length; i++)
+            {
+                ret.Add(declared[i]);
+            }
+
+            Type bt = this.BaseType;
+
+            if (bt != null && !Utils.IsCoreType(bt, "System.Object"))
+            {
+                object[] inherited = this.BaseType.GetCustomAttributes(inherit);
+                ret.Capacity += inherited.Length;
+
+                for (int i = 0; i < inherited.Length; i++)
+                {
+                    ret.Add(inherited[i]);
+                }
+            }
             
-            return Utils.ReadCustomAttributes(coll, this, this.assembly);
+            return ret.ToArray();
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)
