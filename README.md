@@ -4,6 +4,8 @@
 
 **License:** [BSD 2.0](https://gitflic.ru/project/smallsoft/ciltools/blob?file=LICENSE&branch=master)
 
+[![gitflic-catalog](https://img.shields.io/badge/gitflic--catalog-blue)](https://gitflic.ru/project/smallsoft/gitflic-catalog) &nbsp; [![GitHub release (latest by date)](https://img.shields.io/github/v/release/MSDN-WhiteKnight/CilTools)](https://github.com/MSDN-WhiteKnight/CilTools/releases)
+
 [Documentation](https://msdn-whiteknight.github.io/CilTools/) | [Examples](https://gitflic.ru/project/smallsoft/ciltools/file?file=Examples&branch=master)
 
 CIL tools is a set of software to work with Common Intermediate Language in .NET:
@@ -18,7 +20,7 @@ CIL tools is a set of software to work with Common Intermediate Language in .NET
 
 **Requirements:** .NET Framework 3.5+ or .NET Standard 2.0+ 
 
-[![Nuget](https://img.shields.io/nuget/v/CilTools.BytecodeAnalysis)](https://www.nuget.org/packages/CilTools.BytecodeAnalysis/) &nbsp; [![GitHub release (latest by date)](https://img.shields.io/github/v/release/MSDN-WhiteKnight/CilTools)](https://github.com/MSDN-WhiteKnight/CilTools/releases)
+[![Nuget](https://img.shields.io/nuget/v/CilTools.BytecodeAnalysis)](https://www.nuget.org/packages/CilTools.BytecodeAnalysis/)
 
 CilTools.BytecodeAnalysis reads .NET methods' Common Intermediate Language (CIL) bytecode and converts it into high-level objects or textual CIL representation so they can be easily studied and programmatically processed.
 
@@ -113,7 +115,7 @@ Install as global .NET tool:
 
     dotnet tool install --global CilTools.CommandLine
     
-For more information see [readme file](https://github.com/MSDN-WhiteKnight/CilTools/blob/master/CilTools.CommandLine/readme.md).
+For more information see [readme file](https://gitflic.ru/project/smallsoft/ciltools/blob?file=CilTools.CommandLine%2Freadme.md&branch=master).
 
 ## CilView
 
@@ -127,4 +129,4 @@ A windows application to display CIL code of methods in the given assembly file 
 
 ---
 
-Copyright (c) 2023,  MSDN.WhiteKnight
+Copyright (c) 2023,  SmallSoft

@@ -1007,11 +1007,6 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual(0, attrs.Length);
         }
 
-        static void VerifyCustomAtrribute(object attr, string expectedType)
-        {
-            Assert.AreEqual(expectedType, ((ICustomAttribute)attr).Constructor.DeclaringType.FullName);
-        }
-
         [TestMethod]
         [TypeTestData(typeof(AttrInheritanceTestType), BytecodeProviders.Metadata)]
         public void Test_GetCustomAttributes_Inherit(Type t)
@@ -1019,8 +1014,8 @@ namespace CilTools.Metadata.Tests
             object[] attrs = t.GetCustomAttributes(true);
 
             Assert.AreEqual(2, attrs.Length);
-            VerifyCustomAtrribute(attrs[0], "System.ComponentModel.CategoryAttribute");
-            VerifyCustomAtrribute(attrs[1], "CilTools.Tests.Common.MyAttribute");
+            AssertThat.CustomAtrributeIsOfType(attrs[0], "System.ComponentModel.CategoryAttribute");
+            AssertThat.CustomAtrributeIsOfType(attrs[1], "CilTools.Tests.Common.MyAttribute");
         }
     }
 }

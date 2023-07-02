@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -381,6 +382,15 @@ namespace CilTools.Tests.Common
             // Assert on the normalized strings
             const string mes = "AssertThat.CilContains failed. Tested string does not contain the specified string.";
             Assert.IsTrue(s2.Contains(s1), mes);
+        }
+
+        /// <summary>
+        /// Assert that specified custom attribute's type full name matches the specified string. Only works with custom 
+        /// attribute objects implementing <see cref="ICustomAttribute"/>.
+        /// </summary>
+        public static void CustomAtrributeIsOfType(object attr, string expectedType)
+        {
+            Assert.AreEqual(expectedType, ((ICustomAttribute)attr).Constructor.DeclaringType.FullName);
         }
     }
 }

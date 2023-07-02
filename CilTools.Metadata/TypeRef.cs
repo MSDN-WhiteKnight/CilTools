@@ -317,7 +317,10 @@ namespace CilTools.Metadata
 
         public override object[] GetCustomAttributes(bool inherit)
         {
-            return new object[] { };
+            this.LoadImpl();
+
+            if (this.impl != null) return this.impl.GetCustomAttributes(inherit);
+            else return new object[] { };
         }
 
         public override bool IsDefined(Type attributeType, bool inherit)

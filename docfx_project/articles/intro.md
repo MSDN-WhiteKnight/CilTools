@@ -7,7 +7,7 @@ CIL Tools consist of the following projects:
 - [CilTools.BytecodeAnalysis](https://www.nuget.org/packages/CilTools.BytecodeAnalysis/)
 - [CilTools.Runtime](https://www.nuget.org/packages/CilTools.Runtime/)
 - [CilTools.Metadata](https://www.nuget.org/packages/CilTools.Metadata/)
-- [CIL View](https://github.com/MSDN-WhiteKnight/CilTools/tree/master/CilView)
+- [CIL View](https://gitflic.ru/project/smallsoft/ciltools/file?file=CilView&branch=master)
 
 Documentation pages:
 
@@ -21,8 +21,8 @@ Documentation pages:
 
 ## See also
 
-[Source code](https://github.com/MSDN-WhiteKnight/CilTools)
+[Source code](https://gitflic.ru/project/smallsoft/ciltools)
 
 [Releases](https://github.com/MSDN-WhiteKnight/CilTools/releases)
 
-[Examples](https://github.com/MSDN-WhiteKnight/CilTools/tree/master/Examples)
+[Examples](https://gitflic.ru/project/smallsoft/ciltools/file?file=Examples&branch=master)

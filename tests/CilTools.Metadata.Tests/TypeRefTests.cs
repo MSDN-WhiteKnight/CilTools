@@ -104,6 +104,27 @@ namespace CilTools.Metadata.Tests
             t = TypeRefTests_Data.GetTypeRef(typeof(Console).FullName);
             Assert.IsFalse(t.IsEnum);
         }
+
+        [TestMethod]
+        public void Test_GetCustomAttributes()
+        {
+            Type t = TypeRefTests_Data.GetTypeRef(typeof(TestType).FullName);
+            object[] attrs = t.GetCustomAttributes(false);
+
+            Assert.AreEqual(1, attrs.Length);
+            AssertThat.CustomAtrributeIsOfType(attrs[0], "CilTools.Tests.Common.MyAttribute");
+        }
+
+        [TestMethod]
+        public void Test_GetCustomAttributes_Empty()
+        {
+            Type t = TypeRefTests_Data.GetTypeRef(typeof(Console).FullName);
+            object[] attrs = t.GetCustomAttributes(false);
+            Assert.AreEqual(0, attrs.Length);
+
+            attrs = t.GetCustomAttributes(true);
+            Assert.AreEqual(0, attrs.Length);
+        }
     }
 
     public class TypeRefTests_Data
@@ -113,6 +134,7 @@ namespace CilTools.Metadata.Tests
             Console.WriteLine(typeof(AttributeTargets));
             Console.WriteLine(typeof(Console));
             Console.WriteLine(typeof(IDisposable));
+            Console.WriteLine(typeof(TestType));
         }
 
         public static Type GetTypeRef(string typeName)
