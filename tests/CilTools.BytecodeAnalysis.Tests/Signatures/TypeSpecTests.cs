@@ -31,13 +31,8 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
     [TestClass]
     public class TypeSpecTests
     {
-        [TestMethod]
-        public void Test_ReadFromArray_Int()
+        static void VerifyInt32(TypeSpec ts)
         {
-            byte[] data = new byte[] { 0x08 };
-            GenericContext gctx = GenericContext.Create((Type)null, null);
-            SignatureContext ctx = SignatureContext.Create(MockTokenResolver.Value, gctx, null);
-            TypeSpec ts = TypeSpec.ReadFromArray(data, ctx);
             Assert.AreEqual(ElementType.I4, ts.ElementType);
             Assert.IsFalse(ts.IsPinned);
             Assert.IsFalse(ts.IsByRef);
@@ -48,6 +43,16 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
             Assert.IsTrue(ts.IsPublic);
             Assert.AreEqual(0, ts.ModifiersCount);
             Assert.AreEqual("System.Int32", ts.FullName);
+        }
+
+        [TestMethod]
+        public void Test_ReadFromArray_Int()
+        {
+            byte[] data = new byte[] { 0x08 };
+            GenericContext gctx = GenericContext.Create((Type)null, null);
+            SignatureContext ctx = SignatureContext.Create(MockTokenResolver.Value, gctx, null);
+            TypeSpec ts = TypeSpec.ReadFromArray(data, ctx);
+            VerifyInt32(ts);
         }
 
         [TestMethod]        
@@ -185,6 +190,28 @@ namespace CilTools.BytecodeAnalysis.Tests.Signatures
             Assert.AreEqual("System.Double", t.FullName);
             Assert.IsTrue(t2.IsValueType);
             Assert.AreEqual("System.Double", t2.FullName);
+        }
+
+        [TestMethod]
+        public void Test_CreateSpecialType_Int()
+        {
+            TypeSpec ts = TypeSpec.CreateSpecialType(ElementType.I4);
+            VerifyInt32(ts);
+        }
+
+        [TestMethod]
+        public void Test_CreateSpecialType_String()
+        {
+            TypeSpec ts = TypeSpec.CreateSpecialType(ElementType.String);
+            AssertThat.AreEqual("System.String", ts.FullName);
+            Assert.IsFalse(ts.IsValueType);
+        }
+
+        [TestMethod]
+        public void Test_CreateSpecialType_Negative()
+        {
+            AssertThat.Throws<ArgumentException>(() => TypeSpec.CreateSpecialType(ElementType.Class));
+            AssertThat.Throws<ArgumentException>(() => TypeSpec.CreateSpecialType(ElementType.ValueType));
         }
     }
 }

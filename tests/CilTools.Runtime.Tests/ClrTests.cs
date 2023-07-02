@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.TextUtils;
 using Microsoft.Diagnostics.Runtime;
@@ -271,6 +272,17 @@ namespace CilTools.Runtime.Tests
             methods = t.GetMethods(Utils.AllMembers() | BindingFlags.DeclaredOnly);
             Assert.AreEqual(1, methods.Length);
             Assert.AreEqual("Method2", methods[0].Name);
+        }
+
+        [LongTest]
+        public void Test_ClrTypeInfo_Disassemble()
+        {
+            Type t = GetTestDynamicType();
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string il = Utils.SyntaxToString(nodes);
+
+            AssertThat.CilContains(il, ".class public auto ansi MyDynamicType");
+            AssertThat.CilContains(il, ".field private static int32 number");
         }
 
         [LongTest]

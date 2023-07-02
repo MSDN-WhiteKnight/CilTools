@@ -21,6 +21,33 @@ namespace CilTools.Runtime
 
         internal static Type LoadTypeInfo(ClrTypeInfo ownertype, ClrType ft)
         {
+            //handle special types
+            if (ft.IsPrimitive)
+            {
+                switch (ft.ElementType)
+                {
+                    case ClrElementType.Boolean: return TypeSpec.CreateSpecialType(ElementType.Boolean);
+                    case ClrElementType.Int8: return TypeSpec.CreateSpecialType(ElementType.I1);
+                    case ClrElementType.UInt8: return TypeSpec.CreateSpecialType(ElementType.U1);
+                    case ClrElementType.Int16: return TypeSpec.CreateSpecialType(ElementType.I2);
+                    case ClrElementType.UInt16: return TypeSpec.CreateSpecialType(ElementType.U2);
+                    case ClrElementType.Int32: return TypeSpec.CreateSpecialType(ElementType.I4);
+                    case ClrElementType.UInt32: return TypeSpec.CreateSpecialType(ElementType.U4);
+                    case ClrElementType.Int64: return TypeSpec.CreateSpecialType(ElementType.I8);
+                    case ClrElementType.UInt64: return TypeSpec.CreateSpecialType(ElementType.U8);
+                    case ClrElementType.NativeInt: return TypeSpec.CreateSpecialType(ElementType.I);
+                    case ClrElementType.NativeUInt: return TypeSpec.CreateSpecialType(ElementType.U);
+                    case ClrElementType.Float: return TypeSpec.CreateSpecialType(ElementType.R4);
+                    case ClrElementType.Double: return TypeSpec.CreateSpecialType(ElementType.R8);
+                    case ClrElementType.Char: return TypeSpec.CreateSpecialType(ElementType.Char);
+                }
+            }
+
+            if (ft.ElementType == ClrElementType.String)
+            {
+                return TypeSpec.CreateSpecialType(ElementType.String);
+            }
+
             ClrAssemblyInfo ownerass = (ClrAssemblyInfo)ownertype.Assembly;
             Type t=null;
 

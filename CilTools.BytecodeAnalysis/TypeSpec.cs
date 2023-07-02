@@ -469,6 +469,41 @@ namespace CilTools.BytecodeAnalysis
         }
 
         /// <summary>
+        /// Creates a <c>TypeSpec</c> object that represents a special type (that is, a type referenced using special 
+        /// keyword in CIL assembler)
+        /// </summary>
+        /// <param name="et">Element type that identifies a special type</param>
+        /// <remarks>
+        /// The returned <c>TypeSpec</c> references a special type from current runtime's CoreLib. Passed element 
+        /// type must represent a special type (Class, ValueType, etc. are not valid).
+        /// </remarks>
+        /// <exception cref="ArgumentException">
+        /// The specified element type does not represent a special type
+        /// </exception>
+        public static TypeSpec CreateSpecialType(ElementType et)
+        {
+            Type t;
+
+            if (_types.TryGetValue((byte)et, out t) == false)
+            {
+                throw new ArgumentException(et.ToString() + " is not a special type");
+            }
+
+            TypeSpec ret = new TypeSpec(new CustomModifier[0], (byte)et, t, SignatureContext.Empty, null);
+
+            if (et == ElementType.String || et == ElementType.Object || et == ElementType.TypedByRef)
+            {
+                ret._isValueType = false;
+            }
+            else
+            {
+                ret._isValueType = true;
+            }
+
+            return ret;
+        }
+
+        /// <summary>
         /// Gets the element type of this type specification 
         /// </summary>
         public ElementType ElementType { get { return (ElementType)this._ElementType; } }
