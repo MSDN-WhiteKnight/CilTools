@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CilTools.Metadata.Tests.TestData;
 using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
@@ -1016,6 +1017,16 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual(2, attrs.Length);
             AssertThat.CustomAtrributeIsOfType(attrs[0], "System.ComponentModel.CategoryAttribute");
             AssertThat.CustomAtrributeIsOfType(attrs[1], "CilTools.Tests.Common.MyAttribute");
+        }
+
+        [TestMethod]
+        [TypeTestData(typeof(DuplicateAttrSample), BytecodeProviders.Metadata)]
+        public void Test_GetCustomAttributes_Duplicate(Type t)
+        {
+            object[] attrs = t.GetCustomAttributes(true);
+
+            Assert.AreEqual(1, attrs.Length);
+            AssertThat.CustomAtrributeIsOfType(attrs[0], "CilTools.Tests.Common.MyAttribute");
         }
     }
 }

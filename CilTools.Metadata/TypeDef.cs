@@ -3,13 +3,13 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Diagnostics;
-using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
 using CilTools.Reflection;
 
@@ -707,26 +707,19 @@ namespace CilTools.Metadata
             if (!inherit) return declared;
 
             //merge inherited and declared
-            List<object> ret = new List<object>(coll.Count);
-
-            for (int i = 0; i < declared.Length; i++)
-            {
-                ret.Add(declared[i]);
-            }
-
+            HashSet<object> ret = new HashSet<object>(declared, AttributeComparer.Value);
             Type bt = this.BaseType;
 
             if (bt != null && !Utils.IsCoreType(bt, "System.Object"))
             {
                 object[] inherited = this.BaseType.GetCustomAttributes(inherit);
-                ret.Capacity += inherited.Length;
 
                 for (int i = 0; i < inherited.Length; i++)
                 {
                     ret.Add(inherited[i]);
                 }
             }
-            
+
             return ret.ToArray();
         }
 
