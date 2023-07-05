@@ -141,7 +141,7 @@ namespace CilTools.Syntax.Generation
                     else yield return new KeywordSyntax("class", " ");
                 }
 
-                if (!this.SkipAssemblyName && !ReflectionUtils.IsTypeInAssembly(t, this.ContainingAssembly))
+                if (!this.SkipAssemblyName && !ReflectionFacts.IsTypeInAssembly(t, this.ContainingAssembly))
                 {
                     Assembly ass = t.Assembly;
 

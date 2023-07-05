@@ -154,7 +154,7 @@ namespace CilTools.BytecodeAnalysis
                     children.Add(new GenericSyntax(" "));
 
                     //append declaring type
-                    if (t != null && !ReflectionUtils.IsModuleType(t))
+                    if (t != null && !ReflectionFacts.IsModuleType(t))
                     {
                         nodes = TypeSyntaxGenerator.GetTypeSpecSyntaxAuto(t, skipAssembly: false, containingAssembly);
 

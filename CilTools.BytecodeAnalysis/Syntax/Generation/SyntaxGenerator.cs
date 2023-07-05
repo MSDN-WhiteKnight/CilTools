@@ -218,7 +218,7 @@ namespace CilTools.Syntax.Generation
             {
                 ICustomAttribute ca = (ICustomAttribute)attr;
 
-                if (ReflectionUtils.IsBuiltInAttribute(ca.Constructor.DeclaringType)) return;
+                if (ReflectionFacts.IsBuiltInAttribute(ca.Constructor.DeclaringType)) return;
 
                 List<SyntaxNode> children = new List<SyntaxNode>();
 
@@ -247,7 +247,7 @@ namespace CilTools.Syntax.Generation
             //from reflection
             Type t = attr.GetType();
 
-            if (ReflectionUtils.IsBuiltInAttribute(t)) return;
+            if (ReflectionFacts.IsBuiltInAttribute(t)) return;
 
             ConstructorInfo[] constr = t.GetConstructors();
             string s_attr;
@@ -258,8 +258,8 @@ namespace CilTools.Syntax.Generation
             {
                 int parcount = constr[0].GetParameters().Length;
 
-                if (parcount == 0 && !ReflectionUtils.HasPublicInstanceFields(t) && 
-                    !ReflectionUtils.HasPublicWritableInstanceProperties(t))
+                if (parcount == 0 && !ReflectionFacts.HasPublicInstanceFields(t) && 
+                    !ReflectionFacts.HasPublicWritableInstanceProperties(t))
                 {
                     //Atribute prolog & zero number of arguments (ECMA-335 II.23.3 Custom attributes)
                     List<SyntaxNode> children = new List<SyntaxNode>();
@@ -335,7 +335,7 @@ namespace CilTools.Syntax.Generation
             {
                 Type constType;
 
-                if (ReflectionUtils.IsEnumType(t))
+                if (ReflectionFacts.IsEnumType(t))
                 {
                     constType = constant.GetType(); //use enum underlying numeric type
                 }
@@ -515,7 +515,7 @@ namespace CilTools.Syntax.Generation
                 rt = new SyntaxNode[] { new KeywordSyntax("void", string.Empty) };
             }
 
-            if (!ReflectionUtils.IsMethodStatic(m))
+            if (!ReflectionFacts.IsMethodStatic(m))
             {
                 children.Add(new KeywordSyntax("instance", " "));
             }
@@ -533,7 +533,7 @@ namespace CilTools.Syntax.Generation
             children.Add(new GenericSyntax(" "));
 
             //append declaring type
-            if (t != null && !ReflectionUtils.IsModuleType(t))
+            if (t != null && !ReflectionFacts.IsModuleType(t))
             {
                 IEnumerable<SyntaxNode> syntax;
 
@@ -824,7 +824,7 @@ namespace CilTools.Syntax.Generation
             }
 
             int bodyIndent;
-            bool isModuleType = ReflectionUtils.IsModuleType(t); //module type holds global fields and functions
+            bool isModuleType = ReflectionFacts.IsModuleType(t); //module type holds global fields and functions
 
             if (!isModuleType)
             {

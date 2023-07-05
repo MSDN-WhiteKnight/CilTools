@@ -134,7 +134,7 @@ namespace CilTools.BytecodeAnalysis
             List<int> labels = new List<int>();
             m = (MethodBase)CustomMethod.PrepareMethod(m);
 
-            if (ReflectionUtils.IsMethodWithoutBody(m))
+            if (ReflectionFacts.IsMethodWithoutBody(m))
             {
                 //If method is abstract, PInvoke or provided by runtime, it does not have CIL method body by design,
                 //so we simply return empty CilGraph
@@ -470,7 +470,7 @@ namespace CilTools.BytecodeAnalysis
             }
 
             //display bytecode size in bytes if specified
-            if (disassemblerParams.IncludeCodeSize && !ReflectionUtils.IsMethodWithoutBody(this._Method))
+            if (disassemblerParams.IncludeCodeSize && !ReflectionFacts.IsMethodWithoutBody(this._Method))
             {
                 try
                 {
@@ -490,7 +490,7 @@ namespace CilTools.BytecodeAnalysis
                 }
             }
 
-            if (ReflectionUtils.IsEntryPoint(this._Method))
+            if (ReflectionFacts.IsEntryPoint(this._Method))
             {
                 DirectiveSyntax dir = new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent + 1), "entrypoint",
                     new SyntaxNode[] { new GenericSyntax(Environment.NewLine) });
