@@ -4,13 +4,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Metadata.Tests.TestData;
-using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.Attributes;
@@ -19,31 +17,6 @@ using CilTools.Tests.Common.TextUtils;
 
 namespace CilTools.Metadata.Tests
 {
-    public class SampleType
-    {
-        public static string PublicStaticField;
-        public string PublicInstanceField;
-        private static string PrivateStaticField;
-        private string PrivateInstanceField;
-        public string PublicProperty { get; set; }
-
-        public static void PublicStaticMethod() 
-        {
-            PrivateStaticField = string.Empty;
-            Console.WriteLine(PrivateStaticField);
-            PrivateStaticMethod();
-        }
-        public void PublicInstanceMethod() 
-        {
-            PrivateInstanceField = string.Empty;
-            Console.WriteLine(PrivateInstanceField);
-            PrivateInstanceMethod();
-        }
-
-        private static void PrivateStaticMethod() { }
-        private void PrivateInstanceMethod() { }
-    }
-
     public class DerivedSampleType : SampleType
     {
         public int x;
@@ -51,21 +24,10 @@ namespace CilTools.Metadata.Tests
         public int X { get { return this.x; } }
     }
 
-    public class TypeWithStaticCtor
-    {
-        static TypeWithStaticCtor() { }
-    }
-
-    [My(444)]
-    public class CustomAttrsTestType { }
-
-    [Category("Unicorns")]
-    public class AttrInheritanceTestType : CustomAttrsTestType { }
-
     [TestClass]
     public class TypeDefTests
     {
-        const string SampleTypeName = "CilTools.Metadata.Tests.SampleType";
+        const string SampleTypeName = "CilTools.Metadata.Tests.TestData.SampleType";
 
         [TestMethod]
         public void Test_TypeDef()
@@ -78,7 +40,7 @@ namespace CilTools.Metadata.Tests
                 Type t = ass.GetType(SampleTypeName);
 
                 Assert.AreEqual(SampleTypeName, t.FullName);
-                Assert.AreEqual("CilTools.Metadata.Tests", t.Namespace);
+                Assert.AreEqual("CilTools.Metadata.Tests.TestData", t.Namespace);
                 Assert.AreEqual("SampleType", t.Name);
                 Assert.AreEqual(TypeAttributes.Public, t.Attributes & TypeAttributes.VisibilityMask);
 

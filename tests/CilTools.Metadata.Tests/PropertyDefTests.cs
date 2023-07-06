@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
+using CilTools.Metadata.Tests.TestData;
 using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Tests.Common;
