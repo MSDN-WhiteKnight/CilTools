@@ -31,6 +31,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         [DataRow(".method", KeywordKind.DirectiveName)]
         [DataRow("ldstr", KeywordKind.InstructionName)]
         [DataRow("string", KeywordKind.Other)]
+        [DataRow("windowsruntime", KeywordKind.Other)]
         public void Test_CreateFromToken_Keyword(string token, KeywordKind expectedKind)
         {
             SyntaxNode node = SyntaxFactory.CreateFromToken(token, string.Empty, string.Empty);

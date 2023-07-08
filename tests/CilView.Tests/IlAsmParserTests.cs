@@ -448,5 +448,17 @@ namespace CilView.Tests
             Assert.AreEqual("Test2", an.Name);
             Assert.IsNull(an.Version);
         }
+
+        [TestMethod]
+        public void Test_IlAsmParser_WindowsRuntime()
+        {
+            string il = ".class interface private abstract auto ansi import windowsruntime IFoo { }";
+            IlasmAssembly ass = ParseAssembly(il);
+            Type[] types = ass.GetTypes();
+
+            Assert.AreEqual(1, types.Length);
+            Assert.AreEqual("IFoo", types[0].FullName);
+            Assert.AreEqual(il, ass.GetDocumentText());
+        }
     }
 }

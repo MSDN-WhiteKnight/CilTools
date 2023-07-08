@@ -479,6 +479,7 @@ namespace CilTools.Syntax
 "with",
 "wrapper",
 "xor",
+"windowsruntime" //not specified in ECMA-335, but used as keyword in .NET Framework implementation
     };
 
         // Excluded:
