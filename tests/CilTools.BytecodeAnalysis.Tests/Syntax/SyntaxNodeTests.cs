@@ -313,5 +313,19 @@ extends [CilTools.BytecodeAnalysis]CilTools.Syntax.SyntaxFactory {
             string s = Utils.SyntaxToString(nodes);
             AssertThat.AreLexicallyEqual(expected, s);           
         }
+
+        [TestMethod]
+        [TypeTestData(typeof(MMDeviceEnumerator), BytecodeProviders.All)]
+        public void Test_GetTypeDefSyntax_ComImport(Type t)
+        {
+            const string expected = 
+                ".class public auto ansi beforefieldinit import CilTools.Tests.Common.TestData.MMDeviceEnumerator";
+
+            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t);
+            string il = Utils.SyntaxToString(nodes);
+
+            AssertThat.IsSyntaxTreeCorrect(nodes);
+            AssertThat.CilContains(il, expected);
+        }
     }
 }

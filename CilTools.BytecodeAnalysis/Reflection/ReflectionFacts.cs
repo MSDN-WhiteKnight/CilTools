@@ -15,6 +15,12 @@ namespace CilTools.Reflection
     /// </summary>
     internal static class ReflectionFacts
     {
+        static bool StrEquals(string left, string right)
+        {
+            //metadata strings are compared using non-linguistic comparison
+            return string.Equals(left, right, StringComparison.Ordinal);
+        }
+
         /// <summary>
         /// Gets the value indicating whether the specified method is an entry point of its containing assembly. For 
         /// methods in non-executable assemblies that have no entry point, always returns <c>false</c>
@@ -139,16 +145,18 @@ namespace CilTools.Reflection
         /// </summary>
         internal static bool IsBuiltInAttribute(Type t)
         {
-            if (string.Equals(t.FullName, "System.Runtime.InteropServices.OptionalAttribute",
-                StringComparison.Ordinal))
+            if (StrEquals(t.FullName, "System.Runtime.InteropServices.OptionalAttribute"))
             {
-                //OptionalAttribute is translated to [opt]
+                return true; //translated to [opt]
+            }
+            else if (StrEquals(t.FullName, "System.SerializableAttribute"))
+            {
+                //translated to 'serializable' built-in type attribute
                 return true;
             }
-            else if (string.Equals(t.FullName, "System.SerializableAttribute", StringComparison.Ordinal))
+            else if (StrEquals(t.FullName, "System.Runtime.InteropServices.ComImportAttribute"))
             {
-                //SerializableAttribute is represented by built-in attribute flag, but runtime reflection still
-                //synthesizes it
+                //translated to 'import' built-in type attribute
                 return true;
             }
             else

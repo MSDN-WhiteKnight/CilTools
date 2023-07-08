@@ -634,7 +634,8 @@ namespace CilTools.Syntax.Generation
             DisassemblerParams disassemblerParams, int startIndent)
         {
             List<SyntaxNode> content = new List<SyntaxNode>(10);
-            
+            const int TypeAttributes_WindowsRuntime = 16384; //enum member is not available in .NET Framework 3.5
+
             //type standard attributes
             if (t.IsInterface)
             {
@@ -737,6 +738,16 @@ namespace CilTools.Syntax.Generation
             if ((t.Attributes & TypeAttributes.BeforeFieldInit) != 0)
             {
                 content.Add(new KeywordSyntax("beforefieldinit", " "));
+            }
+
+            if (t.IsImport)
+            {
+                content.Add(new KeywordSyntax("import", " "));
+            }
+
+            if (((int)t.Attributes & TypeAttributes_WindowsRuntime) != 0)
+            {
+                content.Add(new KeywordSyntax("windowsruntime", " "));
             }
 
             //type name
