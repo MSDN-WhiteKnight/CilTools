@@ -37,8 +37,8 @@ namespace CilView.Tests.SourceCode
             SourceDocument doc = docs.First();
 
             Assert.AreSame(mb, doc.Method);
-            Assert.AreEqual(15, doc.LineStart);
-            Assert.AreEqual(17, doc.LineEnd);
+            Assert.AreEqual(16, doc.LineStart);
+            Assert.AreEqual(18, doc.LineEnd);
             Assert.IsTrue(doc.SymbolsFile.EndsWith(@"CilTools.Tests.Common.pdb"));
             Assert.AreEqual("Portable PDB", doc.SymbolsFileFormat);
 
@@ -52,16 +52,16 @@ namespace CilView.Tests.SourceCode
             Assert.AreEqual(3, fragments.Length);
             VerifyFragments(fragments, doc, mb);
 
-            Assert.AreEqual(15, fragments[0].LineStart);
-            Assert.AreEqual(15, fragments[0].LineEnd);
+            Assert.AreEqual(16, fragments[0].LineStart);
+            Assert.AreEqual(16, fragments[0].LineEnd);
             AssertThat.AreLexicallyEqual("{", fragments[0].Text);
 
-            Assert.AreEqual(16, fragments[1].LineStart);
-            Assert.AreEqual(16, fragments[1].LineEnd);
+            Assert.AreEqual(17, fragments[1].LineStart);
+            Assert.AreEqual(17, fragments[1].LineEnd);
             AssertThat.AreLexicallyEqual("Console.WriteLine(\"Hello, World\");", fragments[1].Text);
             
-            Assert.AreEqual(17, fragments[2].LineStart);
-            Assert.AreEqual(17, fragments[2].LineEnd);
+            Assert.AreEqual(18, fragments[2].LineStart);
+            Assert.AreEqual(18, fragments[2].LineEnd);
             AssertThat.AreLexicallyEqual("}", fragments[2].Text);
         }
 

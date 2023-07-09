@@ -1,9 +1,10 @@
 ﻿/* CIL Tools
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Threading;
 
@@ -229,6 +230,9 @@ namespace CilTools.Tests.Common
         public static void TestGenericStruct(ArraySegment<int> x) { }
 
         public static void TestNestedTypes(Environment.SpecialFolder sf) { }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void TestAggressiveInlining() { }
     }
 
     public class MyPoint

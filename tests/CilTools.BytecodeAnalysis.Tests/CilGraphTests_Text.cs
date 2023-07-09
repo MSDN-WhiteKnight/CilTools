@@ -600,5 +600,16 @@ namespace CilTools.BytecodeAnalysis.Tests
             string str = graph.ToString();
             AssertThat.CilEquals(expected, str);
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestAggressiveInlining", BytecodeProviders.All)]
+        public void Test_ToString_AggressiveInlining(MethodBase mi)
+        {
+            const string expected = ".method public hidebysig static void TestAggressiveInlining() cil managed aggressiveinlining";
+
+            CilGraph graph = CilGraph.Create(mi);
+            string str = graph.ToString();
+            AssertThat.CilEquals(expected, str);
+        }
     }
 }

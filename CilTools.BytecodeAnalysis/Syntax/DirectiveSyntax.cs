@@ -116,6 +116,7 @@ namespace CilTools.Syntax
 
         internal static DirectiveSyntax FromMethodSignature(MethodBase m, string lead)
         {
+            const int MethodImplAttributes_AggressiveInlining = 256; //enum member is not available in .NET Framework 3.5
             ICustomMethod cm = (ICustomMethod)m;
             ParameterInfo[] pars = m.GetParameters();
 
@@ -371,6 +372,12 @@ namespace CilTools.Syntax
             if ((mia & MethodImplAttributes.Synchronized) == MethodImplAttributes.Synchronized)
             {
                 inner.Add(new KeywordSyntax(" ", "synchronized", string.Empty, KeywordKind.Other));
+            }
+
+            if (((int)mia & MethodImplAttributes_AggressiveInlining) == MethodImplAttributes_AggressiveInlining)
+            {
+                //AggressiveInlining - not in ECMA-335
+                inner.Add(new KeywordSyntax(" ", "aggressiveinlining", string.Empty, KeywordKind.Other));
             }
 
             inner.Add(new GenericSyntax(Environment.NewLine));
