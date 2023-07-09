@@ -1,5 +1,5 @@
 ﻿/* CilTools.BytecodeAnalysis library 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -479,7 +479,15 @@ namespace CilTools.Syntax
 "with",
 "wrapper",
 "xor",
-"windowsruntime" //not specified in ECMA-335, but used as keyword in .NET Framework implementation
+// Not specified in ECMA-335, but used as keywords in Microsoft implementation
+// (https://github.com/dotnet/runtime/blob/main/src/coreclr/inc/il_kywd.h)
+"aggressiveinlining",
+"type",
+"uint8",
+"uint16",
+"uint32",
+"uint64",
+"windowsruntime"
     };
 
         // Excluded:

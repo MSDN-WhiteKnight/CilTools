@@ -272,5 +272,54 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
             Assert.AreEqual(string.Empty, node.TrailingWhitespace);
             Assert.AreEqual("1", node.ToString());
         }
+
+        [TestMethod]
+        public void Test_SyntaxReader_NonStandardKeywords()
+        {
+            //https://github.com/MSDN-WhiteKnight/CilTools/issues/136
+            string s = ".method public instance uint8 FizzBuzz() cil managed aggressiveinlining";
+            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(s);
+            Assert.AreEqual(10, nodes.Length);
+
+            SyntaxNode node = nodes[0];
+            Assert.IsTrue(node is KeywordSyntax);
+            Assert.AreEqual(".method", (node as KeywordSyntax).Content);
+
+            node = nodes[1];
+            Assert.IsTrue(node is KeywordSyntax);
+            Assert.AreEqual("public", (node as KeywordSyntax).Content);
+
+            node = nodes[2];
+            Assert.IsTrue(node is KeywordSyntax);
+            Assert.AreEqual("instance", (node as KeywordSyntax).Content);
+
+            node = nodes[3];
+            Assert.IsTrue(node is KeywordSyntax);
+            Assert.AreEqual("uint8", (node as KeywordSyntax).Content);
+
+            node = nodes[4];
+            Assert.IsTrue(node is IdentifierSyntax);
+            Assert.AreEqual("FizzBuzz", (node as IdentifierSyntax).Content);
+
+            node = nodes[5];
+            Assert.IsTrue(node is PunctuationSyntax);
+            Assert.AreEqual("(", (node as PunctuationSyntax).Content);
+
+            node = nodes[6];
+            Assert.IsTrue(node is PunctuationSyntax);
+            Assert.AreEqual(")", (node as PunctuationSyntax).Content);
+
+            node = nodes[7];
+            Assert.IsTrue(node is KeywordSyntax);
+            Assert.AreEqual("cil", (node as KeywordSyntax).Content);
+
+            node = nodes[8];
+            Assert.IsTrue(node is KeywordSyntax);
+            Assert.AreEqual("managed", (node as KeywordSyntax).Content);
+
+            node = nodes[9];
+            Assert.IsTrue(node is KeywordSyntax);
+            Assert.AreEqual("aggressiveinlining", (node as KeywordSyntax).Content);
+        }
     }
 }
