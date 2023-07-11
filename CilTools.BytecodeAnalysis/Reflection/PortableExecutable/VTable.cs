@@ -1,14 +1,16 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Text;
 
-namespace CilTools.Metadata.PortableExecutable
+namespace CilTools.Reflection.PortableExecutable
 {
-    class VTable
+    /// <summary>
+    /// Represents a table of pointers to virtual functions in executable image
+    /// </summary>
+    public class VTable
     {
         //ECMA-335 II.25.3.3.3 - Vtable fixup
         int _rva;
@@ -16,28 +18,45 @@ namespace CilTools.Metadata.PortableExecutable
         short _type;
         byte[] _data;
 
-        internal const short COR_VTABLE_64BIT = 0x02;
+        const short COR_VTABLE_64BIT = 0x02;
 
-        public VTable(int rva, short n_items, short type, ImmutableArray<byte> data)
+        /// <summary>
+        /// Creates a new VTable
+        /// </summary>
+        public VTable(int rva, short n_items, short type, byte[] data)
         {
             this._rva = rva;
             this._n_items = n_items;
             this._type = type;
-            List<byte> bytes = new List<byte>(data);
-            this._data = bytes.ToArray();
+            this._data = data;
         }
 
+        /// <summary>
+        /// Gets a Relative virtual address of this table's data in the image it was read from
+        /// </summary>
         public int RVA { get { return this._rva; } }
 
+        /// <summary>
+        /// Gets the number of slots (functions) in this table
+        /// </summary>
         public short SlotsCount { get { return this._n_items; } }
 
+        /// <summary>
+        /// Gets the short integer value that represents the type of this table
+        /// </summary>
         public short Type { get { return this._type; } }
 
+        /// <summary>
+        /// Gets the boolean value indicating whether this table contains 64-bit function pointer values
+        /// </summary>
         public bool Is64Bit
         {
             get { return (this._type & COR_VTABLE_64BIT) != 0; }
         }
 
+        /// <summary>
+        /// Gets the data of this table as a byte array
+        /// </summary>
         public byte[] GetData()
         {
             byte[] ret = new byte[this._data.Length];
@@ -46,7 +65,7 @@ namespace CilTools.Metadata.PortableExecutable
         }
 
         /// <summary>
-        /// Gets the VTable slot value as <c>Int64</c>. The initial slot value is a method's metadata token, 
+        /// Gets the VTable slot initial value as <c>Int64</c>. The initial slot value is a method's metadata token, 
         /// which gets replaced with a native function address when the image is loaded.
         /// </summary>
         public long GetSlotValue(int index)
@@ -77,9 +96,9 @@ namespace CilTools.Metadata.PortableExecutable
         }
 
         /// <summary>
-        /// Gets the VTable slot value as <c>Int32</c>. If the value is 64-bit, it is truncated.
-        /// The initial slot value is a method's metadata token, 
-        /// which gets replaced with a native function address when the image is loaded.
+        /// Gets the VTable slot initial value as <c>Int32</c>. If the value is 64-bit, it is converted to <c>Int32</c>. 
+        /// The initial slot value is a method's metadata token, which gets replaced with a native function address when 
+        /// the image is loaded.
         /// </summary>
         public int GetSlotValueInt32(int index)
         {

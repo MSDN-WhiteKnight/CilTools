@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -7,6 +7,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
@@ -15,8 +16,8 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
 using CilTools.Metadata.Methods;
-using CilTools.Metadata.PortableExecutable;
 using CilTools.Reflection;
+using CilTools.Reflection.PortableExecutable;
 
 namespace CilTools.Metadata
 {
@@ -881,6 +882,8 @@ namespace CilTools.Metadata
         /// </summary>
         internal VTable[] GetVTables()
         {
+            const short COR_VTABLE_64BIT = 0x02;
+
             //cached value
             if (this.vTables != null) return this.vTables;
 
@@ -910,12 +913,12 @@ namespace CilTools.Metadata
                 short type = br.ReadInt16();
                 int size;
 
-                if ((type & VTable.COR_VTABLE_64BIT) != 0) size = n_items * 8;
+                if ((type & COR_VTABLE_64BIT) != 0) size = n_items * 8;
                 else size = n_items * 4;
 
                 ImmutableArray<byte> data = pr.GetSectionData(rva).GetContent(0, size);
 
-                VTable vt = new VTable(rva, n_items, type, data);
+                VTable vt = new VTable(rva, n_items, type, ImmutableArrayExtensions.ToArray(data));
                 ret.Add(vt);
             }
 
@@ -1004,6 +1007,7 @@ namespace CilTools.Metadata
             {
                 case ReflectionProperties.InfoText: return this.GetInfoText();
                 case ReflectionProperties.ReferencedModules: return this.GetReferencedModules();
+                case ReflectionProperties.VTables: return this.GetVTables();
                 default: return this.GetImageProperty(id);
             }
         }

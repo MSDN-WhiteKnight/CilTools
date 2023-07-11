@@ -99,6 +99,11 @@ namespace CilTools.Reflection
         public const int FieldOffset = 112;
 
         /// <summary>
+        /// Represents an array of virtual function tables in the executable image. (Type: VTable[])
+        /// </summary>
+        public const int VTables = 113;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>

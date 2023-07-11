@@ -13,6 +13,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Internal;
 using CilTools.Metadata.PortableExecutable;
 using CilTools.Reflection;
+using CilTools.Reflection.PortableExecutable;
 
 namespace CilTools.Metadata.Methods
 {
