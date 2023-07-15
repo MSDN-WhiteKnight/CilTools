@@ -18,7 +18,12 @@ namespace CilTools.Reflection.PortableExecutable
         short _type;
         byte[] _data;
 
-        const short COR_VTABLE_64BIT = 0x02;
+        internal const short COR_VTABLE_64BIT = 0x02;
+        internal const short COR_VTABLE_FROM_UNMANAGED = 0x04; //Transition from unmanaged to managed code
+        internal const short COR_VTABLE_CALL_MOST_DERIVED = 0x10; //Call most derived method described by the token
+
+        // retainappdomain - not included in ECMA-335, but used in Microsoft implementation
+        internal const short COR_VTABLE_RETAINAPPDOMAIN = 0x08; 
 
         /// <summary>
         /// Creates a new VTable

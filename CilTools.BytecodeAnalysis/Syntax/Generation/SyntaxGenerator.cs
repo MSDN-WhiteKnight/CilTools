@@ -616,6 +616,23 @@ namespace CilTools.Syntax.Generation
             return sb.ToString();
         }
 
+        internal static DirectiveSyntax CreateDataDirective(string label, string val, int startIndent, bool isCil)
+        {
+            List<SyntaxNode> nodes = new List<SyntaxNode>();
+
+            if (isCil) nodes.Add(new KeywordSyntax("cil", " "));
+
+            nodes.Add(new IdentifierSyntax(string.Empty, label, " ", IdentifierKind.Other));
+            nodes.Add(new PunctuationSyntax(string.Empty, "=", " "));
+            nodes.Add(new KeywordSyntax("bytearray", " "));
+
+            nodes.Add(new PunctuationSyntax(string.Empty, "(", " "));
+            nodes.Add(new GenericSyntax(val));
+            nodes.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
+
+            return new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent), "data", nodes.ToArray());
+        }
+
         internal static IEnumerable<SyntaxNode> GetTypeDefSyntax(Type t, bool full,
             DisassemblerParams disassemblerParams, int startIndent)
         {
@@ -1367,18 +1384,8 @@ namespace CilTools.Syntax.Generation
             // RVA field values
             for (int i = 0; i < rva_labels.Count; i++)
             {
-                List<SyntaxNode> nodes = new List<SyntaxNode>();
-                nodes.Add(new KeywordSyntax("cil", " "));
-                nodes.Add(new IdentifierSyntax(string.Empty, rva_labels[i], " ", IdentifierKind.Other));
-                nodes.Add(new PunctuationSyntax(string.Empty, "=", " "));
-                nodes.Add(new KeywordSyntax("bytearray", " "));
-                nodes.Add(new PunctuationSyntax(string.Empty, "(", " "));
-
                 string val_str = Disassembler.ArrayBytesToString(rva_arrays[i]);
-                nodes.Add(new GenericSyntax(val_str));
-
-                nodes.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));
-                yield return new DirectiveSyntax(SyntaxUtils.GetIndentString(startIndent), "data", nodes.ToArray());
+                yield return CreateDataDirective(rva_labels[i], val_str, startIndent, isCil: true);
             }
         }
     }

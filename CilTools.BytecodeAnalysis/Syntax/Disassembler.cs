@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -10,6 +10,7 @@ using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+using CilTools.Reflection.PortableExecutable;
 using CilTools.Syntax.Generation;
 
 namespace CilTools.Syntax
@@ -393,6 +394,71 @@ namespace CilTools.Syntax
                     str = "0x" + flags.ToString("X", CultureInfo.InvariantCulture);
                     content = new SyntaxNode[] { new GenericSyntax(str + Environment.NewLine) };
                     yield return new DirectiveSyntax(string.Empty, "corflags", content);
+                }
+
+                // VTable Fixups (ECMA-335 II.15.5.1 - Method transition thunks)
+                VTable[] tables = ReflectionProperties.Get(ass, ReflectionProperties.VTables) as VTable[];
+
+                if (tables != null)
+                {
+                    if (tables.Length > 0) yield return new GenericSyntax(Environment.NewLine);
+
+                    List<SyntaxNode> nodes = new List<SyntaxNode>(15);
+
+                    for (int i = 0; i < tables.Length; i++)
+                    {
+                        nodes.Clear();
+                        nodes.Add(new PunctuationSyntax(string.Empty, "[", string.Empty));
+                        nodes.Add(LiteralSyntax.CreateFromValue(string.Empty, (int)tables[i].SlotsCount, string.Empty));
+                        nodes.Add(new PunctuationSyntax(string.Empty, "]", " "));
+
+                        if (tables[i].Is64Bit)
+                        {
+                            nodes.Add(new KeywordSyntax("int64", " "));
+                        }
+                        else
+                        {
+                            nodes.Add(new KeywordSyntax("int32", " "));
+                        }
+
+                        if ((tables[i].Type & VTable.COR_VTABLE_FROM_UNMANAGED) != 0)
+                        {
+                            nodes.Add(new KeywordSyntax("fromunmanaged", " "));
+                        }
+
+                        if ((tables[i].Type & VTable.COR_VTABLE_CALL_MOST_DERIVED) != 0)
+                        {
+                            nodes.Add(new KeywordSyntax("callmostderived", " "));
+                        }
+
+                        if ((tables[i].Type & VTable.COR_VTABLE_RETAINAPPDOMAIN) != 0)
+                        {
+                            nodes.Add(new KeywordSyntax("retainappdomain", " "));
+                        }
+
+                        nodes.Add(new KeywordSyntax("at", " "));
+                        string label = "D_" + tables[i].RVA.ToString("X",CultureInfo.InvariantCulture);
+                        nodes.Add(new IdentifierSyntax(string.Empty, label, " ", IdentifierKind.Other));
+
+                        if (!tables[i].Is64Bit && tables[i].SlotsCount == 1)
+                        {
+                            string commentStr = tables[i].GetSlotValueInt32(0).ToString("X8", CultureInfo.InvariantCulture);
+                            nodes.Add(CommentSyntax.Create(string.Empty, commentStr, string.Empty, isRaw: false));
+                        }
+
+                        nodes.Add(new GenericSyntax(Environment.NewLine));
+                        yield return new DirectiveSyntax(string.Empty, "vtfixup", nodes.ToArray());
+                    }
+
+                    if (tables.Length > 0) yield return new GenericSyntax(Environment.NewLine);
+
+                    // .data directives
+                    for (int i = 0; i < tables.Length; i++)
+                    {
+                        string label = "D_" + tables[i].RVA.ToString("X", CultureInfo.InvariantCulture);
+                        string val_str = ArrayBytesToString(tables[i].GetData());
+                        yield return SyntaxGenerator.CreateDataDirective(label, val_str, 0, isCil: false);
+                    }
                 }
 
             }//endif
