@@ -155,6 +155,11 @@ namespace CilTools.Syntax
         /// <summary>
         /// Instruction label
         /// </summary>
-        Label
+        Label,
+
+        /// <summary>
+        /// Local variable
+        /// </summary>
+        LocalVariable,
     }
 }

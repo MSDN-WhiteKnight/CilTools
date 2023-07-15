@@ -261,8 +261,14 @@ namespace CilTools.BytecodeAnalysis
                 if (ReferencesLocal(this.OpCode))
                 {
                     //local variable
-                    yield return new IdentifierSyntax(string.Empty, "V_" + this.Operand.ToString(), 
-                        string.Empty, IdentifierKind.Other);
+                    LocalVariable? local = ReflectionUtils.TryGetLocalVariable(this._Method, (int)this.Operand);
+                    object target;
+
+                    if (local.HasValue) target = local.Value;
+                    else target = null;
+
+                    yield return new IdentifierSyntax(string.Empty, "V_" + this.Operand.ToString(), string.Empty, 
+                        IdentifierKind.LocalVariable, target);
                 }
                 else if (ReferencesParam(this.OpCode) && this.Method != null)
                 {
@@ -310,8 +316,14 @@ namespace CilTools.BytecodeAnalysis
             else if (typeof(T) == typeof(sbyte) && ReferencesLocal(this.OpCode))
             {
                 //local variable
+                LocalVariable? local = ReflectionUtils.TryGetLocalVariable(this._Method, (sbyte)this.Operand);
+                object target;
+
+                if (local.HasValue) target = local.Value;
+                else target = null;
+
                 yield return new IdentifierSyntax(string.Empty, "V_" + this.Operand.ToString(), string.Empty, 
-                    IdentifierKind.Other);
+                    IdentifierKind.LocalVariable, target);
             }
             else if (typeof(T) == typeof(sbyte) && ReferencesParam(this.OpCode) && this.Method != null)
             {

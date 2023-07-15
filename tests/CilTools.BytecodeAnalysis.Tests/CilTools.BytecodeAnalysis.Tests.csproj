@@ -35,6 +35,7 @@
     <Compile Include="SourceCode\SourceCodeProviderTests.cs" />    
     <Compile Include="SyntaxTests.cs" />    
     <Compile Include="Syntax\DisassemblerTests.cs" />    
+    <Compile Include="Syntax\IdentifierSyntaxTest.cs" />    
     <Compile Include="Syntax\SyntaxFactoryTests.cs" />    
     <Compile Include="Syntax\SyntaxNodeTests.cs" />    
     <Compile Include="Syntax\SyntaxReaderTests.cs" />    

@@ -531,8 +531,10 @@ namespace CilTools.BytecodeAnalysis
                     LocalVariable local = locals[i];
                     inner.Add(local.LocalTypeSpec.ToSyntax(containingAssembly));
 
-                    inner.Add(new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), string.Empty, 
-                        IdentifierKind.Other, local));
+                    IdentifierSyntax idLocal = new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), string.Empty,
+                        IdentifierKind.LocalVariable, local);
+                    idLocal.SetAdditionalInfo("IsDefinition", true);
+                    inner.Add(idLocal);
                 }
 
                 inner.Add(new PunctuationSyntax(string.Empty, ")", Environment.NewLine));

@@ -192,5 +192,17 @@ namespace CilTools.Reflection
             else if (t.Equals(typeof(TypedReference))) return "typedref";
             else return null;
         }
+
+        internal static LocalVariable? TryGetLocalVariable(MethodBase m, int index)
+        {
+            if (index < 0) return null;
+
+            if (!(m is ICustomMethod)) return null;
+
+            LocalVariable[] vars = ((ICustomMethod)m).GetLocalVariables();
+
+            if (index < vars.Length) return vars[index];
+            else return null;
+        }
     }
 }
