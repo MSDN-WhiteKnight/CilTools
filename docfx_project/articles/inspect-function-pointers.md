@@ -1,5 +1,8 @@
 # Inspecting function pointer types with CilTools.Metadata
 
+> [!NOTE]
+> .NET Runtime intoduced the function pointers inspection support in .NET 8 Preview 2 (both for runtime reflection and MetadataLoadContext). You might not need APIs described in this article if you are using modern .NET versions. For more information, see [System.Reflection: introspection support for function pointers](https://github.com/dotnet/core/issues/8134#issuecomment-1444103530).
+
 The .NET platform from the start had supported function types that enable developers to pass around and store addresses of functions (mostly useful for interop with native C++ code). Initially only Visual C++ compiler emitted function pointer types, but starting from the version 9.0 C# compiler takes advantage of them as well. However, the runtime reflection functionality is severely lacking in its ability to handle function pointers (now as of .NET 5). The standard reflection implementation substitutes IntPtr type when encountering them, MetadataLoadContext just dies with NotSupportedException. The CIL Tools suite added the API to support inspecting function pointers in the version 2.3 to help fill this gap.
 
 ## Prerequisites
