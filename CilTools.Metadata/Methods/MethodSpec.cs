@@ -350,8 +350,10 @@ namespace CilTools.Metadata.Methods
         public Reflection.LocalVariable[] GetLocalVariables()
         {
             byte[] sig = this.GetLocalVarSignature();
+            GenericContext gctx = GenericContext.Create(null, this);
+            SignatureContext ctx = SignatureContext.Create(this.TokenResolver, gctx, null);
 
-            return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
+            return Reflection.LocalVariable.ReadMethodSignature(this, sig, ctx);
         }
 
         public PInvokeParams GetPInvokeParams()

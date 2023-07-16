@@ -341,5 +341,25 @@ namespace CilTools.Metadata.Tests
 
             Assert.AreEqual(string.Empty, vte);
         }
+
+        [ConditionalTest(TestCondition.DebugBuildOnly, "Local variables are optimized out in release builds")]
+        public void Test_GetLocalVariables()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Type t = ass.GetType(typeof(SampleMethods).FullName);
+            MethodBase mb = t.GetMethod("CreatePoint");
+            LocalVariable[] locals = (mb as ICustomMethod).GetLocalVariables();
+
+            Assert.AreEqual(2, locals.Length);
+
+            Assert.AreEqual(0, locals[0].LocalIndex);
+            Assert.AreEqual("CilTools.Tests.Common.MyPoint", locals[0].LocalType.FullName);
+            Assert.AreSame(mb, locals[0].Method);
+
+            Assert.AreEqual(1, locals[1].LocalIndex);
+            Assert.AreEqual("CilTools.Tests.Common.MyPoint", locals[1].LocalType.FullName);
+            Assert.AreSame(mb, locals[1].Method);
+        }
     }
 }

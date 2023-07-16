@@ -16,18 +16,21 @@ namespace CilTools.Reflection
     /// </summary>
     public struct LocalVariable
     {
+        MethodBase method;
         TypeSpec type;
         int index;
 
         /// <summary>
-        /// Initializes a new LocalVariable instance with the specified TypeSpec and index
+        /// Initializes a new LocalVariable instance
         /// </summary>
+        /// <param name="m">Method in which this local variable is declared</param>
         /// <param name="ptype">TypeSpec object representing the variable type</param>
         /// <param name="pindex">Index of local variable within method body</param>
-        internal LocalVariable(TypeSpec ptype, int pindex)
+        internal LocalVariable(MethodBase m, TypeSpec ptype, int pindex)
         {
             this.type = ptype;
             this.index = pindex;
+            this.method = m;
         }
 
         /// <summary>
@@ -50,7 +53,12 @@ namespace CilTools.Reflection
         /// </summary>
         public bool IsPinned { get { return this.type.IsPinned; } }
 
-        static LocalVariable[] ReadSignatureImpl(byte[] data, SignatureContext ctx)
+        /// <summary>
+        /// Gets the method in which this local variable is declared
+        /// </summary>
+        public MethodBase Method { get { return this.method; } }
+
+        static LocalVariable[] ReadSignatureImpl(MethodBase m, byte[] data, SignatureContext ctx)
         {
             MemoryStream ms = new MemoryStream(data);
             LocalVariable[] ret;
@@ -67,7 +75,7 @@ namespace CilTools.Reflection
                 for (int i = 0; i < paramcount; i++)
                 {
                     TypeSpec t = TypeSpec.ReadFromStream(ms, ctx, null);
-                    ret[i] = new LocalVariable(t, i);
+                    ret[i] = new LocalVariable(m, t, i);
                 }
 
                 return ret;
@@ -87,7 +95,27 @@ namespace CilTools.Reflection
             if (data == null) throw new ArgumentNullException("data", "Source array cannot be null");
             if (data.Length == 0) return new LocalVariable[0];
 
-            return ReadSignatureImpl(data, SignatureContext.FromResolver(resolver));
+            return ReadSignatureImpl(null, data, SignatureContext.FromResolver(resolver));
+        }
+
+        /// <summary>
+        /// Reads local variables from the specified method signature
+        /// </summary>
+        /// <param name="m">Method which local variables are read</param>
+        /// <param name="data">Local variable signature as byte array</param>
+        /// <param name="ctx">Signature context information</param>
+        /// <returns>An array of local variables read from the signature</returns>
+        /// <exception cref="ArgumentNullException">Method, input array or signature context is null</exception>
+        /// <exception cref="NotSupportedException">Signature contains unsupported types</exception>
+        public static LocalVariable[] ReadMethodSignature(MethodBase m, byte[] data, SignatureContext ctx)
+        {
+            if (m == null) throw new ArgumentNullException("m");
+            if (data == null) throw new ArgumentNullException("data");
+            if (ctx == null) throw new ArgumentNullException("ctx");
+
+            if (data.Length == 0) return new LocalVariable[0];
+
+            return ReadSignatureImpl(m, data, ctx);
         }
 
         /// <summary>
@@ -108,7 +136,7 @@ namespace CilTools.Reflection
 
             GenericContext gctx = GenericContext.FromMember(member);
             SignatureContext ctx = new SignatureContext(resolver, gctx, null);
-            return ReadSignatureImpl(data, ctx);
+            return ReadSignatureImpl(null, data, ctx);
         }
 
         /// <summary>
@@ -125,7 +153,7 @@ namespace CilTools.Reflection
             if (data.Length == 0) return new LocalVariable[0];
 
             ModuleWrapper mwr = new ModuleWrapper(module);
-            return ReadSignatureImpl(data, SignatureContext.FromResolver(mwr));
+            return ReadSignatureImpl(null, data, SignatureContext.FromResolver(mwr));
         }
 
         /// <summary>
@@ -145,7 +173,7 @@ namespace CilTools.Reflection
 
             for (int i = 0; i < body.LocalVariables.Count; i++)
             {
-                ret[i] = new LocalVariable(
+                ret[i] = new LocalVariable(mb, 
                     TypeSpec.FromType(body.LocalVariables[i].LocalType, body.LocalVariables[i].IsPinned),
                     i);
             }

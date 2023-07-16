@@ -314,14 +314,7 @@ namespace CilTools.Metadata.Methods
 
             return ret;
         }
-
-        public override Reflection.LocalVariable[] GetLocalVariables()
-        {
-            byte[] sig = this.GetLocalVarSignature();
-
-            return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
-        }
-
+        
         MethodInfo[] GetExplicitlyImplementedMethods()
         {
             TypeDefinitionHandle tdh = this.mdef.GetDeclaringType();

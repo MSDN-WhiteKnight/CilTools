@@ -330,14 +330,7 @@ namespace CilTools.Metadata.Methods
             if (this.impl != null) return this.impl.GetGenericArguments();
             else return Utils.EmptyTypeArray;
         }
-
-        public override Reflection.LocalVariable[] GetLocalVariables()
-        {
-            byte[] sig = this.GetLocalVarSignature();
-
-            return Reflection.LocalVariable.ReadSignature(sig, this.TokenResolver, this);
-        }
-
+        
         public override PInvokeParams GetPInvokeParams()
         {
             return null;

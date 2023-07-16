@@ -25,7 +25,7 @@ namespace CilTools.Metadata.Methods
         public abstract byte[] GetBytecode();
         public abstract byte[] GetLocalVarSignature();
         public abstract ExceptionBlock[] GetExceptionBlocks();
-        public abstract Reflection.LocalVariable[] GetLocalVariables();
+        
         public abstract PInvokeParams GetPInvokeParams();
 
         /// <summary>
@@ -117,6 +117,15 @@ namespace CilTools.Metadata.Methods
             }
 
             return baseDefinition;
+        }
+
+        public Reflection.LocalVariable[] GetLocalVariables()
+        {
+            byte[] sig = this.GetLocalVarSignature();
+            GenericContext gctx = GenericContext.Create(null, this);
+            SignatureContext ctx = SignatureContext.Create(this.TokenResolver, gctx, null);
+
+            return Reflection.LocalVariable.ReadMethodSignature(this, sig, ctx);
         }
     }
 }

@@ -104,8 +104,10 @@ namespace CilTools.Reflection.Methods
         LocalVariable[] GetLocalVariables_Default()
         {
             byte[] sig = this.GetLocalVarSignature();
+            GenericContext gctx = GenericContext.FromMember(this);
+            SignatureContext ctx = new SignatureContext(this.TokenResolver, gctx, null);
 
-            return LocalVariable.ReadSignature(sig, this.TokenResolver, this);
+            return LocalVariable.ReadMethodSignature(this, sig, ctx);
         }
 
         public LocalVariable[] GetLocalVariables()
