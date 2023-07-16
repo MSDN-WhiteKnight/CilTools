@@ -1031,7 +1031,7 @@ namespace CilTools.Syntax.Generation
                     {
                         int rva = (int)val;
                         inner.Add(new KeywordSyntax(" ", "at", " ", KeywordKind.Other));
-                        string label = "I_" + rva.ToString("X", CultureInfo.InvariantCulture);
+                        string label = "F_" + rva.ToString("X", CultureInfo.InvariantCulture);
                         inner.Add(new IdentifierSyntax(string.Empty, label, string.Empty, IdentifierKind.Other));
                         rva_labels.Add(label);
                         byte[] arr = ReflectionProperties.Get(fields[i], ReflectionProperties.RvaFieldValue) as byte[];
