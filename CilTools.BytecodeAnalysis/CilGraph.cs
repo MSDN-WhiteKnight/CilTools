@@ -533,7 +533,7 @@ namespace CilTools.BytecodeAnalysis
 
                     IdentifierSyntax idLocal = new IdentifierSyntax(" ", "V_" + local.LocalIndex.ToString(), string.Empty,
                         IdentifierKind.LocalVariable, local);
-                    idLocal.SetAdditionalInfo("IsDefinition", true);
+                    idLocal._isDefinition = true;
                     inner.Add(idLocal);
                 }
 

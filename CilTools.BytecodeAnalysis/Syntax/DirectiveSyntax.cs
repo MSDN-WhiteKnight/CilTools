@@ -257,7 +257,7 @@ namespace CilTools.Syntax
             }
 
             IdentifierSyntax idMethodName = new IdentifierSyntax(" ", m.Name, string.Empty, IdentifierKind.Member, m);
-            idMethodName.SetAdditionalInfo(IsDefinitionTag, true);
+            idMethodName._isDefinition = true;
             inner.Add(idMethodName);
 
             if (m.IsGenericMethod)

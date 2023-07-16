@@ -23,6 +23,7 @@ namespace CilTools.Syntax
         IdentifierKind _kind;
         object _target = null;
         string _contentEscaped;
+        internal bool _isDefinition;
 
         /// <summary>
         /// Gets the content of this identifier as string
@@ -71,10 +72,7 @@ namespace CilTools.Syntax
         {
             get 
             {
-                object val = this.GetAdditionalInfo("IsDefinition");
-
-                if (val != null) return (bool)val;
-                else return false;
+                return this._isDefinition;
             }
         }
 

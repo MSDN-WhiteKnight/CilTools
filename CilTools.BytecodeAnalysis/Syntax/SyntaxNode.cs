@@ -50,8 +50,6 @@ namespace CilTools.Syntax
 
         Dictionary<string, object> _tags;
 
-        internal const string IsDefinitionTag = "IsDefinition";
-
         internal static readonly SyntaxNode[] EmptySyntax = new SyntaxNode[] { new GenericSyntax(String.Empty) };
 
         /// <summary>
