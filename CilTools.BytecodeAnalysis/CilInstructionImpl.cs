@@ -280,17 +280,17 @@ namespace CilTools.BytecodeAnalysis
                         if (string.IsNullOrEmpty(par.Name))
                         {
                             yield return new IdentifierSyntax(string.Empty, "par" + (par.Position + 1).ToString(), string.Empty,
-                                IdentifierKind.Other, par);
+                                IdentifierKind.Parameter, par);
                         }
                         else
                         {
-                            yield return new IdentifierSyntax(string.Empty, par.Name, string.Empty, IdentifierKind.Other, par);
+                            yield return new IdentifierSyntax(string.Empty, par.Name, string.Empty, IdentifierKind.Parameter, par);
                         }
                     }
                     else
                     {
                         yield return new IdentifierSyntax(string.Empty, "par" + this.Operand.ToString(), string.Empty, 
-                            IdentifierKind.Other);
+                            IdentifierKind.Parameter);
                     }
                 }
                 else
@@ -335,17 +335,17 @@ namespace CilTools.BytecodeAnalysis
                     if (string.IsNullOrEmpty(par.Name))
                     {
                         yield return new IdentifierSyntax(string.Empty, "par" + (par.Position + 1).ToString(), string.Empty, 
-                            IdentifierKind.Other, par);
+                            IdentifierKind.Parameter, par);
                     }
                     else
                     {
-                        yield return new IdentifierSyntax(string.Empty, par.Name, string.Empty, IdentifierKind.Other, par);
+                        yield return new IdentifierSyntax(string.Empty, par.Name, string.Empty, IdentifierKind.Parameter, par);
                     }
                 }
                 else
                 {
                     yield return new IdentifierSyntax(string.Empty, "par" + this.Operand.ToString(), string.Empty, 
-                        IdentifierKind.Other);
+                        IdentifierKind.Parameter);
                 }
             }
             else

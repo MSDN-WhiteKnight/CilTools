@@ -42,5 +42,33 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
 
             Assert.IsTrue(c > 0);
         }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "CalcSum", BytecodeProviders.All)]
+        public void Test_IdentifierSyntax_Params(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            MethodDefSyntax mds = graph.ToSyntaxTree();
+
+            AssertThat.IsSyntaxTreeCorrect(mds);
+
+            AssertThat.HasOnlyOneMatch(mds, (node) => {
+                if (!(node is IdentifierSyntax)) return false;
+
+                IdentifierSyntax id = (IdentifierSyntax)node;
+
+                return id.Kind == IdentifierKind.Parameter && id.Content == "x" && id.IsDefinition && 
+                    (id.TargetItem as ParameterInfo).Name == "x";
+            });
+
+            AssertThat.HasOnlyOneMatch(mds, (node) => {
+                if (!(node is IdentifierSyntax)) return false;
+
+                IdentifierSyntax id = (IdentifierSyntax)node;
+
+                return id.Kind == IdentifierKind.Parameter && id.Content == "y" && id.IsDefinition &&
+                    (id.TargetItem as ParameterInfo).Name == "y";
+            });
+        }
     }
 }

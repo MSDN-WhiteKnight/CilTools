@@ -159,5 +159,10 @@ namespace CilTools.Syntax
         /// Local variable
         /// </summary>
         LocalVariable,
+
+        /// <summary>
+        /// Method parameter
+        /// </summary>
+        Parameter,
     }
 }

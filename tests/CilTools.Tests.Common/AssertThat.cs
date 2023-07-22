@@ -98,6 +98,18 @@ namespace CilTools.Tests.Common
             }
         }
 
+        public static void HasOnlyOneMatch(SyntaxNode root, Func<SyntaxNode, bool> condition, string message = "")
+        {
+            int c_matches = 0;
+
+            Utils.VisitSyntaxTree(root, (node) =>
+            {
+                if (condition(node)) c_matches++;
+            });
+
+            Assert.AreEqual(1, c_matches, message);
+        }
+
         public static void IsCorrect(CilGraph graph)
         {
             CilGraphNode[] nodes = graph.GetNodes().ToArray();

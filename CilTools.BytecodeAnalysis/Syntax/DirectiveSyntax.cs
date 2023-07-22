@@ -312,7 +312,10 @@ namespace CilTools.Syntax
                 else parname = "par" + (i + 1).ToString();
 
                 inner.Add(new MemberRefSyntax(parNodes.ToArray(), pars[i].ParameterType));
-                inner.Add(new IdentifierSyntax(" ", parname, string.Empty, IdentifierKind.Other, pars[i]));
+
+                IdentifierSyntax idPar = new IdentifierSyntax(" ", parname, string.Empty, IdentifierKind.Parameter, pars[i]);
+                idPar._isDefinition = true;
+                inner.Add(idPar);
             }
 
             if (pars.Length > 0) inner.Add(new GenericSyntax(Environment.NewLine + lead));
