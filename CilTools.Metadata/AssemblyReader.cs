@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -60,6 +60,7 @@ namespace CilTools.Metadata
         Dictionary<AssemblyId, MetadataAssembly> _assemblies = new Dictionary<AssemblyId, MetadataAssembly>();
         string _runtimeDir = RuntimeEnvironment.GetRuntimeDirectory();
         bool _allowResolve = true;
+        HashSet<string> _dirs = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Gets or sets the value indicating that assembly reader should resolve external assembly references 
@@ -169,8 +170,9 @@ namespace CilTools.Metadata
         /// </summary>
         /// <remarks>
         /// When the assembly reader needs to resolve an external assembly, it first looks for it in the 
-        /// current runtime directory (where the system assemblies are located). If the assembly is not 
-        /// found there, the reader calls the <c>AssemblyResolve</c> event handle so you can customize 
+        /// current runtime directory (where the system assemblies are located). Then it looks into a 
+        /// additional resolution directories. If the assembly is not found there, 
+        /// the reader calls the <c>AssemblyResolve</c> event handle so you can customize 
         /// how assemblies are resolved. The rules for handling this event are similar with the 
         /// <see cref="AppDomain.AssemblyResolve"/> event in .NET Framework. See 
         /// <see href="https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads"/> for more 
@@ -193,6 +195,22 @@ namespace CilTools.Metadata
             }
 
             if (ret != null) return ret;
+
+            //try additional resolution directories
+            foreach (string dir in this._dirs)
+            {
+                path = Path.Combine(dir, n.Name + ".dll");
+
+                try
+                {
+                    if (File.Exists(path)) ret = this.LoadFrom(path);
+                }
+                catch (FileNotFoundException) { }
+                catch (BadImageFormatException) { }
+                catch (InvalidOperationException) { }
+
+                if (ret != null) return ret;
+            }
 
             //try to resolve using custom handler
             ResolveEventHandler handler = AssemblyResolve;
@@ -306,6 +324,51 @@ namespace CilTools.Metadata
                 {
                     this._runtimeDir = value;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Adds the specified directory into the collection of additional resolution directories
+        /// </summary>
+        public void AddResolutionDirectory(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("Resolution directory path cannot be null or empty string");
+            }
+
+            this._dirs.Add(path);
+        }
+
+        /// <summary>
+        /// Removes the specified directory from the collection of additional resolution directories
+        /// </summary>
+        public void RemoveResolutionDirectory(string path)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                throw new ArgumentException("Resolution directory path cannot be null or empty string");
+            }
+
+            this._dirs.Remove(path);
+        }
+
+        /// <summary>
+        /// Removes all directories from the collection of additional resolution directories
+        /// </summary>
+        public void RemoveAllResolutionDirectories()
+        {
+            this._dirs.Clear();
+        }
+
+        /// <summary>
+        /// Gets the collection of additional resolution directories
+        /// </summary>
+        public IEnumerable<string> ResolutionDirectories
+        {
+            get
+            {
+                foreach (string path in this._dirs) yield return path;
             }
         }
 

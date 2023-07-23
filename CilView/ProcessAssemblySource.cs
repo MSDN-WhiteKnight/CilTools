@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2020,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.IO;
@@ -9,8 +9,6 @@ using System.Text;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Windows;
-using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
 using CilTools.Runtime;
 using CilTools.Metadata;
@@ -23,7 +21,6 @@ namespace CilView
         DataTarget dt;
         Process process;
         OperationBase op;
-        HashSet<string> paths=new HashSet<string>();
         ClrAssemblyReader reader;
         AssemblyReader rd;
 
@@ -100,7 +97,7 @@ namespace CilView
                 {
                     string dir = Path.GetDirectoryName(path).ToLower();
 
-                    if(!dir.Contains("assembly\\gac"))this.paths.Add(dir);
+                    if (!dir.Contains("assembly\\gac")) this.rd.AddResolutionDirectory(dir);
                 }
 
                 if (op != null)
@@ -192,12 +189,11 @@ namespace CilView
             this.Methods = new ObservableCollection<MethodBase>();
             this.process = pr;
             this.rd = new AssemblyReader();
-            this.rd.AssemblyResolve += Rd_AssemblyResolve;
 
             try
             {
                 string mainmodule = pr.MainModule.FileName;
-                this.paths.Add(Path.GetDirectoryName(mainmodule).ToLower());
+                this.rd.AddResolutionDirectory(Path.GetDirectoryName(mainmodule).ToLower());
             }
             catch (NotSupportedException) { }
             catch (Win32Exception) { }
@@ -211,30 +207,7 @@ namespace CilView
             DataTarget dt = DataTarget.AttachToProcess(pr.Id, 5000, at);
             this.Init(dt);
         }
-
-        private Assembly Rd_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            AssemblyName an = new AssemblyName(args.Name);
-            Assembly ret = null;
-
-            foreach (string dir in this.paths)
-            {
-                string path = Path.Combine(dir, an.Name + ".dll");
-
-                try
-                {
-                    if (File.Exists(path)) ret = this.rd.LoadFrom(path);
-                }
-                catch (FileNotFoundException) { }
-                catch (BadImageFormatException) { }
-                catch (InvalidOperationException) { }
-
-                if (ret != null) return ret;
-            }
-
-            return null;
-        }
-
+        
         public override bool HasProcessInfo
         {
             get { return true; }

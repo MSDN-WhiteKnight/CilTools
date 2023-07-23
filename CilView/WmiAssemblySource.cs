@@ -1,17 +1,14 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Management;
 using System.Reflection;
 using System.Text;
-using System.Threading.Tasks;
-using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
 using CilView.Common;
 using CilView.FileSystem;
@@ -22,7 +19,6 @@ namespace CilView
     {
         Process process;
         AssemblyReader rd;
-        HashSet<string> paths = new HashSet<string>();
         OperationBase op;
 
         public WmiAssemblySource(Process pr, OperationBase op = null)
@@ -32,33 +28,9 @@ namespace CilView
             this.Types = new ObservableCollection<Type>();
             this.Methods = new ObservableCollection<MethodBase>();
             this.rd = new AssemblyReader();
-            this.rd.AssemblyResolve += Rd_AssemblyResolve;
             this.Assemblies = this.LoadAssemblies(pr.Id);
         }
-
-        Assembly Rd_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            AssemblyName an = new AssemblyName(args.Name);
-            Assembly ret = null;
-
-            foreach (string dir in this.paths)
-            {
-                string path = Path.Combine(dir, an.Name + ".dll");
-
-                try
-                {
-                    if (File.Exists(path)) ret = this.rd.LoadFrom(path);
-                }
-                catch (FileNotFoundException) { }
-                catch (BadImageFormatException) { }
-                catch (InvalidOperationException) { }
-
-                if (ret != null) return ret;
-            }
-
-            return null;
-        }
-
+        
         static string[] GetProcessModules(int id, OperationBase op = null)
         {
             if (op != null)
@@ -149,7 +121,7 @@ namespace CilView
 
                 if (!dir.Contains("assembly\\gac") && !dir.Contains("assembly\\nativeimages"))
                 {
-                    this.paths.Add(dir);
+                    this.rd.AddResolutionDirectory(dir);
                 }
 
                 Assembly ass = null;

@@ -16,7 +16,6 @@ namespace CilView
 {
     sealed class FileAssemblySource:AssemblySource
     {
-        string _path; //assembly directory
         AssemblyReader rd;
 
         Assembly LoadAssembly(string filepath)
@@ -31,26 +30,7 @@ namespace CilView
             }
             else return null;
         }
-
-        private Assembly Rd_AssemblyResolve(object sender, ResolveEventArgs args)
-        {
-            AssemblyName an = new AssemblyName(args.Name);
-            string path = Path.Combine(this._path, an.Name + ".dll");
-            Assembly ret = null;
-
-            //attempt to resolve assembly from current assembly directory
-
-            try
-            {
-                if (File.Exists(path)) ret = this.rd.LoadFrom(path);
-            }
-            catch (FileNotFoundException) { }            
-            catch (BadImageFormatException) { }
-            catch (InvalidOperationException) { }
-
-            return ret;
-        }
-
+        
         static string GetTargetRuntimeDirectory(Assembly ass)
         {
             //check assembly TargetFramework attribute to determine runtime directory
@@ -130,12 +110,12 @@ namespace CilView
         {
             AssemblySource.TypeCacheClear();
 
-            this._path = Path.GetDirectoryName(filepath);
+            string dirPath = Path.GetDirectoryName(filepath);
             ObservableCollection<Assembly> ret = new ObservableCollection<Assembly>();
 
             Assembly main=null;
             this.rd = new AssemblyReader();
-            rd.AssemblyResolve += Rd_AssemblyResolve;
+            rd.AddResolutionDirectory(dirPath);
             main = this.LoadAssembly(filepath);
             
             if (main == null) throw new ApplicationException("Cannot load assembly " + filepath + " due to unknown error!");
