@@ -926,6 +926,23 @@ namespace CilTools.Metadata
             return this.vTables;
         }
 
+        Type[] GetForwardedTypesImpl()
+        {
+            List<Type> ret = new List<Type>(this.reader.ExportedTypes.Count);
+
+            foreach (ExportedTypeHandle h in this.reader.ExportedTypes)
+            {
+                ExportedType et = this.reader.GetExportedType(h);
+
+                if (!et.IsForwarder) continue;
+
+                TypeForward t = new TypeForward(et, this);
+                ret.Add(t);
+            }
+
+            return ret.ToArray();
+        }
+
         public string GetInfoText()
         {
             StringBuilder sb = new StringBuilder(1000);
@@ -1008,6 +1025,7 @@ namespace CilTools.Metadata
                 case ReflectionProperties.InfoText: return this.GetInfoText();
                 case ReflectionProperties.ReferencedModules: return this.GetReferencedModules();
                 case ReflectionProperties.VTables: return this.GetVTables();
+                case ReflectionProperties.ForwardedTypes: return this.GetForwardedTypesImpl();
                 default: return this.GetImageProperty(id);
             }
         }

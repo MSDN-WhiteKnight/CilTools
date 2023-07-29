@@ -121,6 +121,16 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        public void Test_ForwardedTypes_Empty()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Type[] forwards = (Type[])ReflectionProperties.Get(ass, ReflectionProperties.ForwardedTypes);
+
+            Assert.AreEqual(0, forwards.Length);
+        }
+
+        [TestMethod]
         public void Test_ResolveMethod()
         {
             AssemblyReader reader = ReaderFactory.GetReader();

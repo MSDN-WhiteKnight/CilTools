@@ -104,6 +104,11 @@ namespace CilTools.Reflection
         public const int VTables = 113;
 
         /// <summary>
+        /// Represents an array of forwarded types. (Type: Type[])
+        /// </summary>
+        public const int ForwardedTypes = 114;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>
