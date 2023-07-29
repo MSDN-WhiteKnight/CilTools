@@ -460,7 +460,41 @@ namespace CilTools.Syntax
                         yield return SyntaxGenerator.CreateDataDirective(label, val_str, 0, isCil: false);
                     }
                 }
+            }//endif
 
+            // Type forwarders (ECMA-335 II.6.8)
+            Type[] forwardedTypes = ReflectionProperties.Get(ass, ReflectionProperties.ForwardedTypes) as Type[];
+
+            if (forwardedTypes != null)
+            {
+                for (int i = 0; i < forwardedTypes.Length; i++)
+                {
+                    yield return new GenericSyntax(Environment.NewLine);
+
+                    SyntaxNode[] arrNodes = new SyntaxNode[3];
+                    arrNodes[0] = new KeywordSyntax("extern", " ");
+                    arrNodes[1] = new KeywordSyntax("forwarder", " ");
+                    IdentifierSyntax ids = new IdentifierSyntax(string.Empty, forwardedTypes[i].FullName,
+                        Environment.NewLine, IdentifierKind.Member, forwardedTypes[i]);
+                    arrNodes[2] = ids;
+
+                    yield return new DirectiveSyntax(string.Empty, "class", arrNodes);
+
+                    string targetName = ReflectionUtils.GetAssemblySimpleName(forwardedTypes[i].Assembly);
+
+                    if (!string.IsNullOrEmpty(targetName))
+                    {
+                        arrNodes = new SyntaxNode[2];
+                        arrNodes[0] = new KeywordSyntax("extern", " ");
+                        ids = new IdentifierSyntax(string.Empty, targetName, Environment.NewLine, IdentifierKind.Other,
+                            forwardedTypes[i].Assembly);
+                        arrNodes[1] = ids;
+                        DirectiveSyntax assemblyDirective = new DirectiveSyntax("  ", "assembly", arrNodes);
+
+                        yield return new BlockSyntax(string.Empty, SyntaxNode.EmptyArray,
+                            new SyntaxNode[] { assemblyDirective });
+                    }
+                }
             }//endif
         }
     }

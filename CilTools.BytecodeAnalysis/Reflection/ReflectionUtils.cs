@@ -204,5 +204,15 @@ namespace CilTools.Reflection
             if (index < vars.Length) return vars[index];
             else return null;
         }
+
+        internal static string GetAssemblySimpleName(Assembly ass)
+        {
+            if (ass == null) return string.Empty;
+
+            AssemblyName an = ass.GetName();
+
+            if (an == null) return string.Empty;
+            else return an.Name;
+        }
     }
 }
