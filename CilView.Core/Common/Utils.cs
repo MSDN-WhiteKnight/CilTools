@@ -120,6 +120,11 @@ namespace CilView.Common
             return t.GetMembers(AllMembers);
         }
 
+        public static MemberInfo[] GetDeclaredMembers(Type t)
+        {
+            return t.GetMembers(AllMembers | BindingFlags.DeclaredOnly);
+        }
+
         public static bool IsMethodAndNotConstructor(MemberInfo m)
         {
             MethodBase mb = m as MethodBase;

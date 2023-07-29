@@ -324,40 +324,26 @@ namespace CilView
                 source.Methods.Clear();
                 source.Types = AssemblySource.LoadTypes(ass);
 
-                if (source.Types.Count == 1 && !(ass is IlasmAssembly))
+                //display assembly manifest
+                this.cilbrowser.NavigateToAssembly(ass);
+
+                int c = 0;
+                int index = 0;
+
+                for (int i = 0; i < source.Types.Count; i++)
                 {
-                    //if there's only one type, select it automatically
-                    cbType.SelectedIndex = 0;
+                    if (Utils.StringEquals(source.Types[i].Name, "<Module>")) continue;
+
+                    c++;
+                    index = i;
+
+                    if (c >= 2) break;
                 }
-                else
-                {
-                    //display assembly manifest
-                    this.cilbrowser.NavigateToAssembly(ass);
 
-                    int c = 0;
-                    int index = 0;
+                //If there's only one non-module type, select it automatically.
+                //There's a good chance it's exactly what user needs.
 
-                    for (int i = 0; i < source.Types.Count; i++)
-                    {
-                        if (Utils.StringEquals(source.Types[i].Name, "<Module>"))
-                        {
-                            continue;
-                        }
-
-                        c++;
-                        index = i;
-
-                        if (c >= 2) break;
-                    }
-
-                    //If there's only one non-module type, select it automatically.
-                    //There's a good chance it's exactly what user needs.
-
-                    if (c == 1 && !(ass is IlasmAssembly))
-                    {
-                        cbType.SelectedIndex = index;
-                    }
-                }
+                if (c == 1 && !(ass is IlasmAssembly)) cbType.SelectedIndex = index;
             }
             catch (Exception ex)
             {
@@ -394,7 +380,7 @@ namespace CilView
                 //count number of methods and other members
                 int c_methods = 0;
                 int c_others = 0;
-                MemberInfo[] members = Utils.GetAllMembers(t);
+                MemberInfo[] members = Utils.GetDeclaredMembers(t);
 
                 for (int i = 0; i < members.Length; i++)
                 {
