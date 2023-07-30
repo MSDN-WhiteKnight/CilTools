@@ -172,7 +172,7 @@ namespace CilTools.Metadata
         /// When the assembly reader needs to resolve an external assembly, it first looks for it in the 
         /// current runtime directory (where the system assemblies are located). Then it looks into a 
         /// additional resolution directories. If the assembly is not found there, 
-        /// the reader calls the <c>AssemblyResolve</c> event handle so you can customize 
+        /// the reader calls the <c>AssemblyResolve</c> event handler so you can customize 
         /// how assemblies are resolved. The rules for handling this event are similar with the 
         /// <see cref="AppDomain.AssemblyResolve"/> event in .NET Framework. See 
         /// <see href="https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads"/> for more 
