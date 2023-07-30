@@ -1,0 +1,23 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.PortableExecutable
+  commentId: N:CilTools.Reflection.PortableExecutable
+  id: CilTools.Reflection.PortableExecutable
+  children:
+  - CilTools.Reflection.PortableExecutable.VTable
+  langs:
+  - csharp
+  - vb
+  name: CilTools.Reflection.PortableExecutable
+  nameWithType: CilTools.Reflection.PortableExecutable
+  fullName: CilTools.Reflection.PortableExecutable
+  type: Namespace
+  assemblies:
+  - CilTools.BytecodeAnalysis
+references:
+- uid: CilTools.Reflection.PortableExecutable.VTable
+  commentId: T:CilTools.Reflection.PortableExecutable.VTable
+  isExternal: true
+  name: VTable
+  nameWithType: VTable
+  fullName: CilTools.Reflection.PortableExecutable.VTable

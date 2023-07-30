@@ -166,6 +166,57 @@ implementation. Otherwise, should be an empty array. (Type: MethodInfo[])</p>
   </table>
   
   
+  <h4 id="CilTools_Reflection_ReflectionProperties_FieldOffset" data-uid="CilTools.Reflection.ReflectionProperties.FieldOffset">FieldOffset</h4>
+  <div class="markdown level1 summary"><p>Represents a field offset from the beginning of the structure, for structures with explicit layout.
+Returns -1 when field offset is not available. (Type: int)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int FieldOffset = 112</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="CilTools_Reflection_ReflectionProperties_FieldRva" data-uid="CilTools.Reflection.ReflectionProperties.FieldRva">FieldRva</h4>
+  <div class="markdown level1 summary"><p>Represents a Relative Virtual Address (RVA) of a field mapped to an executable image memory block. (Type: int)</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int FieldRva = 110</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <h4 id="CilTools_Reflection_ReflectionProperties_FileAlignment" data-uid="CilTools.Reflection.ReflectionProperties.FileAlignment">FileAlignment</h4>
   <div class="markdown level1 summary"><p>Represents the PE image alignment factor, in bytes (Type: int)</p>
 </div>
@@ -173,6 +224,31 @@ implementation. Otherwise, should be an empty array. (Type: MethodInfo[])</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public const int FileAlignment = 102</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="CilTools_Reflection_ReflectionProperties_ForwardedTypes" data-uid="CilTools.Reflection.ReflectionProperties.ForwardedTypes">ForwardedTypes</h4>
+  <div class="markdown level1 summary"><p>Represents an array of forwarded types. (Type: Type[])</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int ForwardedTypes = 114</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -291,6 +367,31 @@ implementation. Otherwise, should be an empty array. (Type: MethodInfo[])</p>
   </table>
   
   
+  <h4 id="CilTools_Reflection_ReflectionProperties_RvaFieldValue" data-uid="CilTools.Reflection.ReflectionProperties.RvaFieldValue">RvaFieldValue</h4>
+  <div class="markdown level1 summary"><p>Represents a byte array containing RVA field's value. (Type: byte[])</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int RvaFieldValue = 111</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <h4 id="CilTools_Reflection_ReflectionProperties_Signature" data-uid="CilTools.Reflection.ReflectionProperties.Signature">Signature</h4>
   <div class="markdown level1 summary"><p>Represents a method signature. (Type: Signature)</p>
 </div>
@@ -374,6 +475,31 @@ string if the method does not have a VTable entry. (Type: string)</p>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
     <pre><code class="lang-csharp hljs">public const int VTableEntry = 108</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <h4 id="CilTools_Reflection_ReflectionProperties_VTables" data-uid="CilTools.Reflection.ReflectionProperties.VTables">VTables</h4>
+  <div class="markdown level1 summary"><p>Represents an array of virtual function tables in the executable image. (Type: VTable[])</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public const int VTables = 113</code></pre>
   </div>
   <h5 class="fieldValue">Field Value</h5>
   <table class="table table-bordered table-striped table-condensed">

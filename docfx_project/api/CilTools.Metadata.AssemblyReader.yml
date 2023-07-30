@@ -6,12 +6,16 @@ items:
   parent: CilTools.Metadata
   children:
   - CilTools.Metadata.AssemblyReader.#ctor
+  - CilTools.Metadata.AssemblyReader.AddResolutionDirectory(System.String)
   - CilTools.Metadata.AssemblyReader.AssemblyResolve
   - CilTools.Metadata.AssemblyReader.Dispose
   - CilTools.Metadata.AssemblyReader.Load(System.Reflection.AssemblyName)
   - CilTools.Metadata.AssemblyReader.Load(System.String)
   - CilTools.Metadata.AssemblyReader.LoadFrom(System.String)
   - CilTools.Metadata.AssemblyReader.LoadImage(CilTools.Reflection.MemoryImage)
+  - CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories
+  - CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory(System.String)
+  - CilTools.Metadata.AssemblyReader.ResolutionDirectories
   - CilTools.Metadata.AssemblyReader.ResolveExternalRefs
   - CilTools.Metadata.AssemblyReader.RuntimeDirectory
   langs:
@@ -204,6 +208,90 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilTools.Metadata.AssemblyReader.AddResolutionDirectory(System.String)
+  commentId: M:CilTools.Metadata.AssemblyReader.AddResolutionDirectory(System.String)
+  id: AddResolutionDirectory(System.String)
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: AddResolutionDirectory(String)
+  nameWithType: AssemblyReader.AddResolutionDirectory(String)
+  fullName: CilTools.Metadata.AssemblyReader.AddResolutionDirectory(System.String)
+  type: Method
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nAdds the specified directory into the collection of additional resolution directories\n"
+  syntax:
+    content: public void AddResolutionDirectory(string path)
+    parameters:
+    - id: path
+      type: System.String
+    content.vb: Public Sub AddResolutionDirectory(path As String)
+  overload: CilTools.Metadata.AssemblyReader.AddResolutionDirectory*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory(System.String)
+  commentId: M:CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory(System.String)
+  id: RemoveResolutionDirectory(System.String)
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: RemoveResolutionDirectory(String)
+  nameWithType: AssemblyReader.RemoveResolutionDirectory(String)
+  fullName: CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory(System.String)
+  type: Method
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nRemoves the specified directory from the collection of additional resolution directories\n"
+  syntax:
+    content: public void RemoveResolutionDirectory(string path)
+    parameters:
+    - id: path
+      type: System.String
+    content.vb: Public Sub RemoveResolutionDirectory(path As String)
+  overload: CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories
+  commentId: M:CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories
+  id: RemoveAllResolutionDirectories
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: RemoveAllResolutionDirectories()
+  nameWithType: AssemblyReader.RemoveAllResolutionDirectories()
+  fullName: CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories()
+  type: Method
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nRemoves all directories from the collection of additional resolution directories\n"
+  syntax:
+    content: public void RemoveAllResolutionDirectories()
+    content.vb: Public Sub RemoveAllResolutionDirectories
+  overload: CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 - uid: CilTools.Metadata.AssemblyReader.Dispose
   commentId: M:CilTools.Metadata.AssemblyReader.Dispose
   id: Dispose
@@ -323,6 +411,37 @@ items:
   - set
   modifiers.vb:
   - Public
+- uid: CilTools.Metadata.AssemblyReader.ResolutionDirectories
+  commentId: P:CilTools.Metadata.AssemblyReader.ResolutionDirectories
+  id: ResolutionDirectories
+  parent: CilTools.Metadata.AssemblyReader
+  langs:
+  - csharp
+  - vb
+  name: ResolutionDirectories
+  nameWithType: AssemblyReader.ResolutionDirectories
+  fullName: CilTools.Metadata.AssemblyReader.ResolutionDirectories
+  type: Property
+  source:
+    path: CilTools.Metadata
+    isExternal: true
+  assemblies:
+  - CilTools.Metadata
+  namespace: CilTools.Metadata
+  summary: "\nGets the collection of additional resolution directories\n"
+  syntax:
+    content: public IEnumerable<string> ResolutionDirectories { get; }
+    parameters: []
+    return:
+      type: System.Collections.Generic.IEnumerable{System.String}
+    content.vb: Public ReadOnly Property ResolutionDirectories As IEnumerable(Of String)
+  overload: CilTools.Metadata.AssemblyReader.ResolutionDirectories*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
 - uid: CilTools.Metadata.AssemblyReader.AssemblyResolve
   commentId: E:CilTools.Metadata.AssemblyReader.AssemblyResolve
   id: AssemblyResolve
@@ -341,7 +460,7 @@ items:
   - CilTools.Metadata
   namespace: CilTools.Metadata
   summary: "\nRaised when the assembly reader needs to resolve an external assembly\n"
-  remarks: "\nWhen the assembly reader needs to resolve an external assembly, it first looks for it in the \ncurrent runtime directory (where the system assemblies are located). If the assembly is not \nfound there, the reader calls the <code>AssemblyResolve</code> event handle so you can customize \nhow assemblies are resolved. The rules for handling this event are similar with the \n<xref href=\"System.AppDomain.AssemblyResolve\" data-throw-if-not-resolved=\"false\"></xref> event in .NET Framework. See \n<a href=\"https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads\">https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads</a> for more \ninformation.\n"
+  remarks: "\nWhen the assembly reader needs to resolve an external assembly, it first looks for it in the \ncurrent runtime directory (where the system assemblies are located). Then it looks into a \nadditional resolution directories. If the assembly is not found there, \nthe reader calls the <code>AssemblyResolve</code> event handle so you can customize \nhow assemblies are resolved. The rules for handling this event are similar with the \n<xref href=\"System.AppDomain.AssemblyResolve\" data-throw-if-not-resolved=\"false\"></xref> event in .NET Framework. See \n<a href=\"https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads\">https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads</a> for more \ninformation.\n"
   syntax:
     content: public event ResolveEventHandler AssemblyResolve
     return:
@@ -721,6 +840,24 @@ references:
   name: AssemblyName
   nameWithType: AssemblyName
   fullName: System.Reflection.AssemblyName
+- uid: CilTools.Metadata.AssemblyReader.AddResolutionDirectory*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.AddResolutionDirectory
+  isExternal: true
+  name: AddResolutionDirectory
+  nameWithType: AssemblyReader.AddResolutionDirectory
+  fullName: CilTools.Metadata.AssemblyReader.AddResolutionDirectory
+- uid: CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory
+  isExternal: true
+  name: RemoveResolutionDirectory
+  nameWithType: AssemblyReader.RemoveResolutionDirectory
+  fullName: CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory
+- uid: CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories
+  isExternal: true
+  name: RemoveAllResolutionDirectories
+  nameWithType: AssemblyReader.RemoveAllResolutionDirectories
+  fullName: CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories
 - uid: CilTools.Metadata.AssemblyReader.Dispose*
   commentId: Overload:CilTools.Metadata.AssemblyReader.Dispose
   isExternal: true
@@ -783,6 +920,101 @@ references:
   name: RuntimeDirectory
   nameWithType: AssemblyReader.RuntimeDirectory
   fullName: CilTools.Metadata.AssemblyReader.RuntimeDirectory
+- uid: CilTools.Metadata.AssemblyReader.ResolutionDirectories*
+  commentId: Overload:CilTools.Metadata.AssemblyReader.ResolutionDirectories
+  isExternal: true
+  name: ResolutionDirectories
+  nameWithType: AssemblyReader.ResolutionDirectories
+  fullName: CilTools.Metadata.AssemblyReader.ResolutionDirectories
+- uid: System.Collections.Generic.IEnumerable{System.String}
+  commentId: T:System.Collections.Generic.IEnumerable{System.String}
+  parent: System.Collections.Generic
+  definition: System.Collections.Generic.IEnumerable`1
+  name: IEnumerable<String>
+  nameWithType: IEnumerable<String>
+  fullName: System.Collections.Generic.IEnumerable<System.String>
+  nameWithType.vb: IEnumerable(Of String)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of System.String)
+  name.vb: IEnumerable(Of String)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic.IEnumerable`1
+  commentId: T:System.Collections.Generic.IEnumerable`1
+  isExternal: true
+  name: IEnumerable<T>
+  nameWithType: IEnumerable<T>
+  fullName: System.Collections.Generic.IEnumerable<T>
+  nameWithType.vb: IEnumerable(Of T)
+  fullName.vb: System.Collections.Generic.IEnumerable(Of T)
+  name.vb: IEnumerable(Of T)
+  spec.csharp:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  spec.vb:
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - name: T
+    nameWithType: T
+    fullName: T
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Collections.Generic
+  commentId: N:System.Collections.Generic
+  isExternal: true
+  name: System.Collections.Generic
+  nameWithType: System.Collections.Generic
+  fullName: System.Collections.Generic
 - uid: System.ResolveEventHandler
   commentId: T:System.ResolveEventHandler
   parent: System

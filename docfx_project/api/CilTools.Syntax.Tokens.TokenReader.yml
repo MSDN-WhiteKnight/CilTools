@@ -6,8 +6,12 @@ items:
   parent: CilTools.Syntax.Tokens
   children:
   - CilTools.Syntax.Tokens.TokenReader.#ctor(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition})
+  - CilTools.Syntax.Tokens.TokenReader.GetPreviousChar(System.Int32)
+  - CilTools.Syntax.Tokens.TokenReader.GetSourceString
+  - CilTools.Syntax.Tokens.TokenReader.Length
   - CilTools.Syntax.Tokens.TokenReader.PeekChar
   - CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
+  - CilTools.Syntax.Tokens.TokenReader.Position
   - CilTools.Syntax.Tokens.TokenReader.ReadAll
   langs:
   - csharp
@@ -136,6 +140,39 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilTools.Syntax.Tokens.TokenReader.GetPreviousChar(System.Int32)
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.GetPreviousChar(System.Int32)
+  id: GetPreviousChar(System.Int32)
+  parent: CilTools.Syntax.Tokens.TokenReader
+  langs:
+  - csharp
+  - vb
+  name: GetPreviousChar(Int32)
+  nameWithType: TokenReader.GetPreviousChar(Int32)
+  fullName: CilTools.Syntax.Tokens.TokenReader.GetPreviousChar(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nGets a character at the specified offset before the current position in this token reader. Offset 0 means current \nposition, offset 1 means character immediately before current position, etc. Does not change the current position.\n"
+  syntax:
+    content: public char GetPreviousChar(int offset)
+    parameters:
+    - id: offset
+      type: System.Int32
+      description: The offset of the character to return
+    return:
+      type: System.Char
+      description: Previous character at the specified offset, or zero if it is outside of the source string bounds.
+    content.vb: Public Function GetPreviousChar(offset As Integer) As Char
+  overload: CilTools.Syntax.Tokens.TokenReader.GetPreviousChar*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 - uid: CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
   commentId: M:CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)
   id: PeekString(System.Int32)
@@ -169,6 +206,96 @@ items:
   - public
   modifiers.vb:
   - Public
+- uid: CilTools.Syntax.Tokens.TokenReader.GetSourceString
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.GetSourceString
+  id: GetSourceString
+  parent: CilTools.Syntax.Tokens.TokenReader
+  langs:
+  - csharp
+  - vb
+  name: GetSourceString()
+  nameWithType: TokenReader.GetSourceString()
+  fullName: CilTools.Syntax.Tokens.TokenReader.GetSourceString()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nGets the full source string used by this reader\n"
+  syntax:
+    content: public string GetSourceString()
+    return:
+      type: System.String
+    content.vb: Public Function GetSourceString As String
+  overload: CilTools.Syntax.Tokens.TokenReader.GetSourceString*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Syntax.Tokens.TokenReader.Position
+  commentId: P:CilTools.Syntax.Tokens.TokenReader.Position
+  id: Position
+  parent: CilTools.Syntax.Tokens.TokenReader
+  langs:
+  - csharp
+  - vb
+  name: Position
+  nameWithType: TokenReader.Position
+  fullName: CilTools.Syntax.Tokens.TokenReader.Position
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nGets the position in the source string at which the next token would be read\n"
+  syntax:
+    content: public int Position { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Position As Integer
+  overload: CilTools.Syntax.Tokens.TokenReader.Position*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Syntax.Tokens.TokenReader.Length
+  commentId: P:CilTools.Syntax.Tokens.TokenReader.Length
+  id: Length
+  parent: CilTools.Syntax.Tokens.TokenReader
+  langs:
+  - csharp
+  - vb
+  name: Length
+  nameWithType: TokenReader.Length
+  fullName: CilTools.Syntax.Tokens.TokenReader.Length
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax.Tokens
+  summary: "\nGets the number of characters in the source string\n"
+  syntax:
+    content: public int Length { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property Length As Integer
+  overload: CilTools.Syntax.Tokens.TokenReader.Length*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
 references:
 - uid: CilTools.Syntax.Tokens
   commentId: N:CilTools.Syntax.Tokens
@@ -633,12 +760,12 @@ references:
   name: Char
   nameWithType: Char
   fullName: System.Char
-- uid: CilTools.Syntax.Tokens.TokenReader.PeekString*
-  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.PeekString
+- uid: CilTools.Syntax.Tokens.TokenReader.GetPreviousChar*
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.GetPreviousChar
   isExternal: true
-  name: PeekString
-  nameWithType: TokenReader.PeekString
-  fullName: CilTools.Syntax.Tokens.TokenReader.PeekString
+  name: GetPreviousChar
+  nameWithType: TokenReader.GetPreviousChar
+  fullName: CilTools.Syntax.Tokens.TokenReader.GetPreviousChar
 - uid: System.Int32
   commentId: T:System.Int32
   parent: System
@@ -646,3 +773,27 @@ references:
   name: Int32
   nameWithType: Int32
   fullName: System.Int32
+- uid: CilTools.Syntax.Tokens.TokenReader.PeekString*
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.PeekString
+  isExternal: true
+  name: PeekString
+  nameWithType: TokenReader.PeekString
+  fullName: CilTools.Syntax.Tokens.TokenReader.PeekString
+- uid: CilTools.Syntax.Tokens.TokenReader.GetSourceString*
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.GetSourceString
+  isExternal: true
+  name: GetSourceString
+  nameWithType: TokenReader.GetSourceString
+  fullName: CilTools.Syntax.Tokens.TokenReader.GetSourceString
+- uid: CilTools.Syntax.Tokens.TokenReader.Position*
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.Position
+  isExternal: true
+  name: Position
+  nameWithType: TokenReader.Position
+  fullName: CilTools.Syntax.Tokens.TokenReader.Position
+- uid: CilTools.Syntax.Tokens.TokenReader.Length*
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.Length
+  isExternal: true
+  name: Length
+  nameWithType: TokenReader.Length
+  fullName: CilTools.Syntax.Tokens.TokenReader.Length

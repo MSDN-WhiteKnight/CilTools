@@ -9,6 +9,7 @@ items:
   - CilTools.Syntax.DirectiveSyntax
   - CilTools.Syntax.Disassembler
   - CilTools.Syntax.DisassemblerParams
+  - CilTools.Syntax.IdentifierKind
   - CilTools.Syntax.IdentifierSyntax
   - CilTools.Syntax.InstructionSyntax
   - CilTools.Syntax.KeywordKind
@@ -68,6 +69,13 @@ references:
   name: IdentifierSyntax
   nameWithType: IdentifierSyntax
   fullName: CilTools.Syntax.IdentifierSyntax
+- uid: CilTools.Syntax.IdentifierKind
+  commentId: T:CilTools.Syntax.IdentifierKind
+  parent: CilTools.Syntax
+  isExternal: true
+  name: IdentifierKind
+  nameWithType: IdentifierKind
+  fullName: CilTools.Syntax.IdentifierKind
 - uid: CilTools.Syntax.InstructionSyntax
   commentId: T:CilTools.Syntax.InstructionSyntax
   isExternal: true

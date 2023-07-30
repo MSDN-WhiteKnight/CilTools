@@ -8,6 +8,7 @@ items:
   - CilTools.BytecodeAnalysis.TypeSpec.Assembly
   - CilTools.BytecodeAnalysis.TypeSpec.AssemblyQualifiedName
   - CilTools.BytecodeAnalysis.TypeSpec.BaseType
+  - CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType(CilTools.BytecodeAnalysis.ElementType)
   - CilTools.BytecodeAnalysis.TypeSpec.DeclaringMethod
   - CilTools.BytecodeAnalysis.TypeSpec.DeclaringType
   - CilTools.BytecodeAnalysis.TypeSpec.ElementType
@@ -341,6 +342,45 @@ items:
   - Shared
   fullName.vb: CilTools.BytecodeAnalysis.TypeSpec.ReadFromArray(System.Byte(), CilTools.Reflection.SignatureContext)
   name.vb: ReadFromArray(Byte(), SignatureContext)
+- uid: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType(CilTools.BytecodeAnalysis.ElementType)
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType(CilTools.BytecodeAnalysis.ElementType)
+  id: CreateSpecialType(CilTools.BytecodeAnalysis.ElementType)
+  parent: CilTools.BytecodeAnalysis.TypeSpec
+  langs:
+  - csharp
+  - vb
+  name: CreateSpecialType(ElementType)
+  nameWithType: TypeSpec.CreateSpecialType(ElementType)
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType(CilTools.BytecodeAnalysis.ElementType)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.BytecodeAnalysis
+  summary: "\nCreates a <code>TypeSpec</code> object that represents a special type (that is, a type referenced using special \nkeyword in CIL assembler)\n"
+  remarks: "\nThe returned <code>TypeSpec</code> references a special type from current runtime&apos;s CoreLib. Passed element \ntype must represent a special type (Class, ValueType, etc. are not valid).\n"
+  syntax:
+    content: public static TypeSpec CreateSpecialType(ElementType et)
+    parameters:
+    - id: et
+      type: CilTools.BytecodeAnalysis.ElementType
+      description: Element type that identifies a special type
+    return:
+      type: CilTools.BytecodeAnalysis.TypeSpec
+    content.vb: Public Shared Function CreateSpecialType(et As ElementType) As TypeSpec
+  overload: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType*
+  exceptions:
+  - type: System.ArgumentException
+    commentId: T:System.ArgumentException
+    description: "\nThe specified element type does not represent a special type\n"
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
 - uid: CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)
   commentId: M:CilTools.BytecodeAnalysis.TypeSpec.GetModifier(System.Int32)
   id: GetModifier(System.Int32)
@@ -8645,6 +8685,19 @@ references:
   name: SignatureContext
   nameWithType: SignatureContext
   fullName: CilTools.Reflection.SignatureContext
+- uid: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType*
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType
+  isExternal: true
+  name: CreateSpecialType
+  nameWithType: TypeSpec.CreateSpecialType
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType
+- uid: CilTools.BytecodeAnalysis.ElementType
+  commentId: T:CilTools.BytecodeAnalysis.ElementType
+  parent: CilTools.BytecodeAnalysis
+  isExternal: true
+  name: ElementType
+  nameWithType: ElementType
+  fullName: CilTools.BytecodeAnalysis.ElementType
 - uid: CilTools.BytecodeAnalysis.TypeSpec.GetModifier*
   commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.GetModifier
   isExternal: true
@@ -11163,13 +11216,6 @@ references:
   name: ElementType
   nameWithType: TypeSpec.ElementType
   fullName: CilTools.BytecodeAnalysis.TypeSpec.ElementType
-- uid: CilTools.BytecodeAnalysis.ElementType
-  commentId: T:CilTools.BytecodeAnalysis.ElementType
-  parent: CilTools.BytecodeAnalysis
-  isExternal: true
-  name: ElementType
-  nameWithType: ElementType
-  fullName: CilTools.BytecodeAnalysis.ElementType
 - uid: CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount*
   commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.ModifiersCount
   isExternal: true

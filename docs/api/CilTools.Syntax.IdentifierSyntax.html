@@ -91,6 +91,9 @@
       <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode__trail">SyntaxNode._trail</a>
     </div>
     <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode__parent">SyntaxNode._parent</a>
+    </div>
+    <div>
       <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EmptyArray">SyntaxNode.EmptyArray</a>
     </div>
     <div>
@@ -104,6 +107,12 @@
     </div>
     <div>
       <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetTypeDefSyntax_System_Type_System_Boolean_CilTools_Syntax_DisassemblerParams_">SyntaxNode.GetTypeDefSyntax(Type, Boolean, DisassemblerParams)</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetAdditionalInfo_System_String_">SyntaxNode.GetAdditionalInfo(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_SetAdditionalInfo_System_String_System_Object_">SyntaxNode.SetAdditionalInfo(String, Object)</a>
     </div>
     <div>
       <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_LeadingWhitespace">SyntaxNode.LeadingWhitespace</a>
@@ -174,6 +183,38 @@ its name will be represented like <code>'method'</code> in text output.</p>
   </table>
   
   
+  <a id="CilTools_Syntax_IdentifierSyntax_IsDefinition_" data-uid="CilTools.Syntax.IdentifierSyntax.IsDefinition*"></a>
+  <h4 id="CilTools_Syntax_IdentifierSyntax_IsDefinition" data-uid="CilTools.Syntax.IdentifierSyntax.IsDefinition">IsDefinition</h4>
+  <div class="markdown level1 summary"><p>Gets a boolean value indicating whether this node represents a code location where the identified entity is
+originally defined, not where is is referenced.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public bool IsDefinition { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 id="CilTools_Syntax_IdentifierSyntax_IsDefinition_remarks">Remarks</h5>
+  <div class="markdown level1 remarks"><p>For example, in <code>.method public void Foo()</code>, Foo is a definition, while in <code>call void C::Foo()</code>
+it is a reference. This property enables code navigation services to detect which identifier is a
+target location for navigation.</p>
+</div>
+  
+  
   <a id="CilTools_Syntax_IdentifierSyntax_IsMemberName_" data-uid="CilTools.Syntax.IdentifierSyntax.IsMemberName*"></a>
   <h4 id="CilTools_Syntax_IdentifierSyntax_IsMemberName" data-uid="CilTools.Syntax.IdentifierSyntax.IsMemberName">IsMemberName</h4>
   <div class="markdown level1 summary"><p>Gets the value indicating whether this identifier represents assembly member name</p>
@@ -194,6 +235,32 @@ its name will be represented like <code>'method'</code> in text output.</p>
     <tbody>
       <tr>
         <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Syntax_IdentifierSyntax_Kind_" data-uid="CilTools.Syntax.IdentifierSyntax.Kind*"></a>
+  <h4 id="CilTools_Syntax_IdentifierSyntax_Kind" data-uid="CilTools.Syntax.IdentifierSyntax.Kind">Kind</h4>
+  <div class="markdown level1 summary"><p>Gets the kind of entity identified by this node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public IdentifierKind Kind { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.IdentifierKind.html">IdentifierKind</a></td>
         <td></td>
       </tr>
     </tbody>

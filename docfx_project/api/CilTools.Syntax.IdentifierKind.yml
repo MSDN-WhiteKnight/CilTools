@@ -1,0 +1,189 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Syntax.IdentifierKind
+  commentId: T:CilTools.Syntax.IdentifierKind
+  id: IdentifierKind
+  parent: CilTools.Syntax
+  children:
+  - CilTools.Syntax.IdentifierKind.Label
+  - CilTools.Syntax.IdentifierKind.LocalVariable
+  - CilTools.Syntax.IdentifierKind.Member
+  - CilTools.Syntax.IdentifierKind.Other
+  - CilTools.Syntax.IdentifierKind.Parameter
+  langs:
+  - csharp
+  - vb
+  name: IdentifierKind
+  nameWithType: IdentifierKind
+  fullName: CilTools.Syntax.IdentifierKind
+  type: Enum
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nRepresents the kind of entity identified <xref href=\"CilTools.Syntax.IdentifierSyntax\" data-throw-if-not-resolved=\"false\"></xref> node.\n"
+  syntax:
+    content: public enum IdentifierKind
+    content.vb: Public Enum IdentifierKind
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilTools.Syntax.IdentifierKind.Other
+  commentId: F:CilTools.Syntax.IdentifierKind.Other
+  id: Other
+  parent: CilTools.Syntax.IdentifierKind
+  langs:
+  - csharp
+  - vb
+  name: Other
+  nameWithType: IdentifierKind.Other
+  fullName: CilTools.Syntax.IdentifierKind.Other
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nUnclassifed\n"
+  syntax:
+    content: Other = 0
+    return:
+      type: CilTools.Syntax.IdentifierKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Syntax.IdentifierKind.Member
+  commentId: F:CilTools.Syntax.IdentifierKind.Member
+  id: Member
+  parent: CilTools.Syntax.IdentifierKind
+  langs:
+  - csharp
+  - vb
+  name: Member
+  nameWithType: IdentifierKind.Member
+  fullName: CilTools.Syntax.IdentifierKind.Member
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nAssembly member (type, method, etc.)\n"
+  syntax:
+    content: Member = 1
+    return:
+      type: CilTools.Syntax.IdentifierKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Syntax.IdentifierKind.Label
+  commentId: F:CilTools.Syntax.IdentifierKind.Label
+  id: Label
+  parent: CilTools.Syntax.IdentifierKind
+  langs:
+  - csharp
+  - vb
+  name: Label
+  nameWithType: IdentifierKind.Label
+  fullName: CilTools.Syntax.IdentifierKind.Label
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nInstruction label\n"
+  syntax:
+    content: Label = 2
+    return:
+      type: CilTools.Syntax.IdentifierKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Syntax.IdentifierKind.LocalVariable
+  commentId: F:CilTools.Syntax.IdentifierKind.LocalVariable
+  id: LocalVariable
+  parent: CilTools.Syntax.IdentifierKind
+  langs:
+  - csharp
+  - vb
+  name: LocalVariable
+  nameWithType: IdentifierKind.LocalVariable
+  fullName: CilTools.Syntax.IdentifierKind.LocalVariable
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nLocal variable\n"
+  syntax:
+    content: LocalVariable = 3
+    return:
+      type: CilTools.Syntax.IdentifierKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Syntax.IdentifierKind.Parameter
+  commentId: F:CilTools.Syntax.IdentifierKind.Parameter
+  id: Parameter
+  parent: CilTools.Syntax.IdentifierKind
+  langs:
+  - csharp
+  - vb
+  name: Parameter
+  nameWithType: IdentifierKind.Parameter
+  fullName: CilTools.Syntax.IdentifierKind.Parameter
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nMethod parameter\n"
+  syntax:
+    content: Parameter = 4
+    return:
+      type: CilTools.Syntax.IdentifierKind
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilTools.Syntax
+  commentId: N:CilTools.Syntax
+  isExternal: true
+  name: CilTools.Syntax
+  nameWithType: CilTools.Syntax
+  fullName: CilTools.Syntax
+- uid: CilTools.Syntax.IdentifierKind
+  commentId: T:CilTools.Syntax.IdentifierKind
+  parent: CilTools.Syntax
+  isExternal: true
+  name: IdentifierKind
+  nameWithType: IdentifierKind
+  fullName: CilTools.Syntax.IdentifierKind

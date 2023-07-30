@@ -6,3 +6,8 @@
 - Implement Type.StructLayoutAttribute property on TypeDef
 - Fix Type.IsValueType and Type.IsEnum returning incorrect values for .NET Core assemblies
 - Fix token resolution to throw ArgumentOutOfRangeException instead of BadImageFormatException on out-of-range tokens
+
+2.8
+
+- Support additional assembly resolution directories in AssemblyReader
+- Support inherit parameter in Type.GetCustomAttributes methods

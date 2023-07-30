@@ -178,6 +178,31 @@ Use <a class="xref" href="CilTools.BytecodeAnalysis.CilGraph.html#CilTools_Bytec
   </table>
   
   
+  <h4 id="CilTools_Syntax_SyntaxNode__parent" data-uid="CilTools.Syntax.SyntaxNode._parent">_parent</h4>
+  <div class="markdown level1 summary"><p>Parent node for this node, or <code>null</code> if this node is root or not included in syntax tree</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected SyntaxNode _parent</code></pre>
+  </div>
+  <h5 class="fieldValue">Field Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <h4 id="CilTools_Syntax_SyntaxNode__trail" data-uid="CilTools.Syntax.SyntaxNode._trail">_trail</h4>
   <div class="markdown level1 summary"><p>Whitespace content at the end of this node's code</p>
 </div>
@@ -347,6 +372,50 @@ indentation-only, is stored within one of the adjacent nodes, not in the separat
   </table>
   
   
+  <a id="CilTools_Syntax_SyntaxNode_GetAdditionalInfo_" data-uid="CilTools.Syntax.SyntaxNode.GetAdditionalInfo*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_GetAdditionalInfo_System_String_" data-uid="CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)">GetAdditionalInfo(String)</h4>
+  <div class="markdown level1 summary"><p>Gets an additional implementation-defined information about this node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public object GetAdditionalInfo(string name)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><p>The requested value, or <code>null</code> if it is not set</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
   <a id="CilTools_Syntax_SyntaxNode_GetChildNodes_" data-uid="CilTools.Syntax.SyntaxNode.GetChildNodes*"></a>
   <h4 id="CilTools_Syntax_SyntaxNode_GetChildNodes" data-uid="CilTools.Syntax.SyntaxNode.GetChildNodes">GetChildNodes()</h4>
   <div class="markdown level1 summary"><p>Gets the array of this node's child nodes. For the leaf node, returns an empty array.</p>
@@ -504,6 +573,39 @@ short syntax</p>
         <td><span class="xref">System.ArgumentNullException</span></td>
         <td><p>The specified type is null</p>
 </td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Syntax_SyntaxNode_SetAdditionalInfo_" data-uid="CilTools.Syntax.SyntaxNode.SetAdditionalInfo*"></a>
+  <h4 id="CilTools_Syntax_SyntaxNode_SetAdditionalInfo_System_String_System_Object_" data-uid="CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)">SetAdditionalInfo(String, Object)</h4>
+  <div class="markdown level1 summary"><p>Sets an additional implementation-defined information about this node</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void SetAdditionalInfo(string name, object val)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">name</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td><span class="parametername">val</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

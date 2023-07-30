@@ -223,3 +223,15 @@ v2.0
 
 2.7
 - Add more public APIs to TokenReader (Position, Length, GetPreviousChar, GetSourceString)
+
+2.8
+- Add support for type forwards in disassembler
+- Add support for .vtfixup directives in assembly manifest
+- Add support for AggressiveInlining method attribute
+- Add support for Import and WindowsRuntime type attributes
+- Add support for field offsets in structs with explicit layout
+- Add support for RVA fields in type disassembler
+- Add LocalVariable.Method property
+- Add TypeSpec.CreateSpecialType method
+- Add IdentifierSyntax.Kind property
+- Make SyntaxNode._parent field protected

@@ -1,0 +1,701 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Reflection.PortableExecutable.VTable
+  commentId: T:CilTools.Reflection.PortableExecutable.VTable
+  id: VTable
+  parent: CilTools.Reflection.PortableExecutable
+  children:
+  - CilTools.Reflection.PortableExecutable.VTable.#ctor(System.Int32,System.Int16,System.Int16,System.Byte[])
+  - CilTools.Reflection.PortableExecutable.VTable.GetData
+  - CilTools.Reflection.PortableExecutable.VTable.GetSlotValue(System.Int32)
+  - CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32(System.Int32)
+  - CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  - CilTools.Reflection.PortableExecutable.VTable.RVA
+  - CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  - CilTools.Reflection.PortableExecutable.VTable.Type
+  langs:
+  - csharp
+  - vb
+  name: VTable
+  nameWithType: VTable
+  fullName: CilTools.Reflection.PortableExecutable.VTable
+  type: Class
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection.PortableExecutable
+  summary: "\nRepresents a table of pointers to virtual functions in executable image\n"
+  syntax:
+    content: public class VTable
+    content.vb: Public Class VTable
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Reflection.PortableExecutable.VTable.#ctor(System.Int32,System.Int16,System.Int16,System.Byte[])
+  commentId: M:CilTools.Reflection.PortableExecutable.VTable.#ctor(System.Int32,System.Int16,System.Int16,System.Byte[])
+  id: '#ctor(System.Int32,System.Int16,System.Int16,System.Byte[])'
+  parent: CilTools.Reflection.PortableExecutable.VTable
+  langs:
+  - csharp
+  - vb
+  name: VTable(Int32, Int16, Int16, Byte[])
+  nameWithType: VTable.VTable(Int32, Int16, Int16, Byte[])
+  fullName: CilTools.Reflection.PortableExecutable.VTable.VTable(System.Int32, System.Int16, System.Int16, System.Byte[])
+  type: Constructor
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection.PortableExecutable
+  summary: "\nCreates a new VTable\n"
+  syntax:
+    content: public VTable(int rva, short n_items, short type, byte[] data)
+    parameters:
+    - id: rva
+      type: System.Int32
+    - id: n_items
+      type: System.Int16
+    - id: type
+      type: System.Int16
+    - id: data
+      type: System.Byte[]
+    content.vb: Public Sub New(rva As Integer, n_items As Short, type As Short, data As Byte())
+  overload: CilTools.Reflection.PortableExecutable.VTable.#ctor*
+  nameWithType.vb: VTable.VTable(Int32, Int16, Int16, Byte())
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+  fullName.vb: CilTools.Reflection.PortableExecutable.VTable.VTable(System.Int32, System.Int16, System.Int16, System.Byte())
+  name.vb: VTable(Int32, Int16, Int16, Byte())
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetData
+  commentId: M:CilTools.Reflection.PortableExecutable.VTable.GetData
+  id: GetData
+  parent: CilTools.Reflection.PortableExecutable.VTable
+  langs:
+  - csharp
+  - vb
+  name: GetData()
+  nameWithType: VTable.GetData()
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetData()
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection.PortableExecutable
+  summary: "\nGets the data of this table as a byte array\n"
+  syntax:
+    content: public byte[] GetData()
+    return:
+      type: System.Byte[]
+    content.vb: Public Function GetData As Byte()
+  overload: CilTools.Reflection.PortableExecutable.VTable.GetData*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetSlotValue(System.Int32)
+  commentId: M:CilTools.Reflection.PortableExecutable.VTable.GetSlotValue(System.Int32)
+  id: GetSlotValue(System.Int32)
+  parent: CilTools.Reflection.PortableExecutable.VTable
+  langs:
+  - csharp
+  - vb
+  name: GetSlotValue(Int32)
+  nameWithType: VTable.GetSlotValue(Int32)
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetSlotValue(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection.PortableExecutable
+  summary: "\nGets the VTable slot initial value as <code>Int64</code>. The initial slot value is a method&apos;s metadata token, \nwhich gets replaced with a native function address when the image is loaded.\n"
+  syntax:
+    content: public long GetSlotValue(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.Int64
+    content.vb: Public Function GetSlotValue(index As Integer) As Long
+  overload: CilTools.Reflection.PortableExecutable.VTable.GetSlotValue*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32(System.Int32)
+  commentId: M:CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32(System.Int32)
+  id: GetSlotValueInt32(System.Int32)
+  parent: CilTools.Reflection.PortableExecutable.VTable
+  langs:
+  - csharp
+  - vb
+  name: GetSlotValueInt32(Int32)
+  nameWithType: VTable.GetSlotValueInt32(Int32)
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection.PortableExecutable
+  summary: "\nGets the VTable slot initial value as <code>Int32</code>. If the value is 64-bit, it is converted to <code>Int32</code>. \nThe initial slot value is a method&apos;s metadata token, which gets replaced with a native function address when \nthe image is loaded.\n"
+  syntax:
+    content: public int GetSlotValueInt32(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: System.Int32
+    content.vb: Public Function GetSlotValueInt32(index As Integer) As Integer
+  overload: CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Reflection.PortableExecutable.VTable.RVA
+  commentId: P:CilTools.Reflection.PortableExecutable.VTable.RVA
+  id: RVA
+  parent: CilTools.Reflection.PortableExecutable.VTable
+  langs:
+  - csharp
+  - vb
+  name: RVA
+  nameWithType: VTable.RVA
+  fullName: CilTools.Reflection.PortableExecutable.VTable.RVA
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection.PortableExecutable
+  summary: "\nGets a Relative virtual address of this table&apos;s data in the image it was read from\n"
+  syntax:
+    content: public int RVA { get; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public ReadOnly Property RVA As Integer
+  overload: CilTools.Reflection.PortableExecutable.VTable.RVA*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  commentId: P:CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  id: SlotsCount
+  parent: CilTools.Reflection.PortableExecutable.VTable
+  langs:
+  - csharp
+  - vb
+  name: SlotsCount
+  nameWithType: VTable.SlotsCount
+  fullName: CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection.PortableExecutable
+  summary: "\nGets the number of slots (functions) in this table\n"
+  syntax:
+    content: public short SlotsCount { get; }
+    parameters: []
+    return:
+      type: System.Int16
+    content.vb: Public ReadOnly Property SlotsCount As Short
+  overload: CilTools.Reflection.PortableExecutable.VTable.SlotsCount*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.PortableExecutable.VTable.Type
+  commentId: P:CilTools.Reflection.PortableExecutable.VTable.Type
+  id: Type
+  parent: CilTools.Reflection.PortableExecutable.VTable
+  langs:
+  - csharp
+  - vb
+  name: Type
+  nameWithType: VTable.Type
+  fullName: CilTools.Reflection.PortableExecutable.VTable.Type
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection.PortableExecutable
+  summary: "\nGets the short integer value that represents the type of this table\n"
+  syntax:
+    content: public short Type { get; }
+    parameters: []
+    return:
+      type: System.Int16
+    content.vb: Public ReadOnly Property Type As Short
+  overload: CilTools.Reflection.PortableExecutable.VTable.Type*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  commentId: P:CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  id: Is64Bit
+  parent: CilTools.Reflection.PortableExecutable.VTable
+  langs:
+  - csharp
+  - vb
+  name: Is64Bit
+  nameWithType: VTable.Is64Bit
+  fullName: CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection.PortableExecutable
+  summary: "\nGets the boolean value indicating whether this table contains 64-bit function pointer values\n"
+  syntax:
+    content: public bool Is64Bit { get; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public ReadOnly Property Is64Bit As Boolean
+  overload: CilTools.Reflection.PortableExecutable.VTable.Is64Bit*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+references:
+- uid: CilTools.Reflection.PortableExecutable
+  commentId: N:CilTools.Reflection.PortableExecutable
+  isExternal: true
+  name: CilTools.Reflection.PortableExecutable
+  nameWithType: CilTools.Reflection.PortableExecutable
+  fullName: CilTools.Reflection.PortableExecutable
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Reflection.PortableExecutable.VTable.#ctor*
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.#ctor
+  isExternal: true
+  name: VTable
+  nameWithType: VTable.VTable
+  fullName: CilTools.Reflection.PortableExecutable.VTable.VTable
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: System.Int16
+  commentId: T:System.Int16
+  parent: System
+  isExternal: true
+  name: Int16
+  nameWithType: Int16
+  fullName: System.Int16
+- uid: System.Byte[]
+  isExternal: true
+  name: Byte[]
+  nameWithType: Byte[]
+  fullName: System.Byte[]
+  nameWithType.vb: Byte()
+  fullName.vb: System.Byte()
+  name.vb: Byte()
+  spec.csharp:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
+  spec.vb:
+  - uid: System.Byte
+    name: Byte
+    nameWithType: Byte
+    fullName: System.Byte
+    isExternal: true
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetData*
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.GetData
+  isExternal: true
+  name: GetData
+  nameWithType: VTable.GetData
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetData
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetSlotValue*
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.GetSlotValue
+  isExternal: true
+  name: GetSlotValue
+  nameWithType: VTable.GetSlotValue
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetSlotValue
+- uid: System.Int64
+  commentId: T:System.Int64
+  parent: System
+  isExternal: true
+  name: Int64
+  nameWithType: Int64
+  fullName: System.Int64
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32*
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32
+  isExternal: true
+  name: GetSlotValueInt32
+  nameWithType: VTable.GetSlotValueInt32
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32
+- uid: CilTools.Reflection.PortableExecutable.VTable.RVA*
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.RVA
+  isExternal: true
+  name: RVA
+  nameWithType: VTable.RVA
+  fullName: CilTools.Reflection.PortableExecutable.VTable.RVA
+- uid: CilTools.Reflection.PortableExecutable.VTable.SlotsCount*
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  isExternal: true
+  name: SlotsCount
+  nameWithType: VTable.SlotsCount
+  fullName: CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+- uid: CilTools.Reflection.PortableExecutable.VTable.Type*
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.Type
+  isExternal: true
+  name: Type
+  nameWithType: VTable.Type
+  fullName: CilTools.Reflection.PortableExecutable.VTable.Type
+- uid: CilTools.Reflection.PortableExecutable.VTable.Is64Bit*
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  isExternal: true
+  name: Is64Bit
+  nameWithType: VTable.Is64Bit
+  fullName: CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean

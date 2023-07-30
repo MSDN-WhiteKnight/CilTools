@@ -5,10 +5,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Class TokenReader
+    <title>Class VTable
    | CIL Tools </title>
     <meta name="viewport" content="width=device-width">
-    <meta name="title" content="Class TokenReader
+    <meta name="title" content="Class VTable
    | CIL Tools ">
     <meta name="generator" content="docfx 2.40.12.0">
     
@@ -68,18 +68,18 @@
         </div>
         <div class="article row grid-right">
           <div class="col-md-10">
-            <article class="content wrap" id="_content" data-uid="CilTools.Syntax.Tokens.TokenReader">
+            <article class="content wrap" id="_content" data-uid="CilTools.Reflection.PortableExecutable.VTable">
   
   
-  <h1 id="CilTools_Syntax_Tokens_TokenReader" data-uid="CilTools.Syntax.Tokens.TokenReader" class="text-break">Class TokenReader
+  <h1 id="CilTools_Reflection_PortableExecutable_VTable" data-uid="CilTools.Reflection.PortableExecutable.VTable" class="text-break">Class VTable
   </h1>
-  <div class="markdown level0 summary"><p>Reads raw tokens from a string using the specified collection of token definitions</p>
+  <div class="markdown level0 summary"><p>Represents a table of pointers to virtual functions in executable image</p>
 </div>
   <div class="markdown level0 conceptual"></div>
   <div class="inheritance">
     <h5>Inheritance</h5>
     <div class="level0"><span class="xref">System.Object</span></div>
-    <div class="level1"><span class="xref">TokenReader</span></div>
+    <div class="level1"><span class="xref">VTable</span></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -105,24 +105,24 @@
       <span class="xref">System.Object.MemberwiseClone()</span>
     </div>
   </div>
-  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Syntax.Tokens.html">CilTools.Syntax.Tokens</a></h6>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Reflection.PortableExecutable.html">CilTools.Reflection.PortableExecutable</a></h6>
   <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
-  <h5 id="CilTools_Syntax_Tokens_TokenReader_syntax">Syntax</h5>
+  <h5 id="CilTools_Reflection_PortableExecutable_VTable_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TokenReader</code></pre>
+    <pre><code class="lang-csharp hljs">public class VTable</code></pre>
   </div>
   <h3 id="constructors">Constructors
   </h3>
   
   
-  <a id="CilTools_Syntax_Tokens_TokenReader__ctor_" data-uid="CilTools.Syntax.Tokens.TokenReader.#ctor*"></a>
-  <h4 id="CilTools_Syntax_Tokens_TokenReader__ctor_System_String_System_Collections_Generic_IEnumerable_CilTools_Syntax_Tokens_SyntaxTokenDefinition__" data-uid="CilTools.Syntax.Tokens.TokenReader.#ctor(System.String,System.Collections.Generic.IEnumerable{CilTools.Syntax.Tokens.SyntaxTokenDefinition})">TokenReader(String, IEnumerable&lt;SyntaxTokenDefinition&gt;)</h4>
-  <div class="markdown level1 summary"><p>Creates a new instance of the token reader</p>
+  <a id="CilTools_Reflection_PortableExecutable_VTable__ctor_" data-uid="CilTools.Reflection.PortableExecutable.VTable.#ctor*"></a>
+  <h4 id="CilTools_Reflection_PortableExecutable_VTable__ctor_System_Int32_System_Int16_System_Int16_System_Byte___" data-uid="CilTools.Reflection.PortableExecutable.VTable.#ctor(System.Int32,System.Int16,System.Int16,System.Byte[])">VTable(Int32, Int16, Int16, Byte[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new VTable</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public TokenReader(string src, IEnumerable&lt;SyntaxTokenDefinition&gt; tokenDefinitions)</code></pre>
+    <pre><code class="lang-csharp hljs">public VTable(int rva, short n_items, short type, byte[] data)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -135,16 +135,24 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><span class="parametername">src</span></td>
-        <td><p>Source string</p>
-</td>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">rva</span></td>
+        <td></td>
       </tr>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilTools.Syntax.Tokens.SyntaxTokenDefinition.html">SyntaxTokenDefinition</a>&gt;</td>
-        <td><span class="parametername">tokenDefinitions</span></td>
-        <td><p>Collection of token definitions to use</p>
-</td>
+        <td><span class="xref">System.Int16</span></td>
+        <td><span class="parametername">n_items</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
+        <td><span class="parametername">type</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.Byte</span>[]</td>
+        <td><span class="parametername">data</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -152,14 +160,40 @@
   </h3>
   
   
-  <a id="CilTools_Syntax_Tokens_TokenReader_Length_" data-uid="CilTools.Syntax.Tokens.TokenReader.Length*"></a>
-  <h4 id="CilTools_Syntax_Tokens_TokenReader_Length" data-uid="CilTools.Syntax.Tokens.TokenReader.Length">Length</h4>
-  <div class="markdown level1 summary"><p>Gets the number of characters in the source string</p>
+  <a id="CilTools_Reflection_PortableExecutable_VTable_Is64Bit_" data-uid="CilTools.Reflection.PortableExecutable.VTable.Is64Bit*"></a>
+  <h4 id="CilTools_Reflection_PortableExecutable_VTable_Is64Bit" data-uid="CilTools.Reflection.PortableExecutable.VTable.Is64Bit">Is64Bit</h4>
+  <div class="markdown level1 summary"><p>Gets the boolean value indicating whether this table contains 64-bit function pointer values</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int Length { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public bool Is64Bit { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Boolean</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_PortableExecutable_VTable_RVA_" data-uid="CilTools.Reflection.PortableExecutable.VTable.RVA*"></a>
+  <h4 id="CilTools_Reflection_PortableExecutable_VTable_RVA" data-uid="CilTools.Reflection.PortableExecutable.VTable.RVA">RVA</h4>
+  <div class="markdown level1 summary"><p>Gets a Relative virtual address of this table's data in the image it was read from</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int RVA { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -178,14 +212,14 @@
   </table>
   
   
-  <a id="CilTools_Syntax_Tokens_TokenReader_Position_" data-uid="CilTools.Syntax.Tokens.TokenReader.Position*"></a>
-  <h4 id="CilTools_Syntax_Tokens_TokenReader_Position" data-uid="CilTools.Syntax.Tokens.TokenReader.Position">Position</h4>
-  <div class="markdown level1 summary"><p>Gets the position in the source string at which the next token would be read</p>
+  <a id="CilTools_Reflection_PortableExecutable_VTable_SlotsCount_" data-uid="CilTools.Reflection.PortableExecutable.VTable.SlotsCount*"></a>
+  <h4 id="CilTools_Reflection_PortableExecutable_VTable_SlotsCount" data-uid="CilTools.Reflection.PortableExecutable.VTable.SlotsCount">SlotsCount</h4>
+  <div class="markdown level1 summary"><p>Gets the number of slots (functions) in this table</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public int Position { get; }</code></pre>
+    <pre><code class="lang-csharp hljs">public short SlotsCount { get; }</code></pre>
   </div>
   <h5 class="propertyValue">Property Value</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -197,7 +231,33 @@
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Int32</span></td>
+        <td><span class="xref">System.Int16</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Reflection_PortableExecutable_VTable_Type_" data-uid="CilTools.Reflection.PortableExecutable.VTable.Type*"></a>
+  <h4 id="CilTools_Reflection_PortableExecutable_VTable_Type" data-uid="CilTools.Reflection.PortableExecutable.VTable.Type">Type</h4>
+  <div class="markdown level1 summary"><p>Gets the short integer value that represents the type of this table</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public short Type { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int16</span></td>
         <td></td>
       </tr>
     </tbody>
@@ -206,60 +266,14 @@
   </h3>
   
   
-  <a id="CilTools_Syntax_Tokens_TokenReader_GetPreviousChar_" data-uid="CilTools.Syntax.Tokens.TokenReader.GetPreviousChar*"></a>
-  <h4 id="CilTools_Syntax_Tokens_TokenReader_GetPreviousChar_System_Int32_" data-uid="CilTools.Syntax.Tokens.TokenReader.GetPreviousChar(System.Int32)">GetPreviousChar(Int32)</h4>
-  <div class="markdown level1 summary"><p>Gets a character at the specified offset before the current position in this token reader. Offset 0 means current
-position, offset 1 means character immediately before current position, etc. Does not change the current position.</p>
+  <a id="CilTools_Reflection_PortableExecutable_VTable_GetData_" data-uid="CilTools.Reflection.PortableExecutable.VTable.GetData*"></a>
+  <h4 id="CilTools_Reflection_PortableExecutable_VTable_GetData" data-uid="CilTools.Reflection.PortableExecutable.VTable.GetData">GetData()</h4>
+  <div class="markdown level1 summary"><p>Gets the data of this table as a byte array</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public char GetPreviousChar(int offset)</code></pre>
-  </div>
-  <h5 class="parameters">Parameters</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Name</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">offset</span></td>
-        <td><p>The offset of the character to return</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Char</span></td>
-        <td><p>Previous character at the specified offset, or zero if it is outside of the source string bounds.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="CilTools_Syntax_Tokens_TokenReader_GetSourceString_" data-uid="CilTools.Syntax.Tokens.TokenReader.GetSourceString*"></a>
-  <h4 id="CilTools_Syntax_Tokens_TokenReader_GetSourceString" data-uid="CilTools.Syntax.Tokens.TokenReader.GetSourceString">GetSourceString()</h4>
-  <div class="markdown level1 summary"><p>Gets the full source string used by this reader</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string GetSourceString()</code></pre>
+    <pre><code class="lang-csharp hljs">public byte[] GetData()</code></pre>
   </div>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -271,48 +285,22 @@ position, offset 1 means character immediately before current position, etc. Doe
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
+        <td><span class="xref">System.Byte</span>[]</td>
         <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="CilTools_Syntax_Tokens_TokenReader_PeekChar_" data-uid="CilTools.Syntax.Tokens.TokenReader.PeekChar*"></a>
-  <h4 id="CilTools_Syntax_Tokens_TokenReader_PeekChar" data-uid="CilTools.Syntax.Tokens.TokenReader.PeekChar">PeekChar()</h4>
-  <div class="markdown level1 summary"><p>Gets a next character in this token reader without advancing a current position</p>
+  <a id="CilTools_Reflection_PortableExecutable_VTable_GetSlotValue_" data-uid="CilTools.Reflection.PortableExecutable.VTable.GetSlotValue*"></a>
+  <h4 id="CilTools_Reflection_PortableExecutable_VTable_GetSlotValue_System_Int32_" data-uid="CilTools.Reflection.PortableExecutable.VTable.GetSlotValue(System.Int32)">GetSlotValue(Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets the VTable slot initial value as <code>Int64</code>. The initial slot value is a method's metadata token,
+which gets replaced with a native function address when the image is loaded.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public char PeekChar()</code></pre>
-  </div>
-  <h5 class="returns">Returns</h5>
-  <table class="table table-bordered table-striped table-condensed">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Description</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><span class="xref">System.Char</span></td>
-        <td><p>Next character in the current position, or zero if the end of string is reached.</p>
-</td>
-      </tr>
-    </tbody>
-  </table>
-  
-  
-  <a id="CilTools_Syntax_Tokens_TokenReader_PeekString_" data-uid="CilTools.Syntax.Tokens.TokenReader.PeekString*"></a>
-  <h4 id="CilTools_Syntax_Tokens_TokenReader_PeekString_System_Int32_" data-uid="CilTools.Syntax.Tokens.TokenReader.PeekString(System.Int32)">PeekString(Int32)</h4>
-  <div class="markdown level1 summary"><p>Gets a specified number of next characters in this token reader without advancing a current position</p>
-</div>
-  <div class="markdown level1 conceptual"></div>
-  <h5 class="decalaration">Declaration</h5>
-  <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public string PeekString(int n)</code></pre>
+    <pre><code class="lang-csharp hljs">public long GetSlotValue(int index)</code></pre>
   </div>
   <h5 class="parameters">Parameters</h5>
   <table class="table table-bordered table-striped table-condensed">
@@ -326,9 +314,8 @@ position, offset 1 means character immediately before current position, etc. Doe
     <tbody>
       <tr>
         <td><span class="xref">System.Int32</span></td>
-        <td><span class="parametername">n</span></td>
-        <td><p>Number of characters to peek</p>
-</td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
@@ -342,23 +329,41 @@ position, offset 1 means character immediately before current position, etc. Doe
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.String</span></td>
-        <td><p>String containing <code>n</code> next characters, or an empty string when the end of string is reached.</p>
-</td>
+        <td><span class="xref">System.Int64</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>
   
   
-  <a id="CilTools_Syntax_Tokens_TokenReader_ReadAll_" data-uid="CilTools.Syntax.Tokens.TokenReader.ReadAll*"></a>
-  <h4 id="CilTools_Syntax_Tokens_TokenReader_ReadAll" data-uid="CilTools.Syntax.Tokens.TokenReader.ReadAll">ReadAll()</h4>
-  <div class="markdown level1 summary"><p>Reads all tokens from the current instance</p>
+  <a id="CilTools_Reflection_PortableExecutable_VTable_GetSlotValueInt32_" data-uid="CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32*"></a>
+  <h4 id="CilTools_Reflection_PortableExecutable_VTable_GetSlotValueInt32_System_Int32_" data-uid="CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32(System.Int32)">GetSlotValueInt32(Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets the VTable slot initial value as <code>Int32</code>. If the value is 64-bit, it is converted to <code>Int32</code>.
+The initial slot value is a method's metadata token, which gets replaced with a native function address when
+the image is loaded.</p>
 </div>
   <div class="markdown level1 conceptual"></div>
   <h5 class="decalaration">Declaration</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public IEnumerable&lt;string&gt; ReadAll()</code></pre>
+    <pre><code class="lang-csharp hljs">public int GetSlotValueInt32(int index)</code></pre>
   </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h5 class="returns">Returns</h5>
   <table class="table table-bordered table-striped table-condensed">
     <thead>
@@ -369,9 +374,8 @@ position, offset 1 means character immediately before current position, etc. Doe
     </thead>
     <tbody>
       <tr>
-        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<span class="xref">System.String</span>&gt;</td>
-        <td><p>Collection of strings that contain tokens</p>
-</td>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
       </tr>
     </tbody>
   </table>

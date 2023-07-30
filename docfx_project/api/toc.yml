@@ -85,6 +85,11 @@
     name: RefResolutionMode
   - uid: CilTools.Reflection.SignatureContext
     name: SignatureContext
+- uid: CilTools.Reflection.PortableExecutable
+  name: CilTools.Reflection.PortableExecutable
+  items:
+  - uid: CilTools.Reflection.PortableExecutable.VTable
+    name: VTable
 - uid: CilTools.Runtime
   name: CilTools.Runtime
   items:
@@ -139,6 +144,8 @@
     name: Disassembler
   - uid: CilTools.Syntax.DisassemblerParams
     name: DisassemblerParams
+  - uid: CilTools.Syntax.IdentifierKind
+    name: IdentifierKind
   - uid: CilTools.Syntax.IdentifierSyntax
     name: IdentifierSyntax
   - uid: CilTools.Syntax.InstructionSyntax

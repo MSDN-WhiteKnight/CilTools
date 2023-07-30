@@ -7,14 +7,17 @@ items:
   children:
   - CilTools.Syntax.SyntaxNode.#ctor
   - CilTools.Syntax.SyntaxNode._lead
+  - CilTools.Syntax.SyntaxNode._parent
   - CilTools.Syntax.SyntaxNode._trail
   - CilTools.Syntax.SyntaxNode.EmptyArray
   - CilTools.Syntax.SyntaxNode.EnumerateChildNodes
+  - CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
   - CilTools.Syntax.SyntaxNode.GetChildNodes
   - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
   - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
   - CilTools.Syntax.SyntaxNode.LeadingWhitespace
   - CilTools.Syntax.SyntaxNode.Parent
+  - CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
   - CilTools.Syntax.SyntaxNode.ToString
   - CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
   - CilTools.Syntax.SyntaxNode.TrailingWhitespace
@@ -115,6 +118,33 @@ items:
     return:
       type: System.String
     content.vb: Protected _trail As String
+  modifiers.csharp:
+  - protected
+  modifiers.vb:
+  - Protected
+- uid: CilTools.Syntax.SyntaxNode._parent
+  commentId: F:CilTools.Syntax.SyntaxNode._parent
+  id: _parent
+  parent: CilTools.Syntax.SyntaxNode
+  langs:
+  - csharp
+  - vb
+  name: _parent
+  nameWithType: SyntaxNode._parent
+  fullName: CilTools.Syntax.SyntaxNode._parent
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nParent node for this node, or <code>null</code> if this node is root or not included in syntax tree\n"
+  syntax:
+    content: protected SyntaxNode _parent
+    return:
+      type: CilTools.Syntax.SyntaxNode
+    content.vb: Protected _parent As SyntaxNode
   modifiers.csharp:
   - protected
   modifiers.vb:
@@ -357,6 +387,69 @@ items:
   modifiers.vb:
   - Public
   - Shared
+- uid: CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  commentId: M:CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  id: GetAdditionalInfo(System.String)
+  parent: CilTools.Syntax.SyntaxNode
+  langs:
+  - csharp
+  - vb
+  name: GetAdditionalInfo(String)
+  nameWithType: SyntaxNode.GetAdditionalInfo(String)
+  fullName: CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nGets an additional implementation-defined information about this node\n"
+  syntax:
+    content: public object GetAdditionalInfo(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: System.Object
+      description: The requested value, or <code>null</code> if it is not set
+    content.vb: Public Function GetAdditionalInfo(name As String) As Object
+  overload: CilTools.Syntax.SyntaxNode.GetAdditionalInfo*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
+  commentId: M:CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
+  id: SetAdditionalInfo(System.String,System.Object)
+  parent: CilTools.Syntax.SyntaxNode
+  langs:
+  - csharp
+  - vb
+  name: SetAdditionalInfo(String, Object)
+  nameWithType: SyntaxNode.SetAdditionalInfo(String, Object)
+  fullName: CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String, System.Object)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Syntax
+  summary: "\nSets an additional implementation-defined information about this node\n"
+  syntax:
+    content: public void SetAdditionalInfo(string name, object val)
+    parameters:
+    - id: name
+      type: System.String
+    - id: val
+      type: System.Object
+    content.vb: Public Sub SetAdditionalInfo(name As String, val As Object)
+  overload: CilTools.Syntax.SyntaxNode.SetAdditionalInfo*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
 - uid: CilTools.Syntax.SyntaxNode.#ctor
   commentId: M:CilTools.Syntax.SyntaxNode.#ctor
   id: '#ctor'
@@ -752,6 +845,13 @@ references:
   name: String
   nameWithType: String
   fullName: System.String
+- uid: CilTools.Syntax.SyntaxNode
+  commentId: T:CilTools.Syntax.SyntaxNode
+  parent: CilTools.Syntax
+  isExternal: true
+  name: SyntaxNode
+  nameWithType: SyntaxNode
+  fullName: CilTools.Syntax.SyntaxNode
 - uid: CilTools.Syntax.SyntaxNode[]
   isExternal: true
   name: SyntaxNode[]
@@ -965,6 +1065,18 @@ references:
   name: DisassemblerParams
   nameWithType: DisassemblerParams
   fullName: CilTools.Syntax.DisassemblerParams
+- uid: CilTools.Syntax.SyntaxNode.GetAdditionalInfo*
+  commentId: Overload:CilTools.Syntax.SyntaxNode.GetAdditionalInfo
+  isExternal: true
+  name: GetAdditionalInfo
+  nameWithType: SyntaxNode.GetAdditionalInfo
+  fullName: CilTools.Syntax.SyntaxNode.GetAdditionalInfo
+- uid: CilTools.Syntax.SyntaxNode.SetAdditionalInfo*
+  commentId: Overload:CilTools.Syntax.SyntaxNode.SetAdditionalInfo
+  isExternal: true
+  name: SetAdditionalInfo
+  nameWithType: SyntaxNode.SetAdditionalInfo
+  fullName: CilTools.Syntax.SyntaxNode.SetAdditionalInfo
 - uid: CilTools.Syntax.SyntaxNode.#ctor*
   commentId: Overload:CilTools.Syntax.SyntaxNode.#ctor
   isExternal: true
@@ -989,10 +1101,3 @@ references:
   name: Parent
   nameWithType: SyntaxNode.Parent
   fullName: CilTools.Syntax.SyntaxNode.Parent
-- uid: CilTools.Syntax.SyntaxNode
-  commentId: T:CilTools.Syntax.SyntaxNode
-  parent: CilTools.Syntax
-  isExternal: true
-  name: SyntaxNode
-  nameWithType: SyntaxNode
-  fullName: CilTools.Syntax.SyntaxNode

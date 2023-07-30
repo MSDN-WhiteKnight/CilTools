@@ -153,7 +153,7 @@ To view the source code for individual instructions, click **Tools** -> **Show s
 
 To view the source code for the whole method, click **Tools** -> **Show source code (method)**. The **Source code** window will display the method's source code as well as the information about where it was fetched from.
 
-If the source code is located on external server (this feature is called [Source Link](https://github.com/dotnet/designs/blob/main/accepted/2020/diagnostics/source-link.md)), the source viewer will prompt you with a dialog box to allow navigating to server. If you choose **Yes**, the source code will be opened in your default browser. Any subsequent attempts for the same domain will open the browser automatically without propmting again. The Source Link is supported for Portable PDB only.
+If the source code is located on external server (this feature is called [Source Link](https://github.com/dotnet/designs/blob/main/accepted/2020/diagnostics/source-link.md)), the source viewer will prompt you with a dialog box to allow navigating to server. If you choose **Yes**, the source code will be opened in your default browser. Any subsequent attempts for the same domain will open the browser automatically without prompting again. The Source Link is supported for Portable PDB only.
 
 ## Method execution
 

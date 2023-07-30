@@ -9,6 +9,8 @@ items:
   - CilTools.Reflection.LocalVariable.LocalIndex
   - CilTools.Reflection.LocalVariable.LocalType
   - CilTools.Reflection.LocalVariable.LocalTypeSpec
+  - CilTools.Reflection.LocalVariable.Method
+  - CilTools.Reflection.LocalVariable.ReadMethodSignature(System.Reflection.MethodBase,System.Byte[],CilTools.Reflection.SignatureContext)
   - CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver)
   - CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   - CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],System.Reflection.Module)
@@ -90,6 +92,57 @@ items:
   - Shared
   fullName.vb: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte(), CilTools.Reflection.ITokenResolver)
   name.vb: ReadSignature(Byte(), ITokenResolver)
+- uid: CilTools.Reflection.LocalVariable.ReadMethodSignature(System.Reflection.MethodBase,System.Byte[],CilTools.Reflection.SignatureContext)
+  commentId: M:CilTools.Reflection.LocalVariable.ReadMethodSignature(System.Reflection.MethodBase,System.Byte[],CilTools.Reflection.SignatureContext)
+  id: ReadMethodSignature(System.Reflection.MethodBase,System.Byte[],CilTools.Reflection.SignatureContext)
+  parent: CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: ReadMethodSignature(MethodBase, Byte[], SignatureContext)
+  nameWithType: LocalVariable.ReadMethodSignature(MethodBase, Byte[], SignatureContext)
+  fullName: CilTools.Reflection.LocalVariable.ReadMethodSignature(System.Reflection.MethodBase, System.Byte[], CilTools.Reflection.SignatureContext)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nReads local variables from the specified method signature\n"
+  syntax:
+    content: public static LocalVariable[] ReadMethodSignature(MethodBase m, byte[] data, SignatureContext ctx)
+    parameters:
+    - id: m
+      type: System.Reflection.MethodBase
+      description: Method which local variables are read
+    - id: data
+      type: System.Byte[]
+      description: Local variable signature as byte array
+    - id: ctx
+      type: CilTools.Reflection.SignatureContext
+      description: Signature context information
+    return:
+      type: CilTools.Reflection.LocalVariable[]
+      description: An array of local variables read from the signature
+    content.vb: Public Shared Function ReadMethodSignature(m As MethodBase, data As Byte(), ctx As SignatureContext) As LocalVariable()
+  overload: CilTools.Reflection.LocalVariable.ReadMethodSignature*
+  exceptions:
+  - type: System.ArgumentNullException
+    commentId: T:System.ArgumentNullException
+    description: Method, input array or signature context is null
+  - type: System.NotSupportedException
+    commentId: T:System.NotSupportedException
+    description: Signature contains unsupported types
+  nameWithType.vb: LocalVariable.ReadMethodSignature(MethodBase, Byte(), SignatureContext)
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+  fullName.vb: CilTools.Reflection.LocalVariable.ReadMethodSignature(System.Reflection.MethodBase, System.Byte(), CilTools.Reflection.SignatureContext)
+  name.vb: ReadMethodSignature(MethodBase, Byte(), SignatureContext)
 - uid: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   commentId: M:CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
   id: ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver,System.Reflection.MemberInfo)
@@ -307,6 +360,37 @@ items:
       type: System.Boolean
     content.vb: Public ReadOnly Property IsPinned As Boolean
   overload: CilTools.Reflection.LocalVariable.IsPinned*
+  modifiers.csharp:
+  - public
+  - get
+  modifiers.vb:
+  - Public
+  - ReadOnly
+- uid: CilTools.Reflection.LocalVariable.Method
+  commentId: P:CilTools.Reflection.LocalVariable.Method
+  id: Method
+  parent: CilTools.Reflection.LocalVariable
+  langs:
+  - csharp
+  - vb
+  name: Method
+  nameWithType: LocalVariable.Method
+  fullName: CilTools.Reflection.LocalVariable.Method
+  type: Property
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nGets the method in which this local variable is declared\n"
+  syntax:
+    content: public MethodBase Method { get; }
+    parameters: []
+    return:
+      type: System.Reflection.MethodBase
+    content.vb: Public ReadOnly Property Method As MethodBase
+  overload: CilTools.Reflection.LocalVariable.Method*
   modifiers.csharp:
   - public
   - get
@@ -659,6 +743,32 @@ references:
   - name: ()
     nameWithType: ()
     fullName: ()
+- uid: CilTools.Reflection.LocalVariable.ReadMethodSignature*
+  commentId: Overload:CilTools.Reflection.LocalVariable.ReadMethodSignature
+  isExternal: true
+  name: ReadMethodSignature
+  nameWithType: LocalVariable.ReadMethodSignature
+  fullName: CilTools.Reflection.LocalVariable.ReadMethodSignature
+- uid: System.Reflection.MethodBase
+  commentId: T:System.Reflection.MethodBase
+  parent: System.Reflection
+  isExternal: true
+  name: MethodBase
+  nameWithType: MethodBase
+  fullName: System.Reflection.MethodBase
+- uid: CilTools.Reflection.SignatureContext
+  commentId: T:CilTools.Reflection.SignatureContext
+  parent: CilTools.Reflection
+  isExternal: true
+  name: SignatureContext
+  nameWithType: SignatureContext
+  fullName: CilTools.Reflection.SignatureContext
+- uid: System.Reflection
+  commentId: N:System.Reflection
+  isExternal: true
+  name: System.Reflection
+  nameWithType: System.Reflection
+  fullName: System.Reflection
 - uid: System.Reflection.MemberInfo
   commentId: T:System.Reflection.MemberInfo
   parent: System.Reflection
@@ -666,12 +776,6 @@ references:
   name: MemberInfo
   nameWithType: MemberInfo
   fullName: System.Reflection.MemberInfo
-- uid: System.Reflection
-  commentId: N:System.Reflection
-  isExternal: true
-  name: System.Reflection
-  nameWithType: System.Reflection
-  fullName: System.Reflection
 - uid: System.Reflection.Module
   commentId: T:System.Reflection.Module
   parent: System.Reflection
@@ -737,3 +841,9 @@ references:
   name: Boolean
   nameWithType: Boolean
   fullName: System.Boolean
+- uid: CilTools.Reflection.LocalVariable.Method*
+  commentId: Overload:CilTools.Reflection.LocalVariable.Method
+  isExternal: true
+  name: Method
+  nameWithType: LocalVariable.Method
+  fullName: CilTools.Reflection.LocalVariable.Method

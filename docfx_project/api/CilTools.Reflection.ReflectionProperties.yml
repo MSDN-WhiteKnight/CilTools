@@ -7,16 +7,21 @@ items:
   children:
   - CilTools.Reflection.ReflectionProperties.CorFlags
   - CilTools.Reflection.ReflectionProperties.ExplicitlyImplementedMethods
+  - CilTools.Reflection.ReflectionProperties.FieldOffset
+  - CilTools.Reflection.ReflectionProperties.FieldRva
   - CilTools.Reflection.ReflectionProperties.FileAlignment
+  - CilTools.Reflection.ReflectionProperties.ForwardedTypes
   - CilTools.Reflection.ReflectionProperties.Get(System.Object,System.Int32)
   - CilTools.Reflection.ReflectionProperties.ImageBase
   - CilTools.Reflection.ReflectionProperties.InfoText
   - CilTools.Reflection.ReflectionProperties.IsStatic
   - CilTools.Reflection.ReflectionProperties.ReferencedModules
+  - CilTools.Reflection.ReflectionProperties.RvaFieldValue
   - CilTools.Reflection.ReflectionProperties.Signature
   - CilTools.Reflection.ReflectionProperties.StackReserve
   - CilTools.Reflection.ReflectionProperties.Subsystem
   - CilTools.Reflection.ReflectionProperties.VTableEntry
+  - CilTools.Reflection.ReflectionProperties.VTables
   langs:
   - csharp
   - vb
@@ -364,6 +369,151 @@ items:
     return:
       type: System.Int32
     content.vb: Public Const Signature As Integer = 109
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.FieldRva
+  commentId: F:CilTools.Reflection.ReflectionProperties.FieldRva
+  id: FieldRva
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: FieldRva
+  nameWithType: ReflectionProperties.FieldRva
+  fullName: CilTools.Reflection.ReflectionProperties.FieldRva
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents a Relative Virtual Address (RVA) of a field mapped to an executable image memory block. (Type: int)\n"
+  syntax:
+    content: public const int FieldRva = 110
+    return:
+      type: System.Int32
+    content.vb: Public Const FieldRva As Integer = 110
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.RvaFieldValue
+  commentId: F:CilTools.Reflection.ReflectionProperties.RvaFieldValue
+  id: RvaFieldValue
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: RvaFieldValue
+  nameWithType: ReflectionProperties.RvaFieldValue
+  fullName: CilTools.Reflection.ReflectionProperties.RvaFieldValue
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents a byte array containing RVA field&apos;s value. (Type: byte[])\n"
+  syntax:
+    content: public const int RvaFieldValue = 111
+    return:
+      type: System.Int32
+    content.vb: Public Const RvaFieldValue As Integer = 111
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.FieldOffset
+  commentId: F:CilTools.Reflection.ReflectionProperties.FieldOffset
+  id: FieldOffset
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: FieldOffset
+  nameWithType: ReflectionProperties.FieldOffset
+  fullName: CilTools.Reflection.ReflectionProperties.FieldOffset
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents a field offset from the beginning of the structure, for structures with explicit layout. \nReturns -1 when field offset is not available. (Type: int)\n"
+  syntax:
+    content: public const int FieldOffset = 112
+    return:
+      type: System.Int32
+    content.vb: Public Const FieldOffset As Integer = 112
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.VTables
+  commentId: F:CilTools.Reflection.ReflectionProperties.VTables
+  id: VTables
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: VTables
+  nameWithType: ReflectionProperties.VTables
+  fullName: CilTools.Reflection.ReflectionProperties.VTables
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents an array of virtual function tables in the executable image. (Type: VTable[])\n"
+  syntax:
+    content: public const int VTables = 113
+    return:
+      type: System.Int32
+    content.vb: Public Const VTables As Integer = 113
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.ForwardedTypes
+  commentId: F:CilTools.Reflection.ReflectionProperties.ForwardedTypes
+  id: ForwardedTypes
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: ForwardedTypes
+  nameWithType: ReflectionProperties.ForwardedTypes
+  fullName: CilTools.Reflection.ReflectionProperties.ForwardedTypes
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents an array of forwarded types. (Type: Type[])\n"
+  syntax:
+    content: public const int ForwardedTypes = 114
+    return:
+      type: System.Int32
+    content.vb: Public Const ForwardedTypes As Integer = 114
   modifiers.csharp:
   - public
   - const

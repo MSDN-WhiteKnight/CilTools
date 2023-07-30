@@ -136,6 +136,16 @@ Changelog
 2.6.1
 - Fix TypeLoadException when disassembling property on a type derived from external non-BCL assembly
 
+2.8
+- Add support for type forwards
+- Add support for .vtfixup directives in assembly manifest
+- Add syntax highlighting support for some non-standard IlAsm keywords
+- Add navigation to labels
+- Add support for field offsets for structs with explicit layout
+- Add support for RVA fields
+- No longer automatically select <Module> type when it's the only one in assembly (so user can see assembly manifest)
+- Fix members counting to pick only declared members when deciding whether the only method in type should be auto-selected
+
 ---------------------------------------------
 
 Copyright (c) 2023,  MSDN.WhiteKnight

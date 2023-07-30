@@ -35,11 +35,14 @@ items:
   inheritedMembers:
   - CilTools.Syntax.SyntaxNode._lead
   - CilTools.Syntax.SyntaxNode._trail
+  - CilTools.Syntax.SyntaxNode._parent
   - CilTools.Syntax.SyntaxNode.EmptyArray
   - CilTools.Syntax.SyntaxNode.ToString
   - CilTools.Syntax.SyntaxNode.GetChildNodes
   - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type)
   - CilTools.Syntax.SyntaxNode.GetTypeDefSyntax(System.Type,System.Boolean,CilTools.Syntax.DisassemblerParams)
+  - CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  - CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
   - CilTools.Syntax.SyntaxNode.LeadingWhitespace
   - CilTools.Syntax.SyntaxNode.TrailingWhitespace
   - CilTools.Syntax.SyntaxNode.Parent
@@ -218,6 +221,13 @@ references:
   name: _trail
   nameWithType: SyntaxNode._trail
   fullName: CilTools.Syntax.SyntaxNode._trail
+- uid: CilTools.Syntax.SyntaxNode._parent
+  commentId: F:CilTools.Syntax.SyntaxNode._parent
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: _parent
+  nameWithType: SyntaxNode._parent
+  fullName: CilTools.Syntax.SyntaxNode._parent
 - uid: CilTools.Syntax.SyntaxNode.EmptyArray
   commentId: F:CilTools.Syntax.SyntaxNode.EmptyArray
   parent: CilTools.Syntax.SyntaxNode
@@ -397,6 +407,104 @@ references:
     name: DisassemblerParams
     nameWithType: DisassemblerParams
     fullName: CilTools.Syntax.DisassemblerParams
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  commentId: M:CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: GetAdditionalInfo(String)
+  nameWithType: SyntaxNode.GetAdditionalInfo(String)
+  fullName: CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  spec.csharp:
+  - uid: CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+    name: GetAdditionalInfo
+    nameWithType: SyntaxNode.GetAdditionalInfo
+    fullName: CilTools.Syntax.SyntaxNode.GetAdditionalInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+    name: GetAdditionalInfo
+    nameWithType: SyntaxNode.GetAdditionalInfo
+    fullName: CilTools.Syntax.SyntaxNode.GetAdditionalInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
+  commentId: M:CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
+  parent: CilTools.Syntax.SyntaxNode
+  isExternal: true
+  name: SetAdditionalInfo(String, Object)
+  nameWithType: SyntaxNode.SetAdditionalInfo(String, Object)
+  fullName: CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String, System.Object)
+  spec.csharp:
+  - uid: CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
+    name: SetAdditionalInfo
+    nameWithType: SyntaxNode.SetAdditionalInfo
+    fullName: CilTools.Syntax.SyntaxNode.SetAdditionalInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
+    name: SetAdditionalInfo
+    nameWithType: SyntaxNode.SetAdditionalInfo
+    fullName: CilTools.Syntax.SyntaxNode.SetAdditionalInfo
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
     isExternal: true
   - name: )
     nameWithType: )

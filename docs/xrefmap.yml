@@ -1894,6 +1894,18 @@ references:
   commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.BaseType
   fullName: CilTools.BytecodeAnalysis.TypeSpec.BaseType
   nameWithType: TypeSpec.BaseType
+- uid: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType(CilTools.BytecodeAnalysis.ElementType)
+  name: CreateSpecialType(ElementType)
+  href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_CreateSpecialType_CilTools_BytecodeAnalysis_ElementType_
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType(CilTools.BytecodeAnalysis.ElementType)
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType(CilTools.BytecodeAnalysis.ElementType)
+  nameWithType: TypeSpec.CreateSpecialType(ElementType)
+- uid: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType*
+  name: CreateSpecialType
+  href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_CreateSpecialType_
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType
+  nameWithType: TypeSpec.CreateSpecialType
 - uid: CilTools.BytecodeAnalysis.TypeSpec.DeclaringMethod
   name: DeclaringMethod
   href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_DeclaringMethod
@@ -2707,6 +2719,18 @@ references:
   commentId: Overload:CilTools.Metadata.AssemblyReader.#ctor
   fullName: CilTools.Metadata.AssemblyReader.AssemblyReader
   nameWithType: AssemblyReader.AssemblyReader
+- uid: CilTools.Metadata.AssemblyReader.AddResolutionDirectory(System.String)
+  name: AddResolutionDirectory(String)
+  href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_AddResolutionDirectory_System_String_
+  commentId: M:CilTools.Metadata.AssemblyReader.AddResolutionDirectory(System.String)
+  fullName: CilTools.Metadata.AssemblyReader.AddResolutionDirectory(System.String)
+  nameWithType: AssemblyReader.AddResolutionDirectory(String)
+- uid: CilTools.Metadata.AssemblyReader.AddResolutionDirectory*
+  name: AddResolutionDirectory
+  href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_AddResolutionDirectory_
+  commentId: Overload:CilTools.Metadata.AssemblyReader.AddResolutionDirectory
+  fullName: CilTools.Metadata.AssemblyReader.AddResolutionDirectory
+  nameWithType: AssemblyReader.AddResolutionDirectory
 - uid: CilTools.Metadata.AssemblyReader.AssemblyResolve
   name: AssemblyResolve
   href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_AssemblyResolve
@@ -2767,6 +2791,42 @@ references:
   commentId: Overload:CilTools.Metadata.AssemblyReader.LoadImage
   fullName: CilTools.Metadata.AssemblyReader.LoadImage
   nameWithType: AssemblyReader.LoadImage
+- uid: CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories
+  name: RemoveAllResolutionDirectories()
+  href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_RemoveAllResolutionDirectories
+  commentId: M:CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories
+  fullName: CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories()
+  nameWithType: AssemblyReader.RemoveAllResolutionDirectories()
+- uid: CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories*
+  name: RemoveAllResolutionDirectories
+  href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_RemoveAllResolutionDirectories_
+  commentId: Overload:CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories
+  fullName: CilTools.Metadata.AssemblyReader.RemoveAllResolutionDirectories
+  nameWithType: AssemblyReader.RemoveAllResolutionDirectories
+- uid: CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory(System.String)
+  name: RemoveResolutionDirectory(String)
+  href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_RemoveResolutionDirectory_System_String_
+  commentId: M:CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory(System.String)
+  fullName: CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory(System.String)
+  nameWithType: AssemblyReader.RemoveResolutionDirectory(String)
+- uid: CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory*
+  name: RemoveResolutionDirectory
+  href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_RemoveResolutionDirectory_
+  commentId: Overload:CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory
+  fullName: CilTools.Metadata.AssemblyReader.RemoveResolutionDirectory
+  nameWithType: AssemblyReader.RemoveResolutionDirectory
+- uid: CilTools.Metadata.AssemblyReader.ResolutionDirectories
+  name: ResolutionDirectories
+  href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_ResolutionDirectories
+  commentId: P:CilTools.Metadata.AssemblyReader.ResolutionDirectories
+  fullName: CilTools.Metadata.AssemblyReader.ResolutionDirectories
+  nameWithType: AssemblyReader.ResolutionDirectories
+- uid: CilTools.Metadata.AssemblyReader.ResolutionDirectories*
+  name: ResolutionDirectories
+  href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_ResolutionDirectories_
+  commentId: Overload:CilTools.Metadata.AssemblyReader.ResolutionDirectories
+  fullName: CilTools.Metadata.AssemblyReader.ResolutionDirectories
+  nameWithType: AssemblyReader.ResolutionDirectories
 - uid: CilTools.Metadata.AssemblyReader.ResolveExternalRefs
   name: ResolveExternalRefs
   href: api/CilTools.Metadata.AssemblyReader.html#CilTools_Metadata_AssemblyReader_ResolveExternalRefs
@@ -4912,6 +4972,33 @@ references:
   commentId: Overload:CilTools.Reflection.LocalVariable.LocalTypeSpec
   fullName: CilTools.Reflection.LocalVariable.LocalTypeSpec
   nameWithType: LocalVariable.LocalTypeSpec
+- uid: CilTools.Reflection.LocalVariable.Method
+  name: Method
+  href: api/CilTools.Reflection.LocalVariable.html#CilTools_Reflection_LocalVariable_Method
+  commentId: P:CilTools.Reflection.LocalVariable.Method
+  fullName: CilTools.Reflection.LocalVariable.Method
+  nameWithType: LocalVariable.Method
+- uid: CilTools.Reflection.LocalVariable.Method*
+  name: Method
+  href: api/CilTools.Reflection.LocalVariable.html#CilTools_Reflection_LocalVariable_Method_
+  commentId: Overload:CilTools.Reflection.LocalVariable.Method
+  fullName: CilTools.Reflection.LocalVariable.Method
+  nameWithType: LocalVariable.Method
+- uid: CilTools.Reflection.LocalVariable.ReadMethodSignature(System.Reflection.MethodBase,System.Byte[],CilTools.Reflection.SignatureContext)
+  name: ReadMethodSignature(MethodBase, Byte[], SignatureContext)
+  href: api/CilTools.Reflection.LocalVariable.html#CilTools_Reflection_LocalVariable_ReadMethodSignature_System_Reflection_MethodBase_System_Byte___CilTools_Reflection_SignatureContext_
+  commentId: M:CilTools.Reflection.LocalVariable.ReadMethodSignature(System.Reflection.MethodBase,System.Byte[],CilTools.Reflection.SignatureContext)
+  name.vb: ReadMethodSignature(MethodBase, Byte(), SignatureContext)
+  fullName: CilTools.Reflection.LocalVariable.ReadMethodSignature(System.Reflection.MethodBase, System.Byte[], CilTools.Reflection.SignatureContext)
+  fullName.vb: CilTools.Reflection.LocalVariable.ReadMethodSignature(System.Reflection.MethodBase, System.Byte(), CilTools.Reflection.SignatureContext)
+  nameWithType: LocalVariable.ReadMethodSignature(MethodBase, Byte[], SignatureContext)
+  nameWithType.vb: LocalVariable.ReadMethodSignature(MethodBase, Byte(), SignatureContext)
+- uid: CilTools.Reflection.LocalVariable.ReadMethodSignature*
+  name: ReadMethodSignature
+  href: api/CilTools.Reflection.LocalVariable.html#CilTools_Reflection_LocalVariable_ReadMethodSignature_
+  commentId: Overload:CilTools.Reflection.LocalVariable.ReadMethodSignature
+  fullName: CilTools.Reflection.LocalVariable.ReadMethodSignature
+  nameWithType: LocalVariable.ReadMethodSignature
 - uid: CilTools.Reflection.LocalVariable.ReadSignature(System.Byte[],CilTools.Reflection.ITokenResolver)
   name: ReadSignature(Byte[], ITokenResolver)
   href: api/CilTools.Reflection.LocalVariable.html#CilTools_Reflection_LocalVariable_ReadSignature_System_Byte___CilTools_Reflection_ITokenResolver_
@@ -5131,6 +5218,117 @@ references:
   commentId: Overload:CilTools.Reflection.PInvokeParams.SetLastError
   fullName: CilTools.Reflection.PInvokeParams.SetLastError
   nameWithType: PInvokeParams.SetLastError
+- uid: CilTools.Reflection.PortableExecutable
+  name: CilTools.Reflection.PortableExecutable
+  href: api/CilTools.Reflection.PortableExecutable.html
+  commentId: N:CilTools.Reflection.PortableExecutable
+  fullName: CilTools.Reflection.PortableExecutable
+  nameWithType: CilTools.Reflection.PortableExecutable
+- uid: CilTools.Reflection.PortableExecutable.VTable
+  name: VTable
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html
+  commentId: T:CilTools.Reflection.PortableExecutable.VTable
+  fullName: CilTools.Reflection.PortableExecutable.VTable
+  nameWithType: VTable
+- uid: CilTools.Reflection.PortableExecutable.VTable.#ctor(System.Int32,System.Int16,System.Int16,System.Byte[])
+  name: VTable(Int32, Int16, Int16, Byte[])
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable__ctor_System_Int32_System_Int16_System_Int16_System_Byte___
+  commentId: M:CilTools.Reflection.PortableExecutable.VTable.#ctor(System.Int32,System.Int16,System.Int16,System.Byte[])
+  name.vb: VTable(Int32, Int16, Int16, Byte())
+  fullName: CilTools.Reflection.PortableExecutable.VTable.VTable(System.Int32, System.Int16, System.Int16, System.Byte[])
+  fullName.vb: CilTools.Reflection.PortableExecutable.VTable.VTable(System.Int32, System.Int16, System.Int16, System.Byte())
+  nameWithType: VTable.VTable(Int32, Int16, Int16, Byte[])
+  nameWithType.vb: VTable.VTable(Int32, Int16, Int16, Byte())
+- uid: CilTools.Reflection.PortableExecutable.VTable.#ctor*
+  name: VTable
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable__ctor_
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.#ctor
+  fullName: CilTools.Reflection.PortableExecutable.VTable.VTable
+  nameWithType: VTable.VTable
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetData
+  name: GetData()
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_GetData
+  commentId: M:CilTools.Reflection.PortableExecutable.VTable.GetData
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetData()
+  nameWithType: VTable.GetData()
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetData*
+  name: GetData
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_GetData_
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.GetData
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetData
+  nameWithType: VTable.GetData
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetSlotValue(System.Int32)
+  name: GetSlotValue(Int32)
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_GetSlotValue_System_Int32_
+  commentId: M:CilTools.Reflection.PortableExecutable.VTable.GetSlotValue(System.Int32)
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetSlotValue(System.Int32)
+  nameWithType: VTable.GetSlotValue(Int32)
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetSlotValue*
+  name: GetSlotValue
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_GetSlotValue_
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.GetSlotValue
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetSlotValue
+  nameWithType: VTable.GetSlotValue
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32(System.Int32)
+  name: GetSlotValueInt32(Int32)
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_GetSlotValueInt32_System_Int32_
+  commentId: M:CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32(System.Int32)
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32(System.Int32)
+  nameWithType: VTable.GetSlotValueInt32(Int32)
+- uid: CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32*
+  name: GetSlotValueInt32
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_GetSlotValueInt32_
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32
+  fullName: CilTools.Reflection.PortableExecutable.VTable.GetSlotValueInt32
+  nameWithType: VTable.GetSlotValueInt32
+- uid: CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  name: Is64Bit
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_Is64Bit
+  commentId: P:CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  fullName: CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  nameWithType: VTable.Is64Bit
+- uid: CilTools.Reflection.PortableExecutable.VTable.Is64Bit*
+  name: Is64Bit
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_Is64Bit_
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  fullName: CilTools.Reflection.PortableExecutable.VTable.Is64Bit
+  nameWithType: VTable.Is64Bit
+- uid: CilTools.Reflection.PortableExecutable.VTable.RVA
+  name: RVA
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_RVA
+  commentId: P:CilTools.Reflection.PortableExecutable.VTable.RVA
+  fullName: CilTools.Reflection.PortableExecutable.VTable.RVA
+  nameWithType: VTable.RVA
+- uid: CilTools.Reflection.PortableExecutable.VTable.RVA*
+  name: RVA
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_RVA_
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.RVA
+  fullName: CilTools.Reflection.PortableExecutable.VTable.RVA
+  nameWithType: VTable.RVA
+- uid: CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  name: SlotsCount
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_SlotsCount
+  commentId: P:CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  fullName: CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  nameWithType: VTable.SlotsCount
+- uid: CilTools.Reflection.PortableExecutable.VTable.SlotsCount*
+  name: SlotsCount
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_SlotsCount_
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  fullName: CilTools.Reflection.PortableExecutable.VTable.SlotsCount
+  nameWithType: VTable.SlotsCount
+- uid: CilTools.Reflection.PortableExecutable.VTable.Type
+  name: Type
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_Type
+  commentId: P:CilTools.Reflection.PortableExecutable.VTable.Type
+  fullName: CilTools.Reflection.PortableExecutable.VTable.Type
+  nameWithType: VTable.Type
+- uid: CilTools.Reflection.PortableExecutable.VTable.Type*
+  name: Type
+  href: api/CilTools.Reflection.PortableExecutable.VTable.html#CilTools_Reflection_PortableExecutable_VTable_Type_
+  commentId: Overload:CilTools.Reflection.PortableExecutable.VTable.Type
+  fullName: CilTools.Reflection.PortableExecutable.VTable.Type
+  nameWithType: VTable.Type
 - uid: CilTools.Reflection.ReflectionProperties
   name: ReflectionProperties
   href: api/CilTools.Reflection.ReflectionProperties.html
@@ -5149,12 +5347,30 @@ references:
   commentId: F:CilTools.Reflection.ReflectionProperties.ExplicitlyImplementedMethods
   fullName: CilTools.Reflection.ReflectionProperties.ExplicitlyImplementedMethods
   nameWithType: ReflectionProperties.ExplicitlyImplementedMethods
+- uid: CilTools.Reflection.ReflectionProperties.FieldOffset
+  name: FieldOffset
+  href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_FieldOffset
+  commentId: F:CilTools.Reflection.ReflectionProperties.FieldOffset
+  fullName: CilTools.Reflection.ReflectionProperties.FieldOffset
+  nameWithType: ReflectionProperties.FieldOffset
+- uid: CilTools.Reflection.ReflectionProperties.FieldRva
+  name: FieldRva
+  href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_FieldRva
+  commentId: F:CilTools.Reflection.ReflectionProperties.FieldRva
+  fullName: CilTools.Reflection.ReflectionProperties.FieldRva
+  nameWithType: ReflectionProperties.FieldRva
 - uid: CilTools.Reflection.ReflectionProperties.FileAlignment
   name: FileAlignment
   href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_FileAlignment
   commentId: F:CilTools.Reflection.ReflectionProperties.FileAlignment
   fullName: CilTools.Reflection.ReflectionProperties.FileAlignment
   nameWithType: ReflectionProperties.FileAlignment
+- uid: CilTools.Reflection.ReflectionProperties.ForwardedTypes
+  name: ForwardedTypes
+  href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_ForwardedTypes
+  commentId: F:CilTools.Reflection.ReflectionProperties.ForwardedTypes
+  fullName: CilTools.Reflection.ReflectionProperties.ForwardedTypes
+  nameWithType: ReflectionProperties.ForwardedTypes
 - uid: CilTools.Reflection.ReflectionProperties.Get(System.Object,System.Int32)
   name: Get(Object, Int32)
   href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_Get_System_Object_System_Int32_
@@ -5191,6 +5407,12 @@ references:
   commentId: F:CilTools.Reflection.ReflectionProperties.ReferencedModules
   fullName: CilTools.Reflection.ReflectionProperties.ReferencedModules
   nameWithType: ReflectionProperties.ReferencedModules
+- uid: CilTools.Reflection.ReflectionProperties.RvaFieldValue
+  name: RvaFieldValue
+  href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_RvaFieldValue
+  commentId: F:CilTools.Reflection.ReflectionProperties.RvaFieldValue
+  fullName: CilTools.Reflection.ReflectionProperties.RvaFieldValue
+  nameWithType: ReflectionProperties.RvaFieldValue
 - uid: CilTools.Reflection.ReflectionProperties.Signature
   name: Signature
   href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_Signature
@@ -5215,6 +5437,12 @@ references:
   commentId: F:CilTools.Reflection.ReflectionProperties.VTableEntry
   fullName: CilTools.Reflection.ReflectionProperties.VTableEntry
   nameWithType: ReflectionProperties.VTableEntry
+- uid: CilTools.Reflection.ReflectionProperties.VTables
+  name: VTables
+  href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_VTables
+  commentId: F:CilTools.Reflection.ReflectionProperties.VTables
+  fullName: CilTools.Reflection.ReflectionProperties.VTables
+  nameWithType: ReflectionProperties.VTables
 - uid: CilTools.Reflection.RefResolutionMode
   name: RefResolutionMode
   href: api/CilTools.Reflection.RefResolutionMode.html
@@ -6910,6 +7138,30 @@ references:
   commentId: Overload:CilTools.SourceCode.Common.SourceToken.Kind
   fullName: CilTools.SourceCode.Common.SourceToken.Kind
   nameWithType: SourceToken.Kind
+- uid: CilTools.SourceCode.Common.SourceToken.Language
+  name: Language
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_Language
+  commentId: P:CilTools.SourceCode.Common.SourceToken.Language
+  fullName: CilTools.SourceCode.Common.SourceToken.Language
+  nameWithType: SourceToken.Language
+- uid: CilTools.SourceCode.Common.SourceToken.Language*
+  name: Language
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_Language_
+  commentId: Overload:CilTools.SourceCode.Common.SourceToken.Language
+  fullName: CilTools.SourceCode.Common.SourceToken.Language
+  nameWithType: SourceToken.Language
+- uid: CilTools.SourceCode.Common.SourceToken.OrdinalNumber
+  name: OrdinalNumber
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_OrdinalNumber
+  commentId: P:CilTools.SourceCode.Common.SourceToken.OrdinalNumber
+  fullName: CilTools.SourceCode.Common.SourceToken.OrdinalNumber
+  nameWithType: SourceToken.OrdinalNumber
+- uid: CilTools.SourceCode.Common.SourceToken.OrdinalNumber*
+  name: OrdinalNumber
+  href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_OrdinalNumber_
+  commentId: Overload:CilTools.SourceCode.Common.SourceToken.OrdinalNumber
+  fullName: CilTools.SourceCode.Common.SourceToken.OrdinalNumber
+  nameWithType: SourceToken.OrdinalNumber
 - uid: CilTools.SourceCode.Common.SourceToken.ToText(System.IO.TextWriter)
   name: ToText(TextWriter)
   href: api/CilTools.SourceCode.Common.SourceToken.html#CilTools_SourceCode_Common_SourceToken_ToText_System_IO_TextWriter_
@@ -7582,6 +7834,42 @@ references:
   commentId: Overload:CilTools.Syntax.DisassemblerParams.IncludeSourceCode
   fullName: CilTools.Syntax.DisassemblerParams.IncludeSourceCode
   nameWithType: DisassemblerParams.IncludeSourceCode
+- uid: CilTools.Syntax.IdentifierKind
+  name: IdentifierKind
+  href: api/CilTools.Syntax.IdentifierKind.html
+  commentId: T:CilTools.Syntax.IdentifierKind
+  fullName: CilTools.Syntax.IdentifierKind
+  nameWithType: IdentifierKind
+- uid: CilTools.Syntax.IdentifierKind.Label
+  name: Label
+  href: api/CilTools.Syntax.IdentifierKind.html#CilTools_Syntax_IdentifierKind_Label
+  commentId: F:CilTools.Syntax.IdentifierKind.Label
+  fullName: CilTools.Syntax.IdentifierKind.Label
+  nameWithType: IdentifierKind.Label
+- uid: CilTools.Syntax.IdentifierKind.LocalVariable
+  name: LocalVariable
+  href: api/CilTools.Syntax.IdentifierKind.html#CilTools_Syntax_IdentifierKind_LocalVariable
+  commentId: F:CilTools.Syntax.IdentifierKind.LocalVariable
+  fullName: CilTools.Syntax.IdentifierKind.LocalVariable
+  nameWithType: IdentifierKind.LocalVariable
+- uid: CilTools.Syntax.IdentifierKind.Member
+  name: Member
+  href: api/CilTools.Syntax.IdentifierKind.html#CilTools_Syntax_IdentifierKind_Member
+  commentId: F:CilTools.Syntax.IdentifierKind.Member
+  fullName: CilTools.Syntax.IdentifierKind.Member
+  nameWithType: IdentifierKind.Member
+- uid: CilTools.Syntax.IdentifierKind.Other
+  name: Other
+  href: api/CilTools.Syntax.IdentifierKind.html#CilTools_Syntax_IdentifierKind_Other
+  commentId: F:CilTools.Syntax.IdentifierKind.Other
+  fullName: CilTools.Syntax.IdentifierKind.Other
+  nameWithType: IdentifierKind.Other
+- uid: CilTools.Syntax.IdentifierKind.Parameter
+  name: Parameter
+  href: api/CilTools.Syntax.IdentifierKind.html#CilTools_Syntax_IdentifierKind_Parameter
+  commentId: F:CilTools.Syntax.IdentifierKind.Parameter
+  fullName: CilTools.Syntax.IdentifierKind.Parameter
+  nameWithType: IdentifierKind.Parameter
 - uid: CilTools.Syntax.IdentifierSyntax
   name: IdentifierSyntax
   href: api/CilTools.Syntax.IdentifierSyntax.html
@@ -7612,6 +7900,18 @@ references:
   commentId: Overload:CilTools.Syntax.IdentifierSyntax.EnumerateChildNodes
   fullName: CilTools.Syntax.IdentifierSyntax.EnumerateChildNodes
   nameWithType: IdentifierSyntax.EnumerateChildNodes
+- uid: CilTools.Syntax.IdentifierSyntax.IsDefinition
+  name: IsDefinition
+  href: api/CilTools.Syntax.IdentifierSyntax.html#CilTools_Syntax_IdentifierSyntax_IsDefinition
+  commentId: P:CilTools.Syntax.IdentifierSyntax.IsDefinition
+  fullName: CilTools.Syntax.IdentifierSyntax.IsDefinition
+  nameWithType: IdentifierSyntax.IsDefinition
+- uid: CilTools.Syntax.IdentifierSyntax.IsDefinition*
+  name: IsDefinition
+  href: api/CilTools.Syntax.IdentifierSyntax.html#CilTools_Syntax_IdentifierSyntax_IsDefinition_
+  commentId: Overload:CilTools.Syntax.IdentifierSyntax.IsDefinition
+  fullName: CilTools.Syntax.IdentifierSyntax.IsDefinition
+  nameWithType: IdentifierSyntax.IsDefinition
 - uid: CilTools.Syntax.IdentifierSyntax.IsMemberName
   name: IsMemberName
   href: api/CilTools.Syntax.IdentifierSyntax.html#CilTools_Syntax_IdentifierSyntax_IsMemberName
@@ -7624,6 +7924,18 @@ references:
   commentId: Overload:CilTools.Syntax.IdentifierSyntax.IsMemberName
   fullName: CilTools.Syntax.IdentifierSyntax.IsMemberName
   nameWithType: IdentifierSyntax.IsMemberName
+- uid: CilTools.Syntax.IdentifierSyntax.Kind
+  name: Kind
+  href: api/CilTools.Syntax.IdentifierSyntax.html#CilTools_Syntax_IdentifierSyntax_Kind
+  commentId: P:CilTools.Syntax.IdentifierSyntax.Kind
+  fullName: CilTools.Syntax.IdentifierSyntax.Kind
+  nameWithType: IdentifierSyntax.Kind
+- uid: CilTools.Syntax.IdentifierSyntax.Kind*
+  name: Kind
+  href: api/CilTools.Syntax.IdentifierSyntax.html#CilTools_Syntax_IdentifierSyntax_Kind_
+  commentId: Overload:CilTools.Syntax.IdentifierSyntax.Kind
+  fullName: CilTools.Syntax.IdentifierSyntax.Kind
+  nameWithType: IdentifierSyntax.Kind
 - uid: CilTools.Syntax.IdentifierSyntax.TargetItem
   name: TargetItem
   href: api/CilTools.Syntax.IdentifierSyntax.html#CilTools_Syntax_IdentifierSyntax_TargetItem
@@ -8110,6 +8422,12 @@ references:
   commentId: F:CilTools.Syntax.SyntaxNode._lead
   fullName: CilTools.Syntax.SyntaxNode._lead
   nameWithType: SyntaxNode._lead
+- uid: CilTools.Syntax.SyntaxNode._parent
+  name: _parent
+  href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode__parent
+  commentId: F:CilTools.Syntax.SyntaxNode._parent
+  fullName: CilTools.Syntax.SyntaxNode._parent
+  nameWithType: SyntaxNode._parent
 - uid: CilTools.Syntax.SyntaxNode._trail
   name: _trail
   href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode__trail
@@ -8134,6 +8452,18 @@ references:
   commentId: Overload:CilTools.Syntax.SyntaxNode.EnumerateChildNodes
   fullName: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
   nameWithType: SyntaxNode.EnumerateChildNodes
+- uid: CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  name: GetAdditionalInfo(String)
+  href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetAdditionalInfo_System_String_
+  commentId: M:CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  fullName: CilTools.Syntax.SyntaxNode.GetAdditionalInfo(System.String)
+  nameWithType: SyntaxNode.GetAdditionalInfo(String)
+- uid: CilTools.Syntax.SyntaxNode.GetAdditionalInfo*
+  name: GetAdditionalInfo
+  href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetAdditionalInfo_
+  commentId: Overload:CilTools.Syntax.SyntaxNode.GetAdditionalInfo
+  fullName: CilTools.Syntax.SyntaxNode.GetAdditionalInfo
+  nameWithType: SyntaxNode.GetAdditionalInfo
 - uid: CilTools.Syntax.SyntaxNode.GetChildNodes
   name: GetChildNodes()
   href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetChildNodes
@@ -8188,6 +8518,18 @@ references:
   commentId: Overload:CilTools.Syntax.SyntaxNode.Parent
   fullName: CilTools.Syntax.SyntaxNode.Parent
   nameWithType: SyntaxNode.Parent
+- uid: CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
+  name: SetAdditionalInfo(String, Object)
+  href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_SetAdditionalInfo_System_String_System_Object_
+  commentId: M:CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String,System.Object)
+  fullName: CilTools.Syntax.SyntaxNode.SetAdditionalInfo(System.String, System.Object)
+  nameWithType: SyntaxNode.SetAdditionalInfo(String, Object)
+- uid: CilTools.Syntax.SyntaxNode.SetAdditionalInfo*
+  name: SetAdditionalInfo
+  href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_SetAdditionalInfo_
+  commentId: Overload:CilTools.Syntax.SyntaxNode.SetAdditionalInfo
+  fullName: CilTools.Syntax.SyntaxNode.SetAdditionalInfo
+  nameWithType: SyntaxNode.SetAdditionalInfo
 - uid: CilTools.Syntax.SyntaxNode.ToString
   name: ToString()
   href: api/CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_ToString
@@ -8584,6 +8926,42 @@ references:
   commentId: Overload:CilTools.Syntax.Tokens.TokenReader.#ctor
   fullName: CilTools.Syntax.Tokens.TokenReader.TokenReader
   nameWithType: TokenReader.TokenReader
+- uid: CilTools.Syntax.Tokens.TokenReader.GetPreviousChar(System.Int32)
+  name: GetPreviousChar(Int32)
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_GetPreviousChar_System_Int32_
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.GetPreviousChar(System.Int32)
+  fullName: CilTools.Syntax.Tokens.TokenReader.GetPreviousChar(System.Int32)
+  nameWithType: TokenReader.GetPreviousChar(Int32)
+- uid: CilTools.Syntax.Tokens.TokenReader.GetPreviousChar*
+  name: GetPreviousChar
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_GetPreviousChar_
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.GetPreviousChar
+  fullName: CilTools.Syntax.Tokens.TokenReader.GetPreviousChar
+  nameWithType: TokenReader.GetPreviousChar
+- uid: CilTools.Syntax.Tokens.TokenReader.GetSourceString
+  name: GetSourceString()
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_GetSourceString
+  commentId: M:CilTools.Syntax.Tokens.TokenReader.GetSourceString
+  fullName: CilTools.Syntax.Tokens.TokenReader.GetSourceString()
+  nameWithType: TokenReader.GetSourceString()
+- uid: CilTools.Syntax.Tokens.TokenReader.GetSourceString*
+  name: GetSourceString
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_GetSourceString_
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.GetSourceString
+  fullName: CilTools.Syntax.Tokens.TokenReader.GetSourceString
+  nameWithType: TokenReader.GetSourceString
+- uid: CilTools.Syntax.Tokens.TokenReader.Length
+  name: Length
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_Length
+  commentId: P:CilTools.Syntax.Tokens.TokenReader.Length
+  fullName: CilTools.Syntax.Tokens.TokenReader.Length
+  nameWithType: TokenReader.Length
+- uid: CilTools.Syntax.Tokens.TokenReader.Length*
+  name: Length
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_Length_
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.Length
+  fullName: CilTools.Syntax.Tokens.TokenReader.Length
+  nameWithType: TokenReader.Length
 - uid: CilTools.Syntax.Tokens.TokenReader.PeekChar
   name: PeekChar()
   href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_PeekChar
@@ -8608,6 +8986,18 @@ references:
   commentId: Overload:CilTools.Syntax.Tokens.TokenReader.PeekString
   fullName: CilTools.Syntax.Tokens.TokenReader.PeekString
   nameWithType: TokenReader.PeekString
+- uid: CilTools.Syntax.Tokens.TokenReader.Position
+  name: Position
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_Position
+  commentId: P:CilTools.Syntax.Tokens.TokenReader.Position
+  fullName: CilTools.Syntax.Tokens.TokenReader.Position
+  nameWithType: TokenReader.Position
+- uid: CilTools.Syntax.Tokens.TokenReader.Position*
+  name: Position
+  href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_Position_
+  commentId: Overload:CilTools.Syntax.Tokens.TokenReader.Position
+  fullName: CilTools.Syntax.Tokens.TokenReader.Position
+  nameWithType: TokenReader.Position
 - uid: CilTools.Syntax.Tokens.TokenReader.ReadAll
   name: ReadAll()
   href: api/CilTools.Syntax.Tokens.TokenReader.html#CilTools_Syntax_Tokens_TokenReader_ReadAll
