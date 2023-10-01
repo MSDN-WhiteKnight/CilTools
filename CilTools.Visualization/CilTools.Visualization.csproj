@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <Description>Provides APIs that visualize syntax trees as HTML</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageTags>dotnet dotnet-standard dotnet-framework syntax html visualization</PackageTags>
+    <PackageIcon>IL.png</PackageIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
+    <ProjectReference Include="..\CilTools.Metadata\CilTools.Metadata.csproj" />
+    <ProjectReference Include="..\CilTools.SourceCode\CilTools.SourceCode.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\docs\images\IL.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>
