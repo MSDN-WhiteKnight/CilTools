@@ -105,5 +105,10 @@ namespace CilTools.SourceCode.Common
         {
             return SyntaxNode.EmptyArray;
         }
+
+        internal void SetParent(SyntaxNode parent)
+        {
+            this._parent = parent;
+        }
     }
 }

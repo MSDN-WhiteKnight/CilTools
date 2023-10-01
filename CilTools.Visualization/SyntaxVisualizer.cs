@@ -10,7 +10,6 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.SourceCode.Common;
 using CilTools.Syntax;
-using CilTools.Visualization.SyntaxModel;
 
 namespace CilTools.Visualization
 {
@@ -372,10 +371,10 @@ namespace CilTools.Visualization
         void VisualizeSourceTextImpl(string content, string ext, HtmlBuilder html)
         {
             //convert source text into tokens
-            SyntaxNode[] nodes = SourceParser.Parse(content, ext);
+            SyntaxNodeCollection coll = SourceParser.Parse(content, ext);
 
             //convert tokens to HTML
-            this.VisualizeSyntaxNodes(nodes, 0, html);
+            this.VisualizeSyntaxNodes(coll.GetChildNodes(), 0, html);
         }
 
         /// <summary>
