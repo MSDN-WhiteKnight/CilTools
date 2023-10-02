@@ -8,15 +8,21 @@
 
 [Documentation](https://msdn-whiteknight.github.io/CilTools/) | [Examples](https://gitflic.ru/project/smallsoft/ciltools/file?file=Examples&branch=master)
 
-CIL tools is a set of software to work with Common Intermediate Language in .NET:
+CIL tools is a set of software to work with Common Intermediate Language in .NET.
 
-- *CilTools.BytecodeAnalysis* - programmatically inspect bytecode of methods
-- *CilTools.Runtime* - load bytecode of methods in another process
-- *CilTools.Metadata* - inspect assembly via reflection without loading it into the current process
-- *CilTools.CommandLine* - cross-platform command line tool to display CIL code of methods
-- *CilView* - windows application to display CIL code of methods in the given assembly file or process
+Libraries:
 
-## CilTools.BytecodeAnalysis (previously CilBytecodeParser)
+- [CilTools.BytecodeAnalysis](https://www.nuget.org/packages/CilTools.BytecodeAnalysis/) - inspect or disassemble bytecode of methods
+- [CilTools.Runtime](https://www.nuget.org/packages/CilTools.Runtime/) - inspect assemblies from external .NET process
+- [CilTools.Metadata](https://www.nuget.org/packages/CilTools.Metadata/) - inspect assembly via reflection without loading it into the current process
+- [CilTools.SourceCode](https://www.nuget.org/packages/CilTools.SourceCode/) - provides APIs that assist in lexical analysis of source code
+
+Applications:
+
+- [CilTools.CommandLine](https://www.nuget.org/packages/CilTools.CommandLine/) - cross-platform command line disassembler tool
+- [CIL View](https://gitflic.ru/project/smallsoft/ciltools/file?file=CilView&branch=master) - graphical CIL viewer application for Windows
+
+## Using CilTools.BytecodeAnalysis
 
 **Requirements:** .NET Framework 3.5+ or .NET Standard 2.0+ 
 
@@ -87,45 +93,7 @@ ret
 */
 ```
 
-## CilTools.Runtime
-
-**Requirements:** .NET Framework 4.5+
-
-[![Nuget](https://img.shields.io/nuget/v/CilTools.Runtime)](https://www.nuget.org/packages/CilTools.Runtime/)
-
-CilTools.Runtime loads CIL bytecode of methods in external process's CLR instance using ClrMD. This enables processing bytecode from external process with CilTools.BytecodeAnalysis library.
-
-## CilTools.Metadata
-
-**Requirements:** .NET Framework 4.5+ or .NET Standard 2.0+
-
-[![Nuget](https://img.shields.io/nuget/v/CilTools.Metadata)](https://www.nuget.org/packages/CilTools.Metadata/)
-
-The library that supports inspecting the contents of .NET assembly via reflection without loading it into the current process. This enables inspecting assemblies for another target framework (such as .NET Standard assemblies when your application is on .NET Framework) or when some dependencies could not be resolved. This also means assemblies can be unloaded from memory when they are no longer needed.
-
-## CilTools.CommandLine
-
-**Requirements:** .NET Core 3.1+
-
-[![Nuget](https://img.shields.io/nuget/v/CilTools.CommandLine)](https://www.nuget.org/packages/CilTools.CommandLine/)
-
-Cross-platform command line tool to view disassembled CIL code of methods in .NET assemblies. The application runs on any operating system supported by .NET Core. CilTools.CommandLine could print disassembled CIL into the console (standard output) or .il file. Syntax highlighting is supported for console output as long as the target console implementation supports setting console colors. 
-
-Install as global .NET tool:
-
-    dotnet tool install --global CilTools.CommandLine
-    
-For more information see [readme file](https://gitflic.ru/project/smallsoft/ciltools/blob?file=CilTools.CommandLine%2Freadme.md&branch=master).
-
-## CilView
-
-**Requirements:** .NET Framework 4.5+
-
-**Download:** [ClickOnce installer](https://msdn-whiteknight.github.io/CilTools/update/), [Releases](https://github.com/MSDN-WhiteKnight/CilTools/releases)
-
-A windows application to display CIL code of methods in the given assembly file or process. Supports syntax highlighting and navigating to method code by clicking on its reference.
-
-![cilview](https://raw.githubusercontent.com/MSDN-WhiteKnight/CilTools/master/docfx_project/images/cilview.png)
+For more information, see [documentation](https://msdn-whiteknight.github.io/CilTools/articles/using-bytecode-analysis.html).
 
 ---
 
