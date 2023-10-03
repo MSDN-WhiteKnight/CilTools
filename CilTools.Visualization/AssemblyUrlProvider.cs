@@ -18,7 +18,7 @@ namespace CilTools.Visualization
             this.scope = ass;
         }
 
-        public override string GetMemberUrl(MemberInfo member, int level)
+        public override string GetMemberUrl(MemberInfo member)
         {
             if (member is MethodBase)
             {

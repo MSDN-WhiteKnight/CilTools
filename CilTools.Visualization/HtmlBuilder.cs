@@ -45,6 +45,11 @@ namespace CilTools.Visualization
             this.wr = new StringWriter(target);
         }
 
+        internal TextWriter Target
+        {
+            get { return this.wr; }
+        }
+
         internal static readonly HtmlAttribute[] NoAttributes = new HtmlAttribute[0];
 
         public static HtmlAttribute[] OneAttribute(string name, string val)
