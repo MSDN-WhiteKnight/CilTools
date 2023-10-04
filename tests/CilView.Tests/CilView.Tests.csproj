@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\CilTools.Metadata\CilTools.Metadata.csproj" />
+    <ProjectReference Include="..\..\CilTools.Visualization\CilTools.Visualization.csproj" />
     <ProjectReference Include="..\..\CilView.Core\CilView.Core.csproj" />
     <ProjectReference Include="..\CilTools.Tests.Common\CilTools.Tests.Common.csproj" />
   </ItemGroup>

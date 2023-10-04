@@ -404,5 +404,33 @@ namespace CilTools.Tests.Common
         {
             Assert.AreEqual(expectedType, ((ICustomAttribute)attr).Constructor.DeclaringType.FullName);
         }
+
+        /// <summary>
+        /// Asserts that the specified markup strings are equal, disregarding differences in line endings
+        /// </summary>
+        public static void MarkupEquals(string expected, string actual)
+        {
+            //normalize line endings
+            expected = expected.Replace("\r\n", "\n").Trim();
+            actual = actual.Replace("\r\n", "\n").Trim();
+
+            //assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        /// <summary>
+        /// Asserts that the specified markup string contains the specified substring, disregarding differences in line endings
+        /// </summary>
+        public static void MarkupContains(string str, string substr)
+        {
+            //remove line endings
+            str = str.Replace("\r\n", string.Empty);
+            str = str.Replace("\n", string.Empty).Trim();
+            substr = substr.Replace("\r\n", string.Empty);
+            substr = substr.Replace("\n", string.Empty).Trim();
+
+            //assert
+            Assert.IsTrue(str.Contains(substr));
+        }
     }
 }
