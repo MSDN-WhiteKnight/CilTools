@@ -6,8 +6,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Reflection;
 using System.Text;
+using CilTools.Visualization;
 
-namespace CilTools.Visualization
+namespace CilView.Visualization
 {
     class AssemblyUrlProvider : UrlProviderBase
     {

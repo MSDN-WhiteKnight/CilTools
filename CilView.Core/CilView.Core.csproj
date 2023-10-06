@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
     <ProjectReference Include="..\CilTools.SourceCode\CilTools.SourceCode.csproj" />
+    <ProjectReference Include="..\CilTools.Visualization\CilTools.Visualization.csproj" />
   </ItemGroup>
 
 </Project>

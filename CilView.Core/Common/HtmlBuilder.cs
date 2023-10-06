@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 // Copied from: https://gitflic.ru/project/smallsoft/html-forms/blob?file=Html.Forms%2FHtmlBuilder.cs&branch=main
 
-namespace CilTools.Visualization
+namespace CilView.Common
 {
     /// <summary>
     /// Provides high-level helper methods that generate HTML markup and write it into the specified target
