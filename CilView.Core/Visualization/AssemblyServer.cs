@@ -20,13 +20,31 @@ namespace CilView.Visualization
     {
         Assembly _ass;        
         CilVisualizer _vis;
-        
+
+        public AssemblyServer(string urlHost, string urlPrefix) : base(urlHost, urlPrefix)
+        {
+            this._vis = new CilVisualizer();
+        }
+
         public AssemblyServer(Assembly ass, string urlHost, string urlPrefix) : base(urlHost, urlPrefix)
         {
             this._ass = ass;
             this._vis = new CilVisualizer();
             AssemblyUrlProvider provider = new AssemblyUrlProvider(this._ass);
             this._vis.AddUrlProvider(provider);
+        }
+
+        public Assembly MainAssembly
+        {
+            get { return this._ass; }
+
+            set
+            {
+                this._ass = value;
+                this._vis.RemoveAllProviders();
+                AssemblyUrlProvider provider = new AssemblyUrlProvider(this._ass);
+                this._vis.AddUrlProvider(provider);
+            }
         }
         
         static MemberInfo ResolveMember(Assembly ass, int metadataToken)

@@ -26,6 +26,11 @@ namespace CilTools.Visualization
             this._urlProviders.Add(provider);
         }
 
+        public void RemoveAllProviders()
+        {
+            this._urlProviders.Clear();
+        }
+
         string ResolveMemberUrl(MemberInfo member)
         {
             if (this._urlProviders.Count == 0) return string.Empty;

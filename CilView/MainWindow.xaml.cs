@@ -21,6 +21,7 @@ using CilView.Core.Syntax;
 using CilView.Exceptions;
 using CilView.SourceCode;
 using CilView.UI.Dialogs;
+using CilView.Visualization;
 
 namespace CilView
 {
@@ -31,6 +32,7 @@ namespace CilView
     {
         AssemblySource source;
         HistoryContainer<string> recentFiles = new HistoryContainer<string>();
+        AssemblyServer srv;
 
         void SetSource(AssemblySource newval)
         {
@@ -53,6 +55,8 @@ namespace CilView
         public MainWindow()
         {
             InitializeComponent();
+            this.srv = new AssemblyServer(ServerBase.DefaultUrlHost, ServerBase.DefaultUrlPrefix);
+            this.srv.RunInBackground();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -326,6 +330,7 @@ namespace CilView
 
                 //display assembly manifest
                 this.cilbrowser.NavigateToAssembly(ass);
+                this.srv.MainAssembly = ass;
 
                 int c = 0;
                 int index = 0;

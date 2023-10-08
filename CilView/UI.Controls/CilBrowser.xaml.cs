@@ -16,6 +16,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using CilView.Common;
 using CilView.Core.DocumentModel;
+using CilView.Visualization;
 
 namespace CilView.UI.Controls
 {
@@ -133,7 +134,8 @@ namespace CilView.UI.Controls
         {
             CilBrowserPage page = new CilBrowserPage(mb, start, end, Navigated);
             page.Title = mb.Name;
-            frameContent.Navigate(page);
+            string url = ServerBase.DefaultUrlHost + ServerBase.DefaultUrlPrefix + "render.html?token=" + mb.MetadataToken.ToString("X");
+            frameContent.Navigate(new Uri(url));
             this.current_method = mb;
             this.text = page.ContentText;
 
@@ -151,7 +153,9 @@ namespace CilView.UI.Controls
             {
                 CilBrowserPage page = new CilBrowserPage(t, Navigated);
                 page.Title = "Type: " + t.Name;
-                frameContent.Navigate(page);
+                string url = ServerBase.DefaultUrlHost + ServerBase.DefaultUrlPrefix + "render.html?token=" + 
+                    t.MetadataToken.ToString("X");
+                frameContent.Navigate(new Uri(url));
                 contenttext = page.ContentText;
             }
             catch (TypeLoadException ex) 
@@ -190,8 +194,9 @@ namespace CilView.UI.Controls
             {
                 page.Title = "Assembly: " + ass.GetName().Name;
             }
-
-            frameContent.Navigate(page);
+            
+            string url = ServerBase.DefaultUrlHost + ServerBase.DefaultUrlPrefix + "render.html";
+            frameContent.Navigate(new Uri(url));
             contenttext = page.ContentText;
             
             this.current_method = null;
