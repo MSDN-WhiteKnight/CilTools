@@ -195,6 +195,11 @@ namespace CilView
             get { return false; }
         }
 
+        public override Assembly GetAssembly(string name)
+        {
+            return this.rd.Load(name);
+        }
+
         public override string GetProcessInfoString()
         {
             return "";

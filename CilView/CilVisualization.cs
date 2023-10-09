@@ -17,6 +17,7 @@ using CilTools.Runtime;
 using CilView.Core.DocumentModel;
 using CilView.SourceCode;
 using CilView.UI.Controls;
+using CilView.Visualization;
 
 namespace CilView
 {
@@ -30,6 +31,8 @@ namespace CilView
 
         //Parameters that control how disassembled CIL is produced. They are changed from main window UI.
         internal static readonly DisassemblerParams CurrentDisassemblerParams = InitDisassemblerParams();
+
+        internal static AssemblyServer Server;
 
         static DisassemblerParams InitDisassemblerParams()
         {
@@ -342,17 +345,7 @@ namespace CilView
             public bool ContextMenuEnabled = true;
             public bool ScrollCallbackApplied = false;
         }
-
-        static FlowDocumentScrollViewer CreateScrollViewer(FlowDocument fd)
-        {
-            FlowDocumentScrollViewer scroll = new FlowDocumentScrollViewer();
-            scroll.HorizontalAlignment = HorizontalAlignment.Stretch;
-            scroll.VerticalAlignment = VerticalAlignment.Stretch;
-            scroll.VerticalScrollBarVisibility = ScrollBarVisibility.Visible;
-            scroll.Document = fd;
-            return scroll;
-        }
-
+        
         internal static FlowDocument CreateFlowDocument()
         {
             FlowDocument fd = new FlowDocument();
@@ -361,129 +354,74 @@ namespace CilView
             return fd;
         }
 
-        public static UIElement VisualizeGraph(
-            CilGraph gr, RoutedEventHandler navigation,int highlight_start=-1,int highlight_end=Int32.MaxValue
-            )
+        public static UIElement VisualizeAsHtml(object obj)
         {
-            FlowDocument fd = CreateFlowDocument();
-
-            SyntaxNode[] tree = gr.ToSyntaxTree(CurrentDisassemblerParams).GetChildNodes();
-            Paragraph par = new Paragraph();
-
-            VisualizeGraphContext ctx = new VisualizeGraphContext();
-            ctx.navigation = navigation;
-            ctx.highlight_start = highlight_start;
-            ctx.highlight_end = highlight_end;
-
-            for (int i = 0; i < tree.Length; i++) VisualizeNode(tree[i], par, ctx);
-
-            fd.Blocks.Add(par);
-            return CreateScrollViewer(fd);
+            string html = Server.Visualize(obj);
+            WebBrowser wb = new WebBrowser();
+            wb.NavigateToString(html);
+            return wb;
         }
 
+        public static string VisualizeAsText(object obj)
+        {
+            IEnumerable<SyntaxNode> nodes;
+
+            if (obj is IlasmAssembly)
+            {
+                //synthesized assembly that contains IL - no need to disassemble
+                IlasmAssembly ia = (IlasmAssembly)obj;
+                nodes = ia.Syntax.GetChildNodes();
+            }
+            else if (obj is IlasmType)
+            {
+                //synthesized type that contains IL - no need to disassemble
+                IlasmType dt = (IlasmType)obj;
+                nodes = dt.Syntax.GetChildNodes();
+            }
+            else if (obj is Assembly)
+            {
+                //assembly manifest
+                Assembly ass = (Assembly)obj;
+                nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+            }
+            else if (obj is Type)
+            {
+                //type disassembled IL
+                Type t = (Type)obj;
+                nodes = SyntaxNode.GetTypeDefSyntax(t);
+            }
+            else if (obj is MethodBase)
+            {
+                //method disassembled IL
+                MethodBase mb = (MethodBase)obj;
+                CilGraph gr = CilGraph.Create(mb);
+                nodes = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams).GetChildNodes();
+            }
+            else return string.Empty;
+
+            StringBuilder sb = new StringBuilder(500);
+            StringWriter wr = new StringWriter(sb);
+
+            foreach (SyntaxNode node in nodes)
+            {
+                node.ToText(wr);
+            }
+
+            return sb.ToString();
+        }
+        
         public static FlowDocument VisualizeNodes(IEnumerable<SyntaxNode> nodes)
         {
             FlowDocument fd = CreateFlowDocument();
             Paragraph par = new Paragraph();
             VisualizeGraphContext ctx = new VisualizeGraphContext();
             ctx.ContextMenuEnabled = false;
+            ctx.navigation = null;
 
             foreach (SyntaxNode node in nodes) VisualizeNode(node, par, ctx);
 
             fd.Blocks.Add(par);
             return fd;
-        }
-
-        public static UIElement VisualizeType(Type t, RoutedEventHandler navigation,out string plaintext)
-        {
-            FlowDocument fd = CreateFlowDocument();
-
-            IEnumerable<SyntaxNode> tree;
-
-            if (t is IlasmType)
-            {
-                //synthesized type that contains IL - no need to disassemble
-                IlasmType dt = (IlasmType)t;
-                tree = dt.Syntax.EnumerateChildNodes();
-            }
-            else
-            {
-                //disassemble type
-                tree = SyntaxNode.GetTypeDefSyntax(t);
-            }
-
-            StringBuilder sb = new StringBuilder(500);
-            StringWriter wr = new StringWriter(sb);
-            Paragraph par = new Paragraph();
-
-            VisualizeGraphContext ctx = new VisualizeGraphContext();
-            ctx.navigation = navigation;
-
-            foreach (SyntaxNode node in tree) 
-            {
-                VisualizeNode(node, par, ctx);
-                node.ToText(wr);
-            }
-
-            fd.Blocks.Add(par);            
-            plaintext = sb.ToString();
-            return CreateScrollViewer(fd);
-        }
-
-        public static UIElement VisualizeAssembly(Assembly ass, RoutedEventHandler navigation, out string plaintext)
-        {
-            FlowDocument fd = CreateFlowDocument();
-            Paragraph par = new Paragraph();
-            IEnumerable<SyntaxNode> tree;
-            VisualizeGraphContext ctx = new VisualizeGraphContext();
-            
-            if (ass is IlasmAssembly)
-            {
-                //synthesized assembly that contains IL - no need to disassemble
-                IlasmAssembly ia = (IlasmAssembly)ass;
-                string contentText = ia.GetDocumentText();
-
-                if (contentText.Length < 1024 * 1024)
-                {
-                    tree = ia.Syntax.EnumerateChildNodes();
-
-                    //visualize IL
-                    foreach (SyntaxNode node in tree)
-                    {
-                        VisualizeNode(node, par, ctx);
-                    }
-                }
-                else
-                {
-                    Run r = new Run("[Error: Formatted view is not supported for files larger then 1 MB]");
-                    par.Inlines.Add(r);
-                }
-
-                //no need to reconstruct raw text as it is stored on IlasmAssembly
-                plaintext = contentText;
-            }
-            else
-            {
-                ctx.navigation = navigation;
-
-                //disassemble assembly manifest
-                tree = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
-
-                //visualize assembly manifest
-                StringBuilder sb = new StringBuilder(500);
-                StringWriter wr = new StringWriter(sb);
-                
-                foreach (SyntaxNode node in tree)
-                {
-                    VisualizeNode(node, par, ctx);
-                    node.ToText(wr);
-                }
-                
-                plaintext = sb.ToString();
-            }
-
-            fd.Blocks.Add(par);
-            return CreateScrollViewer(fd);
         }
     }
 }

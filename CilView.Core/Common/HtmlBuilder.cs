@@ -13,7 +13,7 @@ namespace CilView.Common
     /// <summary>
     /// Provides high-level helper methods that generate HTML markup and write it into the specified target
     /// </summary>
-    internal class HtmlBuilder
+    public class HtmlBuilder
     {
         TextWriter wr;
 
@@ -248,7 +248,7 @@ namespace CilView.Common
         }
     }
 
-    internal class HtmlAttribute
+    public class HtmlAttribute
     {
         public HtmlAttribute()
         {

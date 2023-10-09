@@ -6,12 +6,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.IO;
-using System.Reflection;
 using CilTools.Runtime;
-using CilTools.BytecodeAnalysis;
 
 namespace CilView
 {

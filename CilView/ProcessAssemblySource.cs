@@ -213,6 +213,11 @@ namespace CilView
             get { return true; }
         }
 
+        public override Assembly GetAssembly(string name)
+        {
+            return this.rd.Load(name);
+        }
+
         public override string GetProcessInfoString()
         {
             if (this.dt == null) throw new ObjectDisposedException("Data target");

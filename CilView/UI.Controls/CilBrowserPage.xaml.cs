@@ -27,7 +27,7 @@ namespace CilView.UI.Controls
             CilGraph gr = CilGraph.Create(m);
             string contentText = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams).ToString();
             
-            UIElement elem = CilVisualization.VisualizeGraph(gr, navigation, start, end);
+            UIElement elem = CilVisualization.VisualizeAsHtml(m);
             this.tbMainContent.Text = contentText;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);
@@ -56,8 +56,8 @@ namespace CilView.UI.Controls
             InitializeComponent();
             this.member = t;
 
-            string plaintext;
-            UIElement elem = CilVisualization.VisualizeType(t, navigation, out plaintext);
+            string plaintext = CilVisualization.VisualizeAsText(t);
+            UIElement elem = CilVisualization.VisualizeAsHtml(t);
             this.tbMainContent.Text = plaintext;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);
@@ -78,8 +78,8 @@ namespace CilView.UI.Controls
         {
             InitializeComponent();
             
-            string plaintext;
-            UIElement elem = CilVisualization.VisualizeAssembly(ass, navigation, out plaintext);
+            string plaintext = CilVisualization.VisualizeAsText(ass);
+            UIElement elem = CilVisualization.VisualizeAsHtml(ass);
             this.tbMainContent.Text = plaintext;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);

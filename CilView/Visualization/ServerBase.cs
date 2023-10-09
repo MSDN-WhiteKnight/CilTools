@@ -8,7 +8,7 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using CilView.Common;
-// Copied from: https://gitflic.ru/project/smallsoft/cilbrowser/blob?file=CilBrowser.Core%2FServerBase.cs&branch=main
+// From: https://gitflic.ru/project/smallsoft/cilbrowser/blob?file=CilBrowser.Core%2FServerBase.cs&branch=main
 
 namespace CilView.Visualization
 {
@@ -162,7 +162,8 @@ namespace CilView.Visualization
 
                 if (cached.Length > 0)
                 {
-                    SendHtmlResponse(response, cached);
+                    try { SendHtmlResponse(response, cached); }
+                    catch (Exception ex) { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
                     continue;
                 }
 
@@ -176,7 +177,8 @@ namespace CilView.Visualization
                 else
                 {
                     // Regular page
-                    this.RenderPage(url, request, response);
+                    try { this.RenderPage(url, request, response); }
+                    catch (Exception ex) { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
                     response.Close();
                 }
             }//end while

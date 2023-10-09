@@ -223,5 +223,15 @@ namespace CilView.Common
                 return reader.ReadToEnd();
             }
         }
+
+        public static string GetAssemblySimpleName(Assembly ass)
+        {
+            if (ass == null) return string.Empty;
+
+            AssemblyName an = ass.GetName();
+
+            if (an == null) return string.Empty;
+            else return an.Name;
+        }
     }
 }

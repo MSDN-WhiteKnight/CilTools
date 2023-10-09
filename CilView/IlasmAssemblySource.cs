@@ -57,6 +57,11 @@ namespace CilView
 
         public override bool HasProcessInfo => false;
 
+        public override Assembly GetAssembly(string name)
+        {
+            return this._ass;
+        }
+
         public override void Dispose() { }
 
         public override string GetProcessInfoString()

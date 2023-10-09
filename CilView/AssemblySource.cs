@@ -126,6 +126,8 @@ namespace CilView
         public event PropertyChangedEventHandler PropertyChanged;
 
         public abstract bool HasProcessInfo { get; }
+
+        public abstract Assembly GetAssembly(string name);
         public abstract string GetProcessInfoString();
         public abstract ClrThreadInfo[] GetProcessThreads();
         public abstract void Dispose();

@@ -50,6 +50,7 @@ namespace CilView
             
             this.source = newval;
             this.DataContext = newval;
+            this.srv.Source = newval;
         }
 
         public MainWindow()
@@ -57,6 +58,7 @@ namespace CilView
             InitializeComponent();
             this.srv = new AssemblyServer(ServerBase.DefaultUrlHost, ServerBase.DefaultUrlPrefix);
             this.srv.RunInBackground();
+            CilVisualization.Server = this.srv;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -330,7 +332,6 @@ namespace CilView
 
                 //display assembly manifest
                 this.cilbrowser.NavigateToAssembly(ass);
-                this.srv.MainAssembly = ass;
 
                 int c = 0;
                 int index = 0;

@@ -175,6 +175,9 @@
     <Compile Include="UI.Dialogs\wndError.xaml.cs">
       <DependentUpon>wndError.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Visualization\AssemblyServer.cs" />
+    <Compile Include="Visualization\CilViewUrlProvider.cs" />
+    <Compile Include="Visualization\ServerBase.cs" />
     <Compile Include="WmiAssemblySource.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -293,6 +296,10 @@
     <ProjectReference Include="..\CilTools.SourceCode\CilTools.SourceCode.csproj">
       <Project>{ced2367c-9616-412d-ab5e-0a27ac9794f8}</Project>
       <Name>CilTools.SourceCode</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CilTools.Visualization\CilTools.Visualization.csproj">
+      <Project>{c601ac80-c7b6-48af-ad73-a4dea992b9c5}</Project>
+      <Name>CilTools.Visualization</Name>
     </ProjectReference>
     <ProjectReference Include="..\CilView.Core\CilView.Core.csproj">
       <Project>{2801415a-3cbe-4d72-87f4-82c31d380675}</Project>
