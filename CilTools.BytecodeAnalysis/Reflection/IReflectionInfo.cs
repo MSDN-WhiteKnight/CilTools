@@ -109,6 +109,11 @@ namespace CilTools.Reflection
         public const int ForwardedTypes = 114;
 
         /// <summary>
+        /// Represents a target member of reference (TypeRef or MethodRef). (Type: MemberInfo)
+        /// </summary>
+        public const int ReferenceTarget = 115;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>

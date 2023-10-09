@@ -14,7 +14,7 @@ using CilTools.Reflection;
 
 namespace CilTools.Metadata
 {
-    class TypeRef : Type
+    class TypeRef : Type, IReflectionInfo
     {
         TypeReference tref;
         TypeReferenceHandle htref;
@@ -432,6 +432,15 @@ namespace CilTools.Metadata
 
             return (Utils.StrEquals(bt.FullName, "System.ValueType") || Utils.StrEquals(bt.FullName, "System.Enum")) &&
                 Utils.IsCoreAssembly(bt.Assembly);
+        }
+
+        public object GetReflectionProperty(int id)
+        {
+            if (id != ReflectionProperties.ReferenceTarget) return null;
+
+            this.LoadImpl();
+
+            return this.impl;
         }
 
         public override int GetHashCode()

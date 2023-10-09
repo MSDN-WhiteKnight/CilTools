@@ -160,6 +160,24 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        public void Test_MethodRef_ReferenceTarget()
+        {
+            MethodInfo mRef = GetMethodRef_Console_WriteLine() as MethodInfo;
+            MethodInfo mTarget = ReflectionProperties.Get(mRef, ReflectionProperties.ReferenceTarget) as MethodInfo;
+
+            Assert.AreEqual(mRef.Name, mTarget.Name);
+            Assert.AreEqual(mRef.ReturnType.FullName, mTarget.ReturnType.FullName);
+            Assert.AreEqual(mRef.DeclaringType.FullName, mTarget.DeclaringType.FullName);
+            Assert.AreEqual(mRef.Attributes, mTarget.Attributes);
+            Assert.AreEqual("MethodDef", mTarget.GetType().Name);
+
+            ParameterInfo[] parsRef = mRef.GetParameters();
+            ParameterInfo[] parsTarget = mTarget.GetParameters();
+            Assert.AreEqual(parsRef.Length, parsTarget.Length);
+            Assert.AreEqual(parsRef[0].ParameterType.FullName, parsTarget[0].ParameterType.FullName);
+        }
+
+        [TestMethod]
         public void Test_ConstructorRef()
         {
             MethodBase mRef = GetConstructorRef();

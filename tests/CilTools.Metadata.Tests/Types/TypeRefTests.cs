@@ -9,11 +9,8 @@ using System.Reflection.Emit;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.BytecodeAnalysis;
-using CilTools.Syntax;
+using CilTools.Reflection;
 using CilTools.Tests.Common;
-using CilTools.Tests.Common.Attributes;
-using CilTools.Tests.Common.TestData;
-using CilTools.Tests.Common.TextUtils;
 
 namespace CilTools.Metadata.Tests
 {
@@ -124,6 +121,20 @@ namespace CilTools.Metadata.Tests
 
             attrs = t.GetCustomAttributes(true);
             Assert.AreEqual(0, attrs.Length);
+        }
+
+        [TestMethod]
+        public void Test_TypeRef_ReferenceTarget()
+        {
+            Type t = GetTypeRef_System_Int32();
+            Type tTarget = ReflectionProperties.Get(t, ReflectionProperties.ReferenceTarget) as Type;
+
+            Assert.AreEqual(t.FullName, tTarget.FullName);
+            Assert.AreEqual(t.Namespace, tTarget.Namespace);
+            Assert.AreEqual(t.Name, tTarget.Name);
+            Assert.AreEqual(t.Attributes, tTarget.Attributes);
+            Assert.AreEqual(t.IsValueType, tTarget.IsValueType);
+            Assert.AreEqual("TypeDef", tTarget.GetType().Name);
         }
     }
 
