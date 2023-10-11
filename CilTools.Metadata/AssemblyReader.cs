@@ -42,6 +42,11 @@ namespace CilTools.Metadata
                 this.kind = k;this.val = v;
             }
 
+            internal AssemblyIdKind Kind
+            {
+                get { return this.kind; }
+            }
+
             public override int GetHashCode()
             {
                 int res = 0;
@@ -183,6 +188,23 @@ namespace CilTools.Metadata
         internal Assembly OnResolve(object sender, ResolveEventArgs e)
         {
             AssemblyName n = new AssemblyName(e.Name);
+
+            //try already loaded assemblies
+            foreach (AssemblyId key in this._assemblies.Keys)
+            {
+                // Skip assemblies identified by name, because they were already tried in Load
+                if (key.Kind == AssemblyIdKind.Name) continue;
+
+                Assembly ass = this._assemblies[key];
+                AssemblyName anCurrent = ass.GetName();
+
+                if (anCurrent == null) continue;
+
+                if (string.Equals(anCurrent.Name, n.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    return ass;
+                }
+            }
 
             //try from runtime directory first
             string sname = n.Name;
