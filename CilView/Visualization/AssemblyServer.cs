@@ -133,47 +133,55 @@ namespace CilView.Visualization
 
             if (url.StartsWith(this._urlPrefix + "render.html"))
             {
-                string assemblyName = request.QueryString["assembly"];
-                Assembly ass = this.ResolveAssembly(assemblyName);
-
-                if (ass == null)
+                try
                 {
-                    SendErrorResponse(response, 404, "Not found");
-                    return;
-                }
+                    string assemblyName = request.QueryString["assembly"];
+                    Assembly ass = this.ResolveAssembly(assemblyName);
 
-                string tokenStr = request.QueryString["token"];
-                int token;
+                    if (ass == null)
+                    {
+                        SendErrorResponse(response, 404, "Not found");
+                        return;
+                    }
 
-                if (string.IsNullOrEmpty(tokenStr))
-                {
-                    content = this.PrepareContent(this._vis.RenderAssemblyManifest(ass));
+                    string tokenStr = request.QueryString["token"];
+                    int token;
+
+                    if (string.IsNullOrEmpty(tokenStr))
+                    {
+                        content = this.PrepareContent(this._vis.RenderAssemblyManifest(ass));
+                        SendHtmlResponse(response, content);
+                        this.AddToCache(url, content);
+                        return;
+                    }
+
+                    if (!int.TryParse(tokenStr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out token))
+                    {
+                        SendErrorResponse(response, 404, "Not found");
+                        return;
+                    }
+
+                    MemberInfo member = ResolveMember(ass, token);
+
+                    if (member is MethodBase)
+                    {
+                        content = this._vis.RenderMethod((MethodBase)member);
+                    }
+                    else if (member is Type)
+                    {
+                        content = this._vis.RenderType((Type)member, false);
+                    }
+                    else content = string.Empty;
+
+                    content = this.PrepareContent(content);
                     SendHtmlResponse(response, content);
                     this.AddToCache(url, content);
-                    return;
                 }
-
-                if (!int.TryParse(tokenStr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out token))
+                catch (Exception ex)
                 {
-                    SendErrorResponse(response, 404, "Not found");
-                    return;
+                    string error = WebUtility.HtmlEncode(ex.ToString());
+                    SendHtmlResponse(response, error);
                 }
-
-                MemberInfo member = ResolveMember(ass, token);
-
-                if (member is MethodBase)
-                {
-                    content = this._vis.RenderMethod((MethodBase)member);
-                }
-                else if (member is Type)
-                {
-                    content = this._vis.RenderType((Type)member, false);
-                }
-                else content = string.Empty;
-
-                content = this.PrepareContent(content);
-                SendHtmlResponse(response, content);
-                this.AddToCache(url, content);
             }
             else
             {

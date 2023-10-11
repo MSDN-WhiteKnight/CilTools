@@ -177,8 +177,7 @@ namespace CilView.Visualization
                 else
                 {
                     // Regular page
-                    try { this.RenderPage(url, request, response); }
-                    catch (Exception ex) { System.Diagnostics.Debug.WriteLine(ex.ToString()); }
+                    this.RenderPage(url, request, response);
                     response.Close();
                 }
             }//end while

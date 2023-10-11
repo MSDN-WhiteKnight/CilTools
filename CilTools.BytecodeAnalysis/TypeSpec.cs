@@ -18,7 +18,7 @@ namespace CilTools.BytecodeAnalysis
     /// <summary>
     /// Represents type specification, the set of type information stored in the signature, as defined by ECMA-335
     /// </summary>
-    public class TypeSpec : Type, ITypeInfo //ECMA-335 II.23.2.12 Type
+    public class TypeSpec : Type, ITypeInfo, IReflectionInfo //ECMA-335 II.23.2.12 Type
     {
         //ECMA-335 II.23.1.16 Element types used in signatures
         internal const byte ELEMENT_TYPE_CMOD_REQD = 0x1f;
@@ -1036,6 +1036,16 @@ namespace CilTools.BytecodeAnalysis
         public override Type[] GetGenericParameterConstraints()
         {
             return this._Type.GetGenericParameterConstraints();
+        }
+
+        object IReflectionInfo.GetReflectionProperty(int id)
+        {
+            if (id == ReflectionProperties.ReferenceTarget)
+            {
+                // Forward ReferenceTarget for TypeRefs
+                return ReflectionProperties.Get(this._Type, id);
+            }
+            else return null;
         }
     }
 }

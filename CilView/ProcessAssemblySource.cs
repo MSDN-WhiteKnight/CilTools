@@ -12,6 +12,7 @@ using System.Diagnostics;
 using CilTools.Reflection;
 using CilTools.Runtime;
 using CilTools.Metadata;
+using CilView.Common;
 using Microsoft.Diagnostics.Runtime;
 
 namespace CilView
@@ -215,6 +216,14 @@ namespace CilView
 
         public override Assembly GetAssembly(string name)
         {
+            for (int i = 0; i < this.Assemblies.Count; i++)
+            {
+                if (Utils.StringEquals(Utils.GetAssemblySimpleName(this.Assemblies[i]), name))
+                {
+                    return this.Assemblies[i];
+                }
+            }
+
             return this.rd.Load(name);
         }
 
