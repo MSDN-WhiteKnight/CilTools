@@ -178,6 +178,15 @@ namespace CilTools.Metadata.Tests
         }
 
         [TestMethod]
+        public void Test_MethodRef_ContainingAssembly()
+        {
+            MethodInfo mRef = GetMethodRef_Console_WriteLine() as MethodInfo;
+            Assembly ca = ReflectionProperties.Get(mRef, ReflectionProperties.ContainingAssembly) as Assembly;
+
+            AssertThat.AssemblyEquals(typeof(SampleMethods).Assembly, ca);
+        }
+
+        [TestMethod]
         public void Test_ConstructorRef()
         {
             MethodBase mRef = GetConstructorRef();

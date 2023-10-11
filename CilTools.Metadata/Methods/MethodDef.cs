@@ -377,30 +377,27 @@ namespace CilTools.Metadata.Methods
 
         public object GetReflectionProperty(int id)
         {
-            if (id == ReflectionProperties.ExplicitlyImplementedMethods)
+            switch (id)
             {
-                return this.GetExplicitlyImplementedMethods();
-            }
-            else if (id == ReflectionProperties.VTableEntry)
-            {
-                VTableSlot slot = this.GetVTableSlot();
+                case ReflectionProperties.ContainingAssembly:
+                    return this.assembly;
+                case ReflectionProperties.ExplicitlyImplementedMethods:
+                    return this.GetExplicitlyImplementedMethods();
+                case ReflectionProperties.VTableEntry:
+                    VTableSlot slot = this.GetVTableSlot();
 
-                if (slot.TableIndex < 0)
-                {
-                    return string.Empty;
-                }
-                else
-                {
-                    return (slot.TableIndex + 1).ToString() + " : " + (slot.SlotIndex + 1).ToString();
-                }
-            }
-            else if (id == ReflectionProperties.Signature)
-            {
-                return this.sig;
-            }
-            else
-            {
-                return null;
+                    if (slot.TableIndex < 0)
+                    {
+                        return string.Empty;
+                    }
+                    else
+                    {
+                        return (slot.TableIndex + 1).ToString() + " : " + (slot.SlotIndex + 1).ToString();
+                    }
+
+                case ReflectionProperties.Signature:
+                    return this.sig;
+                default: return null;
             }
         }
 

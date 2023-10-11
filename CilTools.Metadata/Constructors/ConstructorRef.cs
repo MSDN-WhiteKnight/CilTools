@@ -17,7 +17,7 @@ namespace CilTools.Metadata.Constructors
     class ConstructorRef : MdConstructorBase, ICustomMethod, IParamsProvider, IReflectionInfo
     {
         MemberReferenceHandle mrefh;
-        MemberReference mref;        
+        MemberReference mref;
         MethodBase impl;
 
         internal ConstructorRef(MemberReference m, MemberReferenceHandle mh, MetadataAssembly owner)
@@ -218,18 +218,18 @@ namespace CilTools.Metadata.Constructors
 
         public object GetReflectionProperty(int id)
         {
-            if (id == ReflectionProperties.IsStatic)
+            switch (id)
             {
-                //Avoids MethodBase.IsStatic that calls .Attributes and resolves implementation
-                return !this.sig.HasThis;
+                case ReflectionProperties.ReferenceTarget:
+                    this.LoadImpl();
+                    return this.impl;
+                case ReflectionProperties.ContainingAssembly:
+                    return this.assembly;
+                case ReflectionProperties.IsStatic:
+                    //Avoids MethodBase.IsStatic that calls .Attributes and resolves implementation
+                    return !this.sig.HasThis;
+                default: return null;
             }
-            else if (id == ReflectionProperties.ReferenceTarget)
-            {
-                this.LoadImpl();
-
-                return this.impl;
-            }
-            else return null;
         }
 
         /// <inheritdoc/>

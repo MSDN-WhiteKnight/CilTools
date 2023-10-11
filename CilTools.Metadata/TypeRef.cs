@@ -436,11 +436,15 @@ namespace CilTools.Metadata
 
         public object GetReflectionProperty(int id)
         {
-            if (id != ReflectionProperties.ReferenceTarget) return null;
-
-            this.LoadImpl();
-
-            return this.impl;
+            switch (id)
+            {
+                case ReflectionProperties.ReferenceTarget:
+                    this.LoadImpl();
+                    return this.impl;
+                case ReflectionProperties.ContainingAssembly:
+                    return this.assembly;
+                default: return null;
+            }
         }
 
         public override int GetHashCode()

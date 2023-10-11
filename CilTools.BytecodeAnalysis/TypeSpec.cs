@@ -1040,9 +1040,9 @@ namespace CilTools.BytecodeAnalysis
 
         object IReflectionInfo.GetReflectionProperty(int id)
         {
-            if (id == ReflectionProperties.ReferenceTarget)
+            if (id == ReflectionProperties.ReferenceTarget || id == ReflectionProperties.ContainingAssembly)
             {
-                // Forward ReferenceTarget for TypeRefs
+                // Forward some properties for references
                 return ReflectionProperties.Get(this._Type, id);
             }
             else return null;

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
@@ -431,6 +432,11 @@ namespace CilTools.Tests.Common
 
             //assert
             Assert.IsTrue(str.Contains(substr));
+        }
+
+        public static void AssemblyEquals(Assembly expected, Assembly actual)
+        {
+            Assert.AreEqual(expected.GetName().Name, actual.GetName().Name);
         }
     }
 }

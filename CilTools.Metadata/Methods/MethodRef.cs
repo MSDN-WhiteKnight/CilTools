@@ -231,22 +231,20 @@ namespace CilTools.Metadata.Methods
 
         public object GetReflectionProperty(int id)
         {
-            if (id == ReflectionProperties.IsStatic)
+            switch (id)
             {
-                //Avoids MethodBase.IsStatic that calls .Attributes and resolves implementation
-                return !this.sig.HasThis;
+                case ReflectionProperties.ReferenceTarget:
+                    this.LoadImpl();
+                    return this.impl;
+                case ReflectionProperties.ContainingAssembly:
+                    return this.assembly;
+                case ReflectionProperties.IsStatic:
+                    //Avoids MethodBase.IsStatic that calls .Attributes and resolves implementation
+                    return !this.sig.HasThis;
+                case ReflectionProperties.Signature:
+                    return this.sig;
+                default: return null;
             }
-            else if (id == ReflectionProperties.Signature)
-            {
-                return this.sig;
-            }
-            else if (id == ReflectionProperties.ReferenceTarget)
-            {
-                this.LoadImpl();
-
-                return this.impl;
-            }
-            else return null;
         }
 
         /// <inheritdoc/>

@@ -199,6 +199,9 @@ namespace CilTools.Metadata.Methods
 
         public object GetReflectionProperty(int id)
         {
+            if (id == ReflectionProperties.ContainingAssembly) return this.assembly;
+
+            // Others are obtained from definition
             object val = ReflectionProperties.Get(this.definition, id);
 
             if (val != null) return val;

@@ -136,6 +136,15 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual(t.IsValueType, tTarget.IsValueType);
             Assert.AreEqual("TypeDef", tTarget.GetType().Name);
         }
+
+        [TestMethod]
+        public void Test_TypeRef_ContainingAssembly()
+        {
+            Type t = GetTypeRef_System_Int32();
+            Assembly ca = ReflectionProperties.Get(t, ReflectionProperties.ContainingAssembly) as Assembly;
+
+            AssertThat.AssemblyEquals(typeof(SampleMethods).Assembly, ca);
+        }
     }
 
     public class TypeRefTests_Data

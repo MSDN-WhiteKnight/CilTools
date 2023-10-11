@@ -114,6 +114,13 @@ namespace CilTools.Reflection
         public const int ReferenceTarget = 115;
 
         /// <summary>
+        /// Represents an assembly where the metadata element corresponding to the reflection object is stored. Only relevant 
+        /// for references (TypeRef or MethodRef), because for definitions containing assembly is the same as <c>Assembly</c>
+        /// property value. (Type: Assembly)
+        /// </summary>
+        public const int ContainingAssembly = 116;
+
+        /// <summary>
         /// Gets the value of the reflection property with the specified Id from the specified object
         /// </summary>
         /// <param name="obj">Reflection object to get property</param>

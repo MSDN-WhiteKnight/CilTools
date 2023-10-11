@@ -361,5 +361,17 @@ namespace CilTools.Metadata.Tests
             Assert.AreEqual("CilTools.Tests.Common.MyPoint", locals[1].LocalType.FullName);
             Assert.AreSame(mb, locals[1].Method);
         }
+
+        [TestMethod]
+        public void Test_MethodDef_ContainingAssembly()
+        {
+            AssemblyReader reader = ReaderFactory.GetReader();
+            Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
+            Type t = ass.GetType(typename);
+            MethodBase m = t.GetMember("PrintHelloWorld")[0] as MethodBase;
+            Assembly ca = ReflectionProperties.Get(m, ReflectionProperties.ContainingAssembly) as Assembly;
+
+            AssertThat.AssemblyEquals(typeof(SampleMethods).Assembly, ca);
+        }
     }
 }
