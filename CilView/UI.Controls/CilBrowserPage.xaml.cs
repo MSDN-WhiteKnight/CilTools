@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Navigation;
 using CilTools.BytecodeAnalysis;
 using CilView.Core.DocumentModel;
 
@@ -19,7 +20,7 @@ namespace CilView.UI.Controls
     {
         MemberInfo member; //assembly member which code is displayed on the page
 
-        public CilBrowserPage(MethodBase m, int start, int end, RoutedEventHandler navigation)
+        public CilBrowserPage(MethodBase m, int start, int end, NavigatingCancelEventHandler navigation)
         {
             InitializeComponent();
             this.member = m;
@@ -27,7 +28,7 @@ namespace CilView.UI.Controls
             CilGraph gr = CilGraph.Create(m);
             string contentText = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams).ToString();
             
-            UIElement elem = CilVisualization.VisualizeAsHtml(m);
+            UIElement elem = CilVisualization.VisualizeAsHtml(m, navigation);
             this.tbMainContent.Text = contentText;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);
@@ -51,13 +52,13 @@ namespace CilView.UI.Controls
             this.tbCurrLocation.Text = sb.ToString();
         }
 
-        public CilBrowserPage(Type t, RoutedEventHandler navigation)
+        public CilBrowserPage(Type t, NavigatingCancelEventHandler navigation)
         {
             InitializeComponent();
             this.member = t;
 
             string plaintext = CilVisualization.VisualizeAsText(t);
-            UIElement elem = CilVisualization.VisualizeAsHtml(t);
+            UIElement elem = CilVisualization.VisualizeAsHtml(t, navigation);
             this.tbMainContent.Text = plaintext;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);
@@ -74,12 +75,12 @@ namespace CilView.UI.Controls
             this.tbCurrLocation.Text = sb.ToString();
         }
 
-        public CilBrowserPage(Assembly ass, RoutedEventHandler navigation)
+        public CilBrowserPage(Assembly ass, NavigatingCancelEventHandler navigation)
         {
             InitializeComponent();
             
             string plaintext = CilVisualization.VisualizeAsText(ass);
-            UIElement elem = CilVisualization.VisualizeAsHtml(ass);
+            UIElement elem = CilVisualization.VisualizeAsHtml(ass, navigation);
             this.tbMainContent.Text = plaintext;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);

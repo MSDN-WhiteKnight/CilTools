@@ -106,7 +106,6 @@ namespace CilView.Visualization
             {
                 //synthesized type that contains IL - no need to disassemble
                 IlasmType dt = (IlasmType)obj;
-                SyntaxVisualizer visualizer = new SyntaxVisualizer();
                 string html = this._vis.RenderSyntaxNodes(dt.Syntax.GetChildNodes());
                 return this.PrepareContent(html);
             }
@@ -129,6 +128,52 @@ namespace CilView.Visualization
                 return this.PrepareContent(this._vis.RenderMethod(mb));
             }
             else return string.Empty;
+        }
+
+        public MemberInfo ParseQueryString(string queryString)
+        {
+            if (queryString.Length <= 2) return null;
+
+            if (queryString[0] == '?')
+            {
+                queryString = queryString.Substring(1);
+            }
+
+            string[] arr = queryString.Split('&');
+            string assemblyName = string.Empty;
+            string tokenStr = string.Empty;
+            int token;
+
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i].Length <= 2) continue;
+
+                int index = arr[i].IndexOf('=');
+
+                if (index < 0 || index >= arr[i].Length - 1) continue;
+
+                string name = arr[i].Substring(0, index);
+                string val = arr[i].Substring(index + 1);
+
+                if (Utils.StringEquals(name, "assembly")) assemblyName = val;
+                else if (Utils.StringEquals(name, "token")) tokenStr = val;
+            }
+
+            if (string.IsNullOrEmpty(assemblyName) || string.IsNullOrEmpty(tokenStr))
+            {
+                return null;
+            }
+
+            if (!int.TryParse(tokenStr, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out token))
+            {
+                return null;
+            }
+
+            Assembly ass = this.ResolveAssembly(assemblyName);
+
+            if (ass == null) return null;
+
+            return ResolveMember(ass, token);
         }
 
         protected override void RenderPage(string url, HttpListenerRequest request, HttpListenerResponse response)
@@ -166,18 +211,7 @@ namespace CilView.Visualization
                     }
 
                     MemberInfo member = ResolveMember(ass, token);
-
-                    if (member is MethodBase)
-                    {
-                        content = this._vis.RenderMethod((MethodBase)member);
-                    }
-                    else if (member is Type)
-                    {
-                        content = this._vis.RenderType((Type)member, false);
-                    }
-                    else content = string.Empty;
-
-                    content = this.PrepareContent(content);
+                    content = this.Visualize(member);
                     SendHtmlResponse(response, content);
                     this.AddToCache(url, content);
                 }

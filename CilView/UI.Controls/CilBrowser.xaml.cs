@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2021, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Navigation;
 using System.Reflection;
 using System.Collections.ObjectModel;
@@ -80,6 +79,26 @@ namespace CilView.UI.Controls
             return mb;
         }
 
+        void Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (e.Uri == null) return;
+
+            MemberInfo targetMember = CilVisualization.Server.ParseQueryString(e.Uri.Query);
+
+            if (targetMember == null) return;
+
+            if (targetMember is MethodBase)
+            {
+                e.Cancel = true;
+                this.NavigateToMethod((MethodBase)targetMember);
+            }
+            else if (targetMember is Type)
+            {
+                e.Cancel = true;
+                this.NavigateToType((Type)targetMember);
+            }
+        }
+
         void Navigated(object sender, RoutedEventArgs e)
         {
             if (!(sender is FrameworkContentElement)) return;
@@ -131,7 +150,7 @@ namespace CilView.UI.Controls
 
         public void NavigateToMethod(MethodBase mb, int start, int end)
         {
-            CilBrowserPage page = new CilBrowserPage(mb, start, end, Navigated);
+            CilBrowserPage page = new CilBrowserPage(mb, start, end, Navigating);
             page.Title = mb.Name;
             frameContent.Navigate(page);
             this.current_method = mb;
@@ -149,7 +168,7 @@ namespace CilView.UI.Controls
 
             try
             {
-                CilBrowserPage page = new CilBrowserPage(t, Navigated);
+                CilBrowserPage page = new CilBrowserPage(t, Navigating);
                 page.Title = "Type: " + t.Name;
                 frameContent.Navigate(page);
                 contenttext = page.ContentText;
@@ -179,7 +198,7 @@ namespace CilView.UI.Controls
         {
             string contenttext = string.Empty;
 
-            CilBrowserPage page = new CilBrowserPage(ass, Navigated);
+            CilBrowserPage page = new CilBrowserPage(ass, Navigating);
 
             if (ass is IlasmAssembly)
             {

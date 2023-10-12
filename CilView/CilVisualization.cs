@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.ObjectModel;
@@ -11,6 +11,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Media;
+using System.Windows.Navigation;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
@@ -354,11 +355,14 @@ namespace CilView
             return fd;
         }
 
-        public static UIElement VisualizeAsHtml(object obj)
+        public static UIElement VisualizeAsHtml(object obj, NavigatingCancelEventHandler navigation)
         {
             string html = Server.Visualize(obj);
             WebBrowser wb = new WebBrowser();
             wb.NavigateToString(html);
+
+            if (navigation != null) wb.Navigating += navigation;
+
             return wb;
         }
 
