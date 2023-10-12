@@ -175,7 +175,7 @@
     <Compile Include="UI.Dialogs\wndError.xaml.cs">
       <DependentUpon>wndError.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Visualization\AssemblyServer.cs" />
+    <Compile Include="Visualization\VisualizationServer.cs" />
     <Compile Include="Visualization\CilViewUrlProvider.cs" />
     <Compile Include="Visualization\ServerBase.cs" />
     <Compile Include="WmiAssemblySource.cs" />

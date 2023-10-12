@@ -33,7 +33,7 @@ namespace CilView
         //Parameters that control how disassembled CIL is produced. They are changed from main window UI.
         internal static readonly DisassemblerParams CurrentDisassemblerParams = InitDisassemblerParams();
 
-        internal static AssemblyServer Server;
+        internal static VisualizationServer Server;
 
         static DisassemblerParams InitDisassemblerParams()
         {

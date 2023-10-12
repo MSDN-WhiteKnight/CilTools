@@ -15,15 +15,15 @@ using CilView.Core.DocumentModel;
 namespace CilView.Visualization
 {
     /// <summary>
-    /// Provides a server that dynamically generates HTML for a disassembled IL and returns it via HTTP
+    /// Generates HTML to visualize metadata object identified by URL
     /// </summary>
-    class AssemblyServer : ServerBase
+    class VisualizationServer : ServerBase
     {
         AssemblySource _src;
         CilVisualizer _vis;
         CilViewUrlProvider _provider;
 
-        public AssemblyServer(string urlHost, string urlPrefix) : base(urlHost, urlPrefix)
+        public VisualizationServer(string urlHost, string urlPrefix) : base(urlHost, urlPrefix)
         {
             this._vis = new CilVisualizer();
             this._provider = new CilViewUrlProvider();
@@ -35,18 +35,7 @@ namespace CilView.Visualization
             get { return this._src; }
             set { this._src = value; }
         }
-
-        public UrlProviderBase UrlProvider
-        {
-            get { return this._provider; }
-        }
-
-        public string GetAssemblyUrl(Assembly ass)
-        {
-            return DefaultUrlHost + DefaultUrlPrefix + "render.html?assembly=" + 
-                WebUtility.UrlEncode(Utils.GetAssemblySimpleName(ass));
-        }
-
+        
         static MemberInfo ResolveMember(Assembly ass, int metadataToken)
         {
             if (ass is ITokenResolver)

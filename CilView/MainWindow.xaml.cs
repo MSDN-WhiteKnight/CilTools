@@ -32,7 +32,7 @@ namespace CilView
     {
         AssemblySource source;
         HistoryContainer<string> recentFiles = new HistoryContainer<string>();
-        AssemblyServer srv;
+        VisualizationServer srv;
 
         void SetSource(AssemblySource newval)
         {
@@ -56,7 +56,7 @@ namespace CilView
         public MainWindow()
         {
             InitializeComponent();
-            this.srv = new AssemblyServer(ServerBase.DefaultUrlHost, ServerBase.DefaultUrlPrefix);
+            this.srv = new VisualizationServer(ServerBase.DefaultUrlHost, ServerBase.DefaultUrlPrefix);
             this.srv.RunInBackground();
             CilVisualization.Server = this.srv;
         }
