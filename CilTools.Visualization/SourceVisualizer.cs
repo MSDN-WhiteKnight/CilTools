@@ -17,7 +17,7 @@ namespace CilTools.Visualization
             SyntaxNodeCollection coll = SourceParser.Parse(content, ext);
 
             //convert tokens to HTML
-            this.VisualizeSyntaxNodes(coll.GetChildNodes(), html);
+            this.VisualizeSyntaxNodes(coll.GetChildNodes(), new VisualizationOptions(), html);
         }
 
         /// <summary>

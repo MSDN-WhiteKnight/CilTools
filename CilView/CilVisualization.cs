@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
 using CilTools.Runtime;
+using CilTools.Visualization;
 using CilView.Core.DocumentModel;
 using CilView.SourceCode;
 using CilView.UI.Controls;
@@ -355,9 +356,10 @@ namespace CilView
             return fd;
         }
 
-        public static UIElement VisualizeAsHtml(object obj, NavigatingCancelEventHandler navigation)
+        public static UIElement VisualizeAsHtml(object obj, NavigatingCancelEventHandler navigation, 
+            VisualizationOptions options)
         {
-            string html = Server.Visualize(obj);
+            string html = Server.Visualize(obj, options);
             WebBrowser wb = new WebBrowser();
             wb.NavigateToString(html);
 

@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
 using CilTools.BytecodeAnalysis;
+using CilTools.Visualization;
 using CilView.Core.DocumentModel;
 
 namespace CilView.UI.Controls
@@ -27,8 +28,11 @@ namespace CilView.UI.Controls
 
             CilGraph gr = CilGraph.Create(m);
             string contentText = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams).ToString();
-            
-            UIElement elem = CilVisualization.VisualizeAsHtml(m, navigation);
+
+            VisualizationOptions options = new VisualizationOptions();
+            options.HighlightingStartOffset = start;
+            options.HighlightingEndOffset = end;
+            UIElement elem = CilVisualization.VisualizeAsHtml(m, navigation, options);
             this.tbMainContent.Text = contentText;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);
@@ -58,7 +62,7 @@ namespace CilView.UI.Controls
             this.member = t;
 
             string plaintext = CilVisualization.VisualizeAsText(t);
-            UIElement elem = CilVisualization.VisualizeAsHtml(t, navigation);
+            UIElement elem = CilVisualization.VisualizeAsHtml(t, navigation, new VisualizationOptions());
             this.tbMainContent.Text = plaintext;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);
@@ -80,7 +84,7 @@ namespace CilView.UI.Controls
             InitializeComponent();
             
             string plaintext = CilVisualization.VisualizeAsText(ass);
-            UIElement elem = CilVisualization.VisualizeAsHtml(ass, navigation);
+            UIElement elem = CilVisualization.VisualizeAsHtml(ass, navigation, new VisualizationOptions());
             this.tbMainContent.Text = plaintext;
             gridContent.Children.Clear();
             gridContent.Children.Add(elem);

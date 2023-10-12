@@ -27,7 +27,7 @@ namespace CilView.Tests.Visualization
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
                 Type t = ass.GetType(typeof(SampleType).FullName);
                 MethodBase mb = t.GetMethod("CalcSum");
-                str = vis.RenderMethod(mb);
+                str = vis.RenderMethod(mb, new VisualizationOptions());
             }
 
             Assert.IsTrue(str.Contains("<span>          ldfld        </span>" +

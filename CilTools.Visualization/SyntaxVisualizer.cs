@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 using CilTools.SourceCode.Common;
 using CilTools.Syntax;
 
@@ -73,15 +74,17 @@ namespace CilTools.Visualization
             }
         }
 
-        protected virtual void RenderNode(SyntaxNode node, TextWriter target)
+        protected virtual void RenderNode(SyntaxNode node, VisualizationOptions options, TextWriter target)
         {
+            if (options == null) options = new VisualizationOptions();
+
             HtmlBuilder builder = new HtmlBuilder(target);
             SyntaxNode[] children = node.GetChildNodes();
             HtmlAttribute[] attrs;
 
             if (children.Length > 0)
             {
-                foreach (SyntaxNode child in children) this.RenderNode(child, target);
+                foreach (SyntaxNode child in children) this.RenderNode(child, options, target);
             }
             else if (node is KeywordSyntax)
             {
@@ -91,6 +94,26 @@ namespace CilTools.Visualization
                 {
                     attrs = new HtmlAttribute[1];
                     attrs[0] = new HtmlAttribute("style", "color: magenta;");
+                }
+                else if (ks.Kind == KeywordKind.InstructionName && options.HighlightingStartOffset >= 0)
+                {
+                    InstructionSyntax par = ks.Parent as InstructionSyntax;
+                    CilInstruction instr = null;
+                    attrs = HtmlBuilder.NoAttributes;
+
+                    if (par != null)
+                    {
+                        instr = par.Instruction;
+                    }
+
+                    if (instr != null)
+                    {
+                        if (instr.ByteOffset >= options.HighlightingStartOffset && 
+                            instr.ByteOffset < options.HighlightingEndOffset)
+                        {
+                            attrs = HtmlBuilder.OneAttribute("style", "color: red; font-weight: bold;");
+                        }
+                    }
                 }
                 else if (ks.Kind == KeywordKind.Other)
                 {
@@ -200,14 +223,15 @@ namespace CilTools.Visualization
         /// Visualizes the specified collection of syntax nodes as HTML and writes result into HtmlBuilder
         /// </summary>
         /// <param name="nodes">Collection of nodes to visualize</param>
+        /// <param name="options">Options that control visualization output</param>
         /// <param name="target">HtmlBuilder to write resulting HTML</param>
-        internal void VisualizeSyntaxNodes(IEnumerable<SyntaxNode> nodes, HtmlBuilder target)
+        internal void VisualizeSyntaxNodes(IEnumerable<SyntaxNode> nodes, VisualizationOptions options, HtmlBuilder target)
         {
             target.WriteOpeningTag("pre", HtmlBuilder.OneAttribute("style", "white-space: pre-wrap;"));
             target.WriteOpeningTag("code");
 
             //content
-            foreach (SyntaxNode node in nodes) this.RenderNode(node, target.Target);
+            foreach (SyntaxNode node in nodes) this.RenderNode(node, options, target.Target);
 
             target.WriteClosingTag("code");
             target.WriteClosingTag("pre");
@@ -218,15 +242,29 @@ namespace CilTools.Visualization
         /// <c>TextWriter</c>
         /// </summary>
         /// <param name="nodes">Collection of nodes to render</param>
+        /// <param name="options">Options that control visualization output</param>
         /// <param name="target">TextWriter to write resulting HTML</param>
         /// <exception cref="ArgumentNullException"><paramref name="target"/> is null</exception>
-        public void RenderSyntaxNodes(IEnumerable<SyntaxNode> nodes, TextWriter target)
+        public void RenderSyntaxNodes(IEnumerable<SyntaxNode> nodes, VisualizationOptions options, TextWriter target)
         {
             if (nodes == null) return;
             if (target == null) throw new ArgumentNullException("target");
 
-            this.VisualizeSyntaxNodes(nodes, new HtmlBuilder(target));
+            this.VisualizeSyntaxNodes(nodes, options, new HtmlBuilder(target));
             target.Flush();
+        }
+
+        /// <summary>
+        /// Renders the specified collection of syntax nodes as HTML with syntax highlighting and returns the string with 
+        /// resulting markup
+        /// </summary>
+        public string RenderSyntaxNodes(IEnumerable<SyntaxNode> nodes, VisualizationOptions options)
+        {
+            if (nodes == null) return string.Empty;
+
+            StringBuilder sb = new StringBuilder();
+            this.VisualizeSyntaxNodes(nodes, options, new HtmlBuilder(sb));
+            return sb.ToString();
         }
 
         /// <summary>
@@ -239,7 +277,7 @@ namespace CilTools.Visualization
             if (nodes == null) return string.Empty;
 
             StringBuilder sb = new StringBuilder();
-            this.VisualizeSyntaxNodes(nodes, new HtmlBuilder(sb));
+            this.VisualizeSyntaxNodes(nodes, new VisualizationOptions(), new HtmlBuilder(sb));
             return sb.ToString();
         }
 

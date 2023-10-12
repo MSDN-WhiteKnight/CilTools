@@ -84,7 +84,7 @@ namespace CilView.Visualization
             return sb.ToString();
         }
 
-        public string Visualize(object obj)
+        public string Visualize(object obj, VisualizationOptions options)
         {
             if (obj is IlasmAssembly)
             {
@@ -118,7 +118,8 @@ namespace CilView.Visualization
                 MethodBase mb = (MethodBase)obj;
                 CilGraph gr = CilGraph.Create(mb);
                 MethodDefSyntax mds = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams);
-                return this.PrepareContent(this._vis.RenderSyntaxNodes(mds.EnumerateChildNodes()));
+                string rendered = this._vis.RenderSyntaxNodes(mds.EnumerateChildNodes(), options);
+                return this.PrepareContent(rendered);
             }
             else return string.Empty;
         }
@@ -204,7 +205,7 @@ namespace CilView.Visualization
                     }
 
                     MemberInfo member = ResolveMember(ass, token);
-                    content = this.Visualize(member);
+                    content = this.Visualize(member, new VisualizationOptions());
                     SendHtmlResponse(response, content);
                     this.AddToCache(url, content);
                 }
