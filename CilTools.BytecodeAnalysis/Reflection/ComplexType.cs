@@ -38,7 +38,7 @@ namespace CilTools.Reflection
     /// Represents a complex type. Complex type is a type contructed on demand based on another type defined in some assembly, 
     /// for example, an array or pointer type.
     /// </summary>
-    public class ComplexType : Type
+    public class ComplexType : Type, IReflectionInfo
     {
         Type inner;
         ComplexTypeKind kind;
@@ -466,6 +466,15 @@ namespace CilTools.Reflection
             {
                 return this.inner.DeclaringType;
             }
+        }
+
+        object IReflectionInfo.GetReflectionProperty(int id)
+        {
+            if (id == ReflectionProperties.ContainingAssembly)
+            {
+                return ReflectionProperties.Get(this.inner, id);
+            }
+            else return null;
         }
 
         /// <inheritdoc/>

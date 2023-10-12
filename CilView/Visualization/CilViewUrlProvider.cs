@@ -15,38 +15,21 @@ namespace CilView.Visualization
 {
     class CilViewUrlProvider : UrlProviderBase
     {
-        static MemberInfo ResolveMember(MemberInfo member)
+        static Assembly GetContainingAssembly(MemberInfo member)
         {
-            // Find defininition for generic types/methods
+            Assembly ca = ReflectionProperties.Get(member, ReflectionProperties.ContainingAssembly) as Assembly;
+
+            if (ca != null) return ca;
+
             if (member is Type)
             {
-                Type t = (Type)member;
-
-                if (t.IsGenericType && !t.IsGenericTypeDefinition)
-                {
-                    Type tDefinition = t.GetGenericTypeDefinition();
-
-                    if (tDefinition != null) member = tDefinition;
-                }
+                return ((Type)member).Assembly;
             }
-            else if (member is MethodInfo && member is ICustomMethod)
+            else
             {
-                MethodInfo m = (MethodInfo)member;
-                ICustomMethod cm = (ICustomMethod)member;
-
-                if (m.IsGenericMethod && !m.IsGenericMethodDefinition)
-                {
-                    MethodBase mDefinition = cm.GetDefinition();
-
-                    if (mDefinition != null) member = mDefinition;
-                }
+                if (member.DeclaringType == null) return null;
+                else return member.DeclaringType.Assembly;
             }
-
-            // Find target member for references
-            MemberInfo target = ReflectionProperties.Get(member, ReflectionProperties.ReferenceTarget) as MemberInfo;
-
-            if (target != null) return target;
-            else return member;
         }
 
         public override string GetMemberUrl(MemberInfo member)
@@ -55,35 +38,15 @@ namespace CilView.Visualization
 
             try
             {
-                if (member is MethodBase)
+                if (member is MethodBase || member is Type)
                 {
-                    MethodBase mb = (MethodBase)member;
-                    MethodBase mTarget = ResolveMember(mb) as MethodBase;
-
-                    if (mTarget == null) return string.Empty;
-                    if (mTarget.DeclaringType == null) return string.Empty;
-
-                    string name = Utils.GetAssemblySimpleName(mTarget.DeclaringType.Assembly);
+                    Assembly containingAssembly = GetContainingAssembly(member);
+                    string name = Utils.GetAssemblySimpleName(containingAssembly);
                     sb.Append(ServerBase.DefaultUrlHost + ServerBase.DefaultUrlPrefix + "render.html?");
 
                     if (!string.IsNullOrEmpty(name)) sb.Append("assembly=" + WebUtility.UrlEncode(name) + "&");
 
-                    sb.Append("token=" + mTarget.MetadataToken.ToString("X", CultureInfo.InvariantCulture));
-                    return sb.ToString();
-                }
-                else if (member is Type)
-                {
-                    Type t = (Type)member;
-                    Type tTarget = ResolveMember(t) as Type;
-
-                    if (tTarget == null) return string.Empty;
-
-                    string name = Utils.GetAssemblySimpleName(tTarget.Assembly);
-                    sb.Append(ServerBase.DefaultUrlHost + ServerBase.DefaultUrlPrefix + "render.html?");
-
-                    if (!string.IsNullOrEmpty(name)) sb.Append("assembly=" + WebUtility.UrlEncode(name) + "&");
-
-                    sb.Append("token=" + tTarget.MetadataToken.ToString("X", CultureInfo.InvariantCulture));
+                    sb.Append("token=" + member.MetadataToken.ToString("X", CultureInfo.InvariantCulture));
                     return sb.ToString();
                 }
                 else return string.Empty;

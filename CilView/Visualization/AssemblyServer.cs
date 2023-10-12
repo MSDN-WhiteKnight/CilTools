@@ -80,6 +80,10 @@ namespace CilView.Visualization
             HtmlBuilder html = new HtmlBuilder(sb);
             html.WriteOpeningTag("html");
             html.WriteOpeningTag("head");
+
+            // CSS only works good starting from Internet Explorer 9
+            html.WriteRaw("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\"/>");
+
             html.WriteElement("style", SyntaxVisualizer.GetVisualStyles());
             html.WriteOpeningTag("head");
             html.WriteOpeningTag("body");
@@ -179,7 +183,7 @@ namespace CilView.Visualization
                 }
                 catch (Exception ex)
                 {
-                    string error = WebUtility.HtmlEncode(ex.ToString());
+                    string error = "<pre>" + WebUtility.HtmlEncode(ex.ToString()) + "</pre>";
                     SendHtmlResponse(response, error);
                 }
             }
