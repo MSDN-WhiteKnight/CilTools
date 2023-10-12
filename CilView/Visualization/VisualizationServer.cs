@@ -7,7 +7,9 @@ using System.Globalization;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
 using CilTools.Reflection;
+using CilTools.Syntax;
 using CilTools.Visualization;
 using CilView.Common;
 using CilView.Core.DocumentModel;
@@ -114,7 +116,9 @@ namespace CilView.Visualization
             {
                 //method disassembled IL
                 MethodBase mb = (MethodBase)obj;
-                return this.PrepareContent(this._vis.RenderMethod(mb));
+                CilGraph gr = CilGraph.Create(mb);
+                MethodDefSyntax mds = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams);
+                return this.PrepareContent(this._vis.RenderSyntaxNodes(mds.EnumerateChildNodes()));
             }
             else return string.Empty;
         }
