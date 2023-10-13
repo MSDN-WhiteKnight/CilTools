@@ -119,6 +119,14 @@ namespace CilView.Visualization
                 CilGraph gr = CilGraph.Create(mb);
                 MethodDefSyntax mds = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams);
                 string rendered = this._vis.RenderSyntaxNodes(mds.EnumerateChildNodes(), options);
+
+                if (options.HighlightingStartOffset >= 0)
+                {
+                    // Add script to jump to the first highlighted instruction on page load
+                    string url = "#" + options.HighlightingStartOffset.ToString(CultureInfo.InvariantCulture);
+                    rendered += "<script type=\"text/javascript\">location.href='" + url + "';</script>";
+                }
+
                 return this.PrepareContent(rendered);
             }
             else return string.Empty;
@@ -146,8 +154,8 @@ namespace CilView.Visualization
 
                 if (index < 0 || index >= arr[i].Length - 1) continue;
 
-                string name = arr[i].Substring(0, index);
-                string val = arr[i].Substring(index + 1);
+                string name = WebUtility.UrlDecode(arr[i].Substring(0, index));
+                string val = WebUtility.UrlDecode(arr[i].Substring(index + 1));
 
                 if (Utils.StringEquals(name, "assembly")) assemblyName = val;
                 else if (Utils.StringEquals(name, "token")) tokenStr = val;

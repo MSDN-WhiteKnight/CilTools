@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Globalization;
 using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
@@ -74,6 +75,62 @@ namespace CilTools.Visualization
             }
         }
 
+        static void RenderKeyword(KeywordSyntax ks, VisualizationOptions options, HtmlBuilder target)
+        {
+            if (ks.Kind == KeywordKind.DirectiveName)
+            {
+                target.WriteElement("span", ks.ToString(), HtmlBuilder.OneAttribute("style", "color: magenta;"));
+            }
+            else if (ks.Kind == KeywordKind.Other)
+            {
+                target.WriteElement("span", ks.ToString(), HtmlBuilder.OneAttribute("style", "color: blue;"));
+            }
+            else if (ks.Kind == KeywordKind.InstructionName)
+            {
+                if (options.HighlightingStartOffset < 0)
+                {
+                    target.WriteEscaped(ks.ToString());
+                    return;
+                }
+
+                InstructionSyntax par = ks.Parent as InstructionSyntax;
+
+                if (par == null)
+                {
+                    target.WriteEscaped(ks.ToString());
+                    return;
+                }
+
+                CilInstruction instr = par.Instruction;
+
+                if (instr == null)
+                {
+                    target.WriteEscaped(ks.ToString());
+                    return;
+                }
+
+                string elementName = "span";
+                List<HtmlAttribute> attrs = new List<HtmlAttribute>(2);
+
+                if (instr.ByteOffset >= options.HighlightingStartOffset &&
+                    instr.ByteOffset < options.HighlightingEndOffset)
+                {
+                    // Highlighted instructions
+                    attrs.Add(new HtmlAttribute("style", "color: red; font-weight: bold;"));
+                }
+
+                if (instr.ByteOffset == options.HighlightingStartOffset)
+                {
+                    // Anchor on first highlighted instruction
+                    elementName = "a";
+                    attrs.Add(new HtmlAttribute("name", instr.ByteOffset.ToString(CultureInfo.InvariantCulture)));
+                }
+
+                target.WriteElement(elementName, ks.ToString(), attrs.ToArray());
+            }
+            else target.WriteEscaped(ks.ToString());
+        }
+
         protected virtual void RenderNode(SyntaxNode node, VisualizationOptions options, TextWriter target)
         {
             if (options == null) options = new VisualizationOptions();
@@ -88,41 +145,7 @@ namespace CilTools.Visualization
             }
             else if (node is KeywordSyntax)
             {
-                KeywordSyntax ks = (KeywordSyntax)node;
-
-                if (ks.Kind == KeywordKind.DirectiveName)
-                {
-                    attrs = new HtmlAttribute[1];
-                    attrs[0] = new HtmlAttribute("style", "color: magenta;");
-                }
-                else if (ks.Kind == KeywordKind.InstructionName && options.HighlightingStartOffset >= 0)
-                {
-                    InstructionSyntax par = ks.Parent as InstructionSyntax;
-                    CilInstruction instr = null;
-                    attrs = HtmlBuilder.NoAttributes;
-
-                    if (par != null)
-                    {
-                        instr = par.Instruction;
-                    }
-
-                    if (instr != null)
-                    {
-                        if (instr.ByteOffset >= options.HighlightingStartOffset && 
-                            instr.ByteOffset < options.HighlightingEndOffset)
-                        {
-                            attrs = HtmlBuilder.OneAttribute("style", "color: red; font-weight: bold;");
-                        }
-                    }
-                }
-                else if (ks.Kind == KeywordKind.Other)
-                {
-                    attrs = new HtmlAttribute[1];
-                    attrs[0] = new HtmlAttribute("style", "color: blue;");
-                }
-                else attrs = new HtmlAttribute[0];
-
-                builder.WriteElement("span", node.ToString(), attrs);
+                RenderKeyword((KeywordSyntax)node, options, builder);
             }
             else if (node is IdentifierSyntax)
             {
