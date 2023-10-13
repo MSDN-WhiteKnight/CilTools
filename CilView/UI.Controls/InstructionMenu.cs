@@ -91,6 +91,21 @@ namespace CilView.UI.Controls
             SourceCodeUI.ShowSource(instr.Method, 0, true);
         }
 
+        public static void ShowInstructionDialog(CilInstruction instr)
+        {
+            //build info text
+            string info = InstructionInfo.GetInstructionInfo(instr);
+
+            //show info
+            TextViewWindow wnd = new TextViewWindow();
+            wnd.Title = "Instruction information";
+            wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
+            wnd.FontSize = 14.0;
+            wnd.Height = 450;
+            wnd.Text = info;
+            wnd.ShowDialog();
+        }
+
         private static void Mi_InstructionInfo_Click(object sender, RoutedEventArgs e)
         {
             if (s_instructionMenuTarget == null) return;
@@ -104,17 +119,7 @@ namespace CilView.UI.Controls
             
             try
             {
-                //build info text
-                string info = InstructionInfo.GetInstructionInfo(instr);
-
-                //show info
-                TextViewWindow wnd = new TextViewWindow();
-                wnd.Title = "Instruction information";
-                wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
-                wnd.FontSize = 14.0;
-                wnd.Height = 450;
-                wnd.Text = info;
-                wnd.ShowDialog();
+                ShowInstructionDialog(instr);
             }
             catch (Exception ex)
             {

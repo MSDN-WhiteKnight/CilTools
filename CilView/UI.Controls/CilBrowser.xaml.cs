@@ -15,6 +15,7 @@ using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
 using CilView.Common;
 using CilView.Core.DocumentModel;
+using CilView.Visualization;
 
 namespace CilView.UI.Controls
 {
@@ -83,10 +84,47 @@ namespace CilView.UI.Controls
         {
             if (e.Uri == null) return;
 
-            MemberInfo targetMember = CilVisualization.Server.ParseQueryString(e.Uri.Query);
+            NavigationTarget target = CilVisualization.Server.ParseQueryString(e.Uri.Query);
+
+            if (target == null) return;
+
+            if (target.Kind == NavigationTargetKind.Instruction)
+            {
+                // Show instruction info dialog (don't actually navigate anywhere)
+                e.Cancel = true;
+
+                if (this.current_method == null) return;
+
+                try
+                {
+                    CilInstruction targetInstruction = null;
+
+                    foreach (CilInstruction instr in CilReader.GetInstructions(current_method))
+                    {
+                        if (instr.OrdinalNumber == target.InstructionNumber)
+                        {
+                            targetInstruction = instr;
+                            break;
+                        }
+                    }
+
+                    if (targetInstruction == null) return;
+
+                    InstructionMenu.ShowInstructionDialog(targetInstruction);
+                }
+                catch (Exception ex)
+                {
+                    ErrorHandler.Current.Error(ex);
+                }
+
+                return;
+            }
+
+            MemberInfo targetMember = target.Member;
 
             if (targetMember == null) return;
 
+            // Navigate to target member
             if (targetMember is MethodBase)
             {
                 e.Cancel = true;

@@ -87,12 +87,7 @@ namespace CilTools.Visualization
             }
             else if (ks.Kind == KeywordKind.InstructionName)
             {
-                if (options.HighlightingStartOffset < 0)
-                {
-                    target.WriteEscaped(ks.ToString());
-                    return;
-                }
-
+                // Find target instruction
                 InstructionSyntax par = ks.Parent as InstructionSyntax;
 
                 if (par == null)
@@ -109,6 +104,25 @@ namespace CilTools.Visualization
                     return;
                 }
 
+                if (options.HighlightingStartOffset < 0) // Instruction highlighting is not used
+                {
+                    if (options.EnableInstructionDoubleClick)
+                    {
+                        // Used by CIL View to show Instruction info dialog
+                        string url = "?instruction=" + instr.OrdinalNumber.ToString(CultureInfo.InvariantCulture);
+
+                        target.WriteElement("span", ks.ToString(), 
+                            HtmlBuilder.OneAttribute("ondblclick", "location.href='" + url + "';"));
+                    }
+                    else
+                    {
+                        target.WriteEscaped(ks.ToString());
+                    }
+
+                    return;
+                }
+
+                // Instruction highlighting is used
                 string elementName = "span";
                 List<HtmlAttribute> attrs = new List<HtmlAttribute>(2);
 

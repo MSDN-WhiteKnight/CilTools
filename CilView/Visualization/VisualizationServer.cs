@@ -132,7 +132,7 @@ namespace CilView.Visualization
             else return string.Empty;
         }
 
-        public MemberInfo ParseQueryString(string queryString)
+        public NavigationTarget ParseQueryString(string queryString)
         {
             if (queryString.Length <= 2) return null;
 
@@ -144,6 +144,7 @@ namespace CilView.Visualization
             string[] arr = queryString.Split('&');
             string assemblyName = string.Empty;
             string tokenStr = string.Empty;
+            string instructionStr = string.Empty;
             int token;
 
             for (int i = 0; i < arr.Length; i++)
@@ -159,6 +160,20 @@ namespace CilView.Visualization
 
                 if (Utils.StringEquals(name, "assembly")) assemblyName = val;
                 else if (Utils.StringEquals(name, "token")) tokenStr = val;
+                else if (Utils.StringEquals(name, "instruction")) instructionStr = val;
+            }
+
+            if (instructionStr != string.Empty) //instruction navigation
+            {
+                uint num;
+
+                if (uint.TryParse(instructionStr, NumberStyles.Integer, CultureInfo.InvariantCulture, out num))
+                {
+                    NavigationTarget target = new NavigationTarget();
+                    target.Kind = NavigationTargetKind.Instruction;
+                    target.InstructionNumber = num;
+                    return target;
+                }
             }
 
             if (string.IsNullOrEmpty(assemblyName) || string.IsNullOrEmpty(tokenStr))
@@ -175,7 +190,7 @@ namespace CilView.Visualization
 
             if (ass == null) return null;
 
-            return ResolveMember(ass, token);
+            return new NavigationTarget(ResolveMember(ass, token));
         }
 
         protected override void RenderPage(string url, HttpListenerRequest request, HttpListenerResponse response)
@@ -228,5 +243,27 @@ namespace CilView.Visualization
                 SendErrorResponse(response, 404, "Not found");
             }
         }
+    }
+
+    class NavigationTarget
+    {
+        public NavigationTarget() { }
+
+        public NavigationTarget(MemberInfo member)
+        {
+            this.Member = member;
+            this.Kind = NavigationTargetKind.Member;
+        }
+
+        public NavigationTargetKind Kind { get; set; }
+
+        public MemberInfo Member { get; set; }
+
+        public uint InstructionNumber { get; set; }
+    }
+
+    enum NavigationTargetKind
+    {
+        Member = 1, Instruction = 2
     }
 }

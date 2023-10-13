@@ -49,5 +49,16 @@ namespace CilTools.Visualization
 
             set { this.SetOption("HighlightingEndOffset", value); }
         }
+
+        internal bool EnableInstructionDoubleClick
+        {
+            get 
+            {
+                object val = this.GetOption("EnableInstructionDoubleClick");
+
+                if (val != null) return (bool)val;
+                else return false;
+            }
+        }
     }
 }
