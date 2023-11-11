@@ -33,6 +33,7 @@ namespace CilView.UI.Controls
             options.HighlightingStartOffset = start;
             options.HighlightingEndOffset = end;
             options.SetOption("EnableInstructionDoubleClick", true);
+            options.EnableInstructionNavigation = true;
             UIElement elem = CilVisualization.VisualizeAsHtml(m, navigation, options);
             this.tbMainContent.Text = contentText;
             gridContent.Children.Clear();

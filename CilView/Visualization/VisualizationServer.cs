@@ -84,6 +84,22 @@ namespace CilView.Visualization
             return sb.ToString();
         }
 
+        static string GetInstructionAnchor(MethodBase mb, uint offset)
+        {
+            if (mb == null) return offset.ToString(CultureInfo.InvariantCulture);
+
+            int token = 0;
+
+            try { token = mb.MetadataToken; }
+            catch (InvalidOperationException) { }
+
+            string tokenStr;
+            if (token != 0) tokenStr = token.ToString("X", CultureInfo.InvariantCulture) + "_";
+            else tokenStr = string.Empty;
+
+            return tokenStr + offset.ToString(CultureInfo.InvariantCulture);
+        }
+
         public string Visualize(object obj, VisualizationOptions options)
         {
             if (obj is IlasmAssembly)
@@ -123,7 +139,7 @@ namespace CilView.Visualization
                 if (options.HighlightingStartOffset >= 0)
                 {
                     // Add script to jump to the first highlighted instruction on page load
-                    string url = "#" + options.HighlightingStartOffset.ToString(CultureInfo.InvariantCulture);
+                    string url = "#" + GetInstructionAnchor(mb, (uint)options.HighlightingStartOffset);
                     rendered += "<script type=\"text/javascript\">location.href='" + url + "';</script>";
                 }
 

@@ -17,7 +17,8 @@ namespace CilTools.Visualization
     {
         List<UrlProviderBase> _urlProviders = new List<UrlProviderBase>();
 
-        const string GlobalStyles = ".memberid { color: rgb(43, 145, 175); text-decoration: none; }";
+        const string GlobalStyles = ".memberid { color: rgb(43, 145, 175); text-decoration: none; } " +
+            ".labellink { color: black; text-decoration: none; }";
 
         /// <summary>
         /// Adds the specified custom URL provider into the list of providers used by this generator. URL providers 
@@ -104,45 +105,57 @@ namespace CilTools.Visualization
                     return;
                 }
 
-                if (options.HighlightingStartOffset < 0) // Instruction highlighting is not used
-                {
-                    if (options.EnableInstructionDoubleClick)
-                    {
-                        // Used by CIL View to show Instruction info dialog
-                        string url = "?instruction=" + instr.OrdinalNumber.ToString(CultureInfo.InvariantCulture);
-
-                        target.WriteElement("span", ks.ToString(), 
-                            HtmlBuilder.OneAttribute("ondblclick", "location.href='" + url + "';"));
-                    }
-                    else
-                    {
-                        target.WriteEscaped(ks.ToString());
-                    }
-
-                    return;
-                }
-
-                // Instruction highlighting is used
                 string elementName = "span";
-                List<HtmlAttribute> attrs = new List<HtmlAttribute>(2);
-
-                if (instr.ByteOffset >= options.HighlightingStartOffset &&
-                    instr.ByteOffset < options.HighlightingEndOffset)
+                List<HtmlAttribute> attrs = new List<HtmlAttribute>(3);
+                
+                if (options.EnableInstructionNavigation || options.HighlightingStartOffset >= 0)
                 {
-                    // Highlighted instructions
-                    attrs.Add(new HtmlAttribute("style", "color: red; font-weight: bold;"));
-                }
-
-                if (instr.ByteOffset == options.HighlightingStartOffset)
-                {
-                    // Anchor on first highlighted instruction
+                    string anchor = GetInstructionAnchor(instr);
+                    attrs.Add(new HtmlAttribute("name", anchor));
                     elementName = "a";
-                    attrs.Add(new HtmlAttribute("name", instr.ByteOffset.ToString(CultureInfo.InvariantCulture)));
+                }
+                
+                if (options.EnableInstructionDoubleClick)
+                {
+                    // Used by CIL View to show Instruction info dialog
+                    string jumpUrl = "?instruction=" + instr.OrdinalNumber.ToString(CultureInfo.InvariantCulture);
+                    attrs.Add(new HtmlAttribute("ondblclick", "location.href='" + jumpUrl + "';"));
+                }
+                
+                if (options.HighlightingStartOffset >= 0) // Instruction highlighting is used
+                {
+                    if (instr.ByteOffset >= options.HighlightingStartOffset &&
+                        instr.ByteOffset < options.HighlightingEndOffset)
+                    {
+                        // Highlighted instructions
+                        attrs.Add(new HtmlAttribute("style", "color: red; font-weight: bold;"));
+                    }
                 }
 
                 target.WriteElement(elementName, ks.ToString(), attrs.ToArray());
             }
             else target.WriteEscaped(ks.ToString());
+        }
+
+        static string GetInstructionAnchor(MethodBase mb, uint offset)
+        {
+            if (mb == null) return offset.ToString(CultureInfo.InvariantCulture);
+
+            int token = 0;
+
+            try { token = mb.MetadataToken; }
+            catch (InvalidOperationException) { }
+
+            string tokenStr;
+            if (token != 0) tokenStr = token.ToString("X", CultureInfo.InvariantCulture) + "_";
+            else tokenStr = string.Empty;
+
+            return tokenStr + offset.ToString(CultureInfo.InvariantCulture);
+        }
+
+        static string GetInstructionAnchor(CilInstruction instr)
+        {
+            return GetInstructionAnchor(instr.Method, instr.ByteOffset);
         }
 
         protected virtual void RenderNode(SyntaxNode node, VisualizationOptions options, TextWriter target)
@@ -221,6 +234,15 @@ namespace CilTools.Visualization
                     }
 
                     attrList.Add(new HtmlAttribute("class", "memberid"));
+                }
+                else if (ids.TargetItem is CilInstruction && !ids.IsDefinition && options.EnableInstructionNavigation)
+                {
+                    // Hyperlink for jump target instruction
+                    CilInstruction targetInstr = (CilInstruction)ids.TargetItem;
+                    tagName = "a";
+                    string targetInstrUrl = "#" + GetInstructionAnchor(targetInstr);
+                    attrList.Add(new HtmlAttribute("href", targetInstrUrl));
+                    attrList.Add(new HtmlAttribute("class", "labellink"));
                 }
                 else tagName = "span";
 

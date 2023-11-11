@@ -97,7 +97,7 @@ namespace CilView.Tests.Visualization
                 SyntaxFactory.CreateFromToken("// Load string", string.Empty, string.Empty),
             };
 
-            string expected = Preformatted("<span>ldstr </span>" +
+            string expected = Preformatted("ldstr " +
                 "<span style=\"color: red;\">&quot;Rabbits&quot; </span>" +
                 "<span style=\"color: green;\">// Load string</span>");
 

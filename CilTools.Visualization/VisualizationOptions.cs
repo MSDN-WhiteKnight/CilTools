@@ -60,5 +60,18 @@ namespace CilTools.Visualization
                 else return false;
             }
         }
+
+        public bool EnableInstructionNavigation
+        {
+            get
+            {
+                object val = this.GetOption("EnableInstructionNavigation");
+
+                if (val != null) return (bool)val;
+                else return false;
+            }
+
+            set { this.SetOption("EnableInstructionNavigation", value); }
+        }
     }
 }
