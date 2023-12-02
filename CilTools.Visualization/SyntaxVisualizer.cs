@@ -153,6 +153,19 @@ namespace CilTools.Visualization
             return tokenStr + offset.ToString(CultureInfo.InvariantCulture);
         }
 
+        static string GetMethodAnchor(MethodBase mb)
+        {
+            if (mb == null) return string.Empty;
+
+            int token = 0;
+
+            try { token = mb.MetadataToken; }
+            catch (InvalidOperationException) { }
+
+            if (token != 0) return "M" + token.ToString("X", CultureInfo.InvariantCulture);
+            else return string.Empty;
+        }
+
         static string GetInstructionAnchor(CilInstruction instr)
         {
             return GetInstructionAnchor(instr.Method, instr.ByteOffset);
@@ -203,8 +216,20 @@ namespace CilTools.Visualization
                     {
                         MethodBase mb = (MethodBase)ids.TargetMember;
                         string urlResolved = this.ResolveMemberUrl(mb);
+                        string mAnchor = GetMethodAnchor(mb);
 
-                        if (!string.IsNullOrEmpty(urlResolved))
+                        if (ids.IsDefinition && !string.IsNullOrEmpty(mAnchor))
+                        {
+                            //anchor when in method signature
+                            tagName = "a";
+                            attrList.Add(new HtmlAttribute("name", mAnchor));
+
+                            if (options.EnableMethodDefinitionLinks)
+                            {
+                                attrList.Add(new HtmlAttribute("href", mAnchor));
+                            }
+                        }
+                        else if (!string.IsNullOrEmpty(urlResolved))
                         {
                             //hyperlink if URL is resolved via providers
                             tagName = "a";

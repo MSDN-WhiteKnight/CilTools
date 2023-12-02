@@ -61,6 +61,17 @@ namespace CilTools.Visualization
             }
         }
 
+        internal bool EnableMethodDefinitionLinks
+        {
+            get
+            {
+                object val = this.GetOption("EnableMethodDefinitionLinks");
+
+                if (val != null) return (bool)val;
+                else return false;
+            }
+        }
+
         public bool EnableInstructionNavigation
         {
             get

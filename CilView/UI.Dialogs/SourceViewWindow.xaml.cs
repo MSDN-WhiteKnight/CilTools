@@ -15,6 +15,7 @@ using CilTools.Syntax;
 using CilTools.Visualization;
 using CilView.Common;
 using CilView.SourceCode;
+using CilView.Visualization;
 
 namespace CilView.UI.Dialogs
 {
@@ -50,16 +51,16 @@ namespace CilView.UI.Dialogs
                 //visualize nodes as HTML in WebBrowser
                 VisualizationOptions options = new VisualizationOptions();
                 options.EnableInstructionNavigation = false;
-                UIElement elem = CilVisualization.VisualizeAsHtml(nodes, null, options);
-                contentCIL.Content = elem;
+                SyntaxVisualizer vis = new SyntaxVisualizer();
+                string html = vis.RenderSyntaxNodes(nodes, options);
+                html = VisualizationServer.PrepareContent(html);
+                contentCIL.NavigateToString(html);
             }
             catch (Exception ex)
             {
                 //don't stop the rest of method to work if this errors out
                 //showing source can still be useful
-                TextBlock errorBlock = new TextBlock(new Run("[error!]"));
-                errorBlock.TextAlignment = TextAlignment.Left;
-                contentCIL.Content = errorBlock;
+                contentCIL.NavigateToString("[error!]");
                 ErrorHandler.Current.Error(ex);
             }
 

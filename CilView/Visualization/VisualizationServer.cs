@@ -65,7 +65,7 @@ namespace CilView.Visualization
             // Not implemented
         }
         
-        string PrepareContent(string content)
+        public static string PrepareContent(string content)
         {
             StringBuilder sb = new StringBuilder();
             HtmlBuilder html = new HtmlBuilder(sb);
@@ -107,26 +107,26 @@ namespace CilView.Visualization
                 //synthesized assembly that contains IL - no need to disassemble
                 IlasmAssembly ia = (IlasmAssembly)obj;
                 string html = this._vis.RenderSyntaxNodes(ia.Syntax.GetChildNodes());
-                return this.PrepareContent(html);
+                return PrepareContent(html);
             }
             else if (obj is IlasmType)
             {
                 //synthesized type that contains IL - no need to disassemble
                 IlasmType dt = (IlasmType)obj;
                 string html = this._vis.RenderSyntaxNodes(dt.Syntax.GetChildNodes());
-                return this.PrepareContent(html);
+                return PrepareContent(html);
             }
             else if (obj is Assembly)
             {
                 //assembly manifest
                 Assembly ass = (Assembly)obj;
-                return this.PrepareContent(this._vis.RenderAssemblyManifest(ass));
+                return PrepareContent(this._vis.RenderAssemblyManifest(ass));
             }
             else if (obj is Type)
             {
                 //type disassembled IL
                 Type t = (Type)obj;
-                return this.PrepareContent(this._vis.RenderType(t, false));
+                return PrepareContent(this._vis.RenderType(t, false));
             }
             else if (obj is MethodBase)
             {
@@ -143,15 +143,7 @@ namespace CilView.Visualization
                     rendered += "<script type=\"text/javascript\">location.href='" + url + "';</script>";
                 }
 
-                return this.PrepareContent(rendered);
-            }
-            else if (obj is IEnumerable<SyntaxNode>)
-            {
-                IEnumerable<SyntaxNode> nodes = (IEnumerable<SyntaxNode>)obj;
-                SyntaxVisualizer vis = new SyntaxVisualizer();
-                string rendered = vis.RenderSyntaxNodes(nodes, options);
-
-                return this.PrepareContent(rendered);
+                return PrepareContent(rendered);
             }
             else return string.Empty;
         }
@@ -239,7 +231,7 @@ namespace CilView.Visualization
 
                     if (string.IsNullOrEmpty(tokenStr))
                     {
-                        content = this.PrepareContent(this._vis.RenderAssemblyManifest(ass));
+                        content = PrepareContent(this._vis.RenderAssemblyManifest(ass));
                         SendHtmlResponse(response, content);
                         this.AddToCache(url, content);
                         return;

@@ -20,7 +20,7 @@
                  Text="" VerticalAlignment="Top" IsReadOnly="True"/>
             <Border HorizontalAlignment="Stretch" Margin="5,35,5,5"
                  VerticalAlignment="Stretch" Grid.Column="0" BorderBrush="DarkGray" BorderThickness="1">
-                <ContentControl x:Name="contentCIL" HorizontalAlignment="Stretch"
+                <WebBrowser x:Name="contentCIL" HorizontalAlignment="Stretch"
                  VerticalAlignment="Stretch" />
             </Border>
 
