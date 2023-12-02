@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -7,11 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 using CilTools.SourceCode;
 using CilTools.SourceCode.Common;
-using CilTools.Syntax;
 using CilView.Common;
 using CilView.SourceCode;
 
@@ -88,8 +86,8 @@ namespace CilView.UI.Dialogs
             string caption = sb.ToString();
 
             //show source code
-            FlowDocument fd = SourceVisualization.VisualizeTokens(tokens, string.Empty, string.Empty);
-            this.viewer.Document = fd;
+            string html = SourceVisualization.VisualizeAsHtml(tokens, string.Empty, string.Empty);
+            this.browser.NavigateToString(html);
             this.tbFileName.Text = header;
             this.tbSymbolsFile.Text = caption;
         }

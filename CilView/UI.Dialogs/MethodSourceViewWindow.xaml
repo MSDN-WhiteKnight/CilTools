@@ -12,8 +12,8 @@
                  ToolTip="Open in external editor" MouseDown="tbFileName_MouseDown" />
         <Border HorizontalAlignment="Stretch"  Margin="5,35,5,55" VerticalAlignment="Stretch" 
                 BorderBrush="DarkGray" BorderThickness="1">
-            <FlowDocumentScrollViewer x:Name="viewer" HorizontalAlignment="Stretch" 
-                VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible"/>
+            <WebBrowser x:Name="browser" HorizontalAlignment="Stretch" 
+                VerticalAlignment="Stretch" />
         </Border>
         <TextBlock x:Name="tbSymbolsFile" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" 
                    Margin="5,5,125,5" Height="35" TextWrapping="Wrap" Text="Symbols"  Foreground="Blue" Cursor="Hand"

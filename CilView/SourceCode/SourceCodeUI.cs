@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -52,9 +52,10 @@ namespace CilView.SourceCode
         {
             //stub implementation that only works for methods without body
             IEnumerable<SourceToken> tokens = Decompiler.DecompileMethodSignature(".cs", method);
-            DocumentViewWindow wnd = new DocumentViewWindow();
+            string html = SourceVisualization.VisualizeAsHtml(tokens, string.Empty, "Source code from: Decompiler");
+
+            HtmlViewWindow wnd = new HtmlViewWindow(html);
             wnd.Title = "Source code";
-            wnd.Document = SourceVisualization.VisualizeTokens(tokens, string.Empty, "Source code from: Decompiler");
             wnd.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             wnd.ShowDialog();
         }

@@ -30,8 +30,8 @@
                  MouseDown="tbFileName_MouseDown"/>
             <Border HorizontalAlignment="Stretch" Margin="5,35,5,5"
                  VerticalAlignment="Stretch" Grid.Column="1" BorderBrush="DarkGray" BorderThickness="1">
-                <FlowDocumentScrollViewer x:Name="fdSource" HorizontalAlignment="Stretch"
-                 VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" />
+                <WebBrowser x:Name="contentSource" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch" />
             </Border>
 
         </Grid>

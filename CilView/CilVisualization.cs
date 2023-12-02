@@ -10,7 +10,6 @@ using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
-using System.Windows.Media;
 using System.Windows.Navigation;
 using CilTools.BytecodeAnalysis;
 using CilTools.Syntax;
@@ -25,12 +24,9 @@ namespace CilView
 {
     static class CilVisualization
     {
-        //Default WPF hyperlink color
-        //static readonly SolidColorBrush HyperlinkBrush = new SolidColorBrush(Color.FromArgb(0xFF, 0x00, 0x66, 0xCC));
-
-        //Default in Visual Studio for types
-        internal static readonly SolidColorBrush IdentifierBrush = new SolidColorBrush(Color.FromArgb(0xFF, 43, 145, 175));
-
+        //Default WPF hyperlink color: Color.FromArgb(0xFF, 0x00, 0x66, 0xCC)
+        //Default in Visual Studio for types: Color.FromArgb(0xFF, 43, 145, 175)
+        
         //Parameters that control how disassembled CIL is produced. They are changed from main window UI.
         internal static readonly DisassemblerParams CurrentDisassemblerParams = InitDisassemblerParams();
 
@@ -180,14 +176,6 @@ namespace CilView
             return tlv;
         }
         
-        internal static FlowDocument CreateFlowDocument()
-        {
-            FlowDocument fd = new FlowDocument();
-            fd.TextAlignment = TextAlignment.Left;
-            fd.FontFamily = new FontFamily("Courier New");
-            return fd;
-        }
-
         public static UIElement VisualizeAsHtml(object obj, NavigatingCancelEventHandler navigation, 
             VisualizationOptions options)
         {

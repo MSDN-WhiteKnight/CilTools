@@ -1,5 +1,5 @@
 ﻿/* CIL Tools 
- * Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,6 @@ using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Input;
 using CilTools.SourceCode;
 using CilTools.SourceCode.Common;
@@ -69,8 +68,9 @@ namespace CilView.UI.Dialogs
 
             SourceToken[] tokens = SourceCodeUtils.ReadAllTokens(f.Text, SourceCodeUtils.GetTokenDefinitions(ext),
                 SourceCodeUtils.GetFactory(ext));
-
-            fdSource.Document = SourceVisualization.VisualizeTokens(tokens, string.Empty, string.Empty);
+            
+            string srcHtml = SourceVisualization.VisualizeAsHtml(tokens, string.Empty, string.Empty);
+            contentSource.NavigateToString(srcHtml);
 
             if (f.CilStart == 0) bPrevious.IsEnabled = false;
             else bPrevious.IsEnabled = true;
