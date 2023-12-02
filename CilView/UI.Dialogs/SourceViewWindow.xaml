@@ -20,8 +20,8 @@
                  Text="" VerticalAlignment="Top" IsReadOnly="True"/>
             <Border HorizontalAlignment="Stretch" Margin="5,35,5,5"
                  VerticalAlignment="Stretch" Grid.Column="0" BorderBrush="DarkGray" BorderThickness="1">
-                <FlowDocumentScrollViewer x:Name="fdCIL" HorizontalAlignment="Stretch"
-                 VerticalAlignment="Stretch" VerticalScrollBarVisibility="Visible" />
+                <ContentControl x:Name="contentCIL" HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch" />
             </Border>
 
             <TextBlock x:Name="tbFileName" Text="File" HorizontalAlignment="Stretch" Margin="5,5,0,0" 

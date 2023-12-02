@@ -12,6 +12,7 @@ using System.Windows.Input;
 using CilTools.SourceCode;
 using CilTools.SourceCode.Common;
 using CilTools.Syntax;
+using CilTools.Visualization;
 using CilView.Common;
 using CilView.SourceCode;
 
@@ -45,19 +46,20 @@ namespace CilView.UI.Dialogs
             {
                 //get CIL for the range of the sequence point
                 IEnumerable<SyntaxNode> nodes = PdbUtils.GetCilSyntax(f.Method, (uint)f.CilStart, (uint)f.CilEnd);
-                fdCIL.Document = CilVisualization.VisualizeNodes(nodes);
+
+                //visualize nodes as HTML in WebBrowser
+                VisualizationOptions options = new VisualizationOptions();
+                options.EnableInstructionNavigation = false;
+                UIElement elem = CilVisualization.VisualizeAsHtml(nodes, null, options);
+                contentCIL.Content = elem;
             }
             catch (Exception ex)
             {
                 //don't stop the rest of method to work if this errors out
                 //showing source can still be useful
-                FlowDocument errorDocument = new FlowDocument();
-                errorDocument.TextAlignment = TextAlignment.Left;
-                Paragraph par = new Paragraph();
-                par.Inlines.Add(new Run("[error!]"));
-                errorDocument.Blocks.Add(par);
-                fdCIL.Document = errorDocument;
-
+                TextBlock errorBlock = new TextBlock(new Run("[error!]"));
+                errorBlock.TextAlignment = TextAlignment.Left;
+                contentCIL.Content = errorBlock;
                 ErrorHandler.Current.Error(ex);
             }
 

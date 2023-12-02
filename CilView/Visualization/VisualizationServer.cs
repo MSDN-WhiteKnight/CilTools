@@ -145,6 +145,14 @@ namespace CilView.Visualization
 
                 return this.PrepareContent(rendered);
             }
+            else if (obj is IEnumerable<SyntaxNode>)
+            {
+                IEnumerable<SyntaxNode> nodes = (IEnumerable<SyntaxNode>)obj;
+                SyntaxVisualizer vis = new SyntaxVisualizer();
+                string rendered = vis.RenderSyntaxNodes(nodes, options);
+
+                return this.PrepareContent(rendered);
+            }
             else return string.Empty;
         }
 
