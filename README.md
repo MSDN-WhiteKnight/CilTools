@@ -6,7 +6,7 @@
 
 [![gitflic-catalog](https://img.shields.io/badge/gitflic--catalog-blue)](https://gitflic.ru/project/smallsoft/gitflic-catalog) &nbsp; [![GitHub release (latest by date)](https://img.shields.io/github/v/release/MSDN-WhiteKnight/CilTools)](https://github.com/MSDN-WhiteKnight/CilTools/releases)
 
-[Documentation](https://msdn-whiteknight.github.io/CilTools/) | [Examples](https://gitflic.ru/project/smallsoft/ciltools/file?file=Examples&branch=master)
+[Documentation](https://msdn-whiteknight.github.io/CilTools/) | [Examples](Examples/)
 
 CIL tools is a set of software to work with Common Intermediate Language in .NET.
 
