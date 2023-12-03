@@ -1,5 +1,5 @@
 /* CIL Tools
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -35,12 +35,13 @@ namespace CilTools.CommandLine
                 string exeName = typeof(Program).Assembly.GetName().Name;
 
                 yield return TextParagraph.Code("    " + exeName +
-                    " disasm [--output <output path>] <assembly path> [<type full name>] [<method name>]");
+                    " disasm [--output <output path>] [--html] <assembly path> [<type full name>] [<method name>]");
                 yield return TextParagraph.Text("[--output <output path>] - Output file path");
+                yield return TextParagraph.Text("[--html] - When specified, output format is HTML");
             }
         }
 
-        static async Task<int> DisassembleAssembly(string asspath, TextWriter target)
+        static async Task<int> DisassembleAssembly(string asspath, bool html, TextWriter target)
         {
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
@@ -49,7 +50,10 @@ namespace CilTools.CommandLine
             try
             {
                 ass = reader.LoadFrom(asspath);
-                await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), target);
+
+                if (html) await SyntaxWriter.DisassembleAsHtmlAsync(ass, new DisassemblerParams(), target);
+                else await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), target);
+
                 retCode = 0;
             }
             catch (Exception ex)
@@ -66,7 +70,7 @@ namespace CilTools.CommandLine
             return retCode;
         }
 
-        static async Task<int> DisassembleType(string asspath, string type, TextWriter target)
+        static async Task<int> DisassembleType(string asspath, string type, bool html, TextWriter target)
         {
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
@@ -83,7 +87,9 @@ namespace CilTools.CommandLine
                     return 1;
                 }
 
-                await SyntaxWriter.DisassembleTypeAsync(t, new DisassemblerParams(), target);
+                if (html) await SyntaxWriter.DisassembleTypeAsHtmlAsync(t, new DisassemblerParams(), target);
+                else await SyntaxWriter.DisassembleTypeAsync(t, new DisassemblerParams(), target);
+
                 retCode = 0;
             }
             catch (Exception ex)
@@ -100,7 +106,7 @@ namespace CilTools.CommandLine
             return retCode;
         }
 
-        static int DisassembleMethod(string asspath, string type, string method, TextWriter target)
+        static int DisassembleMethod(string asspath, string type, string method, bool html, TextWriter target)
         {
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
@@ -127,13 +133,24 @@ namespace CilTools.CommandLine
                     return 1;
                 }
 
-                SyntaxWriter.WriteHeader(target);
+                if (html) SyntaxWriter.WriteDocumentStart(target);
+                else SyntaxWriter.WriteHeader(target);
 
                 for (int i = 0; i < selectedMethods.Length; i++)
                 {
-                    SyntaxWriter.DisassembleMethod(selectedMethods[i], new DisassemblerParams(), target);
+                    if (html)
+                    {
+                        SyntaxWriter.DisassembleMethodAsHtml(selectedMethods[i], new DisassemblerParams(), target);
+                    }
+                    else
+                    {
+                        SyntaxWriter.DisassembleMethod(selectedMethods[i], new DisassemblerParams(), target);
+                    }
+
                     target.WriteLine();
                 }
+
+                if (html) SyntaxWriter.WriteDocumentEnd(target);
 
                 retCode = 0;
             }
@@ -153,10 +170,12 @@ namespace CilTools.CommandLine
 
         public override int Execute(string[] args)
         {
-            string asspath;
-            string type;
-            string method;
+            string asspath = string.Empty;
+            string type = string.Empty;
+            string method = string.Empty;
             string outpath = null;
+            bool html = false;
+            string targExt = ".il";
 
             if (args.Length < 2)
             {
@@ -165,17 +184,30 @@ namespace CilTools.CommandLine
                 return 1;
             }
 
-            int pos = 1;
-
-            if (CLI.TryReadExpectedParameter(args, pos, "--output"))
+            // Parse command line arguments
+            NamedArgumentDefinition[] defs = new NamedArgumentDefinition[]
             {
-                pos++;
-                outpath = CLI.ReadCommandParameter(args, pos);
-                pos++;
+                new NamedArgumentDefinition("--output", true, "Output file path"),
+                new NamedArgumentDefinition("--html", false, "Output format is HTML"),
+            };
+
+            CommandLineArgs cla = new CommandLineArgs(args, defs);
+            
+            if (cla.HasNamedArgument("--output"))
+            {
+                outpath = cla.GetNamedArgument("--output");
             }
 
-            asspath = CLI.ReadCommandParameter(args, pos);
-            pos++;
+            if (cla.HasNamedArgument("--html"))
+            {
+                html = true;
+                targExt = ".html";
+            }
+
+            if (cla.PositionalArgumentsCount > 1)
+            {
+                asspath = cla.GetPositionalArgument(1);
+            }
 
             if (string.IsNullOrEmpty(asspath))
             {
@@ -186,11 +218,19 @@ namespace CilTools.CommandLine
 
             if (string.IsNullOrEmpty(outpath))
             {
-                outpath = Path.GetFileNameWithoutExtension(asspath) + ".il";
+                outpath = Path.GetFileNameWithoutExtension(asspath) + targExt;
             }
 
-            type = CLI.ReadCommandParameter(args, pos);
-            pos++;
+            if (cla.PositionalArgumentsCount > 2)
+            {
+                type = cla.GetPositionalArgument(2);
+            }
+
+            if (cla.PositionalArgumentsCount > 3)
+            {
+                method = cla.GetPositionalArgument(3);
+            }
+
             Console.WriteLine("Input file: " + asspath);
             StreamWriter wr;
 
@@ -205,6 +245,7 @@ namespace CilTools.CommandLine
                 return 1;
             }
 
+            // Disassemble
             using (wr)
             {
                 int res;
@@ -213,7 +254,7 @@ namespace CilTools.CommandLine
                 if (string.IsNullOrEmpty(type))
                 {
                     // disassemble assembly
-                    Task<int> task = DisassembleAssembly(asspath, wr);
+                    Task<int> task = DisassembleAssembly(asspath, html, wr);
                     task.Wait(); //OK to block in console app
 
                     if (task.IsCompletedSuccessfully) res = task.Result;
@@ -224,13 +265,11 @@ namespace CilTools.CommandLine
 
                     return res;
                 }
-
-                method = CLI.ReadCommandParameter(args, pos);
-
+                
                 if (string.IsNullOrEmpty(method))
                 {
                     //disassemble type
-                    Task<int> task = DisassembleType(asspath, type, wr);
+                    Task<int> task = DisassembleType(asspath, type, html, wr);
                     task.Wait(); //OK to block in console app
 
                     if (task.IsCompletedSuccessfully) res = task.Result;
@@ -239,7 +278,7 @@ namespace CilTools.CommandLine
                 else
                 {
                     //disassemble method
-                    res = DisassembleMethod(asspath, type, method, wr);
+                    res = DisassembleMethod(asspath, type, method, html, wr);
                 }
 
                 if (res == 0) Console.WriteLine("Output successfully written to " + outpath);
