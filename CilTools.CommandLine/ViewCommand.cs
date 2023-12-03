@@ -1,5 +1,5 @@
 /* CIL Tools
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -109,6 +109,15 @@ namespace CilTools.CommandLine
                     Console.WriteLine(ex.ToString());
                     return 1;
                 }
+            }
+
+            if (!File.Exists(filepath) && FileUtils.IsFileNameWithoutDirectory(filepath) &&
+                filepath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
+            {
+                // If full path is not specified, try to find path for BCL assembly of the current runtime
+                string bclPath = FileUtils.GetBclAssemblyPath(filepath);
+
+                if (File.Exists(bclPath)) filepath = bclPath;
             }
 
             Console.WriteLine("Assembly: " + filepath);
