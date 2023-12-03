@@ -133,7 +133,7 @@ namespace CilView.UI.Controls
             else if (targetMember is Type)
             {
                 e.Cancel = true;
-                this.NavigateToType((Type)targetMember);
+                this.NavigateToType((Type)targetMember, false);
             }
         }
 
@@ -198,7 +198,7 @@ namespace CilView.UI.Controls
             ExpandContentPane();
         }
 
-        public ObservableCollection<MethodBase> NavigateToType(Type t)
+        public ObservableCollection<MethodBase> NavigateToType(Type t, bool updateMethodList)
         {
             if (t == null) return new ObservableCollection<MethodBase>();
 
@@ -216,14 +216,19 @@ namespace CilView.UI.Controls
                 ErrorHandler.Current.Error(ex);
                 frameContent.Navigate(String.Empty);
             }
-
-            //display method list in left pane
-            ObservableCollection<MethodBase> methods = AssemblySource.LoadMethods(t);
-            this.tlv = CilVisualization.VisualizeMethodList(methods, Navigated);
-            cMethodsList.Child = this.tlv;
             
-            this.current_method = null;
-            this.current_type = t;
+            ObservableCollection<MethodBase> methods = AssemblySource.LoadMethods(t);
+
+            if (updateMethodList)
+            {
+                //display method list in left pane
+                this.tlv = CilVisualization.VisualizeMethodList(methods, Navigated);
+                cMethodsList.Child = this.tlv;
+
+                this.current_method = null;
+                this.current_type = t;
+            }
+
             this.text = contenttext;
 
             //make sure content is visible

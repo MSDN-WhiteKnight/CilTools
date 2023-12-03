@@ -373,7 +373,7 @@ namespace CilView
                 if (source == null) return;
 
                 source.Methods.Clear();
-                source.Methods = this.cilbrowser.NavigateToType(t);
+                source.Methods = this.cilbrowser.NavigateToType(t, true);
             }
             catch (Exception ex)
             {
