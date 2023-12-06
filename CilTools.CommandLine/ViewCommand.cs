@@ -58,9 +58,9 @@ namespace CilTools.CommandLine
 
         public override int Execute(string[] args)
         {
-            string filepath;
-            string type;
-            string method;
+            string filepath = string.Empty;
+            string type = string.Empty;
+            string method = string.Empty;
             bool noColor = false;
 
             if (args.Length < 2)
@@ -70,17 +70,21 @@ namespace CilTools.CommandLine
                 return 1;
             }
 
-            int pos = 1;
-
-            if (CLI.TryReadExpectedParameter(args, pos, "--nocolor"))
+            // Parse command line arguments
+            NamedArgumentDefinition[] defs = new NamedArgumentDefinition[]
             {
-                noColor = true;
-                pos++;
-            }
+                new NamedArgumentDefinition("--nocolor", false, "Disable syntax highlighting")
+            };
 
-            //read path for assembly or IL source file
-            filepath = CLI.ReadCommandParameter(args, pos);
-            pos++;
+            CommandLineArgs cla = new CommandLineArgs(args, defs);
+
+            if (cla.HasNamedArgument("--nocolor")) noColor = true;
+
+            if (cla.PositionalArgumentsCount > 1)
+            {
+                //read path for assembly or IL source file
+                filepath = cla.GetPositionalArgument(1);
+            }
 
             if (string.IsNullOrEmpty(filepath))
             {
@@ -89,10 +93,15 @@ namespace CilTools.CommandLine
                 return 1;
             }
 
+            //read type and method name from arguments
+            if (cla.PositionalArgumentsCount > 2) type = cla.GetPositionalArgument(2);
+
+            if (cla.PositionalArgumentsCount > 3) method = cla.GetPositionalArgument(3);
+
             if (FileUtils.HasCilSourceExtension(filepath) ||
-                (args.Length < 3 && !FileUtils.HasPeFileExtension(filepath)))
+                (cla.PositionalArgumentsCount <= 2 && !FileUtils.HasPeFileExtension(filepath)))
             {
-                //view IL source file
+                // View IL source file
 
                 try
                 {
@@ -110,6 +119,8 @@ namespace CilTools.CommandLine
                     return 1;
                 }
             }
+            
+            // View disassembled IL
 
             if (!File.Exists(filepath) && FileUtils.IsFileNameWithoutDirectory(filepath) &&
                 filepath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
@@ -122,19 +133,13 @@ namespace CilTools.CommandLine
 
             Console.WriteLine("Assembly: " + filepath);
             
-            //read type and method name from arguments
-            type = CLI.ReadCommandParameter(args, pos);
-            pos++;
-
-            if (type == null)
+            if (string.IsNullOrEmpty(type))
             {
                 //view assembly manifest
                 Console.WriteLine();
                 return Visualizer.VisualizeAssembly(filepath, noColor, Console.Out);
             }
-
-            method = CLI.ReadCommandParameter(args, pos);
-
+            
             if (string.IsNullOrEmpty(method))
             {
                 //view type

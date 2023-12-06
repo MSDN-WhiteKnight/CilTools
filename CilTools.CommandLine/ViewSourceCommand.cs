@@ -1,5 +1,5 @@
 /* CIL Tools
- * Copyright (c) 2022,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
+ * Copyright (c) 2023,  MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight) 
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
@@ -252,9 +252,9 @@ namespace CilTools.CommandLine
 
         public override int Execute(string[] args)
         {
-            string filepath;
-            string type;
-            string method;
+            string filepath = string.Empty;
+            string type = string.Empty;
+            string method = string.Empty;
             bool noColor = false;
 
             if (args.Length < 4)
@@ -264,17 +264,21 @@ namespace CilTools.CommandLine
                 return 1;
             }
 
-            int pos = 1;
-
-            if (CLI.TryReadExpectedParameter(args, pos, "--nocolor"))
+            // Parse command line arguments
+            NamedArgumentDefinition[] defs = new NamedArgumentDefinition[]
             {
-                noColor = true;
-                pos++;
-            }
+                new NamedArgumentDefinition("--nocolor", false, "Disable syntax highlighting")
+            };
 
-            //read path for assembly
-            filepath = CLI.ReadCommandParameter(args, pos);
-            pos++;
+            CommandLineArgs cla = new CommandLineArgs(args, defs);
+
+            if (cla.HasNamedArgument("--nocolor")) noColor = true;
+
+            if (cla.PositionalArgumentsCount > 1)
+            {
+                //read path for assembly
+                filepath = cla.GetPositionalArgument(1);
+            }
 
             if (string.IsNullOrEmpty(filepath))
             {
@@ -284,26 +288,25 @@ namespace CilTools.CommandLine
             }
 
             //read type and method name from arguments
-            type = CLI.ReadCommandParameter(args, pos);
-            pos++;
+            if (cla.PositionalArgumentsCount > 2) type = cla.GetPositionalArgument(2);
 
-            if (type == null)
+            if (string.IsNullOrEmpty(type))
             {
                 Console.WriteLine("Error: Type name is not provided for the 'view-source' command.");
                 Console.WriteLine(CLI.GetErrorInfo());
                 return 1;
             }
 
-            method = CLI.ReadCommandParameter(args, pos);
+            if (cla.PositionalArgumentsCount > 3) method = cla.GetPositionalArgument(3);
 
-            if (method == null)
+            if (string.IsNullOrEmpty(method))
             {
                 Console.WriteLine("Error: Method name is not provided for the 'view-source' command.");
                 Console.WriteLine(CLI.GetErrorInfo());
                 return 1;
             }
-
-            //view method source
+            
+            // View method source
             Console.WriteLine("Assembly: " + filepath);
             Console.WriteLine("Type: " + type);
             Console.WriteLine();

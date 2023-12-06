@@ -32,7 +32,7 @@ namespace CilTools.CommandLine
 
         public override int Execute(string[] args)
         {
-            string filepath;
+            string filepath = string.Empty;
 
             if (args.Length < 2)
             {
@@ -41,8 +41,15 @@ namespace CilTools.CommandLine
                 return 1;
             }
 
-            filepath = CLI.ReadCommandParameter(args, 1);
+            // Parse command line arguments
+            CommandLineArgs cla = new CommandLineArgs(args, new NamedArgumentDefinition[0]);
 
+            if (cla.PositionalArgumentsCount > 1)
+            {
+                //read path for assembly
+                filepath = cla.GetPositionalArgument(1);
+            }
+            
             if (string.IsNullOrEmpty(filepath))
             {
                 Console.WriteLine("Error: File path is not provided for the 'fileinfo' command.");
