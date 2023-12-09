@@ -12,7 +12,7 @@ using CilTools.Visualization;
 namespace CilView.Tests.Visualization
 {
     [TestClass]
-    public class SyntaxVisualizerTests
+    public class HtmlVisualizerTests
     {
         static string Visualize(IEnumerable<SyntaxNode> nodes)
         {

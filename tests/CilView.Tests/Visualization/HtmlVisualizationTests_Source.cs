@@ -12,7 +12,7 @@ using CilTools.Visualization;
 namespace CilView.Tests.Visualization
 {
     [TestClass]
-    public class SourceVisualizerTests
+    public class HtmlVisualizationTests_Source
     {
         [TestMethod]
         public void Test_RenderSourceText()

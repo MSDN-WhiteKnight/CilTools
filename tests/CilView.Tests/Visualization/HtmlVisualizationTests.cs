@@ -13,7 +13,7 @@ using CilTools.Visualization;
 namespace CilView.Tests.Visualization
 {
     [TestClass]
-    public class CilVisualizerTests
+    public class HtmlVisualizationTests
     {
         [TestMethod]
         public void Test_RenderMethod()

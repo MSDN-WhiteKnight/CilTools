@@ -13,6 +13,9 @@ using CilTools.Syntax;
 
 namespace CilTools.Visualization
 {
+    /// <summary>
+    /// Visualizes syntax nodes as HTML
+    /// </summary>
     public class HtmlVisualizer : SyntaxVisualizer
     {
         List<UrlProviderBase> _urlProviders = new List<UrlProviderBase>();
