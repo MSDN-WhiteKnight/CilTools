@@ -10,6 +10,8 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
 using CilTools.Syntax;
+using CilView.Common;
+using CilView.Core.Syntax;
 
 namespace CilTools.CommandLine
 {
@@ -192,6 +194,68 @@ namespace CilTools.CommandLine
                     PrintNode(node, noColor, target);
                 }
                 
+                retCode = 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
+                retCode = 1;
+            }
+            finally
+            {
+                reader.Dispose();
+            }
+
+            return retCode;
+        }
+        
+        public static int DisassembleMethod(string asspath, string type, string method, bool html, TextWriter target)
+        {
+            AssemblyReader reader = new AssemblyReader();
+            Assembly ass;
+            int retCode;
+
+            try
+            {
+                ass = reader.LoadFrom(asspath);
+                Type t = ass.GetType(type);
+
+                if (t == null)
+                {
+                    Console.WriteLine("Error: Type {0} not found in assembly {1}", type, asspath);
+                    return 1;
+                }
+
+                MemberInfo[] methods = Utils.GetAllMembers(t);
+                Func<MethodBase, bool> predicate = (x) => Utils.StringEquals(x.Name, method);
+                MethodBase[] selectedMethods = methods.OfType<MethodBase>().Where(predicate).ToArray();
+
+                if (selectedMethods.Length == 0)
+                {
+                    Console.WriteLine("Error: Type {0} does not declare methods with the specified name", type);
+                    return 1;
+                }
+
+                if (html) SyntaxWriter.WriteDocumentStart(target);
+                else SyntaxWriter.WriteHeader(target);
+
+                for (int i = 0; i < selectedMethods.Length; i++)
+                {
+                    if (html)
+                    {
+                        SyntaxWriter.DisassembleMethodAsHtml(selectedMethods[i], new DisassemblerParams(), target);
+                    }
+                    else
+                    {
+                        SyntaxWriter.DisassembleMethod(selectedMethods[i], new DisassemblerParams(), target);
+                    }
+
+                    target.WriteLine();
+                }
+
+                if (html) SyntaxWriter.WriteDocumentEnd(target);
+
                 retCode = 0;
             }
             catch (Exception ex)

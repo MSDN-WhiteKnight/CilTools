@@ -3,12 +3,15 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Text;
 using CilTools.Syntax;
 using CilTools.Syntax.Tokens;
+using CilTools.Visualization;
 using CilView.Core;
 using CilView.Core.Documentation;
+using CilView.Core.Syntax;
 
 namespace CilTools.CommandLine
 {
@@ -40,9 +43,9 @@ namespace CilTools.CommandLine
             }
         }
 
-        static void PrintSourceDocument(string content, bool noColor, TextWriter target)
+        static void PrintSourceDocument(string content, bool noColor, bool html, TextWriter target)
         {
-            if (noColor)
+            if (noColor && !html)
             {
                 target.WriteLine(content);
                 return;
@@ -50,10 +53,107 @@ namespace CilTools.CommandLine
 
             SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(content);
 
-            for (int i = 0; i < nodes.Length; i++)
+            if (html)
             {
-                Visualizer.PrintNode(nodes[i], noColor, target);
+                SyntaxVisualizer vis = new SyntaxVisualizer();
+                SyntaxWriter.WriteDocumentStart(target);
+                vis.RenderSyntaxNodes(nodes, new VisualizationOptions(), target);
+                SyntaxWriter.WriteDocumentEnd(target);
             }
+            else
+            {
+                for (int i = 0; i < nodes.Length; i++)
+                {
+                    Visualizer.PrintNode(nodes[i], noColor, target);
+                }
+            }
+        }
+
+        static FileStream TryCreateFile(string name)
+        {
+            FileStream fs;
+
+            try
+            {
+                //try in current directory
+                fs = new FileStream(name, FileMode.Create, FileAccess.Write);
+            }
+            catch (IOException)
+            {
+                //try in temp directory
+                string path = Path.Combine(Path.GetTempPath(), name);
+                fs = new FileStream(path, FileMode.Create, FileAccess.Write);
+            }
+
+            return fs;
+        }
+
+        static void OpenInBrowser(string filePath)
+        {
+            Console.WriteLine("Trying to open " + filePath + " in browser...");
+            ProcessStartInfo psi = new ProcessStartInfo();
+            psi.FileName = filePath;
+            psi.UseShellExecute = true;
+            Process pr = Process.Start(psi);
+
+            if (pr != null) pr.Dispose();
+        }
+
+        static int ViewMethodAsHtml(string asspath, string type, string method)
+        {
+            try
+            {
+                // Create output file
+                FileStream fs = TryCreateFile("CilTools.html");
+
+                if (fs == null)
+                {
+                    Console.WriteLine("Error: failed to create output HTML file.");
+                    return 1;
+                }
+
+                // Write HTML to output file
+                using (fs)
+                {
+                    TextWriter wr = new StreamWriter(fs);
+                    Visualizer.DisassembleMethod(asspath, type, method, true, wr);
+                }
+
+                // Open output file in browser
+                OpenInBrowser(fs.Name);
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
+                return 1;
+            }
+        }
+
+        static int ViewContentAsHtml(string content)
+        {
+            // Create output file
+            FileStream fs = TryCreateFile("CilTools.html");
+
+            if (fs == null)
+            {
+                Console.WriteLine("Error: failed to create output HTML file.");
+                return 1;
+            }
+
+            // Write HTML to output file
+            using (fs)
+            {
+                TextWriter wr = new StreamWriter(fs);
+                PrintSourceDocument(content, noColor: false, html: true, wr);
+            }
+
+            // Open output file in browser
+            OpenInBrowser(fs.Name);
+
+            return 0;
         }
 
         public override int Execute(string[] args)
@@ -62,6 +162,7 @@ namespace CilTools.CommandLine
             string type = string.Empty;
             string method = string.Empty;
             bool noColor = false;
+            bool html = false;
 
             if (args.Length < 2)
             {
@@ -73,12 +174,15 @@ namespace CilTools.CommandLine
             // Parse command line arguments
             NamedArgumentDefinition[] defs = new NamedArgumentDefinition[]
             {
-                new NamedArgumentDefinition("--nocolor", false, "Disable syntax highlighting")
+                new NamedArgumentDefinition("--nocolor", false, "Disable syntax highlighting"),
+                new NamedArgumentDefinition("--html", false, "Output format is HTML")
             };
 
             CommandLineArgs cla = new CommandLineArgs(args, defs);
 
             if (cla.HasNamedArgument("--nocolor")) noColor = true;
+
+            if (cla.HasNamedArgument("--html")) html = true;
 
             if (cla.PositionalArgumentsCount > 1)
             {
@@ -109,8 +213,16 @@ namespace CilTools.CommandLine
                     string title = Path.GetFileName(filepath);
                     Console.WriteLine("IL source file: " + title);
                     Console.WriteLine();
-                    PrintSourceDocument(content, noColor, Console.Out);
-                    return 0;
+
+                    if (html)
+                    {
+                        return ViewContentAsHtml(content);
+                    }
+                    else
+                    {
+                        PrintSourceDocument(content, noColor, false, Console.Out);
+                        return 0;
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -150,7 +262,9 @@ namespace CilTools.CommandLine
             //view method
             Console.WriteLine("{0}.{1}", type, method);
             Console.WriteLine();
-            return Visualizer.VisualizeMethod(filepath, type, method, noColor, Console.Out);
+
+            if (html) return ViewMethodAsHtml(filepath, type, method);
+            else return Visualizer.VisualizeMethod(filepath, type, method, noColor, Console.Out);
         }
     }
 }
