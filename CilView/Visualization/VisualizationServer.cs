@@ -22,12 +22,12 @@ namespace CilView.Visualization
     class VisualizationServer : ServerBase
     {
         AssemblySource _src;
-        CilVisualizer _vis;
+        HtmlVisualizer _vis;
         CilViewUrlProvider _provider;
 
         public VisualizationServer(string urlHost, string urlPrefix) : base(urlHost, urlPrefix)
         {
-            this._vis = new CilVisualizer();
+            this._vis = new HtmlVisualizer();
             this._provider = new CilViewUrlProvider();
             this._vis.AddUrlProvider(this._provider);
         }
@@ -75,7 +75,7 @@ namespace CilView.Visualization
             // CSS only works good starting from Internet Explorer 9
             html.WriteRaw("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\"/>");
 
-            html.WriteElement("style", SyntaxVisualizer.GetVisualStyles());
+            html.WriteElement("style", HtmlVisualizer.GetVisualStyles());
             html.WriteOpeningTag("head");
             html.WriteOpeningTag("body");
             html.WriteRaw(content);
@@ -120,13 +120,15 @@ namespace CilView.Visualization
             {
                 //assembly manifest
                 Assembly ass = (Assembly)obj;
-                return PrepareContent(this._vis.RenderAssemblyManifest(ass));
+                string html = HtmlVisualization.RenderAssemblyManifest(ass, this._vis);
+                return PrepareContent(html);
             }
             else if (obj is Type)
             {
                 //type disassembled IL
                 Type t = (Type)obj;
-                return PrepareContent(this._vis.RenderType(t, false));
+                string html = HtmlVisualization.RenderType(t, this._vis, false);
+                return PrepareContent(html);
             }
             else if (obj is MethodBase)
             {
@@ -231,7 +233,8 @@ namespace CilView.Visualization
 
                     if (string.IsNullOrEmpty(tokenStr))
                     {
-                        content = PrepareContent(this._vis.RenderAssemblyManifest(ass));
+                        content = HtmlVisualization.RenderAssemblyManifest(ass, this._vis);
+                        content = PrepareContent(content);
                         SendHtmlResponse(response, content);
                         this.AddToCache(url, content);
                         return;

@@ -18,7 +18,7 @@ namespace CilView.SourceCode
         {
             StringBuilder sb = new StringBuilder();
             HtmlBuilder html = new HtmlBuilder(sb);
-            SyntaxVisualizer vis = new SyntaxVisualizer();
+            HtmlVisualizer vis = new HtmlVisualizer();
             
             if (!string.IsNullOrEmpty(header))
             {

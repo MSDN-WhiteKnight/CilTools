@@ -55,7 +55,7 @@ namespace CilTools.CommandLine
 
             if (html)
             {
-                SyntaxVisualizer vis = new SyntaxVisualizer();
+                HtmlVisualizer vis = new HtmlVisualizer();
                 SyntaxWriter.WriteDocumentStart(target);
                 vis.RenderSyntaxNodes(nodes, new VisualizationOptions(), target);
                 SyntaxWriter.WriteDocumentEnd(target);

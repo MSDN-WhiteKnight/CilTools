@@ -18,7 +18,7 @@ namespace CilView.Tests.Visualization
         [TestMethod]
         public void Test_RenderMethod()
         {
-            CilVisualizer vis = new CilVisualizer();
+            HtmlVisualizer vis = new HtmlVisualizer();
             AssemblyReader reader = new AssemblyReader();
             string str;
 
@@ -27,7 +27,7 @@ namespace CilView.Tests.Visualization
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
                 Type t = ass.GetType(typeof(SampleType).FullName);
                 MethodBase mb = t.GetMethod("CalcSum");
-                str = vis.RenderMethod(mb, new VisualizationOptions());
+                str = HtmlVisualization.RenderMethod(mb, vis, new VisualizationOptions());
             }
 
             Assert.IsTrue(str.Contains("<span>          ldfld        </span>" +
@@ -57,7 +57,7 @@ namespace CilView.Tests.Visualization
 }
 </code></pre>";
 
-            CilVisualizer vis = new CilVisualizer();
+            HtmlVisualizer vis = new HtmlVisualizer();
             AssemblyReader reader = new AssemblyReader();
             string html;
 
@@ -65,7 +65,7 @@ namespace CilView.Tests.Visualization
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
                 Type t = ass.GetType(typeof(SampleType).FullName);
-                html = vis.RenderType(t, full: false);
+                html = HtmlVisualization.RenderType(t, vis, full: false);
             }
 
             AssertThat.MarkupEquals(expected, html);
@@ -74,14 +74,14 @@ namespace CilView.Tests.Visualization
         [TestMethod]
         public void Test_RenderAssemblyManifest()
         {
-            CilVisualizer vis = new CilVisualizer();
+            HtmlVisualizer vis = new HtmlVisualizer();
             AssemblyReader reader = new AssemblyReader();
             string html;
 
             using (reader)
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
-                html = vis.RenderAssemblyManifest(ass);
+                html = HtmlVisualization.RenderAssemblyManifest(ass, vis);
             }
 
             AssertThat.MarkupContains(html, "<span style=\"color: magenta;\">.assembly </span>" +

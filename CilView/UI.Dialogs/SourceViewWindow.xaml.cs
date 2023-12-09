@@ -50,7 +50,7 @@ namespace CilView.UI.Dialogs
                 //visualize nodes as HTML in WebBrowser
                 VisualizationOptions options = new VisualizationOptions();
                 options.EnableInstructionNavigation = false;
-                SyntaxVisualizer vis = new SyntaxVisualizer();
+                HtmlVisualizer vis = new HtmlVisualizer();
                 string html = vis.RenderSyntaxNodes(nodes, options);
                 html = VisualizationServer.PrepareContent(html);
                 contentCIL.NavigateToString(html);

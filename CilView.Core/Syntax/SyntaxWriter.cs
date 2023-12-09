@@ -55,7 +55,7 @@ namespace CilView.Core.Syntax
             html.WriteOpeningTag("html");
             html.WriteOpeningTag("head");
             html.WriteOpeningTag("style");
-            html.WriteRaw(SyntaxVisualizer.GetVisualStyles());
+            html.WriteRaw(HtmlVisualizer.GetVisualStyles());
             html.WriteClosingTag("style");
             html.WriteClosingTag("head");
             html.StartParagraph();
@@ -88,7 +88,7 @@ namespace CilView.Core.Syntax
 
         public static async Task DisassembleAsHtmlAsync(Assembly ass, DisassemblerParams pars, TextWriter target)
         {
-            SyntaxVisualizer vis = new SyntaxVisualizer();
+            HtmlVisualizer vis = new HtmlVisualizer();
             await WriteDocumentStartAsync(target);
 
             //assembly manifest
@@ -162,7 +162,7 @@ namespace CilView.Core.Syntax
 
         public static async Task DisassembleTypeAsHtmlAsync(Type t, DisassemblerParams pars, TextWriter target)
         {
-            SyntaxVisualizer vis = new SyntaxVisualizer();
+            HtmlVisualizer vis = new HtmlVisualizer();
             await WriteDocumentStartAsync(target);
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, true, pars);
             string html = vis.RenderSyntaxNodes(nodes);
@@ -182,8 +182,8 @@ namespace CilView.Core.Syntax
         public static void DisassembleMethodAsHtml(MethodBase m, DisassemblerParams pars, TextWriter target)
         {
             //this is only used in CommandLine so don't need to be async
-            CilVisualizer vis = new CilVisualizer();
-            string html = vis.RenderMethod(m, new VisualizationOptions());
+            HtmlVisualizer vis = new HtmlVisualizer();
+            string html = HtmlVisualization.RenderMethod(m, vis, new VisualizationOptions());
             target.WriteLine(html);
             target.Flush();
         }

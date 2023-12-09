@@ -16,7 +16,7 @@ namespace CilView.Tests.Visualization
     {
         static string Visualize(IEnumerable<SyntaxNode> nodes)
         {
-            SyntaxVisualizer vis = new SyntaxVisualizer();
+            HtmlVisualizer vis = new HtmlVisualizer();
             return vis.RenderSyntaxNodes(nodes);
         }
 

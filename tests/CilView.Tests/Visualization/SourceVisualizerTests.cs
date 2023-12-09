@@ -37,7 +37,7 @@ public class Program
     }
 }</code></pre>";
 
-            string html = SourceVisualizer.RenderSourceText(sourceText, "file.cs");
+            string html = HtmlVisualization.RenderSourceText(sourceText, "file.cs");
             AssertThat.MarkupEquals(expected, html);
         }
 
@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 
             StringBuilder sb = new StringBuilder();
             StringWriter wr = new StringWriter(sb);
-            SourceVisualizer.RenderSourceText(sourceText, ".cpp", wr);
+            HtmlVisualization.RenderSourceText(sourceText, ".cpp", wr);
             string html = sb.ToString().Trim();
             expected = expected.Trim();
             
