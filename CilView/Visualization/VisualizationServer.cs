@@ -106,14 +106,14 @@ namespace CilView.Visualization
             {
                 //synthesized assembly that contains IL - no need to disassemble
                 IlasmAssembly ia = (IlasmAssembly)obj;
-                string html = this._vis.RenderSyntaxNodes(ia.Syntax.GetChildNodes());
+                string html = this._vis.RenderNodes(ia.Syntax.GetChildNodes());
                 return PrepareContent(html);
             }
             else if (obj is IlasmType)
             {
                 //synthesized type that contains IL - no need to disassemble
                 IlasmType dt = (IlasmType)obj;
-                string html = this._vis.RenderSyntaxNodes(dt.Syntax.GetChildNodes());
+                string html = this._vis.RenderNodes(dt.Syntax.GetChildNodes());
                 return PrepareContent(html);
             }
             else if (obj is Assembly)
@@ -136,7 +136,7 @@ namespace CilView.Visualization
                 MethodBase mb = (MethodBase)obj;
                 CilGraph gr = CilGraph.Create(mb);
                 MethodDefSyntax mds = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams);
-                string rendered = this._vis.RenderSyntaxNodes(mds.EnumerateChildNodes(), options);
+                string rendered = this._vis.RenderNodes(mds.EnumerateChildNodes(), options);
 
                 if (options.HighlightingStartOffset >= 0)
                 {

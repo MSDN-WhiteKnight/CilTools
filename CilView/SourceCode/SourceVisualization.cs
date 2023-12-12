@@ -27,7 +27,7 @@ namespace CilView.SourceCode
                 html.EndParagraph();
             }
 
-            string rendered = vis.RenderSyntaxNodes(tokens);
+            string rendered = vis.RenderNodes(tokens);
             html.WriteRaw(rendered);
 
             if (!string.IsNullOrEmpty(caption))

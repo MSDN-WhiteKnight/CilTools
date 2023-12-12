@@ -51,7 +51,7 @@ namespace CilView.UI.Dialogs
                 VisualizationOptions options = new VisualizationOptions();
                 options.EnableInstructionNavigation = false;
                 HtmlVisualizer vis = new HtmlVisualizer();
-                string html = vis.RenderSyntaxNodes(nodes, options);
+                string html = vis.RenderNodes(nodes, options);
                 html = VisualizationServer.PrepareContent(html);
                 contentCIL.NavigateToString(html);
             }

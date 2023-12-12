@@ -93,7 +93,7 @@ namespace CilView.Core.Syntax
 
             //assembly manifest
             IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
-            string html = vis.RenderSyntaxNodes(nodes);
+            string html = vis.RenderNodes(nodes);
             await target.WriteLineAsync(html);
 
             //types
@@ -116,7 +116,7 @@ namespace CilView.Core.Syntax
                     nodes = new SyntaxNode[] { cs };
                 }
 
-                html = vis.RenderSyntaxNodes(nodes);
+                html = vis.RenderNodes(nodes);
                 await target.WriteLineAsync(html);
             }
 
@@ -165,7 +165,7 @@ namespace CilView.Core.Syntax
             HtmlVisualizer vis = new HtmlVisualizer();
             await WriteDocumentStartAsync(target);
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, true, pars);
-            string html = vis.RenderSyntaxNodes(nodes);
+            string html = vis.RenderNodes(nodes);
             await target.WriteLineAsync(html);
             await WriteDocumentEndAsync(target);
             await target.FlushAsync();
