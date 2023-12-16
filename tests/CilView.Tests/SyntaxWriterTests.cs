@@ -15,6 +15,7 @@ using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Tests.Common.Attributes;
 using CilTools.Tests.Common.TextUtils;
+using CilTools.Visualization;
 using CilView.Core.Syntax;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -206,7 +207,7 @@ extends [System.Runtime]System.Object
         {
             StringBuilder sb = new StringBuilder(1000);
             StringWriter wr = new StringWriter(sb);
-            await SyntaxWriter.DisassembleTypeAsync(t, new DisassemblerParams(), wr);
+            await SyntaxWriter.DisassembleTypeAsync(t, new DisassemblerParams(), OutputFormat.Plaintext, wr);
             string str = Utils.NormalizeWhitespace(sb.ToString());
 
             AssertThat.IsMatch(str, new Text[] { "// CIL Tools ", Text.Any,

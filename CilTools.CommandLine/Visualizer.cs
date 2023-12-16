@@ -10,6 +10,7 @@ using System.Text;
 using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
 using CilTools.Syntax;
+using CilTools.Visualization;
 using CilView.Common;
 using CilView.Core.Syntax;
 
@@ -237,19 +238,23 @@ namespace CilTools.CommandLine
                     return 1;
                 }
 
-                if (html) SyntaxWriter.WriteDocumentStart(target);
-                else SyntaxWriter.WriteHeader(target);
+                OutputFormat fmt;
+                DisassemblerParams dpars = new DisassemblerParams();
 
+                if (html)
+                {
+                    SyntaxWriter.WriteDocumentStart(target);
+                    fmt = OutputFormat.Html;
+                }
+                else
+                {
+                    SyntaxWriter.WriteHeader(target);
+                    fmt = OutputFormat.Plaintext;
+                }
+                
                 for (int i = 0; i < selectedMethods.Length; i++)
                 {
-                    if (html)
-                    {
-                        SyntaxWriter.DisassembleMethodAsHtml(selectedMethods[i], new DisassemblerParams(), target);
-                    }
-                    else
-                    {
-                        SyntaxWriter.DisassembleMethod(selectedMethods[i], new DisassemblerParams(), target);
-                    }
+                    SyntaxWriter.DisassembleMethod(selectedMethods[i], dpars, fmt, target);
 
                     target.WriteLine();
                 }

@@ -159,41 +159,42 @@ namespace CilView.Core.Syntax
 
             await target.FlushAsync();
         }
-
-        public static async Task DisassembleTypeAsHtmlAsync(Type t, DisassemblerParams pars, TextWriter target)
+        
+        public static async Task DisassembleTypeAsync(Type t, DisassemblerParams pars, OutputFormat fmt, TextWriter target)
         {
-            HtmlVisualizer vis = new HtmlVisualizer();
-            await WriteDocumentStartAsync(target);
+            SyntaxVisualizer vis;
+
+            if (fmt == OutputFormat.Html)
+            {
+                await WriteDocumentStartAsync(target);
+                vis = new HtmlVisualizer();
+            }
+            else
+            {
+                await WriteHeaderAsync(target);
+                vis = new PlaintextVisualizer();
+            }
+
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, true, pars);
-            string html = vis.RenderNodes(nodes);
-            await target.WriteLineAsync(html);
-            await WriteDocumentEndAsync(target);
+            string content = vis.RenderNodes(nodes);
+            await target.WriteAsync(content);
+
+            if (fmt == OutputFormat.Html) await WriteDocumentEndAsync(target);
+
             await target.FlushAsync();
         }
 
-        public static async Task DisassembleTypeAsync(Type t, DisassemblerParams pars, TextWriter target)
-        {
-            await WriteHeaderAsync(target);
-            IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, true, pars);
-            await WriteSyntaxAsync(nodes, target);
-            await target.FlushAsync();
-        }
-
-        public static void DisassembleMethodAsHtml(MethodBase m, DisassemblerParams pars, TextWriter target)
-        {
-            //this is only used in CommandLine so don't need to be async
-            HtmlVisualizer vis = new HtmlVisualizer();
-            string html = HtmlVisualization.RenderMethod(m, vis, new VisualizationOptions());
-            target.WriteLine(html);
-            target.Flush();
-        }
-
-        public static void DisassembleMethod(MethodBase m, DisassemblerParams pars, TextWriter target)
+        public static void DisassembleMethod(MethodBase m, DisassemblerParams pars, OutputFormat fmt, TextWriter target)
         {
             //this is only used in CommandLine so don't need to be async
             CilGraph graph = CilGraph.Create(m);
             SyntaxNode root = graph.ToSyntaxTree(pars);
-            root.ToText(target);
+            SyntaxVisualizer vis;
+
+            if (fmt == OutputFormat.Html) vis = new HtmlVisualizer();
+            else vis = new PlaintextVisualizer();
+
+            vis.RenderNodes(new SyntaxNode[] { root }, new VisualizationOptions(), target);
             target.Flush();
         }
 

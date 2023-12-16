@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CilTools.Metadata;
 using CilTools.Syntax;
+using CilTools.Visualization;
 using CilView.Core.Documentation;
 using CilView.Core.Syntax;
 
@@ -85,9 +86,12 @@ namespace CilTools.CommandLine
                     return 1;
                 }
 
-                if (html) await SyntaxWriter.DisassembleTypeAsHtmlAsync(t, new DisassemblerParams(), target);
-                else await SyntaxWriter.DisassembleTypeAsync(t, new DisassemblerParams(), target);
+                OutputFormat fmt;
 
+                if (html) fmt = OutputFormat.Html;
+                else fmt = OutputFormat.Plaintext;
+
+                await SyntaxWriter.DisassembleTypeAsync(t, new DisassemblerParams(), fmt, target);
                 retCode = 0;
             }
             catch (Exception ex)

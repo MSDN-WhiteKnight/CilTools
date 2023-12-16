@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Microsoft.Win32;
 using CilTools.Runtime;
+using CilTools.Visualization;
 using CilView.Build;
 using CilView.Common;
 using CilView.Core;
@@ -563,7 +564,8 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
                     }
                     else
                     {
-                        await SyntaxWriter.DisassembleTypeAsync(t, CilVisualization.CurrentDisassemblerParams, wr);
+                        await SyntaxWriter.DisassembleTypeAsync(t, CilVisualization.CurrentDisassemblerParams, 
+                            OutputFormat.Plaintext, wr);
                     }
                 }
 
