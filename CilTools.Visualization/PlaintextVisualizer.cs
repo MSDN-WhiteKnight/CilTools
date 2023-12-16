@@ -12,8 +12,12 @@ namespace CilTools.Visualization
     /// <summary>
     /// Visualizes syntax nodes as plain text
     /// </summary>
-    public class PlaintextVisualizer : SyntaxVisualizer
+    internal class PlaintextVisualizer : SyntaxVisualizer
     {
+        private PlaintextVisualizer() { }
+
+        internal static readonly PlaintextVisualizer Instance = new PlaintextVisualizer();
+
         public override void RenderNode(SyntaxNode node, VisualizationOptions options, TextWriter target)
         {
             node.ToText(target);

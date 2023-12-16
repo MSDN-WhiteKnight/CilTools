@@ -67,5 +67,11 @@ namespace CilTools.Visualization
         {
             return this.RenderNodes(nodes, new VisualizationOptions());
         }
+
+        public static SyntaxVisualizer Create(OutputFormat fmt)
+        {
+            if (fmt == OutputFormat.Html) return new HtmlVisualizer();
+            else return PlaintextVisualizer.Instance;
+        }
     }
 }

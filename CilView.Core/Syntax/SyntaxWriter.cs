@@ -85,94 +85,65 @@ namespace CilView.Core.Syntax
         {
             target.WriteLine("</body></html>");
         }
-
-        public static async Task DisassembleAsHtmlAsync(Assembly ass, DisassemblerParams pars, TextWriter target)
-        {
-            HtmlVisualizer vis = new HtmlVisualizer();
-            await WriteDocumentStartAsync(target);
-
-            //assembly manifest
-            IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
-            string html = vis.RenderNodes(nodes);
-            await target.WriteLineAsync(html);
-
-            //types
-            Type[] types = ass.GetTypes();
-
-            for (int i = 0; i < types.Length; i++)
-            {
-                if (types[i].IsNested) continue;
-
-                try
-                {
-                    nodes = SyntaxNode.GetTypeDefSyntax(types[i], true, pars).ToArray();
-                }
-                catch (NotSupportedException ex)
-                {
-                    //don't error out the whole loop if the current type contains unsupported elements
-                    string commentStr = "// Failed to disassemble type " + types[i].FullName + ". "
-                        + ex.GetType().ToString() + ": " + ex.Message;
-                    SyntaxNode cs = SyntaxFactory.CreateFromToken(commentStr, string.Empty, Environment.NewLine);
-                    nodes = new SyntaxNode[] { cs };
-                }
-
-                html = vis.RenderNodes(nodes);
-                await target.WriteLineAsync(html);
-            }
-
-            await WriteDocumentEndAsync(target);
-            await target.FlushAsync();
-        }
-
-        public static async Task DisassembleAsync(Assembly ass, DisassemblerParams pars, TextWriter target)
-        {
-            await WriteHeaderAsync(target);
-
-            //assembly manifest
-            IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
-            await WriteSyntaxAsync(nodes, target);
-            await target.WriteLineAsync();
-
-            //types
-            Type[] types = ass.GetTypes();
-
-            for (int i = 0; i < types.Length; i++)
-            {
-                if (types[i].IsNested) continue;
-                
-                try
-                {
-                    nodes = SyntaxNode.GetTypeDefSyntax(types[i], true, pars).ToArray();
-                }
-                catch (NotSupportedException ex)
-                {
-                    //don't error out the whole loop if the current type contains unsupported elements
-                    string commentStr = "// Failed to disassemble type " + types[i].FullName + ". "
-                        + ex.GetType().ToString() + ": " + ex.Message;
-                    SyntaxNode cs = SyntaxFactory.CreateFromToken(commentStr, string.Empty, Environment.NewLine);
-                    nodes = new SyntaxNode[] { cs };
-                }
-
-                await WriteSyntaxAsync(nodes, target);
-                await target.WriteLineAsync();
-            }
-
-            await target.FlushAsync();
-        }
         
-        public static async Task DisassembleTypeAsync(Type t, DisassemblerParams pars, OutputFormat fmt, TextWriter target)
+        public static async Task DisassembleAsync(Assembly ass, DisassemblerParams pars, OutputFormat fmt, TextWriter target)
         {
-            SyntaxVisualizer vis;
+            SyntaxVisualizer vis = SyntaxVisualizer.Create(fmt);
 
             if (fmt == OutputFormat.Html)
             {
                 await WriteDocumentStartAsync(target);
-                vis = new HtmlVisualizer();
             }
             else
             {
                 await WriteHeaderAsync(target);
-                vis = new PlaintextVisualizer();
+            }
+            
+            //assembly manifest
+            IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+            string content = vis.RenderNodes(nodes);
+            await target.WriteLineAsync(content);
+
+            //types
+            Type[] types = ass.GetTypes();
+
+            for (int i = 0; i < types.Length; i++)
+            {
+                if (types[i].IsNested) continue;
+
+                try
+                {
+                    nodes = SyntaxNode.GetTypeDefSyntax(types[i], true, pars).ToArray();
+                }
+                catch (NotSupportedException ex)
+                {
+                    //don't error out the whole loop if the current type contains unsupported elements
+                    string commentStr = "// Failed to disassemble type " + types[i].FullName + ". "
+                        + ex.GetType().ToString() + ": " + ex.Message;
+                    SyntaxNode cs = SyntaxFactory.CreateFromToken(commentStr, string.Empty, Environment.NewLine);
+                    nodes = new SyntaxNode[] { cs };
+                }
+
+                content = vis.RenderNodes(nodes);
+                await target.WriteLineAsync(content);
+            }
+
+            if (fmt == OutputFormat.Html) await WriteDocumentEndAsync(target);
+
+            await target.FlushAsync();
+        }
+
+        public static async Task DisassembleTypeAsync(Type t, DisassemblerParams pars, OutputFormat fmt, TextWriter target)
+        {
+            SyntaxVisualizer vis = SyntaxVisualizer.Create(fmt);
+
+            if (fmt == OutputFormat.Html)
+            {
+                await WriteDocumentStartAsync(target);
+            }
+            else
+            {
+                await WriteHeaderAsync(target);
             }
 
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, true, pars);
@@ -189,11 +160,8 @@ namespace CilView.Core.Syntax
             //this is only used in CommandLine so don't need to be async
             CilGraph graph = CilGraph.Create(m);
             SyntaxNode root = graph.ToSyntaxTree(pars);
-            SyntaxVisualizer vis;
 
-            if (fmt == OutputFormat.Html) vis = new HtmlVisualizer();
-            else vis = new PlaintextVisualizer();
-
+            SyntaxVisualizer vis = SyntaxVisualizer.Create(fmt);
             vis.RenderNodes(new SyntaxNode[] { root }, new VisualizationOptions(), target);
             target.Flush();
         }

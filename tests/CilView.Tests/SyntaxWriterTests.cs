@@ -134,7 +134,7 @@ extends [System.Runtime]System.Object
                 //disassemble assembly
                 Assembly ass = reader.LoadImage(img);
                 Assert.AreEqual("MyAssembly", ass.GetName().Name);
-                await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), wr);
+                await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), OutputFormat.Plaintext, wr);
                 mvid = ass.ManifestModule.ModuleVersionId.ToString();
             }
 
@@ -185,7 +185,7 @@ extends [System.Runtime]System.Object
             using (reader)
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleMethods).Assembly.Location);
-                await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), wr);
+                await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), OutputFormat.Plaintext, wr);
             }
 
             string str = sb.ToString().Trim();

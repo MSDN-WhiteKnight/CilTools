@@ -612,7 +612,8 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
                     }
                     else
                     {
-                        await SyntaxWriter.DisassembleAsync(ass, CilVisualization.CurrentDisassemblerParams, wr);
+                        await SyntaxWriter.DisassembleAsync(ass, CilVisualization.CurrentDisassemblerParams, 
+                            OutputFormat.Plaintext, wr);
                     }
                 }
 

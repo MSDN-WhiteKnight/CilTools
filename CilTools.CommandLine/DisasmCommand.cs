@@ -45,14 +45,15 @@ namespace CilTools.CommandLine
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
             int retCode;
+            OutputFormat fmt;
+
+            if (html) fmt = OutputFormat.Html;
+            else fmt = OutputFormat.Plaintext;
 
             try
             {
                 ass = reader.LoadFrom(asspath);
-
-                if (html) await SyntaxWriter.DisassembleAsHtmlAsync(ass, new DisassemblerParams(), target);
-                else await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), target);
-
+                await SyntaxWriter.DisassembleAsync(ass, new DisassemblerParams(), fmt, target);
                 retCode = 0;
             }
             catch (Exception ex)
