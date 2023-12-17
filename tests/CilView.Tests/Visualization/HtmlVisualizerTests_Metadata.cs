@@ -15,7 +15,7 @@ using CilTools.Visualization;
 namespace CilView.Tests.Visualization
 {
     [TestClass]
-    public class HtmlVisualizationTests
+    public class HtmlVisualizerTests_Metadata
     {
         [TestMethod]
         public void Test_RenderMethod()
