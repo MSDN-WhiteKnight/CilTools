@@ -76,8 +76,12 @@ namespace CilTools.Visualization
 
         public static SyntaxVisualizer Create(OutputFormat fmt)
         {
-            if (fmt == OutputFormat.Html) return new HtmlVisualizer();
-            else return PlaintextVisualizer.Instance;
+            switch (fmt)
+            {
+                case OutputFormat.Html: return new HtmlVisualizer();
+                case OutputFormat.ConsoleText: return ConsoleVisualizer.Instance;
+                default: return PlaintextVisualizer.Instance;
+            }
         }
     }
 }

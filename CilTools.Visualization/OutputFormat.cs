@@ -9,6 +9,6 @@ namespace CilTools.Visualization
 {
     public enum OutputFormat
     {
-        Html = 1, Plaintext = 2
+        Html = 1, Plaintext = 2, ConsoleText = 3
     }
 }

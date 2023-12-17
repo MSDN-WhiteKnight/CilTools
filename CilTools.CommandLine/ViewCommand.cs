@@ -52,20 +52,21 @@ namespace CilTools.CommandLine
             }
 
             SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(content);
+            SyntaxVisualizer vis;
 
             if (html)
             {
-                HtmlVisualizer vis = new HtmlVisualizer();
+                vis = new HtmlVisualizer();
                 SyntaxWriter.WriteDocumentStart(target);
                 vis.RenderNodes(nodes, new VisualizationOptions(), target);
                 SyntaxWriter.WriteDocumentEnd(target);
             }
             else
             {
-                for (int i = 0; i < nodes.Length; i++)
-                {
-                    Visualizer.PrintNode(nodes[i], noColor, target);
-                }
+                if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
+                else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
+
+                vis.RenderNodes(nodes, new VisualizationOptions(), target);
             }
         }
 

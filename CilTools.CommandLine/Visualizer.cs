@@ -18,80 +18,27 @@ namespace CilTools.CommandLine
 {
     static class Visualizer
     {
-        public static void PrintNode(SyntaxNode node, bool noColor, TextWriter target)
-        {
-            //recursively prints CIL syntax tree to console
-
-            SyntaxNode[] children = node.GetChildNodes();
-
-            if (children.Length == 0)
-            {
-                //if it a leaf node, print its content to console
-
-                if (noColor)
-                {
-                    //no syntax highlighting
-                    node.ToText(target);
-                    return;
-                }
-
-                //hightlight syntax elements
-                ConsoleColor originalColor = Console.ForegroundColor;
-
-                if (node is KeywordSyntax)
-                {
-                    KeywordSyntax ks = (KeywordSyntax)node;
-
-                    if (ks.Kind == KeywordKind.Other) Console.ForegroundColor = ConsoleColor.Cyan;
-                    else if (ks.Kind == KeywordKind.DirectiveName) Console.ForegroundColor = ConsoleColor.Magenta;
-                }
-                else if (node is IdentifierSyntax)
-                {
-                    IdentifierSyntax id = (IdentifierSyntax)node;
-
-                    if (id.IsMemberName) Console.ForegroundColor = ConsoleColor.Yellow;
-                }
-                else if (node is LiteralSyntax)
-                {
-                    LiteralSyntax lit = (LiteralSyntax)node;
-                    if (lit.Value is string) Console.ForegroundColor = ConsoleColor.Red;
-                }
-                else if (node is CommentSyntax)
-                {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                }
-
-                node.ToText(target);
-
-                //restore console color to default value
-                Console.ForegroundColor = originalColor;
-            }
-            else
-            {
-                //if the node has child nodes, process them
-
-                for (int i = 0; i < children.Length; i++)
-                {
-                    PrintNode(children[i], noColor, target);
-                }
-            }
-        }
-
         static void PrintMethod(MethodBase method, bool noColor, TextWriter target)
         {
             CilGraph graph = CilGraph.Create(method);
             SyntaxNode root = graph.ToSyntaxTree();
-            PrintNode(root, noColor, target);
+            SyntaxVisualizer vis;
+
+            if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
+            else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
+
+            vis.RenderNodes(new SyntaxNode[] { root }, new VisualizationOptions(), target);
         }
 
         static void PrintType(Type t, bool full, bool noColor, TextWriter target)
         {
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, full, new DisassemblerParams());
+            SyntaxVisualizer vis;
 
-            foreach (SyntaxNode node in nodes)
-            {
-                PrintNode(node, noColor, target);
-            }
+            if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
+            else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
+
+            vis.RenderNodes(nodes, new VisualizationOptions(), target);
         }
 
         public static int VisualizeMethod(string asspath, string type, string method, bool noColor, TextWriter target)
@@ -184,17 +131,16 @@ namespace CilTools.CommandLine
             AssemblyReader reader = new AssemblyReader();
             Assembly ass;
             int retCode;
+            SyntaxVisualizer vis;
 
+            if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
+            else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
+            
             try
             {
                 ass = reader.LoadFrom(asspath);                
                 IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
-
-                foreach (SyntaxNode node in nodes)
-                {
-                    PrintNode(node, noColor, target);
-                }
-                
+                vis.RenderNodes(nodes, new VisualizationOptions(), target);
                 retCode = 0;
             }
             catch (Exception ex)
