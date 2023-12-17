@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using CilTools.Tests.Common;
+using CilTools.SourceCode.Common;
 using CilTools.Visualization;
 
 namespace CilView.Tests.Visualization
@@ -36,8 +37,15 @@ public class Program
         Console.WriteLine(<span style=""color: red;"">&quot;Hello, world!&quot;</span>);
     }
 }</code></pre>";
+            
+            //convert source text into tokens
+            SyntaxNodeCollection coll = SourceParser.Parse(sourceText, ".cs");
 
-            string html = HtmlVisualization.RenderSourceText(sourceText, "file.cs");
+            //convert tokens to HTML
+            HtmlVisualizer vis = new HtmlVisualizer();
+            string html = vis.RenderNodes(coll.GetChildNodes());
+            
+            //validate results
             AssertThat.MarkupEquals(expected, html);
         }
 
@@ -62,10 +70,17 @@ int main(int argc, char* argv[])
 
             StringBuilder sb = new StringBuilder();
             StringWriter wr = new StringWriter(sb);
-            HtmlVisualization.RenderSourceText(sourceText, ".cpp", wr);
+
+            //convert source text into tokens
+            SyntaxNodeCollection coll = SourceParser.Parse(sourceText, ".cpp");
+
+            //convert tokens to HTML
+            HtmlVisualizer vis = new HtmlVisualizer();
+            vis.RenderNodes(coll.GetChildNodes(), new VisualizationOptions(), wr);
+            
+            //validate output
             string html = sb.ToString().Trim();
             expected = expected.Trim();
-            
             AssertThat.MarkupEquals(expected, html);
         }
     }

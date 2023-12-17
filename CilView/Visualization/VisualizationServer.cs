@@ -120,14 +120,16 @@ namespace CilView.Visualization
             {
                 //assembly manifest
                 Assembly ass = (Assembly)obj;
-                string html = HtmlVisualization.RenderAssemblyManifest(ass, this._vis);
+                IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+                string html = this._vis.RenderNodes(nodes);
                 return PrepareContent(html);
             }
             else if (obj is Type)
             {
                 //type disassembled IL
                 Type t = (Type)obj;
-                string html = HtmlVisualization.RenderType(t, this._vis, false);
+                IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, full: false, new DisassemblerParams());
+                string html = this._vis.RenderNodes(nodes);
                 return PrepareContent(html);
             }
             else if (obj is MethodBase)
@@ -233,7 +235,11 @@ namespace CilView.Visualization
 
                     if (string.IsNullOrEmpty(tokenStr))
                     {
-                        content = HtmlVisualization.RenderAssemblyManifest(ass, this._vis);
+                        //render assembly manifest
+                        IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+                        content = this._vis.RenderNodes(nodes);
+                        
+                        //send response
                         content = PrepareContent(content);
                         SendHtmlResponse(response, content);
                         this.AddToCache(url, content);

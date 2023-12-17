@@ -6,7 +6,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using CilTools.BytecodeAnalysis;
 using CilTools.Metadata;
+using CilTools.Syntax;
 using CilTools.Tests.Common;
 using CilTools.Visualization;
 
@@ -27,7 +29,13 @@ namespace CilView.Tests.Visualization
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
                 Type t = ass.GetType(typeof(SampleType).FullName);
                 MethodBase mb = t.GetMethod("CalcSum");
-                str = HtmlVisualization.RenderMethod(mb, vis, new VisualizationOptions());
+
+                //build syntax tree
+                CilGraph gr = CilGraph.Create(mb);
+                SyntaxNode[] nodes = new SyntaxNode[] { gr.ToSyntaxTree() };
+
+                //render
+                str = vis.RenderNodes(nodes);
             }
 
             Assert.IsTrue(str.Contains("<span>          ldfld        </span>" +
@@ -65,7 +73,12 @@ namespace CilView.Tests.Visualization
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
                 Type t = ass.GetType(typeof(SampleType).FullName);
-                html = HtmlVisualization.RenderType(t, vis, full: false);
+
+                //build syntax tree
+                IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, full: false, new DisassemblerParams());
+
+                //render
+                html = vis.RenderNodes(nodes);
             }
 
             AssertThat.MarkupEquals(expected, html);
@@ -81,7 +94,12 @@ namespace CilView.Tests.Visualization
             using (reader)
             {
                 Assembly ass = reader.LoadFrom(typeof(SampleType).Assembly.Location);
-                html = HtmlVisualization.RenderAssemblyManifest(ass, vis);
+
+                //build syntax tree
+                IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+
+                //render
+                html = vis.RenderNodes(nodes);
             }
 
             AssertThat.MarkupContains(html, "<span style=\"color: magenta;\">.assembly </span>" +

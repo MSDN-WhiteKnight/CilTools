@@ -32,6 +32,9 @@ namespace CilTools.Visualization
         /// <summary>
         /// Visualizes the specified collection of syntax nodes and writes results into the <c>TextWriter</c>
         /// </summary>
+        /// <param name="nodes">Collection of nodes to visualize</param>
+        /// <param name="options">Options that control visualization output</param>
+        /// <param name="target"><c>TextWriter</c> where to write output</param>
         /// <exception cref="ArgumentNullException"><paramref name="target"/> is null</exception>
         public void RenderNodes(IEnumerable<SyntaxNode> nodes, VisualizationOptions options, TextWriter target)
         {
@@ -49,6 +52,8 @@ namespace CilTools.Visualization
         /// <summary>
         /// Visualizes the specified collection of syntax nodes and returns the resulting string
         /// </summary>
+        /// <param name="nodes">Collection of nodes to visualize</param>
+        /// <param name="options">Options that control visualization output</param>
         public string RenderNodes(IEnumerable<SyntaxNode> nodes, VisualizationOptions options)
         {
             if (nodes == null) return string.Empty;
@@ -63,6 +68,7 @@ namespace CilTools.Visualization
         /// Visualizes the specified collection of syntax nodes using default visualization options and returns the 
         /// resulting string
         /// </summary>
+        /// <param name="nodes">Collection of nodes to visualize</param>
         public string RenderNodes(IEnumerable<SyntaxNode> nodes)
         {
             return this.RenderNodes(nodes, new VisualizationOptions());
