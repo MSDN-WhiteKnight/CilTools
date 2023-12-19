@@ -10,7 +10,7 @@ using System.Text;
 using CilTools.Metadata;
 using CilTools.SourceCode;
 using CilTools.SourceCode.Common;
-using CilTools.Syntax;
+using CilTools.Visualization;
 using CilView.Common;
 using CilView.Core.Documentation;
 using CilView.SourceCode;
@@ -46,57 +46,7 @@ namespace CilTools.CommandLine
                     "disassembled source code.");
             }
         }
-
-        static void PrintNode(SyntaxNode node, bool noColor, TextWriter target)
-        {
-            //recursively prints source fragment's syntax tree to console
-            SyntaxNode[] children = node.GetChildNodes();
-
-            if (children.Length == 0)
-            {
-                //if it a leaf node, print its content to console
-
-                if (noColor)
-                {
-                    //no syntax highlighting
-                    node.ToText(target);
-                    return;
-                }
-
-                //highlight syntax elements
-                ConsoleColor originalColor = Console.ForegroundColor;
-                
-                if(node is SourceToken){
-                    SourceToken token = (SourceToken)node;
-                    
-                    switch (token.Kind)
-                    {
-                        case TokenKind.Keyword: Console.ForegroundColor = ConsoleColor.Magenta; break;
-                        case TokenKind.TypeName: Console.ForegroundColor = ConsoleColor.Cyan; break;
-                        case TokenKind.DoubleQuotLiteral: Console.ForegroundColor = ConsoleColor.Red; break;
-                        case TokenKind.SingleQuotLiteral: Console.ForegroundColor = ConsoleColor.Red; break;
-                        case TokenKind.SpecialTextLiteral: Console.ForegroundColor = ConsoleColor.Red; break;
-                        case TokenKind.Comment: Console.ForegroundColor = ConsoleColor.Green; break;
-                        case TokenKind.MultilineComment: Console.ForegroundColor = ConsoleColor.Green; break;
-                    }
-                }
-
-                node.ToText(target);
-
-                //restore console color to default value
-                Console.ForegroundColor = originalColor;
-            }
-            else
-            {
-                //if the node has child nodes, process them
-
-                for (int i = 0; i < children.Length; i++)
-                {
-                    PrintNode(children[i], noColor, target);
-                }
-            }
-        }
-
+        
         static string MethodToString(MethodBase m)
         {
             StringBuilder sb = new StringBuilder();
@@ -132,18 +82,18 @@ namespace CilTools.CommandLine
 
         static int PrintMethodSource(MethodBase mb, bool noColor)
         {
+            SyntaxVisualizer vis;
+
+            if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
+            else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
+
             if (Utils.IsMethodWithoutBody(mb))
             {
                 //method without IL body has no sequence points in PDB, just use decompiler
                 IEnumerable<SourceToken> decompiled = Decompiler.DecompileMethodSignature(".cs", mb);
                 Console.WriteLine("Source code from: Decompiler");
                 Console.WriteLine();
-
-                foreach (SourceToken token in decompiled)
-                {
-                    PrintNode(token, noColor, Console.Out);
-                }
-
+                vis.RenderNodes(decompiled, new VisualizationOptions(), Console.Out);
                 Console.WriteLine();
                 return 0;
             }
@@ -238,12 +188,7 @@ namespace CilTools.CommandLine
             //show source code
             Console.WriteLine(header);
             Console.WriteLine();
-
-            for (int i = 0; i < tokens.Count; i++)
-            {
-                PrintNode(tokens[i], noColor, Console.Out);
-            }
-
+            vis.RenderNodes(tokens, new VisualizationOptions(), Console.Out);
             Console.WriteLine();
             Console.WriteLine(caption);
             Console.WriteLine();

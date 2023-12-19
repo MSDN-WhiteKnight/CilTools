@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using CilTools.SourceCode.Common;
 using CilTools.Syntax;
 
 namespace CilTools.Visualization
@@ -21,8 +22,36 @@ namespace CilTools.Visualization
 
         internal static readonly ConsoleVisualizer Instance = new ConsoleVisualizer();
 
+        static void RenderToken(SourceToken token, TextWriter target)
+        {
+            //highlight syntax elements
+            ConsoleColor originalColor = Console.ForegroundColor;
+
+            switch (token.Kind)
+            {
+                case TokenKind.Keyword: Console.ForegroundColor = ConsoleColor.Magenta; break;
+                case TokenKind.TypeName: Console.ForegroundColor = ConsoleColor.Cyan; break;
+                case TokenKind.DoubleQuotLiteral: Console.ForegroundColor = ConsoleColor.Red; break;
+                case TokenKind.SingleQuotLiteral: Console.ForegroundColor = ConsoleColor.Red; break;
+                case TokenKind.SpecialTextLiteral: Console.ForegroundColor = ConsoleColor.Red; break;
+                case TokenKind.Comment: Console.ForegroundColor = ConsoleColor.Green; break;
+                case TokenKind.MultilineComment: Console.ForegroundColor = ConsoleColor.Green; break;
+            }
+
+            token.ToText(target);
+
+            //restore console color to default value
+            Console.ForegroundColor = originalColor;
+        }
+
         public override void RenderNode(SyntaxNode node, VisualizationOptions options, TextWriter target)
         {
+            if (node is SourceToken)
+            {
+                RenderToken((SourceToken)node, target);
+                return;
+            }
+
             // Recursively prints CIL syntax tree to console
 
             SyntaxNode[] children = node.GetChildNodes();
