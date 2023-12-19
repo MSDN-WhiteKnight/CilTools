@@ -43,7 +43,7 @@ public class Program
 
             //convert tokens to HTML
             HtmlVisualizer vis = new HtmlVisualizer();
-            string html = vis.RenderNodes(coll.GetChildNodes());
+            string html = vis.RenderToString(coll.GetChildNodes());
             
             //validate results
             AssertThat.MarkupEquals(expected, html);

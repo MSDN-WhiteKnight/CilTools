@@ -17,7 +17,7 @@ namespace CilView.Tests.Visualization
         static string Visualize(IEnumerable<SyntaxNode> nodes)
         {
             HtmlVisualizer vis = new HtmlVisualizer();
-            return vis.RenderNodes(nodes);
+            return vis.RenderToString(nodes);
         }
 
         static string Preformatted(string html)

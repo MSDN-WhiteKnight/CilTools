@@ -54,7 +54,7 @@ namespace CilTools.Visualization
         /// </summary>
         /// <param name="nodes">Collection of nodes to visualize</param>
         /// <param name="options">Options that control visualization output</param>
-        public string RenderNodes(IEnumerable<SyntaxNode> nodes, VisualizationOptions options)
+        public string RenderToString(IEnumerable<SyntaxNode> nodes, VisualizationOptions options)
         {
             if (nodes == null) return string.Empty;
 
@@ -69,9 +69,9 @@ namespace CilTools.Visualization
         /// resulting string
         /// </summary>
         /// <param name="nodes">Collection of nodes to visualize</param>
-        public string RenderNodes(IEnumerable<SyntaxNode> nodes)
+        public string RenderToString(IEnumerable<SyntaxNode> nodes)
         {
-            return this.RenderNodes(nodes, new VisualizationOptions());
+            return this.RenderToString(nodes, new VisualizationOptions());
         }
 
         public static SyntaxVisualizer Create(OutputFormat fmt)

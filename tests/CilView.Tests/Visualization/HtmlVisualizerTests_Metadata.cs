@@ -35,7 +35,7 @@ namespace CilView.Tests.Visualization
                 SyntaxNode[] nodes = new SyntaxNode[] { gr.ToSyntaxTree() };
 
                 //render
-                str = vis.RenderNodes(nodes);
+                str = vis.RenderToString(nodes);
             }
 
             Assert.IsTrue(str.Contains("<span>          ldfld        </span>" +
@@ -78,7 +78,7 @@ namespace CilView.Tests.Visualization
                 IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, full: false, new DisassemblerParams());
 
                 //render
-                html = vis.RenderNodes(nodes);
+                html = vis.RenderToString(nodes);
             }
 
             AssertThat.MarkupEquals(expected, html);
@@ -99,7 +99,7 @@ namespace CilView.Tests.Visualization
                 IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
 
                 //render
-                html = vis.RenderNodes(nodes);
+                html = vis.RenderToString(nodes);
             }
 
             AssertThat.MarkupContains(html, "<span style=\"color: magenta;\">.assembly </span>" +
