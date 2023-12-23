@@ -5,10 +5,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
+using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
+using CilTools.Metadata;
 using CilTools.Syntax;
 using CilTools.Syntax.Tokens;
 using CilTools.Visualization;
+using CilView.Common;
 using CilView.Core;
 using CilView.Core.Documentation;
 using CilView.Core.Syntax;
@@ -17,6 +22,8 @@ namespace CilTools.CommandLine
 {
     class ViewCommand : Command
     {
+        const string HtmlFileName = "CilTools.html";
+
         public override string Name 
         { 
             get { return "view"; } 
@@ -35,41 +42,15 @@ namespace CilTools.CommandLine
 
                 yield return TextParagraph.Text("Print disassembled CIL code of the specified assembly, type or method:");
                 yield return TextParagraph.Code("    " + exeName +
-                    " view [--nocolor] <assembly path> [<type full name>] [<method name>]");
+                    " view [--nocolor] [--html] <assembly path> [<type full name>] [<method name>]");
                 yield return TextParagraph.Text("Print contents of the specified CIL source file (*.il):");
-                yield return TextParagraph.Code("    " + exeName + " view [--nocolor] <source file path>");
+                yield return TextParagraph.Code("    " + exeName + " view [--nocolor] [--html] <source file path>");
                 yield return TextParagraph.Text(string.Empty);
                 yield return TextParagraph.Text("[--nocolor] - Disable syntax highlighting");
+                yield return TextParagraph.Text("[--html] - Output format is HTML");
             }
         }
-
-        static void PrintSourceDocument(string content, bool noColor, bool html, TextWriter target)
-        {
-            if (noColor && !html)
-            {
-                target.WriteLine(content);
-                return;
-            }
-
-            SyntaxNode[] nodes = SyntaxReader.ReadAllNodes(content);
-            SyntaxVisualizer vis;
-
-            if (html)
-            {
-                vis = new HtmlVisualizer();
-                SyntaxWriter.WriteDocumentStart(target);
-                vis.RenderNodes(nodes, new VisualizationOptions(), target);
-                SyntaxWriter.WriteDocumentEnd(target);
-            }
-            else
-            {
-                if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
-                else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
-
-                vis.RenderNodes(nodes, new VisualizationOptions(), target);
-            }
-        }
-
+        
         static FileStream TryCreateFile(string name)
         {
             FileStream fs;
@@ -99,29 +80,85 @@ namespace CilTools.CommandLine
 
             if (pr != null) pr.Dispose();
         }
-
-        static int ViewMethodAsHtml(string asspath, string type, string method)
+        
+        static int View(string filepath, string typeName, bool html, bool noColor)
         {
+            AssemblyReader reader = new AssemblyReader();
+            FileStream fs = null;
+            TextWriter target;
+
             try
             {
-                // Create output file
-                FileStream fs = TryCreateFile("CilTools.html");
+                Assembly ass;
+                IEnumerable<SyntaxNode> nodes;
 
-                if (fs == null)
+                // Build syntax nodes
+                if (FileUtils.HasCilSourceExtension(filepath) ||
+                    (string.IsNullOrEmpty(typeName) && !FileUtils.HasPeFileExtension(filepath))) //source file
                 {
-                    Console.WriteLine("Error: failed to create output HTML file.");
-                    return 1;
+                    string content = File.ReadAllText(filepath);
+                    string title = Path.GetFileName(filepath);
+                    Console.WriteLine("IL source file: " + title);
+                    nodes = SyntaxReader.ReadAllNodes(content);
+                }
+                else if (string.IsNullOrEmpty(typeName)) //assembly manifest
+                {
+                    Console.WriteLine("Assembly: " + filepath);
+                    ass = reader.LoadFrom(filepath);
+                    nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
+                }
+                else //type
+                {
+                    Console.WriteLine("Assembly: " + filepath);
+                    ass = reader.LoadFrom(filepath);
+                    Type t = ass.GetType(typeName);
+
+                    if (t == null)
+                    {
+                        Console.WriteLine("Error: Type {0} not found in assembly {1}", typeName, filepath);
+                        return 1;
+                    }
+
+                    nodes = SyntaxNode.GetTypeDefSyntax(t, full: false, new DisassemblerParams());
                 }
 
-                // Write HTML to output file
-                using (fs)
+                // Determine output target
+                if (html)
                 {
-                    TextWriter wr = new StreamWriter(fs);
-                    Visualizer.DisassembleMethod(asspath, type, method, true, wr);
-                }
+                    fs = TryCreateFile(HtmlFileName); //create output HTML file
 
-                // Open output file in browser
-                OpenInBrowser(fs.Name);
+                    if (fs == null)
+                    {
+                        Console.WriteLine("Error: failed to create output HTML file.");
+                        return 1;
+                    }
+
+                    target = new StreamWriter(fs);
+                    SyntaxWriter.WriteDocumentStart(target);
+                }
+                else target = Console.Out;
+
+                // Visualize syntax nodes
+                SyntaxVisualizer vis;
+
+                if (html) vis = new HtmlVisualizer();
+                else if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
+                else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
+
+                Console.WriteLine();
+                vis.RenderNodes(nodes, new VisualizationOptions(), target);
+
+                if (html)
+                {
+                    SyntaxWriter.WriteDocumentEnd(target);
+                    
+                    // Open output file in browser
+                    OpenInBrowser(fs.Name);
+
+                    // Close target file stream
+                    fs.Dispose();
+                    fs = null;
+                }
 
                 return 0;
             }
@@ -131,30 +168,104 @@ namespace CilTools.CommandLine
                 Console.WriteLine(ex.ToString());
                 return 1;
             }
+            finally
+            {
+                reader.Dispose();
+                if (fs != null) fs.Dispose();
+            }
         }
 
-        static int ViewContentAsHtml(string content)
+        static void PrintMethod(MethodBase method, SyntaxVisualizer vis, TextWriter target)
         {
-            // Create output file
-            FileStream fs = TryCreateFile("CilTools.html");
+            CilGraph graph = CilGraph.Create(method);
+            SyntaxNode root = graph.ToSyntaxTree();
+            vis.RenderNodes(new SyntaxNode[] { root }, new VisualizationOptions(), target);
+        }
 
-            if (fs == null)
+        static int ViewMethod(string filepath, string typeName, string methodName, bool html, bool noColor)
+        {
+            AssemblyReader reader = new AssemblyReader();
+            FileStream fs = null;
+            TextWriter target;
+
+            try
             {
-                Console.WriteLine("Error: failed to create output HTML file.");
+                // Find method group to visualize
+                Assembly ass = reader.LoadFrom(filepath);
+                Type t = ass.GetType(typeName);
+
+                if (t == null)
+                {
+                    Console.WriteLine("Error: Type {0} not found in assembly {1}", typeName, filepath);
+                    return 1;
+                }
+
+                MemberInfo[] methods = t.GetMembers(Utils.AllMembers);
+
+                MethodBase[] selectedMethods = methods.OfType<MethodBase>().Where(
+                        (x) => Utils.StringEquals(x.Name, methodName)
+                    ).ToArray();
+
+                if (selectedMethods.Length == 0)
+                {
+                    Console.WriteLine("Error: Type {0} does not declare methods with the specified name", typeName);
+                    return 1;
+                }
+                
+                // Determine output target
+                if (html)
+                {
+                    fs = TryCreateFile(HtmlFileName); //create output HTML file
+
+                    if (fs == null)
+                    {
+                        Console.WriteLine("Error: failed to create output HTML file.");
+                        return 1;
+                    }
+
+                    target = new StreamWriter(fs);
+                    SyntaxWriter.WriteDocumentStart(target);
+                }
+                else target = Console.Out;
+                
+                SyntaxVisualizer vis;
+
+                if (html) vis = new HtmlVisualizer();
+                else if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
+                else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
+
+                // Visualize selected methods
+                for (int i = 0; i < selectedMethods.Length; i++)
+                {
+                    PrintMethod(selectedMethods[i], vis, target);
+                    target.WriteLine();
+                }
+
+                if (html)
+                {
+                    SyntaxWriter.WriteDocumentEnd(target);
+
+                    // Open output file in browser
+                    OpenInBrowser(fs.Name);
+
+                    // Close target file stream
+                    fs.Dispose();
+                    fs = null;
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
                 return 1;
             }
-
-            // Write HTML to output file
-            using (fs)
+            finally
             {
-                TextWriter wr = new StreamWriter(fs);
-                PrintSourceDocument(content, noColor: false, html: true, wr);
+                reader.Dispose();
+                if (fs != null) fs.Dispose();
             }
-
-            // Open output file in browser
-            OpenInBrowser(fs.Name);
-
-            return 0;
         }
 
         public override int Execute(string[] args)
@@ -202,39 +313,7 @@ namespace CilTools.CommandLine
             if (cla.PositionalArgumentsCount > 2) type = cla.GetPositionalArgument(2);
 
             if (cla.PositionalArgumentsCount > 3) method = cla.GetPositionalArgument(3);
-
-            if (FileUtils.HasCilSourceExtension(filepath) ||
-                (cla.PositionalArgumentsCount <= 2 && !FileUtils.HasPeFileExtension(filepath)))
-            {
-                // View IL source file
-
-                try
-                {
-                    string content = File.ReadAllText(filepath);
-                    string title = Path.GetFileName(filepath);
-                    Console.WriteLine("IL source file: " + title);
-                    Console.WriteLine();
-
-                    if (html)
-                    {
-                        return ViewContentAsHtml(content);
-                    }
-                    else
-                    {
-                        PrintSourceDocument(content, noColor, false, Console.Out);
-                        return 0;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine("Error:");
-                    Console.WriteLine(ex.ToString());
-                    return 1;
-                }
-            }
             
-            // View disassembled IL
-
             if (!File.Exists(filepath) && FileUtils.IsFileNameWithoutDirectory(filepath) &&
                 filepath.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
             {
@@ -243,29 +322,19 @@ namespace CilTools.CommandLine
 
                 if (File.Exists(bclPath)) filepath = bclPath;
             }
+            
+            if (string.IsNullOrEmpty(method) || FileUtils.HasCilSourceExtension(filepath))
+            {
+                //source file, type or assembly manifest
+                return View(filepath, type, html, noColor);
+            }
 
+            //method
             Console.WriteLine("Assembly: " + filepath);
-            
-            if (string.IsNullOrEmpty(type))
-            {
-                //view assembly manifest
-                Console.WriteLine();
-                return Visualizer.VisualizeAssembly(filepath, noColor, Console.Out);
-            }
-            
-            if (string.IsNullOrEmpty(method))
-            {
-                //view type
-                Console.WriteLine();
-                return Visualizer.VisualizeType(filepath, type, false, noColor, Console.Out);
-            }
-
-            //view method
             Console.WriteLine("{0}.{1}", type, method);
             Console.WriteLine();
-
-            if (html) return ViewMethodAsHtml(filepath, type, method);
-            else return Visualizer.VisualizeMethod(filepath, type, method, noColor, Console.Out);
+            
+            return ViewMethod(filepath, type, method, html, noColor);
         }
     }
 }
