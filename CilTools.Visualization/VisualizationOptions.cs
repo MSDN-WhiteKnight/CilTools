@@ -7,9 +7,17 @@ using System.Text;
 
 namespace CilTools.Visualization
 {
+    /// <summary>
+    /// Contains options that control the visualization process performed by <see cref="SyntaxVisualizer"/>
+    /// </summary>
     public class VisualizationOptions
     {
         Dictionary<string, object> _dict = new Dictionary<string, object>();
+
+        public VisualizationOptions()
+        {
+            this.EnableSyntaxHighlighting = true;
+        }
         
         public object GetOption(string name)
         {
@@ -83,6 +91,25 @@ namespace CilTools.Visualization
             }
 
             set { this.SetOption("EnableInstructionNavigation", value); }
+        }
+
+        /// <summary>
+        /// Gets or sets the boolean value indicating whether the syntax highlighting is enabled
+        /// </summary>
+        /// <remarks>
+        /// The default value is <c>true</c>. This property is honoured by HTML and ConsoleText visualizers.
+        /// </remarks>
+        public bool EnableSyntaxHighlighting
+        {
+            get
+            {
+                object val = this.GetOption("EnableSyntaxHighlighting");
+
+                if (val != null) return (bool)val;
+                else return false;
+            }
+
+            set { this.SetOption("EnableSyntaxHighlighting", value); }
         }
     }
 }

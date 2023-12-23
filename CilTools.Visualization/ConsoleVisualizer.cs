@@ -22,8 +22,14 @@ namespace CilTools.Visualization
 
         internal static readonly ConsoleVisualizer Instance = new ConsoleVisualizer();
 
-        static void RenderToken(SourceToken token, TextWriter target)
+        static void RenderToken(SourceToken token, VisualizationOptions options, TextWriter target)
         {
+            if (!options.EnableSyntaxHighlighting)
+            {
+                token.ToText(target);
+                return;
+            }
+
             //highlight syntax elements
             ConsoleColor originalColor = Console.ForegroundColor;
 
@@ -48,7 +54,7 @@ namespace CilTools.Visualization
         {
             if (node is SourceToken)
             {
-                RenderToken((SourceToken)node, target);
+                RenderToken((SourceToken)node, options, target);
                 return;
             }
 
@@ -58,6 +64,12 @@ namespace CilTools.Visualization
 
             if (children.Length == 0) //if it a leaf node, print its content to console
             {
+                if (!options.EnableSyntaxHighlighting)
+                {
+                    node.ToText(target);
+                    return;
+                }
+
                 //hightlight syntax elements
                 ConsoleColor originalColor = Console.ForegroundColor;
 

@@ -140,13 +140,16 @@ namespace CilTools.CommandLine
 
                 // Visualize syntax nodes
                 SyntaxVisualizer vis;
+                VisualizationOptions options = new VisualizationOptions();
 
                 if (html) vis = new HtmlVisualizer();
                 else if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
                 else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
+                
+                if (noColor) options.EnableSyntaxHighlighting = false;
 
                 Console.WriteLine();
-                vis.RenderNodes(nodes, new VisualizationOptions(), target);
+                vis.RenderNodes(nodes, options, target);
 
                 if (html)
                 {
@@ -175,11 +178,11 @@ namespace CilTools.CommandLine
             }
         }
 
-        static void PrintMethod(MethodBase method, SyntaxVisualizer vis, TextWriter target)
+        static void PrintMethod(MethodBase method, SyntaxVisualizer vis, VisualizationOptions options, TextWriter target)
         {
             CilGraph graph = CilGraph.Create(method);
             SyntaxNode root = graph.ToSyntaxTree();
-            vis.RenderNodes(new SyntaxNode[] { root }, new VisualizationOptions(), target);
+            vis.RenderNodes(new SyntaxNode[] { root }, options, target);
         }
 
         static int ViewMethod(string filepath, string typeName, string methodName, bool html, bool noColor)
@@ -229,15 +232,18 @@ namespace CilTools.CommandLine
                 else target = Console.Out;
                 
                 SyntaxVisualizer vis;
+                VisualizationOptions options = new VisualizationOptions();
 
                 if (html) vis = new HtmlVisualizer();
                 else if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
                 else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
 
+                if (noColor) options.EnableSyntaxHighlighting = false;
+
                 // Visualize selected methods
                 for (int i = 0; i < selectedMethods.Length; i++)
                 {
-                    PrintMethod(selectedMethods[i], vis, target);
+                    PrintMethod(selectedMethods[i], vis, options, target);
                     target.WriteLine();
                 }
 

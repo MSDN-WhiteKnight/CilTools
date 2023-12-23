@@ -104,5 +104,28 @@ namespace CilView.Tests.Visualization
             string str = Visualize(nodes);
             Assert.AreEqual(expected, str);
         }
+
+        [TestMethod]
+        public void Test_RenderSyntaxNodes_NoSyntaxHighlighting()
+        {
+            SyntaxNode[] nodes = new SyntaxNode[]
+            {
+                SyntaxFactory.CreateFromToken(".method", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("public", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("static", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("void", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("Foo", string.Empty, " "),
+                SyntaxFactory.CreateFromToken("(", string.Empty, string.Empty),
+                SyntaxFactory.CreateFromToken(")", string.Empty, string.Empty),
+            };
+
+            string expected = Preformatted(".method public static void <span>Foo </span>()");
+
+            HtmlVisualizer vis = new HtmlVisualizer();
+            VisualizationOptions options = new VisualizationOptions();
+            options.EnableSyntaxHighlighting = false;
+            string str = vis.RenderToString(nodes, options);
+            Assert.AreEqual(expected, str);
+        }
     }
 }

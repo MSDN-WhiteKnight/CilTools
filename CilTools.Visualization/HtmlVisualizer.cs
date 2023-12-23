@@ -51,8 +51,14 @@ namespace CilTools.Visualization
             return string.Empty;
         }
 
-        static void RenderSourceToken(SourceToken token, HtmlBuilder target)
+        static void RenderSourceToken(SourceToken token, VisualizationOptions options, HtmlBuilder target)
         {
+            if (!options.EnableSyntaxHighlighting)
+            {
+                target.WriteEscaped(token.ToString());
+                return;
+            }
+
             switch (token.Kind)
             {
                 case TokenKind.Keyword:
@@ -81,11 +87,11 @@ namespace CilTools.Visualization
 
         static void RenderKeyword(KeywordSyntax ks, VisualizationOptions options, HtmlBuilder target)
         {
-            if (ks.Kind == KeywordKind.DirectiveName)
+            if (ks.Kind == KeywordKind.DirectiveName && options.EnableSyntaxHighlighting)
             {
                 target.WriteElement("span", ks.ToString(), HtmlBuilder.OneAttribute("style", "color: magenta;"));
             }
-            else if (ks.Kind == KeywordKind.Other)
+            else if (ks.Kind == KeywordKind.Other && options.EnableSyntaxHighlighting)
             {
                 target.WriteElement("span", ks.ToString(), HtmlBuilder.OneAttribute("style", "color: blue;"));
             }
@@ -261,7 +267,10 @@ namespace CilTools.Visualization
                         }
                     }
 
-                    attrList.Add(new HtmlAttribute("class", "memberid"));
+                    if (options.EnableSyntaxHighlighting)
+                    {
+                        attrList.Add(new HtmlAttribute("class", "memberid"));
+                    }
                 }
                 else if (ids.TargetItem is CilInstruction && !ids.IsDefinition && options.EnableInstructionNavigation)
                 {
@@ -280,25 +289,28 @@ namespace CilTools.Visualization
             {
                 LiteralSyntax ls = (LiteralSyntax)node;
 
-                if (ls.Value is string)
+                if (ls.Value is string && options.EnableSyntaxHighlighting)
                 {
-                    attrs = new HtmlAttribute[1];
-                    attrs[0] = new HtmlAttribute("style", "color: red;");
+                    attrs = HtmlBuilder.OneAttribute("style", "color: red;");
                 }
-                else attrs = new HtmlAttribute[0];
+                else attrs = HtmlBuilder.NoAttributes;
 
                 builder.WriteElement("span", node.ToString(), attrs);
             }
             else if (node is CommentSyntax)
             {
-                attrs = new HtmlAttribute[1];
-                attrs[0] = new HtmlAttribute("style", "color: green;");
+                if (options.EnableSyntaxHighlighting)
+                {
+                    attrs = HtmlBuilder.OneAttribute("style", "color: green;");
+                }
+                else attrs = HtmlBuilder.NoAttributes;
+
                 builder.WriteElement("span", node.ToString(), attrs);
             }
             else if (node is SourceToken)
             {
                 SourceToken token = (SourceToken)node;
-                RenderSourceToken(token, builder);
+                RenderSourceToken(token, options, builder);
             }
             else
             {
