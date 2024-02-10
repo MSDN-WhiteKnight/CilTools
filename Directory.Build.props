@@ -1,7 +1,7 @@
 <Project>
  <PropertyGroup>
-   <Version>2.8.0</Version>
-   <FileVersion>2.8.0.0</FileVersion>
+   <Version>2.9.0</Version>
+   <FileVersion>2.9.0.0</FileVersion>
    <Authors>SmallSoft</Authors>
    <Company>CIL Tools</Company>
    <Product>CIL Tools</Product>
