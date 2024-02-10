@@ -100,20 +100,23 @@ namespace CilView.Visualization
             return tokenStr + offset.ToString(CultureInfo.InvariantCulture);
         }
 
-        public string Visualize(object obj, VisualizationOptions options)
+        /// <summary>
+        /// Gets HTML that visualizes object using the specified visualizer
+        /// </summary>
+        public static string VisualizeObject(object obj, HtmlVisualizer vis, VisualizationOptions options)
         {
             if (obj is IlasmAssembly)
             {
                 //synthesized assembly that contains IL - no need to disassemble
                 IlasmAssembly ia = (IlasmAssembly)obj;
-                string html = this._vis.RenderToString(ia.Syntax.GetChildNodes());
+                string html = vis.RenderToString(ia.Syntax.GetChildNodes());
                 return PrepareContent(html);
             }
             else if (obj is IlasmType)
             {
                 //synthesized type that contains IL - no need to disassemble
                 IlasmType dt = (IlasmType)obj;
-                string html = this._vis.RenderToString(dt.Syntax.GetChildNodes());
+                string html = vis.RenderToString(dt.Syntax.GetChildNodes());
                 return PrepareContent(html);
             }
             else if (obj is Assembly)
@@ -121,7 +124,7 @@ namespace CilView.Visualization
                 //assembly manifest
                 Assembly ass = (Assembly)obj;
                 IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
-                string html = this._vis.RenderToString(nodes);
+                string html = vis.RenderToString(nodes);
                 return PrepareContent(html);
             }
             else if (obj is Type)
@@ -129,7 +132,7 @@ namespace CilView.Visualization
                 //type disassembled IL
                 Type t = (Type)obj;
                 IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, full: false, new DisassemblerParams());
-                string html = this._vis.RenderToString(nodes);
+                string html = vis.RenderToString(nodes);
                 return PrepareContent(html);
             }
             else if (obj is MethodBase)
@@ -138,7 +141,7 @@ namespace CilView.Visualization
                 MethodBase mb = (MethodBase)obj;
                 CilGraph gr = CilGraph.Create(mb);
                 MethodDefSyntax mds = gr.ToSyntaxTree(CilVisualization.CurrentDisassemblerParams);
-                string rendered = this._vis.RenderToString(mds.EnumerateChildNodes(), options);
+                string rendered = vis.RenderToString(mds.EnumerateChildNodes(), options);
 
                 if (options.HighlightingStartOffset >= 0)
                 {
@@ -150,6 +153,14 @@ namespace CilView.Visualization
                 return PrepareContent(rendered);
             }
             else return string.Empty;
+        }
+
+        /// <summary>
+        /// Gets HTML that visualizes object using CIL View visualizer
+        /// </summary>
+        public string Visualize(object obj, VisualizationOptions options)
+        {
+            return VisualizeObject(obj, this._vis, options);
         }
 
         public NavigationTarget ParseQueryString(string queryString)

@@ -166,10 +166,15 @@ namespace CilView.Core.Syntax
             target.Flush();
         }
 
-        public static async Task WriteContentAsync(string content, TextWriter target)
+        public static async Task WriteContentAsync(string content, TextWriter target, OutputFormat fmt)
         {
-            await WriteHeaderAsync(target);
+            if (fmt == OutputFormat.Html) await WriteDocumentStartAsync(target);
+            else await WriteHeaderAsync(target);
+
             await target.WriteAsync(content);
+
+            if (fmt == OutputFormat.Html) await WriteDocumentEndAsync(target);
+
             await target.FlushAsync();
         }
     }

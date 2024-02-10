@@ -13,6 +13,7 @@ using System.Reflection;
 using System.Collections.ObjectModel;
 using CilTools.BytecodeAnalysis;
 using CilTools.Runtime;
+using CilTools.Visualization;
 using CilView.Common;
 using CilView.Core.DocumentModel;
 using CilView.Visualization;
@@ -300,9 +301,40 @@ namespace CilView.UI.Controls
             return this.current_method;
         }
 
+        object GetCurrentObject()
+        {
+            object obj;
+
+            if (this.current_method != null) obj = this.current_method;
+            else if (this.current_type != null) obj = this.current_type;
+            else obj = this.current_assembly;
+
+            return obj;
+        }
+
+        public bool HasCurrentObject
+        {
+            get { return this.GetCurrentObject() != null; }
+        }
+
         public string GetTextContent()
         {
             return this.text;
+        }
+
+        /// <summary>
+        /// Gets HTML content representing current object in browser for export
+        /// </summary>
+        public string GetHtmlContent()
+        {
+            object obj = GetCurrentObject();
+            
+            if (obj == null) return string.Empty;
+
+            //visualize object without navigation hyperlinks
+            HtmlVisualizer vis = new HtmlVisualizer();
+            string html = VisualizationServer.VisualizeObject(obj, vis, new VisualizationOptions());
+            return html;
         }
 
         private void frameContent_Navigating(object sender, NavigatingCancelEventArgs e)

@@ -497,32 +497,43 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
         private async void miExportMethod_Click(object sender, RoutedEventArgs e)
         {
-            string txt = cilbrowser.GetTextContent();
-
-            if (String.IsNullOrEmpty(txt))
+            if (!this.cilbrowser.HasCurrentObject)
             {
                 MessageBox.Show(this, "No content to export. Open type or method first to export its code", "Error");
                 return;
             }
+            
+            string content;
+            OutputFormat fmt;
 
             try
             {
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.RestoreDirectory = true;
                 dlg.DefaultExt = ".il";
-                dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
-                MethodBase current_method= this.cilbrowser.GetCurrentMethod();
+                dlg.Filter = "CIL Assembler source (*.il)|*.il|Hypertext document (*.html;*.htm)|*.html;*.htm";
+                MethodBase current_method = this.cilbrowser.GetCurrentMethod();
 
                 if (current_method != null) dlg.FileName = current_method.Name;
 
-                if (dlg.ShowDialog(this) == true)
-                {
-                    StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
+                if (dlg.ShowDialog(this) != true) return;
 
-                    using (wr)
-                    {
-                        await SyntaxWriter.WriteContentAsync(txt, wr);
-                    }
+                if (dlg.FilterIndex == 2) // HTML
+                {
+                    content = cilbrowser.GetHtmlContent();
+                    fmt = OutputFormat.Html;
+                }
+                else
+                {
+                    content = cilbrowser.GetTextContent();
+                    fmt = OutputFormat.Plaintext;
+                }
+
+                StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
+
+                using (wr)
+                {
+                    await SyntaxWriter.WriteContentAsync(content, wr, fmt);
                 }
             }
             catch (Exception ex)
