@@ -8,6 +8,7 @@ nuget push "..\CilTools.BytecodeAnalysis\bin\Release\CilTools.BytecodeAnalysis.$
 nuget push "..\CilTools.Metadata\bin\Release\CilTools.Metadata.$ver.nupkg" -src $src
 nuget push "..\CilTools.Runtime\pkg\CilTools.Runtime.$ver.nupkg" -src $src
 nuget push "..\CilTools.SourceCode\bin\Release\CilTools.SourceCode.$ver.nupkg" -src $src
+nuget push "..\CilTools.Visualization\bin\Release\CilTools.Visualization.$ver.nupkg" -src $src
 nuget push "..\CilTools.CommandLine\bin\Release\CilTools.CommandLine.$ver.nupkg" -src $src
 
 echo "Finished"
