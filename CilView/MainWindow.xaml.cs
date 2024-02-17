@@ -554,13 +554,23 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
             try
             {
+                OutputFormat fmt;
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.RestoreDirectory = true;
                 dlg.DefaultExt = ".il";
-                dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
+                dlg.Filter = "CIL Assembler source (*.il)|*.il|Hypertext document (*.html;*.htm)|*.html;*.htm";
                 dlg.FileName = t.Name + ".il";
 
                 if (dlg.ShowDialog(this) != true) return;
+
+                if (dlg.FilterIndex == 2) // HTML
+                {
+                    fmt = OutputFormat.Html;
+                }
+                else
+                {
+                    fmt = OutputFormat.Plaintext;
+                }
 
                 Mouse.OverrideCursor = Cursors.Wait;
                 StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
@@ -570,13 +580,24 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
                     if (t is IlasmType)
                     {
                         IlasmType it = (IlasmType)t;
-                        await SyntaxWriter.WriteHeaderAsync(wr);
-                        await wr.WriteAsync(it.GetDocumentText());
+                        string content;
+
+                        if (fmt == OutputFormat.Html)
+                        {
+                            HtmlVisualizer vis = new HtmlVisualizer();
+                            content = VisualizationServer.VisualizeObject(it, vis, new VisualizationOptions());
+                        }
+                        else
+                        {
+                            content = it.GetDocumentText();
+                        }
+                        
+                        await SyntaxWriter.WriteContentAsync(content, wr, fmt);
                     }
                     else
                     {
                         await SyntaxWriter.DisassembleTypeAsync(t, CilVisualization.CurrentDisassemblerParams, 
-                            OutputFormat.Plaintext, wr);
+                            fmt, wr);
                     }
                 }
 
@@ -602,13 +623,23 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
 
             try
             {
+                OutputFormat fmt;
                 SaveFileDialog dlg = new SaveFileDialog();
                 dlg.RestoreDirectory = true;
                 dlg.DefaultExt = ".il";
-                dlg.Filter = "CIL Assembler source (*.il)|*.il|All files|*";
+                dlg.Filter = "CIL Assembler source (*.il)|*.il|Hypertext document (*.html;*.htm)|*.html;*.htm";
                 dlg.FileName = ass.GetName().Name + ".il";
 
                 if (dlg.ShowDialog(this) != true) return;
+
+                if (dlg.FilterIndex == 2) // HTML
+                {
+                    fmt = OutputFormat.Html;
+                }
+                else
+                {
+                    fmt = OutputFormat.Plaintext;
+                }
 
                 Mouse.OverrideCursor = Cursors.Wait;
                 StreamWriter wr = new StreamWriter(dlg.FileName, false, Encoding.UTF8);
@@ -618,13 +649,24 @@ typeof(MainWindow).Assembly.GetName().Version.ToString());
                     if (ass is IlasmAssembly)
                     {
                         IlasmAssembly ia = (IlasmAssembly)ass;
-                        await SyntaxWriter.WriteHeaderAsync(wr);
-                        await wr.WriteAsync(ia.GetDocumentText());
+                        string content;
+
+                        if (fmt == OutputFormat.Html)
+                        {
+                            HtmlVisualizer vis = new HtmlVisualizer();
+                            content = VisualizationServer.VisualizeObject(ia, vis, new VisualizationOptions());
+                        }
+                        else
+                        {
+                            content = ia.GetDocumentText();
+                        }
+
+                        await SyntaxWriter.WriteContentAsync(content, wr, fmt);
                     }
                     else
                     {
                         await SyntaxWriter.DisassembleAsync(ass, CilVisualization.CurrentDisassemblerParams, 
-                            OutputFormat.Plaintext, wr);
+                            fmt, wr);
                     }
                 }
 
