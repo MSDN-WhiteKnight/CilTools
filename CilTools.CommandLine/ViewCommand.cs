@@ -3,7 +3,6 @@
  * License: BSD 2.0 */
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,8 +21,6 @@ namespace CilTools.CommandLine
 {
     class ViewCommand : Command
     {
-        const string HtmlFileName = "CilTools.html";
-
         public override string Name 
         { 
             get { return "view"; } 
@@ -49,36 +46,6 @@ namespace CilTools.CommandLine
                 yield return TextParagraph.Text("[--nocolor] - Disable syntax highlighting");
                 yield return TextParagraph.Text("[--html] - Output format is HTML");
             }
-        }
-        
-        static FileStream TryCreateFile(string name)
-        {
-            FileStream fs;
-
-            try
-            {
-                //try in current directory
-                fs = new FileStream(name, FileMode.Create, FileAccess.Write);
-            }
-            catch (IOException)
-            {
-                //try in temp directory
-                string path = Path.Combine(Path.GetTempPath(), name);
-                fs = new FileStream(path, FileMode.Create, FileAccess.Write);
-            }
-
-            return fs;
-        }
-
-        static void OpenInBrowser(string filePath)
-        {
-            Console.WriteLine("Trying to open " + filePath + " in browser...");
-            ProcessStartInfo psi = new ProcessStartInfo();
-            psi.FileName = filePath;
-            psi.UseShellExecute = true;
-            Process pr = Process.Start(psi);
-
-            if (pr != null) pr.Dispose();
         }
         
         static int View(string filepath, string typeName, bool html, bool noColor)
@@ -125,7 +92,7 @@ namespace CilTools.CommandLine
                 // Determine output target
                 if (html)
                 {
-                    fs = TryCreateFile(HtmlFileName); //create output HTML file
+                    fs = CLI.TryCreateFile(CLI.HtmlFileName); //create output HTML file
 
                     if (fs == null)
                     {
@@ -154,9 +121,9 @@ namespace CilTools.CommandLine
                 if (html)
                 {
                     SyntaxWriter.WriteDocumentEnd(target);
-                    
+
                     // Open output file in browser
-                    OpenInBrowser(fs.Name);
+                    CLI.OpenInBrowser(fs.Name);
 
                     // Close target file stream
                     fs.Dispose();
@@ -218,7 +185,7 @@ namespace CilTools.CommandLine
                 // Determine output target
                 if (html)
                 {
-                    fs = TryCreateFile(HtmlFileName); //create output HTML file
+                    fs = CLI.TryCreateFile(CLI.HtmlFileName); //create output HTML file
 
                     if (fs == null)
                     {
@@ -252,7 +219,7 @@ namespace CilTools.CommandLine
                     SyntaxWriter.WriteDocumentEnd(target);
 
                     // Open output file in browser
-                    OpenInBrowser(fs.Name);
+                    CLI.OpenInBrowser(fs.Name);
 
                     // Close target file stream
                     fs.Dispose();

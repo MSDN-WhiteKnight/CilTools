@@ -13,6 +13,7 @@ using CilTools.SourceCode.Common;
 using CilTools.Visualization;
 using CilView.Common;
 using CilView.Core.Documentation;
+using CilView.Core.Syntax;
 using CilView.SourceCode;
 
 namespace CilTools.CommandLine
@@ -36,9 +37,10 @@ namespace CilTools.CommandLine
                 string exeName = typeof(Program).Assembly.GetName().Name;
 
                 yield return TextParagraph.Code("    " + exeName +
-                    " view-source [--nocolor] <assembly path> <type full name> <method name>");
+                    " view-source [--nocolor] [--html] <assembly path> <type full name> <method name>");
                 yield return TextParagraph.Text(string.Empty);
                 yield return TextParagraph.Text("[--nocolor] - Disable syntax highlighting");
+                yield return TextParagraph.Text("[--html] - Output format is HTML");
                 yield return TextParagraph.Text(string.Empty);
 
                 yield return TextParagraph.Text("For methods with body, this command can print source code " +
@@ -80,22 +82,18 @@ namespace CilTools.CommandLine
             return sb.ToString();
         }
 
-        static int PrintMethodSource(MethodBase mb, bool noColor)
+        static void PrintMethodSource(MethodBase mb, SyntaxVisualizer vis, VisualizationOptions options, TextWriter target)
         {
-            SyntaxVisualizer vis;
-
-            if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
-            else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
-
             if (Utils.IsMethodWithoutBody(mb))
             {
                 //method without IL body has no sequence points in PDB, just use decompiler
                 IEnumerable<SourceToken> decompiled = Decompiler.DecompileMethodSignature(".cs", mb);
                 Console.WriteLine("Source code from: Decompiler");
                 Console.WriteLine();
-                vis.RenderNodes(decompiled, new VisualizationOptions(), Console.Out);
+                vis.RenderNodes(decompiled, options, target);
                 Console.WriteLine();
-                return 0;
+
+                return;
             }
 
             //from PDB
@@ -105,7 +103,7 @@ namespace CilTools.CommandLine
             if (doc == null)
             {
                 Console.WriteLine("Error: Line info not found for this method.");
-                return 1;
+                return;
             }
 
             if (string.IsNullOrEmpty(doc.Text))
@@ -116,7 +114,7 @@ namespace CilTools.CommandLine
                 if (string.IsNullOrEmpty(sourceLinkStr))
                 {
                     Console.WriteLine("Error: Source file " + doc.FilePath + " is not found or empty.");
-                    return 1;
+                    return;
                 }
                 else
                 {
@@ -124,7 +122,7 @@ namespace CilTools.CommandLine
                     Console.WriteLine("The source code is located on the remote server:");
                     Console.WriteLine(sourceLinkStr);
                     Console.WriteLine("File path: " + doc.FilePath);
-                    return 1;
+                    return;
                 }
             }
 
@@ -188,19 +186,109 @@ namespace CilTools.CommandLine
             //show source code
             Console.WriteLine(header);
             Console.WriteLine();
-            vis.RenderNodes(tokens, new VisualizationOptions(), Console.Out);
+            vis.RenderNodes(tokens, options, target);
             Console.WriteLine();
             Console.WriteLine(caption);
             Console.WriteLine();
-            return 0;
         }
 
+        static int ViewMethodSource(string filepath, string typeName, string methodName, bool html, bool noColor)
+        {
+            AssemblyReader reader = new AssemblyReader();
+            FileStream fs = null;
+            TextWriter target;
+
+            try
+            {
+                // Find method group to visualize
+                Assembly ass = reader.LoadFrom(filepath);
+                Type t = ass.GetType(typeName);
+
+                if (t == null)
+                {
+                    Console.WriteLine("Error: Type {0} not found in assembly {1}", typeName, filepath);
+                    return 1;
+                }
+
+                MemberInfo[] methods = t.GetMembers(Utils.AllMembers);
+
+                MethodBase[] selectedMethods = methods.OfType<MethodBase>().Where(
+                        (x) => Utils.StringEquals(x.Name, methodName)
+                    ).ToArray();
+
+                if (selectedMethods.Length == 0)
+                {
+                    Console.WriteLine("Error: Type {0} does not declare methods with the specified name", typeName);
+                    return 1;
+                }
+
+                // Determine output target
+                if (html)
+                {
+                    fs = CLI.TryCreateFile(CLI.HtmlFileName); //create output HTML file
+
+                    if (fs == null)
+                    {
+                        Console.WriteLine("Error: failed to create output HTML file.");
+                        return 1;
+                    }
+
+                    target = new StreamWriter(fs);
+                    SyntaxWriter.WriteDocumentStart(target);
+                }
+                else target = Console.Out;
+
+                SyntaxVisualizer vis;
+                VisualizationOptions options = new VisualizationOptions();
+
+                if (html) vis = new HtmlVisualizer();
+                else if (noColor) vis = SyntaxVisualizer.Create(OutputFormat.Plaintext);
+                else vis = SyntaxVisualizer.Create(OutputFormat.ConsoleText);
+
+                if (noColor) options.EnableSyntaxHighlighting = false;
+
+                // Visualize selected methods
+                for (int i = 0; i < selectedMethods.Length; i++)
+                {
+                    Console.WriteLine(MethodToString(selectedMethods[i]));
+                    PrintMethodSource(selectedMethods[i], vis, options, target);
+                    target.WriteLine();
+                }
+
+                if (html)
+                {
+                    SyntaxWriter.WriteDocumentEnd(target);
+
+                    // Open output file in browser
+                    CLI.OpenInBrowser(fs.Name);
+
+                    // Close target file stream
+                    fs.Dispose();
+                    fs = null;
+                }
+
+                return 0;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error:");
+                Console.WriteLine(ex.ToString());
+                return 1;
+            }
+            finally
+            {
+                reader.Dispose();
+                if (fs != null) fs.Dispose();
+            }
+        }
+        
         public override int Execute(string[] args)
         {
             string filepath = string.Empty;
             string type = string.Empty;
             string method = string.Empty;
             bool noColor = false;
+            bool html = false;
 
             if (args.Length < 4)
             {
@@ -212,12 +300,15 @@ namespace CilTools.CommandLine
             // Parse command line arguments
             NamedArgumentDefinition[] defs = new NamedArgumentDefinition[]
             {
-                new NamedArgumentDefinition("--nocolor", false, "Disable syntax highlighting")
+                new NamedArgumentDefinition("--nocolor", false, "Disable syntax highlighting"),
+                new NamedArgumentDefinition("--html", false, "Output format is HTML")
             };
 
             CommandLineArgs cla = new CommandLineArgs(args, defs);
 
             if (cla.HasNamedArgument("--nocolor")) noColor = true;
+
+            if (cla.HasNamedArgument("--html")) html = true;
 
             if (cla.PositionalArgumentsCount > 1)
             {
@@ -256,56 +347,7 @@ namespace CilTools.CommandLine
             Console.WriteLine("Type: " + type);
             Console.WriteLine();
 
-            AssemblyReader reader = new AssemblyReader();
-
-            try
-            {
-                //read methods from assembly
-                Assembly ass = reader.LoadFrom(filepath);
-                Type t = ass.GetType(type);
-
-                if (t == null)
-                {
-                    Console.WriteLine("Error: Type {0} not found in assembly {1}", type, filepath);
-                    return 1;
-                }
-
-                MemberInfo[] methods = t.GetMembers(
-                    BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.Static
-                    );
-
-                MethodBase[] selectedMethods = methods.OfType<MethodBase>().Where((x) => { return x.Name == method; }).ToArray();
-
-                if (selectedMethods.Length == 0)
-                {
-                    Console.WriteLine("Error: Type {0} does not declare methods with the specified name", type);
-                    return 1;
-                }
-
-                //print sources for matching methods
-                int retCode = 0;
-
-                for (int i = 0; i < selectedMethods.Length; i++)
-                {
-                    Console.WriteLine(MethodToString(selectedMethods[i]));
-
-                    int res = PrintMethodSource(selectedMethods[i], noColor);
-
-                    if (res != 0) retCode = res;
-                }
-
-                return retCode;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("Error:");
-                Console.WriteLine(ex.ToString());
-                return 1;
-            }
-            finally
-            {
-                reader.Dispose();
-            }
+            return ViewMethodSource(filepath, type, method, html, noColor);
         }
     }
 }
