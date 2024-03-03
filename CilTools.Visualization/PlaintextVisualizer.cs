@@ -23,6 +23,12 @@ namespace CilTools.Visualization
             node.ToText(target);
         }
 
+        public override void RenderParagraph(string content, TextWriter target)
+        {
+            target.WriteLine(content);
+            target.WriteLine();
+        }
+
         protected override void EndBlock(VisualizationOptions options, TextWriter target) { }
 
         protected override void StartBlock(VisualizationOptions options, TextWriter target) { }

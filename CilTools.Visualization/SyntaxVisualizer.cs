@@ -20,6 +20,11 @@ namespace CilTools.Visualization
         public abstract void RenderNode(SyntaxNode node, VisualizationOptions options, TextWriter target);
 
         /// <summary>
+        /// Visualizes a paragraph with the specified text and writes results into the <c>TextWriter</c>
+        /// </summary>
+        public abstract void RenderParagraph(string content, TextWriter target);
+
+        /// <summary>
         /// Writes content that marks the beginning of the visualized code block to the <c>TextWriter</c>
         /// </summary>
         protected abstract void StartBlock(VisualizationOptions options, TextWriter target);

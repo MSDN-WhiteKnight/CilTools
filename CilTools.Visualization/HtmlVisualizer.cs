@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Globalization;
+using System.Net;
 using System.Reflection;
 using System.Text;
 using CilTools.BytecodeAnalysis;
@@ -316,6 +317,13 @@ namespace CilTools.Visualization
             {
                 builder.WriteEscaped(node.ToString());
             }
+        }
+
+        public override void RenderParagraph(string content, TextWriter target)
+        {
+            target.Write("<p>");
+            target.Write(WebUtility.HtmlEncode(content));
+            target.WriteLine("</p>");
         }
 
         protected override void StartBlock(VisualizationOptions options, TextWriter target)

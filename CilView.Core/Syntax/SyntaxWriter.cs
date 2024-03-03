@@ -84,6 +84,7 @@ namespace CilView.Core.Syntax
         public static void WriteDocumentEnd(TextWriter target)
         {
             target.WriteLine("</body></html>");
+            target.Flush();
         }
         
         public static async Task DisassembleAsync(Assembly ass, DisassemblerParams pars, OutputFormat fmt, TextWriter target)

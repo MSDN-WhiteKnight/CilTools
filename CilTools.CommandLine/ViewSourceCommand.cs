@@ -88,10 +88,9 @@ namespace CilTools.CommandLine
             {
                 //method without IL body has no sequence points in PDB, just use decompiler
                 IEnumerable<SourceToken> decompiled = Decompiler.DecompileMethodSignature(".cs", mb);
-                Console.WriteLine("Source code from: Decompiler");
-                Console.WriteLine();
+                vis.RenderParagraph("Source code from: Decompiler", target);
                 vis.RenderNodes(decompiled, options, target);
-                Console.WriteLine();
+                target.WriteLine();
 
                 return;
             }
@@ -184,12 +183,10 @@ namespace CilTools.CommandLine
             string caption = sb.ToString();
 
             //show source code
-            Console.WriteLine(header);
-            Console.WriteLine();
+            vis.RenderParagraph(header, target);
             vis.RenderNodes(tokens, options, target);
-            Console.WriteLine();
-            Console.WriteLine(caption);
-            Console.WriteLine();
+            target.WriteLine();
+            vis.RenderParagraph(caption, target);
         }
 
         static int ViewMethodSource(string filepath, string typeName, string methodName, bool html, bool noColor)
