@@ -37,6 +37,7 @@
     <Compile Include="Syntax\DisassemblerTests.cs" />    
     <Compile Include="Syntax\IdentifierSyntaxTest.cs" />    
     <Compile Include="Syntax\SyntaxFactoryTests.cs" />    
+    <Compile Include="Syntax\SyntaxGenerationTests.cs" />    
     <Compile Include="Syntax\SyntaxNodeTests.cs" />    
     <Compile Include="Syntax\SyntaxReaderTests.cs" />    
     <Compile Include="Syntax\TokenReaderTests.cs" />

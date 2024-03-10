@@ -109,7 +109,11 @@ namespace CilTools.Syntax.Generation
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = this.GetTypeSyntax(et);
+                    IEnumerable<SyntaxNode> nodes;
+
+                    if (et is TypeSpec) nodes = this.GetTypeNameSyntax(et);
+                    else nodes = this.GetTypeSyntax(et);
+
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 

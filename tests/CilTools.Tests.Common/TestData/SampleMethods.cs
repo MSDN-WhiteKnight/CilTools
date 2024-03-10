@@ -233,6 +233,11 @@ namespace CilTools.Tests.Common
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static void TestAggressiveInlining() { }
+
+        public static byte[][] TestArrayOfArrays()
+        {
+            return new byte[0][];
+        }
     }
 
     public class MyPoint
