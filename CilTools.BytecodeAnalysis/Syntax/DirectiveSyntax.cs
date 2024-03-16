@@ -247,7 +247,7 @@ namespace CilTools.Syntax
 
             if (cm.ReturnType != null)
             {
-                IEnumerable<SyntaxNode> rtNodes = tgen.GetTypeNameSyntax(cm.ReturnType);
+                IEnumerable<SyntaxNode> rtNodes = tgen.GetSignatureTypeSyntax(cm.ReturnType);
                 inner.Add(new MemberRefSyntax(rtNodes.ToArray(), cm.ReturnType));
             }
             else
@@ -305,7 +305,7 @@ namespace CilTools.Syntax
 
                 if (pars[i].IsOptional) inner.Add(new GenericSyntax("[opt] "));
 
-                IEnumerable<SyntaxNode> parNodes = tgen.GetTypeNameSyntax(pars[i].ParameterType);
+                IEnumerable<SyntaxNode> parNodes = tgen.GetSignatureTypeSyntax(pars[i].ParameterType);
 
                 string parname;
                 if (pars[i].Name != null) parname = pars[i].Name;

@@ -969,11 +969,11 @@ namespace CilTools.BytecodeAnalysis
             else if (this._Type != null)
             {
                 TypeSyntaxGenerator tgen = new TypeSyntaxGenerator(containingAssembly);
-                IEnumerable<SyntaxNode> nodes = tgen.GetTypeNameSyntax(this);
+                IEnumerable<SyntaxNode> nodes = tgen.GetSignatureTypeSyntax(this);
 
                 foreach (SyntaxNode x in nodes) ret.Add(x);
 
-                //GetTypeNameSyntax will add modifiers when called on TypeSpec
+                //GetSignatureTypeSyntax will add modifiers when called on TypeSpec
                 return new MemberRefSyntax(ret.ToArray(), this._Type);
             }
             else if (this._ElementType == (byte)CilTools.BytecodeAnalysis.ElementType.Var) //generic type arg

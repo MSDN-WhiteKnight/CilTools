@@ -147,7 +147,7 @@ namespace CilTools.BytecodeAnalysis
                 {
                     Type t = fi.DeclaringType;
                     List<SyntaxNode> children = new List<SyntaxNode>();
-                    IEnumerable<SyntaxNode> nodes = tgen.GetTypeNameSyntax(fi.FieldType);
+                    IEnumerable<SyntaxNode> nodes = tgen.GetSignatureTypeSyntax(fi.FieldType);
 
                     foreach (SyntaxNode node in nodes) children.Add(node);
 
@@ -233,7 +233,7 @@ namespace CilTools.BytecodeAnalysis
                         //use TypeSpec syntax to avoid resolving external references
                         TypeSyntaxGenerator tgTypeSpec = new TypeSyntaxGenerator(isSpec: true, skipAssembly: false);
                         tgTypeSpec.ContainingAssembly = containingAssembly;
-                        IEnumerable<SyntaxNode> nodes = tgTypeSpec.GetTypeSyntax((Type)mi);
+                        IEnumerable<SyntaxNode> nodes = tgTypeSpec.GetDefinedTypeSyntax((Type)mi);
 
                         yield return new MemberRefSyntax(nodes.ToArray(), mi);
                     }
@@ -243,7 +243,7 @@ namespace CilTools.BytecodeAnalysis
                         Type t = fi.DeclaringType;
                         List<SyntaxNode> children = new List<SyntaxNode>();
                         children.Add(new KeywordSyntax(string.Empty, "field", " ", KeywordKind.Other));
-                        IEnumerable<SyntaxNode> nodes = tgen.GetTypeNameSyntax(fi.FieldType);
+                        IEnumerable<SyntaxNode> nodes = tgen.GetSignatureTypeSyntax(fi.FieldType);
 
                         foreach (SyntaxNode node in nodes) children.Add(node);
 

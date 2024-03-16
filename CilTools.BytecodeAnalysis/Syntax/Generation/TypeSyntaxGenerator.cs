@@ -70,10 +70,10 @@ namespace CilTools.Syntax.Generation
             return sb.ToString();
         }
 
-        public IEnumerable<SyntaxNode> GetTypeSyntax(Type t)
+        public IEnumerable<SyntaxNode> GetDefinedTypeSyntax(Type t)
         {
-            //converts reflection Type object to Type or TypeSpec CIL assembler syntax
-            //(ECMA-335 II.7.1 Types)
+            // Converts reflection Type object to CIL assembler syntax for TypeReference or TypeDefinition
+            // (ECMA-335 II.7.3 References to user-defined types)
 
             if (t.IsGenericParameter)
             {
@@ -97,7 +97,7 @@ namespace CilTools.Syntax.Generation
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = this.GetTypeSyntax(et);
+                    IEnumerable<SyntaxNode> nodes = this.GetDefinedTypeSyntax(et);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
@@ -111,8 +111,8 @@ namespace CilTools.Syntax.Generation
                 {
                     IEnumerable<SyntaxNode> nodes;
 
-                    if (et is TypeSpec) nodes = this.GetTypeNameSyntax(et);
-                    else nodes = this.GetTypeSyntax(et);
+                    if (et is TypeSpec) nodes = this.GetSignatureTypeSyntax(et);
+                    else nodes = this.GetDefinedTypeSyntax(et);
 
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
@@ -125,7 +125,7 @@ namespace CilTools.Syntax.Generation
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = this.GetTypeSyntax(et);
+                    IEnumerable<SyntaxNode> nodes = this.GetDefinedTypeSyntax(et);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
@@ -187,7 +187,7 @@ namespace CilTools.Syntax.Generation
                     {
                         if (i >= 1) yield return new PunctuationSyntax(string.Empty, ",", " ");
 
-                        IEnumerable<SyntaxNode> nodes = this.GetTypeNameSyntax(args[i]);
+                        IEnumerable<SyntaxNode> nodes = this.GetSignatureTypeSyntax(args[i]);
 
                         foreach (SyntaxNode node in nodes) yield return node;
                     }
@@ -207,11 +207,14 @@ namespace CilTools.Syntax.Generation
             }
         }
 
-        public IEnumerable<SyntaxNode> GetTypeNameSyntax(Type t)
+        public IEnumerable<SyntaxNode> GetSignatureTypeSyntax(Type t)
         {
+            // Converts reflection Type object to CIL Assembler syntax for a type in signature
+            // See ECMA-335 II.7.1 (Types)
+
             if (t == null) yield break;
 
-            if (t.IsGenericParameter) //See ECMA-335 II.7.1 (Types)
+            if (t.IsGenericParameter) 
             {
                 string prefix;
 
@@ -234,7 +237,7 @@ namespace CilTools.Syntax.Generation
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = this.GetTypeNameSyntax(et);
+                    IEnumerable<SyntaxNode> nodes = this.GetSignatureTypeSyntax(et);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
@@ -246,7 +249,7 @@ namespace CilTools.Syntax.Generation
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = this.GetTypeNameSyntax(et);
+                    IEnumerable<SyntaxNode> nodes = this.GetSignatureTypeSyntax(et);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
@@ -258,7 +261,7 @@ namespace CilTools.Syntax.Generation
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = this.GetTypeNameSyntax(et);
+                    IEnumerable<SyntaxNode> nodes = this.GetSignatureTypeSyntax(et);
 
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
@@ -277,11 +280,11 @@ namespace CilTools.Syntax.Generation
                 }
                 else
                 {
-                    IEnumerable<SyntaxNode> nodes = this.GetTypeSyntax(t); //full type name syntax
+                    IEnumerable<SyntaxNode> nodes = this.GetDefinedTypeSyntax(t); //full type name syntax
 
                     foreach (SyntaxNode x in nodes) yield return x;
 
-                    yield break; //GetTypeSyntax will yield modifiers
+                    yield break; //GetDefinedTypeSyntax will yield modifiers
                 }
             }
 
@@ -311,7 +314,7 @@ namespace CilTools.Syntax.Generation
             else gen = new TypeSyntaxGenerator(isSpec: true, this.SkipAssemblyName);
 
             gen.ContainingAssembly = this.ContainingAssembly;
-            return gen.GetTypeSyntax(t);
+            return gen.GetDefinedTypeSyntax(t);
         }
     }
 }

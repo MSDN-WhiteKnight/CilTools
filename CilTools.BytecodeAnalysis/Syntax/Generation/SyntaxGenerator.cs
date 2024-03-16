@@ -345,7 +345,7 @@ namespace CilTools.Syntax.Generation
                 }
 
                 TypeSyntaxGenerator gen = new TypeSyntaxGenerator();
-                IEnumerable<SyntaxNode> syntax = gen.GetTypeNameSyntax(constType);
+                IEnumerable<SyntaxNode> syntax = gen.GetSignatureTypeSyntax(constType);
 
                 foreach (SyntaxNode node in syntax) output.Add(node);
 
@@ -491,14 +491,14 @@ namespace CilTools.Syntax.Generation
             if (mi != null)
             {
                 //standard reflection implementation: return type exposed via MethodInfo
-                rt = gen.GetTypeNameSyntax(mi.ReturnType);
+                rt = gen.GetSignatureTypeSyntax(mi.ReturnType);
             }
             else if (m is ICustomMethod)
             {
                 //CilTools reflection implementation: return type exposed via ICustomMethod
                 Type tReturn = ((ICustomMethod)m).ReturnType;
 
-                if (tReturn != null) rt = gen.GetTypeNameSyntax(tReturn);
+                if (tReturn != null) rt = gen.GetSignatureTypeSyntax(tReturn);
                 else rt = new SyntaxNode[] { new KeywordSyntax("void", string.Empty) };
             }
             else if (m is CustomMethod)
@@ -506,7 +506,7 @@ namespace CilTools.Syntax.Generation
                 //CilTools reflection implementation: return type exposed via CustomMethod
                 Type tReturn = ((CustomMethod)m).ReturnType;
 
-                if (tReturn != null) rt = gen.GetTypeNameSyntax(tReturn);
+                if (tReturn != null) rt = gen.GetSignatureTypeSyntax(tReturn);
                 else rt = new SyntaxNode[] { new KeywordSyntax("void", string.Empty) };
             }
             else
@@ -548,7 +548,7 @@ namespace CilTools.Syntax.Generation
                 if (forceTypeSpec)
                 {
                     dtGen.IsTypeSpec = true;
-                    syntax = dtGen.GetTypeSyntax(t);
+                    syntax = dtGen.GetDefinedTypeSyntax(t);
                 }
                 else
                 {
@@ -572,7 +572,7 @@ namespace CilTools.Syntax.Generation
                 {
                     if (i >= 1) children.Add(new PunctuationSyntax(string.Empty, ",", " "));
 
-                    IEnumerable<SyntaxNode> syntax = gen.GetTypeNameSyntax(args[i]);
+                    IEnumerable<SyntaxNode> syntax = gen.GetSignatureTypeSyntax(args[i]);
 
                     foreach (SyntaxNode node in syntax) children.Add(node);
                 }
@@ -593,7 +593,7 @@ namespace CilTools.Syntax.Generation
                     children.Add(new PunctuationSyntax(string.Empty, ",", " "));
                 }
 
-                IEnumerable<SyntaxNode> syntax = gen.GetTypeNameSyntax(pars[i].ParameterType);
+                IEnumerable<SyntaxNode> syntax = gen.GetSignatureTypeSyntax(pars[i].ParameterType);
 
                 foreach (SyntaxNode node in syntax) children.Add(node);
             }
@@ -1016,7 +1016,7 @@ namespace CilTools.Syntax.Generation
                     inner.Add(new KeywordSyntax("rtspecialname", " "));
                 }
 
-                SyntaxNode[] ftNodes = tgen.GetTypeNameSyntax(fields[i].FieldType).ToArray();
+                SyntaxNode[] ftNodes = tgen.GetSignatureTypeSyntax(fields[i].FieldType).ToArray();
                 inner.Add(new MemberRefSyntax(ftNodes, fields[i].FieldType));
 
                 // Field name
@@ -1135,7 +1135,7 @@ namespace CilTools.Syntax.Generation
                     inner.Add(new KeywordSyntax("instance", " "));
                 }
 
-                SyntaxNode[] ptNodes = tgen.GetTypeNameSyntax(props[i].PropertyType).ToArray();
+                SyntaxNode[] ptNodes = tgen.GetSignatureTypeSyntax(props[i].PropertyType).ToArray();
                 inner.Add(new MemberRefSyntax(ptNodes, props[i].PropertyType));
 
                 inner.Add(new IdentifierSyntax(" ", props[i].Name, string.Empty, IdentifierKind.Member, props[i]));
@@ -1150,7 +1150,7 @@ namespace CilTools.Syntax.Generation
                 {
                     if (j >= 1) inner.Add(new PunctuationSyntax(string.Empty, ",", " "));
 
-                    SyntaxNode[] partype = tgen.GetTypeNameSyntax(pars[j].ParameterType).ToArray();
+                    SyntaxNode[] partype = tgen.GetSignatureTypeSyntax(pars[j].ParameterType).ToArray();
                     inner.Add(new MemberRefSyntax(partype, pars[j].ParameterType));
                 }
 

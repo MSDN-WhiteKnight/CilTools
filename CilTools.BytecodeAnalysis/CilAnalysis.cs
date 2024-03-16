@@ -31,7 +31,7 @@ namespace CilTools.BytecodeAnalysis
             StringWriter wr = new StringWriter(sb);
             TypeSyntaxGenerator gen = new TypeSyntaxGenerator();
 
-            foreach (SyntaxNode node in gen.GetTypeNameSyntax(t)) node.ToText(wr);
+            foreach (SyntaxNode node in gen.GetSignatureTypeSyntax(t)) node.ToText(wr);
 
             wr.Flush();
             return sb.ToString();
@@ -51,7 +51,7 @@ namespace CilTools.BytecodeAnalysis
             StringBuilder sb = new StringBuilder();
             StringWriter wr = new StringWriter(sb);
             TypeSyntaxGenerator gen = new TypeSyntaxGenerator();
-            IEnumerable<SyntaxNode> nodes = gen.GetTypeSyntax(t);
+            IEnumerable<SyntaxNode> nodes = gen.GetDefinedTypeSyntax(t);
 
             foreach (SyntaxNode node in nodes)
             {
