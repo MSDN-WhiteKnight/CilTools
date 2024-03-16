@@ -238,6 +238,11 @@ namespace CilTools.Tests.Common
         {
             return new byte[0][];
         }
+
+        public static void TestPointerToPointer()
+        {
+            Console.Write(typeof(int**));
+        }
     }
 
     public class MyPoint

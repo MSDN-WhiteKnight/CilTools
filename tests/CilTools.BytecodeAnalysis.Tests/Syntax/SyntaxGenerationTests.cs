@@ -17,7 +17,7 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
         // Tests that verify disassembler output in different cases
 
         [TestMethod]
-        [MethodTestData(typeof(SampleMethods), "TestArrayOfArrays", BytecodeProviders.Metadata)]
+        [MethodTestData(typeof(SampleMethods), "TestArrayOfArrays", BytecodeProviders.All)]
         public void Test_Operand_ArrayOfArrays(MethodBase mi)
         {
             CilGraph graph = CilGraph.Create(mi);
@@ -25,6 +25,18 @@ namespace CilTools.BytecodeAnalysis.Tests.Syntax
 
             AssertThat.IsMatch(str, new Text[] {
                 Text.Any, "newarr", Text.Any, "uint8[]", Text.Any
+            });
+        }
+
+        [TestMethod]
+        [MethodTestData(typeof(SampleMethods), "TestPointerToPointer", BytecodeProviders.All)]
+        public void Test_Operand_PointerToPointer(MethodBase mi)
+        {
+            CilGraph graph = CilGraph.Create(mi);
+            string str = graph.ToText();
+
+            AssertThat.IsMatch(str, new Text[] {
+                Text.Any, "ldtoken", Text.Any, "int32**", Text.Any
             });
         }
     }

@@ -109,10 +109,8 @@ namespace CilTools.Syntax.Generation
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes;
-
-                    if (et is TypeSpec) nodes = this.GetSignatureTypeSyntax(et);
-                    else nodes = this.GetDefinedTypeSyntax(et);
+                    //arrays are always in signature
+                    IEnumerable<SyntaxNode> nodes = this.GetSignatureTypeSyntax(et);
 
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
@@ -125,7 +123,8 @@ namespace CilTools.Syntax.Generation
 
                 if (et != null)
                 {
-                    IEnumerable<SyntaxNode> nodes = this.GetDefinedTypeSyntax(et);
+                    //pointers are always in signature
+                    IEnumerable<SyntaxNode> nodes = this.GetSignatureTypeSyntax(et);
                     foreach (SyntaxNode x in nodes) yield return x;
                 }
 
