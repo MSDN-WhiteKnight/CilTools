@@ -4,7 +4,7 @@
 
 <p><strong>Requirements:</strong> .NET Framework 4.5+<br>
 <strong>License:</strong> BSD 3-Clause<br>
-<strong>Repository:</strong> <a href="https://github.com/MSDN-WhiteKnight/CilTools">https://github.com/MSDN-WhiteKnight/CilTools</a></p>
+<strong>Repository:</strong> <a href="https://gitflic.ru/project/smallsoft/ciltools">https://gitflic.ru/project/smallsoft/ciltools</a></p>
 <p>CilView is a windows application to display CIL code of methods in .NET assemblies. The key features are:</p>
 <ul>
 <li>Displaying CIL code of methods in the specified assembly file or process</li>
@@ -26,7 +26,7 @@
 <p>5. The right panel will display the CIL disassembly of the selected method.</p>
 <p>All method references on the <strong>Formatted</strong> tab are hyperlinks to the referenced methods. Clicking one them will open the referenced method's code in the right panel, even if the method is from another assembly, as long as that assembly could be loaded.</p>
 <p></p>
-<p>To view detailed information about CIL instruction, right-click on the instruction opcode in formatted view and choose <strong>Instruction information</strong> menu item. The displayed dialog box will provide information such as opcode and operand sizes and raw instruction bytes hexadecimal code.</p>
+<p>To view detailed information about CIL instruction, double-click on the instruction opcode in formatted view. The displayed dialog box will provide information such as opcode and operand sizes and raw instruction bytes hexadecimal code.</p>
 <h2 id="view-the-resulting-cil-for-cvb-sources">View the resulting CIL for C#/VB sources</h2>
 <p>This feature enables you to view disassembled CIL code corresponding to the entered code snippet. CIL View will compile the provided code in background, and open the output binary if the compilation is successful. If the build fails, it will display the build output to you.</p>
 <ol>
@@ -115,7 +115,7 @@
 <p>The exception analysis is supported when opening both files and processes. However, when you hit any limitations mentioned above, the analysis accuracy decreases.</p>
 <h2 id="source-code-viewer">Source code viewer</h2>
 <p>This feature enables you to display source code corresponding to disassembled CIL code. Source code viewer can fetch source code using symbols line data (see <em>Disassembler options</em> section above for information about symbols support) or display the decompiled code (currently only supported for abstract methods or methods implemented in unmanaged code).</p>
-<p>To view the source code for individual instructions, click <strong>Tools</strong> -&gt; <strong>Show source code</strong>. Alternatively, you could right-click the instruction of interest in formatted view. In the <strong>View source</strong> window you'll see the CIL code of the sequence point on the left and its corresponding source code fragment on the right. Use <strong>&lt;</strong> and <strong>&gt;</strong> buttons to navigate between sequence points, or the file hyperlink to open the whole source file in your default editor.</p>
+<p>To view the source code for individual instructions, click <strong>Tools</strong> -&gt; <strong>Show source code</strong>. In the <strong>View source</strong> window you'll see the CIL code of the sequence point on the left and its corresponding source code fragment on the right. Use <strong>&lt;</strong> and <strong>&gt;</strong> buttons to navigate between sequence points, or the file hyperlink to open the whole source file in your default editor.</p>
 <p>To view the source code for the whole method, click <strong>Tools</strong> -&gt; <strong>Show source code (method)</strong>. The <strong>Source code</strong> window will display the method's source code as well as the information about where it was fetched from.</p>
 <p>If the source code is located on external server (this feature is called <a href="https://github.com/dotnet/designs/blob/main/accepted/2020/diagnostics/source-link.md">Source Link</a>), the source viewer will prompt you with a dialog box to allow navigating to server. If you choose <strong>Yes</strong>, the source code will be opened in your default browser. Any subsequent attempts for the same domain will open the browser automatically without prompting again. The Source Link is supported for Portable PDB only.</p>
 <h2 id="method-execution">Method execution</h2>
@@ -130,7 +130,7 @@
 <p>You can install CIL View via ClickOnce if you want to download updates automatically. The ClickOnce download URL: <a href="https://msdn-whiteknight.github.io/CilTools/update/">https://msdn-whiteknight.github.io/CilTools/update/</a></p>
 <p>Using auto-update requires stable internet connection and access to the <a href="https://msdn-whiteknight.github.io/">https://msdn-whiteknight.github.io/</a> website. If you are using old Windows or .NET Framework versions, you might be unable to connect due to TLS protocol version or ciphersuite mismatch.</p>
 <hr>
-<p><em>Copyright (c) 2022,  MSDN.WhiteKnight</em></p>
+<p><em>Copyright (c) 2024,  MSDN.WhiteKnight</em></p>
 <p><em>See Help - Credits or <a href="https://github.com/MSDN-WhiteKnight/CilTools/blob/master/CilView/credits.txt">credits.txt</a> for copyright and license notices of third-party projects.</em></p>
 
 <p><a href="https://msdn-whiteknight.github.io/CilTools/articles/cilview-manual.html">View latest version of this document online</a></p>
