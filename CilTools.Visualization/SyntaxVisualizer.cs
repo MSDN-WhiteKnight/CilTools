@@ -79,6 +79,9 @@ namespace CilTools.Visualization
             return this.RenderToString(nodes, new VisualizationOptions());
         }
 
+        /// <summary>
+        /// Creates a new instance of the visualizer for the specified output format
+        /// </summary>
         public static SyntaxVisualizer Create(OutputFormat fmt)
         {
             switch (fmt)

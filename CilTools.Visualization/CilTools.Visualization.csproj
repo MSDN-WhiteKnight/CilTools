@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
-    <Description>Provides APIs that visualize syntax trees as HTML</Description>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageLicenseFile>license.txt</PackageLicenseFile>
+    <Description>Provides APIs that visualize syntax trees</Description>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageTags>dotnet dotnet-standard dotnet-framework syntax html visualization</PackageTags>
     <PackageIcon>IL.png</PackageIcon>
@@ -15,6 +17,10 @@
 
   <ItemGroup>
     <None Include="..\docs\images\IL.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="license.txt">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>

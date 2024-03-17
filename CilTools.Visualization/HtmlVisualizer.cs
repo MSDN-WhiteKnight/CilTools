@@ -33,6 +33,9 @@ namespace CilTools.Visualization
             this._urlProviders.Add(provider);
         }
 
+        /// <summary>
+        /// Removes all custom URL providers from this generator
+        /// </summary>
         public void RemoveAllProviders()
         {
             this._urlProviders.Clear();
@@ -181,6 +184,7 @@ namespace CilTools.Visualization
             return GetInstructionAnchor(instr.Method, instr.ByteOffset);
         }
 
+        /// <inheritdoc/>
         public override void RenderNode(SyntaxNode node, VisualizationOptions options, TextWriter target)
         {
             if (options == null) options = new VisualizationOptions();
@@ -319,6 +323,7 @@ namespace CilTools.Visualization
             }
         }
 
+        /// <inheritdoc/>
         public override void RenderParagraph(string content, TextWriter target)
         {
             target.Write("<p>");
@@ -326,11 +331,13 @@ namespace CilTools.Visualization
             target.WriteLine("</p>");
         }
 
+        /// <inheritdoc/>
         protected override void StartBlock(VisualizationOptions options, TextWriter target)
         {
             target.Write("<pre style=\"white-space: pre-wrap;\"><code>");
         }
 
+        /// <inheritdoc/>
         protected override void EndBlock(VisualizationOptions options, TextWriter target)
         {
             target.Write("</code></pre>");

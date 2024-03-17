@@ -7,8 +7,24 @@ using System.Text;
 
 namespace CilTools.Visualization
 {
+    /// <summary>
+    /// Specifies visualization output format
+    /// </summary>
     public enum OutputFormat
     {
-        Html = 1, Plaintext = 2, ConsoleText = 3
+        /// <summary>
+        /// Hypertext Markup Language (HTML) format
+        /// </summary>
+        Html = 1, 
+
+        /// <summary>
+        /// Plain text format
+        /// </summary>
+        Plaintext = 2,
+        
+        /// <summary>
+        /// Text printed into console (with colors)
+        /// </summary>
+        ConsoleText = 3
     }
 }

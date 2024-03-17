@@ -14,11 +14,17 @@ namespace CilTools.Visualization
     {
         Dictionary<string, object> _dict = new Dictionary<string, object>();
 
+        /// <summary>
+        /// Creates a new instance of the visualization options with default option values
+        /// </summary>
         public VisualizationOptions()
         {
             this.EnableSyntaxHighlighting = true;
         }
         
+        /// <summary>
+        /// Gets the value of the option with the specified name, or <c>null</c> if the option is not set.
+        /// </summary>
         public object GetOption(string name)
         {
             object val;
@@ -27,11 +33,21 @@ namespace CilTools.Visualization
             else return null;
         }
 
+        /// <summary>
+        /// Sets the value for the specified option
+        /// </summary>
         public void SetOption(string name, object val)
         {
             this._dict[name] = val;
         }
 
+        /// <summary>
+        /// Gets or sets the offset of the first highlighted instruction, in bytes
+        /// </summary>
+        /// <remarks>
+        /// If the instruction highlighting is not used, should be set to -1. This property is only honoured by HTML 
+        /// visualizer.The default value is -1.
+        /// </remarks>
         public int HighlightingStartOffset
         {
             get
@@ -45,6 +61,13 @@ namespace CilTools.Visualization
             set { this.SetOption("HighlightingStartOffset", value); }
         }
 
+        /// <summary>
+        /// Gets or sets the offset of the last highlighted instruction, in bytes
+        /// </summary>
+        /// <remarks>
+        /// If the instruction highlighting is not used, should be set to -1. This property is only honoured by HTML 
+        /// visualizer.The default value is -1.
+        /// </remarks>
         public int HighlightingEndOffset
         {
             get
@@ -80,6 +103,13 @@ namespace CilTools.Visualization
             }
         }
 
+        /// <summary>
+        /// Gets or sets the boolean value indicating whether the instruction navigation hyperlinks are enabled
+        /// </summary>
+        /// <remarks>
+        /// When this property is set to <c>true</c>, labels in jump instructions are rendered as hyperlinks to 
+        /// the target instruction. This property is only honoured by HTML visualizer. The default value is <c>false</c>.
+        /// </remarks>
         public bool EnableInstructionNavigation
         {
             get

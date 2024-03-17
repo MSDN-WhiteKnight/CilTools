@@ -17,6 +17,10 @@
         {
           "files": ["CilTools.SourceCode.dll"],          
           "src": "../CilTools.SourceCode/bin/Debug/net35"
+        },
+        {
+          "files": ["CilTools.Visualization.dll"],
+          "src": "../CilTools.Visualization/bin/Debug/net45"
         }
       ],
       "dest": "api",
