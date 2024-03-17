@@ -71,6 +71,7 @@ namespace CilView.Visualization
             HtmlBuilder html = new HtmlBuilder(sb);
             html.WriteOpeningTag("html");
             html.WriteOpeningTag("head");
+            html.WriteRaw("<meta charset=\"utf-8\"/>");
 
             // CSS only works good starting from Internet Explorer 9
             html.WriteRaw("<meta http-equiv=\"X-UA-Compatible\" content=\"IE=9\"/>");
