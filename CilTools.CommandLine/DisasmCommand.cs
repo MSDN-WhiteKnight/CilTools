@@ -38,7 +38,7 @@ namespace CilTools.CommandLine
                 yield return TextParagraph.Code("    " + exeName +
                     " disasm [--output <output path>] [--html] <assembly path> [<type full name>] [<method name>]");
                 yield return TextParagraph.Text("[--output <output path>] - Output file path");
-                yield return TextParagraph.Text("[--html] - When specified, output format is HTML");
+                yield return TextParagraph.Text("[--html] - Output format is HTML");
             }
         }
 

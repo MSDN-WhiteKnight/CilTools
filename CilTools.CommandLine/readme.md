@@ -10,31 +10,37 @@ Commands:
 
 Print disassembled CIL code of the specified assembly, type or method:
 
-    cil view [--nocolor] <assembly path> [<type full name>] [<method name>]
+    cil view [--nocolor] [--html] <assembly path> [<type full name>] [<method name>]
 
 Print contents of the specified CIL source file (*.il):
 
-    cil view [--nocolor] <source file path>
+    cil view [--nocolor] [--html] <source file path>
 
 
 [--nocolor] - Disable syntax highlighting
+
+[--html] - Output format is HTML
 
 **disasm** - Write disassembled CIL code of the specified assembly, type or method into the file
 
 *Usage*
 
-    cil disasm [--output <output path>] <assembly path> [<type full name>] [<method name>]
+    cil disasm [--output <output path>] [--html] <assembly path> [<type full name>] [<method name>]
 
 [--output \<output path\>] - Output file path
+
+[--html] - Output format is HTML
 
 **view-source** - Print source code of the specified method
 
 *Usage*
 
-    cil view-source [--nocolor] <assembly path> <type full name> <method name>
+    cil view-source [--nocolor] [--html] <assembly path> <type full name> <method name>
 
 
 [--nocolor] - Disable syntax highlighting
+
+[--html] - Output format is HTML
 
 
 For methods with body, this command can print source code based on symbols, if they are available. For methods without body, the command prints a disassembled source code.
@@ -49,4 +55,4 @@ For methods with body, this command can print source code based on symbols, if t
 
 ---
 
-Copyright (c) 2022, MSDN.WhiteKnight (https://github.com/MSDN-WhiteKnight/CilTools)
+Copyright (c) 2024, SmallSoft (https://gitflic.ru/user/smallsoft)

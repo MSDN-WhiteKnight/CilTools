@@ -11,3 +11,7 @@
 
 - Support additional assembly resolution directories in AssemblyReader
 - Support inherit parameter in Type.GetCustomAttributes methods
+
+2.9
+
+- Assembly resolution logic in AssemblyReader now tries to search in assemblies loaded by path before calling AssemblyResolve handler

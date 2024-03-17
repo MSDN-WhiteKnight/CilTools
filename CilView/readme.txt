@@ -146,6 +146,11 @@ Changelog
 - No longer automatically select <Module> type when it's the only one in assembly (so user can see assembly manifest)
 - Fix members counting to pick only declared members when deciding whether the only method in type should be auto-selected
 
+2.9
+- Add support for exporting disassembled CIL as HTML
+- Fix disassembling pointer-to-pointer types when used as operand of instruction
+- Fix disassembling array-of-arrays types when used as operand of instruction
+
 ---------------------------------------------
 
 Copyright (c) 2023,  MSDN.WhiteKnight

@@ -235,3 +235,8 @@ v2.0
 - Add TypeSpec.CreateSpecialType method
 - Add IdentifierSyntax.Kind property
 - Make SyntaxNode._parent field protected
+
+2.9
+- Add ReflectionProperties.ContainingAssembly and ReflectionProperties.ReferenceTarget
+- Fix disassembling pointer-to-pointer types when used as operand of instruction
+- Fix disassembling array-of-arrays types when used as operand of instruction
