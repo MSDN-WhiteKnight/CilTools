@@ -31,6 +31,7 @@ items:
     content: 'public class SourceToken : SyntaxNode'
     content.vb: >-
       Public Class SourceToken
+
           Inherits SyntaxNode
   inheritance:
   - System.Object

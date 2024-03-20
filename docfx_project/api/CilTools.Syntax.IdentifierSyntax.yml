@@ -32,6 +32,7 @@ items:
     content: 'public class IdentifierSyntax : SyntaxNode'
     content.vb: >-
       Public Class IdentifierSyntax
+
           Inherits SyntaxNode
   inheritance:
   - System.Object

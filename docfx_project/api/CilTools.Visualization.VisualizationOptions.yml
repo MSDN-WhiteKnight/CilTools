@@ -1,0 +1,625 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Visualization.VisualizationOptions
+  commentId: T:CilTools.Visualization.VisualizationOptions
+  id: VisualizationOptions
+  parent: CilTools.Visualization
+  children:
+  - CilTools.Visualization.VisualizationOptions.#ctor
+  - CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  - CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  - CilTools.Visualization.VisualizationOptions.GetOption(System.String)
+  - CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  - CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  - CilTools.Visualization.VisualizationOptions.SetOption(System.String,System.Object)
+  langs:
+  - csharp
+  - vb
+  name: VisualizationOptions
+  nameWithType: VisualizationOptions
+  fullName: CilTools.Visualization.VisualizationOptions
+  type: Class
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nContains options that control the visualization process performed by <xref href=\"CilTools.Visualization.SyntaxVisualizer\" data-throw-if-not-resolved=\"false\"></xref>\n"
+  syntax:
+    content: public class VisualizationOptions
+    content.vb: Public Class VisualizationOptions
+  inheritance:
+  - System.Object
+  inheritedMembers:
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Visualization.VisualizationOptions.#ctor
+  commentId: M:CilTools.Visualization.VisualizationOptions.#ctor
+  id: '#ctor'
+  parent: CilTools.Visualization.VisualizationOptions
+  langs:
+  - csharp
+  - vb
+  name: VisualizationOptions()
+  nameWithType: VisualizationOptions.VisualizationOptions()
+  fullName: CilTools.Visualization.VisualizationOptions.VisualizationOptions()
+  type: Constructor
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nCreates a new instance of the visualization options with default option values\n"
+  syntax:
+    content: public VisualizationOptions()
+    content.vb: Public Sub New
+  overload: CilTools.Visualization.VisualizationOptions.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Visualization.VisualizationOptions.GetOption(System.String)
+  commentId: M:CilTools.Visualization.VisualizationOptions.GetOption(System.String)
+  id: GetOption(System.String)
+  parent: CilTools.Visualization.VisualizationOptions
+  langs:
+  - csharp
+  - vb
+  name: GetOption(String)
+  nameWithType: VisualizationOptions.GetOption(String)
+  fullName: CilTools.Visualization.VisualizationOptions.GetOption(System.String)
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nGets the value of the option with the specified name, or <code>null</code> if the option is not set.\n"
+  syntax:
+    content: public object GetOption(string name)
+    parameters:
+    - id: name
+      type: System.String
+    return:
+      type: System.Object
+    content.vb: Public Function GetOption(name As String) As Object
+  overload: CilTools.Visualization.VisualizationOptions.GetOption*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Visualization.VisualizationOptions.SetOption(System.String,System.Object)
+  commentId: M:CilTools.Visualization.VisualizationOptions.SetOption(System.String,System.Object)
+  id: SetOption(System.String,System.Object)
+  parent: CilTools.Visualization.VisualizationOptions
+  langs:
+  - csharp
+  - vb
+  name: SetOption(String, Object)
+  nameWithType: VisualizationOptions.SetOption(String, Object)
+  fullName: CilTools.Visualization.VisualizationOptions.SetOption(System.String, System.Object)
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nSets the value for the specified option\n"
+  syntax:
+    content: public void SetOption(string name, object val)
+    parameters:
+    - id: name
+      type: System.String
+    - id: val
+      type: System.Object
+    content.vb: Public Sub SetOption(name As String, val As Object)
+  overload: CilTools.Visualization.VisualizationOptions.SetOption*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  commentId: P:CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  id: HighlightingStartOffset
+  parent: CilTools.Visualization.VisualizationOptions
+  langs:
+  - csharp
+  - vb
+  name: HighlightingStartOffset
+  nameWithType: VisualizationOptions.HighlightingStartOffset
+  fullName: CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  type: Property
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nGets or sets the offset of the first highlighted instruction, in bytes\n"
+  remarks: "\nIf the instruction highlighting is not used, should be set to -1. This property is only honoured by HTML \nvisualizer.The default value is -1.\n"
+  syntax:
+    content: public int HighlightingStartOffset { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property HighlightingStartOffset As Integer
+  overload: CilTools.Visualization.VisualizationOptions.HighlightingStartOffset*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  commentId: P:CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  id: HighlightingEndOffset
+  parent: CilTools.Visualization.VisualizationOptions
+  langs:
+  - csharp
+  - vb
+  name: HighlightingEndOffset
+  nameWithType: VisualizationOptions.HighlightingEndOffset
+  fullName: CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  type: Property
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nGets or sets the offset of the last highlighted instruction, in bytes\n"
+  remarks: "\nIf the instruction highlighting is not used, should be set to -1. This property is only honoured by HTML \nvisualizer.The default value is -1.\n"
+  syntax:
+    content: public int HighlightingEndOffset { get; set; }
+    parameters: []
+    return:
+      type: System.Int32
+    content.vb: Public Property HighlightingEndOffset As Integer
+  overload: CilTools.Visualization.VisualizationOptions.HighlightingEndOffset*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  commentId: P:CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  id: EnableInstructionNavigation
+  parent: CilTools.Visualization.VisualizationOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableInstructionNavigation
+  nameWithType: VisualizationOptions.EnableInstructionNavigation
+  fullName: CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  type: Property
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nGets or sets the boolean value indicating whether the instruction navigation hyperlinks are enabled\n"
+  remarks: "\nWhen this property is set to <code>true</code>, labels in jump instructions are rendered as hyperlinks to \nthe target instruction. This property is only honoured by HTML visualizer. The default value is <code>false</code>.\n"
+  syntax:
+    content: public bool EnableInstructionNavigation { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableInstructionNavigation As Boolean
+  overload: CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+- uid: CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  commentId: P:CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  id: EnableSyntaxHighlighting
+  parent: CilTools.Visualization.VisualizationOptions
+  langs:
+  - csharp
+  - vb
+  name: EnableSyntaxHighlighting
+  nameWithType: VisualizationOptions.EnableSyntaxHighlighting
+  fullName: CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  type: Property
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nGets or sets the boolean value indicating whether the syntax highlighting is enabled\n"
+  remarks: "\nThe default value is <code>true</code>. This property is honoured by HTML and ConsoleText visualizers.\n"
+  syntax:
+    content: public bool EnableSyntaxHighlighting { get; set; }
+    parameters: []
+    return:
+      type: System.Boolean
+    content.vb: Public Property EnableSyntaxHighlighting As Boolean
+  overload: CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting*
+  modifiers.csharp:
+  - public
+  - get
+  - set
+  modifiers.vb:
+  - Public
+references:
+- uid: CilTools.Visualization
+  commentId: N:CilTools.Visualization
+  isExternal: true
+  name: CilTools.Visualization
+  nameWithType: CilTools.Visualization
+  fullName: CilTools.Visualization
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Visualization.VisualizationOptions.#ctor*
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.#ctor
+  isExternal: true
+  name: VisualizationOptions
+  nameWithType: VisualizationOptions.VisualizationOptions
+  fullName: CilTools.Visualization.VisualizationOptions.VisualizationOptions
+- uid: CilTools.Visualization.VisualizationOptions.GetOption*
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.GetOption
+  isExternal: true
+  name: GetOption
+  nameWithType: VisualizationOptions.GetOption
+  fullName: CilTools.Visualization.VisualizationOptions.GetOption
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.Visualization.VisualizationOptions.SetOption*
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.SetOption
+  isExternal: true
+  name: SetOption
+  nameWithType: VisualizationOptions.SetOption
+  fullName: CilTools.Visualization.VisualizationOptions.SetOption
+- uid: CilTools.Visualization.VisualizationOptions.HighlightingStartOffset*
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  isExternal: true
+  name: HighlightingStartOffset
+  nameWithType: VisualizationOptions.HighlightingStartOffset
+  fullName: CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.Visualization.VisualizationOptions.HighlightingEndOffset*
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  isExternal: true
+  name: HighlightingEndOffset
+  nameWithType: VisualizationOptions.HighlightingEndOffset
+  fullName: CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+- uid: CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation*
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  isExternal: true
+  name: EnableInstructionNavigation
+  nameWithType: VisualizationOptions.EnableInstructionNavigation
+  fullName: CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+- uid: System.Boolean
+  commentId: T:System.Boolean
+  parent: System
+  isExternal: true
+  name: Boolean
+  nameWithType: Boolean
+  fullName: System.Boolean
+- uid: CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting*
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  isExternal: true
+  name: EnableSyntaxHighlighting
+  nameWithType: VisualizationOptions.EnableSyntaxHighlighting
+  fullName: CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting

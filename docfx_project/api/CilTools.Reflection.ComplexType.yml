@@ -9,6 +9,7 @@ items:
   - CilTools.Reflection.ComplexType.Assembly
   - CilTools.Reflection.ComplexType.AssemblyQualifiedName
   - CilTools.Reflection.ComplexType.BaseType
+  - CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty(System.Int32)
   - CilTools.Reflection.ComplexType.DeclaringType
   - CilTools.Reflection.ComplexType.FullName
   - CilTools.Reflection.ComplexType.GetArrayRank
@@ -70,11 +71,13 @@ items:
   namespace: CilTools.Reflection
   summary: "\nRepresents a complex type. Complex type is a type contructed on demand based on another type defined in some assembly, \nfor example, an array or pointer type.\n"
   syntax:
-    content: 'public class ComplexType : Type, ICustomAttributeProvider, _MemberInfo, _Type, IReflect'
+    content: 'public class ComplexType : Type, ICustomAttributeProvider, _MemberInfo, _Type, IReflect, IReflectionInfo'
     content.vb: >-
       Public Class ComplexType
+
           Inherits Type
-          Implements ICustomAttributeProvider, _MemberInfo, _Type, IReflect
+
+          Implements ICustomAttributeProvider, _MemberInfo, _Type, IReflect, IReflectionInfo
   inheritance:
   - System.Object
   - System.Reflection.MemberInfo
@@ -84,6 +87,7 @@ items:
   - System.Runtime.InteropServices._MemberInfo
   - System.Runtime.InteropServices._Type
   - System.Reflection.IReflect
+  - CilTools.Reflection.IReflectionInfo
   inheritedMembers:
   - System.Type.FilterAttribute
   - System.Type.FilterName
@@ -1452,6 +1456,37 @@ items:
   modifiers.vb:
   - Public
   - Overrides
+- uid: CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty(System.Int32)
+  commentId: M:CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty(System.Int32)
+  id: CilTools#Reflection#IReflectionInfo#GetReflectionProperty(System.Int32)
+  isEii: true
+  parent: CilTools.Reflection.ComplexType
+  langs:
+  - csharp
+  - vb
+  name: IReflectionInfo.GetReflectionProperty(Int32)
+  nameWithType: ComplexType.IReflectionInfo.GetReflectionProperty(Int32)
+  fullName: CilTools.Reflection.ComplexType.CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)
+  type: Method
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  syntax:
+    content: object IReflectionInfo.GetReflectionProperty(int id)
+    parameters:
+    - id: id
+      type: System.Int32
+    return:
+      type: System.Object
+    content.vb: Function CilTools.Reflection.IReflectionInfo.GetReflectionProperty(id As Integer) As Object Implements IReflectionInfo.GetReflectionProperty
+  overload: CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty*
+  implements:
+  - CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)
+  nameWithType.vb: ComplexType.CilTools.Reflection.IReflectionInfo.GetReflectionProperty(Int32)
+  name.vb: CilTools.Reflection.IReflectionInfo.GetReflectionProperty(Int32)
 - uid: CilTools.Reflection.ComplexType.ToString
   commentId: M:CilTools.Reflection.ComplexType.ToString
   id: ToString
@@ -1967,6 +2002,13 @@ references:
   name: IReflect
   nameWithType: IReflect
   fullName: System.Reflection.IReflect
+- uid: CilTools.Reflection.IReflectionInfo
+  commentId: T:CilTools.Reflection.IReflectionInfo
+  parent: CilTools.Reflection
+  isExternal: true
+  name: IReflectionInfo
+  nameWithType: IReflectionInfo
+  fullName: CilTools.Reflection.IReflectionInfo
 - uid: System.Type.FilterAttribute
   commentId: F:System.Type.FilterAttribute
   parent: System.Type
@@ -10421,6 +10463,55 @@ references:
   name: MakePointerType
   nameWithType: ComplexType.MakePointerType
   fullName: CilTools.Reflection.ComplexType.MakePointerType
+- uid: CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty*
+  commentId: Overload:CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty
+  isExternal: true
+  name: IReflectionInfo.GetReflectionProperty
+  nameWithType: ComplexType.IReflectionInfo.GetReflectionProperty
+  fullName: CilTools.Reflection.ComplexType.CilTools.Reflection.IReflectionInfo.GetReflectionProperty
+  nameWithType.vb: ComplexType.CilTools.Reflection.IReflectionInfo.GetReflectionProperty
+  name.vb: CilTools.Reflection.IReflectionInfo.GetReflectionProperty
+- uid: CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)
+  commentId: M:CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)
+  parent: CilTools.Reflection.IReflectionInfo
+  isExternal: true
+  name: GetReflectionProperty(Int32)
+  nameWithType: IReflectionInfo.GetReflectionProperty(Int32)
+  fullName: CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)
+  spec.csharp:
+  - uid: CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)
+    name: GetReflectionProperty
+    nameWithType: IReflectionInfo.GetReflectionProperty
+    fullName: CilTools.Reflection.IReflectionInfo.GetReflectionProperty
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)
+    name: GetReflectionProperty
+    nameWithType: IReflectionInfo.GetReflectionProperty
+    fullName: CilTools.Reflection.IReflectionInfo.GetReflectionProperty
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Int32
+    name: Int32
+    nameWithType: Int32
+    fullName: System.Int32
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
 - uid: System.Type.ToString
   commentId: M:System.Type.ToString
   parent: System.Type

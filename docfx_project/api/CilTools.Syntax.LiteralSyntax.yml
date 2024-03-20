@@ -27,6 +27,7 @@ items:
     content: 'public class LiteralSyntax : SyntaxNode'
     content.vb: >-
       Public Class LiteralSyntax
+
           Inherits SyntaxNode
   inheritance:
   - System.Object

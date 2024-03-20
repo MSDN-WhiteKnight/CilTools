@@ -1,0 +1,361 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class SyntaxNodeCollection
+   | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class SyntaxNodeCollection
+   | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection">
+  
+  
+  <h1 id="CilTools_SourceCode_Common_SyntaxNodeCollection" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection" class="text-break">Class SyntaxNodeCollection
+  </h1>
+  <div class="markdown level0 summary"><p>Represents an ordered collection of syntax nodes</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a></div>
+    <div class="level2"><span class="xref">SyntaxNodeCollection</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode__lead">SyntaxNode._lead</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode__trail">SyntaxNode._trail</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode__parent">SyntaxNode._parent</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EmptyArray">SyntaxNode.EmptyArray</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_ToString">SyntaxNode.ToString()</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetChildNodes">SyntaxNode.GetChildNodes()</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetTypeDefSyntax_System_Type_">SyntaxNode.GetTypeDefSyntax(Type)</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetTypeDefSyntax_System_Type_System_Boolean_CilTools_Syntax_DisassemblerParams_">SyntaxNode.GetTypeDefSyntax(Type, Boolean, DisassemblerParams)</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_GetAdditionalInfo_System_String_">SyntaxNode.GetAdditionalInfo(String)</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_SetAdditionalInfo_System_String_System_Object_">SyntaxNode.SetAdditionalInfo(String, Object)</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_LeadingWhitespace">SyntaxNode.LeadingWhitespace</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_TrailingWhitespace">SyntaxNode.TrailingWhitespace</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_Parent">SyntaxNode.Parent</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.SourceCode.Common.html">CilTools.SourceCode.Common</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.SourceCode.dll</h6>
+  <h5 id="CilTools_SourceCode_Common_SyntaxNodeCollection_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class SyntaxNodeCollection : SyntaxNode</code></pre>
+  </div>
+  <h3 id="properties">Properties
+  </h3>
+  
+  
+  <a id="CilTools_SourceCode_Common_SyntaxNodeCollection_Count_" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.Count*"></a>
+  <h4 id="CilTools_SourceCode_Common_SyntaxNodeCollection_Count" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.Count">Count</h4>
+  <div class="markdown level1 summary"><p>Gets the number of nodes in this collection</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public int Count { get; }</code></pre>
+  </div>
+  <h5 class="propertyValue">Property Value</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="CilTools_SourceCode_Common_SyntaxNodeCollection_EnumerateChildNodes_" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes*"></a>
+  <h4 id="CilTools_SourceCode_Common_SyntaxNodeCollection_EnumerateChildNodes" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes">EnumerateChildNodes()</h4>
+  <div class="markdown level1 summary"><p>Enumerates child nodes of this node. For the leaf node, returns an empty collection.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override IEnumerable&lt;SyntaxNode&gt; EnumerateChildNodes()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Collections.Generic.IEnumerable</span>&lt;<a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>&gt;</td>
+        <td><p>The collection of child syntax nodes</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_EnumerateChildNodes">SyntaxNode.EnumerateChildNodes()</a></div>
+  
+  
+  <a id="CilTools_SourceCode_Common_SyntaxNodeCollection_FromArray_" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray*"></a>
+  <h4 id="CilTools_SourceCode_Common_SyntaxNodeCollection_FromArray_CilTools_Syntax_SyntaxNode___" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode[])">FromArray(SyntaxNode[])</h4>
+  <div class="markdown level1 summary"><p>Creates a new <code>SyntaxNodeCollection</code> using contents of the specified array</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static SyntaxNodeCollection FromArray(SyntaxNode[] nodes)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a>[]</td>
+        <td><span class="parametername">nodes</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.SourceCode.Common.SyntaxNodeCollection.html">SyntaxNodeCollection</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_SourceCode_Common_SyntaxNodeCollection_GetNode_" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode*"></a>
+  <h4 id="CilTools_SourceCode_Common_SyntaxNodeCollection_GetNode_System_Int32_" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode(System.Int32)">GetNode(Int32)</h4>
+  <div class="markdown level1 summary"><p>Gets the syntax node at the specified index in this collection</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public SyntaxNode GetNode(int index)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">index</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_SourceCode_Common_SyntaxNodeCollection_ToText_" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.ToText*"></a>
+  <h4 id="CilTools_SourceCode_Common_SyntaxNodeCollection_ToText_System_IO_TextWriter_" data-uid="CilTools.SourceCode.Common.SyntaxNodeCollection.ToText(System.IO.TextWriter)">ToText(TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Writes text representation of this node into the specified TextWriter</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void ToText(TextWriter target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="CilTools.Syntax.SyntaxNode.html#CilTools_Syntax_SyntaxNode_ToText_System_IO_TextWriter_">SyntaxNode.ToText(TextWriter)</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

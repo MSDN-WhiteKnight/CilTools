@@ -1,0 +1,1268 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Visualization.HtmlVisualizer
+  commentId: T:CilTools.Visualization.HtmlVisualizer
+  id: HtmlVisualizer
+  parent: CilTools.Visualization
+  children:
+  - CilTools.Visualization.HtmlVisualizer.#ctor
+  - CilTools.Visualization.HtmlVisualizer.AddUrlProvider(CilTools.Visualization.UrlProviderBase)
+  - CilTools.Visualization.HtmlVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  - CilTools.Visualization.HtmlVisualizer.GetVisualStyles
+  - CilTools.Visualization.HtmlVisualizer.GetVisualStyles(System.IO.TextWriter)
+  - CilTools.Visualization.HtmlVisualizer.RemoveAllProviders
+  - CilTools.Visualization.HtmlVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  - CilTools.Visualization.HtmlVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  - CilTools.Visualization.HtmlVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  langs:
+  - csharp
+  - vb
+  name: HtmlVisualizer
+  nameWithType: HtmlVisualizer
+  fullName: CilTools.Visualization.HtmlVisualizer
+  type: Class
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nVisualizes syntax nodes as HTML\n"
+  syntax:
+    content: 'public class HtmlVisualizer : SyntaxVisualizer'
+    content.vb: >-
+      Public Class HtmlVisualizer
+          Inherits SyntaxVisualizer
+  inheritance:
+  - System.Object
+  - CilTools.Visualization.SyntaxVisualizer
+  inheritedMembers:
+  - CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  - CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions)
+  - CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode})
+  - CilTools.Visualization.SyntaxVisualizer.Create(CilTools.Visualization.OutputFormat)
+  - System.Object.ToString
+  - System.Object.Equals(System.Object)
+  - System.Object.Equals(System.Object,System.Object)
+  - System.Object.ReferenceEquals(System.Object,System.Object)
+  - System.Object.GetHashCode
+  - System.Object.GetType
+  - System.Object.MemberwiseClone
+  modifiers.csharp:
+  - public
+  - class
+  modifiers.vb:
+  - Public
+  - Class
+- uid: CilTools.Visualization.HtmlVisualizer.AddUrlProvider(CilTools.Visualization.UrlProviderBase)
+  commentId: M:CilTools.Visualization.HtmlVisualizer.AddUrlProvider(CilTools.Visualization.UrlProviderBase)
+  id: AddUrlProvider(CilTools.Visualization.UrlProviderBase)
+  parent: CilTools.Visualization.HtmlVisualizer
+  langs:
+  - csharp
+  - vb
+  name: AddUrlProvider(UrlProviderBase)
+  nameWithType: HtmlVisualizer.AddUrlProvider(UrlProviderBase)
+  fullName: CilTools.Visualization.HtmlVisualizer.AddUrlProvider(CilTools.Visualization.UrlProviderBase)
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nAdds the specified custom URL provider into the list of providers used by this generator. URL providers \ndefine logic how URLs for navigation hyperlinks are rendered.\n"
+  syntax:
+    content: public void AddUrlProvider(UrlProviderBase provider)
+    parameters:
+    - id: provider
+      type: CilTools.Visualization.UrlProviderBase
+    content.vb: Public Sub AddUrlProvider(provider As UrlProviderBase)
+  overload: CilTools.Visualization.HtmlVisualizer.AddUrlProvider*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Visualization.HtmlVisualizer.RemoveAllProviders
+  commentId: M:CilTools.Visualization.HtmlVisualizer.RemoveAllProviders
+  id: RemoveAllProviders
+  parent: CilTools.Visualization.HtmlVisualizer
+  langs:
+  - csharp
+  - vb
+  name: RemoveAllProviders()
+  nameWithType: HtmlVisualizer.RemoveAllProviders()
+  fullName: CilTools.Visualization.HtmlVisualizer.RemoveAllProviders()
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nRemoves all custom URL providers from this generator\n"
+  syntax:
+    content: public void RemoveAllProviders()
+    content.vb: Public Sub RemoveAllProviders
+  overload: CilTools.Visualization.HtmlVisualizer.RemoveAllProviders*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.Visualization.HtmlVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.HtmlVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  id: RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  parent: CilTools.Visualization.HtmlVisualizer
+  langs:
+  - csharp
+  - vb
+  name: RenderNode(SyntaxNode, VisualizationOptions, TextWriter)
+  nameWithType: HtmlVisualizer.RenderNode(SyntaxNode, VisualizationOptions, TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.RenderNode(CilTools.Syntax.SyntaxNode, CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nVisualizes the specified <xref href=\"CilTools.Syntax.SyntaxNode\" data-throw-if-not-resolved=\"false\"></xref> and writes results into the <code>TextWriter</code>\n"
+  syntax:
+    content: public override void RenderNode(SyntaxNode node, VisualizationOptions options, TextWriter target)
+    parameters:
+    - id: node
+      type: CilTools.Syntax.SyntaxNode
+    - id: options
+      type: CilTools.Visualization.VisualizationOptions
+    - id: target
+      type: System.IO.TextWriter
+    content.vb: Public Overrides Sub RenderNode(node As SyntaxNode, options As VisualizationOptions, target As TextWriter)
+  overridden: CilTools.Visualization.SyntaxVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  overload: CilTools.Visualization.HtmlVisualizer.RenderNode*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Visualization.HtmlVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.HtmlVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  id: RenderParagraph(System.String,System.IO.TextWriter)
+  parent: CilTools.Visualization.HtmlVisualizer
+  langs:
+  - csharp
+  - vb
+  name: RenderParagraph(String, TextWriter)
+  nameWithType: HtmlVisualizer.RenderParagraph(String, TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.RenderParagraph(System.String, System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nVisualizes a paragraph with the specified text and writes results into the <code>TextWriter</code>\n"
+  syntax:
+    content: public override void RenderParagraph(string content, TextWriter target)
+    parameters:
+    - id: content
+      type: System.String
+    - id: target
+      type: System.IO.TextWriter
+    content.vb: Public Overrides Sub RenderParagraph(content As String, target As TextWriter)
+  overridden: CilTools.Visualization.SyntaxVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  overload: CilTools.Visualization.HtmlVisualizer.RenderParagraph*
+  modifiers.csharp:
+  - public
+  - override
+  modifiers.vb:
+  - Public
+  - Overrides
+- uid: CilTools.Visualization.HtmlVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.HtmlVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  id: StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  parent: CilTools.Visualization.HtmlVisualizer
+  langs:
+  - csharp
+  - vb
+  name: StartBlock(VisualizationOptions, TextWriter)
+  nameWithType: HtmlVisualizer.StartBlock(VisualizationOptions, TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nWrites content that marks the beginning of the visualized code block to the <code>TextWriter</code>\n"
+  syntax:
+    content: protected override void StartBlock(VisualizationOptions options, TextWriter target)
+    parameters:
+    - id: options
+      type: CilTools.Visualization.VisualizationOptions
+    - id: target
+      type: System.IO.TextWriter
+    content.vb: Protected Overrides Sub StartBlock(options As VisualizationOptions, target As TextWriter)
+  overridden: CilTools.Visualization.SyntaxVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  overload: CilTools.Visualization.HtmlVisualizer.StartBlock*
+  modifiers.csharp:
+  - protected
+  - override
+  modifiers.vb:
+  - Protected
+  - Overrides
+- uid: CilTools.Visualization.HtmlVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.HtmlVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  id: EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  parent: CilTools.Visualization.HtmlVisualizer
+  langs:
+  - csharp
+  - vb
+  name: EndBlock(VisualizationOptions, TextWriter)
+  nameWithType: HtmlVisualizer.EndBlock(VisualizationOptions, TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nWrites content that marks the end of the visualized code block to the <code>TextWriter</code>\n"
+  syntax:
+    content: protected override void EndBlock(VisualizationOptions options, TextWriter target)
+    parameters:
+    - id: options
+      type: CilTools.Visualization.VisualizationOptions
+    - id: target
+      type: System.IO.TextWriter
+    content.vb: Protected Overrides Sub EndBlock(options As VisualizationOptions, target As TextWriter)
+  overridden: CilTools.Visualization.SyntaxVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  overload: CilTools.Visualization.HtmlVisualizer.EndBlock*
+  modifiers.csharp:
+  - protected
+  - override
+  modifiers.vb:
+  - Protected
+  - Overrides
+- uid: CilTools.Visualization.HtmlVisualizer.GetVisualStyles(System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.HtmlVisualizer.GetVisualStyles(System.IO.TextWriter)
+  id: GetVisualStyles(System.IO.TextWriter)
+  parent: CilTools.Visualization.HtmlVisualizer
+  langs:
+  - csharp
+  - vb
+  name: GetVisualStyles(TextWriter)
+  nameWithType: HtmlVisualizer.GetVisualStyles(TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.GetVisualStyles(System.IO.TextWriter)
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nWrites CSS code containing syntax highlighting styles into the specified TextWriter. \nThese styles are used in markup generated by <code>RenderNodes</code> method.\n"
+  syntax:
+    content: public static void GetVisualStyles(TextWriter target)
+    parameters:
+    - id: target
+      type: System.IO.TextWriter
+      description: Text writer where to output the resulting CSS
+    content.vb: Public Shared Sub GetVisualStyles(target As TextWriter)
+  overload: CilTools.Visualization.HtmlVisualizer.GetVisualStyles*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Visualization.HtmlVisualizer.GetVisualStyles
+  commentId: M:CilTools.Visualization.HtmlVisualizer.GetVisualStyles
+  id: GetVisualStyles
+  parent: CilTools.Visualization.HtmlVisualizer
+  langs:
+  - csharp
+  - vb
+  name: GetVisualStyles()
+  nameWithType: HtmlVisualizer.GetVisualStyles()
+  fullName: CilTools.Visualization.HtmlVisualizer.GetVisualStyles()
+  type: Method
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nGets CSS code containing syntax highlighting styles. These styles are used in markup generated by \n<code>RenderNodes</code> method.\n"
+  syntax:
+    content: public static string GetVisualStyles()
+    return:
+      type: System.String
+    content.vb: Public Shared Function GetVisualStyles As String
+  overload: CilTools.Visualization.HtmlVisualizer.GetVisualStyles*
+  modifiers.csharp:
+  - public
+  - static
+  modifiers.vb:
+  - Public
+  - Shared
+- uid: CilTools.Visualization.HtmlVisualizer.#ctor
+  commentId: M:CilTools.Visualization.HtmlVisualizer.#ctor
+  id: '#ctor'
+  parent: CilTools.Visualization.HtmlVisualizer
+  langs:
+  - csharp
+  - vb
+  name: HtmlVisualizer()
+  nameWithType: HtmlVisualizer.HtmlVisualizer()
+  fullName: CilTools.Visualization.HtmlVisualizer.HtmlVisualizer()
+  type: Constructor
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  syntax:
+    content: public HtmlVisualizer()
+    content.vb: Public Sub New
+  overload: CilTools.Visualization.HtmlVisualizer.#ctor*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+references:
+- uid: CilTools.Visualization
+  commentId: N:CilTools.Visualization
+  isExternal: true
+  name: CilTools.Visualization
+  nameWithType: CilTools.Visualization
+  fullName: CilTools.Visualization
+- uid: System.Object
+  commentId: T:System.Object
+  parent: System
+  isExternal: true
+  name: Object
+  nameWithType: Object
+  fullName: System.Object
+- uid: CilTools.Visualization.SyntaxVisualizer
+  commentId: T:CilTools.Visualization.SyntaxVisualizer
+  parent: CilTools.Visualization
+  isExternal: true
+  name: SyntaxVisualizer
+  nameWithType: SyntaxVisualizer
+  fullName: CilTools.Visualization.SyntaxVisualizer
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  parent: CilTools.Visualization.SyntaxVisualizer
+  isExternal: true
+  name: RenderNodes(IEnumerable<SyntaxNode>, VisualizationOptions, TextWriter)
+  nameWithType: SyntaxVisualizer.RenderNodes(IEnumerable<SyntaxNode>, VisualizationOptions, TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable<CilTools.Syntax.SyntaxNode>, CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  nameWithType.vb: SyntaxVisualizer.RenderNodes(IEnumerable(Of SyntaxNode), VisualizationOptions, TextWriter)
+  fullName.vb: CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable(Of CilTools.Syntax.SyntaxNode), CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  name.vb: RenderNodes(IEnumerable(Of SyntaxNode), VisualizationOptions, TextWriter)
+  spec.csharp:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+    name: RenderNodes
+    nameWithType: SyntaxVisualizer.RenderNodes
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderNodes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+    name: RenderNodes
+    nameWithType: SyntaxVisualizer.RenderNodes
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderNodes
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions)
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions)
+  parent: CilTools.Visualization.SyntaxVisualizer
+  isExternal: true
+  name: RenderToString(IEnumerable<SyntaxNode>, VisualizationOptions)
+  nameWithType: SyntaxVisualizer.RenderToString(IEnumerable<SyntaxNode>, VisualizationOptions)
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable<CilTools.Syntax.SyntaxNode>, CilTools.Visualization.VisualizationOptions)
+  nameWithType.vb: SyntaxVisualizer.RenderToString(IEnumerable(Of SyntaxNode), VisualizationOptions)
+  fullName.vb: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable(Of CilTools.Syntax.SyntaxNode), CilTools.Visualization.VisualizationOptions)
+  name.vb: RenderToString(IEnumerable(Of SyntaxNode), VisualizationOptions)
+  spec.csharp:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions)
+    name: RenderToString
+    nameWithType: SyntaxVisualizer.RenderToString
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions)
+    name: RenderToString
+    nameWithType: SyntaxVisualizer.RenderToString
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode})
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode})
+  parent: CilTools.Visualization.SyntaxVisualizer
+  isExternal: true
+  name: RenderToString(IEnumerable<SyntaxNode>)
+  nameWithType: SyntaxVisualizer.RenderToString(IEnumerable<SyntaxNode>)
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable<CilTools.Syntax.SyntaxNode>)
+  nameWithType.vb: SyntaxVisualizer.RenderToString(IEnumerable(Of SyntaxNode))
+  fullName.vb: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable(Of CilTools.Syntax.SyntaxNode))
+  name.vb: RenderToString(IEnumerable(Of SyntaxNode))
+  spec.csharp:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode})
+    name: RenderToString
+    nameWithType: SyntaxVisualizer.RenderToString
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: <
+    nameWithType: <
+    fullName: <
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: '>'
+    nameWithType: '>'
+    fullName: '>'
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode})
+    name: RenderToString
+    nameWithType: SyntaxVisualizer.RenderToString
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Collections.Generic.IEnumerable`1
+    name: IEnumerable
+    nameWithType: IEnumerable
+    fullName: System.Collections.Generic.IEnumerable
+    isExternal: true
+  - name: '(Of '
+    nameWithType: '(Of '
+    fullName: '(Of '
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Visualization.SyntaxVisualizer.Create(CilTools.Visualization.OutputFormat)
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.Create(CilTools.Visualization.OutputFormat)
+  parent: CilTools.Visualization.SyntaxVisualizer
+  isExternal: true
+  name: Create(OutputFormat)
+  nameWithType: SyntaxVisualizer.Create(OutputFormat)
+  fullName: CilTools.Visualization.SyntaxVisualizer.Create(CilTools.Visualization.OutputFormat)
+  spec.csharp:
+  - uid: CilTools.Visualization.SyntaxVisualizer.Create(CilTools.Visualization.OutputFormat)
+    name: Create
+    nameWithType: SyntaxVisualizer.Create
+    fullName: CilTools.Visualization.SyntaxVisualizer.Create
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Visualization.OutputFormat
+    name: OutputFormat
+    nameWithType: OutputFormat
+    fullName: CilTools.Visualization.OutputFormat
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Visualization.SyntaxVisualizer.Create(CilTools.Visualization.OutputFormat)
+    name: Create
+    nameWithType: SyntaxVisualizer.Create
+    fullName: CilTools.Visualization.SyntaxVisualizer.Create
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Visualization.OutputFormat
+    name: OutputFormat
+    nameWithType: OutputFormat
+    fullName: CilTools.Visualization.OutputFormat
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ToString
+  commentId: M:System.Object.ToString
+  parent: System.Object
+  isExternal: true
+  name: ToString()
+  nameWithType: Object.ToString()
+  fullName: System.Object.ToString()
+  spec.csharp:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ToString
+    name: ToString
+    nameWithType: Object.ToString
+    fullName: System.Object.ToString
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object)
+  commentId: M:System.Object.Equals(System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object)
+  nameWithType: Object.Equals(Object)
+  fullName: System.Object.Equals(System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.Equals(System.Object,System.Object)
+  commentId: M:System.Object.Equals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: Equals(Object, Object)
+  nameWithType: Object.Equals(Object, Object)
+  fullName: System.Object.Equals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.Equals(System.Object,System.Object)
+    name: Equals
+    nameWithType: Object.Equals
+    fullName: System.Object.Equals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.ReferenceEquals(System.Object,System.Object)
+  commentId: M:System.Object.ReferenceEquals(System.Object,System.Object)
+  parent: System.Object
+  isExternal: true
+  name: ReferenceEquals(Object, Object)
+  nameWithType: Object.ReferenceEquals(Object, Object)
+  fullName: System.Object.ReferenceEquals(System.Object, System.Object)
+  spec.csharp:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.ReferenceEquals(System.Object,System.Object)
+    name: ReferenceEquals
+    nameWithType: Object.ReferenceEquals
+    fullName: System.Object.ReferenceEquals
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.Object
+    name: Object
+    nameWithType: Object
+    fullName: System.Object
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetHashCode
+  commentId: M:System.Object.GetHashCode
+  parent: System.Object
+  isExternal: true
+  name: GetHashCode()
+  nameWithType: Object.GetHashCode()
+  fullName: System.Object.GetHashCode()
+  spec.csharp:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetHashCode
+    name: GetHashCode
+    nameWithType: Object.GetHashCode
+    fullName: System.Object.GetHashCode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.GetType
+  commentId: M:System.Object.GetType
+  parent: System.Object
+  isExternal: true
+  name: GetType()
+  nameWithType: Object.GetType()
+  fullName: System.Object.GetType()
+  spec.csharp:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.GetType
+    name: GetType
+    nameWithType: Object.GetType
+    fullName: System.Object.GetType
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System.Object.MemberwiseClone
+  commentId: M:System.Object.MemberwiseClone
+  parent: System.Object
+  isExternal: true
+  name: MemberwiseClone()
+  nameWithType: Object.MemberwiseClone()
+  fullName: System.Object.MemberwiseClone()
+  spec.csharp:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: System.Object.MemberwiseClone
+    name: MemberwiseClone
+    nameWithType: Object.MemberwiseClone
+    fullName: System.Object.MemberwiseClone
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: System
+  commentId: N:System
+  isExternal: true
+  name: System
+  nameWithType: System
+  fullName: System
+- uid: CilTools.Visualization.HtmlVisualizer.AddUrlProvider*
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.AddUrlProvider
+  isExternal: true
+  name: AddUrlProvider
+  nameWithType: HtmlVisualizer.AddUrlProvider
+  fullName: CilTools.Visualization.HtmlVisualizer.AddUrlProvider
+- uid: CilTools.Visualization.UrlProviderBase
+  commentId: T:CilTools.Visualization.UrlProviderBase
+  parent: CilTools.Visualization
+  isExternal: true
+  name: UrlProviderBase
+  nameWithType: UrlProviderBase
+  fullName: CilTools.Visualization.UrlProviderBase
+- uid: CilTools.Visualization.HtmlVisualizer.RemoveAllProviders*
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.RemoveAllProviders
+  isExternal: true
+  name: RemoveAllProviders
+  nameWithType: HtmlVisualizer.RemoveAllProviders
+  fullName: CilTools.Visualization.HtmlVisualizer.RemoveAllProviders
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  parent: CilTools.Visualization.SyntaxVisualizer
+  isExternal: true
+  name: RenderNode(SyntaxNode, VisualizationOptions, TextWriter)
+  nameWithType: SyntaxVisualizer.RenderNode(SyntaxNode, VisualizationOptions, TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderNode(CilTools.Syntax.SyntaxNode, CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  spec.csharp:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+    name: RenderNode
+    nameWithType: SyntaxVisualizer.RenderNode
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderNode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+    name: RenderNode
+    nameWithType: SyntaxVisualizer.RenderNode
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderNode
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Visualization.HtmlVisualizer.RenderNode*
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.RenderNode
+  isExternal: true
+  name: RenderNode
+  nameWithType: HtmlVisualizer.RenderNode
+  fullName: CilTools.Visualization.HtmlVisualizer.RenderNode
+- uid: CilTools.Syntax.SyntaxNode
+  commentId: T:CilTools.Syntax.SyntaxNode
+  parent: CilTools.Syntax
+  isExternal: true
+  name: SyntaxNode
+  nameWithType: SyntaxNode
+  fullName: CilTools.Syntax.SyntaxNode
+- uid: CilTools.Visualization.VisualizationOptions
+  commentId: T:CilTools.Visualization.VisualizationOptions
+  parent: CilTools.Visualization
+  isExternal: true
+  name: VisualizationOptions
+  nameWithType: VisualizationOptions
+  fullName: CilTools.Visualization.VisualizationOptions
+- uid: System.IO.TextWriter
+  commentId: T:System.IO.TextWriter
+  parent: System.IO
+  isExternal: true
+  name: TextWriter
+  nameWithType: TextWriter
+  fullName: System.IO.TextWriter
+- uid: CilTools.Syntax
+  commentId: N:CilTools.Syntax
+  isExternal: true
+  name: CilTools.Syntax
+  nameWithType: CilTools.Syntax
+  fullName: CilTools.Syntax
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  parent: CilTools.Visualization.SyntaxVisualizer
+  isExternal: true
+  name: RenderParagraph(String, TextWriter)
+  nameWithType: SyntaxVisualizer.RenderParagraph(String, TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderParagraph(System.String, System.IO.TextWriter)
+  spec.csharp:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+    name: RenderParagraph
+    nameWithType: SyntaxVisualizer.RenderParagraph
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderParagraph
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Visualization.SyntaxVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+    name: RenderParagraph
+    nameWithType: SyntaxVisualizer.RenderParagraph
+    fullName: CilTools.Visualization.SyntaxVisualizer.RenderParagraph
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.String
+    name: String
+    nameWithType: String
+    fullName: System.String
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Visualization.HtmlVisualizer.RenderParagraph*
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.RenderParagraph
+  isExternal: true
+  name: RenderParagraph
+  nameWithType: HtmlVisualizer.RenderParagraph
+  fullName: CilTools.Visualization.HtmlVisualizer.RenderParagraph
+- uid: System.String
+  commentId: T:System.String
+  parent: System
+  isExternal: true
+  name: String
+  nameWithType: String
+  fullName: System.String
+- uid: CilTools.Visualization.SyntaxVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  parent: CilTools.Visualization.SyntaxVisualizer
+  isExternal: true
+  name: StartBlock(VisualizationOptions, TextWriter)
+  nameWithType: SyntaxVisualizer.StartBlock(VisualizationOptions, TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  spec.csharp:
+  - uid: CilTools.Visualization.SyntaxVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+    name: StartBlock
+    nameWithType: SyntaxVisualizer.StartBlock
+    fullName: CilTools.Visualization.SyntaxVisualizer.StartBlock
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Visualization.SyntaxVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+    name: StartBlock
+    nameWithType: SyntaxVisualizer.StartBlock
+    fullName: CilTools.Visualization.SyntaxVisualizer.StartBlock
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Visualization.HtmlVisualizer.StartBlock*
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.StartBlock
+  isExternal: true
+  name: StartBlock
+  nameWithType: HtmlVisualizer.StartBlock
+  fullName: CilTools.Visualization.HtmlVisualizer.StartBlock
+- uid: CilTools.Visualization.SyntaxVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  parent: CilTools.Visualization.SyntaxVisualizer
+  isExternal: true
+  name: EndBlock(VisualizationOptions, TextWriter)
+  nameWithType: SyntaxVisualizer.EndBlock(VisualizationOptions, TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  spec.csharp:
+  - uid: CilTools.Visualization.SyntaxVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+    name: EndBlock
+    nameWithType: SyntaxVisualizer.EndBlock
+    fullName: CilTools.Visualization.SyntaxVisualizer.EndBlock
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Visualization.SyntaxVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+    name: EndBlock
+    nameWithType: SyntaxVisualizer.EndBlock
+    fullName: CilTools.Visualization.SyntaxVisualizer.EndBlock
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions
+    nameWithType: VisualizationOptions
+    fullName: CilTools.Visualization.VisualizationOptions
+    isExternal: true
+  - name: ', '
+    nameWithType: ', '
+    fullName: ', '
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.Visualization.HtmlVisualizer.EndBlock*
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.EndBlock
+  isExternal: true
+  name: EndBlock
+  nameWithType: HtmlVisualizer.EndBlock
+  fullName: CilTools.Visualization.HtmlVisualizer.EndBlock
+- uid: CilTools.Visualization.HtmlVisualizer.GetVisualStyles*
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.GetVisualStyles
+  isExternal: true
+  name: GetVisualStyles
+  nameWithType: HtmlVisualizer.GetVisualStyles
+  fullName: CilTools.Visualization.HtmlVisualizer.GetVisualStyles
+- uid: CilTools.Visualization.HtmlVisualizer.#ctor*
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.#ctor
+  isExternal: true
+  name: HtmlVisualizer
+  nameWithType: HtmlVisualizer.HtmlVisualizer
+  fullName: CilTools.Visualization.HtmlVisualizer.HtmlVisualizer

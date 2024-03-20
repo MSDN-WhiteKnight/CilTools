@@ -1,0 +1,61 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Visualization
+  commentId: N:CilTools.Visualization
+  id: CilTools.Visualization
+  children:
+  - CilTools.Visualization.HtmlVisualizer
+  - CilTools.Visualization.OutputFormat
+  - CilTools.Visualization.SyntaxVisualizer
+  - CilTools.Visualization.UrlProviderBase
+  - CilTools.Visualization.VisualizationOptions
+  langs:
+  - csharp
+  - vb
+  name: CilTools.Visualization
+  nameWithType: CilTools.Visualization
+  fullName: CilTools.Visualization
+  type: Namespace
+  assemblies:
+  - CilTools.Visualization
+references:
+- uid: CilTools.Visualization.HtmlVisualizer
+  commentId: T:CilTools.Visualization.HtmlVisualizer
+  isExternal: true
+  name: HtmlVisualizer
+  nameWithType: HtmlVisualizer
+  fullName: CilTools.Visualization.HtmlVisualizer
+- uid: CilTools.Visualization.OutputFormat
+  commentId: T:CilTools.Visualization.OutputFormat
+  parent: CilTools.Visualization
+  isExternal: true
+  name: OutputFormat
+  nameWithType: OutputFormat
+  fullName: CilTools.Visualization.OutputFormat
+- uid: CilTools.Visualization.SyntaxVisualizer
+  commentId: T:CilTools.Visualization.SyntaxVisualizer
+  parent: CilTools.Visualization
+  isExternal: true
+  name: SyntaxVisualizer
+  nameWithType: SyntaxVisualizer
+  fullName: CilTools.Visualization.SyntaxVisualizer
+- uid: CilTools.Visualization.UrlProviderBase
+  commentId: T:CilTools.Visualization.UrlProviderBase
+  parent: CilTools.Visualization
+  isExternal: true
+  name: UrlProviderBase
+  nameWithType: UrlProviderBase
+  fullName: CilTools.Visualization.UrlProviderBase
+- uid: CilTools.Visualization.VisualizationOptions
+  commentId: T:CilTools.Visualization.VisualizationOptions
+  parent: CilTools.Visualization
+  isExternal: true
+  name: VisualizationOptions
+  nameWithType: VisualizationOptions
+  fullName: CilTools.Visualization.VisualizationOptions
+- uid: CilTools.Visualization
+  commentId: N:CilTools.Visualization
+  isExternal: true
+  name: CilTools.Visualization
+  nameWithType: CilTools.Visualization
+  fullName: CilTools.Visualization

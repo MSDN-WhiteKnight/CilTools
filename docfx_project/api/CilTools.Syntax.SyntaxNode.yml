@@ -43,6 +43,7 @@ items:
   - System.Object
   derivedClasses:
   - CilTools.SourceCode.Common.SourceToken
+  - CilTools.SourceCode.Common.SyntaxNodeCollection
   - CilTools.Syntax.BlockSyntax
   - CilTools.Syntax.CommentSyntax
   - CilTools.Syntax.DirectiveSyntax

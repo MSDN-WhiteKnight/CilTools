@@ -595,7 +595,7 @@ used to load a memory image from a process.</p>
   <div class="markdown level1 remarks"><p>When the assembly reader needs to resolve an external assembly, it first looks for it in the
 current runtime directory (where the system assemblies are located). Then it looks into a
 additional resolution directories. If the assembly is not found there,
-the reader calls the <code>AssemblyResolve</code> event handle so you can customize
+the reader calls the <code>AssemblyResolve</code> event handler so you can customize
 how assemblies are resolved. The rules for handling this event are similar with the
 <span class="xref">System.AppDomain.AssemblyResolve</span> event in .NET Framework. See
 <a href="https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads">https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads</a> for more

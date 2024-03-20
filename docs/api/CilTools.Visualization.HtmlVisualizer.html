@@ -1,0 +1,418 @@
+﻿<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html>
+  
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>Class HtmlVisualizer
+   | CIL Tools </title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="title" content="Class HtmlVisualizer
+   | CIL Tools ">
+    <meta name="generator" content="docfx 2.40.12.0">
+    
+    <link rel="shortcut icon" href="../favicon.ico">
+    <link rel="stylesheet" href="../styles/docfx.vendor.css">
+    <link rel="stylesheet" href="../styles/docfx.css">
+    <link rel="stylesheet" href="../styles/main.css">
+    <meta property="docfx:navrel" content="../toc.html">
+    <meta property="docfx:tocrel" content="toc.html">
+    
+    
+    
+  </head>
+  <body data-spy="scroll" data-target="#affix" data-offset="120">
+    <div id="wrapper">
+      <header>
+        
+        <nav id="autocollapse" class="navbar navbar-inverse ng-scope" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              
+              <a class="navbar-brand" href="../index.html">
+                <img id="logo" class="svg" src="../logo.svg" alt="">
+              </a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar">
+              <form class="navbar-form navbar-right" role="search" id="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" id="search-query" placeholder="Search" autocomplete="off">
+                </div>
+              </form>
+            </div>
+          </div>
+        </nav>
+        
+        <div class="subnav navbar navbar-default">
+          <div class="container hide-when-search" id="breadcrumb">
+            <ul class="breadcrumb">
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </header>
+      <div role="main" class="container body-content hide-when-search">
+        
+        <div class="sidenav hide-when-search">
+          <a class="btn toc-toggle collapse" data-toggle="collapse" href="#sidetoggle" aria-expanded="false" aria-controls="sidetoggle">Show / Hide Table of Contents</a>
+          <div class="sidetoggle collapse" id="sidetoggle">
+            <div id="sidetoc"></div>
+          </div>
+        </div>
+        <div class="article row grid-right">
+          <div class="col-md-10">
+            <article class="content wrap" id="_content" data-uid="CilTools.Visualization.HtmlVisualizer">
+  
+  
+  <h1 id="CilTools_Visualization_HtmlVisualizer" data-uid="CilTools.Visualization.HtmlVisualizer" class="text-break">Class HtmlVisualizer
+  </h1>
+  <div class="markdown level0 summary"><p>Visualizes syntax nodes as HTML</p>
+</div>
+  <div class="markdown level0 conceptual"></div>
+  <div class="inheritance">
+    <h5>Inheritance</h5>
+    <div class="level0"><span class="xref">System.Object</span></div>
+    <div class="level1"><a class="xref" href="CilTools.Visualization.SyntaxVisualizer.html">SyntaxVisualizer</a></div>
+    <div class="level2"><span class="xref">HtmlVisualizer</span></div>
+  </div>
+  <div class="inheritedMembers">
+    <h5>Inherited Members</h5>
+    <div>
+      <a class="xref" href="CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderNodes_System_Collections_Generic_IEnumerable_CilTools_Syntax_SyntaxNode__CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_">SyntaxVisualizer.RenderNodes(IEnumerable&lt;SyntaxNode&gt;, VisualizationOptions, TextWriter)</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderToString_System_Collections_Generic_IEnumerable_CilTools_Syntax_SyntaxNode__CilTools_Visualization_VisualizationOptions_">SyntaxVisualizer.RenderToString(IEnumerable&lt;SyntaxNode&gt;, VisualizationOptions)</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderToString_System_Collections_Generic_IEnumerable_CilTools_Syntax_SyntaxNode__">SyntaxVisualizer.RenderToString(IEnumerable&lt;SyntaxNode&gt;)</a>
+    </div>
+    <div>
+      <a class="xref" href="CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_Create_CilTools_Visualization_OutputFormat_">SyntaxVisualizer.Create(OutputFormat)</a>
+    </div>
+    <div>
+      <span class="xref">System.Object.ToString()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.Equals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.ReferenceEquals(System.Object, System.Object)</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetHashCode()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.GetType()</span>
+    </div>
+    <div>
+      <span class="xref">System.Object.MemberwiseClone()</span>
+    </div>
+  </div>
+  <h6><strong>Namespace</strong>: <a class="xref" href="CilTools.Visualization.html">CilTools.Visualization</a></h6>
+  <h6><strong>Assembly</strong>: CilTools.Visualization.dll</h6>
+  <h5 id="CilTools_Visualization_HtmlVisualizer_syntax">Syntax</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public class HtmlVisualizer : SyntaxVisualizer</code></pre>
+  </div>
+  <h3 id="constructors">Constructors
+  </h3>
+  
+  
+  <a id="CilTools_Visualization_HtmlVisualizer__ctor_" data-uid="CilTools.Visualization.HtmlVisualizer.#ctor*"></a>
+  <h4 id="CilTools_Visualization_HtmlVisualizer__ctor" data-uid="CilTools.Visualization.HtmlVisualizer.#ctor">HtmlVisualizer()</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public HtmlVisualizer()</code></pre>
+  </div>
+  <h3 id="methods">Methods
+  </h3>
+  
+  
+  <a id="CilTools_Visualization_HtmlVisualizer_AddUrlProvider_" data-uid="CilTools.Visualization.HtmlVisualizer.AddUrlProvider*"></a>
+  <h4 id="CilTools_Visualization_HtmlVisualizer_AddUrlProvider_CilTools_Visualization_UrlProviderBase_" data-uid="CilTools.Visualization.HtmlVisualizer.AddUrlProvider(CilTools.Visualization.UrlProviderBase)">AddUrlProvider(UrlProviderBase)</h4>
+  <div class="markdown level1 summary"><p>Adds the specified custom URL provider into the list of providers used by this generator. URL providers
+define logic how URLs for navigation hyperlinks are rendered.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void AddUrlProvider(UrlProviderBase provider)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Visualization.UrlProviderBase.html">UrlProviderBase</a></td>
+        <td><span class="parametername">provider</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Visualization_HtmlVisualizer_EndBlock_" data-uid="CilTools.Visualization.HtmlVisualizer.EndBlock*"></a>
+  <h4 id="CilTools_Visualization_HtmlVisualizer_EndBlock_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_" data-uid="CilTools.Visualization.HtmlVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)">EndBlock(VisualizationOptions, TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Writes content that marks the end of the visualized code block to the <code>TextWriter</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void EndBlock(VisualizationOptions options, TextWriter target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Visualization.VisualizationOptions.html">VisualizationOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_EndBlock_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_">SyntaxVisualizer.EndBlock(VisualizationOptions, TextWriter)</a></div>
+  
+  
+  <a id="CilTools_Visualization_HtmlVisualizer_GetVisualStyles_" data-uid="CilTools.Visualization.HtmlVisualizer.GetVisualStyles*"></a>
+  <h4 id="CilTools_Visualization_HtmlVisualizer_GetVisualStyles" data-uid="CilTools.Visualization.HtmlVisualizer.GetVisualStyles">GetVisualStyles()</h4>
+  <div class="markdown level1 summary"><p>Gets CSS code containing syntax highlighting styles. These styles are used in markup generated by
+<code>RenderNodes</code> method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static string GetVisualStyles()</code></pre>
+  </div>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Visualization_HtmlVisualizer_GetVisualStyles_" data-uid="CilTools.Visualization.HtmlVisualizer.GetVisualStyles*"></a>
+  <h4 id="CilTools_Visualization_HtmlVisualizer_GetVisualStyles_System_IO_TextWriter_" data-uid="CilTools.Visualization.HtmlVisualizer.GetVisualStyles(System.IO.TextWriter)">GetVisualStyles(TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Writes CSS code containing syntax highlighting styles into the specified TextWriter.
+These styles are used in markup generated by <code>RenderNodes</code> method.</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public static void GetVisualStyles(TextWriter target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">target</span></td>
+        <td><p>Text writer where to output the resulting CSS</p>
+</td>
+      </tr>
+    </tbody>
+  </table>
+  
+  
+  <a id="CilTools_Visualization_HtmlVisualizer_RemoveAllProviders_" data-uid="CilTools.Visualization.HtmlVisualizer.RemoveAllProviders*"></a>
+  <h4 id="CilTools_Visualization_HtmlVisualizer_RemoveAllProviders" data-uid="CilTools.Visualization.HtmlVisualizer.RemoveAllProviders">RemoveAllProviders()</h4>
+  <div class="markdown level1 summary"><p>Removes all custom URL providers from this generator</p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public void RemoveAllProviders()</code></pre>
+  </div>
+  
+  
+  <a id="CilTools_Visualization_HtmlVisualizer_RenderNode_" data-uid="CilTools.Visualization.HtmlVisualizer.RenderNode*"></a>
+  <h4 id="CilTools_Visualization_HtmlVisualizer_RenderNode_CilTools_Syntax_SyntaxNode_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_" data-uid="CilTools.Visualization.HtmlVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)">RenderNode(SyntaxNode, VisualizationOptions, TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Visualizes the specified <a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a> and writes results into the <code>TextWriter</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void RenderNode(SyntaxNode node, VisualizationOptions options, TextWriter target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Syntax.SyntaxNode.html">SyntaxNode</a></td>
+        <td><span class="parametername">node</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><a class="xref" href="CilTools.Visualization.VisualizationOptions.html">VisualizationOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderNode_CilTools_Syntax_SyntaxNode_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_">SyntaxVisualizer.RenderNode(SyntaxNode, VisualizationOptions, TextWriter)</a></div>
+  
+  
+  <a id="CilTools_Visualization_HtmlVisualizer_RenderParagraph_" data-uid="CilTools.Visualization.HtmlVisualizer.RenderParagraph*"></a>
+  <h4 id="CilTools_Visualization_HtmlVisualizer_RenderParagraph_System_String_System_IO_TextWriter_" data-uid="CilTools.Visualization.HtmlVisualizer.RenderParagraph(System.String,System.IO.TextWriter)">RenderParagraph(String, TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Visualizes a paragraph with the specified text and writes results into the <code>TextWriter</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">public override void RenderParagraph(string content, TextWriter target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.String</span></td>
+        <td><span class="parametername">content</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderParagraph_System_String_System_IO_TextWriter_">SyntaxVisualizer.RenderParagraph(String, TextWriter)</a></div>
+  
+  
+  <a id="CilTools_Visualization_HtmlVisualizer_StartBlock_" data-uid="CilTools.Visualization.HtmlVisualizer.StartBlock*"></a>
+  <h4 id="CilTools_Visualization_HtmlVisualizer_StartBlock_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_" data-uid="CilTools.Visualization.HtmlVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)">StartBlock(VisualizationOptions, TextWriter)</h4>
+  <div class="markdown level1 summary"><p>Writes content that marks the beginning of the visualized code block to the <code>TextWriter</code></p>
+</div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">protected override void StartBlock(VisualizationOptions options, TextWriter target)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><a class="xref" href="CilTools.Visualization.VisualizationOptions.html">VisualizationOptions</a></td>
+        <td><span class="parametername">options</span></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td><span class="xref">System.IO.TextWriter</span></td>
+        <td><span class="parametername">target</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="overrides">Overrides</h5>
+  <div><a class="xref" href="CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_StartBlock_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_">SyntaxVisualizer.StartBlock(VisualizationOptions, TextWriter)</a></div>
+</article>
+          </div>
+          
+          <div class="hidden-sm col-md-2" role="complementary">
+            <div class="sideaffix">
+              <div class="contribution">
+                <ul class="nav">
+                </ul>
+              </div>
+              <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm affix" id="affix">
+              <!-- <p><a class="back-to-top" href="#top">Back to top</a><p> -->
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <footer>
+        <div class="grad-bottom"></div>
+        <div class="footer">
+          <div class="container">
+            <span class="pull-right">
+              <a href="#top">Back to top</a>
+            </span>
+            <span>CIL Tools (published from sources in <a href="https://github.com/MSDN-WhiteKnight/CilTools">GitHub repository</a>).<br>Generated by <strong>DocFX</strong></span><script type="text/javascript">(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");ym(65150713, "init", {clickmap:true,trackLinks:true,accurateTrackBounce:true});</script><noscript><div><img src="https://mc.yandex.ru/watch/65150713" style="position:absolute; left:-9999px;" alt=""></div></noscript>
+            
+          </div>
+        </div>
+      </footer>
+    </div>
+    
+    <script type="text/javascript" src="../styles/docfx.vendor.js"></script>
+    <script type="text/javascript" src="../styles/docfx.js"></script>
+    <script type="text/javascript" src="../styles/main.js"></script>
+  </body>
+</html>

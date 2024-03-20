@@ -26,6 +26,7 @@ items:
     content: 'public class CommentToken : SyntaxTokenDefinition'
     content.vb: >-
       Public Class CommentToken
+
           Inherits SyntaxTokenDefinition
   inheritance:
   - System.Object

@@ -1,0 +1,131 @@
+### YamlMime:ManagedReference
+items:
+- uid: CilTools.Visualization.OutputFormat
+  commentId: T:CilTools.Visualization.OutputFormat
+  id: OutputFormat
+  parent: CilTools.Visualization
+  children:
+  - CilTools.Visualization.OutputFormat.ConsoleText
+  - CilTools.Visualization.OutputFormat.Html
+  - CilTools.Visualization.OutputFormat.Plaintext
+  langs:
+  - csharp
+  - vb
+  name: OutputFormat
+  nameWithType: OutputFormat
+  fullName: CilTools.Visualization.OutputFormat
+  type: Enum
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nSpecifies visualization output format\n"
+  syntax:
+    content: public enum OutputFormat
+    content.vb: Public Enum OutputFormat
+  modifiers.csharp:
+  - public
+  - enum
+  modifiers.vb:
+  - Public
+  - Enum
+- uid: CilTools.Visualization.OutputFormat.Html
+  commentId: F:CilTools.Visualization.OutputFormat.Html
+  id: Html
+  parent: CilTools.Visualization.OutputFormat
+  langs:
+  - csharp
+  - vb
+  name: Html
+  nameWithType: OutputFormat.Html
+  fullName: CilTools.Visualization.OutputFormat.Html
+  type: Field
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nHypertext Markup Language (HTML) format\n"
+  syntax:
+    content: Html = 1
+    return:
+      type: CilTools.Visualization.OutputFormat
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Visualization.OutputFormat.Plaintext
+  commentId: F:CilTools.Visualization.OutputFormat.Plaintext
+  id: Plaintext
+  parent: CilTools.Visualization.OutputFormat
+  langs:
+  - csharp
+  - vb
+  name: Plaintext
+  nameWithType: OutputFormat.Plaintext
+  fullName: CilTools.Visualization.OutputFormat.Plaintext
+  type: Field
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nPlain text format\n"
+  syntax:
+    content: Plaintext = 2
+    return:
+      type: CilTools.Visualization.OutputFormat
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Visualization.OutputFormat.ConsoleText
+  commentId: F:CilTools.Visualization.OutputFormat.ConsoleText
+  id: ConsoleText
+  parent: CilTools.Visualization.OutputFormat
+  langs:
+  - csharp
+  - vb
+  name: ConsoleText
+  nameWithType: OutputFormat.ConsoleText
+  fullName: CilTools.Visualization.OutputFormat.ConsoleText
+  type: Field
+  source:
+    path: CilTools.Visualization
+    isExternal: true
+  assemblies:
+  - CilTools.Visualization
+  namespace: CilTools.Visualization
+  summary: "\nText printed into console (with colors)\n"
+  syntax:
+    content: ConsoleText = 3
+    return:
+      type: CilTools.Visualization.OutputFormat
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+references:
+- uid: CilTools.Visualization
+  commentId: N:CilTools.Visualization
+  isExternal: true
+  name: CilTools.Visualization
+  nameWithType: CilTools.Visualization
+  fullName: CilTools.Visualization
+- uid: CilTools.Visualization.OutputFormat
+  commentId: T:CilTools.Visualization.OutputFormat
+  parent: CilTools.Visualization
+  isExternal: true
+  name: OutputFormat
+  nameWithType: OutputFormat
+  fullName: CilTools.Visualization.OutputFormat

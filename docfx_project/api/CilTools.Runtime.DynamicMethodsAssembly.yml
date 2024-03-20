@@ -45,7 +45,9 @@ items:
     content: 'public sealed class DynamicMethodsAssembly : Assembly, _Assembly, IEvidenceFactory, ICustomAttributeProvider, ISerializable, IDisposable'
     content.vb: >-
       Public NotInheritable Class DynamicMethodsAssembly
+
           Inherits Assembly
+
           Implements _Assembly, IEvidenceFactory, ICustomAttributeProvider, ISerializable, IDisposable
   inheritance:
   - System.Object

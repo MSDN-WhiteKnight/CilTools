@@ -49,7 +49,9 @@ items:
     content: 'public class ClrAssemblyInfo : Assembly, _Assembly, IEvidenceFactory, ICustomAttributeProvider, ISerializable, ITokenResolver'
     content.vb: >-
       Public Class ClrAssemblyInfo
+
           Inherits Assembly
+
           Implements _Assembly, IEvidenceFactory, ICustomAttributeProvider, ISerializable, ITokenResolver
   inheritance:
   - System.Object

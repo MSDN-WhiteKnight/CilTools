@@ -26,6 +26,7 @@ items:
     content: 'public class NumericLiteralToken : SyntaxTokenDefinition'
     content.vb: >-
       Public Class NumericLiteralToken
+
           Inherits SyntaxTokenDefinition
   inheritance:
   - System.Object

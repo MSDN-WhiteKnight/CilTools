@@ -6,8 +6,10 @@ items:
   children:
   - CilTools.SourceCode.Common.SourceCodeUtils
   - CilTools.SourceCode.Common.SourceLanguage
+  - CilTools.SourceCode.Common.SourceParser
   - CilTools.SourceCode.Common.SourceToken
   - CilTools.SourceCode.Common.SourceTokenFactory
+  - CilTools.SourceCode.Common.SyntaxNodeCollection
   - CilTools.SourceCode.Common.TokenKind
   langs:
   - csharp
@@ -32,6 +34,12 @@ references:
   name: SourceLanguage
   nameWithType: SourceLanguage
   fullName: CilTools.SourceCode.Common.SourceLanguage
+- uid: CilTools.SourceCode.Common.SourceParser
+  commentId: T:CilTools.SourceCode.Common.SourceParser
+  isExternal: true
+  name: SourceParser
+  nameWithType: SourceParser
+  fullName: CilTools.SourceCode.Common.SourceParser
 - uid: CilTools.SourceCode.Common.SourceToken
   commentId: T:CilTools.SourceCode.Common.SourceToken
   isExternal: true
@@ -45,6 +53,13 @@ references:
   name: SourceTokenFactory
   nameWithType: SourceTokenFactory
   fullName: CilTools.SourceCode.Common.SourceTokenFactory
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection
+  commentId: T:CilTools.SourceCode.Common.SyntaxNodeCollection
+  parent: CilTools.SourceCode.Common
+  isExternal: true
+  name: SyntaxNodeCollection
+  nameWithType: SyntaxNodeCollection
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection
 - uid: CilTools.SourceCode.Common.TokenKind
   commentId: T:CilTools.SourceCode.Common.TokenKind
   parent: CilTools.SourceCode.Common

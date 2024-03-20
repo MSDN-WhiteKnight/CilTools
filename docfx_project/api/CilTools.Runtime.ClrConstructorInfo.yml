@@ -50,7 +50,9 @@ items:
     content: 'public class ClrConstructorInfo : ConstructorInfo, ICustomAttributeProvider, _MemberInfo, _MethodBase, _ConstructorInfo, ICustomMethod'
     content.vb: >-
       Public Class ClrConstructorInfo
+
           Inherits ConstructorInfo
+
           Implements ICustomAttributeProvider, _MemberInfo, _MethodBase, _ConstructorInfo, ICustomMethod
   inheritance:
   - System.Object

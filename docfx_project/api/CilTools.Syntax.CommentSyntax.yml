@@ -25,6 +25,7 @@ items:
     content: 'public class CommentSyntax : SyntaxNode'
     content.vb: >-
       Public Class CommentSyntax
+
           Inherits SyntaxNode
   inheritance:
   - System.Object

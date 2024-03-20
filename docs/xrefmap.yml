@@ -1894,6 +1894,22 @@ references:
   commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.BaseType
   fullName: CilTools.BytecodeAnalysis.TypeSpec.BaseType
   nameWithType: TypeSpec.BaseType
+- uid: CilTools.BytecodeAnalysis.TypeSpec.CilTools#Reflection#IReflectionInfo#GetReflectionProperty(System.Int32)
+  name: IReflectionInfo.GetReflectionProperty(Int32)
+  href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_CilTools_Reflection_IReflectionInfo_GetReflectionProperty_System_Int32_
+  commentId: M:CilTools.BytecodeAnalysis.TypeSpec.CilTools#Reflection#IReflectionInfo#GetReflectionProperty(System.Int32)
+  name.vb: CilTools.Reflection.IReflectionInfo.GetReflectionProperty(Int32)
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)
+  nameWithType: TypeSpec.IReflectionInfo.GetReflectionProperty(Int32)
+  nameWithType.vb: TypeSpec.CilTools.Reflection.IReflectionInfo.GetReflectionProperty(Int32)
+- uid: CilTools.BytecodeAnalysis.TypeSpec.CilTools#Reflection#IReflectionInfo#GetReflectionProperty*
+  name: IReflectionInfo.GetReflectionProperty
+  href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_CilTools_Reflection_IReflectionInfo_GetReflectionProperty_
+  commentId: Overload:CilTools.BytecodeAnalysis.TypeSpec.CilTools#Reflection#IReflectionInfo#GetReflectionProperty
+  name.vb: CilTools.Reflection.IReflectionInfo.GetReflectionProperty
+  fullName: CilTools.BytecodeAnalysis.TypeSpec.CilTools.Reflection.IReflectionInfo.GetReflectionProperty
+  nameWithType: TypeSpec.IReflectionInfo.GetReflectionProperty
+  nameWithType.vb: TypeSpec.CilTools.Reflection.IReflectionInfo.GetReflectionProperty
 - uid: CilTools.BytecodeAnalysis.TypeSpec.CreateSpecialType(CilTools.BytecodeAnalysis.ElementType)
   name: CreateSpecialType(ElementType)
   href: api/CilTools.BytecodeAnalysis.TypeSpec.html#CilTools_BytecodeAnalysis_TypeSpec_CreateSpecialType_CilTools_BytecodeAnalysis_ElementType_
@@ -2914,6 +2930,22 @@ references:
   commentId: Overload:CilTools.Reflection.ComplexType.BaseType
   fullName: CilTools.Reflection.ComplexType.BaseType
   nameWithType: ComplexType.BaseType
+- uid: CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty(System.Int32)
+  name: IReflectionInfo.GetReflectionProperty(Int32)
+  href: api/CilTools.Reflection.ComplexType.html#CilTools_Reflection_ComplexType_CilTools_Reflection_IReflectionInfo_GetReflectionProperty_System_Int32_
+  commentId: M:CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty(System.Int32)
+  name.vb: CilTools.Reflection.IReflectionInfo.GetReflectionProperty(Int32)
+  fullName: CilTools.Reflection.ComplexType.CilTools.Reflection.IReflectionInfo.GetReflectionProperty(System.Int32)
+  nameWithType: ComplexType.IReflectionInfo.GetReflectionProperty(Int32)
+  nameWithType.vb: ComplexType.CilTools.Reflection.IReflectionInfo.GetReflectionProperty(Int32)
+- uid: CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty*
+  name: IReflectionInfo.GetReflectionProperty
+  href: api/CilTools.Reflection.ComplexType.html#CilTools_Reflection_ComplexType_CilTools_Reflection_IReflectionInfo_GetReflectionProperty_
+  commentId: Overload:CilTools.Reflection.ComplexType.CilTools#Reflection#IReflectionInfo#GetReflectionProperty
+  name.vb: CilTools.Reflection.IReflectionInfo.GetReflectionProperty
+  fullName: CilTools.Reflection.ComplexType.CilTools.Reflection.IReflectionInfo.GetReflectionProperty
+  nameWithType: ComplexType.IReflectionInfo.GetReflectionProperty
+  nameWithType.vb: ComplexType.CilTools.Reflection.IReflectionInfo.GetReflectionProperty
 - uid: CilTools.Reflection.ComplexType.DeclaringType
   name: DeclaringType
   href: api/CilTools.Reflection.ComplexType.html#CilTools_Reflection_ComplexType_DeclaringType
@@ -5335,6 +5367,12 @@ references:
   commentId: T:CilTools.Reflection.ReflectionProperties
   fullName: CilTools.Reflection.ReflectionProperties
   nameWithType: ReflectionProperties
+- uid: CilTools.Reflection.ReflectionProperties.ContainingAssembly
+  name: ContainingAssembly
+  href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_ContainingAssembly
+  commentId: F:CilTools.Reflection.ReflectionProperties.ContainingAssembly
+  fullName: CilTools.Reflection.ReflectionProperties.ContainingAssembly
+  nameWithType: ReflectionProperties.ContainingAssembly
 - uid: CilTools.Reflection.ReflectionProperties.CorFlags
   name: CorFlags
   href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_CorFlags
@@ -5407,6 +5445,12 @@ references:
   commentId: F:CilTools.Reflection.ReflectionProperties.ReferencedModules
   fullName: CilTools.Reflection.ReflectionProperties.ReferencedModules
   nameWithType: ReflectionProperties.ReferencedModules
+- uid: CilTools.Reflection.ReflectionProperties.ReferenceTarget
+  name: ReferenceTarget
+  href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_ReferenceTarget
+  commentId: F:CilTools.Reflection.ReflectionProperties.ReferenceTarget
+  fullName: CilTools.Reflection.ReflectionProperties.ReferenceTarget
+  nameWithType: ReflectionProperties.ReferenceTarget
 - uid: CilTools.Reflection.ReflectionProperties.RvaFieldValue
   name: RvaFieldValue
   href: api/CilTools.Reflection.ReflectionProperties.html#CilTools_Reflection_ReflectionProperties_RvaFieldValue
@@ -7078,6 +7122,36 @@ references:
   commentId: F:CilTools.SourceCode.Common.SourceLanguage.VisualBasic
   fullName: CilTools.SourceCode.Common.SourceLanguage.VisualBasic
   nameWithType: SourceLanguage.VisualBasic
+- uid: CilTools.SourceCode.Common.SourceParser
+  name: SourceParser
+  href: api/CilTools.SourceCode.Common.SourceParser.html
+  commentId: T:CilTools.SourceCode.Common.SourceParser
+  fullName: CilTools.SourceCode.Common.SourceParser
+  nameWithType: SourceParser
+- uid: CilTools.SourceCode.Common.SourceParser.Parse(System.String,System.String)
+  name: Parse(String, String)
+  href: api/CilTools.SourceCode.Common.SourceParser.html#CilTools_SourceCode_Common_SourceParser_Parse_System_String_System_String_
+  commentId: M:CilTools.SourceCode.Common.SourceParser.Parse(System.String,System.String)
+  fullName: CilTools.SourceCode.Common.SourceParser.Parse(System.String, System.String)
+  nameWithType: SourceParser.Parse(String, String)
+- uid: CilTools.SourceCode.Common.SourceParser.Parse*
+  name: Parse
+  href: api/CilTools.SourceCode.Common.SourceParser.html#CilTools_SourceCode_Common_SourceParser_Parse_
+  commentId: Overload:CilTools.SourceCode.Common.SourceParser.Parse
+  fullName: CilTools.SourceCode.Common.SourceParser.Parse
+  nameWithType: SourceParser.Parse
+- uid: CilTools.SourceCode.Common.SourceParser.RegisterSyntaxFactory(System.String,CilTools.Syntax.SyntaxFactory)
+  name: RegisterSyntaxFactory(String, SyntaxFactory)
+  href: api/CilTools.SourceCode.Common.SourceParser.html#CilTools_SourceCode_Common_SourceParser_RegisterSyntaxFactory_System_String_CilTools_Syntax_SyntaxFactory_
+  commentId: M:CilTools.SourceCode.Common.SourceParser.RegisterSyntaxFactory(System.String,CilTools.Syntax.SyntaxFactory)
+  fullName: CilTools.SourceCode.Common.SourceParser.RegisterSyntaxFactory(System.String, CilTools.Syntax.SyntaxFactory)
+  nameWithType: SourceParser.RegisterSyntaxFactory(String, SyntaxFactory)
+- uid: CilTools.SourceCode.Common.SourceParser.RegisterSyntaxFactory*
+  name: RegisterSyntaxFactory
+  href: api/CilTools.SourceCode.Common.SourceParser.html#CilTools_SourceCode_Common_SourceParser_RegisterSyntaxFactory_
+  commentId: Overload:CilTools.SourceCode.Common.SourceParser.RegisterSyntaxFactory
+  fullName: CilTools.SourceCode.Common.SourceParser.RegisterSyntaxFactory
+  nameWithType: SourceParser.RegisterSyntaxFactory
 - uid: CilTools.SourceCode.Common.SourceToken
   name: SourceToken
   href: api/CilTools.SourceCode.Common.SourceToken.html
@@ -7204,6 +7278,75 @@ references:
   commentId: Overload:CilTools.SourceCode.Common.SourceTokenFactory.Language
   fullName: CilTools.SourceCode.Common.SourceTokenFactory.Language
   nameWithType: SourceTokenFactory.Language
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection
+  name: SyntaxNodeCollection
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html
+  commentId: T:CilTools.SourceCode.Common.SyntaxNodeCollection
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection
+  nameWithType: SyntaxNodeCollection
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  name: Count
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_Count
+  commentId: P:CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  nameWithType: SyntaxNodeCollection.Count
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.Count*
+  name: Count
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_Count_
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  nameWithType: SyntaxNodeCollection.Count
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes
+  name: EnumerateChildNodes()
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_EnumerateChildNodes
+  commentId: M:CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes()
+  nameWithType: SyntaxNodeCollection.EnumerateChildNodes()
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes*
+  name: EnumerateChildNodes
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_EnumerateChildNodes_
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes
+  nameWithType: SyntaxNodeCollection.EnumerateChildNodes
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode[])
+  name: FromArray(SyntaxNode[])
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_FromArray_CilTools_Syntax_SyntaxNode___
+  commentId: M:CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode[])
+  name.vb: FromArray(SyntaxNode())
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode[])
+  fullName.vb: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode())
+  nameWithType: SyntaxNodeCollection.FromArray(SyntaxNode[])
+  nameWithType.vb: SyntaxNodeCollection.FromArray(SyntaxNode())
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray*
+  name: FromArray
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_FromArray_
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray
+  nameWithType: SyntaxNodeCollection.FromArray
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode(System.Int32)
+  name: GetNode(Int32)
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_GetNode_System_Int32_
+  commentId: M:CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode(System.Int32)
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode(System.Int32)
+  nameWithType: SyntaxNodeCollection.GetNode(Int32)
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode*
+  name: GetNode
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_GetNode_
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode
+  nameWithType: SyntaxNodeCollection.GetNode
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.ToText(System.IO.TextWriter)
+  name: ToText(TextWriter)
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_ToText_System_IO_TextWriter_
+  commentId: M:CilTools.SourceCode.Common.SyntaxNodeCollection.ToText(System.IO.TextWriter)
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.ToText(System.IO.TextWriter)
+  nameWithType: SyntaxNodeCollection.ToText(TextWriter)
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.ToText*
+  name: ToText
+  href: api/CilTools.SourceCode.Common.SyntaxNodeCollection.html#CilTools_SourceCode_Common_SyntaxNodeCollection_ToText_
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.ToText
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.ToText
+  nameWithType: SyntaxNodeCollection.ToText
 - uid: CilTools.SourceCode.Common.TokenKind
   name: TokenKind
   href: api/CilTools.SourceCode.Common.TokenKind.html
@@ -9052,3 +9195,378 @@ references:
   commentId: Overload:CilTools.Syntax.Tokens.WhitespaceToken.HasStart
   fullName: CilTools.Syntax.Tokens.WhitespaceToken.HasStart
   nameWithType: WhitespaceToken.HasStart
+- uid: CilTools.Visualization
+  name: CilTools.Visualization
+  href: api/CilTools.Visualization.html
+  commentId: N:CilTools.Visualization
+  fullName: CilTools.Visualization
+  nameWithType: CilTools.Visualization
+- uid: CilTools.Visualization.HtmlVisualizer
+  name: HtmlVisualizer
+  href: api/CilTools.Visualization.HtmlVisualizer.html
+  commentId: T:CilTools.Visualization.HtmlVisualizer
+  fullName: CilTools.Visualization.HtmlVisualizer
+  nameWithType: HtmlVisualizer
+- uid: CilTools.Visualization.HtmlVisualizer.#ctor
+  name: HtmlVisualizer()
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer__ctor
+  commentId: M:CilTools.Visualization.HtmlVisualizer.#ctor
+  fullName: CilTools.Visualization.HtmlVisualizer.HtmlVisualizer()
+  nameWithType: HtmlVisualizer.HtmlVisualizer()
+- uid: CilTools.Visualization.HtmlVisualizer.#ctor*
+  name: HtmlVisualizer
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer__ctor_
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.#ctor
+  fullName: CilTools.Visualization.HtmlVisualizer.HtmlVisualizer
+  nameWithType: HtmlVisualizer.HtmlVisualizer
+- uid: CilTools.Visualization.HtmlVisualizer.AddUrlProvider(CilTools.Visualization.UrlProviderBase)
+  name: AddUrlProvider(UrlProviderBase)
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_AddUrlProvider_CilTools_Visualization_UrlProviderBase_
+  commentId: M:CilTools.Visualization.HtmlVisualizer.AddUrlProvider(CilTools.Visualization.UrlProviderBase)
+  fullName: CilTools.Visualization.HtmlVisualizer.AddUrlProvider(CilTools.Visualization.UrlProviderBase)
+  nameWithType: HtmlVisualizer.AddUrlProvider(UrlProviderBase)
+- uid: CilTools.Visualization.HtmlVisualizer.AddUrlProvider*
+  name: AddUrlProvider
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_AddUrlProvider_
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.AddUrlProvider
+  fullName: CilTools.Visualization.HtmlVisualizer.AddUrlProvider
+  nameWithType: HtmlVisualizer.AddUrlProvider
+- uid: CilTools.Visualization.HtmlVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  name: EndBlock(VisualizationOptions, TextWriter)
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_EndBlock_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.HtmlVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  nameWithType: HtmlVisualizer.EndBlock(VisualizationOptions, TextWriter)
+- uid: CilTools.Visualization.HtmlVisualizer.EndBlock*
+  name: EndBlock
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_EndBlock_
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.EndBlock
+  fullName: CilTools.Visualization.HtmlVisualizer.EndBlock
+  nameWithType: HtmlVisualizer.EndBlock
+- uid: CilTools.Visualization.HtmlVisualizer.GetVisualStyles
+  name: GetVisualStyles()
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_GetVisualStyles
+  commentId: M:CilTools.Visualization.HtmlVisualizer.GetVisualStyles
+  fullName: CilTools.Visualization.HtmlVisualizer.GetVisualStyles()
+  nameWithType: HtmlVisualizer.GetVisualStyles()
+- uid: CilTools.Visualization.HtmlVisualizer.GetVisualStyles(System.IO.TextWriter)
+  name: GetVisualStyles(TextWriter)
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_GetVisualStyles_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.HtmlVisualizer.GetVisualStyles(System.IO.TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.GetVisualStyles(System.IO.TextWriter)
+  nameWithType: HtmlVisualizer.GetVisualStyles(TextWriter)
+- uid: CilTools.Visualization.HtmlVisualizer.GetVisualStyles*
+  name: GetVisualStyles
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_GetVisualStyles_
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.GetVisualStyles
+  fullName: CilTools.Visualization.HtmlVisualizer.GetVisualStyles
+  nameWithType: HtmlVisualizer.GetVisualStyles
+- uid: CilTools.Visualization.HtmlVisualizer.RemoveAllProviders
+  name: RemoveAllProviders()
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_RemoveAllProviders
+  commentId: M:CilTools.Visualization.HtmlVisualizer.RemoveAllProviders
+  fullName: CilTools.Visualization.HtmlVisualizer.RemoveAllProviders()
+  nameWithType: HtmlVisualizer.RemoveAllProviders()
+- uid: CilTools.Visualization.HtmlVisualizer.RemoveAllProviders*
+  name: RemoveAllProviders
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_RemoveAllProviders_
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.RemoveAllProviders
+  fullName: CilTools.Visualization.HtmlVisualizer.RemoveAllProviders
+  nameWithType: HtmlVisualizer.RemoveAllProviders
+- uid: CilTools.Visualization.HtmlVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  name: RenderNode(SyntaxNode, VisualizationOptions, TextWriter)
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_RenderNode_CilTools_Syntax_SyntaxNode_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.HtmlVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.RenderNode(CilTools.Syntax.SyntaxNode, CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  nameWithType: HtmlVisualizer.RenderNode(SyntaxNode, VisualizationOptions, TextWriter)
+- uid: CilTools.Visualization.HtmlVisualizer.RenderNode*
+  name: RenderNode
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_RenderNode_
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.RenderNode
+  fullName: CilTools.Visualization.HtmlVisualizer.RenderNode
+  nameWithType: HtmlVisualizer.RenderNode
+- uid: CilTools.Visualization.HtmlVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  name: RenderParagraph(String, TextWriter)
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_RenderParagraph_System_String_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.HtmlVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.RenderParagraph(System.String, System.IO.TextWriter)
+  nameWithType: HtmlVisualizer.RenderParagraph(String, TextWriter)
+- uid: CilTools.Visualization.HtmlVisualizer.RenderParagraph*
+  name: RenderParagraph
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_RenderParagraph_
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.RenderParagraph
+  fullName: CilTools.Visualization.HtmlVisualizer.RenderParagraph
+  nameWithType: HtmlVisualizer.RenderParagraph
+- uid: CilTools.Visualization.HtmlVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  name: StartBlock(VisualizationOptions, TextWriter)
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_StartBlock_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.HtmlVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  fullName: CilTools.Visualization.HtmlVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  nameWithType: HtmlVisualizer.StartBlock(VisualizationOptions, TextWriter)
+- uid: CilTools.Visualization.HtmlVisualizer.StartBlock*
+  name: StartBlock
+  href: api/CilTools.Visualization.HtmlVisualizer.html#CilTools_Visualization_HtmlVisualizer_StartBlock_
+  commentId: Overload:CilTools.Visualization.HtmlVisualizer.StartBlock
+  fullName: CilTools.Visualization.HtmlVisualizer.StartBlock
+  nameWithType: HtmlVisualizer.StartBlock
+- uid: CilTools.Visualization.OutputFormat
+  name: OutputFormat
+  href: api/CilTools.Visualization.OutputFormat.html
+  commentId: T:CilTools.Visualization.OutputFormat
+  fullName: CilTools.Visualization.OutputFormat
+  nameWithType: OutputFormat
+- uid: CilTools.Visualization.OutputFormat.ConsoleText
+  name: ConsoleText
+  href: api/CilTools.Visualization.OutputFormat.html#CilTools_Visualization_OutputFormat_ConsoleText
+  commentId: F:CilTools.Visualization.OutputFormat.ConsoleText
+  fullName: CilTools.Visualization.OutputFormat.ConsoleText
+  nameWithType: OutputFormat.ConsoleText
+- uid: CilTools.Visualization.OutputFormat.Html
+  name: Html
+  href: api/CilTools.Visualization.OutputFormat.html#CilTools_Visualization_OutputFormat_Html
+  commentId: F:CilTools.Visualization.OutputFormat.Html
+  fullName: CilTools.Visualization.OutputFormat.Html
+  nameWithType: OutputFormat.Html
+- uid: CilTools.Visualization.OutputFormat.Plaintext
+  name: Plaintext
+  href: api/CilTools.Visualization.OutputFormat.html#CilTools_Visualization_OutputFormat_Plaintext
+  commentId: F:CilTools.Visualization.OutputFormat.Plaintext
+  fullName: CilTools.Visualization.OutputFormat.Plaintext
+  nameWithType: OutputFormat.Plaintext
+- uid: CilTools.Visualization.SyntaxVisualizer
+  name: SyntaxVisualizer
+  href: api/CilTools.Visualization.SyntaxVisualizer.html
+  commentId: T:CilTools.Visualization.SyntaxVisualizer
+  fullName: CilTools.Visualization.SyntaxVisualizer
+  nameWithType: SyntaxVisualizer
+- uid: CilTools.Visualization.SyntaxVisualizer.#ctor
+  name: SyntaxVisualizer()
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer__ctor
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.#ctor
+  fullName: CilTools.Visualization.SyntaxVisualizer.SyntaxVisualizer()
+  nameWithType: SyntaxVisualizer.SyntaxVisualizer()
+- uid: CilTools.Visualization.SyntaxVisualizer.#ctor*
+  name: SyntaxVisualizer
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer__ctor_
+  commentId: Overload:CilTools.Visualization.SyntaxVisualizer.#ctor
+  fullName: CilTools.Visualization.SyntaxVisualizer.SyntaxVisualizer
+  nameWithType: SyntaxVisualizer.SyntaxVisualizer
+- uid: CilTools.Visualization.SyntaxVisualizer.Create(CilTools.Visualization.OutputFormat)
+  name: Create(OutputFormat)
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_Create_CilTools_Visualization_OutputFormat_
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.Create(CilTools.Visualization.OutputFormat)
+  fullName: CilTools.Visualization.SyntaxVisualizer.Create(CilTools.Visualization.OutputFormat)
+  nameWithType: SyntaxVisualizer.Create(OutputFormat)
+- uid: CilTools.Visualization.SyntaxVisualizer.Create*
+  name: Create
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_Create_
+  commentId: Overload:CilTools.Visualization.SyntaxVisualizer.Create
+  fullName: CilTools.Visualization.SyntaxVisualizer.Create
+  nameWithType: SyntaxVisualizer.Create
+- uid: CilTools.Visualization.SyntaxVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  name: EndBlock(VisualizationOptions, TextWriter)
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_EndBlock_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.EndBlock(CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  nameWithType: SyntaxVisualizer.EndBlock(VisualizationOptions, TextWriter)
+- uid: CilTools.Visualization.SyntaxVisualizer.EndBlock*
+  name: EndBlock
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_EndBlock_
+  commentId: Overload:CilTools.Visualization.SyntaxVisualizer.EndBlock
+  fullName: CilTools.Visualization.SyntaxVisualizer.EndBlock
+  nameWithType: SyntaxVisualizer.EndBlock
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  name: RenderNode(SyntaxNode, VisualizationOptions, TextWriter)
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderNode_CilTools_Syntax_SyntaxNode_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderNode(CilTools.Syntax.SyntaxNode,CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderNode(CilTools.Syntax.SyntaxNode, CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  nameWithType: SyntaxVisualizer.RenderNode(SyntaxNode, VisualizationOptions, TextWriter)
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderNode*
+  name: RenderNode
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderNode_
+  commentId: Overload:CilTools.Visualization.SyntaxVisualizer.RenderNode
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderNode
+  nameWithType: SyntaxVisualizer.RenderNode
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  name: RenderNodes(IEnumerable<SyntaxNode>, VisualizationOptions, TextWriter)
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderNodes_System_Collections_Generic_IEnumerable_CilTools_Syntax_SyntaxNode__CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  name.vb: RenderNodes(IEnumerable(Of SyntaxNode), VisualizationOptions, TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable<CilTools.Syntax.SyntaxNode>, CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  fullName.vb: CilTools.Visualization.SyntaxVisualizer.RenderNodes(System.Collections.Generic.IEnumerable(Of CilTools.Syntax.SyntaxNode), CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  nameWithType: SyntaxVisualizer.RenderNodes(IEnumerable<SyntaxNode>, VisualizationOptions, TextWriter)
+  nameWithType.vb: SyntaxVisualizer.RenderNodes(IEnumerable(Of SyntaxNode), VisualizationOptions, TextWriter)
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderNodes*
+  name: RenderNodes
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderNodes_
+  commentId: Overload:CilTools.Visualization.SyntaxVisualizer.RenderNodes
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderNodes
+  nameWithType: SyntaxVisualizer.RenderNodes
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  name: RenderParagraph(String, TextWriter)
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderParagraph_System_String_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderParagraph(System.String,System.IO.TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderParagraph(System.String, System.IO.TextWriter)
+  nameWithType: SyntaxVisualizer.RenderParagraph(String, TextWriter)
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderParagraph*
+  name: RenderParagraph
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderParagraph_
+  commentId: Overload:CilTools.Visualization.SyntaxVisualizer.RenderParagraph
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderParagraph
+  nameWithType: SyntaxVisualizer.RenderParagraph
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode})
+  name: RenderToString(IEnumerable<SyntaxNode>)
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderToString_System_Collections_Generic_IEnumerable_CilTools_Syntax_SyntaxNode__
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode})
+  name.vb: RenderToString(IEnumerable(Of SyntaxNode))
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable<CilTools.Syntax.SyntaxNode>)
+  fullName.vb: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable(Of CilTools.Syntax.SyntaxNode))
+  nameWithType: SyntaxVisualizer.RenderToString(IEnumerable<SyntaxNode>)
+  nameWithType.vb: SyntaxVisualizer.RenderToString(IEnumerable(Of SyntaxNode))
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions)
+  name: RenderToString(IEnumerable<SyntaxNode>, VisualizationOptions)
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderToString_System_Collections_Generic_IEnumerable_CilTools_Syntax_SyntaxNode__CilTools_Visualization_VisualizationOptions_
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode},CilTools.Visualization.VisualizationOptions)
+  name.vb: RenderToString(IEnumerable(Of SyntaxNode), VisualizationOptions)
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable<CilTools.Syntax.SyntaxNode>, CilTools.Visualization.VisualizationOptions)
+  fullName.vb: CilTools.Visualization.SyntaxVisualizer.RenderToString(System.Collections.Generic.IEnumerable(Of CilTools.Syntax.SyntaxNode), CilTools.Visualization.VisualizationOptions)
+  nameWithType: SyntaxVisualizer.RenderToString(IEnumerable<SyntaxNode>, VisualizationOptions)
+  nameWithType.vb: SyntaxVisualizer.RenderToString(IEnumerable(Of SyntaxNode), VisualizationOptions)
+- uid: CilTools.Visualization.SyntaxVisualizer.RenderToString*
+  name: RenderToString
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_RenderToString_
+  commentId: Overload:CilTools.Visualization.SyntaxVisualizer.RenderToString
+  fullName: CilTools.Visualization.SyntaxVisualizer.RenderToString
+  nameWithType: SyntaxVisualizer.RenderToString
+- uid: CilTools.Visualization.SyntaxVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  name: StartBlock(VisualizationOptions, TextWriter)
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_StartBlock_CilTools_Visualization_VisualizationOptions_System_IO_TextWriter_
+  commentId: M:CilTools.Visualization.SyntaxVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions,System.IO.TextWriter)
+  fullName: CilTools.Visualization.SyntaxVisualizer.StartBlock(CilTools.Visualization.VisualizationOptions, System.IO.TextWriter)
+  nameWithType: SyntaxVisualizer.StartBlock(VisualizationOptions, TextWriter)
+- uid: CilTools.Visualization.SyntaxVisualizer.StartBlock*
+  name: StartBlock
+  href: api/CilTools.Visualization.SyntaxVisualizer.html#CilTools_Visualization_SyntaxVisualizer_StartBlock_
+  commentId: Overload:CilTools.Visualization.SyntaxVisualizer.StartBlock
+  fullName: CilTools.Visualization.SyntaxVisualizer.StartBlock
+  nameWithType: SyntaxVisualizer.StartBlock
+- uid: CilTools.Visualization.UrlProviderBase
+  name: UrlProviderBase
+  href: api/CilTools.Visualization.UrlProviderBase.html
+  commentId: T:CilTools.Visualization.UrlProviderBase
+  fullName: CilTools.Visualization.UrlProviderBase
+  nameWithType: UrlProviderBase
+- uid: CilTools.Visualization.UrlProviderBase.#ctor
+  name: UrlProviderBase()
+  href: api/CilTools.Visualization.UrlProviderBase.html#CilTools_Visualization_UrlProviderBase__ctor
+  commentId: M:CilTools.Visualization.UrlProviderBase.#ctor
+  fullName: CilTools.Visualization.UrlProviderBase.UrlProviderBase()
+  nameWithType: UrlProviderBase.UrlProviderBase()
+- uid: CilTools.Visualization.UrlProviderBase.#ctor*
+  name: UrlProviderBase
+  href: api/CilTools.Visualization.UrlProviderBase.html#CilTools_Visualization_UrlProviderBase__ctor_
+  commentId: Overload:CilTools.Visualization.UrlProviderBase.#ctor
+  fullName: CilTools.Visualization.UrlProviderBase.UrlProviderBase
+  nameWithType: UrlProviderBase.UrlProviderBase
+- uid: CilTools.Visualization.UrlProviderBase.GetMemberUrl(System.Reflection.MemberInfo)
+  name: GetMemberUrl(MemberInfo)
+  href: api/CilTools.Visualization.UrlProviderBase.html#CilTools_Visualization_UrlProviderBase_GetMemberUrl_System_Reflection_MemberInfo_
+  commentId: M:CilTools.Visualization.UrlProviderBase.GetMemberUrl(System.Reflection.MemberInfo)
+  fullName: CilTools.Visualization.UrlProviderBase.GetMemberUrl(System.Reflection.MemberInfo)
+  nameWithType: UrlProviderBase.GetMemberUrl(MemberInfo)
+- uid: CilTools.Visualization.UrlProviderBase.GetMemberUrl*
+  name: GetMemberUrl
+  href: api/CilTools.Visualization.UrlProviderBase.html#CilTools_Visualization_UrlProviderBase_GetMemberUrl_
+  commentId: Overload:CilTools.Visualization.UrlProviderBase.GetMemberUrl
+  fullName: CilTools.Visualization.UrlProviderBase.GetMemberUrl
+  nameWithType: UrlProviderBase.GetMemberUrl
+- uid: CilTools.Visualization.VisualizationOptions
+  name: VisualizationOptions
+  href: api/CilTools.Visualization.VisualizationOptions.html
+  commentId: T:CilTools.Visualization.VisualizationOptions
+  fullName: CilTools.Visualization.VisualizationOptions
+  nameWithType: VisualizationOptions
+- uid: CilTools.Visualization.VisualizationOptions.#ctor
+  name: VisualizationOptions()
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions__ctor
+  commentId: M:CilTools.Visualization.VisualizationOptions.#ctor
+  fullName: CilTools.Visualization.VisualizationOptions.VisualizationOptions()
+  nameWithType: VisualizationOptions.VisualizationOptions()
+- uid: CilTools.Visualization.VisualizationOptions.#ctor*
+  name: VisualizationOptions
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions__ctor_
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.#ctor
+  fullName: CilTools.Visualization.VisualizationOptions.VisualizationOptions
+  nameWithType: VisualizationOptions.VisualizationOptions
+- uid: CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  name: EnableInstructionNavigation
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_EnableInstructionNavigation
+  commentId: P:CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  fullName: CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  nameWithType: VisualizationOptions.EnableInstructionNavigation
+- uid: CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation*
+  name: EnableInstructionNavigation
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_EnableInstructionNavigation_
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  fullName: CilTools.Visualization.VisualizationOptions.EnableInstructionNavigation
+  nameWithType: VisualizationOptions.EnableInstructionNavigation
+- uid: CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  name: EnableSyntaxHighlighting
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_EnableSyntaxHighlighting
+  commentId: P:CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  fullName: CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  nameWithType: VisualizationOptions.EnableSyntaxHighlighting
+- uid: CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting*
+  name: EnableSyntaxHighlighting
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_EnableSyntaxHighlighting_
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  fullName: CilTools.Visualization.VisualizationOptions.EnableSyntaxHighlighting
+  nameWithType: VisualizationOptions.EnableSyntaxHighlighting
+- uid: CilTools.Visualization.VisualizationOptions.GetOption(System.String)
+  name: GetOption(String)
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_GetOption_System_String_
+  commentId: M:CilTools.Visualization.VisualizationOptions.GetOption(System.String)
+  fullName: CilTools.Visualization.VisualizationOptions.GetOption(System.String)
+  nameWithType: VisualizationOptions.GetOption(String)
+- uid: CilTools.Visualization.VisualizationOptions.GetOption*
+  name: GetOption
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_GetOption_
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.GetOption
+  fullName: CilTools.Visualization.VisualizationOptions.GetOption
+  nameWithType: VisualizationOptions.GetOption
+- uid: CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  name: HighlightingEndOffset
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_HighlightingEndOffset
+  commentId: P:CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  fullName: CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  nameWithType: VisualizationOptions.HighlightingEndOffset
+- uid: CilTools.Visualization.VisualizationOptions.HighlightingEndOffset*
+  name: HighlightingEndOffset
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_HighlightingEndOffset_
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  fullName: CilTools.Visualization.VisualizationOptions.HighlightingEndOffset
+  nameWithType: VisualizationOptions.HighlightingEndOffset
+- uid: CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  name: HighlightingStartOffset
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_HighlightingStartOffset
+  commentId: P:CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  fullName: CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  nameWithType: VisualizationOptions.HighlightingStartOffset
+- uid: CilTools.Visualization.VisualizationOptions.HighlightingStartOffset*
+  name: HighlightingStartOffset
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_HighlightingStartOffset_
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  fullName: CilTools.Visualization.VisualizationOptions.HighlightingStartOffset
+  nameWithType: VisualizationOptions.HighlightingStartOffset
+- uid: CilTools.Visualization.VisualizationOptions.SetOption(System.String,System.Object)
+  name: SetOption(String, Object)
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_SetOption_System_String_System_Object_
+  commentId: M:CilTools.Visualization.VisualizationOptions.SetOption(System.String,System.Object)
+  fullName: CilTools.Visualization.VisualizationOptions.SetOption(System.String, System.Object)
+  nameWithType: VisualizationOptions.SetOption(String, Object)
+- uid: CilTools.Visualization.VisualizationOptions.SetOption*
+  name: SetOption
+  href: api/CilTools.Visualization.VisualizationOptions.html#CilTools_Visualization_VisualizationOptions_SetOption_
+  commentId: Overload:CilTools.Visualization.VisualizationOptions.SetOption
+  fullName: CilTools.Visualization.VisualizationOptions.SetOption
+  nameWithType: VisualizationOptions.SetOption

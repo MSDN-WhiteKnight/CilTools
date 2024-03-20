@@ -90,6 +90,7 @@
     <div><span class="xref">System.Runtime.InteropServices._Type</span></div>
     <div><span class="xref">System.Reflection.IReflect</span></div>
     <div><a class="xref" href="CilTools.Reflection.ITypeInfo.html">ITypeInfo</a></div>
+    <div><a class="xref" href="CilTools.Reflection.IReflectionInfo.html">IReflectionInfo</a></div>
   </div>
   <div class="inheritedMembers">
     <h5>Inherited Members</h5>
@@ -506,7 +507,7 @@
   <h6><strong>Assembly</strong>: CilTools.BytecodeAnalysis.dll</h6>
   <h5 id="CilTools_BytecodeAnalysis_TypeSpec_syntax">Syntax</h5>
   <div class="codewrapper">
-    <pre><code class="lang-csharp hljs">public class TypeSpec : Type, ICustomAttributeProvider, _MemberInfo, _Type, IReflect, ITypeInfo</code></pre>
+    <pre><code class="lang-csharp hljs">public class TypeSpec : Type, ICustomAttributeProvider, _MemberInfo, _Type, IReflect, ITypeInfo, IReflectionInfo</code></pre>
   </div>
   <h3 id="properties">Properties
   </h3>
@@ -3000,6 +3001,50 @@ when reading generic parameters.</p>
   </table>
   <h5 class="overrides">Overrides</h5>
   <div><span class="xref">System.Type.ToString()</span></div>
+  <h3 id="eii">Explicit Interface Implementations
+  </h3>
+  
+  
+  <a id="CilTools_BytecodeAnalysis_TypeSpec_CilTools_Reflection_IReflectionInfo_GetReflectionProperty_" data-uid="CilTools.BytecodeAnalysis.TypeSpec.CilTools#Reflection#IReflectionInfo#GetReflectionProperty*"></a>
+  <h4 id="CilTools_BytecodeAnalysis_TypeSpec_CilTools_Reflection_IReflectionInfo_GetReflectionProperty_System_Int32_" data-uid="CilTools.BytecodeAnalysis.TypeSpec.CilTools#Reflection#IReflectionInfo#GetReflectionProperty(System.Int32)">IReflectionInfo.GetReflectionProperty(Int32)</h4>
+  <div class="markdown level1 summary"></div>
+  <div class="markdown level1 conceptual"></div>
+  <h5 class="decalaration">Declaration</h5>
+  <div class="codewrapper">
+    <pre><code class="lang-csharp hljs">object IReflectionInfo.GetReflectionProperty(int id)</code></pre>
+  </div>
+  <h5 class="parameters">Parameters</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Name</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Int32</span></td>
+        <td><span class="parametername">id</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+  <h5 class="returns">Returns</h5>
+  <table class="table table-bordered table-striped table-condensed">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="xref">System.Object</span></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
   <h3 id="implements">Implements</h3>
   <div>
       <span class="xref">System.Reflection.ICustomAttributeProvider</span>
@@ -3015,6 +3060,9 @@ when reading generic parameters.</p>
   </div>
   <div>
       <a class="xref" href="CilTools.Reflection.ITypeInfo.html">ITypeInfo</a>
+  </div>
+  <div>
+      <a class="xref" href="CilTools.Reflection.IReflectionInfo.html">IReflectionInfo</a>
   </div>
   <h3 id="extensionmethods">Extension Methods</h3>
   <div>

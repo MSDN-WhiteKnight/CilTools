@@ -5,6 +5,7 @@ items:
   id: ReflectionProperties
   parent: CilTools.Reflection
   children:
+  - CilTools.Reflection.ReflectionProperties.ContainingAssembly
   - CilTools.Reflection.ReflectionProperties.CorFlags
   - CilTools.Reflection.ReflectionProperties.ExplicitlyImplementedMethods
   - CilTools.Reflection.ReflectionProperties.FieldOffset
@@ -16,6 +17,7 @@ items:
   - CilTools.Reflection.ReflectionProperties.InfoText
   - CilTools.Reflection.ReflectionProperties.IsStatic
   - CilTools.Reflection.ReflectionProperties.ReferencedModules
+  - CilTools.Reflection.ReflectionProperties.ReferenceTarget
   - CilTools.Reflection.ReflectionProperties.RvaFieldValue
   - CilTools.Reflection.ReflectionProperties.Signature
   - CilTools.Reflection.ReflectionProperties.StackReserve
@@ -514,6 +516,64 @@ items:
     return:
       type: System.Int32
     content.vb: Public Const ForwardedTypes As Integer = 114
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.ReferenceTarget
+  commentId: F:CilTools.Reflection.ReflectionProperties.ReferenceTarget
+  id: ReferenceTarget
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: ReferenceTarget
+  nameWithType: ReflectionProperties.ReferenceTarget
+  fullName: CilTools.Reflection.ReflectionProperties.ReferenceTarget
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents a target member of reference (TypeRef or MethodRef). (Type: MemberInfo)\n"
+  syntax:
+    content: public const int ReferenceTarget = 115
+    return:
+      type: System.Int32
+    content.vb: Public Const ReferenceTarget As Integer = 115
+  modifiers.csharp:
+  - public
+  - const
+  modifiers.vb:
+  - Public
+  - Const
+- uid: CilTools.Reflection.ReflectionProperties.ContainingAssembly
+  commentId: F:CilTools.Reflection.ReflectionProperties.ContainingAssembly
+  id: ContainingAssembly
+  parent: CilTools.Reflection.ReflectionProperties
+  langs:
+  - csharp
+  - vb
+  name: ContainingAssembly
+  nameWithType: ReflectionProperties.ContainingAssembly
+  fullName: CilTools.Reflection.ReflectionProperties.ContainingAssembly
+  type: Field
+  source:
+    path: CilTools.BytecodeAnalysis
+    isExternal: true
+  assemblies:
+  - CilTools.BytecodeAnalysis
+  namespace: CilTools.Reflection
+  summary: "\nRepresents an assembly where the metadata element corresponding to the reflection object is stored. Only relevant \nfor references (TypeRef or MethodRef), because for definitions containing assembly is the same as <code>Assembly</code>\nproperty value. (Type: Assembly)\n"
+  syntax:
+    content: public const int ContainingAssembly = 116
+    return:
+      type: System.Int32
+    content.vb: Public Const ContainingAssembly As Integer = 116
   modifiers.csharp:
   - public
   - const

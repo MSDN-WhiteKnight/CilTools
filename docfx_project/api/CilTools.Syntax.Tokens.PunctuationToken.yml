@@ -26,6 +26,7 @@ items:
     content: 'public class PunctuationToken : SyntaxTokenDefinition'
     content.vb: >-
       Public Class PunctuationToken
+
           Inherits SyntaxTokenDefinition
   inheritance:
   - System.Object

@@ -51,7 +51,9 @@ items:
     content: 'public class ClrMethodInfo : MethodInfo, ICustomAttributeProvider, _MemberInfo, _MethodBase, _MethodInfo, ICustomMethod'
     content.vb: >-
       Public Class ClrMethodInfo
+
           Inherits MethodInfo
+
           Implements ICustomAttributeProvider, _MemberInfo, _MethodBase, _MethodInfo, ICustomMethod
   inheritance:
   - System.Object

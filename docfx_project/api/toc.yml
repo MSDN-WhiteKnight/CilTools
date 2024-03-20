@@ -125,10 +125,14 @@
     name: SourceCodeUtils
   - uid: CilTools.SourceCode.Common.SourceLanguage
     name: SourceLanguage
+  - uid: CilTools.SourceCode.Common.SourceParser
+    name: SourceParser
   - uid: CilTools.SourceCode.Common.SourceToken
     name: SourceToken
   - uid: CilTools.SourceCode.Common.SourceTokenFactory
     name: SourceTokenFactory
+  - uid: CilTools.SourceCode.Common.SyntaxNodeCollection
+    name: SyntaxNodeCollection
   - uid: CilTools.SourceCode.Common.TokenKind
     name: TokenKind
 - uid: CilTools.Syntax
@@ -189,3 +193,16 @@
     name: TokenReader
   - uid: CilTools.Syntax.Tokens.WhitespaceToken
     name: WhitespaceToken
+- uid: CilTools.Visualization
+  name: CilTools.Visualization
+  items:
+  - uid: CilTools.Visualization.HtmlVisualizer
+    name: HtmlVisualizer
+  - uid: CilTools.Visualization.OutputFormat
+    name: OutputFormat
+  - uid: CilTools.Visualization.SyntaxVisualizer
+    name: SyntaxVisualizer
+  - uid: CilTools.Visualization.UrlProviderBase
+    name: UrlProviderBase
+  - uid: CilTools.Visualization.VisualizationOptions
+    name: VisualizationOptions

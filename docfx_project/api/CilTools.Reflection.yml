@@ -93,6 +93,7 @@ references:
   fullName: CilTools.Reflection.IParamsProvider
 - uid: CilTools.Reflection.IReflectionInfo
   commentId: T:CilTools.Reflection.IReflectionInfo
+  parent: CilTools.Reflection
   isExternal: true
   name: IReflectionInfo
   nameWithType: IReflectionInfo

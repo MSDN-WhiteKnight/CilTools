@@ -26,6 +26,7 @@ items:
     content: 'public class DoubleQuotLiteralToken : SyntaxTokenDefinition'
     content.vb: >-
       Public Class DoubleQuotLiteralToken
+
           Inherits SyntaxTokenDefinition
   inheritance:
   - System.Object

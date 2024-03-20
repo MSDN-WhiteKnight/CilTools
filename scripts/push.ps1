@@ -1,5 +1,5 @@
 # Publish nuget packages
-$ver = "2.8.0"
+$ver = "2.9.0"
 $src = "nuget.org2"
 
 $Env:Path += ";C:\Distr\Microsoft\nuget 4.1\"

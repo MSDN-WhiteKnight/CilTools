@@ -37,6 +37,7 @@ items:
     content: 'public sealed class AssemblyReader : IDisposable'
     content.vb: >-
       Public NotInheritable Class AssemblyReader
+
           Implements IDisposable
   inheritance:
   - System.Object
@@ -460,7 +461,7 @@ items:
   - CilTools.Metadata
   namespace: CilTools.Metadata
   summary: "\nRaised when the assembly reader needs to resolve an external assembly\n"
-  remarks: "\nWhen the assembly reader needs to resolve an external assembly, it first looks for it in the \ncurrent runtime directory (where the system assemblies are located). Then it looks into a \nadditional resolution directories. If the assembly is not found there, \nthe reader calls the <code>AssemblyResolve</code> event handle so you can customize \nhow assemblies are resolved. The rules for handling this event are similar with the \n<xref href=\"System.AppDomain.AssemblyResolve\" data-throw-if-not-resolved=\"false\"></xref> event in .NET Framework. See \n<a href=\"https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads\">https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads</a> for more \ninformation.\n"
+  remarks: "\nWhen the assembly reader needs to resolve an external assembly, it first looks for it in the \ncurrent runtime directory (where the system assemblies are located). Then it looks into a \nadditional resolution directories. If the assembly is not found there, \nthe reader calls the <code>AssemblyResolve</code> event handler so you can customize \nhow assemblies are resolved. The rules for handling this event are similar with the \n<xref href=\"System.AppDomain.AssemblyResolve\" data-throw-if-not-resolved=\"false\"></xref> event in .NET Framework. See \n<a href=\"https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads\">https://docs.microsoft.com/dotnet/standard/assembly/resolve-loads</a> for more \ninformation.\n"
   syntax:
     content: public event ResolveEventHandler AssemblyResolve
     return:

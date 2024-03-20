@@ -1,33 +1,33 @@
 ### YamlMime:ManagedReference
 items:
-- uid: CilTools.Syntax.BlockSyntax
-  commentId: T:CilTools.Syntax.BlockSyntax
-  id: BlockSyntax
-  parent: CilTools.Syntax
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection
+  commentId: T:CilTools.SourceCode.Common.SyntaxNodeCollection
+  id: SyntaxNodeCollection
+  parent: CilTools.SourceCode.Common
   children:
-  - CilTools.Syntax.BlockSyntax.Content
-  - CilTools.Syntax.BlockSyntax.EnumerateChildNodes
-  - CilTools.Syntax.BlockSyntax.HeaderSyntax
-  - CilTools.Syntax.BlockSyntax.ToText(System.IO.TextWriter)
+  - CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  - CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes
+  - CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode[])
+  - CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode(System.Int32)
+  - CilTools.SourceCode.Common.SyntaxNodeCollection.ToText(System.IO.TextWriter)
   langs:
   - csharp
   - vb
-  name: BlockSyntax
-  nameWithType: BlockSyntax
-  fullName: CilTools.Syntax.BlockSyntax
+  name: SyntaxNodeCollection
+  nameWithType: SyntaxNodeCollection
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection
   type: Class
   source:
-    path: CilTools.BytecodeAnalysis
+    path: CilTools.SourceCode
     isExternal: true
   assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
-  summary: "\nRepresents the block syntax in the CIL assembler. The block contains child directive and instruction nodes.\n"
-  remarks: "\nThe examples of block syntax are method body or exception handler blocks. The block consists of the optional header, \nopening curly brace, content nodes (directives and statements) and closing curly brace.\n"
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nRepresents an ordered collection of syntax nodes\n"
   syntax:
-    content: 'public class BlockSyntax : SyntaxNode'
+    content: 'public class SyntaxNodeCollection : SyntaxNode'
     content.vb: >-
-      Public Class BlockSyntax
+      Public Class SyntaxNodeCollection
 
           Inherits SyntaxNode
   inheritance:
@@ -59,55 +59,59 @@ items:
   modifiers.vb:
   - Public
   - Class
-- uid: CilTools.Syntax.BlockSyntax.ToText(System.IO.TextWriter)
-  commentId: M:CilTools.Syntax.BlockSyntax.ToText(System.IO.TextWriter)
-  id: ToText(System.IO.TextWriter)
-  parent: CilTools.Syntax.BlockSyntax
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode[])
+  commentId: M:CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode[])
+  id: FromArray(CilTools.Syntax.SyntaxNode[])
+  parent: CilTools.SourceCode.Common.SyntaxNodeCollection
   langs:
   - csharp
   - vb
-  name: ToText(TextWriter)
-  nameWithType: BlockSyntax.ToText(TextWriter)
-  fullName: CilTools.Syntax.BlockSyntax.ToText(System.IO.TextWriter)
+  name: FromArray(SyntaxNode[])
+  nameWithType: SyntaxNodeCollection.FromArray(SyntaxNode[])
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode[])
   type: Method
   source:
-    path: CilTools.BytecodeAnalysis
+    path: CilTools.SourceCode
     isExternal: true
   assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
-  summary: "\nWrites text representation of this node into the specified TextWriter\n"
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nCreates a new <code>SyntaxNodeCollection</code> using contents of the specified array\n"
   syntax:
-    content: public override void ToText(TextWriter target)
+    content: public static SyntaxNodeCollection FromArray(SyntaxNode[] nodes)
     parameters:
-    - id: target
-      type: System.IO.TextWriter
-    content.vb: Public Overrides Sub ToText(target As TextWriter)
-  overridden: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
-  overload: CilTools.Syntax.BlockSyntax.ToText*
+    - id: nodes
+      type: CilTools.Syntax.SyntaxNode[]
+    return:
+      type: CilTools.SourceCode.Common.SyntaxNodeCollection
+    content.vb: Public Shared Function FromArray(nodes As SyntaxNode()) As SyntaxNodeCollection
+  overload: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray*
+  nameWithType.vb: SyntaxNodeCollection.FromArray(SyntaxNode())
   modifiers.csharp:
   - public
-  - override
+  - static
   modifiers.vb:
   - Public
-  - Overrides
-- uid: CilTools.Syntax.BlockSyntax.EnumerateChildNodes
-  commentId: M:CilTools.Syntax.BlockSyntax.EnumerateChildNodes
+  - Shared
+  fullName.vb: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray(CilTools.Syntax.SyntaxNode())
+  name.vb: FromArray(SyntaxNode())
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes
+  commentId: M:CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes
   id: EnumerateChildNodes
-  parent: CilTools.Syntax.BlockSyntax
+  parent: CilTools.SourceCode.Common.SyntaxNodeCollection
   langs:
   - csharp
   - vb
   name: EnumerateChildNodes()
-  nameWithType: BlockSyntax.EnumerateChildNodes()
-  fullName: CilTools.Syntax.BlockSyntax.EnumerateChildNodes()
+  nameWithType: SyntaxNodeCollection.EnumerateChildNodes()
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes()
   type: Method
   source:
-    path: CilTools.BytecodeAnalysis
+    path: CilTools.SourceCode
     isExternal: true
   assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
   summary: "\nEnumerates child nodes of this node. For the leaf node, returns an empty collection.\n"
   syntax:
     content: public override IEnumerable<SyntaxNode> EnumerateChildNodes()
@@ -116,71 +120,101 @@ items:
       description: The collection of child syntax nodes
     content.vb: Public Overrides Function EnumerateChildNodes As IEnumerable(Of SyntaxNode)
   overridden: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
-  overload: CilTools.Syntax.BlockSyntax.EnumerateChildNodes*
+  overload: CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes*
   modifiers.csharp:
   - public
   - override
   modifiers.vb:
   - Public
   - Overrides
-- uid: CilTools.Syntax.BlockSyntax.HeaderSyntax
-  commentId: P:CilTools.Syntax.BlockSyntax.HeaderSyntax
-  id: HeaderSyntax
-  parent: CilTools.Syntax.BlockSyntax
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.ToText(System.IO.TextWriter)
+  commentId: M:CilTools.SourceCode.Common.SyntaxNodeCollection.ToText(System.IO.TextWriter)
+  id: ToText(System.IO.TextWriter)
+  parent: CilTools.SourceCode.Common.SyntaxNodeCollection
   langs:
   - csharp
   - vb
-  name: HeaderSyntax
-  nameWithType: BlockSyntax.HeaderSyntax
-  fullName: CilTools.Syntax.BlockSyntax.HeaderSyntax
-  type: Property
+  name: ToText(TextWriter)
+  nameWithType: SyntaxNodeCollection.ToText(TextWriter)
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.ToText(System.IO.TextWriter)
+  type: Method
   source:
-    path: CilTools.BytecodeAnalysis
+    path: CilTools.SourceCode
     isExternal: true
   assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
-  summary: "\nGets the header syntax of this block, or an empty collection if this block has no header\n"
-  remarks: "\nFor the exception handler blocks, the header represents the exception clause. Other types of blocks does not have headers.\n"
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nWrites text representation of this node into the specified TextWriter\n"
   syntax:
-    content: public IEnumerable<SyntaxNode> HeaderSyntax { get; }
-    parameters: []
-    return:
-      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
-    content.vb: Public ReadOnly Property HeaderSyntax As IEnumerable(Of SyntaxNode)
-  overload: CilTools.Syntax.BlockSyntax.HeaderSyntax*
+    content: public override void ToText(TextWriter target)
+    parameters:
+    - id: target
+      type: System.IO.TextWriter
+    content.vb: Public Overrides Sub ToText(target As TextWriter)
+  overridden: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+  overload: CilTools.SourceCode.Common.SyntaxNodeCollection.ToText*
   modifiers.csharp:
   - public
-  - get
+  - override
   modifiers.vb:
   - Public
-  - ReadOnly
-- uid: CilTools.Syntax.BlockSyntax.Content
-  commentId: P:CilTools.Syntax.BlockSyntax.Content
-  id: Content
-  parent: CilTools.Syntax.BlockSyntax
+  - Overrides
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode(System.Int32)
+  commentId: M:CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode(System.Int32)
+  id: GetNode(System.Int32)
+  parent: CilTools.SourceCode.Common.SyntaxNodeCollection
   langs:
   - csharp
   - vb
-  name: Content
-  nameWithType: BlockSyntax.Content
-  fullName: CilTools.Syntax.BlockSyntax.Content
-  type: Property
+  name: GetNode(Int32)
+  nameWithType: SyntaxNodeCollection.GetNode(Int32)
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode(System.Int32)
+  type: Method
   source:
-    path: CilTools.BytecodeAnalysis
+    path: CilTools.SourceCode
     isExternal: true
   assemblies:
-  - CilTools.BytecodeAnalysis
-  namespace: CilTools.Syntax
-  summary: "\nReturns the collection of the syntax nodes contained within this block (content nodes)\n"
-  remarks: "\nThe content nodes are located between opening and closing curly braces. They include instructions and directives.\n"
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nGets the syntax node at the specified index in this collection\n"
   syntax:
-    content: public IEnumerable<SyntaxNode> Content { get; }
+    content: public SyntaxNode GetNode(int index)
+    parameters:
+    - id: index
+      type: System.Int32
+    return:
+      type: CilTools.Syntax.SyntaxNode
+    content.vb: Public Function GetNode(index As Integer) As SyntaxNode
+  overload: CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode*
+  modifiers.csharp:
+  - public
+  modifiers.vb:
+  - Public
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  commentId: P:CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  id: Count
+  parent: CilTools.SourceCode.Common.SyntaxNodeCollection
+  langs:
+  - csharp
+  - vb
+  name: Count
+  nameWithType: SyntaxNodeCollection.Count
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  type: Property
+  source:
+    path: CilTools.SourceCode
+    isExternal: true
+  assemblies:
+  - CilTools.SourceCode
+  namespace: CilTools.SourceCode.Common
+  summary: "\nGets the number of nodes in this collection\n"
+  syntax:
+    content: public int Count { get; }
     parameters: []
     return:
-      type: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
-    content.vb: Public ReadOnly Property Content As IEnumerable(Of SyntaxNode)
-  overload: CilTools.Syntax.BlockSyntax.Content*
+      type: System.Int32
+    content.vb: Public ReadOnly Property Count As Integer
+  overload: CilTools.SourceCode.Common.SyntaxNodeCollection.Count*
   modifiers.csharp:
   - public
   - get
@@ -188,12 +222,12 @@ items:
   - Public
   - ReadOnly
 references:
-- uid: CilTools.Syntax
-  commentId: N:CilTools.Syntax
+- uid: CilTools.SourceCode.Common
+  commentId: N:CilTools.SourceCode.Common
   isExternal: true
-  name: CilTools.Syntax
-  nameWithType: CilTools.Syntax
-  fullName: CilTools.Syntax
+  name: CilTools.SourceCode.Common
+  nameWithType: CilTools.SourceCode.Common
+  fullName: CilTools.SourceCode.Common
 - uid: System.Object
   commentId: T:System.Object
   parent: System
@@ -785,66 +819,51 @@ references:
   name: System
   nameWithType: System
   fullName: System
-- uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
-  commentId: M:CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
-  parent: CilTools.Syntax.SyntaxNode
+- uid: CilTools.Syntax
+  commentId: N:CilTools.Syntax
   isExternal: true
-  name: ToText(TextWriter)
-  nameWithType: SyntaxNode.ToText(TextWriter)
-  fullName: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+  name: CilTools.Syntax
+  nameWithType: CilTools.Syntax
+  fullName: CilTools.Syntax
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray*
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray
+  isExternal: true
+  name: FromArray
+  nameWithType: SyntaxNodeCollection.FromArray
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.FromArray
+- uid: CilTools.Syntax.SyntaxNode[]
+  isExternal: true
+  name: SyntaxNode[]
+  nameWithType: SyntaxNode[]
+  fullName: CilTools.Syntax.SyntaxNode[]
+  nameWithType.vb: SyntaxNode()
+  fullName.vb: CilTools.Syntax.SyntaxNode()
+  name.vb: SyntaxNode()
   spec.csharp:
-  - uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
-    name: ToText
-    nameWithType: SyntaxNode.ToText
-    fullName: CilTools.Syntax.SyntaxNode.ToText
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
     isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.IO.TextWriter
-    name: TextWriter
-    nameWithType: TextWriter
-    fullName: System.IO.TextWriter
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
+  - name: '[]'
+    nameWithType: '[]'
+    fullName: '[]'
   spec.vb:
-  - uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
-    name: ToText
-    nameWithType: SyntaxNode.ToText
-    fullName: CilTools.Syntax.SyntaxNode.ToText
+  - uid: CilTools.Syntax.SyntaxNode
+    name: SyntaxNode
+    nameWithType: SyntaxNode
+    fullName: CilTools.Syntax.SyntaxNode
     isExternal: true
-  - name: (
-    nameWithType: (
-    fullName: (
-  - uid: System.IO.TextWriter
-    name: TextWriter
-    nameWithType: TextWriter
-    fullName: System.IO.TextWriter
-    isExternal: true
-  - name: )
-    nameWithType: )
-    fullName: )
-- uid: CilTools.Syntax.BlockSyntax.ToText*
-  commentId: Overload:CilTools.Syntax.BlockSyntax.ToText
+  - name: ()
+    nameWithType: ()
+    fullName: ()
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection
+  commentId: T:CilTools.SourceCode.Common.SyntaxNodeCollection
+  parent: CilTools.SourceCode.Common
   isExternal: true
-  name: ToText
-  nameWithType: BlockSyntax.ToText
-  fullName: CilTools.Syntax.BlockSyntax.ToText
-- uid: System.IO.TextWriter
-  commentId: T:System.IO.TextWriter
-  parent: System.IO
-  isExternal: true
-  name: TextWriter
-  nameWithType: TextWriter
-  fullName: System.IO.TextWriter
-- uid: System.IO
-  commentId: N:System.IO
-  isExternal: true
-  name: System.IO
-  nameWithType: System.IO
-  fullName: System.IO
+  name: SyntaxNodeCollection
+  nameWithType: SyntaxNodeCollection
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection
 - uid: CilTools.Syntax.SyntaxNode.EnumerateChildNodes
   commentId: M:CilTools.Syntax.SyntaxNode.EnumerateChildNodes
   parent: CilTools.Syntax.SyntaxNode
@@ -876,12 +895,12 @@ references:
   - name: )
     nameWithType: )
     fullName: )
-- uid: CilTools.Syntax.BlockSyntax.EnumerateChildNodes*
-  commentId: Overload:CilTools.Syntax.BlockSyntax.EnumerateChildNodes
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes*
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes
   isExternal: true
   name: EnumerateChildNodes
-  nameWithType: BlockSyntax.EnumerateChildNodes
-  fullName: CilTools.Syntax.BlockSyntax.EnumerateChildNodes
+  nameWithType: SyntaxNodeCollection.EnumerateChildNodes
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.EnumerateChildNodes
 - uid: System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
   commentId: T:System.Collections.Generic.IEnumerable{CilTools.Syntax.SyntaxNode}
   parent: System.Collections.Generic
@@ -971,15 +990,82 @@ references:
   name: System.Collections.Generic
   nameWithType: System.Collections.Generic
   fullName: System.Collections.Generic
-- uid: CilTools.Syntax.BlockSyntax.HeaderSyntax*
-  commentId: Overload:CilTools.Syntax.BlockSyntax.HeaderSyntax
+- uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+  commentId: M:CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+  parent: CilTools.Syntax.SyntaxNode
   isExternal: true
-  name: HeaderSyntax
-  nameWithType: BlockSyntax.HeaderSyntax
-  fullName: CilTools.Syntax.BlockSyntax.HeaderSyntax
-- uid: CilTools.Syntax.BlockSyntax.Content*
-  commentId: Overload:CilTools.Syntax.BlockSyntax.Content
+  name: ToText(TextWriter)
+  nameWithType: SyntaxNode.ToText(TextWriter)
+  fullName: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+  spec.csharp:
+  - uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+    name: ToText
+    nameWithType: SyntaxNode.ToText
+    fullName: CilTools.Syntax.SyntaxNode.ToText
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+  spec.vb:
+  - uid: CilTools.Syntax.SyntaxNode.ToText(System.IO.TextWriter)
+    name: ToText
+    nameWithType: SyntaxNode.ToText
+    fullName: CilTools.Syntax.SyntaxNode.ToText
+    isExternal: true
+  - name: (
+    nameWithType: (
+    fullName: (
+  - uid: System.IO.TextWriter
+    name: TextWriter
+    nameWithType: TextWriter
+    fullName: System.IO.TextWriter
+    isExternal: true
+  - name: )
+    nameWithType: )
+    fullName: )
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.ToText*
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.ToText
   isExternal: true
-  name: Content
-  nameWithType: BlockSyntax.Content
-  fullName: CilTools.Syntax.BlockSyntax.Content
+  name: ToText
+  nameWithType: SyntaxNodeCollection.ToText
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.ToText
+- uid: System.IO.TextWriter
+  commentId: T:System.IO.TextWriter
+  parent: System.IO
+  isExternal: true
+  name: TextWriter
+  nameWithType: TextWriter
+  fullName: System.IO.TextWriter
+- uid: System.IO
+  commentId: N:System.IO
+  isExternal: true
+  name: System.IO
+  nameWithType: System.IO
+  fullName: System.IO
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode*
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode
+  isExternal: true
+  name: GetNode
+  nameWithType: SyntaxNodeCollection.GetNode
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.GetNode
+- uid: System.Int32
+  commentId: T:System.Int32
+  parent: System
+  isExternal: true
+  name: Int32
+  nameWithType: Int32
+  fullName: System.Int32
+- uid: CilTools.SourceCode.Common.SyntaxNodeCollection.Count*
+  commentId: Overload:CilTools.SourceCode.Common.SyntaxNodeCollection.Count
+  isExternal: true
+  name: Count
+  nameWithType: SyntaxNodeCollection.Count
+  fullName: CilTools.SourceCode.Common.SyntaxNodeCollection.Count
