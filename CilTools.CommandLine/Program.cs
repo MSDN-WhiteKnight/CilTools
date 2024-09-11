@@ -20,6 +20,7 @@ namespace CilTools.CommandLine
             Command.All["disasm"] = new DisasmCommand();
             Command.All["view-source"] = new ViewSourceCommand();
             Command.All["fileinfo"] = new FileInfoCommand();
+            Command.All["browse"] = new BrowseCommand();
             Command.All["help"] = new HelpCommand();
             Command.All["readme"] = new ReadmeCommand();
 

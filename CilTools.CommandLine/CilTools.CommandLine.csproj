@@ -20,6 +20,7 @@
     <ProjectReference Include="..\CilTools.Metadata\CilTools.Metadata.csproj" />
     <ProjectReference Include="..\CilTools.SourceCode\CilTools.SourceCode.csproj" />
     <ProjectReference Include="..\CilView.Core\CilView.Core.csproj" />
+    <ProjectReference Include="..\CilView.UI\CilView.UI.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="index.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Html.Forms" Version="0.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CilTools.BytecodeAnalysis\CilTools.BytecodeAnalysis.csproj" />
+    <ProjectReference Include="..\CilTools.Metadata\CilTools.Metadata.csproj" />
+    <ProjectReference Include="..\CilTools.Visualization\CilTools.Visualization.csproj" />
+  </ItemGroup>
+
+</Project>
