@@ -24,13 +24,13 @@ jobs:
       run: .\scripts\netstd\test.ps1
       shell: pwsh
     - name: Archive build results
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
           name: Output
           path: CilTools.Metadata/bin/Debug/
     - name: Archive test results
       if: always()
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
           name: Test results
           path: tests/CilTools.BytecodeAnalysis.Tests/bin/Debug/
@@ -52,13 +52,13 @@ jobs:
       run: .\scripts\netstd\test.ps1 -config Release
       shell: pwsh
     - name: Archive build results
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
           name: Output
           path: CilTools.Metadata/bin/Release/
     - name: Archive test results
       if: always()
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v4
       with:
           name: Test results
           path: tests/CilTools.BytecodeAnalysis.Tests/bin/Release/
