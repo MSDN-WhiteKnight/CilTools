@@ -54,11 +54,11 @@ jobs:
     - name: Archive build results
       uses: actions/upload-artifact@v4
       with:
-          name: Output
+          name: Release build output
           path: CilTools.Metadata/bin/Release/
     - name: Archive test results
       if: always()
       uses: actions/upload-artifact@v4
       with:
-          name: Test results
+          name: Release test results
           path: tests/CilTools.BytecodeAnalysis.Tests/bin/Release/
