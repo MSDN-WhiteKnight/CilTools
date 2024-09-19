@@ -4,9 +4,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using CilTools.BytecodeAnalysis;
+using CilTools.Reflection;
 using CilTools.Syntax;
 using CilTools.Visualization;
 using CilView.Common;
@@ -17,8 +20,11 @@ namespace CilView.UI
 {
     class IndexPage : Page
     {
-        ComboBox cbType;
         AssemblySource source;
+        AssemblyUrlProvider urlProvider;
+        HtmlVisualizer vis = new HtmlVisualizer();
+        ComboBox cbType;
+        NavigationPanel panelMethods;
 
         public IndexPage()
         {
@@ -27,18 +33,89 @@ namespace CilView.UI
 
             this.cbType = new ComboBox("cbType");
             this.AddControl(this.cbType);
+
+            this.panelMethods = new NavigationPanel("panelMethods");
+            this.panelMethods.IsVertical = true;
+            this.AddControl(this.panelMethods);
         }
         
         protected override void OnLoad(LoadEventArgs args)
         {
-            if (this.source.Assemblies.Count == 0) return;
+            if (this.source == null || this.source.Assemblies.Count == 0) return;
 
-            // Initially the assembly manifest is displayed
             Assembly ass = this.source.Assemblies[0];
+            int token;
+
+            if (args.IsInitialLoad && args.HasQueryParam("method"))
+            {
+                // View method
+                string method = args.GetQueryParam("method");
+                
+                if (!int.TryParse(method, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out token))
+                {
+                    args.CustomResponse = ResponseData.FromContent("Invalid method token", ContentTypes.PlainText);
+                    return;
+                }
+
+                MethodBase mb = ResolveMethod(ass, token);
+
+                if (mb == null)
+                {
+                    args.CustomResponse = ResponseData.FromContent("Method not found!", ContentTypes.PlainText);
+                    return;
+                }
+
+                CilGraph gr = CilGraph.Create(mb);
+                MethodDefSyntax mds = gr.ToSyntaxTree(new DisassemblerParams());
+                string rendered = this.vis.RenderToString(mds.GetChildNodes());
+                this.SetField("result-html", rendered);
+                return;
+            }
+            else if (args.IsInitialLoad && args.HasQueryParam("type"))
+            {
+                // View type
+                string type = args.GetQueryParam("type");
+
+                if (!int.TryParse(type, NumberStyles.HexNumber, CultureInfo.InvariantCulture, out token))
+                {
+                    args.CustomResponse = ResponseData.FromContent("Invalid type token", ContentTypes.PlainText);
+                    return;
+                }
+
+                Type t = ResolveMember(ass, token) as Type;
+
+                if (t == null)
+                {
+                    args.CustomResponse = ResponseData.FromContent("Type not found!", ContentTypes.PlainText);
+                    return;
+                }
+
+                this.ViewTypeImpl(t);
+                return;
+            }
+            
+            // View assembly manifest
             IEnumerable<SyntaxNode> nodes = Disassembler.GetAssemblyManifestSyntaxNodes(ass);
-            HtmlVisualizer vis = new HtmlVisualizer();
-            string html = vis.RenderToString(nodes);
+            string html = this.vis.RenderToString(nodes);
             this.SetField("result-html", html);
+        }
+
+        static MethodBase ResolveMethod(Assembly ass, int metadataToken)
+        {
+            return ResolveMember(ass, metadataToken) as MethodBase;
+        }
+
+        static MemberInfo ResolveMember(Assembly ass, int metadataToken)
+        {
+            if (ass is ITokenResolver)
+            {
+                ITokenResolver resolver = (ITokenResolver)ass;
+                return resolver.ResolveMember(metadataToken);
+            }
+            else
+            {
+                return ass.ManifestModule.ResolveMember(metadataToken);
+            }
         }
 
         internal void LoadSource(AssemblySource newval)
@@ -63,17 +140,22 @@ namespace CilView.UI
             this.source.Methods.Clear();
             this.source.Types = AssemblySource.LoadTypes(ass);
             this.cbType.ItemsSource = this.source.Types;
+
+            //configure HTML rendering
+            this.urlProvider = new AssemblyUrlProvider(ass);
+            this.vis.RemoveAllProviders();
+            this.vis.AddUrlProvider(this.urlProvider);
         }
 
         void ViewTypeImpl(Type t)
         {
             // Render type definition IL
-            HtmlVisualizer vis = new HtmlVisualizer();
             IEnumerable<SyntaxNode> nodes = SyntaxNode.GetTypeDefSyntax(t, false, new DisassemblerParams());
-            string rendered = vis.RenderToString(nodes);
+            string rendered = this.vis.RenderToString(nodes);
             this.SetField("result-html", rendered);
-            
+
             // Load methods list
+            this.panelMethods.Clear();
             MemberInfo[] members = t.GetMethods(Utils.AllMembers | BindingFlags.DeclaredOnly);
             List<MethodBase> methods = new List<MethodBase>(members.Length);
 
@@ -96,7 +178,13 @@ namespace CilView.UI
 
                 return string.Compare(s1, s2, StringComparison.InvariantCulture);
             });
-            
+
+            for (int i = 0; i < methods.Count; i++)
+            {
+                this.panelMethods.AddLink(AssemblySource.MethodToString(methods[i]),
+                    this.urlProvider.GetMemberUrl(methods[i]));
+            }
+
             this.source.Methods = new ObservableCollection<MethodBase>(methods);
         }
 
