@@ -13,7 +13,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: nuget/setup-nuget@v1
+    - uses: nuget/setup-nuget@v2
     - name: Restore NuGet packages
       run: nuget restore CilTools.sln -PackagesDirectory packages
     - name: Build with MSBuild
@@ -32,7 +32,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - uses: nuget/setup-nuget@v1
+    - uses: nuget/setup-nuget@v2
     - name: Restore NuGet packages
       run: nuget restore CilTools.sln -PackagesDirectory packages
     - name: Build with MSBuild
