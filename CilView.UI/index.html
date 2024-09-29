@@ -9,7 +9,9 @@
         <h1>CIL Tools</h1>
         <div>
             Type: <dn-control id="cbType"></dn-control>
-            <input type="button" value="View type" onclick="dotnet_action(this,'ViewType')" />
+            <input type="button" value="View type" onclick="dotnet_action(this,'ViewType')" />&nbsp;&nbsp;
+            Search <input type="text" name="searchquery" />
+            <input type="button" value=">" onclick="dotnet_action(this,'OnSearch')" />
         </div>
         <table width="100%" cellpadding="5" cellspacing="5">
             <tr>

@@ -15,6 +15,7 @@ using CilTools.Visualization;
 using CilView.Common;
 using Html.Forms;
 using Html.Forms.Controls;
+using CVC = CilView.Common;
 
 namespace CilView.UI
 {
@@ -198,6 +199,79 @@ namespace CilView.UI
 
             Type t = this.source.Types[this.cbType.SelectedIndex];
             this.ViewTypeImpl(t);
+        }
+
+        public void OnSearch()
+        {
+            //validation
+            if (this.source == null) return;
+
+            string text = this.GetFieldAs<string>("searchquery");
+
+            if (text == null) text = string.Empty;
+            else text = text.Trim();
+
+            if (text.Length == 0)
+            {
+                string errmes;
+
+                if (this.source.Methods != null && this.source.Methods.Count > 0)
+                {
+                    errmes = "Enter the method or type name fragment to search";
+                }
+                else
+                {
+                    errmes = "Enter the type name fragment to search";
+                }
+
+                this.RegisterStartupScript("alert('" + errmes + "');");
+                return;
+            }
+
+            //actual search
+            StringBuilder sb = new StringBuilder();
+            CVC.HtmlBuilder html = new CVC.HtmlBuilder(sb);
+            html.WriteElement("h2", "Search results");
+
+            try
+            {
+                IEnumerable<SearchResult> searcher = this.source.Search(text);
+                int i = 0;
+
+                foreach (SearchResult item in searcher)
+                {
+                    //print result hyperlink
+                    MemberInfo target = item.Value as MemberInfo;
+
+                    if (target != null)
+                    {
+                        html.WriteOpeningTag("p");
+                        html.WriteElement("a", item.Name,
+                            CVC.HtmlBuilder.OneAttribute("href", this.urlProvider.GetMemberUrl(target)));
+                        html.WriteClosingTag("p");
+                    }
+                    else
+                    {
+                        html.WriteElement("p", item.Name);
+                    }
+
+                    i++;
+
+                    if (i >= 50) break; //limit results count
+                }
+
+                if (i == 0)
+                {
+                    html.WriteElement("p", "No items matching the query \"" + text + "\" were found");
+                }
+            }
+            catch (Exception ex)
+            {
+                html.WriteElement("p", ex.ToString());
+            }
+
+            //show search results
+            this.SetField("result-html", sb.ToString());
         }
     }
 }
