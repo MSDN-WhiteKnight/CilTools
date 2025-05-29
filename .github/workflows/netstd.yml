@@ -9,14 +9,14 @@ on:
 jobs:
   NetStd-Debug:
 
-    runs-on: ubuntu-latest
-
+    runs-on: ubuntu-22.04
+    
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '6.x'
+        dotnet-version: '3.1.100'
     - name: Build with dotnet
       run: .\scripts\netstd\build.ps1
       shell: pwsh
@@ -44,7 +44,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '6.x'
+        dotnet-version: '3.1.100'
     - name: Build with dotnet
       run: .\scripts\netstd\build.ps1 -config Release
       shell: pwsh
