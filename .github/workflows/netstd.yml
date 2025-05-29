@@ -9,7 +9,7 @@ on:
 jobs:
   NetStd-Debug:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v1
@@ -37,7 +37,7 @@ jobs:
 
   NetStd-Release:
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
     - uses: actions/checkout@v1
