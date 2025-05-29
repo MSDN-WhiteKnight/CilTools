@@ -16,7 +16,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '3.1.100'
+        dotnet-version: '6.x'
     - name: Build with dotnet
       run: .\scripts\netstd\build.ps1
       shell: pwsh
@@ -44,7 +44,7 @@ jobs:
     - name: Setup .NET Core
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '3.1.100'
+        dotnet-version: '6.x'
     - name: Build with dotnet
       run: .\scripts\netstd\build.ps1 -config Release
       shell: pwsh
